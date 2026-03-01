@@ -5,25 +5,25 @@ import (
 	"fmt"
 	"strconv"
 
-	cometfaults "github.com/valkyrieworks/kinds/faults"
+	strongminderrors "github.com/valkyrieworks/dffc4ef0-4ec6-4346-9b6c-d0a0cb42d94b/kinds/faults"
 	"github.com/cosmos/gogoproto/proto"
 	lru "github.com/hashicorp/golang-lru/v2"
 
-	dbm "github.com/valkyrieworks/-db"
+	dbm "github.com/valkyrieworks/dffc4ef0-4ec6-4346-9b6c-d0a0cb42d94b/-db"
 
-	"github.com/valkyrieworks/proof"
-	engineconnect "github.com/valkyrieworks/utils/align"
-	commitdepot "github.com/valkyrieworks/schema/consensuscore/depot"
-	engineproto "github.com/valkyrieworks/schema/consensuscore/kinds"
-	sm "github.com/valkyrieworks/status"
-	"github.com/valkyrieworks/kinds"
+	"github.com/valkyrieworks/dffc4ef0-4ec6-4346-9b6c-d0a0cb42d94b/proof"
+	commitchronize "github.com/valkyrieworks/dffc4ef0-4ec6-4346-9b6c-d0a0cb42d94b/utils/chronize"
+	commitstore "github.com/valkyrieworks/dffc4ef0-4ec6-4346-9b6c-d0a0cb42d94b/schema/strongmind/depot"
+	commitchema "github.com/valkyrieworks/dffc4ef0-4ec6-4346-9b6c-d0a0cb42d94b/schema/strongmind/kinds"
+	sm "github.com/valkyrieworks/dffc4ef0-4ec6-4346-9b6c-d0a0cb42d94b/status"
+	"github.com/valkyrieworks/dffc4ef0-4ec6-4346-9b6c-d0a0cb42d94b/kinds"
 )
 
 //
 //
 //
 //
-const maximumLedgerSectionsToGroup = 10
+const maximumLedgerFragmentsTowardCluster = 10
 
 /**
 .
@@ -54,103 +54,103 @@ type LedgerDepot struct {
 	//
 	//
 	//
-	mtx    engineconnect.ReadwriteLock
-	root   int64
-	level int64
+	mtx    commitchronize.ReadwriteExclusion
+	foundation   int64
+	altitude int64
 
-	viewedEndorseRepository          *lru.Cache[int64, *kinds.Endorse]
-	ledgerEndorseRepository         *lru.Cache[int64, *kinds.Endorse]
-	ledgerExpandedEndorseRepository *lru.Cache[int64, *kinds.ExpandedEndorse]
+	observedEndorseStash          *lru.Cache[int64, *kinds.Endorse]
+	ledgerEndorseStash         *lru.Cache[int64, *kinds.Endorse]
+	ledgerExpandedEndorseStash *lru.Cache[int64, *kinds.ExpandedEndorse]
 }
 
 //
 //
-func NewLedgerDepot(db dbm.DB) *LedgerDepot {
-	bs := ImportLedgerDepotStatus(db)
+func FreshLedgerDepot(db dbm.DB) *LedgerDepot {
+	bs := FetchLedgerDepotStatus(db)
 	byteDepot := &LedgerDepot{
-		root:   bs.Root,
-		level: bs.Level,
+		foundation:   bs.Foundation,
+		altitude: bs.Altitude,
 		db:     db,
 	}
-	byteDepot.appendRepositories()
+	byteDepot.appendStashes()
 	return byteDepot
 }
 
-func (bs *LedgerDepot) appendRepositories() {
+func (bs *LedgerDepot) appendStashes() {
 	var err error
 	//
-	bs.ledgerEndorseRepository, err = lru.New[int64, *kinds.Endorse](100)
+	bs.ledgerEndorseStash, err = lru.New[int64, *kinds.Endorse](100)
 	if err != nil {
 		panic(err)
 	}
-	bs.ledgerExpandedEndorseRepository, err = lru.New[int64, *kinds.ExpandedEndorse](100)
+	bs.ledgerExpandedEndorseStash, err = lru.New[int64, *kinds.ExpandedEndorse](100)
 	if err != nil {
 		panic(err)
 	}
-	bs.viewedEndorseRepository, err = lru.New[int64, *kinds.Endorse](100)
+	bs.observedEndorseStash, err = lru.New[int64, *kinds.Endorse](100)
 	if err != nil {
 		panic(err)
 	}
 }
 
-func (bs *LedgerDepot) IsEmpty() bool {
+func (bs *LedgerDepot) EqualsBlank() bool {
 	bs.mtx.RLock()
 	defer bs.mtx.RUnlock()
-	return bs.root == 0 && bs.level == 0
+	return bs.foundation == 0 && bs.altitude == 0
 }
 
 //
-func (bs *LedgerDepot) Root() int64 {
+func (bs *LedgerDepot) Foundation() int64 {
 	bs.mtx.RLock()
 	defer bs.mtx.RUnlock()
-	return bs.root
+	return bs.foundation
 }
 
 //
-func (bs *LedgerDepot) Level() int64 {
+func (bs *LedgerDepot) Altitude() int64 {
 	bs.mtx.RLock()
 	defer bs.mtx.RUnlock()
-	return bs.level
+	return bs.altitude
 }
 
 //
-func (bs *LedgerDepot) Volume() int64 {
+func (bs *LedgerDepot) Extent() int64 {
 	bs.mtx.RLock()
 	defer bs.mtx.RUnlock()
-	if bs.level == 0 {
+	if bs.altitude == 0 {
 		return 0
 	}
-	return bs.level - bs.root + 1
+	return bs.altitude - bs.foundation + 1
 }
 
 //
-func (bs *LedgerDepot) ImportRootMeta() *kinds.LedgerMeta {
+func (bs *LedgerDepot) FetchFoundationSummary() *kinds.LedgerSummary {
 	bs.mtx.RLock()
 	defer bs.mtx.RUnlock()
-	if bs.root == 0 {
+	if bs.foundation == 0 {
 		return nil
 	}
-	return bs.ImportLedgerMeta(bs.root)
+	return bs.FetchLedgerSummary(bs.foundation)
 }
 
 //
 //
-func (bs *LedgerDepot) ImportLedger(level int64) *kinds.Ledger {
-	ledgerMeta := bs.ImportLedgerMeta(level)
-	if ledgerMeta == nil {
+func (bs *LedgerDepot) FetchLedger(altitude int64) *kinds.Ledger {
+	ledgerSummary := bs.FetchLedgerSummary(altitude)
+	if ledgerSummary == nil {
 		return nil
 	}
 
-	pbb := new(engineproto.Ledger)
+	pbb := new(commitchema.Ledger)
 	buf := []byte{}
-	for i := 0; i < int(ledgerMeta.LedgerUID.SegmentAssignHeading.Sum); i++ {
-		segment := bs.ImportLedgerSegment(level, i)
+	for i := 0; i < int(ledgerSummary.LedgerUUID.FragmentAssignHeading.Sum); i++ {
+		fragment := bs.FetchLedgerFragment(altitude, i)
 		//
 		//
-		if segment == nil {
+		if fragment == nil {
 			return nil
 		}
-		buf = append(buf, segment.Octets...)
+		buf = append(buf, fragment.Octets...)
 	}
 	err := proto.Unmarshal(buf, pbb)
 	if err != nil {
@@ -159,9 +159,9 @@ func (bs *LedgerDepot) ImportLedger(level int64) *kinds.Ledger {
 		panic(fmt.Sprintf("REDACTED", err))
 	}
 
-	ledger, err := kinds.LedgerFromSchema(pbb)
+	ledger, err := kinds.LedgerOriginatingSchema(pbb)
 	if err != nil {
-		panic(cometfaults.ErrMessageFromSchema{SignalLabel: "REDACTED", Err: err})
+		panic(strongminderrors.FaultSignalOriginatingSchema{SignalAlias: "REDACTED", Err: err})
 	}
 
 	return ledger
@@ -170,8 +170,8 @@ func (bs *LedgerDepot) ImportLedger(level int64) *kinds.Ledger {
 //
 //
 //
-func (bs *LedgerDepot) ImportLedgerByDigest(digest []byte) *kinds.Ledger {
-	bz, err := bs.db.Get(computeLedgerDigestKey(digest))
+func (bs *LedgerDepot) FetchLedgerViaDigest(digest []byte) *kinds.Ledger {
+	bz, err := bs.db.Get(reckonLedgerDigestToken(digest))
 	if err != nil {
 		panic(err)
 	}
@@ -180,20 +180,20 @@ func (bs *LedgerDepot) ImportLedgerByDigest(digest []byte) *kinds.Ledger {
 	}
 
 	s := string(bz)
-	level, err := strconv.ParseInt(s, 10, 64)
+	altitude, err := strconv.ParseInt(s, 10, 64)
 	if err != nil {
 		panic(fmt.Sprintf("REDACTED", s, err))
 	}
-	return bs.ImportLedger(level)
+	return bs.FetchLedger(altitude)
 }
 
 //
 //
 //
-func (bs *LedgerDepot) ImportLedgerSegment(level int64, ordinal int) *kinds.Segment {
-	pbsection := new(engineproto.Segment)
+func (bs *LedgerDepot) FetchLedgerFragment(altitude int64, ordinal int) *kinds.Fragment {
+	protosection := new(commitchema.Fragment)
 
-	bz, err := bs.db.Get(computeLedgerSectionKey(level, ordinal))
+	bz, err := bs.db.Get(reckonLedgerFragmentToken(altitude, ordinal))
 	if err != nil {
 		panic(err)
 	}
@@ -201,23 +201,23 @@ func (bs *LedgerDepot) ImportLedgerSegment(level int64, ordinal int) *kinds.Segm
 		return nil
 	}
 
-	err = proto.Unmarshal(bz, pbsection)
+	err = proto.Unmarshal(bz, protosection)
 	if err != nil {
 		panic(fmt.Errorf("REDACTED", err))
 	}
-	segment, err := kinds.SegmentFromSchema(pbsection)
+	fragment, err := kinds.FragmentOriginatingSchema(protosection)
 	if err != nil {
 		panic(fmt.Sprintf("REDACTED", err))
 	}
 
-	return segment
+	return fragment
 }
 
 //
 //
-func (bs *LedgerDepot) ImportLedgerMeta(level int64) *kinds.LedgerMeta {
-	pblm := new(engineproto.LedgerMeta)
-	bz, err := bs.db.Get(computeLedgerMetaKey(level))
+func (bs *LedgerDepot) FetchLedgerSummary(altitude int64) *kinds.LedgerSummary {
+	protoassessment := new(commitchema.LedgerSummary)
+	bz, err := bs.db.Get(reckonLedgerSummaryToken(altitude))
 	if err != nil {
 		panic(err)
 	}
@@ -226,23 +226,23 @@ func (bs *LedgerDepot) ImportLedgerMeta(level int64) *kinds.LedgerMeta {
 		return nil
 	}
 
-	err = proto.Unmarshal(bz, pblm)
+	err = proto.Unmarshal(bz, protoassessment)
 	if err != nil {
 		panic(fmt.Errorf("REDACTED", err))
 	}
 
-	ledgerMeta, err := kinds.LedgerMetaFromValidatedSchema(pblm)
+	ledgerSummary, err := kinds.LedgerSummaryOriginatingReliableSchema(protoassessment)
 	if err != nil {
-		panic(cometfaults.ErrMessageFromSchema{SignalLabel: "REDACTED", Err: err})
+		panic(strongminderrors.FaultSignalOriginatingSchema{SignalAlias: "REDACTED", Err: err})
 	}
 
-	return ledgerMeta
+	return ledgerSummary
 }
 
 //
 //
-func (bs *LedgerDepot) ImportLedgerMetaByDigest(digest []byte) *kinds.LedgerMeta {
-	bz, err := bs.db.Get(computeLedgerDigestKey(digest))
+func (bs *LedgerDepot) FetchLedgerSummaryViaDigest(digest []byte) *kinds.LedgerSummary {
+	bz, err := bs.db.Get(reckonLedgerDigestToken(digest))
 	if err != nil {
 		panic(err)
 	}
@@ -251,24 +251,24 @@ func (bs *LedgerDepot) ImportLedgerMetaByDigest(digest []byte) *kinds.LedgerMeta
 	}
 
 	s := string(bz)
-	level, err := strconv.ParseInt(s, 10, 64)
+	altitude, err := strconv.ParseInt(s, 10, 64)
 	if err != nil {
 		panic(fmt.Sprintf("REDACTED", s, err))
 	}
-	return bs.ImportLedgerMeta(level)
+	return bs.FetchLedgerSummary(altitude)
 }
 
 //
 //
 //
 //
-func (bs *LedgerDepot) ImportLedgerEndorse(level int64) *kinds.Endorse {
-	xfer, ok := bs.ledgerEndorseRepository.Get(level)
+func (bs *LedgerDepot) FetchLedgerEndorse(altitude int64) *kinds.Endorse {
+	xchange, ok := bs.ledgerEndorseStash.Get(altitude)
 	if ok {
-		return xfer.Replicate()
+		return xchange.Replicate()
 	}
-	pbc := new(engineproto.Endorse)
-	bz, err := bs.db.Get(computeLedgerEndorseKey(level))
+	pbc := new(commitchema.Endorse)
+	bz, err := bs.db.Get(reckonLedgerEndorseToken(altitude))
 	if err != nil {
 		panic(err)
 	}
@@ -279,52 +279,52 @@ func (bs *LedgerDepot) ImportLedgerEndorse(level int64) *kinds.Endorse {
 	if err != nil {
 		panic(fmt.Errorf("REDACTED", err))
 	}
-	endorse, err := kinds.EndorseFromSchema(pbc)
+	endorse, err := kinds.EndorseOriginatingSchema(pbc)
 	if err != nil {
-		panic(cometfaults.ErrMessageToSchema{SignalLabel: "REDACTED", Err: err})
+		panic(strongminderrors.FaultSignalTowardSchema{SignalAlias: "REDACTED", Err: err})
 	}
-	bs.ledgerEndorseRepository.Add(level, endorse)
+	bs.ledgerEndorseStash.Add(altitude, endorse)
 	return endorse.Replicate()
 }
 
 //
 //
 //
-func (bs *LedgerDepot) ImportLedgerExpandedEndorse(level int64) *kinds.ExpandedEndorse {
-	xfer, ok := bs.ledgerExpandedEndorseRepository.Get(level)
+func (bs *LedgerDepot) FetchLedgerExpandedEndorse(altitude int64) *kinds.ExpandedEndorse {
+	xchange, ok := bs.ledgerExpandedEndorseStash.Get(altitude)
 	if ok {
-		return xfer.Replicate()
+		return xchange.Replicate()
 	}
-	pbac := new(engineproto.ExpandedEndorse)
-	bz, err := bs.db.Get(computeExtensionEndorseKey(level))
+	protoencode := new(commitchema.ExpandedEndorse)
+	bz, err := bs.db.Get(reckonAddnEndorseToken(altitude))
 	if err != nil {
 		panic(fmt.Errorf("REDACTED", err))
 	}
 	if len(bz) == 0 {
 		return nil
 	}
-	err = proto.Unmarshal(bz, pbac)
+	err = proto.Unmarshal(bz, protoencode)
 	if err != nil {
 		panic(fmt.Errorf("REDACTED", err))
 	}
-	extensionEndorse, err := kinds.ExpandedEndorseFromSchema(pbac)
+	addnEndorse, err := kinds.ExpandedEndorseOriginatingSchema(protoencode)
 	if err != nil {
 		panic(fmt.Errorf("REDACTED", err))
 	}
-	bs.ledgerExpandedEndorseRepository.Add(level, extensionEndorse)
-	return extensionEndorse.Replicate()
+	bs.ledgerExpandedEndorseStash.Add(altitude, addnEndorse)
+	return addnEndorse.Replicate()
 }
 
 //
 //
 //
-func (bs *LedgerDepot) ImportViewedEndorse(level int64) *kinds.Endorse {
-	xfer, ok := bs.viewedEndorseRepository.Get(level)
+func (bs *LedgerDepot) FetchObservedEndorse(altitude int64) *kinds.Endorse {
+	xchange, ok := bs.observedEndorseStash.Get(altitude)
 	if ok {
-		return xfer.Replicate()
+		return xchange.Replicate()
 	}
-	pbc := new(engineproto.Endorse)
-	bz, err := bs.db.Get(computeViewedEndorseKey(level))
+	pbc := new(commitchema.Endorse)
+	bz, err := bs.db.Get(reckonObservedEndorseToken(altitude))
 	if err != nil {
 		panic(err)
 	}
@@ -336,87 +336,87 @@ func (bs *LedgerDepot) ImportViewedEndorse(level int64) *kinds.Endorse {
 		panic(fmt.Sprintf("REDACTED", err))
 	}
 
-	endorse, err := kinds.EndorseFromSchema(pbc)
+	endorse, err := kinds.EndorseOriginatingSchema(pbc)
 	if err != nil {
 		panic(fmt.Errorf("REDACTED", err))
 	}
-	bs.viewedEndorseRepository.Add(level, endorse)
+	bs.observedEndorseStash.Add(altitude, endorse)
 	return endorse.Replicate()
 }
 
 //
-func (bs *LedgerDepot) TrimLedgers(level int64, status sm.Status) (uint64, int64, error) {
-	if level <= 0 {
+func (bs *LedgerDepot) TrimLedgers(altitude int64, status sm.Status) (uint64, int64, error) {
+	if altitude <= 0 {
 		return 0, -1, fmt.Errorf("REDACTED")
 	}
 	bs.mtx.RLock()
-	if level > bs.level {
+	if altitude > bs.altitude {
 		bs.mtx.RUnlock()
-		return 0, -1, fmt.Errorf("REDACTED", bs.level)
+		return 0, -1, fmt.Errorf("REDACTED", bs.altitude)
 	}
-	root := bs.root
+	foundation := bs.foundation
 	bs.mtx.RUnlock()
-	if level < root {
+	if altitude < foundation {
 		return 0, -1, fmt.Errorf("REDACTED",
-			level, root)
+			altitude, foundation)
 	}
 
 	trimmed := uint64(0)
-	group := bs.db.NewGroup()
-	defer group.End()
-	purge := func(group dbm.Group, root int64) error {
+	cluster := bs.db.FreshCluster()
+	defer cluster.Shutdown()
+	purge := func(cluster dbm.Cluster, foundation int64) error {
 		//
 		//
 		bs.mtx.Lock()
-		defer group.End()
+		defer cluster.Shutdown()
 		defer bs.mtx.Unlock()
-		bs.root = root
-		return bs.persistStatusAndRecordStore(group, "REDACTED")
+		bs.foundation = foundation
+		return bs.persistStatusAlsoPersistDatastore(cluster, "REDACTED")
 	}
 
-	proofSpot := level
-	for h := root; h < level; h++ {
+	proofMark := altitude
+	for h := foundation; h < altitude; h++ {
 
-		meta := bs.ImportLedgerMeta(h)
-		if meta == nil { //
+		summary := bs.FetchLedgerSummary(h)
+		if summary == nil { //
 			continue
 		}
 
 		//
 		//
 
-		if proofSpot == level && !proof.IsProofLapsed(status.FinalLedgerLevel, status.FinalLedgerTime, h, meta.Heading.Time, status.AgreementOptions.Proof) {
-			proofSpot = h
+		if proofMark == altitude && !proof.EqualsProofLapsed(status.FinalLedgerAltitude, status.FinalLedgerMoment, h, summary.Heading.Moment, status.AgreementSettings.Proof) {
+			proofMark = h
 		}
 
 		//
-		if h < proofSpot {
-			if err := group.Erase(computeLedgerMetaKey(h)); err != nil {
+		if h < proofMark {
+			if err := cluster.Erase(reckonLedgerSummaryToken(h)); err != nil {
 				return 0, -1, err
 			}
 		}
-		if err := group.Erase(computeLedgerDigestKey(meta.LedgerUID.Digest)); err != nil {
+		if err := cluster.Erase(reckonLedgerDigestToken(summary.LedgerUUID.Digest)); err != nil {
 			return 0, -1, err
 		}
 		//
-		if h < proofSpot {
-			if err := group.Erase(computeLedgerEndorseKey(h)); err != nil {
+		if h < proofMark {
+			if err := cluster.Erase(reckonLedgerEndorseToken(h)); err != nil {
 				return 0, -1, err
 			}
 		}
-		if err := group.Erase(computeViewedEndorseKey(h)); err != nil {
+		if err := cluster.Erase(reckonObservedEndorseToken(h)); err != nil {
 			return 0, -1, err
 		}
 
-		if h < proofSpot {
-			if err := group.Erase(computeExtensionEndorseKey(h)); err != nil {
+		if h < proofMark {
+			if err := cluster.Erase(reckonAddnEndorseToken(h)); err != nil {
 				return 0, -1, err
 			}
-			bs.ledgerExpandedEndorseRepository.Remove(h)
+			bs.ledgerExpandedEndorseStash.Remove(h)
 		}
 
-		for p := 0; p < int(meta.LedgerUID.SegmentAssignHeading.Sum); p++ {
-			if err := group.Erase(computeLedgerSectionKey(h, p)); err != nil {
+		for p := 0; p < int(summary.LedgerUUID.FragmentAssignHeading.Sum); p++ {
+			if err := cluster.Erase(reckonLedgerFragmentToken(h, p)); err != nil {
 				return 0, -1, err
 			}
 		}
@@ -424,20 +424,20 @@ func (bs *LedgerDepot) TrimLedgers(level int64, status sm.Status) (uint64, int64
 
 		//
 		if trimmed%1000 == 0 && trimmed > 0 {
-			err := purge(group, h)
+			err := purge(cluster, h)
 			if err != nil {
 				return 0, -1, err
 			}
-			group = bs.db.NewGroup()
-			defer group.End()
+			cluster = bs.db.FreshCluster()
+			defer cluster.Shutdown()
 		}
 	}
 
-	err := purge(group, level)
+	err := purge(cluster, altitude)
 	if err != nil {
 		return 0, -1, err
 	}
-	return trimmed, proofSpot, nil
+	return trimmed, proofMark, nil
 }
 
 //
@@ -447,27 +447,27 @@ func (bs *LedgerDepot) TrimLedgers(level int64, status sm.Status) (uint64, int64
 //
 //
 //
-func (bs *LedgerDepot) PersistLedger(ledger *kinds.Ledger, ledgerSegments *kinds.SegmentCollection, viewedEndorse *kinds.Endorse) {
+func (bs *LedgerDepot) PersistLedger(ledger *kinds.Ledger, ledgerFragments *kinds.FragmentAssign, observedEndorse *kinds.Endorse) {
 	if ledger == nil {
 		panic("REDACTED")
 	}
 
-	group := bs.db.NewGroup()
-	defer group.End()
+	cluster := bs.db.FreshCluster()
+	defer cluster.Shutdown()
 
-	if err := bs.persistLedgerToGroup(ledger, ledgerSegments, viewedEndorse, group); err != nil {
+	if err := bs.persistLedgerTowardCluster(ledger, ledgerFragments, observedEndorse, cluster); err != nil {
 		panic(err)
 	}
 
 	bs.mtx.Lock()
 	defer bs.mtx.Unlock()
-	bs.level = ledger.Level
-	if bs.root == 0 {
-		bs.root = ledger.Level
+	bs.altitude = ledger.Altitude
+	if bs.foundation == 0 {
+		bs.foundation = ledger.Altitude
 	}
 
 	//
-	err := bs.persistStatusAndRecordStore(group, "REDACTED")
+	err := bs.persistStatusAlsoPersistDatastore(cluster, "REDACTED")
 	if err != nil {
 		panic(err)
 	}
@@ -478,120 +478,120 @@ func (bs *LedgerDepot) PersistLedger(ledger *kinds.Ledger, ledgerSegments *kinds
 //
 //
 //
-func (bs *LedgerDepot) PersistLedgerWithExpandedEndorse(ledger *kinds.Ledger, ledgerSegments *kinds.SegmentCollection, viewedExpandedEndorse *kinds.ExpandedEndorse) {
+func (bs *LedgerDepot) PersistLedgerUsingExpandedEndorse(ledger *kinds.Ledger, ledgerFragments *kinds.FragmentAssign, observedExpandedEndorse *kinds.ExpandedEndorse) {
 	if ledger == nil {
 		panic("REDACTED")
 	}
-	if err := viewedExpandedEndorse.AssurePlugins(true); err != nil {
+	if err := observedExpandedEndorse.AssureAdditions(true); err != nil {
 		panic(fmt.Errorf("REDACTED", err))
 	}
 
-	group := bs.db.NewGroup()
-	defer group.End()
+	cluster := bs.db.FreshCluster()
+	defer cluster.Shutdown()
 
-	if err := bs.persistLedgerToGroup(ledger, ledgerSegments, viewedExpandedEndorse.ToEndorse(), group); err != nil {
+	if err := bs.persistLedgerTowardCluster(ledger, ledgerFragments, observedExpandedEndorse.TowardEndorse(), cluster); err != nil {
 		panic(err)
 	}
-	level := ledger.Level
+	altitude := ledger.Altitude
 
-	pbac := viewedExpandedEndorse.ToSchema()
-	extensionEndorseOctets := shouldMarshal(pbac)
-	if err := group.Set(computeExtensionEndorseKey(level), extensionEndorseOctets); err != nil {
+	protoencode := observedExpandedEndorse.TowardSchema()
+	addnEndorseOctets := shouldEncode(protoencode)
+	if err := cluster.Set(reckonAddnEndorseToken(altitude), addnEndorseOctets); err != nil {
 		panic(err)
 	}
 
 	bs.mtx.Lock()
 	defer bs.mtx.Unlock()
-	bs.level = level
-	if bs.root == 0 {
-		bs.root = level
+	bs.altitude = altitude
+	if bs.foundation == 0 {
+		bs.foundation = altitude
 	}
 
 	//
-	err := bs.persistStatusAndRecordStore(group, "REDACTED")
+	err := bs.persistStatusAlsoPersistDatastore(cluster, "REDACTED")
 	if err != nil {
 		panic(err)
 	}
 }
 
-func (bs *LedgerDepot) persistLedgerToGroup(
+func (bs *LedgerDepot) persistLedgerTowardCluster(
 	ledger *kinds.Ledger,
-	ledgerSegments *kinds.SegmentCollection,
-	viewedEndorse *kinds.Endorse,
-	group dbm.Group,
+	ledgerFragments *kinds.FragmentAssign,
+	observedEndorse *kinds.Endorse,
+	cluster dbm.Cluster,
 ) error {
 	if ledger == nil {
 		panic("REDACTED")
 	}
 
-	level := ledger.Level
+	altitude := ledger.Altitude
 	digest := ledger.Digest()
 
-	if g, w := level, bs.Level()+1; bs.Root() > 0 && g != w {
+	if g, w := altitude, bs.Altitude()+1; bs.Foundation() > 0 && g != w {
 		return fmt.Errorf("REDACTED", w, g)
 	}
-	if !ledgerSegments.IsFinished() {
+	if !ledgerFragments.EqualsFinish() {
 		return errors.New("REDACTED")
 	}
-	if level != viewedEndorse.Level {
-		return fmt.Errorf("REDACTED", level, viewedEndorse.Level)
+	if altitude != observedEndorse.Altitude {
+		return fmt.Errorf("REDACTED", altitude, observedEndorse.Altitude)
 	}
 
 	//
 	//
-	persistLedgerSectionsToGroup := ledgerSegments.Number() <= maximumLedgerSectionsToGroup
+	persistLedgerFragmentsTowardCluster := ledgerFragments.Tally() <= maximumLedgerFragmentsTowardCluster
 
 	//
 	//
 	//
 	//
-	for i := 0; i < int(ledgerSegments.Sum()); i++ {
-		segment := ledgerSegments.FetchSegment(i)
-		bs.persistLedgerSection(level, i, segment, group, persistLedgerSectionsToGroup)
+	for i := 0; i < int(ledgerFragments.Sum()); i++ {
+		fragment := ledgerFragments.ObtainFragment(i)
+		bs.persistLedgerFragment(altitude, i, fragment, cluster, persistLedgerFragmentsTowardCluster)
 	}
 
 	//
-	ledgerMeta := kinds.NewLedgerMeta(ledger, ledgerSegments)
-	pbm := ledgerMeta.ToSchema()
+	ledgerSummary := kinds.FreshLedgerSummary(ledger, ledgerFragments)
+	pbm := ledgerSummary.TowardSchema()
 	if pbm == nil {
 		return errors.New("REDACTED")
 	}
-	metaOctets := shouldMarshal(pbm)
-	if err := group.Set(computeLedgerMetaKey(level), metaOctets); err != nil {
+	summaryOctets := shouldEncode(pbm)
+	if err := cluster.Set(reckonLedgerSummaryToken(altitude), summaryOctets); err != nil {
 		return err
 	}
-	if err := group.Set(computeLedgerDigestKey(digest), []byte(fmt.Sprintf("REDACTED", level))); err != nil {
-		return err
-	}
-
-	//
-	pbc := ledger.FinalEndorse.ToSchema()
-	ledgerEndorseOctets := shouldMarshal(pbc)
-	if err := group.Set(computeLedgerEndorseKey(level-1), ledgerEndorseOctets); err != nil {
+	if err := cluster.Set(reckonLedgerDigestToken(digest), []byte(fmt.Sprintf("REDACTED", altitude))); err != nil {
 		return err
 	}
 
 	//
+	pbc := ledger.FinalEndorse.TowardSchema()
+	ledgerEndorseOctets := shouldEncode(pbc)
+	if err := cluster.Set(reckonLedgerEndorseToken(altitude-1), ledgerEndorseOctets); err != nil {
+		return err
+	}
+
 	//
-	pbcc := viewedEndorse.ToSchema()
-	viewedEndorseOctets := shouldMarshal(pbcc)
-	if err := group.Set(computeViewedEndorseKey(level), viewedEndorseOctets); err != nil {
+	//
+	protoscope := observedEndorse.TowardSchema()
+	observedEndorseOctets := shouldEncode(protoscope)
+	if err := cluster.Set(reckonObservedEndorseToken(altitude), observedEndorseOctets); err != nil {
 		return err
 	}
 
 	return nil
 }
 
-func (bs *LedgerDepot) persistLedgerSection(level int64, ordinal int, segment *kinds.Segment, group dbm.Group, persistLedgerSectionsToGroup bool) {
-	pbp, err := segment.ToSchema()
+func (bs *LedgerDepot) persistLedgerFragment(altitude int64, ordinal int, fragment *kinds.Fragment, cluster dbm.Cluster, persistLedgerFragmentsTowardCluster bool) {
+	pbp, err := fragment.TowardSchema()
 	if err != nil {
-		panic(cometfaults.ErrMessageToSchema{SignalLabel: "REDACTED", Err: err})
+		panic(strongminderrors.FaultSignalTowardSchema{SignalAlias: "REDACTED", Err: err})
 	}
-	sectionOctets := shouldMarshal(pbp)
-	if persistLedgerSectionsToGroup {
-		err = group.Set(computeLedgerSectionKey(level, ordinal), sectionOctets)
+	fragmentOctets := shouldEncode(pbp)
+	if persistLedgerFragmentsTowardCluster {
+		err = cluster.Set(reckonLedgerFragmentToken(altitude, ordinal), fragmentOctets)
 	} else {
-		err = bs.db.Set(computeLedgerSectionKey(level, ordinal), sectionOctets)
+		err = bs.db.Set(reckonLedgerFragmentToken(altitude, ordinal), fragmentOctets)
 	}
 	if err != nil {
 		panic(err)
@@ -599,90 +599,90 @@ func (bs *LedgerDepot) persistLedgerSection(level int64, ordinal int, segment *k
 }
 
 //
-func (bs *LedgerDepot) persistStatusAndRecordStore(group dbm.Group, errMessage string) error {
-	bss := commitdepot.LedgerDepotStatus{
-		Root:   bs.root,
-		Level: bs.level,
+func (bs *LedgerDepot) persistStatusAlsoPersistDatastore(cluster dbm.Cluster, faultSignal string) error {
+	bss := commitstore.LedgerDepotStatus{
+		Foundation:   bs.foundation,
+		Altitude: bs.altitude,
 	}
-	PersistLedgerDepotStatusGroup(&bss, group)
+	PersistLedgerDepotStatusCluster(&bss, cluster)
 
-	err := group.RecordAlign()
+	err := cluster.PersistChronize()
 	if err != nil {
 		return fmt.Errorf("REDACTED",
-			errMessage, bs.root, bs.level, err)
+			faultSignal, bs.foundation, bs.altitude, err)
 	}
 	return nil
 }
 
 //
-func (bs *LedgerDepot) PersistViewedEndorse(level int64, viewedEndorse *kinds.Endorse) error {
-	pbc := viewedEndorse.ToSchema()
-	viewedEndorseOctets, err := proto.Marshal(pbc)
+func (bs *LedgerDepot) PersistObservedEndorse(altitude int64, observedEndorse *kinds.Endorse) error {
+	pbc := observedEndorse.TowardSchema()
+	observedEndorseOctets, err := proto.Marshal(pbc)
 	if err != nil {
 		return fmt.Errorf("REDACTED", err)
 	}
-	return bs.db.Set(computeViewedEndorseKey(level), viewedEndorseOctets)
+	return bs.db.Set(reckonObservedEndorseToken(altitude), observedEndorseOctets)
 }
 
-func (bs *LedgerDepot) End() error {
-	return bs.db.End()
+func (bs *LedgerDepot) Shutdown() error {
+	return bs.db.Shutdown()
 }
 
 //
 
-func computeLedgerMetaKey(level int64) []byte {
-	return []byte(fmt.Sprintf("REDACTED", level))
+func reckonLedgerSummaryToken(altitude int64) []byte {
+	return []byte(fmt.Sprintf("REDACTED", altitude))
 }
 
-func computeLedgerSectionKey(level int64, sectionOrdinal int) []byte {
-	return []byte(fmt.Sprintf("REDACTED", level, sectionOrdinal))
+func reckonLedgerFragmentToken(altitude int64, fragmentPosition int) []byte {
+	return []byte(fmt.Sprintf("REDACTED", altitude, fragmentPosition))
 }
 
-func computeLedgerEndorseKey(level int64) []byte {
-	return []byte(fmt.Sprintf("REDACTED", level))
+func reckonLedgerEndorseToken(altitude int64) []byte {
+	return []byte(fmt.Sprintf("REDACTED", altitude))
 }
 
-func computeViewedEndorseKey(level int64) []byte {
-	return []byte(fmt.Sprintf("REDACTED", level))
+func reckonObservedEndorseToken(altitude int64) []byte {
+	return []byte(fmt.Sprintf("REDACTED", altitude))
 }
 
-func computeExtensionEndorseKey(level int64) []byte {
-	return []byte(fmt.Sprintf("REDACTED", level))
+func reckonAddnEndorseToken(altitude int64) []byte {
+	return []byte(fmt.Sprintf("REDACTED", altitude))
 }
 
-func computeLedgerDigestKey(digest []byte) []byte {
+func reckonLedgerDigestToken(digest []byte) []byte {
 	return []byte(fmt.Sprintf("REDACTED", digest))
 }
 
 //
 
-var ledgerDepotKey = []byte("REDACTED")
+var ledgerDepotToken = []byte("REDACTED")
 
 //
 //
 //
-func PersistLedgerDepotStatus(bsj *commitdepot.LedgerDepotStatus, db dbm.DB) {
-	persistLedgerDepotStatusGroupIntrinsic(bsj, db, nil)
+func PersistLedgerDepotStatus(bsj *commitstore.LedgerDepotStatus, db dbm.DB) {
+	persistLedgerDepotStatusClusterIntrinsic(bsj, db, nil)
 }
 
 //
 //
-func PersistLedgerDepotStatusGroup(bsj *commitdepot.LedgerDepotStatus, group dbm.Group) {
-	persistLedgerDepotStatusGroupIntrinsic(bsj, nil, group)
+func PersistLedgerDepotStatusCluster(bsj *commitstore.LedgerDepotStatus, cluster dbm.Cluster) {
+	persistLedgerDepotStatusClusterIntrinsic(bsj, nil, cluster)
 }
 
-func persistLedgerDepotStatusGroupIntrinsic(bsj *commitdepot.LedgerDepotStatus, db dbm.DB, group dbm.Group) {
+func persistLedgerDepotStatusClusterIntrinsic(bsj *commitstore.LedgerDepotStatus, db dbm.DB, cluster dbm.Cluster) {
 	octets, err := proto.Marshal(bsj)
 	if err != nil {
 		panic(fmt.Sprintf("REDACTED", err))
 	}
-	if group != nil {
-		err = group.Set(ledgerDepotKey, octets)
+	if cluster != nil {
+		err = cluster.Set(ledgerDepotToken, octets)
 	} else {
 		if db == nil {
 			panic("REDACTED")
 		}
-		err = db.CollectionAlign(ledgerDepotKey, octets)
+		err = db.AssignChronize(ledgerDepotToken, octets)
 	}
 	if err != nil {
 		panic(err)
@@ -691,33 +691,33 @@ func persistLedgerDepotStatusGroupIntrinsic(bsj *commitdepot.LedgerDepotStatus, 
 
 //
 //
-func ImportLedgerDepotStatus(db dbm.DB) commitdepot.LedgerDepotStatus {
-	octets, err := db.Get(ledgerDepotKey)
+func FetchLedgerDepotStatus(db dbm.DB) commitstore.LedgerDepotStatus {
+	octets, err := db.Get(ledgerDepotToken)
 	if err != nil {
 		panic(err)
 	}
 
 	if len(octets) == 0 {
-		return commitdepot.LedgerDepotStatus{
-			Root:   0,
-			Level: 0,
+		return commitstore.LedgerDepotStatus{
+			Foundation:   0,
+			Altitude: 0,
 		}
 	}
 
-	var bsj commitdepot.LedgerDepotStatus
+	var bsj commitstore.LedgerDepotStatus
 	if err := proto.Unmarshal(octets, &bsj); err != nil {
 		panic(fmt.Sprintf("REDACTED", octets))
 	}
 
 	//
-	if bsj.Level > 0 && bsj.Root == 0 {
-		bsj.Root = 1
+	if bsj.Altitude > 0 && bsj.Foundation == 0 {
+		bsj.Foundation = 1
 	}
 	return bsj
 }
 
 //
-func shouldMarshal(pb proto.Message) []byte {
+func shouldEncode(pb proto.Message) []byte {
 	bz, err := proto.Marshal(pb)
 	if err != nil {
 		panic(fmt.Errorf("REDACTED", err))
@@ -729,39 +729,39 @@ func shouldMarshal(pb proto.Message) []byte {
 
 //
 //
-func (bs *LedgerDepot) RemoveNewestLedger() error {
+func (bs *LedgerDepot) EraseNewestLedger() error {
 	bs.mtx.RLock()
-	objectiveLevel := bs.level
+	objectiveAltitude := bs.altitude
 	bs.mtx.RUnlock()
 
-	group := bs.db.NewGroup()
-	defer group.End()
+	cluster := bs.db.FreshCluster()
+	defer cluster.Shutdown()
 
 	//
 	//
-	if meta := bs.ImportLedgerMeta(objectiveLevel); meta != nil {
-		if err := group.Erase(computeLedgerDigestKey(meta.LedgerUID.Digest)); err != nil {
+	if summary := bs.FetchLedgerSummary(objectiveAltitude); summary != nil {
+		if err := cluster.Erase(reckonLedgerDigestToken(summary.LedgerUUID.Digest)); err != nil {
 			return err
 		}
-		for p := 0; p < int(meta.LedgerUID.SegmentAssignHeading.Sum); p++ {
-			if err := group.Erase(computeLedgerSectionKey(objectiveLevel, p)); err != nil {
+		for p := 0; p < int(summary.LedgerUUID.FragmentAssignHeading.Sum); p++ {
+			if err := cluster.Erase(reckonLedgerFragmentToken(objectiveAltitude, p)); err != nil {
 				return err
 			}
 		}
 	}
-	if err := group.Erase(computeLedgerEndorseKey(objectiveLevel)); err != nil {
+	if err := cluster.Erase(reckonLedgerEndorseToken(objectiveAltitude)); err != nil {
 		return err
 	}
-	if err := group.Erase(computeViewedEndorseKey(objectiveLevel)); err != nil {
+	if err := cluster.Erase(reckonObservedEndorseToken(objectiveAltitude)); err != nil {
 		return err
 	}
 	//
-	if err := group.Erase(computeLedgerMetaKey(objectiveLevel)); err != nil {
+	if err := cluster.Erase(reckonLedgerSummaryToken(objectiveAltitude)); err != nil {
 		return err
 	}
 
 	bs.mtx.Lock()
 	defer bs.mtx.Unlock()
-	bs.level = objectiveLevel - 1
-	return bs.persistStatusAndRecordStore(group, "REDACTED")
+	bs.altitude = objectiveAltitude - 1
+	return bs.persistStatusAlsoPersistDatastore(cluster, "REDACTED")
 }

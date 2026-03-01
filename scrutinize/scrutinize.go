@@ -6,22 +6,22 @@ import (
 	"net"
 	"os"
 
-	"github.com/valkyrieworks/settings"
-	"github.com/valkyrieworks/scrutinize/rpc"
-	"github.com/valkyrieworks/utils/log"
-	endorsementsstrings "github.com/valkyrieworks/utils/strings"
-	rpcbase "github.com/valkyrieworks/rpc/core"
-	"github.com/valkyrieworks/status"
-	"github.com/valkyrieworks/status/ordinaler"
-	"github.com/valkyrieworks/status/ordinaler/ledger"
-	"github.com/valkyrieworks/status/transordinal"
-	"github.com/valkyrieworks/depot"
-	"github.com/valkyrieworks/kinds"
+	"github.com/valkyrieworks/dffc4ef0-4ec6-4346-9b6c-d0a0cb42d94b/settings"
+	"github.com/valkyrieworks/dffc4ef0-4ec6-4346-9b6c-d0a0cb42d94b/scrutinize/rpc"
+	"github.com/valkyrieworks/dffc4ef0-4ec6-4346-9b6c-d0a0cb42d94b/utils/log"
+	endorsementtexts "github.com/valkyrieworks/dffc4ef0-4ec6-4346-9b6c-d0a0cb42d94b/utils/texts"
+	remotecore "github.com/valkyrieworks/dffc4ef0-4ec6-4346-9b6c-d0a0cb42d94b/rpc/base"
+	"github.com/valkyrieworks/dffc4ef0-4ec6-4346-9b6c-d0a0cb42d94b/status"
+	"github.com/valkyrieworks/dffc4ef0-4ec6-4346-9b6c-d0a0cb42d94b/status/ordinalizer"
+	"github.com/valkyrieworks/dffc4ef0-4ec6-4346-9b6c-d0a0cb42d94b/status/ordinalizer/ledger"
+	"github.com/valkyrieworks/dffc4ef0-4ec6-4346-9b6c-d0a0cb42d94b/status/transferordinal"
+	"github.com/valkyrieworks/dffc4ef0-4ec6-4346-9b6c-d0a0cb42d94b/depot"
+	"github.com/valkyrieworks/dffc4ef0-4ec6-4346-9b6c-d0a0cb42d94b/kinds"
 
 	"golang.org/x/sync/errgroup"
 )
 
-var tracer = log.NewTMTracer(log.NewAlignRecorder(os.Stdout))
+var tracer = log.FreshTEMPTracer(log.FreshChronizePersistor(os.Stdout))
 
 //
 //
@@ -30,9 +30,9 @@ var tracer = log.NewTMTracer(log.NewAlignRecorder(os.Stdout))
 //
 //
 type Auditor struct {
-	paths rpcbase.PathsIndex
+	paths remotecore.PathsIndex
 
-	settings *settings.RPCSettings
+	settings *settings.RemoteSettings
 
 	tracer log.Tracer
 
@@ -49,15 +49,15 @@ type Auditor struct {
 //
 //
 func New(
-	cfg *settings.RPCSettings,
+	cfg *settings.RemoteSettings,
 	bs status.LedgerDepot,
 	ss status.Depot,
-	transferidx transordinal.TransOrdinaler,
-	ledgeridx ordinaler.LedgerOrdinaler,
+	transoffset transferordinal.TransferOrdinalizer,
+	ldgoffset ordinalizer.LedgerOrdinalizer,
 ) *Auditor {
-	paths := rpc.Paths(*cfg, ss, bs, transferidx, ledgeridx, tracer)
-	eb := kinds.NewEventBus()
-	eb.AssignTracer(tracer.With("REDACTED", "REDACTED"))
+	paths := rpc.Paths(*cfg, ss, bs, transoffset, ldgoffset, tracer)
+	eb := kinds.FreshIncidentPipeline()
+	eb.AssignTracer(tracer.Using("REDACTED", "REDACTED"))
 	return &Auditor{
 		paths: paths,
 		settings: cfg,
@@ -68,71 +68,71 @@ func New(
 }
 
 //
-func NewFromSettings(cfg *settings.Settings) (*Auditor, error) {
-	szStore, err := settings.StandardStoreSource(&settings.StoreContext{ID: "REDACTED", Settings: cfg})
+func FreshOriginatingSettings(cfg *settings.Settings) (*Auditor, error) {
+	bytesDatastore, err := settings.FallbackDatastoreSupplier(&settings.DatastoreScope{ID: "REDACTED", Settings: cfg})
 	if err != nil {
 		return nil, err
 	}
-	bs := depot.NewLedgerDepot(szStore)
-	sDB, err := settings.StandardStoreSource(&settings.StoreContext{ID: "REDACTED", Settings: cfg})
+	bs := depot.FreshLedgerDepot(bytesDatastore)
+	sDB, err := settings.FallbackDatastoreSupplier(&settings.DatastoreScope{ID: "REDACTED", Settings: cfg})
 	if err != nil {
 		return nil, err
 	}
-	generatePaper, err := kinds.OriginPaperFromEntry(cfg.OriginEntry())
+	producePaper, err := kinds.InaugurationPaperOriginatingRecord(cfg.InaugurationRecord())
 	if err != nil {
 		return nil, err
 	}
-	transferidx, ledgeridx, err := ledger.OrdinalerFromSettings(cfg, settings.StandardStoreSource, generatePaper.LedgerUID)
+	transoffset, ldgoffset, err := ledger.OrdinalizerOriginatingSettings(cfg, settings.FallbackDatastoreSupplier, producePaper.SuccessionUUID)
 	if err != nil {
 		return nil, err
 	}
-	ss := status.NewDepot(sDB, status.DepotSettings{})
-	return New(cfg.RPC, bs, ss, transferidx, ledgeridx), nil
+	ss := status.FreshDepot(sDB, status.DepotChoices{})
+	return New(cfg.RPC, bs, ss, transoffset, ldgoffset), nil
 }
 
 //
 //
 func (ins *Auditor) Run(ctx context.Context) error {
-	defer ins.bs.End()
-	defer ins.ss.End()
+	defer ins.bs.Shutdown()
+	defer ins.ss.Shutdown()
 
-	return beginRPCHosts(ctx, ins.settings, ins.tracer, ins.paths)
+	return initiateRemoteNodes(ctx, ins.settings, ins.tracer, ins.paths)
 }
 
-func beginRPCHosts(ctx context.Context, cfg *settings.RPCSettings, tracer log.Tracer, paths rpcbase.PathsIndex) error {
-	g, tctx := errgroup.WithContext(ctx)
-	observeLocations := endorsementsstrings.DivideAndClipEmpty(cfg.AcceptLocation, "REDACTED", "REDACTED")
-	rh := rpc.Manager(cfg, paths, tracer)
-	for _, observerAddress := range observeLocations {
-		host := rpc.Host{
+func initiateRemoteNodes(ctx context.Context, cfg *settings.RemoteSettings, tracer log.Tracer, paths remotecore.PathsIndex) error {
+	g, tempctx := errgroup.WithContext(ctx)
+	overhearLocations := endorsementtexts.PartitionAlsoShortenBlank(cfg.OverhearLocation, "REDACTED", "REDACTED")
+	rh := rpc.Processor(cfg, paths, tracer)
+	for _, observerLocation := range overhearLocations {
+		node := rpc.Daemon{
 			Tracer:  tracer,
 			Settings:  cfg,
-			Manager: rh,
-			Address:    observerAddress,
+			Processor: rh,
+			Location:    observerLocation,
 		}
-		if cfg.IsTLSActivated() {
-			keyEntry := cfg.KeyEntry()
-			tokenEntry := cfg.TokenEntry()
-			observerAddress := observerAddress
+		if cfg.EqualsTransportsecActivated() {
+			tokenRecord := cfg.TokenRecord()
+			licenseRecord := cfg.LicenseRecord()
+			observerLocation := observerLocation
 			g.Go(func() error {
-				tracer.Details("REDACTED", "REDACTED", observerAddress,
-					"REDACTED", tokenEntry, "REDACTED", keyEntry)
-				err := host.ObserveAndAttendTLS(tctx, tokenEntry, keyEntry)
+				tracer.Details("REDACTED", "REDACTED", observerLocation,
+					"REDACTED", licenseRecord, "REDACTED", tokenRecord)
+				err := node.OverhearAlsoAttendTransportsec(tempctx, licenseRecord, tokenRecord)
 				if !errors.Is(err, net.ErrClosed) {
 					return err
 				}
-				tracer.Details("REDACTED", "REDACTED", observerAddress)
+				tracer.Details("REDACTED", "REDACTED", observerLocation)
 				return nil
 			})
 		} else {
-			observerAddress := observerAddress
+			observerLocation := observerLocation
 			g.Go(func() error {
-				tracer.Details("REDACTED", "REDACTED", observerAddress)
-				err := host.AcceptAndHost(tctx)
+				tracer.Details("REDACTED", "REDACTED", observerLocation)
+				err := node.OverhearAlsoAttend(tempctx)
 				if !errors.Is(err, net.ErrClosed) {
 					return err
 				}
-				tracer.Details("REDACTED", "REDACTED", observerAddress)
+				tracer.Details("REDACTED", "REDACTED", observerLocation)
 				return nil
 			})
 		}

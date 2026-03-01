@@ -4,41 +4,41 @@ import (
 	"reflect"
 	"testing"
 
-	"github.com/valkyrieworks/vault/comethash"
-	engineseed "github.com/valkyrieworks/utils/random"
-	engineproto "github.com/valkyrieworks/schema/consensuscore/kinds"
+	"github.com/valkyrieworks/dffc4ef0-4ec6-4346-9b6c-d0a0cb42d94b/security/tenderminthash"
+	commitrand "github.com/valkyrieworks/dffc4ef0-4ec6-4346-9b6c-d0a0cb42d94b/utils/arbitrary"
+	commitchema "github.com/valkyrieworks/dffc4ef0-4ec6-4346-9b6c-d0a0cb42d94b/schema/strongmind/kinds"
 )
 
-func VerifyStandardizeLedgerUID(t *testing.T) {
-	arbhash := engineseed.Octets(comethash.Volume)
-	ledger1 := engineproto.LedgerUID{
-		Digest:          arbhash,
-		SegmentAssignHeading: engineproto.SegmentAssignHeading{Sum: 5, Digest: arbhash},
+func VerifyNormalizeLedgerUUID(t *testing.T) {
+	unpredictablehash := commitrand.Octets(tenderminthash.Extent)
+	ledger1 := commitchema.LedgerUUID{
+		Digest:          unpredictablehash,
+		FragmentAssignHeading: commitchema.FragmentAssignHeading{Sum: 5, Digest: unpredictablehash},
 	}
-	ledger2 := engineproto.LedgerUID{
-		Digest:          arbhash,
-		SegmentAssignHeading: engineproto.SegmentAssignHeading{Sum: 10, Digest: arbhash},
+	ledger2 := commitchema.LedgerUUID{
+		Digest:          unpredictablehash,
+		FragmentAssignHeading: commitchema.FragmentAssignHeading{Sum: 10, Digest: unpredictablehash},
 	}
-	vledger1 := engineproto.StandardLedgerUID{
-		Digest:          arbhash,
-		SegmentAssignHeading: engineproto.StandardSectionCollectionHeading{Sum: 5, Digest: arbhash},
+	ledger1 := commitchema.StandardLedgerUUID{
+		Digest:          unpredictablehash,
+		FragmentAssignHeading: commitchema.StandardFragmentAssignHeading{Sum: 5, Digest: unpredictablehash},
 	}
-	vledger2 := engineproto.StandardLedgerUID{
-		Digest:          arbhash,
-		SegmentAssignHeading: engineproto.StandardSectionCollectionHeading{Sum: 10, Digest: arbhash},
+	ledger2 := commitchema.StandardLedgerUUID{
+		Digest:          unpredictablehash,
+		FragmentAssignHeading: commitchema.StandardFragmentAssignHeading{Sum: 10, Digest: unpredictablehash},
 	}
 
 	verifies := []struct {
-		label string
-		args engineproto.LedgerUID
-		desire *engineproto.StandardLedgerUID
+		alias string
+		arguments commitchema.LedgerUUID
+		desire *commitchema.StandardLedgerUUID
 	}{
-		{"REDACTED", ledger1, &vledger1},
-		{"REDACTED", ledger2, &vledger2},
+		{"REDACTED", ledger1, &ledger1},
+		{"REDACTED", ledger2, &ledger2},
 	}
 	for _, tt := range verifies {
-		t.Run(tt.label, func(t *testing.T) {
-			if got := StandardizeLedgerUID(tt.args); !reflect.DeepEqual(got, tt.desire) {
+		t.Run(tt.alias, func(t *testing.T) {
+			if got := NormalizeLedgerUUID(tt.arguments); !reflect.DeepEqual(got, tt.desire) {
 				t.Errorf("REDACTED", got, tt.desire)
 			}
 		})

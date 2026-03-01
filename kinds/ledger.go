@@ -10,16 +10,16 @@ import (
 	"github.com/cosmos/gogoproto/proto"
 	gogotypes "github.com/cosmos/gogoproto/types"
 
-	"github.com/valkyrieworks/vault"
-	"github.com/valkyrieworks/vault/merkle"
-	"github.com/valkyrieworks/vault/comethash"
-	"github.com/valkyrieworks/utils/bits"
-	cometbytes "github.com/valkyrieworks/utils/octets"
-	cometmath "github.com/valkyrieworks/utils/math"
-	engineconnect "github.com/valkyrieworks/utils/align"
-	engineproto "github.com/valkyrieworks/schema/consensuscore/kinds"
-	cometrelease "github.com/valkyrieworks/schema/consensuscore/release"
-	"github.com/valkyrieworks/release"
+	"github.com/valkyrieworks/dffc4ef0-4ec6-4346-9b6c-d0a0cb42d94b/security"
+	"github.com/valkyrieworks/dffc4ef0-4ec6-4346-9b6c-d0a0cb42d94b/security/hashmap"
+	"github.com/valkyrieworks/dffc4ef0-4ec6-4346-9b6c-d0a0cb42d94b/security/tenderminthash"
+	"github.com/valkyrieworks/dffc4ef0-4ec6-4346-9b6c-d0a0cb42d94b/utils/digits"
+	tendermintoctets "github.com/valkyrieworks/dffc4ef0-4ec6-4346-9b6c-d0a0cb42d94b/utils/octets"
+	strongarithmetic "github.com/valkyrieworks/dffc4ef0-4ec6-4346-9b6c-d0a0cb42d94b/utils/arithmetic"
+	commitchronize "github.com/valkyrieworks/dffc4ef0-4ec6-4346-9b6c-d0a0cb42d94b/utils/chronize"
+	commitchema "github.com/valkyrieworks/dffc4ef0-4ec6-4346-9b6c-d0a0cb42d94b/schema/strongmind/kinds"
+	strongmindedition "github.com/valkyrieworks/dffc4ef0-4ec6-4346-9b6c-d0a0cb42d94b/schema/strongmind/edition"
+	"github.com/valkyrieworks/dffc4ef0-4ec6-4346-9b6c-d0a0cb42d94b/edition"
 )
 
 const (
@@ -36,14 +36,14 @@ const (
 	//
 	//
 	//
-	MaximumBurdenForLedger int64 = 11
+	MaximumMarginForeachLedger int64 = 11
 )
 
 //
 type Ledger struct {
-	mtx engineconnect.Lock
+	mtx commitchronize.Exclusion
 
-	certifiedDigest cometbytes.HexOctets //
+	attestedDigest tendermintoctets.HexadecimalOctets //
 	Heading       `json:"heading"`
 	Data         `json:"data"`
 	Proof     ProofData `json:"proof"`
@@ -53,7 +53,7 @@ type Ledger struct {
 //
 //
 //
-func (b *Ledger) CertifySimple() error {
+func (b *Ledger) CertifyFundamental() error {
 	if b == nil {
 		return errors.New("REDACTED")
 	}
@@ -61,7 +61,7 @@ func (b *Ledger) CertifySimple() error {
 	b.mtx.Lock()
 	defer b.mtx.Unlock()
 
-	if err := b.Heading.CertifySimple(); err != nil {
+	if err := b.Heading.CertifyFundamental(); err != nil {
 		return fmt.Errorf("REDACTED", err)
 	}
 
@@ -69,7 +69,7 @@ func (b *Ledger) CertifySimple() error {
 	if b.FinalEndorse == nil {
 		return errors.New("REDACTED")
 	}
-	if err := b.FinalEndorse.CertifySimple(); err != nil {
+	if err := b.FinalEndorse.CertifyFundamental(); err != nil {
 		return fmt.Errorf("REDACTED", err)
 	}
 
@@ -91,7 +91,7 @@ func (b *Ledger) CertifySimple() error {
 
 	//
 	for i, ev := range b.Proof.Proof {
-		if err := ev.CertifySimple(); err != nil {
+		if err := ev.CertifyFundamental(); err != nil {
 			return fmt.Errorf("REDACTED", i, err)
 		}
 	}
@@ -121,7 +121,7 @@ func (b *Ledger) populateHeading() {
 
 //
 //
-func (b *Ledger) Digest() cometbytes.HexOctets {
+func (b *Ledger) Digest() tendermintoctets.HexadecimalOctets {
 	if b == nil {
 		return nil
 	}
@@ -131,26 +131,26 @@ func (b *Ledger) Digest() cometbytes.HexOctets {
 	if b.FinalEndorse == nil {
 		return nil
 	}
-	if b.certifiedDigest != nil {
-		return b.certifiedDigest
+	if b.attestedDigest != nil {
+		return b.attestedDigest
 	}
 	b.populateHeading()
 	digest := b.Heading.Digest()
-	b.certifiedDigest = digest
+	b.attestedDigest = digest
 	return digest
 }
 
 //
 //
 //
-func (b *Ledger) CreateSegmentAssign(segmentVolume uint32) (*SegmentCollection, error) {
+func (b *Ledger) CreateFragmentAssign(fragmentExtent uint32) (*FragmentAssign, error) {
 	if b == nil {
 		return nil, errors.New("REDACTED")
 	}
 	b.mtx.Lock()
 	defer b.mtx.Unlock()
 
-	pbb, err := b.ToSchema()
+	pbb, err := b.TowardSchema()
 	if err != nil {
 		return nil, err
 	}
@@ -158,12 +158,12 @@ func (b *Ledger) CreateSegmentAssign(segmentVolume uint32) (*SegmentCollection, 
 	if err != nil {
 		return nil, err
 	}
-	return NewSegmentCollectionFromData(bz, segmentVolume), nil
+	return FreshFragmentAssignOriginatingData(bz, fragmentExtent), nil
 }
 
 //
 //
-func (b *Ledger) DigestsTo(digest []byte) bool {
+func (b *Ledger) DigestsToward(digest []byte) bool {
 	if len(digest) == 0 {
 		return false
 	}
@@ -174,20 +174,20 @@ func (b *Ledger) DigestsTo(digest []byte) bool {
 }
 
 //
-func (b *Ledger) Volume() int {
-	pbb, err := b.ToSchema()
+func (b *Ledger) Extent() int {
+	pbb, err := b.TowardSchema()
 	if err != nil {
 		return 0
 	}
 
-	return pbb.Volume()
+	return pbb.Extent()
 }
 
 //
 //
 //
-func (b *Ledger) String() string {
-	return b.StringIndented("REDACTED")
+func (b *Ledger) Text() string {
+	return b.TextFormatted("REDACTED")
 }
 
 //
@@ -197,7 +197,7 @@ func (b *Ledger) String() string {
 //
 //
 //
-func (b *Ledger) StringIndented(indent string) string {
+func (b *Ledger) TextFormatted(format string) string {
 	if b == nil {
 		return "REDACTED"
 	}
@@ -207,15 +207,15 @@ REDACTEDv
 REDACTEDv
 REDACTEDv
 REDACTED`,
-		indent, b.Heading.StringIndented(indent+"REDACTED"),
-		indent, b.Data.StringIndented(indent+"REDACTED"),
-		indent, b.Proof.StringIndented(indent+"REDACTED"),
-		indent, b.FinalEndorse.StringIndented(indent+"REDACTED"),
-		indent, b.Digest())
+		format, b.Heading.TextFormatted(format+"REDACTED"),
+		format, b.Data.TextFormatted(format+"REDACTED"),
+		format, b.Proof.TextFormatted(format+"REDACTED"),
+		format, b.FinalEndorse.TextFormatted(format+"REDACTED"),
+		format, b.Digest())
 }
 
 //
-func (b *Ledger) StringBrief() string {
+func (b *Ledger) TextBrief() string {
 	if b == nil {
 		return "REDACTED"
 	}
@@ -223,18 +223,18 @@ func (b *Ledger) StringBrief() string {
 }
 
 //
-func (b *Ledger) ToSchema() (*engineproto.Ledger, error) {
+func (b *Ledger) TowardSchema() (*commitchema.Ledger, error) {
 	if b == nil {
 		return nil, errors.New("REDACTED")
 	}
 
-	pb := new(engineproto.Ledger)
+	pb := new(commitchema.Ledger)
 
-	pb.Heading = *b.Heading.ToSchema()
-	pb.FinalEndorse = b.FinalEndorse.ToSchema()
-	pb.Data = b.Data.ToSchema()
+	pb.Heading = *b.Heading.TowardSchema()
+	pb.FinalEndorse = b.FinalEndorse.TowardSchema()
+	pb.Data = b.Data.TowardSchema()
 
-	schemaProof, err := b.Proof.ToSchema()
+	schemaProof, err := b.Proof.TowardSchema()
 	if err != nil {
 		return nil, err
 	}
@@ -245,35 +245,35 @@ func (b *Ledger) ToSchema() (*engineproto.Ledger, error) {
 
 //
 //
-func LedgerFromSchema(bp *engineproto.Ledger) (*Ledger, error) {
+func LedgerOriginatingSchema(bp *commitchema.Ledger) (*Ledger, error) {
 	if bp == nil {
 		return nil, errors.New("REDACTED")
 	}
 
 	b := new(Ledger)
-	h, err := HeadingFromSchema(&bp.Heading)
+	h, err := HeadingOriginatingSchema(&bp.Heading)
 	if err != nil {
 		return nil, err
 	}
 	b.Heading = h
-	data, err := DataFromSchema(&bp.Data)
+	data, err := DataOriginatingSchema(&bp.Data)
 	if err != nil {
 		return nil, err
 	}
 	b.Data = data
-	if err := b.Proof.FromSchema(&bp.Proof); err != nil {
+	if err := b.Proof.OriginatingSchema(&bp.Proof); err != nil {
 		return nil, err
 	}
 
 	if bp.FinalEndorse != nil {
-		lc, err := EndorseFromSchema(bp.FinalEndorse)
+		lc, err := EndorseOriginatingSchema(bp.FinalEndorse)
 		if err != nil {
 			return nil, err
 		}
 		b.FinalEndorse = lc
 	}
 
-	return b, b.CertifySimple()
+	return b, b.CertifyFundamental()
 }
 
 //
@@ -283,7 +283,7 @@ func LedgerFromSchema(bp *engineproto.Ledger) (*Ledger, error) {
 //
 func MaximumDataOctets(maximumOctets, proofOctets int64, valuesTally int) int64 {
 	maximumDataOctets := maximumOctets -
-		MaximumBurdenForLedger -
+		MaximumMarginForeachLedger -
 		MaximumHeadingOctets -
 		MaximumEndorseOctets(valuesTally) -
 		proofOctets
@@ -303,9 +303,9 @@ func MaximumDataOctets(maximumOctets, proofOctets int64, valuesTally int) int64 
 //
 //
 //
-func MaximumDataOctetsNoProof(maximumOctets int64, valuesTally int) int64 {
+func MaximumDataOctetsNegativeProof(maximumOctets int64, valuesTally int) int64 {
 	maximumDataOctets := maximumOctets -
-		MaximumBurdenForLedger -
+		MaximumMarginForeachLedger -
 		MaximumHeadingOctets -
 		MaximumEndorseOctets(valuesTally)
 
@@ -329,72 +329,72 @@ func MaximumDataOctetsNoProof(maximumOctets int64, valuesTally int) int64 {
 //
 type Heading struct {
 	//
-	Release cometrelease.Agreement `json:"release"`
-	LedgerUID string               `json:"series_uid"`
-	Level  int64                `json:"level"`
-	Time    time.Time            `json:"moment"`
+	Edition strongmindedition.Agreement `json:"edition"`
+	SuccessionUUID string               `json:"succession_uuid"`
+	Altitude  int64                `json:"altitude"`
+	Moment    time.Time            `json:"moment"`
 
 	//
-	FinalLedgerUID LedgerUID `json:"final_ledger_uid"`
+	FinalLedgerUUID LedgerUUID `json:"final_ledger_uuid"`
 
 	//
-	FinalEndorseDigest cometbytes.HexOctets `json:"final_endorse_digest"` //
-	DataDigest       cometbytes.HexOctets `json:"data_digest"`        //
+	FinalEndorseDigest tendermintoctets.HexadecimalOctets `json:"final_endorse_digest"` //
+	DataDigest       tendermintoctets.HexadecimalOctets `json:"data_digest"`        //
 
 	//
-	RatifiersDigest     cometbytes.HexOctets `json:"ratifiers_digest"`      //
-	FollowingRatifiersDigest cometbytes.HexOctets `json:"following_ratifiers_digest"` //
-	AgreementDigest      cometbytes.HexOctets `json:"agreement_digest"`       //
-	ApplicationDigest            cometbytes.HexOctets `json:"application_digest"`             //
+	AssessorsDigest     tendermintoctets.HexadecimalOctets `json:"assessors_digest"`      //
+	FollowingAssessorsDigest tendermintoctets.HexadecimalOctets `json:"following_assessors_digest"` //
+	AgreementDigest      tendermintoctets.HexadecimalOctets `json:"agreement_digest"`       //
+	PlatformDigest            tendermintoctets.HexadecimalOctets `json:"application_digest"`             //
 	//
 	//
-	FinalOutcomesDigest cometbytes.HexOctets `json:"final_outcomes_digest"`
+	FinalOutcomesDigest tendermintoctets.HexadecimalOctets `json:"final_outcomes_digest"`
 
 	//
-	ProofDigest    cometbytes.HexOctets `json:"proof_digest"`    //
-	RecommenderLocation Location           `json:"recommender_location"` //
+	ProofDigest    tendermintoctets.HexadecimalOctets `json:"proof_digest"`    //
+	NominatorLocation Location           `json:"nominator_location"` //
 }
 
 //
 //
-func (h *Heading) Fill(
-	release cometrelease.Agreement, ledgerUID string,
-	timestamp time.Time, finalLedgerUID LedgerUID,
-	valueDigest, followingValueDigest []byte,
-	agreementDigest, applicationDigest, finalOutcomesDigest []byte,
-	recommenderLocation Location,
+func (h *Heading) Inhabit(
+	edition strongmindedition.Agreement, successionUUID string,
+	timestamp time.Time, finalLedgerUUID LedgerUUID,
+	itemDigest, followingItemDigest []byte,
+	agreementDigest, platformDigest, finalOutcomesDigest []byte,
+	nominatorLocator Location,
 ) {
-	h.Release = release
-	h.LedgerUID = ledgerUID
-	h.Time = timestamp
-	h.FinalLedgerUID = finalLedgerUID
-	h.RatifiersDigest = valueDigest
-	h.FollowingRatifiersDigest = followingValueDigest
+	h.Edition = edition
+	h.SuccessionUUID = successionUUID
+	h.Moment = timestamp
+	h.FinalLedgerUUID = finalLedgerUUID
+	h.AssessorsDigest = itemDigest
+	h.FollowingAssessorsDigest = followingItemDigest
 	h.AgreementDigest = agreementDigest
-	h.ApplicationDigest = applicationDigest
+	h.PlatformDigest = platformDigest
 	h.FinalOutcomesDigest = finalOutcomesDigest
-	h.RecommenderLocation = recommenderLocation
+	h.NominatorLocation = nominatorLocator
 }
 
 //
 //
 //
 //
-func (h Heading) CertifySimple() error {
-	if h.Release.Ledger != release.LedgerProtocol {
-		return fmt.Errorf("REDACTED", h.Release.Ledger, release.LedgerProtocol)
+func (h Heading) CertifyFundamental() error {
+	if h.Edition.Ledger != edition.LedgerScheme {
+		return fmt.Errorf("REDACTED", h.Edition.Ledger, edition.LedgerScheme)
 	}
-	if len(h.LedgerUID) > MaximumSeriesUIDSize {
-		return fmt.Errorf("REDACTED", len(h.LedgerUID), MaximumSeriesUIDSize)
-	}
-
-	if h.Level < 0 {
-		return errors.New("REDACTED")
-	} else if h.Level == 0 {
-		return errors.New("REDACTED")
+	if len(h.SuccessionUUID) > MaximumSuccessionUUIDSize {
+		return fmt.Errorf("REDACTED", len(h.SuccessionUUID), MaximumSuccessionUUIDSize)
 	}
 
-	if err := h.FinalLedgerUID.CertifySimple(); err != nil {
+	if h.Altitude < 0 {
+		return errors.New("REDACTED")
+	} else if h.Altitude == 0 {
+		return errors.New("REDACTED")
+	}
+
+	if err := h.FinalLedgerUUID.CertifyFundamental(); err != nil {
 		return fmt.Errorf("REDACTED", err)
 	}
 
@@ -410,19 +410,19 @@ func (h Heading) CertifySimple() error {
 		return fmt.Errorf("REDACTED", err)
 	}
 
-	if len(h.RecommenderLocation) != vault.LocationVolume {
+	if len(h.NominatorLocation) != security.LocatorExtent {
 		return fmt.Errorf(
 			"REDACTED",
-			len(h.RecommenderLocation), vault.LocationVolume,
+			len(h.NominatorLocation), security.LocatorExtent,
 		)
 	}
 
 	//
 	//
-	if err := CertifyDigest(h.RatifiersDigest); err != nil {
+	if err := CertifyDigest(h.AssessorsDigest); err != nil {
 		return fmt.Errorf("REDACTED", err)
 	}
-	if err := CertifyDigest(h.FollowingRatifiersDigest); err != nil {
+	if err := CertifyDigest(h.FollowingAssessorsDigest); err != nil {
 		return fmt.Errorf("REDACTED", err)
 	}
 	if err := CertifyDigest(h.AgreementDigest); err != nil {
@@ -442,45 +442,45 @@ func (h Heading) CertifySimple() error {
 //
 //
 //
-func (h *Heading) Digest() cometbytes.HexOctets {
-	if h == nil || len(h.RatifiersDigest) == 0 {
+func (h *Heading) Digest() tendermintoctets.HexadecimalOctets {
+	if h == nil || len(h.AssessorsDigest) == 0 {
 		return nil
 	}
-	hbz, err := h.Release.Serialize()
+	hbz, err := h.Edition.Serialize()
 	if err != nil {
 		return nil
 	}
 
-	pbt, err := gogotypes.StdTimeMarshal(h.Time)
+	pbt, err := gogotypes.StdTimeMarshal(h.Moment)
 	if err != nil {
 		return nil
 	}
 
-	pbbi := h.FinalLedgerUID.ToSchema()
-	bzbi, err := pbbi.Serialize()
+	bufferbi := h.FinalLedgerUUID.TowardSchema()
+	byzinfra, err := bufferbi.Serialize()
 	if err != nil {
 		return nil
 	}
-	return merkle.DigestFromOctetSegments([][]byte{
+	return hashmap.DigestOriginatingOctetSegments([][]byte{
 		hbz,
-		cdcEncode(h.LedgerUID),
-		cdcEncode(h.Level),
+		codecSerialize(h.SuccessionUUID),
+		codecSerialize(h.Altitude),
 		pbt,
-		bzbi,
-		cdcEncode(h.FinalEndorseDigest),
-		cdcEncode(h.DataDigest),
-		cdcEncode(h.RatifiersDigest),
-		cdcEncode(h.FollowingRatifiersDigest),
-		cdcEncode(h.AgreementDigest),
-		cdcEncode(h.ApplicationDigest),
-		cdcEncode(h.FinalOutcomesDigest),
-		cdcEncode(h.ProofDigest),
-		cdcEncode(h.RecommenderLocation),
+		byzinfra,
+		codecSerialize(h.FinalEndorseDigest),
+		codecSerialize(h.DataDigest),
+		codecSerialize(h.AssessorsDigest),
+		codecSerialize(h.FollowingAssessorsDigest),
+		codecSerialize(h.AgreementDigest),
+		codecSerialize(h.PlatformDigest),
+		codecSerialize(h.FinalOutcomesDigest),
+		codecSerialize(h.ProofDigest),
+		codecSerialize(h.NominatorLocation),
 	})
 }
 
 //
-func (h *Heading) StringIndented(indent string) string {
+func (h *Heading) TextFormatted(format string) string {
 	if h == nil {
 		return "REDACTED"
 	}
@@ -500,127 +500,127 @@ REDACTEDv
 REDACTEDv
 REDACTEDv
 REDACTED`,
-		indent, h.Release,
-		indent, h.LedgerUID,
-		indent, h.Level,
-		indent, h.Time,
-		indent, h.FinalLedgerUID,
-		indent, h.FinalEndorseDigest,
-		indent, h.DataDigest,
-		indent, h.RatifiersDigest,
-		indent, h.FollowingRatifiersDigest,
-		indent, h.ApplicationDigest,
-		indent, h.AgreementDigest,
-		indent, h.FinalOutcomesDigest,
-		indent, h.ProofDigest,
-		indent, h.RecommenderLocation,
-		indent, h.Digest(),
+		format, h.Edition,
+		format, h.SuccessionUUID,
+		format, h.Altitude,
+		format, h.Moment,
+		format, h.FinalLedgerUUID,
+		format, h.FinalEndorseDigest,
+		format, h.DataDigest,
+		format, h.AssessorsDigest,
+		format, h.FollowingAssessorsDigest,
+		format, h.PlatformDigest,
+		format, h.AgreementDigest,
+		format, h.FinalOutcomesDigest,
+		format, h.ProofDigest,
+		format, h.NominatorLocation,
+		format, h.Digest(),
 	)
 }
 
 //
-func (h *Heading) ToSchema() *engineproto.Heading {
+func (h *Heading) TowardSchema() *commitchema.Heading {
 	if h == nil {
 		return nil
 	}
 
-	return &engineproto.Heading{
-		Release:            h.Release,
-		LedgerUID:            h.LedgerUID,
-		Level:             h.Level,
-		Time:               h.Time,
-		FinalLedgerUid:        h.FinalLedgerUID.ToSchema(),
-		RatifiersDigest:     h.RatifiersDigest,
-		FollowingRatifiersDigest: h.FollowingRatifiersDigest,
+	return &commitchema.Heading{
+		Edition:            h.Edition,
+		SuccessionUUID:            h.SuccessionUUID,
+		Altitude:             h.Altitude,
+		Moment:               h.Moment,
+		FinalLedgerUuid:        h.FinalLedgerUUID.TowardSchema(),
+		AssessorsDigest:     h.AssessorsDigest,
+		FollowingAssessorsDigest: h.FollowingAssessorsDigest,
 		AgreementDigest:      h.AgreementDigest,
-		ApplicationDigest:            h.ApplicationDigest,
+		PlatformDigest:            h.PlatformDigest,
 		DataDigest:           h.DataDigest,
 		ProofDigest:       h.ProofDigest,
 		FinalOutcomesDigest:    h.FinalOutcomesDigest,
 		FinalEndorseDigest:     h.FinalEndorseDigest,
-		RecommenderLocation:    h.RecommenderLocation,
+		NominatorLocation:    h.NominatorLocation,
 	}
 }
 
 //
 //
-func HeadingFromSchema(ph *engineproto.Heading) (Heading, error) {
+func HeadingOriginatingSchema(ph *commitchema.Heading) (Heading, error) {
 	if ph == nil {
 		return Heading{}, errors.New("REDACTED")
 	}
 
 	h := new(Heading)
 
-	bi, err := LedgerUIDFromSchema(&ph.FinalLedgerUid)
+	bi, err := LedgerUUIDOriginatingSchema(&ph.FinalLedgerUuid)
 	if err != nil {
 		return Heading{}, err
 	}
 
-	h.Release = ph.Release
-	h.LedgerUID = ph.LedgerUID
-	h.Level = ph.Level
-	h.Time = ph.Time
-	h.FinalLedgerUID = *bi
-	h.RatifiersDigest = ph.RatifiersDigest
-	h.FollowingRatifiersDigest = ph.FollowingRatifiersDigest
+	h.Edition = ph.Edition
+	h.SuccessionUUID = ph.SuccessionUUID
+	h.Altitude = ph.Altitude
+	h.Moment = ph.Moment
+	h.FinalLedgerUUID = *bi
+	h.AssessorsDigest = ph.AssessorsDigest
+	h.FollowingAssessorsDigest = ph.FollowingAssessorsDigest
 	h.AgreementDigest = ph.AgreementDigest
-	h.ApplicationDigest = ph.ApplicationDigest
+	h.PlatformDigest = ph.PlatformDigest
 	h.DataDigest = ph.DataDigest
 	h.ProofDigest = ph.ProofDigest
 	h.FinalOutcomesDigest = ph.FinalOutcomesDigest
 	h.FinalEndorseDigest = ph.FinalEndorseDigest
-	h.RecommenderLocation = ph.RecommenderLocation
+	h.NominatorLocation = ph.NominatorLocation
 
-	return *h, h.CertifySimple()
+	return *h, h.CertifyFundamental()
 }
 
 //
 
 //
-type LedgerUIDMark byte
+type LedgerUUIDMarker byte
 
 const (
 	//
-	LedgerUIDMarkMissing LedgerUIDMark = iota + 1
+	LedgerUUIDMarkerMissing LedgerUUIDMarker = iota + 1
 	//
-	LedgerUIDMarkEndorse
+	LedgerUUIDMarkerEndorse
 	//
-	LedgerUIDMarkNull
+	LedgerUUIDMarkerVoid
 )
 
 const (
 	//
-	MaximumEndorseBurdenOctets int64 = 94
+	MaximumEndorseMarginOctets int64 = 94
 
 	//
 	//
-	maximumEndorseSignatureSchemaEncodeBurden = 4 + 1 + 1 + 1 + 3 //
+	maximumEndorseSignatureSchemaSerMargin = 4 + 1 + 1 + 1 + 3 //
 	//
 	//
 	//
-	MaximumEndorseSignatureOctets = 131 + maximumEndorseSignatureSchemaEncodeBurden
+	MaximumEndorseSignatureOctets = 131 + maximumEndorseSignatureSchemaSerMargin
 )
 
 //
 type EndorseSignature struct {
-	LedgerUIDMark      LedgerUIDMark `json:"ledger_uid_mark"`
-	RatifierLocation Location     `json:"ratifier_location"`
+	LedgerUUIDMarker      LedgerUUIDMarker `json:"ledger_uuid_marker"`
+	AssessorLocation Location     `json:"assessor_location"`
 	Timestamp        time.Time   `json:"timestamp"`
-	Autograph        []byte      `json:"autograph"`
+	Notation        []byte      `json:"signing"`
 }
 
-func MaximumEndorseOctets(valueNumber int) int64 {
+func MaximumEndorseOctets(itemTally int) int64 {
 	//
-	const schemaIteratedFieldSizeBurden int64 = 3
+	const schemaIteratedAttributeLengthMargin int64 = 3
 	//
-	return MaximumEndorseBurdenOctets + ((MaximumEndorseSignatureOctets + schemaIteratedFieldSizeBurden) * int64(valueNumber))
+	return MaximumEndorseMarginOctets + ((MaximumEndorseSignatureOctets + schemaIteratedAttributeLengthMargin) * int64(itemTally))
 }
 
 //
 //
-func NewEndorseSignatureMissing() EndorseSignature {
+func FreshEndorseSignatureMissing() EndorseSignature {
 	return EndorseSignature{
-		LedgerUIDMark: LedgerUIDMarkMissing,
+		LedgerUUIDMarker: LedgerUUIDMarkerMissing,
 	}
 }
 
@@ -630,65 +630,65 @@ func NewEndorseSignatureMissing() EndorseSignature {
 //
 //
 //
-func (cs EndorseSignature) String() string {
+func (cs EndorseSignature) Text() string {
 	return fmt.Sprintf("REDACTED",
-		cometbytes.Footprint(cs.Autograph),
-		cometbytes.Footprint(cs.RatifierLocation),
-		cs.LedgerUIDMark,
-		StandardTime(cs.Timestamp))
+		tendermintoctets.Identifier(cs.Notation),
+		tendermintoctets.Identifier(cs.AssessorLocation),
+		cs.LedgerUUIDMarker,
+		StandardMoment(cs.Timestamp))
 }
 
 //
 //
-func (cs EndorseSignature) LedgerUID(endorseLedgerUID LedgerUID) LedgerUID {
-	var ledgerUID LedgerUID
-	switch cs.LedgerUIDMark {
-	case LedgerUIDMarkMissing:
-		ledgerUID = LedgerUID{}
-	case LedgerUIDMarkEndorse:
-		ledgerUID = endorseLedgerUID
-	case LedgerUIDMarkNull:
-		ledgerUID = LedgerUID{}
+func (cs EndorseSignature) LedgerUUID(endorseLedgerUUID LedgerUUID) LedgerUUID {
+	var ledgerUUID LedgerUUID
+	switch cs.LedgerUUIDMarker {
+	case LedgerUUIDMarkerMissing:
+		ledgerUUID = LedgerUUID{}
+	case LedgerUUIDMarkerEndorse:
+		ledgerUUID = endorseLedgerUUID
+	case LedgerUUIDMarkerVoid:
+		ledgerUUID = LedgerUUID{}
 	default:
-		panic(fmt.Sprintf("REDACTED", cs.LedgerUIDMark))
+		panic(fmt.Sprintf("REDACTED", cs.LedgerUUIDMarker))
 	}
-	return ledgerUID
+	return ledgerUUID
 }
 
 //
-func (cs EndorseSignature) CertifySimple() error {
-	switch cs.LedgerUIDMark {
-	case LedgerUIDMarkMissing:
-	case LedgerUIDMarkEndorse:
-	case LedgerUIDMarkNull:
+func (cs EndorseSignature) CertifyFundamental() error {
+	switch cs.LedgerUUIDMarker {
+	case LedgerUUIDMarkerMissing:
+	case LedgerUUIDMarkerEndorse:
+	case LedgerUUIDMarkerVoid:
 	default:
-		return fmt.Errorf("REDACTED", cs.LedgerUIDMark)
+		return fmt.Errorf("REDACTED", cs.LedgerUUIDMarker)
 	}
 
-	switch cs.LedgerUIDMark {
-	case LedgerUIDMarkMissing:
-		if len(cs.RatifierLocation) != 0 {
+	switch cs.LedgerUUIDMarker {
+	case LedgerUUIDMarkerMissing:
+		if len(cs.AssessorLocation) != 0 {
 			return errors.New("REDACTED")
 		}
 		if !cs.Timestamp.IsZero() {
 			return errors.New("REDACTED")
 		}
-		if len(cs.Autograph) != 0 {
+		if len(cs.Notation) != 0 {
 			return errors.New("REDACTED")
 		}
 	default:
-		if len(cs.RatifierLocation) != vault.LocationVolume {
+		if len(cs.AssessorLocation) != security.LocatorExtent {
 			return fmt.Errorf("REDACTED",
-				vault.LocationVolume,
-				len(cs.RatifierLocation),
+				security.LocatorExtent,
+				len(cs.AssessorLocation),
 			)
 		}
 		//
-		if len(cs.Autograph) == 0 {
+		if len(cs.Notation) == 0 {
 			return errors.New("REDACTED")
 		}
-		if len(cs.Autograph) > MaximumAutographVolume {
-			return fmt.Errorf("REDACTED", MaximumAutographVolume)
+		if len(cs.Notation) > MaximumNotationExtent {
+			return fmt.Errorf("REDACTED", MaximumNotationExtent)
 		}
 	}
 
@@ -696,28 +696,28 @@ func (cs EndorseSignature) CertifySimple() error {
 }
 
 //
-func (cs *EndorseSignature) ToSchema() *engineproto.EndorseSignature {
+func (cs *EndorseSignature) TowardSchema() *commitchema.EndorseSignature {
 	if cs == nil {
 		return nil
 	}
 
-	return &engineproto.EndorseSignature{
-		LedgerUidMark:      engineproto.LedgerUIDMark(cs.LedgerUIDMark),
-		RatifierLocation: cs.RatifierLocation,
+	return &commitchema.EndorseSignature{
+		LedgerUuidMarker:      commitchema.LedgerUUIDMarker(cs.LedgerUUIDMarker),
+		AssessorLocation: cs.AssessorLocation,
 		Timestamp:        cs.Timestamp,
-		Autograph:        cs.Autograph,
+		Notation:        cs.Notation,
 	}
 }
 
 //
 //
-func (cs *EndorseSignature) FromSchema(csp engineproto.EndorseSignature) error {
-	cs.LedgerUIDMark = LedgerUIDMark(csp.LedgerUidMark)
-	cs.RatifierLocation = csp.RatifierLocation
+func (cs *EndorseSignature) OriginatingSchema(csp commitchema.EndorseSignature) error {
+	cs.LedgerUUIDMarker = LedgerUUIDMarker(csp.LedgerUuidMarker)
+	cs.AssessorLocation = csp.AssessorLocation
 	cs.Timestamp = csp.Timestamp
-	cs.Autograph = csp.Autograph
+	cs.Notation = csp.Notation
 
-	return cs.CertifySimple()
+	return cs.CertifyFundamental()
 }
 
 //
@@ -727,13 +727,13 @@ func (cs *EndorseSignature) FromSchema(csp engineproto.EndorseSignature) error {
 type ExpandedEndorseSignature struct {
 	EndorseSignature                 //
 	Addition          []byte //
-	AdditionAutograph []byte //
+	AdditionNotation []byte //
 }
 
 //
 //
-func NewExpandedEndorseSignatureMissing() ExpandedEndorseSignature {
-	return ExpandedEndorseSignature{EndorseSignature: NewEndorseSignatureMissing()}
+func FreshExpandedEndorseSignatureMissing() ExpandedEndorseSignature {
+	return ExpandedEndorseSignature{EndorseSignature: FreshEndorseSignatureMissing()}
 }
 
 //
@@ -741,31 +741,31 @@ func NewExpandedEndorseSignatureMissing() ExpandedEndorseSignature {
 //
 //
 //
-func (ecs ExpandedEndorseSignature) String() string {
+func (ecs ExpandedEndorseSignature) Text() string {
 	return fmt.Sprintf("REDACTED",
 		ecs.EndorseSignature,
-		cometbytes.Footprint(ecs.Addition),
-		cometbytes.Footprint(ecs.AdditionAutograph),
+		tendermintoctets.Identifier(ecs.Addition),
+		tendermintoctets.Identifier(ecs.AdditionNotation),
 	)
 }
 
 //
-func (ecs ExpandedEndorseSignature) CertifySimple() error {
-	if err := ecs.EndorseSignature.CertifySimple(); err != nil {
+func (ecs ExpandedEndorseSignature) CertifyFundamental() error {
+	if err := ecs.EndorseSignature.CertifyFundamental(); err != nil {
 		return err
 	}
 
-	if ecs.LedgerUIDMark == LedgerUIDMarkEndorse {
-		if len(ecs.Addition) > MaximumBallotAdditionVolume {
-			return fmt.Errorf("REDACTED", MaximumBallotAdditionVolume)
+	if ecs.LedgerUUIDMarker == LedgerUUIDMarkerEndorse {
+		if len(ecs.Addition) > MaximumBallotAdditionExtent {
+			return fmt.Errorf("REDACTED", MaximumBallotAdditionExtent)
 		}
-		if len(ecs.AdditionAutograph) > MaximumAutographVolume {
-			return fmt.Errorf("REDACTED", MaximumAutographVolume)
+		if len(ecs.AdditionNotation) > MaximumNotationExtent {
+			return fmt.Errorf("REDACTED", MaximumNotationExtent)
 		}
 		return nil
 	}
 
-	if len(ecs.AdditionAutograph) == 0 && len(ecs.Addition) != 0 {
+	if len(ecs.AdditionNotation) == 0 && len(ecs.Addition) != 0 {
 		return errors.New("REDACTED")
 	}
 	return nil
@@ -773,36 +773,36 @@ func (ecs ExpandedEndorseSignature) CertifySimple() error {
 
 //
 //
-func (ecs ExpandedEndorseSignature) AssureAddition(extensionActivated bool) error {
-	if extensionActivated {
-		if ecs.LedgerUIDMark == LedgerUIDMarkEndorse && len(ecs.AdditionAutograph) == 0 {
+func (ecs ExpandedEndorseSignature) AssureAddition(addnActivated bool) error {
+	if addnActivated {
+		if ecs.LedgerUUIDMarker == LedgerUUIDMarkerEndorse && len(ecs.AdditionNotation) == 0 {
 			return fmt.Errorf("REDACTED",
-				ecs.RatifierLocation.String(),
+				ecs.AssessorLocation.Text(),
 				ecs.Timestamp,
 			)
 		}
-		if ecs.LedgerUIDMark != LedgerUIDMarkEndorse && len(ecs.Addition) != 0 {
+		if ecs.LedgerUUIDMarker != LedgerUUIDMarkerEndorse && len(ecs.Addition) != 0 {
 			return fmt.Errorf("REDACTED",
-				ecs.RatifierLocation.String(),
+				ecs.AssessorLocation.Text(),
 				ecs.Timestamp,
 			)
 		}
-		if ecs.LedgerUIDMark != LedgerUIDMarkEndorse && len(ecs.AdditionAutograph) != 0 {
+		if ecs.LedgerUUIDMarker != LedgerUUIDMarkerEndorse && len(ecs.AdditionNotation) != 0 {
 			return fmt.Errorf("REDACTED",
-				ecs.RatifierLocation.String(),
+				ecs.AssessorLocation.Text(),
 				ecs.Timestamp,
 			)
 		}
 	} else {
 		if len(ecs.Addition) != 0 {
 			return fmt.Errorf("REDACTED",
-				ecs.RatifierLocation.String(),
+				ecs.AssessorLocation.Text(),
 				ecs.Timestamp,
 			)
 		}
-		if len(ecs.AdditionAutograph) != 0 {
+		if len(ecs.AdditionNotation) != 0 {
 			return fmt.Errorf("REDACTED",
-				ecs.RatifierLocation.String(),
+				ecs.AssessorLocation.Text(),
 				ecs.Timestamp,
 			)
 		}
@@ -811,33 +811,33 @@ func (ecs ExpandedEndorseSignature) AssureAddition(extensionActivated bool) erro
 }
 
 //
-func (ecs *ExpandedEndorseSignature) ToSchema() *engineproto.ExpandedEndorseSignature {
+func (ecs *ExpandedEndorseSignature) TowardSchema() *commitchema.ExpandedEndorseSignature {
 	if ecs == nil {
 		return nil
 	}
 
-	return &engineproto.ExpandedEndorseSignature{
-		LedgerUidMark:        engineproto.LedgerUIDMark(ecs.LedgerUIDMark),
-		RatifierLocation:   ecs.RatifierLocation,
+	return &commitchema.ExpandedEndorseSignature{
+		LedgerUuidMarker:        commitchema.LedgerUUIDMarker(ecs.LedgerUUIDMarker),
+		AssessorLocation:   ecs.AssessorLocation,
 		Timestamp:          ecs.Timestamp,
-		Autograph:          ecs.Autograph,
+		Notation:          ecs.Notation,
 		Addition:          ecs.Addition,
-		AdditionAutograph: ecs.AdditionAutograph,
+		AdditionNotation: ecs.AdditionNotation,
 	}
 }
 
 //
 //
 //
-func (ecs *ExpandedEndorseSignature) FromSchema(ecsp engineproto.ExpandedEndorseSignature) error {
-	ecs.LedgerUIDMark = LedgerUIDMark(ecsp.LedgerUidMark)
-	ecs.RatifierLocation = ecsp.RatifierLocation
-	ecs.Timestamp = ecsp.Timestamp
-	ecs.Autograph = ecsp.Autograph
-	ecs.Addition = ecsp.Addition
-	ecs.AdditionAutograph = ecsp.AdditionAutograph
+func (ecs *ExpandedEndorseSignature) OriginatingSchema(endcontextswitchproc commitchema.ExpandedEndorseSignature) error {
+	ecs.LedgerUUIDMarker = LedgerUUIDMarker(endcontextswitchproc.LedgerUuidMarker)
+	ecs.AssessorLocation = endcontextswitchproc.AssessorLocation
+	ecs.Timestamp = endcontextswitchproc.Timestamp
+	ecs.Notation = endcontextswitchproc.Notation
+	ecs.Addition = endcontextswitchproc.Addition
+	ecs.AdditionNotation = endcontextswitchproc.AdditionNotation
 
-	return ecs.CertifySimple()
+	return ecs.CertifyFundamental()
 }
 
 //
@@ -849,24 +849,24 @@ type Endorse struct {
 	//
 	//
 	//
-	Level     int64       `json:"level"`
-	Cycle      int32       `json:"epoch"`
-	LedgerUID    LedgerUID     `json:"ledger_uid"`
-	Endorsements []EndorseSignature `json:"endorsements"`
+	Altitude     int64       `json:"altitude"`
+	Iteration      int32       `json:"iteration"`
+	LedgerUUID    LedgerUUID     `json:"ledger_uuid"`
+	Notations []EndorseSignature `json:"notations"`
 
 	//
 	//
 	//
-	digest cometbytes.HexOctets
+	digest tendermintoctets.HexadecimalOctets
 }
 
 //
 func (endorse *Endorse) Replicate() *Endorse {
-	autographs := make([]EndorseSignature, len(endorse.Endorsements))
-	copy(autographs, endorse.Endorsements)
-	xferClone := *endorse
-	xferClone.Endorsements = autographs
-	return &xferClone
+	signatures := make([]EndorseSignature, len(endorse.Notations))
+	copy(signatures, endorse.Notations)
+	xchangeDuplicate := *endorse
+	xchangeDuplicate.Notations = signatures
+	return &xchangeDuplicate
 }
 
 //
@@ -874,17 +874,17 @@ func (endorse *Endorse) Replicate() *Endorse {
 //
 //
 //
-func (endorse *Endorse) FetchBallot(valueIdx int32) *Ballot {
-	endorseSignature := endorse.Endorsements[valueIdx]
+func (endorse *Endorse) FetchBallot(itemOffset int32) *Ballot {
+	endorseSignature := endorse.Notations[itemOffset]
 	return &Ballot{
-		Kind:             engineproto.PreendorseKind,
-		Level:           endorse.Level,
-		Cycle:            endorse.Cycle,
-		LedgerUID:          endorseSignature.LedgerUID(endorse.LedgerUID),
+		Kind:             commitchema.PreendorseKind,
+		Altitude:           endorse.Altitude,
+		Iteration:            endorse.Iteration,
+		LedgerUUID:          endorseSignature.LedgerUUID(endorse.LedgerUUID),
 		Timestamp:        endorseSignature.Timestamp,
-		RatifierLocation: endorseSignature.RatifierLocation,
-		RatifierOrdinal:   valueIdx,
-		Autograph:        endorseSignature.Autograph,
+		AssessorLocation: endorseSignature.AssessorLocation,
+		AssessorOrdinal:   itemOffset,
+		Notation:        endorseSignature.Notation,
 	}
 }
 
@@ -897,39 +897,39 @@ func (endorse *Endorse) FetchBallot(valueIdx int32) *Ballot {
 //
 //
 //
-func (endorse *Endorse) BallotAttestOctets(ledgerUID string, valueIdx int32) []byte {
-	v := endorse.FetchBallot(valueIdx).ToSchema()
-	return BallotAttestOctets(ledgerUID, v)
+func (endorse *Endorse) BallotAttestOctets(successionUUID string, itemOffset int32) []byte {
+	v := endorse.FetchBallot(itemOffset).TowardSchema()
+	return BallotAttestOctets(successionUUID, v)
 }
 
 //
-func (endorse *Endorse) Volume() int {
+func (endorse *Endorse) Extent() int {
 	if endorse == nil {
 		return 0
 	}
-	return len(endorse.Endorsements)
+	return len(endorse.Notations)
 }
 
 //
 //
-func (endorse *Endorse) CertifySimple() error {
-	if endorse.Level < 0 {
+func (endorse *Endorse) CertifyFundamental() error {
+	if endorse.Altitude < 0 {
 		return errors.New("REDACTED")
 	}
-	if endorse.Cycle < 0 {
+	if endorse.Iteration < 0 {
 		return errors.New("REDACTED")
 	}
 
-	if endorse.Level >= 1 {
-		if endorse.LedgerUID.IsNil() {
+	if endorse.Altitude >= 1 {
+		if endorse.LedgerUUID.EqualsNull() {
 			return errors.New("REDACTED")
 		}
 
-		if len(endorse.Endorsements) == 0 {
+		if len(endorse.Notations) == 0 {
 			return errors.New("REDACTED")
 		}
-		for i, endorseSignature := range endorse.Endorsements {
-			if err := endorseSignature.CertifySimple(); err != nil {
+		for i, endorseSignature := range endorse.Notations {
+			if err := endorseSignature.CertifyFundamental(); err != nil {
 				return fmt.Errorf("REDACTED", i, err)
 			}
 		}
@@ -938,22 +938,22 @@ func (endorse *Endorse) CertifySimple() error {
 }
 
 //
-func (endorse *Endorse) Digest() cometbytes.HexOctets {
+func (endorse *Endorse) Digest() tendermintoctets.HexadecimalOctets {
 	if endorse == nil {
 		return nil
 	}
 	if endorse.digest == nil {
-		bs := make([][]byte, len(endorse.Endorsements))
-		for i, endorseSignature := range endorse.Endorsements {
-			pbft := endorseSignature.ToSchema()
-			bz, err := pbft.Serialize()
+		bs := make([][]byte, len(endorse.Notations))
+		for i, endorseSignature := range endorse.Notations {
+			buffercontextswitch := endorseSignature.TowardSchema()
+			bz, err := buffercontextswitch.Serialize()
 			if err != nil {
 				panic(err)
 			}
 
 			bs[i] = bz
 		}
-		endorse.digest = merkle.DigestFromOctetSegments(bs)
+		endorse.digest = hashmap.DigestOriginatingOctetSegments(bs)
 	}
 	return endorse.digest
 }
@@ -964,28 +964,28 @@ func (endorse *Endorse) Digest() cometbytes.HexOctets {
 //
 //
 func (endorse *Endorse) EncapsulatedExpandedEndorse() *ExpandedEndorse {
-	cs := make([]ExpandedEndorseSignature, len(endorse.Endorsements))
-	for idx, s := range endorse.Endorsements {
+	cs := make([]ExpandedEndorseSignature, len(endorse.Notations))
+	for idx, s := range endorse.Notations {
 		cs[idx] = ExpandedEndorseSignature{
 			EndorseSignature: s,
 		}
 	}
 	return &ExpandedEndorse{
-		Level:             endorse.Level,
-		Cycle:              endorse.Cycle,
-		LedgerUID:            endorse.LedgerUID,
-		ExpandedEndorsements: cs,
+		Altitude:             endorse.Altitude,
+		Iteration:              endorse.Iteration,
+		LedgerUUID:            endorse.LedgerUUID,
+		ExpandedNotations: cs,
 	}
 }
 
 //
-func (endorse *Endorse) StringIndented(indent string) string {
+func (endorse *Endorse) TextFormatted(format string) string {
 	if endorse == nil {
 		return "REDACTED"
 	}
-	endorseSignatureStrings := make([]string, len(endorse.Endorsements))
-	for i, endorseSignature := range endorse.Endorsements {
-		endorseSignatureStrings[i] = endorseSignature.String()
+	endorseSignatureTexts := make([]string, len(endorse.Notations))
+	for i, endorseSignature := range endorse.Notations {
+		endorseSignatureTexts[i] = endorseSignature.Text()
 	}
 	return fmt.Sprintf(`REDACTED{
 REDACTEDd
@@ -994,61 +994,61 @@ REDACTEDv
 REDACTED:
 REDACTEDv
 REDACTED`,
-		indent, endorse.Level,
-		indent, endorse.Cycle,
-		indent, endorse.LedgerUID,
-		indent,
-		indent, strings.Join(endorseSignatureStrings, "REDACTED"+indent+"REDACTED"),
-		indent, endorse.digest)
+		format, endorse.Altitude,
+		format, endorse.Iteration,
+		format, endorse.LedgerUUID,
+		format,
+		format, strings.Join(endorseSignatureTexts, "REDACTED"+format+"REDACTED"),
+		format, endorse.digest)
 }
 
 //
-func (endorse *Endorse) ToSchema() *engineproto.Endorse {
+func (endorse *Endorse) TowardSchema() *commitchema.Endorse {
 	if endorse == nil {
 		return nil
 	}
 
-	c := new(engineproto.Endorse)
-	autographs := make([]engineproto.EndorseSignature, len(endorse.Endorsements))
-	for i := range endorse.Endorsements {
-		autographs[i] = *endorse.Endorsements[i].ToSchema()
+	c := new(commitchema.Endorse)
+	signatures := make([]commitchema.EndorseSignature, len(endorse.Notations))
+	for i := range endorse.Notations {
+		signatures[i] = *endorse.Notations[i].TowardSchema()
 	}
-	c.Endorsements = autographs
+	c.Notations = signatures
 
-	c.Level = endorse.Level
-	c.Cycle = endorse.Cycle
-	c.LedgerUID = endorse.LedgerUID.ToSchema()
+	c.Altitude = endorse.Altitude
+	c.Iteration = endorse.Iteration
+	c.LedgerUUID = endorse.LedgerUUID.TowardSchema()
 
 	return c
 }
 
 //
 //
-func EndorseFromSchema(cp *engineproto.Endorse) (*Endorse, error) {
+func EndorseOriginatingSchema(cp *commitchema.Endorse) (*Endorse, error) {
 	if cp == nil {
 		return nil, errors.New("REDACTED")
 	}
 
 	endorse := new(Endorse)
 
-	bi, err := LedgerUIDFromSchema(&cp.LedgerUID)
+	bi, err := LedgerUUIDOriginatingSchema(&cp.LedgerUUID)
 	if err != nil {
 		return nil, err
 	}
 
-	autographs := make([]EndorseSignature, len(cp.Endorsements))
-	for i := range cp.Endorsements {
-		if err := autographs[i].FromSchema(cp.Endorsements[i]); err != nil {
+	signatures := make([]EndorseSignature, len(cp.Notations))
+	for i := range cp.Notations {
+		if err := signatures[i].OriginatingSchema(cp.Notations[i]); err != nil {
 			return nil, err
 		}
 	}
-	endorse.Endorsements = autographs
+	endorse.Notations = signatures
 
-	endorse.Level = cp.Level
-	endorse.Cycle = cp.Cycle
-	endorse.LedgerUID = *bi
+	endorse.Altitude = cp.Altitude
+	endorse.Iteration = cp.Iteration
+	endorse.LedgerUUID = *bi
 
-	return endorse, endorse.CertifySimple()
+	return endorse, endorse.CertifyFundamental()
 }
 
 //
@@ -1056,20 +1056,20 @@ func EndorseFromSchema(cp *engineproto.Endorse) (*Endorse, error) {
 //
 //
 type ExpandedEndorse struct {
-	Level             int64
-	Cycle              int32
-	LedgerUID            LedgerUID
-	ExpandedEndorsements []ExpandedEndorseSignature
+	Altitude             int64
+	Iteration              int32
+	LedgerUUID            LedgerUUID
+	ExpandedNotations []ExpandedEndorseSignature
 
-	bitList *bits.BitList
+	digitSeries *digits.DigitSeries
 }
 
 //
 func (ec *ExpandedEndorse) Replicate() *ExpandedEndorse {
-	autographs := make([]ExpandedEndorseSignature, len(ec.ExpandedEndorsements))
-	copy(autographs, ec.ExpandedEndorsements)
+	signatures := make([]ExpandedEndorseSignature, len(ec.ExpandedNotations))
+	copy(signatures, ec.ExpandedNotations)
 	ecc := *ec
-	ecc.ExpandedEndorsements = autographs
+	ecc.ExpandedNotations = signatures
 	return &ecc
 }
 
@@ -1077,23 +1077,23 @@ func (ec *ExpandedEndorse) Replicate() *ExpandedEndorse {
 //
 //
 //
-func (ec *ExpandedEndorse) ToExpandedBallotCollection(ledgerUID string, values *RatifierAssign) *BallotCollection {
-	ballotCollection := NewExpandedBallotCollection(ledgerUID, ec.Level, ec.Cycle, engineproto.PreendorseKind, values)
-	ec.appendAutographsToBallotCollection(ballotCollection)
-	return ballotCollection
+func (ec *ExpandedEndorse) TowardExpandedBallotAssign(successionUUID string, values *AssessorAssign) *BallotAssign {
+	ballotAssign := FreshExpandedBallotAssign(successionUUID, ec.Altitude, ec.Iteration, commitchema.PreendorseKind, values)
+	ec.appendSignaturesTowardBallotAssign(ballotAssign)
+	return ballotAssign
 }
 
 //
-func (ec *ExpandedEndorse) appendAutographsToBallotCollection(ballotCollection *BallotCollection) {
-	for idx, ecs := range ec.ExpandedEndorsements {
-		if ecs.LedgerUIDMark == LedgerUIDMarkMissing {
+func (ec *ExpandedEndorse) appendSignaturesTowardBallotAssign(ballotAssign *BallotAssign) {
+	for idx, ecs := range ec.ExpandedNotations {
+		if ecs.LedgerUUIDMarker == LedgerUUIDMarkerMissing {
 			continue //
 		}
-		ballot := ec.FetchExpandedBallot(int32(idx))
-		if err := ballot.CertifySimple(); err != nil {
+		ballot := ec.ObtainExpandedBallot(int32(idx))
+		if err := ballot.CertifyFundamental(); err != nil {
 			panic(fmt.Errorf("REDACTED", err))
 		}
-		appended, err := ballotCollection.AppendBallot(ballot)
+		appended, err := ballotAssign.AppendBallot(ballot)
 		if !appended || err != nil {
 			panic(fmt.Errorf("REDACTED", err))
 		}
@@ -1103,29 +1103,29 @@ func (ec *ExpandedEndorse) appendAutographsToBallotCollection(ballotCollection *
 //
 //
 //
-func (endorse *Endorse) ToBallotCollection(ledgerUID string, values *RatifierAssign) *BallotCollection {
-	ballotCollection := NewBallotCollection(ledgerUID, endorse.Level, endorse.Cycle, engineproto.PreendorseKind, values)
-	for idx, cs := range endorse.Endorsements {
-		if cs.LedgerUIDMark == LedgerUIDMarkMissing {
+func (endorse *Endorse) TowardBallotAssign(successionUUID string, values *AssessorAssign) *BallotAssign {
+	ballotAssign := FreshBallotAssign(successionUUID, endorse.Altitude, endorse.Iteration, commitchema.PreendorseKind, values)
+	for idx, cs := range endorse.Notations {
+		if cs.LedgerUUIDMarker == LedgerUUIDMarkerMissing {
 			continue //
 		}
 		ballot := endorse.FetchBallot(int32(idx))
-		if err := ballot.CertifySimple(); err != nil {
+		if err := ballot.CertifyFundamental(); err != nil {
 			panic(fmt.Errorf("REDACTED", err))
 		}
-		appended, err := ballotCollection.AppendBallot(ballot)
+		appended, err := ballotAssign.AppendBallot(ballot)
 		if !appended || err != nil {
 			panic(fmt.Errorf("REDACTED", err))
 		}
 	}
-	return ballotCollection
+	return ballotAssign
 }
 
 //
 //
-func (ec *ExpandedEndorse) AssurePlugins(extensionActivated bool) error {
-	for _, ecs := range ec.ExpandedEndorsements {
-		if err := ecs.AssureAddition(extensionActivated); err != nil {
+func (ec *ExpandedEndorse) AssureAdditions(addnActivated bool) error {
+	for _, ecs := range ec.ExpandedNotations {
+		if err := ecs.AssureAddition(addnActivated); err != nil {
 			return err
 		}
 	}
@@ -1134,108 +1134,108 @@ func (ec *ExpandedEndorse) AssurePlugins(extensionActivated bool) error {
 
 //
 //
-func (ec *ExpandedEndorse) ToEndorse() *Endorse {
-	cs := make([]EndorseSignature, len(ec.ExpandedEndorsements))
-	for idx, ecs := range ec.ExpandedEndorsements {
+func (ec *ExpandedEndorse) TowardEndorse() *Endorse {
+	cs := make([]EndorseSignature, len(ec.ExpandedNotations))
+	for idx, ecs := range ec.ExpandedNotations {
 		cs[idx] = ecs.EndorseSignature
 	}
 	return &Endorse{
-		Level:     ec.Level,
-		Cycle:      ec.Cycle,
-		LedgerUID:    ec.LedgerUID,
-		Endorsements: cs,
+		Altitude:     ec.Altitude,
+		Iteration:      ec.Iteration,
+		LedgerUUID:    ec.LedgerUUID,
+		Notations: cs,
 	}
 }
 
 //
 //
 //
-func (ec *ExpandedEndorse) FetchExpandedBallot(valueOrdinal int32) *Ballot {
-	ecs := ec.ExpandedEndorsements[valueOrdinal]
+func (ec *ExpandedEndorse) ObtainExpandedBallot(itemOrdinal int32) *Ballot {
+	ecs := ec.ExpandedNotations[itemOrdinal]
 	return &Ballot{
-		Kind:               engineproto.PreendorseKind,
-		Level:             ec.Level,
-		Cycle:              ec.Cycle,
-		LedgerUID:            ecs.LedgerUID(ec.LedgerUID),
+		Kind:               commitchema.PreendorseKind,
+		Altitude:             ec.Altitude,
+		Iteration:              ec.Iteration,
+		LedgerUUID:            ecs.LedgerUUID(ec.LedgerUUID),
 		Timestamp:          ecs.Timestamp,
-		RatifierLocation:   ecs.RatifierLocation,
-		RatifierOrdinal:     valueOrdinal,
-		Autograph:          ecs.Autograph,
+		AssessorLocation:   ecs.AssessorLocation,
+		AssessorOrdinal:     itemOrdinal,
+		Notation:          ecs.Notation,
 		Addition:          ecs.Addition,
-		AdditionAutograph: ecs.AdditionAutograph,
+		AdditionNotation: ecs.AdditionNotation,
 	}
 }
 
 //
 //
 //
-func (ec *ExpandedEndorse) Kind() byte { return byte(engineproto.PreendorseKind) }
+func (ec *ExpandedEndorse) Kind() byte { return byte(commitchema.PreendorseKind) }
 
 //
 //
-func (ec *ExpandedEndorse) FetchLevel() int64 { return ec.Level }
+func (ec *ExpandedEndorse) ObtainAltitude() int64 { return ec.Altitude }
 
 //
 //
-func (ec *ExpandedEndorse) FetchDuration() int32 { return ec.Cycle }
+func (ec *ExpandedEndorse) ObtainIteration() int32 { return ec.Iteration }
 
 //
 //
-func (ec *ExpandedEndorse) Volume() int {
+func (ec *ExpandedEndorse) Extent() int {
 	if ec == nil {
 		return 0
 	}
-	return len(ec.ExpandedEndorsements)
+	return len(ec.ExpandedNotations)
 }
 
 //
 //
 //
-func (ec *ExpandedEndorse) BitList() *bits.BitList {
-	if ec.bitList == nil {
-		primaryBitFn := func(i int) bool {
+func (ec *ExpandedEndorse) DigitSeries() *digits.DigitSeries {
+	if ec.digitSeries == nil {
+		primaryDigitProc := func(i int) bool {
 			//
 			//
-			return ec.ExpandedEndorsements[i].LedgerUIDMark != LedgerUIDMarkMissing
+			return ec.ExpandedNotations[i].LedgerUUIDMarker != LedgerUUIDMarkerMissing
 		}
-		ec.bitList = bits.NewBitListFromFn(len(ec.ExpandedEndorsements), primaryBitFn)
+		ec.digitSeries = digits.FreshDigitSeriesOriginatingProc(len(ec.ExpandedNotations), primaryDigitProc)
 	}
-	return ec.bitList
+	return ec.digitSeries
 }
 
 //
 //
 //
-func (ec *ExpandedEndorse) FetchByOrdinal(valueIdx int32) *Ballot {
-	return ec.FetchExpandedBallot(valueIdx)
+func (ec *ExpandedEndorse) ObtainViaOrdinal(itemOffset int32) *Ballot {
+	return ec.ObtainExpandedBallot(itemOffset)
 }
 
 //
 //
-func (ec *ExpandedEndorse) IsEndorse() bool {
-	return len(ec.ExpandedEndorsements) != 0
+func (ec *ExpandedEndorse) EqualsEndorse() bool {
+	return len(ec.ExpandedNotations) != 0
 }
 
 //
 //
-func (ec *ExpandedEndorse) CertifySimple() error {
-	if ec.Level < 0 {
+func (ec *ExpandedEndorse) CertifyFundamental() error {
+	if ec.Altitude < 0 {
 		return errors.New("REDACTED")
 	}
-	if ec.Cycle < 0 {
+	if ec.Iteration < 0 {
 		return errors.New("REDACTED")
 	}
 
-	if ec.Level >= 1 {
-		if ec.LedgerUID.IsNil() {
+	if ec.Altitude >= 1 {
+		if ec.LedgerUUID.EqualsNull() {
 			return errors.New("REDACTED")
 		}
 
-		if len(ec.ExpandedEndorsements) == 0 {
+		if len(ec.ExpandedNotations) == 0 {
 			return errors.New("REDACTED")
 		}
-		for i, extensionEndorseSignature := range ec.ExpandedEndorsements {
-			if err := extensionEndorseSignature.CertifySimple(); err != nil {
+		for i, addnEndorseSignature := range ec.ExpandedNotations {
+			if err := addnEndorseSignature.CertifyFundamental(); err != nil {
 				return fmt.Errorf("REDACTED", i, err)
 			}
 		}
@@ -1244,51 +1244,51 @@ func (ec *ExpandedEndorse) CertifySimple() error {
 }
 
 //
-func (ec *ExpandedEndorse) ToSchema() *engineproto.ExpandedEndorse {
+func (ec *ExpandedEndorse) TowardSchema() *commitchema.ExpandedEndorse {
 	if ec == nil {
 		return nil
 	}
 
-	c := new(engineproto.ExpandedEndorse)
-	autographs := make([]engineproto.ExpandedEndorseSignature, len(ec.ExpandedEndorsements))
-	for i := range ec.ExpandedEndorsements {
-		autographs[i] = *ec.ExpandedEndorsements[i].ToSchema()
+	c := new(commitchema.ExpandedEndorse)
+	signatures := make([]commitchema.ExpandedEndorseSignature, len(ec.ExpandedNotations))
+	for i := range ec.ExpandedNotations {
+		signatures[i] = *ec.ExpandedNotations[i].TowardSchema()
 	}
-	c.ExpandedEndorsements = autographs
+	c.ExpandedNotations = signatures
 
-	c.Level = ec.Level
-	c.Cycle = ec.Cycle
-	c.LedgerUID = ec.LedgerUID.ToSchema()
+	c.Altitude = ec.Altitude
+	c.Iteration = ec.Iteration
+	c.LedgerUUID = ec.LedgerUUID.TowardSchema()
 
 	return c
 }
 
 //
 //
-func ExpandedEndorseFromSchema(ecp *engineproto.ExpandedEndorse) (*ExpandedEndorse, error) {
+func ExpandedEndorseOriginatingSchema(ecp *commitchema.ExpandedEndorse) (*ExpandedEndorse, error) {
 	if ecp == nil {
 		return nil, errors.New("REDACTED")
 	}
 
-	extensionEndorse := new(ExpandedEndorse)
+	addnEndorse := new(ExpandedEndorse)
 
-	bi, err := LedgerUIDFromSchema(&ecp.LedgerUID)
+	bi, err := LedgerUUIDOriginatingSchema(&ecp.LedgerUUID)
 	if err != nil {
 		return nil, err
 	}
 
-	autographs := make([]ExpandedEndorseSignature, len(ecp.ExpandedEndorsements))
-	for i := range ecp.ExpandedEndorsements {
-		if err := autographs[i].FromSchema(ecp.ExpandedEndorsements[i]); err != nil {
+	signatures := make([]ExpandedEndorseSignature, len(ecp.ExpandedNotations))
+	for i := range ecp.ExpandedNotations {
+		if err := signatures[i].OriginatingSchema(ecp.ExpandedNotations[i]); err != nil {
 			return nil, err
 		}
 	}
-	extensionEndorse.ExpandedEndorsements = autographs
-	extensionEndorse.Level = ecp.Level
-	extensionEndorse.Cycle = ecp.Cycle
-	extensionEndorse.LedgerUID = *bi
+	addnEndorse.ExpandedNotations = signatures
+	addnEndorse.Altitude = ecp.Altitude
+	addnEndorse.Iteration = ecp.Iteration
+	addnEndorse.LedgerUUID = *bi
 
-	return extensionEndorse, extensionEndorse.CertifySimple()
+	return addnEndorse, addnEndorse.CertifyFundamental()
 }
 
 //
@@ -1301,11 +1301,11 @@ type Data struct {
 	Txs Txs `json:"txs"`
 
 	//
-	digest cometbytes.HexOctets
+	digest tendermintoctets.HexadecimalOctets
 }
 
 //
-func (data *Data) Digest() cometbytes.HexOctets {
+func (data *Data) Digest() tendermintoctets.HexadecimalOctets {
 	if data == nil {
 		return (Txs{}).Digest()
 	}
@@ -1316,35 +1316,35 @@ func (data *Data) Digest() cometbytes.HexOctets {
 }
 
 //
-func (data *Data) StringIndented(indent string) string {
+func (data *Data) TextFormatted(format string) string {
 	if data == nil {
 		return "REDACTED"
 	}
-	transferStrings := make([]string, cometmath.MinimumInteger(len(data.Txs), 21))
+	transferTexts := make([]string, strongarithmetic.MinimumInteger(len(data.Txs), 21))
 	for i, tx := range data.Txs {
 		if i == 20 {
-			transferStrings[i] = fmt.Sprintf("REDACTED", len(data.Txs))
+			transferTexts[i] = fmt.Sprintf("REDACTED", len(data.Txs))
 			break
 		}
-		transferStrings[i] = fmt.Sprintf("REDACTED", tx.Digest(), len(tx))
+		transferTexts[i] = fmt.Sprintf("REDACTED", tx.Digest(), len(tx))
 	}
 	return fmt.Sprintf(`REDACTED{
 REDACTEDv
 REDACTED`,
-		indent, strings.Join(transferStrings, "REDACTED"+indent+"REDACTED"),
-		indent, data.digest)
+		format, strings.Join(transferTexts, "REDACTED"+format+"REDACTED"),
+		format, data.digest)
 }
 
 //
-func (data *Data) ToSchema() engineproto.Data {
-	tp := new(engineproto.Data)
+func (data *Data) TowardSchema() commitchema.Data {
+	tp := new(commitchema.Data)
 
 	if len(data.Txs) > 0 {
-		transferBzs := make([][]byte, len(data.Txs))
+		transferByteslices := make([][]byte, len(data.Txs))
 		for i := range data.Txs {
-			transferBzs[i] = data.Txs[i]
+			transferByteslices[i] = data.Txs[i]
 		}
-		tp.Txs = transferBzs
+		tp.Txs = transferByteslices
 	}
 
 	return *tp
@@ -1352,18 +1352,18 @@ func (data *Data) ToSchema() engineproto.Data {
 
 //
 //
-func DataFromSchema(dp *engineproto.Data) (Data, error) {
+func DataOriginatingSchema(dp *commitchema.Data) (Data, error) {
 	if dp == nil {
 		return Data{}, errors.New("REDACTED")
 	}
 	data := new(Data)
 
 	if len(dp.Txs) > 0 {
-		transferBzs := make(Txs, len(dp.Txs))
+		transferByteslices := make(Txs, len(dp.Txs))
 		for i := range dp.Txs {
-			transferBzs[i] = Tx(dp.Txs[i])
+			transferByteslices[i] = Tx(dp.Txs[i])
 		}
-		data.Txs = transferBzs
+		data.Txs = transferByteslices
 	} else {
 		data.Txs = Txs{}
 	}
@@ -1378,12 +1378,12 @@ type ProofData struct {
 	Proof ProofCatalog `json:"proof"`
 
 	//
-	digest     cometbytes.HexOctets
-	octetVolume int64
+	digest     tendermintoctets.HexadecimalOctets
+	octetExtent int64
 }
 
 //
-func (data *ProofData) Digest() cometbytes.HexOctets {
+func (data *ProofData) Digest() tendermintoctets.HexadecimalOctets {
 	if data.digest == nil {
 		data.digest = data.Proof.Digest()
 	}
@@ -1391,73 +1391,73 @@ func (data *ProofData) Digest() cometbytes.HexOctets {
 }
 
 //
-func (data *ProofData) OctetVolume() int64 {
-	if data.octetVolume == 0 && len(data.Proof) != 0 {
-		pb, err := data.ToSchema()
+func (data *ProofData) OctetExtent() int64 {
+	if data.octetExtent == 0 && len(data.Proof) != 0 {
+		pb, err := data.TowardSchema()
 		if err != nil {
 			panic(err)
 		}
-		data.octetVolume = int64(pb.Volume())
+		data.octetExtent = int64(pb.Extent())
 	}
-	return data.octetVolume
+	return data.octetExtent
 }
 
 //
-func (data *ProofData) StringIndented(indent string) string {
+func (data *ProofData) TextFormatted(format string) string {
 	if data == nil {
 		return "REDACTED"
 	}
-	evtStrings := make([]string, cometmath.MinimumInteger(len(data.Proof), 21))
+	occurenceTexts := make([]string, strongarithmetic.MinimumInteger(len(data.Proof), 21))
 	for i, ev := range data.Proof {
 		if i == 20 {
-			evtStrings[i] = fmt.Sprintf("REDACTED", len(data.Proof))
+			occurenceTexts[i] = fmt.Sprintf("REDACTED", len(data.Proof))
 			break
 		}
-		evtStrings[i] = "REDACTED" + ev.String()
+		occurenceTexts[i] = "REDACTED" + ev.Text()
 	}
 	return fmt.Sprintf(`REDACTED{
 REDACTEDv
 REDACTED`,
-		indent, strings.Join(evtStrings, "REDACTED"+indent+"REDACTED"),
-		indent, data.digest)
+		format, strings.Join(occurenceTexts, "REDACTED"+format+"REDACTED"),
+		format, data.digest)
 }
 
 //
-func (data *ProofData) ToSchema() (*engineproto.ProofCatalog, error) {
+func (data *ProofData) TowardSchema() (*commitchema.ProofCatalog, error) {
 	if data == nil {
 		return nil, errors.New("REDACTED")
 	}
 
-	evi := new(engineproto.ProofCatalog)
-	eviBzs := make([]engineproto.Proof, len(data.Proof))
+	evi := new(commitchema.ProofCatalog)
+	evidenceByteslices := make([]commitchema.Proof, len(data.Proof))
 	for i := range data.Proof {
-		schemaEvi, err := ProofToSchema(data.Proof[i])
+		schemaEvidence, err := ProofTowardSchema(data.Proof[i])
 		if err != nil {
 			return nil, err
 		}
-		eviBzs[i] = *schemaEvi
+		evidenceByteslices[i] = *schemaEvidence
 	}
-	evi.Proof = eviBzs
+	evi.Proof = evidenceByteslices
 
 	return evi, nil
 }
 
 //
-func (data *ProofData) FromSchema(eviData *engineproto.ProofCatalog) error {
-	if eviData == nil {
+func (data *ProofData) OriginatingSchema(evidenceData *commitchema.ProofCatalog) error {
+	if evidenceData == nil {
 		return errors.New("REDACTED")
 	}
 
-	eviBzs := make(ProofCatalog, len(eviData.Proof))
-	for i := range eviData.Proof {
-		evi, err := ProofFromSchema(&eviData.Proof[i])
+	evidenceByteslices := make(ProofCatalog, len(evidenceData.Proof))
+	for i := range evidenceData.Proof {
+		evi, err := ProofOriginatingSchema(&evidenceData.Proof[i])
 		if err != nil {
 			return err
 		}
-		eviBzs[i] = evi
+		evidenceByteslices[i] = evi
 	}
-	data.Proof = eviBzs
-	data.octetVolume = int64(eviData.Volume())
+	data.Proof = evidenceByteslices
+	data.octetExtent = int64(evidenceData.Extent())
 
 	return nil
 }
@@ -1465,51 +1465,51 @@ func (data *ProofData) FromSchema(eviData *engineproto.ProofCatalog) error {
 //
 
 //
-type LedgerUID struct {
-	Digest          cometbytes.HexOctets `json:"digest"`
-	SegmentAssignHeading SegmentAssignHeading     `json:"segments"`
+type LedgerUUID struct {
+	Digest          tendermintoctets.HexadecimalOctets `json:"digest"`
+	FragmentAssignHeading FragmentAssignHeading     `json:"fragments"`
 }
 
 //
-func (ledgerUID LedgerUID) Matches(another LedgerUID) bool {
-	return bytes.Equal(ledgerUID.Digest, another.Digest) &&
-		ledgerUID.SegmentAssignHeading.Matches(another.SegmentAssignHeading)
+func (ledgerUUID LedgerUUID) Matches(another LedgerUUID) bool {
+	return bytes.Equal(ledgerUUID.Digest, another.Digest) &&
+		ledgerUUID.FragmentAssignHeading.Matches(another.FragmentAssignHeading)
 }
 
 //
-func (ledgerUID LedgerUID) Key() string {
-	pbph := ledgerUID.SegmentAssignHeading.ToSchema()
-	bz, err := pbph.Serialize()
+func (ledgerUUID LedgerUUID) Key() string {
+	bufferprocess := ledgerUUID.FragmentAssignHeading.TowardSchema()
+	bz, err := bufferprocess.Serialize()
 	if err != nil {
 		panic(err)
 	}
 
-	return fmt.Sprint(string(ledgerUID.Digest), string(bz))
+	return fmt.Sprint(string(ledgerUUID.Digest), string(bz))
 }
 
 //
-func (ledgerUID LedgerUID) CertifySimple() error {
+func (ledgerUUID LedgerUUID) CertifyFundamental() error {
 	//
-	if err := CertifyDigest(ledgerUID.Digest); err != nil {
+	if err := CertifyDigest(ledgerUUID.Digest); err != nil {
 		return fmt.Errorf("REDACTED")
 	}
-	if err := ledgerUID.SegmentAssignHeading.CertifySimple(); err != nil {
+	if err := ledgerUUID.FragmentAssignHeading.CertifyFundamental(); err != nil {
 		return fmt.Errorf("REDACTED", err)
 	}
 	return nil
 }
 
 //
-func (ledgerUID LedgerUID) IsNil() bool {
-	return len(ledgerUID.Digest) == 0 &&
-		ledgerUID.SegmentAssignHeading.IsNil()
+func (ledgerUUID LedgerUUID) EqualsNull() bool {
+	return len(ledgerUUID.Digest) == 0 &&
+		ledgerUUID.FragmentAssignHeading.EqualsNull()
 }
 
 //
-func (ledgerUID LedgerUID) IsFinished() bool {
-	return len(ledgerUID.Digest) == comethash.Volume &&
-		ledgerUID.SegmentAssignHeading.Sum > 0 &&
-		len(ledgerUID.SegmentAssignHeading.Digest) == comethash.Volume
+func (ledgerUUID LedgerUUID) EqualsFinish() bool {
+	return len(ledgerUUID.Digest) == tenderminthash.Extent &&
+		ledgerUUID.FragmentAssignHeading.Sum > 0 &&
+		len(ledgerUUID.FragmentAssignHeading.Digest) == tenderminthash.Extent
 }
 
 //
@@ -1518,43 +1518,43 @@ func (ledgerUID LedgerUID) IsFinished() bool {
 //
 //
 //
-func (ledgerUID LedgerUID) String() string {
-	return fmt.Sprintf("REDACTED", ledgerUID.Digest, ledgerUID.SegmentAssignHeading)
+func (ledgerUUID LedgerUUID) Text() string {
+	return fmt.Sprintf("REDACTED", ledgerUUID.Digest, ledgerUUID.FragmentAssignHeading)
 }
 
 //
-func (ledgerUID *LedgerUID) ToSchema() engineproto.LedgerUID {
-	if ledgerUID == nil {
-		return engineproto.LedgerUID{}
+func (ledgerUUID *LedgerUUID) TowardSchema() commitchema.LedgerUUID {
+	if ledgerUUID == nil {
+		return commitchema.LedgerUUID{}
 	}
 
-	return engineproto.LedgerUID{
-		Digest:          ledgerUID.Digest,
-		SegmentAssignHeading: ledgerUID.SegmentAssignHeading.ToSchema(),
+	return commitchema.LedgerUUID{
+		Digest:          ledgerUUID.Digest,
+		FragmentAssignHeading: ledgerUUID.FragmentAssignHeading.TowardSchema(),
 	}
 }
 
 //
 //
-func LedgerUIDFromSchema(bID *engineproto.LedgerUID) (*LedgerUID, error) {
+func LedgerUUIDOriginatingSchema(bID *commitchema.LedgerUUID) (*LedgerUUID, error) {
 	if bID == nil {
 		return nil, errors.New("REDACTED")
 	}
 
-	ledgerUID := new(LedgerUID)
-	ph, err := SegmentAssignHeadingFromSchema(&bID.SegmentAssignHeading)
+	ledgerUUID := new(LedgerUUID)
+	ph, err := FragmentAssignHeadingOriginatingSchema(&bID.FragmentAssignHeading)
 	if err != nil {
 		return nil, err
 	}
 
-	ledgerUID.SegmentAssignHeading = *ph
-	ledgerUID.Digest = bID.Digest
+	ledgerUUID.FragmentAssignHeading = *ph
+	ledgerUUID.Digest = bID.Digest
 
-	return ledgerUID, ledgerUID.CertifySimple()
+	return ledgerUUID, ledgerUUID.CertifyFundamental()
 }
 
 //
 //
-func SchemaLedgerUIDIsNull(bID *engineproto.LedgerUID) bool {
-	return len(bID.Digest) == 0 && SchemaSectionCollectionHeadingIsNil(&bID.SegmentAssignHeading)
+func SchemaLedgerUUIDEqualsVoid(bID *commitchema.LedgerUUID) bool {
+	return len(bID.Digest) == 0 && SchemaFragmentAssignHeadingEqualsNull(&bID.FragmentAssignHeading)
 }

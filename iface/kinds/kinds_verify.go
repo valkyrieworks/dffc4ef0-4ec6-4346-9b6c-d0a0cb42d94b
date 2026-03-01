@@ -6,20 +6,20 @@ import (
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/require"
 
-	iface "github.com/valkyrieworks/iface/kinds"
-	"github.com/valkyrieworks/vault/merkle"
+	iface "github.com/valkyrieworks/dffc4ef0-4ec6-4346-9b6c-d0a0cb42d94b/iface/kinds"
+	"github.com/valkyrieworks/dffc4ef0-4ec6-4346-9b6c-d0a0cb42d94b/security/hashmap"
 )
 
-func VerifyDigestAndDemonstrateOutcomes(t *testing.T) {
+func VerifyDigestAlsoAscertainOutcomes(t *testing.T) {
 	trs := []*iface.InvokeTransferOutcome{
 		//
-		{Code: 0, Data: nil},
-		{Code: 0, Data: []byte{}},
+		{Cipher: 0, Data: nil},
+		{Cipher: 0, Data: []byte{}},
 
-		{Code: 0, Data: []byte("REDACTED")},
-		{Code: 14, Data: nil},
-		{Code: 14, Data: []byte("REDACTED")},
-		{Code: 14, Data: []byte("REDACTED")},
+		{Cipher: 0, Data: []byte("REDACTED")},
+		{Cipher: 14, Data: nil},
+		{Cipher: 14, Data: []byte("REDACTED")},
+		{Cipher: 14, Data: []byte("REDACTED")},
 	}
 
 	//
@@ -32,43 +32,43 @@ func VerifyDigestAndDemonstrateOutcomes(t *testing.T) {
 	//
 	rs, err := iface.SerializeTransferOutcomes(trs)
 	require.NoError(t, err)
-	origin := merkle.DigestFromOctetSegments(rs)
+	origin := hashmap.DigestOriginatingOctetSegments(rs)
 	assert.NotEmpty(t, origin)
 
-	_, evidences := merkle.EvidencesFromOctetSegments(rs)
+	_, attestations := hashmap.AttestationsOriginatingOctetSegments(rs)
 	for i, tr := range trs {
 		bz, err := tr.Serialize()
 		require.NoError(t, err)
 
-		sound := evidences[i].Validate(origin, bz)
+		sound := attestations[i].Validate(origin, bz)
 		assert.NoError(t, sound, "REDACTED", i)
 	}
 }
 
-func VerifyDigestCertainAttributesSolely(t *testing.T) {
+func VerifyDigestCertainAreasSolely(t *testing.T) {
 	tr1 := iface.InvokeTransferOutcome{
-		Code:      1,
+		Cipher:      1,
 		Data:      []byte("REDACTED"),
 		Log:       "REDACTED",
 		Details:      "REDACTED",
 		FuelDesired: 1000,
-		FuelApplied:   1000,
-		Events:    []iface.Event{},
-		Codex: "REDACTED",
+		FuelUtilized:   1000,
+		Incidents:    []iface.Incident{},
+		Codeset: "REDACTED",
 	}
 	tr2 := iface.InvokeTransferOutcome{
-		Code:      1,
+		Cipher:      1,
 		Data:      []byte("REDACTED"),
 		Log:       "REDACTED",
 		Details:      "REDACTED",
 		FuelDesired: 1000,
-		FuelApplied:   1000,
-		Events:    []iface.Event{},
-		Codex: "REDACTED",
+		FuelUtilized:   1000,
+		Incidents:    []iface.Incident{},
+		Codeset: "REDACTED",
 	}
 	r1, err := iface.SerializeTransferOutcomes([]*iface.InvokeTransferOutcome{&tr1})
 	require.NoError(t, err)
 	r2, err := iface.SerializeTransferOutcomes([]*iface.InvokeTransferOutcome{&tr2})
 	require.NoError(t, err)
-	require.Equal(t, merkle.DigestFromOctetSegments(r1), merkle.DigestFromOctetSegments(r2))
+	require.Equal(t, hashmap.DigestOriginatingOctetSegments(r1), hashmap.DigestOriginatingOctetSegments(r2))
 }

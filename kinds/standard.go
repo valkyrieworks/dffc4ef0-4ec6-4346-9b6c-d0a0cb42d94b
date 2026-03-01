@@ -3,84 +3,84 @@ package kinds
 import (
 	"time"
 
-	engineproto "github.com/valkyrieworks/schema/consensuscore/kinds"
-	engineclock "github.com/valkyrieworks/kinds/moment"
+	commitchema "github.com/valkyrieworks/dffc4ef0-4ec6-4346-9b6c-d0a0cb42d94b/schema/strongmind/kinds"
+	committime "github.com/valkyrieworks/dffc4ef0-4ec6-4346-9b6c-d0a0cb42d94b/kinds/moment"
 )
 
 //
 
 //
-const TimeLayout = time.RFC3339Nano
+const MomentLayout = time.RFC3339Nano
 
 //
 //
 
-func StandardizeLedgerUID(bid engineproto.LedgerUID) *engineproto.StandardLedgerUID {
-	rbid, err := LedgerUIDFromSchema(&bid)
+func NormalizeLedgerUUID(bid commitchema.LedgerUUID) *commitchema.StandardLedgerUUID {
+	recid, err := LedgerUUIDOriginatingSchema(&bid)
 	if err != nil {
 		panic(err)
 	}
-	var cbid *engineproto.StandardLedgerUID
-	if rbid == nil || rbid.IsNil() {
-		cbid = nil
+	var callid *commitchema.StandardLedgerUUID
+	if recid == nil || recid.EqualsNull() {
+		callid = nil
 	} else {
-		cbid = &engineproto.StandardLedgerUID{
+		callid = &commitchema.StandardLedgerUUID{
 			Digest:          bid.Digest,
-			SegmentAssignHeading: StandardizeSectionCollectionHeading(bid.SegmentAssignHeading),
+			FragmentAssignHeading: NormalizeFragmentAssignHeading(bid.FragmentAssignHeading),
 		}
 	}
 
-	return cbid
+	return callid
 }
 
 //
-func StandardizeSectionCollectionHeading(psh engineproto.SegmentAssignHeading) engineproto.StandardSectionCollectionHeading {
-	return engineproto.StandardSectionCollectionHeading(psh)
+func NormalizeFragmentAssignHeading(psh commitchema.FragmentAssignHeading) commitchema.StandardFragmentAssignHeading {
+	return commitchema.StandardFragmentAssignHeading(psh)
 }
 
 //
-func StandardizeNomination(ledgerUID string, nomination *engineproto.Nomination) engineproto.StandardNomination {
-	return engineproto.StandardNomination{
-		Kind:      engineproto.NominationKind,
-		Level:    nomination.Level,       //
-		Cycle:     int64(nomination.Cycle), //
-		POLDuration:  int64(nomination.PolEpoch),
-		LedgerUID:   StandardizeLedgerUID(nomination.LedgerUID),
+func NormalizeNomination(successionUUID string, nomination *commitchema.Nomination) commitchema.StandardNomination {
+	return commitchema.StandardNomination{
+		Kind:      commitchema.NominationKind,
+		Altitude:    nomination.Altitude,       //
+		Iteration:     int64(nomination.Iteration), //
+		PolicyIteration:  int64(nomination.PolicyIteration),
+		LedgerUUID:   NormalizeLedgerUUID(nomination.LedgerUUID),
 		Timestamp: nomination.Timestamp,
-		LedgerUID:   ledgerUID,
+		SuccessionUUID:   successionUUID,
 	}
 }
 
 //
 //
 //
-func StandardizeBallot(ledgerUID string, ballot *engineproto.Ballot) engineproto.StandardBallot {
-	return engineproto.StandardBallot{
+func NormalizeBallot(successionUUID string, ballot *commitchema.Ballot) commitchema.StandardBallot {
+	return commitchema.StandardBallot{
 		Kind:      ballot.Kind,
-		Level:    ballot.Level,       //
-		Cycle:     int64(ballot.Cycle), //
-		LedgerUID:   StandardizeLedgerUID(ballot.LedgerUID),
+		Altitude:    ballot.Altitude,       //
+		Iteration:     int64(ballot.Iteration), //
+		LedgerUUID:   NormalizeLedgerUUID(ballot.LedgerUUID),
 		Timestamp: ballot.Timestamp,
-		LedgerUID:   ledgerUID,
+		SuccessionUUID:   successionUUID,
 	}
 }
 
 //
 //
 //
-func StandardizeBallotAddition(ledgerUID string, ballot *engineproto.Ballot) engineproto.StandardBallotAddition {
-	return engineproto.StandardBallotAddition{
+func NormalizeBallotAddition(successionUUID string, ballot *commitchema.Ballot) commitchema.StandardBallotAddition {
+	return commitchema.StandardBallotAddition{
 		Addition: ballot.Addition,
-		Level:    ballot.Level,
-		Cycle:     int64(ballot.Cycle),
-		SeriesUid:   ledgerUID,
+		Altitude:    ballot.Altitude,
+		Iteration:     int64(ballot.Iteration),
+		SuccessionUuid:   successionUUID,
 	}
 }
 
 //
-func StandardTime(t time.Time) string {
+func StandardMoment(t time.Time) string {
 	//
 	//
 	//
-	return engineclock.Standard(t).Format(TimeLayout)
+	return committime.Standard(t).Format(MomentLayout)
 }

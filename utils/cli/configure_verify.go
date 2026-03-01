@@ -13,9 +13,9 @@ import (
 	"github.com/stretchr/testify/require"
 )
 
-func VerifyConfigureContext(t *testing.T) {
+func VerifyConfigureEnvironment(t *testing.T) {
 	scenarios := []struct {
-		args     []string
+		arguments     []string
 		env      map[string]string
 		anticipated string
 	}{
@@ -38,58 +38,58 @@ func VerifyConfigureContext(t *testing.T) {
 		i := strconv.Itoa(idx)
 		//
 		var foo string
-		demo := &cobra.Command{
+		prototype := &cobra.Command{
 			Use: "REDACTED",
-			RunE: func(cmd *cobra.Command, args []string) error {
+			RunE: func(cmd *cobra.Command, arguments []string) error {
 				foo = viper.GetString("REDACTED")
 				return nil
 			},
 		}
-		demo.Flags().String("REDACTED", "REDACTED", "REDACTED")
-		cmd := ArrangeRootCommand(demo, "REDACTED", "REDACTED") //
+		prototype.Flags().String("REDACTED", "REDACTED", "REDACTED")
+		cmd := ArrangeFoundationDirective(prototype, "REDACTED", "REDACTED") //
 		cmd.Quit = func(int) {}
 
 		viper.Reset()
-		args := append([]string{cmd.Use}, tc.args...)
-		err := ExecuteWithArgs(cmd, args, tc.env)
+		arguments := append([]string{cmd.Use}, tc.arguments...)
+		err := ExecuteUsingArguments(cmd, arguments, tc.env)
 		require.Nil(t, err, i)
 		assert.Equal(t, tc.anticipated, foo, i)
 	}
 }
 
-func temporaryFolder() string {
-	cdir, err := os.MkdirTemp("REDACTED", "REDACTED")
+func transientPath() string {
+	cnpath, err := os.MkdirTemp("REDACTED", "REDACTED")
 	if err != nil {
 		panic(err)
 	}
-	return cdir
+	return cnpath
 }
 
 func VerifyConfigureSettings(t *testing.T) {
 	//
 	//
-	citem1 := "REDACTED"
-	settings1 := temporaryFolder()
-	err := RecordSettingsValues(settings1, map[string]string{"REDACTED": citem1})
+	cnval1 := "REDACTED"
+	cfg1 := transientPath()
+	err := PersistSettingsValues(cfg1, map[string]string{"REDACTED": cnval1})
 	require.Nil(t, err)
 
 	scenarios := []struct {
-		args        []string
+		arguments        []string
 		env         map[string]string
 		anticipated    string
-		anticipatedDual string
+		anticipatedCouple string
 	}{
 		{nil, nil, "REDACTED", "REDACTED"},
 		//
 		{[]string{"REDACTED", "REDACTED"}, nil, "REDACTED", "REDACTED"},
 		{[]string{"REDACTED", "REDACTED"}, nil, "REDACTED", "REDACTED"},
-		{[]string{"REDACTED", settings1}, nil, citem1, "REDACTED"},
+		{[]string{"REDACTED", cfg1}, nil, cnval1, "REDACTED"},
 		//
 		{nil, map[string]string{"REDACTED": "REDACTED"}, "REDACTED", "REDACTED"},
 		{nil, map[string]string{"REDACTED": "REDACTED"}, "REDACTED", "REDACTED"},
 		{nil, map[string]string{"REDACTED": "REDACTED"}, "REDACTED", "REDACTED"},
-		{nil, map[string]string{"REDACTED": settings1}, citem1, "REDACTED"},
-		{nil, map[string]string{"REDACTED": settings1}, citem1, "REDACTED"},
+		{nil, map[string]string{"REDACTED": cfg1}, cnval1, "REDACTED"},
+		{nil, map[string]string{"REDACTED": cfg1}, cnval1, "REDACTED"},
 	}
 
 	for idx, tc := range scenarios {
@@ -98,7 +98,7 @@ func VerifyConfigureSettings(t *testing.T) {
 		var foo, two string
 		boo := &cobra.Command{
 			Use: "REDACTED",
-			RunE: func(cmd *cobra.Command, args []string) error {
+			RunE: func(cmd *cobra.Command, arguments []string) error {
 				foo = viper.GetString("REDACTED")
 				two = viper.GetString("REDACTED")
 				return nil
@@ -106,49 +106,49 @@ func VerifyConfigureSettings(t *testing.T) {
 		}
 		boo.Flags().String("REDACTED", "REDACTED", "REDACTED")
 		boo.Flags().String("REDACTED", "REDACTED", "REDACTED")
-		cmd := ArrangeRootCommand(boo, "REDACTED", "REDACTED") //
+		cmd := ArrangeFoundationDirective(boo, "REDACTED", "REDACTED") //
 		cmd.Quit = func(int) {}
 
 		viper.Reset()
-		args := append([]string{cmd.Use}, tc.args...)
-		err := ExecuteWithArgs(cmd, args, tc.env)
+		arguments := append([]string{cmd.Use}, tc.arguments...)
+		err := ExecuteUsingArguments(cmd, arguments, tc.env)
 		require.Nil(t, err, i)
 		assert.Equal(t, tc.anticipated, foo, i)
-		assert.Equal(t, tc.anticipatedDual, two, i)
+		assert.Equal(t, tc.anticipatedCouple, two, i)
 	}
 }
 
-type DemoSettings struct {
-	Label   string `mapstructure:"label"`
+type PrototypeSettings struct {
+	Alias   string `mapstructure:"alias"`
 	Age    int    `mapstructure:"age"`
 	Idle int    `mapstructure:"idle"`
 }
 
-func VerifyConfigureUnserialize(t *testing.T) {
+func VerifyConfigureDecode(t *testing.T) {
 	//
 	//
-	citem1, citem2 := "REDACTED", "REDACTED"
-	settings1 := temporaryFolder()
-	err := RecordSettingsValues(settings1, map[string]string{"REDACTED": citem1})
+	cnval1, cnval2 := "REDACTED", "REDACTED"
+	cfg1 := transientPath()
+	err := PersistSettingsValues(cfg1, map[string]string{"REDACTED": cnval1})
 	require.Nil(t, err)
 	//
-	settings2 := temporaryFolder()
-	err = RecordSettingsValues(settings2, map[string]string{"REDACTED": citem2, "REDACTED": "REDACTED"})
+	cfg2 := transientPath()
+	err = PersistSettingsValues(cfg2, map[string]string{"REDACTED": cnval2, "REDACTED": "REDACTED"})
 	require.Nil(t, err)
 
 	//
-	root := DemoSettings{
-		Label:   "REDACTED",
+	foundation := PrototypeSettings{
+		Alias:   "REDACTED",
 		Age:    42,
 		Idle: -7,
 	}
-	c := func(label string, age int) DemoSettings {
-		r := root
+	c := func(alias string, age int) PrototypeSettings {
+		r := foundation
 		//
 		//
-		r.Label = "REDACTED"
-		if label != "REDACTED" {
-			r.Label = label
+		r.Alias = "REDACTED"
+		if alias != "REDACTED" {
+			r.Alias = alias
 		}
 		if age != 0 {
 			r.Age = age
@@ -157,50 +157,50 @@ func VerifyConfigureUnserialize(t *testing.T) {
 	}
 
 	scenarios := []struct {
-		args     []string
+		arguments     []string
 		env      map[string]string
-		anticipated DemoSettings
+		anticipated PrototypeSettings
 	}{
 		{nil, nil, c("REDACTED", 0)},
 		//
 		{[]string{"REDACTED", "REDACTED"}, nil, c("REDACTED", 0)},
-		{[]string{"REDACTED", settings1}, nil, c(citem1, 0)},
+		{[]string{"REDACTED", cfg1}, nil, c(cnval1, 0)},
 		//
 		{nil, map[string]string{"REDACTED": "REDACTED"}, c("REDACTED", 56)},
-		{nil, map[string]string{"REDACTED": settings1}, c(citem1, 0)},
-		{[]string{"REDACTED", "REDACTED"}, map[string]string{"REDACTED": settings2}, c(citem2, 17)},
+		{nil, map[string]string{"REDACTED": cfg1}, c(cnval1, 0)},
+		{[]string{"REDACTED", "REDACTED"}, map[string]string{"REDACTED": cfg2}, c(cnval2, 17)},
 	}
 
 	for idx, tc := range scenarios {
 		i := strconv.Itoa(idx)
 		//
-		cfg := root
-		serial := &cobra.Command{
+		cfg := foundation
+		encode := &cobra.Command{
 			Use: "REDACTED",
-			RunE: func(cmd *cobra.Command, args []string) error {
+			RunE: func(cmd *cobra.Command, arguments []string) error {
 				return viper.Unmarshal(&cfg)
 			},
 		}
-		serial.Flags().String("REDACTED", "REDACTED", "REDACTED")
+		encode.Flags().String("REDACTED", "REDACTED", "REDACTED")
 		//
 		//
-		serial.Flags().Int("REDACTED", root.Age, "REDACTED")
-		cmd := ArrangeRootCommand(serial, "REDACTED", "REDACTED") //
+		encode.Flags().Int("REDACTED", foundation.Age, "REDACTED")
+		cmd := ArrangeFoundationDirective(encode, "REDACTED", "REDACTED") //
 		cmd.Quit = func(int) {}
 
 		viper.Reset()
-		args := append([]string{cmd.Use}, tc.args...)
-		err := ExecuteWithArgs(cmd, args, tc.env)
+		arguments := append([]string{cmd.Use}, tc.arguments...)
+		err := ExecuteUsingArguments(cmd, arguments, tc.env)
 		require.Nil(t, err, i)
 		assert.Equal(t, tc.anticipated, cfg, i)
 	}
 }
 
-func VerifyConfigureTrack(t *testing.T) {
+func VerifyConfigureLogging(t *testing.T) {
 	scenarios := []struct {
-		args     []string
+		arguments     []string
 		env      map[string]string
-		lengthy     bool
+		extended     bool
 		anticipated string
 	}{
 		{nil, nil, false, "REDACTED"},
@@ -212,29 +212,29 @@ func VerifyConfigureTrack(t *testing.T) {
 	for idx, tc := range scenarios {
 		i := strconv.Itoa(idx)
 		//
-		track := &cobra.Command{
+		logging := &cobra.Command{
 			Use: "REDACTED",
-			RunE: func(cmd *cobra.Command, args []string) error {
-				return fmt.Errorf("REDACTED", viper.GetBool(TrackMark))
+			RunE: func(cmd *cobra.Command, arguments []string) error {
+				return fmt.Errorf("REDACTED", viper.GetBool(LoggingMarker))
 			},
 		}
-		cmd := ArrangeRootCommand(track, "REDACTED", "REDACTED") //
+		cmd := ArrangeFoundationDirective(logging, "REDACTED", "REDACTED") //
 		cmd.Quit = func(int) {}
 
 		viper.Reset()
-		args := append([]string{cmd.Use}, tc.args...)
-		stdout, stderr, err := RunSeizeWithArgs(cmd, args, tc.env)
+		arguments := append([]string{cmd.Use}, tc.arguments...)
+		standardemission, standardfailure, err := ExecuteSeizeUsingArguments(cmd, arguments, tc.env)
 		require.NotNil(t, err, i)
-		require.Equal(t, "REDACTED", stdout, i)
-		require.NotEqual(t, "REDACTED", stderr, i)
-		msg := strings.Split(stderr, "REDACTED")
-		sought := fmt.Sprintf("REDACTED", tc.anticipated)
-		assert.Equal(t, sought, msg[0], i)
+		require.Equal(t, "REDACTED", standardemission, i)
+		require.NotEqual(t, "REDACTED", standardfailure, i)
+		msg := strings.Split(standardfailure, "REDACTED")
+		intended := fmt.Sprintf("REDACTED", tc.anticipated)
+		assert.Equal(t, intended, msg[0], i)
 		t.Log(msg)
-		if tc.lengthy && assert.True(t, len(msg) > 2, i) {
+		if tc.extended && assert.True(t, len(msg) > 2, i) {
 			//
-			assert.Contains(t, stderr, "REDACTED", i)
-			assert.Contains(t, stderr, "REDACTED", i)
+			assert.Contains(t, standardfailure, "REDACTED", i)
+			assert.Contains(t, standardfailure, "REDACTED", i)
 		}
 	}
 }

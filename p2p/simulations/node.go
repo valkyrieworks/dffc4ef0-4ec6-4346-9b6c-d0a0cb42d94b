@@ -3,23 +3,23 @@
 package simulations
 
 import (
-	log "github.com/valkyrieworks/utils/log"
-	link "github.com/valkyrieworks/p2p/link"
+	log "github.com/valkyrieworks/dffc4ef0-4ec6-4346-9b6c-d0a0cb42d94b/utils/log"
+	link "github.com/valkyrieworks/dffc4ef0-4ec6-4346-9b6c-d0a0cb42d94b/p2p/link"
 
 	mock "github.com/stretchr/testify/mock"
 
 	net "net"
 
-	p2p "github.com/valkyrieworks/p2p"
+	p2p "github.com/valkyrieworks/dffc4ef0-4ec6-4346-9b6c-d0a0cb42d94b/p2p"
 )
 
 //
 type Node struct {
-	mock.Emulate
+	mock.Simulate
 }
 
 //
-func (_m *Node) EndLink() error {
+func (_m *Node) ShutdownLink() error {
 	ret := _m.Called()
 
 	if len(ret) == 0 {
@@ -62,7 +62,7 @@ func (_m *Node) Get(_a0 string) any {
 }
 
 //
-func (_m *Node) FetchDeletionErrored() bool {
+func (_m *Node) ObtainDeletionUnsuccessful() bool {
 	ret := _m.Called()
 
 	if len(ret) == 0 {
@@ -98,7 +98,7 @@ func (_m *Node) ID() p2p.ID {
 }
 
 //
-func (_m *Node) IsOutgoing() bool {
+func (_m *Node) EqualsOutgoing() bool {
 	ret := _m.Called()
 
 	if len(ret) == 0 {
@@ -116,7 +116,7 @@ func (_m *Node) IsOutgoing() bool {
 }
 
 //
-func (_m *Node) IsDurable() bool {
+func (_m *Node) EqualsEnduring() bool {
 	ret := _m.Called()
 
 	if len(ret) == 0 {
@@ -134,7 +134,7 @@ func (_m *Node) IsDurable() bool {
 }
 
 //
-func (_m *Node) IsActive() bool {
+func (_m *Node) EqualsActive() bool {
 	ret := _m.Called()
 
 	if len(ret) == 0 {
@@ -152,19 +152,19 @@ func (_m *Node) IsActive() bool {
 }
 
 //
-func (_m *Node) MemberDetails() p2p.MemberDetails {
+func (_m *Node) PeerDetails() p2p.PeerDetails {
 	ret := _m.Called()
 
 	if len(ret) == 0 {
 		panic("REDACTED")
 	}
 
-	var r0 p2p.MemberDetails
-	if rf, ok := ret.Get(0).(func() p2p.MemberDetails); ok {
+	var r0 p2p.PeerDetails
+	if rf, ok := ret.Get(0).(func() p2p.PeerDetails); ok {
 		r0 = rf()
 	} else {
 		if ret.Get(0) != nil {
-			r0 = ret.Get(0).(p2p.MemberDetails)
+			r0 = ret.Get(0).(p2p.PeerDetails)
 		}
 	}
 
@@ -172,7 +172,7 @@ func (_m *Node) MemberDetails() p2p.MemberDetails {
 }
 
 //
-func (_m *Node) OnRestore() error {
+func (_m *Node) UponRestore() error {
 	ret := _m.Called()
 
 	if len(ret) == 0 {
@@ -190,7 +190,7 @@ func (_m *Node) OnRestore() error {
 }
 
 //
-func (_m *Node) OnBegin() error {
+func (_m *Node) UponInitiate() error {
 	ret := _m.Called()
 
 	if len(ret) == 0 {
@@ -208,7 +208,7 @@ func (_m *Node) OnBegin() error {
 }
 
 //
-func (_m *Node) OnHalt() {
+func (_m *Node) UponHalt() {
 	_m.Called()
 }
 
@@ -233,7 +233,7 @@ func (_m *Node) Exit() <-chan struct{} {
 }
 
 //
-func (_m *Node) DistantAddress() net.Addr {
+func (_m *Node) DistantLocation() net.Addr {
 	ret := _m.Called()
 
 	if len(ret) == 0 {
@@ -253,7 +253,7 @@ func (_m *Node) DistantAddress() net.Addr {
 }
 
 //
-func (_m *Node) DistantIP() net.IP {
+func (_m *Node) DistantINET() net.IP {
 	ret := _m.Called()
 
 	if len(ret) == 0 {
@@ -291,7 +291,7 @@ func (_m *Node) Restore() error {
 }
 
 //
-func (_m *Node) Transmit(_a0 p2p.Packet) bool {
+func (_m *Node) Transmit(_a0 p2p.Wrapper) bool {
 	ret := _m.Called(_a0)
 
 	if len(ret) == 0 {
@@ -299,7 +299,7 @@ func (_m *Node) Transmit(_a0 p2p.Packet) bool {
 	}
 
 	var r0 bool
-	if rf, ok := ret.Get(0).(func(p2p.Packet) bool); ok {
+	if rf, ok := ret.Get(0).(func(p2p.Wrapper) bool); ok {
 		r0 = rf(_a0)
 	} else {
 		r0 = ret.Get(0).(bool)
@@ -319,24 +319,24 @@ func (_m *Node) AssignTracer(_a0 log.Tracer) {
 }
 
 //
-func (_m *Node) CollectionDeletionErrored() {
+func (_m *Node) AssignDeletionUnsuccessful() {
 	_m.Called()
 }
 
 //
-func (_m *Node) SocketAddress() *p2p.NetLocation {
+func (_m *Node) PortLocation() *p2p.NetworkLocator {
 	ret := _m.Called()
 
 	if len(ret) == 0 {
 		panic("REDACTED")
 	}
 
-	var r0 *p2p.NetLocation
-	if rf, ok := ret.Get(0).(func() *p2p.NetLocation); ok {
+	var r0 *p2p.NetworkLocator
+	if rf, ok := ret.Get(0).(func() *p2p.NetworkLocator); ok {
 		r0 = rf()
 	} else {
 		if ret.Get(0) != nil {
-			r0 = ret.Get(0).(*p2p.NetLocation)
+			r0 = ret.Get(0).(*p2p.NetworkLocator)
 		}
 	}
 
@@ -344,7 +344,7 @@ func (_m *Node) SocketAddress() *p2p.NetLocation {
 }
 
 //
-func (_m *Node) Begin() error {
+func (_m *Node) Initiate() error {
 	ret := _m.Called()
 
 	if len(ret) == 0 {
@@ -362,18 +362,18 @@ func (_m *Node) Begin() error {
 }
 
 //
-func (_m *Node) Status() link.LinkageState {
+func (_m *Node) Condition() link.LinkageCondition {
 	ret := _m.Called()
 
 	if len(ret) == 0 {
 		panic("REDACTED")
 	}
 
-	var r0 link.LinkageState
-	if rf, ok := ret.Get(0).(func() link.LinkageState); ok {
+	var r0 link.LinkageCondition
+	if rf, ok := ret.Get(0).(func() link.LinkageCondition); ok {
 		r0 = rf()
 	} else {
-		r0 = ret.Get(0).(link.LinkageState)
+		r0 = ret.Get(0).(link.LinkageCondition)
 	}
 
 	return r0
@@ -398,7 +398,7 @@ func (_m *Node) Halt() error {
 }
 
 //
-func (_m *Node) String() string {
+func (_m *Node) Text() string {
 	ret := _m.Called()
 
 	if len(ret) == 0 {
@@ -416,7 +416,7 @@ func (_m *Node) String() string {
 }
 
 //
-func (_m *Node) AttemptTransmit(_a0 p2p.Packet) bool {
+func (_m *Node) AttemptTransmit(_a0 p2p.Wrapper) bool {
 	ret := _m.Called(_a0)
 
 	if len(ret) == 0 {
@@ -424,7 +424,7 @@ func (_m *Node) AttemptTransmit(_a0 p2p.Packet) bool {
 	}
 
 	var r0 bool
-	if rf, ok := ret.Get(0).(func(p2p.Packet) bool); ok {
+	if rf, ok := ret.Get(0).(func(p2p.Wrapper) bool); ok {
 		r0 = rf(_a0)
 	} else {
 		r0 = ret.Get(0).(bool)
@@ -435,14 +435,14 @@ func (_m *Node) AttemptTransmit(_a0 p2p.Packet) bool {
 
 //
 //
-func NewNode(t interface {
+func FreshNode(t interface {
 	mock.TestingT
 	Sanitize(func())
 }) *Node {
-	emulate := &Node{}
-	mock.Emulate.Test(t)
+	simulate := &Node{}
+	mock.Simulate.Test(t)
 
 	t.Sanitize(func() { mock.AssertExpectations(t) })
 
-	return emulate
+	return simulate
 }

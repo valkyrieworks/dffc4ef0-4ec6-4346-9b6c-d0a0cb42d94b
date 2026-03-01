@@ -1,4 +1,4 @@
-package integration_t_test
+package end2end_typ_test
 
 import (
 	"testing"
@@ -8,15 +8,15 @@ import (
 
 //
 //
-func Verifyproof_Malpractice(t *testing.T) {
-	ledgers := acquireLedgerSeries(t)
-	verifychain := importVerifychain(t)
-	viewedProof := 0
+func Testproof_Malpractice(t *testing.T) {
+	ledgers := acquireLedgerSuccession(t)
+	simnet := fetchSimnet(t)
+	observedProof := 0
 	for _, ledger := range ledgers {
 		if len(ledger.Proof.Proof) != 0 {
-			viewedProof += len(ledger.Proof.Proof)
+			observedProof += len(ledger.Proof.Proof)
 		}
 	}
-	require.Equal(t, verifychain.Proof, viewedProof,
+	require.Equal(t, simnet.Proof, observedProof,
 		"REDACTED")
 }

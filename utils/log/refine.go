@@ -2,66 +2,66 @@ package log
 
 import "fmt"
 
-type layer byte
+type stratum byte
 
 const (
-	layerDiagnose layer = 1 << iota
-	layerDetails
-	layerFault
+	stratumDiagnose stratum = 1 << iota
+	stratumDetails
+	stratumFailure
 )
 
 type refine struct {
 	following             Tracer
-	permitted          layer            //
-	primarilyPermitted layer            //
-	permittedKeyvalues   map[property]layer //
+	permitted          stratum            //
+	primarilyPermitted stratum            //
+	permittedTokvals   map[tokval]stratum //
 }
 
-type property struct {
+type tokval struct {
 	key   any
-	item any
+	datum any
 }
 
 //
 //
 //
 //
-func NewRefine(following Tracer, options ...Setting) Tracer {
+func FreshRefine(following Tracer, choices ...Selection) Tracer {
 	l := &refine{
 		following:           following,
-		permittedKeyvalues: make(map[property]layer),
+		permittedTokvals: make(map[tokval]stratum),
 	}
-	for _, setting := range options {
-		setting(l)
+	for _, selection := range choices {
+		selection(l)
 	}
 	l.primarilyPermitted = l.permitted
 	return l
 }
 
-func (l *refine) Details(msg string, keyvalues ...any) {
-	layerPermitted := l.permitted&layerDetails != 0
-	if !layerPermitted {
+func (l *refine) Details(msg string, tokvals ...any) {
+	stratumPermitted := l.permitted&stratumDetails != 0
+	if !stratumPermitted {
 		return
 	}
-	l.following.Details(msg, keyvalues...)
+	l.following.Details(msg, tokvals...)
 }
 
-func (l *refine) Diagnose(msg string, keyvalues ...any) {
-	if TraceDiagnose {
-		layerPermitted := l.permitted&layerDiagnose != 0
-		if !layerPermitted {
+func (l *refine) Diagnose(msg string, tokvals ...any) {
+	if ReportDiagnose {
+		stratumPermitted := l.permitted&stratumDiagnose != 0
+		if !stratumPermitted {
 			return
 		}
-		l.following.Diagnose(msg, keyvalues...)
+		l.following.Diagnose(msg, tokvals...)
 	}
 }
 
-func (l *refine) Fault(msg string, keyvalues ...any) {
-	layerPermitted := l.permitted&layerFault != 0
-	if !layerPermitted {
+func (l *refine) Failure(msg string, tokvals ...any) {
+	stratumPermitted := l.permitted&stratumFailure != 0
+	if !stratumPermitted {
 		return
 	}
-	l.following.Fault(msg, keyvalues...)
+	l.following.Failure(msg, tokvals...)
 }
 
 //
@@ -84,21 +84,21 @@ func (l *refine) Fault(msg string, keyvalues ...any) {
 //
 //
 //
-func (l *refine) With(keyvalues ...any) Tracer {
-	keyInPermittedKeyvalues := false
+func (l *refine) Using(tokvals ...any) Tracer {
+	tokenInsidePermittedTokvals := false
 
-	for i := len(keyvalues) - 2; i >= 0; i -= 2 {
-		for kv, permitted := range l.permittedKeyvalues {
-			if keyvalues[i] == kv.key {
-				keyInPermittedKeyvalues = true
+	for i := len(tokvals) - 2; i >= 0; i -= 2 {
+		for kv, permitted := range l.permittedTokvals {
+			if tokvals[i] == kv.key {
+				tokenInsidePermittedTokvals = true
 				//
 				//
 				//
-				if keyvalues[i+1] == kv.item {
+				if tokvals[i+1] == kv.datum {
 					return &refine{
-						following:             l.following.With(keyvalues...),
+						following:             l.following.Using(tokvals...),
 						permitted:          permitted, //
-						permittedKeyvalues:   l.permittedKeyvalues,
+						permittedTokvals:   l.permittedTokvals,
 						primarilyPermitted: l.primarilyPermitted,
 					}
 				}
@@ -109,19 +109,19 @@ func (l *refine) With(keyvalues ...any) Tracer {
 	//
 	//
 	//
-	if keyInPermittedKeyvalues {
+	if tokenInsidePermittedTokvals {
 		return &refine{
-			following:             l.following.With(keyvalues...),
+			following:             l.following.Using(tokvals...),
 			permitted:          l.primarilyPermitted, //
-			permittedKeyvalues:   l.permittedKeyvalues,
+			permittedTokvals:   l.permittedTokvals,
 			primarilyPermitted: l.primarilyPermitted,
 		}
 	}
 
 	return &refine{
-		following:             l.following.With(keyvalues...),
+		following:             l.following.Using(tokvals...),
 		permitted:          l.permitted, //
-		permittedKeyvalues:   l.permittedKeyvalues,
+		permittedTokvals:   l.permittedTokvals,
 		primarilyPermitted: l.primarilyPermitted,
 	}
 }
@@ -129,70 +129,70 @@ func (l *refine) With(keyvalues ...any) Tracer {
 //
 
 //
-type Setting func(*refine)
+type Selection func(*refine)
 
 //
 //
-func PermitLayer(lvl string) (Setting, error) {
+func PermitStratum(lvl string) (Selection, error) {
 	switch lvl {
 	case "REDACTED":
 		return PermitDiagnose(), nil
 	case "REDACTED":
 		return PermitDetails(), nil
 	case "REDACTED":
-		return PermitFault(), nil
+		return PermitFailure(), nil
 	case "REDACTED":
-		return PermitNone(), nil
+		return PermitNil(), nil
 	default:
 		return nil, fmt.Errorf("REDACTED", lvl)
 	}
 }
 
 //
-func PermitAll() Setting {
+func PermitEvery() Selection {
 	return PermitDiagnose()
 }
 
 //
-func PermitDiagnose() Setting {
-	return permitted(layerFault | layerDetails | layerDiagnose)
+func PermitDiagnose() Selection {
+	return permitted(stratumFailure | stratumDetails | stratumDiagnose)
 }
 
 //
-func PermitDetails() Setting {
-	return permitted(layerFault | layerDetails)
+func PermitDetails() Selection {
+	return permitted(stratumFailure | stratumDetails)
 }
 
 //
-func PermitFault() Setting {
-	return permitted(layerFault)
+func PermitFailure() Selection {
+	return permitted(stratumFailure)
 }
 
 //
-func PermitNone() Setting {
+func PermitNil() Selection {
 	return permitted(0)
 }
 
-func permitted(permitted layer) Setting {
+func permitted(permitted stratum) Selection {
 	return func(l *refine) { l.permitted = permitted }
 }
 
 //
-func PermitDiagnoseWith(key any, item any) Setting {
-	return func(l *refine) { l.permittedKeyvalues[property{key, item}] = layerFault | layerDetails | layerDiagnose }
+func PermitDiagnoseUsing(key any, datum any) Selection {
+	return func(l *refine) { l.permittedTokvals[tokval{key, datum}] = stratumFailure | stratumDetails | stratumDiagnose }
 }
 
 //
-func PermitDetailsWith(key any, item any) Setting {
-	return func(l *refine) { l.permittedKeyvalues[property{key, item}] = layerFault | layerDetails }
+func PermitDetailsUsing(key any, datum any) Selection {
+	return func(l *refine) { l.permittedTokvals[tokval{key, datum}] = stratumFailure | stratumDetails }
 }
 
 //
-func PermitFaultWith(key any, item any) Setting {
-	return func(l *refine) { l.permittedKeyvalues[property{key, item}] = layerFault }
+func PermitFailureUsing(key any, datum any) Selection {
+	return func(l *refine) { l.permittedTokvals[tokval{key, datum}] = stratumFailure }
 }
 
 //
-func PermitNoneWith(key any, item any) Setting {
-	return func(l *refine) { l.permittedKeyvalues[property{key, item}] = 0 }
+func PermitNilUsing(key any, datum any) Selection {
+	return func(l *refine) { l.permittedTokvals[tokval{key, datum}] = 0 }
 }

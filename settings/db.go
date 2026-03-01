@@ -3,28 +3,28 @@ package settings
 import (
 	"context"
 
-	dbm "github.com/valkyrieworks/-db"
+	dbm "github.com/valkyrieworks/dffc4ef0-4ec6-4346-9b6c-d0a0cb42d94b/-db"
 
-	"github.com/valkyrieworks/utils/log"
-	"github.com/valkyrieworks/utils/daemon"
+	"github.com/valkyrieworks/dffc4ef0-4ec6-4346-9b6c-d0a0cb42d94b/utils/log"
+	"github.com/valkyrieworks/dffc4ef0-4ec6-4346-9b6c-d0a0cb42d94b/utils/facility"
 )
 
 //
-type DaemonSource func(context.Context, *Settings, log.Tracer) (daemon.Daemon, error)
+type FacilitySupplier func(context.Context, *Settings, log.Tracer) (facility.Facility, error)
 
 //
-type StoreContext struct {
+type DatastoreScope struct {
 	ID     string
 	Settings *Settings
 }
 
 //
-type StoreSource func(*StoreContext) (dbm.DB, error)
+type DatastoreSupplier func(*DatastoreScope) (dbm.DB, error)
 
 //
 //
-func StandardStoreSource(ctx *StoreContext) (dbm.DB, error) {
-	storeKind := dbm.OriginKind(ctx.Settings.StoreOrigin)
+func FallbackDatastoreSupplier(ctx *DatastoreScope) (dbm.DB, error) {
+	datastoreKind := dbm.OriginKind(ctx.Settings.DatastoreRepository)
 
-	return dbm.NewStore(ctx.ID, storeKind, ctx.Settings.StoreFolder())
+	return dbm.FreshDatastore(ctx.ID, datastoreKind, ctx.Settings.DatastorePath())
 }

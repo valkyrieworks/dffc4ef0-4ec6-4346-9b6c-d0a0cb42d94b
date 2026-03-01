@@ -12,139 +12,139 @@ import (
 	"github.com/stretchr/testify/assert"
 	"golang.org/x/crypto/chacha20poly1305"
 
-	"github.com/valkyrieworks/vault"
-	"github.com/valkyrieworks/vault/ed25519"
-	cryptocode "github.com/valkyrieworks/vault/codec"
-	"github.com/valkyrieworks/utils/protoio"
-	tmp2p "github.com/valkyrieworks/schema/consensuscore/p2p"
+	"github.com/valkyrieworks/dffc4ef0-4ec6-4346-9b6c-d0a0cb42d94b/security"
+	"github.com/valkyrieworks/dffc4ef0-4ec6-4346-9b6c-d0a0cb42d94b/security/edwards25519"
+	cryptocode "github.com/valkyrieworks/dffc4ef0-4ec6-4346-9b6c-d0a0cb42d94b/security/serialization"
+	"github.com/valkyrieworks/dffc4ef0-4ec6-4346-9b6c-d0a0cb42d94b/utils/protocolio"
+	tmpfabric "github.com/valkyrieworks/dffc4ef0-4ec6-4346-9b6c-d0a0cb42d94b/schema/strongmind/p2p"
 )
 
-type buffer struct {
+type reserve struct {
 	following bytes.Buffer
 }
 
-func (b *buffer) Scan(data []byte) (n int, err error) {
+func (b *reserve) Obtain(data []byte) (n int, err error) {
 	return b.following.Read(data)
 }
 
-func (b *buffer) Record(data []byte) (n int, err error) {
+func (b *reserve) Record(data []byte) (n int, err error) {
 	return b.following.Write(data)
 }
 
-func (b *buffer) Octets() []byte {
+func (b *reserve) Octets() []byte {
 	return b.following.Bytes()
 }
 
-func (b *buffer) End() error {
+func (b *reserve) Shutdown() error {
 	return nil
 }
 
 type maliciousLink struct {
-	tokenLink *TokenLinkage
-	buffer     *buffer
+	credentialLink *CredentialLinkage
+	reserve     *reserve
 
-	locationEphPublic  *[32]byte
-	locationEphPrivate *[32]byte
-	modEphPublic  *[32]byte
-	privateKey    vault.PrivateKey
+	positionTempPublic  *[32]byte
+	positionTempPrivate *[32]byte
+	modTempPublic  *[32]byte
+	privateToken    security.PrivateToken
 
-	readPhase   int
-	recordPhase  int
-	readDisplacement int
+	fetchPhase   int
+	persistPhase  int
+	fetchDisplacement int
 
-	allocateEphKey        bool
-	flawedEphKey          bool
-	allocateAuthAutograph bool
-	flawedAuthAutograph   bool
+	allocateTempToken        bool
+	flawedTempToken          bool
+	allocateAuthNotation bool
+	flawedAuthNotation   bool
 }
 
-func newMaliciousLink(allocateEphKey, flawedEphKey, allocateAuthAutograph, flawedAuthAutograph bool) *maliciousLink {
-	privateKey := ed25519.GeneratePrivateKey()
-	locationEphPublic, locationEphPrivate := generateEphKeys()
+func freshMaliciousLink(allocateTempToken, flawedTempToken, allocateAuthNotation, flawedAuthNotation bool) *maliciousLink {
+	privateToken := edwards25519.ProducePrivateToken()
+	positionTempPublic, positionTempPrivate := produceTempTokens()
 	var rep [32]byte
 	c := &maliciousLink{
-		locationEphPublic:  locationEphPublic,
-		locationEphPrivate: locationEphPrivate,
-		modEphPublic:  &rep,
-		privateKey:    privateKey,
+		positionTempPublic:  positionTempPublic,
+		positionTempPrivate: positionTempPrivate,
+		modTempPublic:  &rep,
+		privateToken:    privateToken,
 
-		allocateEphKey:        allocateEphKey,
-		flawedEphKey:          flawedEphKey,
-		allocateAuthAutograph: allocateAuthAutograph,
-		flawedAuthAutograph:   flawedAuthAutograph,
+		allocateTempToken:        allocateTempToken,
+		flawedTempToken:          flawedTempToken,
+		allocateAuthNotation: allocateAuthNotation,
+		flawedAuthNotation:   flawedAuthNotation,
 	}
 
 	return c
 }
 
-func (c *maliciousLink) Scan(data []byte) (n int, err error) {
-	if !c.allocateEphKey {
+func (c *maliciousLink) Obtain(data []byte) (n int, err error) {
+	if !c.allocateTempToken {
 		return 0, io.EOF
 	}
 
-	switch c.readPhase {
+	switch c.fetchPhase {
 	case 0:
-		if !c.flawedEphKey {
-			lc := *c.locationEphPublic
-			bz, err := protoio.SerializeSeparated(&gogotypes.BytesValue{Value: lc[:]})
+		if !c.flawedTempToken {
+			lc := *c.positionTempPublic
+			bz, err := protocolio.SerializeSeparated(&gogotypes.BytesValue{Value: lc[:]})
 			if err != nil {
 				panic(err)
 			}
-			copy(data, bz[c.readDisplacement:])
+			copy(data, bz[c.fetchDisplacement:])
 			n = len(data)
 		} else {
-			bz, err := protoio.SerializeSeparated(&gogotypes.BytesValue{Value: []byte("REDACTED")})
+			bz, err := protocolio.SerializeSeparated(&gogotypes.BytesValue{Value: []byte("REDACTED")})
 			if err != nil {
 				panic(err)
 			}
 			copy(data, bz)
 			n = len(data)
 		}
-		c.readDisplacement += n
+		c.fetchDisplacement += n
 
 		if n >= 32 {
-			c.readDisplacement = 0
-			c.readPhase = 1
-			if !c.allocateAuthAutograph {
-				c.readPhase = 2
+			c.fetchDisplacement = 0
+			c.fetchPhase = 1
+			if !c.allocateAuthNotation {
+				c.fetchPhase = 2
 			}
 		}
 
 		return n, nil
 	case 1:
-		autograph := c.attestDispute()
-		if !c.flawedAuthAutograph {
-			pkpb, err := cryptocode.PublicKeyToSchema(c.privateKey.PublicKey())
+		signing := c.attestQuery()
+		if !c.flawedAuthNotation {
+			pkpb, err := cryptocode.PublicTokenTowardSchema(c.privateToken.PublicToken())
 			if err != nil {
 				panic(err)
 			}
-			bz, err := protoio.SerializeSeparated(&tmp2p.AuthSignatureSignal{PublicKey: pkpb, Sig: autograph})
+			bz, err := protocolio.SerializeSeparated(&tmpfabric.AuthSignatureArtifact{PublicToken: pkpb, Sig: signing})
 			if err != nil {
 				panic(err)
 			}
-			n, err = c.tokenLink.Record(bz)
+			n, err = c.credentialLink.Record(bz)
 			if err != nil {
 				panic(err)
 			}
-			if c.readDisplacement > len(c.buffer.Octets()) {
+			if c.fetchDisplacement > len(c.reserve.Octets()) {
 				return len(data), nil
 			}
-			copy(data, c.buffer.Octets()[c.readDisplacement:])
+			copy(data, c.reserve.Octets()[c.fetchDisplacement:])
 		} else {
-			bz, err := protoio.SerializeSeparated(&gogotypes.BytesValue{Value: []byte("REDACTED")})
+			bz, err := protocolio.SerializeSeparated(&gogotypes.BytesValue{Value: []byte("REDACTED")})
 			if err != nil {
 				panic(err)
 			}
-			n, err = c.tokenLink.Record(bz)
+			n, err = c.credentialLink.Record(bz)
 			if err != nil {
 				panic(err)
 			}
-			if c.readDisplacement > len(c.buffer.Octets()) {
+			if c.fetchDisplacement > len(c.reserve.Octets()) {
 				return len(data), nil
 			}
-			copy(data, c.buffer.Octets())
+			copy(data, c.reserve.Octets())
 		}
-		c.readDisplacement += len(data)
+		c.fetchDisplacement += len(data)
 		return n, nil
 	default:
 		return 0, io.EOF
@@ -152,21 +152,21 @@ func (c *maliciousLink) Scan(data []byte) (n int, err error) {
 }
 
 func (c *maliciousLink) Record(data []byte) (n int, err error) {
-	switch c.recordPhase {
+	switch c.persistPhase {
 	case 0:
 		var (
 			octets     gogotypes.BytesValue
-			modEphPublic [32]byte
+			modTempPublic [32]byte
 		)
-		err := protoio.UnserializeSeparated(data, &octets)
+		err := protocolio.DecodeSeparated(data, &octets)
 		if err != nil {
 			panic(err)
 		}
-		copy(modEphPublic[:], bytes.Value)
-		c.modEphPublic = &modEphPublic
-		c.recordPhase = 1
-		if !c.allocateAuthAutograph {
-			c.recordPhase = 2
+		copy(modTempPublic[:], bytes.Value)
+		c.modTempPublic = &modTempPublic
+		c.persistPhase = 1
+		if !c.allocateAuthNotation {
+			c.persistPhase = 2
 		}
 		return len(data), nil
 	case 1:
@@ -177,96 +177,96 @@ func (c *maliciousLink) Record(data []byte) (n int, err error) {
 	}
 }
 
-func (c *maliciousLink) End() error {
+func (c *maliciousLink) Shutdown() error {
 	return nil
 }
 
-func (c *maliciousLink) attestDispute() []byte {
+func (c *maliciousLink) attestQuery() []byte {
 	//
-	loEphPublic, greetingEphPublic := sort32(c.locationEphPublic, c.modEphPublic)
+	minimumTempPublic, highTempPublic := sort32(c.positionTempPublic, c.modTempPublic)
 
-	log := merlin.NewTranscript("REDACTED")
+	record := merlin.NewTranscript("REDACTED")
 
-	log.AppendMessage(tagTemporaryLesserExternalKey, loEphPublic[:])
-	log.AppendMessage(tagTemporaryUpperExternalKey, greetingEphPublic[:])
-
-	//
-	//
-	locationIsMinimum := bytes.Equal(c.locationEphPublic[:], loEphPublic[:])
+	record.AppendMessage(tagTemporaryLesserCommonToken, minimumTempPublic[:])
+	record.AppendMessage(tagTemporaryHigherCommonToken, highTempPublic[:])
 
 	//
-	dhCredential, err := calculateDHCredential(c.modEphPublic, c.locationEphPrivate)
+	//
+	positionEqualsMinimal := bytes.Equal(c.positionTempPublic[:], minimumTempPublic[:])
+
+	//
+	dhCredential, err := calculateDHCredential(c.modTempPublic, c.positionTempPrivate)
 	if err != nil {
 		panic(err)
 	}
 
-	log.AppendMessage(tagDHCredential, dhCredential[:])
+	record.AppendMessage(tagDHCredential, dhCredential[:])
 
 	//
 	//
 	//
-	receiveCredential, transmitCredential := deduceCredentials(dhCredential, locationIsMinimum)
+	obtainCredential, transmitCredential := deduceCredentials(dhCredential, positionEqualsMinimal)
 
-	const disputeVolume = 32
-	var dispute [disputeVolume]byte
-	log.ExtractBytes(dispute[:], tagCredentialLinkageMac)
+	const queryExtent = 32
+	var query [queryExtent]byte
+	record.ExtractBytes(query[:], tagCredentialLinkageMac)
 
 	transmitAead, err := chacha20poly1305.New(transmitCredential[:])
 	if err != nil {
 		panic(errors.New("REDACTED"))
 	}
-	receiveAead, err := chacha20poly1305.New(receiveCredential[:])
+	obtainAead, err := chacha20poly1305.New(obtainCredential[:])
 	if err != nil {
 		panic(errors.New("REDACTED"))
 	}
 
-	b := &buffer{}
-	c.tokenLink = &TokenLinkage{
+	b := &reserve{}
+	c.credentialLink = &CredentialLinkage{
 		link:            b,
-		linkRecorder:      bufio.NewWriterSize(b, standardRecordFrameVolume),
-		linkScanner:      b,
-		receiveFrame:      nil,
-		receiveNonce:       new([aeadNonceVolume]byte),
-		transmitNonce:       new([aeadNonceVolume]byte),
-		receiveAead:        receiveAead,
+		linkPersistor:      bufio.NewWriterSize(b, fallbackPersistReserveExtent),
+		linkFetcher:      b,
+		obtainReserve:      nil,
+		obtainNumber:       new([aeadNumberExtent]byte),
+		transmitNumber:       new([aeadNumberExtent]byte),
+		obtainAead:        obtainAead,
 		transmitAead:        transmitAead,
-		receiveBorder:       make([]byte, sumBorderVolume),
-		receiveSecuredBorder: make([]byte, sumBorderVolume+aeadVolumeBurden),
-		transmitBorder:       make([]byte, sumBorderVolume),
-		transmitSecuredBorder: make([]byte, sumBorderVolume+aeadVolumeBurden),
+		obtainStructure:       make([]byte, sumStructureExtent),
+		obtainSecuredStructure: make([]byte, sumStructureExtent+aeadExtentMargin),
+		transmitStructure:       make([]byte, sumStructureExtent),
+		transmitSecuredStructure: make([]byte, sumStructureExtent+aeadExtentMargin),
 	}
-	c.buffer = b
+	c.reserve = b
 
 	//
-	locationAutograph, err := attestDispute(&dispute, c.privateKey)
+	positionNotation, err := attestQuery(&query, c.privateToken)
 	if err != nil {
 		panic(err)
 	}
 
-	return locationAutograph
+	return positionNotation
 }
 
 //
 //
 func VerifyCreateCredentialLinkage(t *testing.T) {
 	verifyScenarios := []struct {
-		label   string
+		alias   string
 		link   *maliciousLink
-		errMessage string
+		faultSignal string
 	}{
-		{"REDACTED", newMaliciousLink(false, false, false, false), "REDACTED"},
-		{"REDACTED", newMaliciousLink(true, true, false, false), "REDACTED"},
-		{"REDACTED", newMaliciousLink(true, false, false, false), "REDACTED"},
-		{"REDACTED", newMaliciousLink(true, false, true, true), "REDACTED"},
+		{"REDACTED", freshMaliciousLink(false, false, false, false), "REDACTED"},
+		{"REDACTED", freshMaliciousLink(true, true, false, false), "REDACTED"},
+		{"REDACTED", freshMaliciousLink(true, false, false, false), "REDACTED"},
+		{"REDACTED", freshMaliciousLink(true, false, true, true), "REDACTED"},
 	}
 
 	for _, tc := range verifyScenarios {
-		t.Run(tc.label, func(t *testing.T) {
-			privateKey := ed25519.GeneratePrivateKey()
-			_, err := CreateTokenLinkage(tc.link, privateKey)
-			if tc.errMessage != "REDACTED" {
+		t.Run(tc.alias, func(t *testing.T) {
+			privateToken := edwards25519.ProducePrivateToken()
+			_, err := CreateCredentialLinkage(tc.link, privateToken)
+			if tc.faultSignal != "REDACTED" {
 				if assert.Error(t, err) {
-					assert.Contains(t, err.Error(), tc.errMessage)
+					assert.Contains(t, err.Error(), tc.faultSignal)
 				}
 			} else {
 				assert.NoError(t, err)

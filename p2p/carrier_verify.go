@@ -10,77 +10,77 @@ import (
 	"testing"
 	"time"
 
-	"github.com/valkyrieworks/vault/ed25519"
-	"github.com/valkyrieworks/utils/protoio"
-	"github.com/valkyrieworks/p2p/link"
-	tmp2p "github.com/valkyrieworks/schema/consensuscore/p2p"
+	"github.com/valkyrieworks/dffc4ef0-4ec6-4346-9b6c-d0a0cb42d94b/security/edwards25519"
+	"github.com/valkyrieworks/dffc4ef0-4ec6-4346-9b6c-d0a0cb42d94b/utils/protocolio"
+	"github.com/valkyrieworks/dffc4ef0-4ec6-4346-9b6c-d0a0cb42d94b/p2p/link"
+	tmpfabric "github.com/valkyrieworks/dffc4ef0-4ec6-4346-9b6c-d0a0cb42d94b/schema/strongmind/p2p"
 )
 
-var standardMemberLabel = "REDACTED"
+var fallbackPeerAlias = "REDACTED"
 
-func emptyMemberDetails() MemberDetails {
-	return StandardMemberDetails{}
+func blankPeerDetails() PeerDetails {
+	return FallbackPeerDetails{}
 }
 
 //
 //
 //
-func newMultiplexCarrier(
-	memberDetails MemberDetails,
-	memberKey MemberKey,
-) *MulticastCarrier {
-	return NewMulticastCarrier(
-		memberDetails, memberKey, link.StandardMLinkSettings(),
+func freshMultiplexCarrier(
+	peerDetails PeerDetails,
+	peerToken PeerToken,
+) *MultiplexCarrier {
+	return FreshMultiplexCarrier(
+		peerDetails, peerToken, link.FallbackModuleLinkSettings(),
 	)
 }
 
 func VerifyCarrierMultiplexLinkRefine(t *testing.T) {
-	mt := newMultiplexCarrier(
-		emptyMemberDetails(),
-		MemberKey{
-			PrivateKey: ed25519.GeneratePrivateKey(),
+	mt := freshMultiplexCarrier(
+		blankPeerDetails(),
+		PeerToken{
+			PrivateToken: edwards25519.ProducePrivateToken(),
 		},
 	)
-	id := mt.memberKey.ID()
+	id := mt.peerToken.ID()
 
-	MulticastCarrierLinkScreens(
-		func(_ LinkCollection, _ net.Conn, _ []net.IP) error { return nil },
-		func(_ LinkCollection, _ net.Conn, _ []net.IP) error { return nil },
-		func(_ LinkCollection, _ net.Conn, _ []net.IP) error {
+	MultiplexCarrierLinkCriteria(
+		func(_ LinkAssign, _ net.Conn, _ []net.IP) error { return nil },
+		func(_ LinkAssign, _ net.Conn, _ []net.IP) error { return nil },
+		func(_ LinkAssign, _ net.Conn, _ []net.IP) error {
 			return fmt.Errorf("REDACTED")
 		},
 	)(mt)
 
-	address, err := NewNetLocationString(UIDLocationString(id, "REDACTED"))
+	location, err := FreshNetworkLocatorText(UUIDLocationText(id, "REDACTED"))
 	if err != nil {
 		t.Fatal(err)
 	}
 
-	if err := mt.Observe(*address); err != nil {
+	if err := mt.Overhear(*location); err != nil {
 		t.Fatal(err)
 	}
 
-	faultc := make(chan error)
+	faultchnl := make(chan error)
 
 	go func() {
-		address := NewNetLocation(id, mt.observer.Addr())
+		location := FreshNetworkLocator(id, mt.observer.Addr())
 
-		_, err := address.Call()
+		_, err := location.Call()
 		if err != nil {
-			faultc <- err
+			faultchnl <- err
 			return
 		}
 
-		close(faultc)
+		close(faultchnl)
 	}()
 
-	if err := <-faultc; err != nil {
+	if err := <-faultchnl; err != nil {
 		t.Errorf("REDACTED", err)
 	}
 
-	_, err = mt.Allow(nodeSettings{})
-	if e, ok := err.(ErrDeclined); ok {
-		if !e.IsScreened() {
+	_, err = mt.Embrace(nodeSettings{})
+	if e, ok := err.(FaultDeclined); ok {
+		if !e.EqualsScreened() {
 			t.Errorf("REDACTED", err)
 		}
 	} else {
@@ -89,91 +89,91 @@ func VerifyCarrierMultiplexLinkRefine(t *testing.T) {
 }
 
 func VerifyCarrierMultiplexLinkRefineDeadline(t *testing.T) {
-	mt := newMultiplexCarrier(
-		emptyMemberDetails(),
-		MemberKey{
-			PrivateKey: ed25519.GeneratePrivateKey(),
+	mt := freshMultiplexCarrier(
+		blankPeerDetails(),
+		PeerToken{
+			PrivateToken: edwards25519.ProducePrivateToken(),
 		},
 	)
-	id := mt.memberKey.ID()
+	id := mt.peerToken.ID()
 
-	MulticastCarrierRefineDeadline(5 * time.Millisecond)(mt)
-	MulticastCarrierLinkScreens(
-		func(_ LinkCollection, _ net.Conn, _ []net.IP) error {
+	MultiplexCarrierRefineDeadline(5 * time.Millisecond)(mt)
+	MultiplexCarrierLinkCriteria(
+		func(_ LinkAssign, _ net.Conn, _ []net.IP) error {
 			time.Sleep(1 * time.Second)
 			return nil
 		},
 	)(mt)
 
-	address, err := NewNetLocationString(UIDLocationString(id, "REDACTED"))
+	location, err := FreshNetworkLocatorText(UUIDLocationText(id, "REDACTED"))
 	if err != nil {
 		t.Fatal(err)
 	}
 
-	if err := mt.Observe(*address); err != nil {
+	if err := mt.Overhear(*location); err != nil {
 		t.Fatal(err)
 	}
 
-	faultc := make(chan error)
+	faultchnl := make(chan error)
 	go func() {
-		address := NewNetLocation(id, mt.observer.Addr())
+		location := FreshNetworkLocator(id, mt.observer.Addr())
 
-		_, err := address.Call()
+		_, err := location.Call()
 		if err != nil {
-			faultc <- err
+			faultchnl <- err
 			return
 		}
 
-		close(faultc)
+		close(faultchnl)
 	}()
 
-	if err := <-faultc; err != nil {
+	if err := <-faultchnl; err != nil {
 		t.Errorf("REDACTED", err)
 	}
 
-	_, err = mt.Allow(nodeSettings{})
-	if _, ok := err.(ErrRefineDeadline); !ok {
+	_, err = mt.Embrace(nodeSettings{})
+	if _, ok := err.(FaultRefineDeadline); !ok {
 		t.Errorf("REDACTED", err)
 	}
 }
 
 func VerifyCarrierMultiplexMaximumArrivingLinkages(t *testing.T) {
-	pv := ed25519.GeneratePrivateKey()
-	id := PublicKeyToUID(pv.PublicKey())
-	mt := newMultiplexCarrier(
-		verifyMemberDetails(
+	pv := edwards25519.ProducePrivateToken()
+	id := PublicTokenTowardUUID(pv.PublicToken())
+	mt := freshMultiplexCarrier(
+		verifyPeerDetails(
 			id, "REDACTED",
 		),
-		MemberKey{
-			PrivateKey: pv,
+		PeerToken{
+			PrivateToken: pv,
 		},
 	)
 
-	MulticastCarrierMaximumIncomingLinkages(0)(mt)
+	MultiplexCarrierMaximumArrivingLinkages(0)(mt)
 
-	address, err := NewNetLocationString(UIDLocationString(id, "REDACTED"))
+	location, err := FreshNetworkLocatorText(UUIDLocationText(id, "REDACTED"))
 	if err != nil {
 		t.Fatal(err)
 	}
 	const maximumArrivingLinks = 2
-	MulticastCarrierMaximumIncomingLinkages(maximumArrivingLinks)(mt)
-	if err := mt.Observe(*address); err != nil {
+	MultiplexCarrierMaximumArrivingLinkages(maximumArrivingLinks)(mt)
+	if err := mt.Overhear(*location); err != nil {
 		t.Fatal(err)
 	}
 
-	laddress := NewNetLocation(mt.memberKey.ID(), mt.observer.Addr())
+	localaddr := FreshNetworkLocator(mt.peerToken.ID(), mt.observer.Addr())
 
 	//
 	for i := 0; i <= maximumArrivingLinks; i++ {
-		faultc := make(chan error)
-		go verifyCaller(*laddress, faultc)
+		faultchnl := make(chan error)
+		go verifyCaller(*localaddr, faultchnl)
 
-		err = <-faultc
+		err = <-faultchnl
 		if i < maximumArrivingLinks {
 			if err != nil {
 				t.Errorf("REDACTED", err)
 			}
-			_, err = mt.Allow(nodeSettings{})
+			_, err = mt.Embrace(nodeSettings{})
 			if err != nil {
 				t.Errorf("REDACTED", err)
 			}
@@ -186,24 +186,24 @@ func VerifyCarrierMultiplexMaximumArrivingLinkages(t *testing.T) {
 	}
 }
 
-func VerifyCarrierMultiplexAllowVaried(t *testing.T) {
+func VerifyCarrierMultiplexEmbraceVarious(t *testing.T) {
 	mt := verifyConfigureMultiplexCarrier(t)
-	laddress := NewNetLocation(mt.memberKey.ID(), mt.observer.Addr())
+	localaddr := FreshNetworkLocator(mt.peerToken.ID(), mt.observer.Addr())
 
 	var (
-		origin     = rand.New(rand.NewSource(time.Now().UnixNano()))
-		nCallers = origin.Intn(64) + 64
-		faultc     = make(chan error, nCallers)
+		germ     = rand.New(rand.NewSource(time.Now().UnixNano()))
+		nthCallers = germ.Intn(64) + 64
+		faultchnl     = make(chan error, nthCallers)
 	)
 
 	//
-	for i := 0; i < nCallers; i++ {
-		go verifyCaller(*laddress, faultc)
+	for i := 0; i < nthCallers; i++ {
+		go verifyCaller(*localaddr, faultchnl)
 	}
 
 	//
-	for i := 0; i < nCallers; i++ {
-		if err := <-faultc; err != nil {
+	for i := 0; i < nthCallers; i++ {
+		if err := <-faultchnl; err != nil {
 			t.Fatal(err)
 		}
 	}
@@ -211,20 +211,20 @@ func VerifyCarrierMultiplexAllowVaried(t *testing.T) {
 	ps := []Node{}
 
 	//
-	for i := 0; i < cap(faultc); i++ {
-		p, err := mt.Allow(nodeSettings{})
+	for i := 0; i < cap(faultchnl); i++ {
+		p, err := mt.Embrace(nodeSettings{})
 		if err != nil {
 			t.Fatal(err)
 		}
 
-		if err := p.Begin(); err != nil {
+		if err := p.Initiate(); err != nil {
 			t.Fatal(err)
 		}
 
 		ps = append(ps, p)
 	}
 
-	if possess, desire := len(ps), cap(faultc); possess != desire {
+	if possess, desire := len(ps), cap(faultchnl); possess != desire {
 		t.Errorf("REDACTED", possess, desire)
 	}
 
@@ -235,157 +235,157 @@ func VerifyCarrierMultiplexAllowVaried(t *testing.T) {
 		}
 	}
 
-	if err := mt.End(); err != nil {
+	if err := mt.Shutdown(); err != nil {
 		t.Errorf("REDACTED", err)
 	}
 }
 
-func verifyCaller(callAddress NetLocation, faultc chan error) {
+func verifyCaller(callLocation NetworkLocator, faultchnl chan error) {
 	var (
-		pv     = ed25519.GeneratePrivateKey()
-		caller = newMultiplexCarrier(
-			verifyMemberDetails(PublicKeyToUID(pv.PublicKey()), standardMemberLabel),
-			MemberKey{
-				PrivateKey: pv,
+		pv     = edwards25519.ProducePrivateToken()
+		caller = freshMultiplexCarrier(
+			verifyPeerDetails(PublicTokenTowardUUID(pv.PublicToken()), fallbackPeerAlias),
+			PeerToken{
+				PrivateToken: pv,
 			},
 		)
 	)
 
-	_, err := caller.Call(callAddress, nodeSettings{})
+	_, err := caller.Call(callLocation, nodeSettings{})
 	if err != nil {
-		faultc <- err
+		faultchnl <- err
 		return
 	}
 
 	//
-	faultc <- nil
+	faultchnl <- nil
 }
 
-func VerifyCarrierMultiplexAllowNotHalting(t *testing.T) {
+func VerifyCarrierMultiplexEmbraceUnHalting(t *testing.T) {
 	mt := verifyConfigureMultiplexCarrier(t)
 
 	var (
-		quickMemberPV   = ed25519.GeneratePrivateKey()
-		quickMemberDetails = verifyMemberDetails(PublicKeyToUID(quickMemberPV.PublicKey()), "REDACTED")
-		faultc         = make(chan error)
-		fastc        = make(chan struct{})
-		slowc        = make(chan struct{})
-		slowdonec    = make(chan struct{})
+		swiftPeerPRV   = edwards25519.ProducePrivateToken()
+		swiftPeerDetails = verifyPeerDetails(PublicTokenTowardUUID(swiftPeerPRV.PublicToken()), "REDACTED")
+		faultchnl         = make(chan error)
+		quickchnl        = make(chan struct{})
+		sluggishchnl        = make(chan struct{})
+		laggarddonechnl    = make(chan struct{})
 	)
 
 	//
 	go func() {
-		address := NewNetLocation(mt.memberKey.ID(), mt.observer.Addr())
+		location := FreshNetworkLocator(mt.peerToken.ID(), mt.observer.Addr())
 
-		c, err := address.Call()
+		c, err := location.Call()
 		if err != nil {
-			faultc <- err
+			faultchnl <- err
 			return
 		}
 
-		close(slowc)
+		close(sluggishchnl)
 		defer func() {
-			close(slowdonec)
+			close(laggarddonechnl)
 		}()
 
 		//
 		runtime.Gosched()
 
 		select {
-		case <-fastc:
+		case <-quickchnl:
 			//
 		case <-time.After(200 * time.Millisecond):
 			//
-			faultc <- fmt.Errorf("REDACTED")
+			faultchnl <- fmt.Errorf("REDACTED")
 		}
 
-		sc, err := enhanceTokenLink(c, 200*time.Millisecond, ed25519.GeneratePrivateKey())
+		sc, err := modernizeCredentialLink(c, 200*time.Millisecond, edwards25519.ProducePrivateToken())
 		if err != nil {
-			faultc <- err
+			faultchnl <- err
 			return
 		}
 
-		_, err = greeting(sc, 200*time.Millisecond,
-			verifyMemberDetails(
-				PublicKeyToUID(ed25519.GeneratePrivateKey().PublicKey()),
+		_, err = negotiation(sc, 200*time.Millisecond,
+			verifyPeerDetails(
+				PublicTokenTowardUUID(edwards25519.ProducePrivateToken().PublicToken()),
 				"REDACTED",
 			))
 		if err != nil {
-			faultc <- err
+			faultchnl <- err
 		}
 	}()
 
 	//
 	go func() {
-		<-slowc
+		<-sluggishchnl
 
-		caller := newMultiplexCarrier(
-			quickMemberDetails,
-			MemberKey{
-				PrivateKey: quickMemberPV,
+		caller := freshMultiplexCarrier(
+			swiftPeerDetails,
+			PeerToken{
+				PrivateToken: swiftPeerPRV,
 			},
 		)
-		address := NewNetLocation(mt.memberKey.ID(), mt.observer.Addr())
+		location := FreshNetworkLocator(mt.peerToken.ID(), mt.observer.Addr())
 
-		_, err := caller.Call(*address, nodeSettings{})
+		_, err := caller.Call(*location, nodeSettings{})
 		if err != nil {
-			faultc <- err
+			faultchnl <- err
 			return
 		}
 
-		close(fastc)
-		<-slowdonec
-		close(faultc)
+		close(quickchnl)
+		<-laggarddonechnl
+		close(faultchnl)
 	}()
 
-	if err := <-faultc; err != nil {
+	if err := <-faultchnl; err != nil {
 		t.Logf("REDACTED", err)
 	}
 
-	p, err := mt.Allow(nodeSettings{})
+	p, err := mt.Embrace(nodeSettings{})
 	if err != nil {
 		t.Fatal(err)
 	}
 
-	if possess, desire := p.MemberDetails(), quickMemberDetails; !reflect.DeepEqual(possess, desire) {
+	if possess, desire := p.PeerDetails(), swiftPeerDetails; !reflect.DeepEqual(possess, desire) {
 		t.Errorf("REDACTED", possess, desire)
 	}
 }
 
-func VerifyCarrierMultiplexCertifyMemberDetails(t *testing.T) {
+func VerifyCarrierMultiplexCertifyPeerDetails(t *testing.T) {
 	mt := verifyConfigureMultiplexCarrier(t)
 
-	faultc := make(chan error)
+	faultchnl := make(chan error)
 
 	go func() {
 		var (
-			pv     = ed25519.GeneratePrivateKey()
-			caller = newMultiplexCarrier(
-				verifyMemberDetails(PublicKeyToUID(pv.PublicKey()), "REDACTED"), //
-				MemberKey{
-					PrivateKey: pv,
+			pv     = edwards25519.ProducePrivateToken()
+			caller = freshMultiplexCarrier(
+				verifyPeerDetails(PublicTokenTowardUUID(pv.PublicToken()), "REDACTED"), //
+				PeerToken{
+					PrivateToken: pv,
 				},
 			)
 		)
 
-		address := NewNetLocation(mt.memberKey.ID(), mt.observer.Addr())
+		location := FreshNetworkLocator(mt.peerToken.ID(), mt.observer.Addr())
 
-		_, err := caller.Call(*address, nodeSettings{})
+		_, err := caller.Call(*location, nodeSettings{})
 		if err != nil {
-			faultc <- err
+			faultchnl <- err
 			return
 		}
 
-		close(faultc)
+		close(faultchnl)
 	}()
 
-	if err := <-faultc; err != nil {
+	if err := <-faultchnl; err != nil {
 		t.Errorf("REDACTED", err)
 	}
 
-	_, err := mt.Allow(nodeSettings{})
-	if e, ok := err.(ErrDeclined); ok {
-		if !e.IsMemberDetailsCorrupt() {
+	_, err := mt.Embrace(nodeSettings{})
+	if e, ok := err.(FaultDeclined); ok {
+		if !e.EqualsPeerDetailsUnfit() {
 			t.Errorf("REDACTED", err)
 		}
 	} else {
@@ -393,38 +393,38 @@ func VerifyCarrierMultiplexCertifyMemberDetails(t *testing.T) {
 	}
 }
 
-func VerifyCarrierMultiplexDeclineDiscrepancyUID(t *testing.T) {
+func VerifyCarrierMultiplexDeclineDiscrepancyUUID(t *testing.T) {
 	mt := verifyConfigureMultiplexCarrier(t)
 
-	faultc := make(chan error)
+	faultchnl := make(chan error)
 
 	go func() {
-		caller := newMultiplexCarrier(
-			verifyMemberDetails(
-				PublicKeyToUID(ed25519.GeneratePrivateKey().PublicKey()), "REDACTED",
+		caller := freshMultiplexCarrier(
+			verifyPeerDetails(
+				PublicTokenTowardUUID(edwards25519.ProducePrivateToken().PublicToken()), "REDACTED",
 			),
-			MemberKey{
-				PrivateKey: ed25519.GeneratePrivateKey(),
+			PeerToken{
+				PrivateToken: edwards25519.ProducePrivateToken(),
 			},
 		)
-		address := NewNetLocation(mt.memberKey.ID(), mt.observer.Addr())
+		location := FreshNetworkLocator(mt.peerToken.ID(), mt.observer.Addr())
 
-		_, err := caller.Call(*address, nodeSettings{})
+		_, err := caller.Call(*location, nodeSettings{})
 		if err != nil {
-			faultc <- err
+			faultchnl <- err
 			return
 		}
 
-		close(faultc)
+		close(faultchnl)
 	}()
 
-	if err := <-faultc; err != nil {
+	if err := <-faultchnl; err != nil {
 		t.Errorf("REDACTED", err)
 	}
 
-	_, err := mt.Allow(nodeSettings{})
-	if e, ok := err.(ErrDeclined); ok {
-		if !e.IsAuthBreakdown() {
+	_, err := mt.Embrace(nodeSettings{})
+	if e, ok := err.(FaultDeclined); ok {
+		if !e.EqualsAuthBreakdown() {
 			t.Errorf("REDACTED", e)
 		}
 	} else {
@@ -432,27 +432,27 @@ func VerifyCarrierMultiplexDeclineDiscrepancyUID(t *testing.T) {
 	}
 }
 
-func VerifyCarrierMultiplexCallDeclineIncorrectUID(t *testing.T) {
+func VerifyCarrierMultiplexCallDeclineIncorrectUUID(t *testing.T) {
 	mt := verifyConfigureMultiplexCarrier(t)
 
 	var (
-		pv     = ed25519.GeneratePrivateKey()
-		caller = newMultiplexCarrier(
-			verifyMemberDetails(PublicKeyToUID(pv.PublicKey()), "REDACTED"), //
-			MemberKey{
-				PrivateKey: pv,
+		pv     = edwards25519.ProducePrivateToken()
+		caller = freshMultiplexCarrier(
+			verifyPeerDetails(PublicTokenTowardUUID(pv.PublicToken()), "REDACTED"), //
+			PeerToken{
+				PrivateToken: pv,
 			},
 		)
 	)
 
-	incorrectUID := PublicKeyToUID(ed25519.GeneratePrivateKey().PublicKey())
-	address := NewNetLocation(incorrectUID, mt.observer.Addr())
+	incorrectUUID := PublicTokenTowardUUID(edwards25519.ProducePrivateToken().PublicToken())
+	location := FreshNetworkLocator(incorrectUUID, mt.observer.Addr())
 
-	_, err := caller.Call(*address, nodeSettings{})
+	_, err := caller.Call(*location, nodeSettings{})
 	if err != nil {
 		t.Logf("REDACTED", err)
-		if e, ok := err.(ErrDeclined); ok {
-			if !e.IsAuthBreakdown() {
+		if e, ok := err.(FaultDeclined); ok {
+			if !e.EqualsAuthBreakdown() {
 				t.Errorf("REDACTED", e)
 			}
 		} else {
@@ -461,35 +461,35 @@ func VerifyCarrierMultiplexCallDeclineIncorrectUID(t *testing.T) {
 	}
 }
 
-func VerifyCarrierMultiplexDeclineDiscordant(t *testing.T) {
+func VerifyCarrierMultiplexDeclineUnmatched(t *testing.T) {
 	mt := verifyConfigureMultiplexCarrier(t)
 
-	faultc := make(chan error)
+	faultchnl := make(chan error)
 
 	go func() {
 		var (
-			pv     = ed25519.GeneratePrivateKey()
-			caller = newMultiplexCarrier(
-				verifyMemberDetailsWithFabric(PublicKeyToUID(pv.PublicKey()), "REDACTED", "REDACTED"),
-				MemberKey{
-					PrivateKey: pv,
+			pv     = edwards25519.ProducePrivateToken()
+			caller = freshMultiplexCarrier(
+				verifyPeerDetailsUsingFabric(PublicTokenTowardUUID(pv.PublicToken()), "REDACTED", "REDACTED"),
+				PeerToken{
+					PrivateToken: pv,
 				},
 			)
 		)
-		address := NewNetLocation(mt.memberKey.ID(), mt.observer.Addr())
+		location := FreshNetworkLocator(mt.peerToken.ID(), mt.observer.Addr())
 
-		_, err := caller.Call(*address, nodeSettings{})
+		_, err := caller.Call(*location, nodeSettings{})
 		if err != nil {
-			faultc <- err
+			faultchnl <- err
 			return
 		}
 
-		close(faultc)
+		close(faultchnl)
 	}()
 
-	_, err := mt.Allow(nodeSettings{})
-	if e, ok := err.(ErrDeclined); ok {
-		if !e.IsDiscordant() {
+	_, err := mt.Embrace(nodeSettings{})
+	if e, ok := err.(FaultDeclined); ok {
+		if !e.EqualsUnmatched() {
 			t.Errorf("REDACTED", e)
 		}
 	} else {
@@ -500,23 +500,23 @@ func VerifyCarrierMultiplexDeclineDiscordant(t *testing.T) {
 func VerifyCarrierMultiplexDeclineEgo(t *testing.T) {
 	mt := verifyConfigureMultiplexCarrier(t)
 
-	faultc := make(chan error)
+	faultchnl := make(chan error)
 
 	go func() {
-		address := NewNetLocation(mt.memberKey.ID(), mt.observer.Addr())
+		location := FreshNetworkLocator(mt.peerToken.ID(), mt.observer.Addr())
 
-		_, err := mt.Call(*address, nodeSettings{})
+		_, err := mt.Call(*location, nodeSettings{})
 		if err != nil {
-			faultc <- err
+			faultchnl <- err
 			return
 		}
 
-		close(faultc)
+		close(faultchnl)
 	}()
 
-	if err := <-faultc; err != nil {
-		if e, ok := err.(ErrDeclined); ok {
-			if !e.IsEgo() {
+	if err := <-faultchnl; err != nil {
+		if e, ok := err.(FaultDeclined); ok {
+			if !e.EqualsEgo() {
 				t.Errorf("REDACTED", e)
 			}
 		} else {
@@ -526,9 +526,9 @@ func VerifyCarrierMultiplexDeclineEgo(t *testing.T) {
 		t.Errorf("REDACTED")
 	}
 
-	_, err := mt.Allow(nodeSettings{})
-	if err, ok := err.(ErrDeclined); ok {
-		if !err.IsEgo() {
+	_, err := mt.Embrace(nodeSettings{})
+	if err, ok := err.(FaultDeclined); ok {
+		if !err.EqualsEgo() {
 			t.Errorf("REDACTED", err)
 		}
 	} else {
@@ -536,8 +536,8 @@ func VerifyCarrierMultiplexDeclineEgo(t *testing.T) {
 	}
 }
 
-func VerifyCarrierLinkReplicatedIPRefine(t *testing.T) {
-	refine := LinkReplicatedIPRefine()
+func VerifyCarrierLinkReplicatedINETRefine(t *testing.T) {
+	refine := LinkReplicatedINETRefine()
 
 	if err := refine(nil, &verifyCarrierLink{}, nil); err != nil {
 		t.Fatal(err)
@@ -545,7 +545,7 @@ func VerifyCarrierLinkReplicatedIPRefine(t *testing.T) {
 
 	var (
 		c  = &verifyCarrierLink{}
-		cs = NewLinkCollection()
+		cs = FreshLinkAssign()
 	)
 
 	cs.Set(c, []net.IP{
@@ -561,15 +561,15 @@ func VerifyCarrierLinkReplicatedIPRefine(t *testing.T) {
 	}
 }
 
-func VerifyCarrierGreeting(t *testing.T) {
+func VerifyCarrierNegotiation(t *testing.T) {
 	ln, err := net.Listen("REDACTED", "REDACTED")
 	if err != nil {
 		t.Fatal(err)
 	}
 
 	var (
-		nodePV       = ed25519.GeneratePrivateKey()
-		nodeMemberDetails = verifyMemberDetails(PublicKeyToUID(nodePV.PublicKey()), standardMemberLabel)
+		nodePRV       = edwards25519.ProducePrivateToken()
+		nodePeerDetails = verifyPeerDetails(PublicTokenTowardUUID(nodePRV.PublicToken()), fallbackPeerAlias)
 	)
 
 	go func() {
@@ -580,7 +580,7 @@ func VerifyCarrierGreeting(t *testing.T) {
 		}
 
 		go func(c net.Conn) {
-			_, err := protoio.NewSeparatedRecorder(c).RecordMessage(nodeMemberDetails.(StandardMemberDetails).ToSchema())
+			_, err := protocolio.FreshSeparatedPersistor(c).PersistSignal(nodePeerDetails.(FallbackPeerDetails).TowardSchema())
 			if err != nil {
 				t.Error(err)
 			}
@@ -588,15 +588,15 @@ func VerifyCarrierGreeting(t *testing.T) {
 		go func(c net.Conn) {
 
 			//
-			var pbni tmp2p.StandardMemberDetails
+			var protobufferindex tmpfabric.FallbackPeerDetails
 
-			schemaScanner := protoio.NewSeparatedScanner(c, MaximumMemberDetailsVolume())
-			_, err := schemaScanner.ScanMessage(&pbni)
+			schemaFetcher := protocolio.FreshSeparatedFetcher(c, MaximumPeerDetailsExtent())
+			_, err := schemaFetcher.FetchSignal(&protobufferindex)
 			if err != nil {
 				t.Error(err)
 			}
 
-			_, err = StandardMemberDetailsFromToSchema(&pbni)
+			_, err = FallbackPeerDetailsOriginatingTowardSchema(&protobufferindex)
 			if err != nil {
 				t.Error(err)
 			}
@@ -608,52 +608,52 @@ func VerifyCarrierGreeting(t *testing.T) {
 		t.Fatal(err)
 	}
 
-	ni, err := greeting(c, 20*time.Millisecond, emptyMemberDetails())
+	ni, err := negotiation(c, 20*time.Millisecond, blankPeerDetails())
 	if err != nil {
 		t.Fatal(err)
 	}
 
-	if possess, desire := ni, nodeMemberDetails; !reflect.DeepEqual(possess, desire) {
+	if possess, desire := ni, nodePeerDetails; !reflect.DeepEqual(possess, desire) {
 		t.Errorf("REDACTED", possess, desire)
 	}
 }
 
 func VerifyCarrierAppendConduit(t *testing.T) {
-	mt := newMultiplexCarrier(
-		emptyMemberDetails(),
-		MemberKey{
-			PrivateKey: ed25519.GeneratePrivateKey(),
+	mt := freshMultiplexCarrier(
+		blankPeerDetails(),
+		PeerToken{
+			PrivateToken: edwards25519.ProducePrivateToken(),
 		},
 	)
 	verifyConduit := byte(0x01)
 
 	mt.AppendConduit(verifyConduit)
-	if !mt.memberDetails.(StandardMemberDetails).HasConduit(verifyConduit) {
-		t.Errorf("REDACTED", verifyConduit, mt.memberDetails.(StandardMemberDetails).Streams)
+	if !mt.peerDetails.(FallbackPeerDetails).OwnsConduit(verifyConduit) {
+		t.Errorf("REDACTED", verifyConduit, mt.peerDetails.(FallbackPeerDetails).Conduits)
 	}
 }
 
 //
-func verifyConfigureMultiplexCarrier(t *testing.T) *MulticastCarrier {
+func verifyConfigureMultiplexCarrier(t *testing.T) *MultiplexCarrier {
 	var (
-		pv = ed25519.GeneratePrivateKey()
-		id = PublicKeyToUID(pv.PublicKey())
-		mt = newMultiplexCarrier(
-			verifyMemberDetails(
+		pv = edwards25519.ProducePrivateToken()
+		id = PublicTokenTowardUUID(pv.PublicToken())
+		mt = freshMultiplexCarrier(
+			verifyPeerDetails(
 				id, "REDACTED",
 			),
-			MemberKey{
-				PrivateKey: pv,
+			PeerToken{
+				PrivateToken: pv,
 			},
 		)
 	)
 
-	address, err := NewNetLocationString(UIDLocationString(id, "REDACTED"))
+	location, err := FreshNetworkLocatorText(UUIDLocationText(id, "REDACTED"))
 	if err != nil {
 		t.Fatal(err)
 	}
 
-	if err := mt.Observe(*address); err != nil {
+	if err := mt.Overhear(*location); err != nil {
 		t.Fatal(err)
 	}
 
@@ -663,38 +663,38 @@ func verifyConfigureMultiplexCarrier(t *testing.T) *MulticastCarrier {
 	return mt
 }
 
-type verifyCarrierAddress struct{}
+type verifyCarrierLocation struct{}
 
-func (a *verifyCarrierAddress) Fabric() string { return "REDACTED" }
-func (a *verifyCarrierAddress) String() string  { return "REDACTED" }
+func (a *verifyCarrierLocation) Fabric() string { return "REDACTED" }
+func (a *verifyCarrierLocation) Text() string  { return "REDACTED" }
 
 type verifyCarrierLink struct{}
 
-func (c *verifyCarrierLink) End() error {
+func (c *verifyCarrierLink) Shutdown() error {
 	return fmt.Errorf("REDACTED")
 }
 
-func (c *verifyCarrierLink) NativeAddress() net.Addr {
-	return &verifyCarrierAddress{}
+func (c *verifyCarrierLink) RegionalLocation() net.Addr {
+	return &verifyCarrierLocation{}
 }
 
-func (c *verifyCarrierLink) DistantAddress() net.Addr {
-	return &verifyCarrierAddress{}
+func (c *verifyCarrierLink) DistantLocation() net.Addr {
+	return &verifyCarrierLocation{}
 }
 
-func (c *verifyCarrierLink) Scan(_ []byte) (int, error) {
+func (c *verifyCarrierLink) Obtain(_ []byte) (int, error) {
 	return -1, fmt.Errorf("REDACTED")
 }
 
-func (c *verifyCarrierLink) CollectionLimit(_ time.Time) error {
+func (c *verifyCarrierLink) AssignExpiration(_ time.Time) error {
 	return fmt.Errorf("REDACTED")
 }
 
-func (c *verifyCarrierLink) CollectionReadLimit(_ time.Time) error {
+func (c *verifyCarrierLink) AssignFetchExpiration(_ time.Time) error {
 	return fmt.Errorf("REDACTED")
 }
 
-func (c *verifyCarrierLink) CollectionRecordLimit(_ time.Time) error {
+func (c *verifyCarrierLink) AssignPersistExpiration(_ time.Time) error {
 	return fmt.Errorf("REDACTED")
 }
 

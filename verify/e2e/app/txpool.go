@@ -6,8 +6,8 @@ import (
 	"slices"
 	"sync"
 
-	"github.com/valkyrieworks/utils/log"
-	"github.com/valkyrieworks/kinds"
+	"github.com/valkyrieworks/dffc4ef0-4ec6-4346-9b6c-d0a0cb42d94b/utils/log"
+	"github.com/valkyrieworks/dffc4ef0-4ec6-4346-9b6c-d0a0cb42d94b/kinds"
 )
 
 //
@@ -19,14 +19,14 @@ type ApplicationTxpool struct {
 }
 
 //
-func NewApplicationTxpool(tracer log.Tracer) *ApplicationTxpool {
+func FreshApplicationTxpool(tracer log.Tracer) *ApplicationTxpool {
 	return &ApplicationTxpool{
 		txs:    make(map[string]kinds.Tx),
 		tracer: tracer,
 	}
 }
 
-func (m *ApplicationTxpool) EmbedTransfer(bz []byte) {
+func (m *ApplicationTxpool) AppendTransfer(bz []byte) {
 	m.mu.Lock()
 	defer m.mu.Unlock()
 

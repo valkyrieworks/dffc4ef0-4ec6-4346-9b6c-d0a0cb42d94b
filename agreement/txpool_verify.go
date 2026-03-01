@@ -10,169 +10,169 @@ import (
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/require"
 
-	dbm "github.com/valkyrieworks/-db"
+	dbm "github.com/valkyrieworks/dffc4ef0-4ec6-4346-9b6c-d0a0cb42d94b/-db"
 
-	"github.com/valkyrieworks/iface/instance/objectdepot"
-	iface "github.com/valkyrieworks/iface/kinds"
-	txpool "github.com/valkyrieworks/txpool"
-	"github.com/valkyrieworks/gateway"
-	sm "github.com/valkyrieworks/status"
-	"github.com/valkyrieworks/kinds"
+	"github.com/valkyrieworks/dffc4ef0-4ec6-4346-9b6c-d0a0cb42d94b/iface/instance/statedepot"
+	iface "github.com/valkyrieworks/dffc4ef0-4ec6-4346-9b6c-d0a0cb42d94b/iface/kinds"
+	txpooll "github.com/valkyrieworks/dffc4ef0-4ec6-4346-9b6c-d0a0cb42d94b/txpool"
+	"github.com/valkyrieworks/dffc4ef0-4ec6-4346-9b6c-d0a0cb42d94b/delegate"
+	sm "github.com/valkyrieworks/dffc4ef0-4ec6-4346-9b6c-d0a0cb42d94b/status"
+	"github.com/valkyrieworks/dffc4ef0-4ec6-4346-9b6c-d0a0cb42d94b/kinds"
 )
 
 //
-func validateTxpool(txn transferAlerter) txpool.Txpool {
-	return txn.(txpool.Txpool)
+func validateTxpool(txn transferObserver) txpooll.Txpool {
+	return txn.(txpooll.Txpool)
 }
 
-func VerifyTxpoolNoAdvancementUntilTransAccessible(t *testing.T) {
+func VerifyTxpoolNegativeOnwardTillTransAccessible(t *testing.T) {
 	settings := RestoreSettings("REDACTED")
-	defer os.RemoveAll(settings.OriginFolder)
-	settings.Agreement.GenerateEmptyLedgers = false
-	status, privateValues := randomOriginStatus(1, false, 10, nil)
-	app := objectdepot.NewInRamSoftware()
-	reply, err := app.Details(context.Background(), gateway.QueryDetails)
+	defer os.RemoveAll(settings.OriginPath)
+	settings.Agreement.GenerateVoidLedgers = false
+	status, privateItems := arbitraryInaugurationStatus(1, false, 10, nil)
+	app := statedepot.FreshInsideRamPlatform()
+	reply, err := app.Details(context.Background(), delegate.SolicitDetails)
 	require.NoError(t, err)
-	status.ApplicationDigest = reply.FinalLedgerApplicationDigest
-	cs := newStatusWithSettings(settings, status, privateValues[0], app)
-	validateTxpool(cs.transferAlerter).ActivateTransAccessible()
-	level, epoch := cs.Level, cs.Cycle
-	newLedgerChan := enrol(cs.eventBus, kinds.EventInquireNewLedger)
-	beginVerifyEpoch(cs, level, epoch)
+	status.PlatformDigest = reply.FinalLedgerPlatformDigest
+	cs := freshStatusUsingSettings(settings, status, privateItems[0], app)
+	validateTxpool(cs.transferObserver).ActivateTransAccessible()
+	altitude, iteration := cs.Altitude, cs.Iteration
+	freshLedgerConduit := listen(cs.incidentPipeline, kinds.IncidentInquireFreshLedger)
+	initiateVerifyIteration(cs, altitude, iteration)
 
-	assureNewEventOnStream(newLedgerChan) //
-	assureNoNewEventOnStream(newLedgerChan)
-	transferTransScope(t, cs, 0, 1)
-	assureNewEventOnStream(newLedgerChan) //
-	assureNewEventOnStream(newLedgerChan) //
-	assureNoNewEventOnStream(newLedgerChan)
+	assureFreshIncidentUponConduit(freshLedgerConduit) //
+	assureNegativeFreshIncidentUponConduit(freshLedgerConduit)
+	dispatchTransScope(t, cs, 0, 1)
+	assureFreshIncidentUponConduit(freshLedgerConduit) //
+	assureFreshIncidentUponConduit(freshLedgerConduit) //
+	assureNegativeFreshIncidentUponConduit(freshLedgerConduit)
 }
 
-func VerifyTxpoolAdvancementAfterInstantiateEmptyLedgersCadence(t *testing.T) {
+func VerifyTxpoolOnwardSubsequentGenerateBlankLedgersDuration(t *testing.T) {
 	settings := RestoreSettings("REDACTED")
-	defer os.RemoveAll(settings.OriginFolder)
+	defer os.RemoveAll(settings.OriginPath)
 
-	settings.Agreement.GenerateEmptyLedgersCadence = assureDeadline
-	status, privateValues := randomOriginStatus(1, false, 10, nil)
-	app := objectdepot.NewInRamSoftware()
-	reply, err := app.Details(context.Background(), gateway.QueryDetails)
+	settings.Agreement.GenerateVoidLedgersDuration = assureDeadline
+	status, privateItems := arbitraryInaugurationStatus(1, false, 10, nil)
+	app := statedepot.FreshInsideRamPlatform()
+	reply, err := app.Details(context.Background(), delegate.SolicitDetails)
 	require.NoError(t, err)
-	status.ApplicationDigest = reply.FinalLedgerApplicationDigest
-	cs := newStatusWithSettings(settings, status, privateValues[0], app)
+	status.PlatformDigest = reply.FinalLedgerPlatformDigest
+	cs := freshStatusUsingSettings(settings, status, privateItems[0], app)
 
-	validateTxpool(cs.transferAlerter).ActivateTransAccessible()
+	validateTxpool(cs.transferObserver).ActivateTransAccessible()
 
-	newLedgerChan := enrol(cs.eventBus, kinds.EventInquireNewLedger)
-	beginVerifyEpoch(cs, cs.Level, cs.Cycle)
+	freshLedgerConduit := listen(cs.incidentPipeline, kinds.IncidentInquireFreshLedger)
+	initiateVerifyIteration(cs, cs.Altitude, cs.Iteration)
 
-	assureNewEventOnStream(newLedgerChan)   //
-	assureNoNewEventOnStream(newLedgerChan) //
-	assureNewEventOnStream(newLedgerChan)   //
+	assureFreshIncidentUponConduit(freshLedgerConduit)   //
+	assureNegativeFreshIncidentUponConduit(freshLedgerConduit) //
+	assureFreshIncidentUponConduit(freshLedgerConduit)   //
 }
 
-func VerifyTxpoolAdvancementInSuperiorEpoch(t *testing.T) {
+func VerifyTxpoolOnwardInsideSuperiorIteration(t *testing.T) {
 	settings := RestoreSettings("REDACTED")
-	defer os.RemoveAll(settings.OriginFolder)
-	settings.Agreement.GenerateEmptyLedgers = false
-	status, privateValues := randomOriginStatus(1, false, 10, nil)
-	cs := newStatusWithSettings(settings, status, privateValues[0], objectdepot.NewInRamSoftware())
-	validateTxpool(cs.transferAlerter).ActivateTransAccessible()
-	level, epoch := cs.Level, cs.Cycle
-	newLedgerChan := enrol(cs.eventBus, kinds.EventInquireNewLedger)
-	newEpochChan := enrol(cs.eventBus, kinds.EventInquireNewEpoch)
-	deadlineChan := enrol(cs.eventBus, kinds.EventInquireDeadlineNominate)
+	defer os.RemoveAll(settings.OriginPath)
+	settings.Agreement.GenerateVoidLedgers = false
+	status, privateItems := arbitraryInaugurationStatus(1, false, 10, nil)
+	cs := freshStatusUsingSettings(settings, status, privateItems[0], statedepot.FreshInsideRamPlatform())
+	validateTxpool(cs.transferObserver).ActivateTransAccessible()
+	altitude, iteration := cs.Altitude, cs.Iteration
+	freshLedgerConduit := listen(cs.incidentPipeline, kinds.IncidentInquireFreshLedger)
+	freshIterationConduit := listen(cs.incidentPipeline, kinds.IncidentInquireFreshIteration)
+	deadlineConduit := listen(cs.incidentPipeline, kinds.IncidentInquireDeadlineNominate)
 	cs.assignNomination = func(nomination *kinds.Nomination) error {
-		if cs.Level == 2 && cs.Cycle == 0 {
+		if cs.Altitude == 2 && cs.Iteration == 0 {
 			//
 			//
 			cs.Tracer.Details("REDACTED")
 			return nil
 		}
-		return cs.standardAssignNomination(nomination)
+		return cs.fallbackAssignNomination(nomination)
 	}
-	beginVerifyEpoch(cs, level, epoch)
+	initiateVerifyIteration(cs, altitude, iteration)
 
-	assureNewEpoch(newEpochChan, level, epoch) //
-	assureNewEventOnStream(newLedgerChan)       //
+	assureFreshIteration(freshIterationConduit, altitude, iteration) //
+	assureFreshIncidentUponConduit(freshLedgerConduit)       //
 
-	level++ //
-	epoch = 0
+	altitude++ //
+	iteration = 0
 
-	assureNewEpoch(newEpochChan, level, epoch) //
-	transferTransScope(t, cs, 0, 1)              //
-	assureNewDeadline(deadlineChan, level, epoch, cs.settings.DeadlineNominate.Nanoseconds())
+	assureFreshIteration(freshIterationConduit, altitude, iteration) //
+	dispatchTransScope(t, cs, 0, 1)              //
+	assureFreshDeadline(deadlineConduit, altitude, iteration, cs.settings.DeadlineNominate.Nanoseconds())
 
-	epoch++                                   //
-	assureNewEpoch(newEpochChan, level, epoch) //
-	assureNewEventOnStream(newLedgerChan)       //
+	iteration++                                   //
+	assureFreshIteration(freshIterationConduit, altitude, iteration) //
+	assureFreshIncidentUponConduit(freshLedgerConduit)       //
 }
 
-func transferTransScope(t *testing.T, cs *Status, begin, end int) {
+func dispatchTransScope(t *testing.T, cs *Status, initiate, end int) {
 	//
-	for i := begin; i < end; i++ {
-		err := validateTxpool(cs.transferAlerter).InspectTransfer(objectdepot.NewTransfer(fmt.Sprintf("REDACTED", i), "REDACTED"), nil, txpool.TransferDetails{})
+	for i := initiate; i < end; i++ {
+		err := validateTxpool(cs.transferObserver).InspectTransfer(statedepot.FreshTransfer(fmt.Sprintf("REDACTED", i), "REDACTED"), nil, txpooll.TransferDetails{})
 		require.NoError(t, err)
 	}
 }
 
-func VerifyTxpoolTransferParallelWithEndorse(t *testing.T) {
-	status, privateValues := randomOriginStatus(1, false, 10, nil)
-	ledgerStore := dbm.NewMemoryStore()
-	statusDepot := sm.NewDepot(ledgerStore, sm.DepotSettings{DropIfaceReplies: false})
-	cs := newStatusWithSettingsAndLedgerDepot(settings, status, privateValues[0], objectdepot.NewInRamSoftware(), ledgerStore)
+func VerifyTxpoolTransferParallelUsingEndorse(t *testing.T) {
+	status, privateItems := arbitraryInaugurationStatus(1, false, 10, nil)
+	ledgerDatastore := dbm.FreshMemoryDatastore()
+	statusDepot := sm.FreshDepot(ledgerDatastore, sm.DepotChoices{EjectIfaceReplies: false})
+	cs := freshStatusUsingSettingsAlsoLedgerDepot(settings, status, privateItems[0], statedepot.FreshInsideRamPlatform(), ledgerDatastore)
 	err := statusDepot.Persist(status)
 	require.NoError(t, err)
-	newLedgerEventsChan := enrol(cs.eventBus, kinds.EventInquireNewLedgerEvents)
+	freshLedgerIncidentsConduit := listen(cs.incidentPipeline, kinds.IncidentInquireFreshLedgerIncidents)
 
 	const countTrans int64 = 3000
-	go transferTransScope(t, cs, 0, int(countTrans))
+	go dispatchTransScope(t, cs, 0, int(countTrans))
 
-	beginVerifyEpoch(cs, cs.Level, cs.Cycle)
+	initiateVerifyIteration(cs, cs.Altitude, cs.Iteration)
 	for n := int64(0); n < countTrans; {
 		select {
-		case msg := <-newLedgerEventsChan:
-			event := msg.Data().(kinds.EventDataNewLedgerEvents)
-			n += event.CountTrans
-			t.Log("REDACTED", "REDACTED", event.CountTrans, "REDACTED", n)
+		case msg := <-freshLedgerIncidentsConduit:
+			incident := msg.Data().(kinds.IncidentDataFreshLedgerIncidents)
+			n += incident.CountTrans
+			t.Log("REDACTED", "REDACTED", incident.CountTrans, "REDACTED", n)
 		case <-time.After(30 * time.Second):
 			t.Fatal("REDACTED")
 		}
 	}
 }
 
-func VerifyTxpoolRemoveFlawedTransfer(t *testing.T) {
-	status, privateValues := randomOriginStatus(1, false, 10, nil)
-	app := objectdepot.NewInRamSoftware()
-	ledgerStore := dbm.NewMemoryStore()
-	statusDepot := sm.NewDepot(ledgerStore, sm.DepotSettings{DropIfaceReplies: false})
-	cs := newStatusWithSettingsAndLedgerDepot(settings, status, privateValues[0], app, ledgerStore)
+func VerifyTxpoolDelFlawedTransfer(t *testing.T) {
+	status, privateItems := arbitraryInaugurationStatus(1, false, 10, nil)
+	app := statedepot.FreshInsideRamPlatform()
+	ledgerDatastore := dbm.FreshMemoryDatastore()
+	statusDepot := sm.FreshDepot(ledgerDatastore, sm.DepotChoices{EjectIfaceReplies: false})
+	cs := freshStatusUsingSettingsAlsoLedgerDepot(settings, status, privateItems[0], app, ledgerDatastore)
 	err := statusDepot.Persist(status)
 	require.NoError(t, err)
 
 	//
-	transferOctets := objectdepot.NewTransfer("REDACTED", "REDACTED")
-	res, err := app.CompleteLedger(context.Background(), &iface.QueryCompleteLedger{Txs: [][]byte{transferOctets}})
+	transferOctets := statedepot.FreshTransfer("REDACTED", "REDACTED")
+	res, err := app.CulminateLedger(context.Background(), &iface.SolicitCulminateLedger{Txs: [][]byte{transferOctets}})
 	require.NoError(t, err)
-	assert.False(t, res.TransOutcomes[0].IsErr())
-	assert.True(t, len(res.ApplicationDigest) > 0)
+	assert.False(t, res.TransferOutcomes[0].EqualsFault())
+	assert.True(t, len(res.PlatformDigest) > 0)
 
-	_, err = app.Endorse(context.Background(), &iface.QueryEndorse{})
+	_, err = app.Endorse(context.Background(), &iface.SolicitEndorse{})
 	require.NoError(t, err)
 
-	emptyTxpoolChan := make(chan struct{})
-	inspectTransferReplyChan := make(chan struct{})
+	blankTxpoolConduit := make(chan struct{})
+	inspectTransferReplyConduit := make(chan struct{})
 	go func() {
 		//
 		//
 		//
-		corruptTransfer := []byte("REDACTED")
-		err := validateTxpool(cs.transferAlerter).InspectTransfer(corruptTransfer, func(r *iface.AnswerInspectTransfer) {
-			if r.Code != objectdepot.CodeKindCorruptTransferLayout {
+		unfitTransfer := []byte("REDACTED")
+		err := validateTxpool(cs.transferObserver).InspectTransfer(unfitTransfer, func(r *iface.ReplyInspectTransfer) {
+			if r.Cipher != statedepot.CipherKindUnfitTransferLayout {
 				t.Errorf("REDACTED", r)
 				return
 			}
-			inspectTransferReplyChan <- struct{}{}
-		}, txpool.TransferDetails{})
+			inspectTransferReplyConduit <- struct{}{}
+		}, txpooll.TransferDetails{})
 		if err != nil {
 			t.Errorf("REDACTED", err)
 			return
@@ -180,9 +180,9 @@ func VerifyTxpoolRemoveFlawedTransfer(t *testing.T) {
 
 		//
 		for {
-			txs := validateTxpool(cs.transferAlerter).HarvestMaximumOctetsMaximumFuel(int64(len(corruptTransfer)), -1)
+			txs := validateTxpool(cs.transferObserver).HarvestMaximumOctetsMaximumFuel(int64(len(unfitTransfer)), -1)
 			if len(txs) == 0 {
-				emptyTxpoolChan <- struct{}{}
+				blankTxpoolConduit <- struct{}{}
 				return
 			}
 			time.Sleep(10 * time.Millisecond)
@@ -190,21 +190,21 @@ func VerifyTxpoolRemoveFlawedTransfer(t *testing.T) {
 	}()
 
 	//
-	timer := time.After(time.Second * 5)
+	metronome := time.After(time.Second * 5)
 	select {
-	case <-inspectTransferReplyChan:
+	case <-inspectTransferReplyConduit:
 		//
-	case <-timer:
+	case <-metronome:
 		t.Errorf("REDACTED")
 		return
 	}
 
 	//
-	timer = time.After(time.Second * 5)
+	metronome = time.After(time.Second * 5)
 	select {
-	case <-emptyTxpoolChan:
+	case <-blankTxpoolConduit:
 		//
-	case <-timer:
+	case <-metronome:
 		t.Errorf("REDACTED")
 		return
 	}

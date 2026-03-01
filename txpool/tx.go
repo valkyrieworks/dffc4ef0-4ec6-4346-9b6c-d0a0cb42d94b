@@ -1,7 +1,7 @@
 package txpool
 
 import (
-	"github.com/valkyrieworks/p2p"
+	"github.com/valkyrieworks/dffc4ef0-4ec6-4346-9b6c-d0a0cb42d94b/p2p"
 )
 
 //
@@ -10,8 +10,8 @@ type TransferDetails struct {
 	//
 	//
 	//
-	EmitterUID uint16
+	OriginatorUUID uint16
 
 	//
-	EmitterP2pid p2p.ID
+	OriginatorNodeid p2p.ID
 }

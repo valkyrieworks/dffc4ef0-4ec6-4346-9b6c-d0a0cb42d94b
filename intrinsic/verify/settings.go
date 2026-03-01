@@ -5,44 +5,44 @@ import (
 	"os"
 	"path/filepath"
 
-	"github.com/valkyrieworks/settings"
-	cometos "github.com/valkyrieworks/utils/os"
+	"github.com/valkyrieworks/dffc4ef0-4ec6-4346-9b6c-d0a0cb42d94b/settings"
+	strongos "github.com/valkyrieworks/dffc4ef0-4ec6-4346-9b6c-d0a0cb42d94b/utils/os"
 )
 
-func RestoreVerifyOrigin(verifyLabel string) *settings.Settings {
-	return RestoreVerifyRootWithSeriesUID(verifyLabel, "REDACTED")
+func RestoreVerifyOrigin(verifyAlias string) *settings.Settings {
+	return RestoreVerifyOriginUsingSuccessionUUID(verifyAlias, "REDACTED")
 }
 
-func RestoreVerifyRootWithSeriesUID(verifyLabel string, ledgerUID string) *settings.Settings {
+func RestoreVerifyOriginUsingSuccessionUUID(verifyAlias string, successionUUID string) *settings.Settings {
 	//
-	originFolder, err := os.MkdirTemp("REDACTED", fmt.Sprintf("REDACTED", ledgerUID, verifyLabel))
+	originPath, err := os.MkdirTemp("REDACTED", fmt.Sprintf("REDACTED", successionUUID, verifyAlias))
 	if err != nil {
 		panic(err)
 	}
 
-	settings.AssureOrigin(originFolder)
+	settings.AssureOrigin(originPath)
 
-	rootSettings := settings.StandardRootSettings()
-	originEntryRoute := filepath.Join(originFolder, rootSettings.Origin)
-	privateKeyEntryRoute := filepath.Join(originFolder, rootSettings.PrivateRatifierKey)
-	privateStatusEntryRoute := filepath.Join(originFolder, rootSettings.PrivateRatifierStatus)
+	foundationSettings := settings.FallbackFoundationSettings()
+	inaugurationRecordRoute := filepath.Join(originPath, foundationSettings.Inauguration)
+	privateTokenRecordRoute := filepath.Join(originPath, foundationSettings.PrivateAssessorToken)
+	privateStatusRecordRoute := filepath.Join(originPath, foundationSettings.PrivateAssessorStatus)
 
-	if !cometos.EntryPresent(originEntryRoute) {
-		if ledgerUID == "REDACTED" {
-			ledgerUID = StandardVerifyLedgerUID
+	if !strongos.RecordPresent(inaugurationRecordRoute) {
+		if successionUUID == "REDACTED" {
+			successionUUID = FallbackVerifySuccessionUUID
 		}
-		verifyOrigin := fmt.Sprintf(verifyOriginFmt, ledgerUID)
-		cometos.ShouldRecordEntry(originEntryRoute, []byte(verifyOrigin), 0o644)
+		verifyInauguration := fmt.Sprintf(verifyInaugurationTextformat, successionUUID)
+		strongos.ShouldRecordRecord(inaugurationRecordRoute, []byte(verifyInauguration), 0o644)
 	}
 	//
-	cometos.ShouldRecordEntry(privateKeyEntryRoute, []byte(verifyPrivateRatifierKey), 0o644)
-	cometos.ShouldRecordEntry(privateStatusEntryRoute, []byte(verifyPrivateRatifierStatus), 0o644)
+	strongos.ShouldRecordRecord(privateTokenRecordRoute, []byte(verifyPrivateAssessorToken), 0o644)
+	strongos.ShouldRecordRecord(privateStatusRecordRoute, []byte(verifyPrivateAssessorStatus), 0o644)
 
-	settings := settings.VerifySettings().AssignOrigin(originFolder)
+	settings := settings.VerifySettings().AssignOrigin(originPath)
 	return settings
 }
 
-var verifyOriginFmt = `REDACTED{
+var verifyInaugurationTextformat = `REDACTED{
 REDACTED,
 REDACTED,
 REDACTED,
@@ -80,7 +80,7 @@ REDACTED,
 REDACTED"
 REDACTED`
 
-var verifyPrivateRatifierKey = `REDACTED{
+var verifyPrivateAssessorToken = `REDACTED{
 REDACTED,
 REDACTED{
 REDACTED,
@@ -92,7 +92,7 @@ REDACTED"
 REDACTED}
 REDACTED`
 
-var verifyPrivateRatifierStatus = `REDACTED{
+var verifyPrivateAssessorStatus = `REDACTED{
 REDACTED,
 REDACTED,
 REDACTED0

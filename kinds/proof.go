@@ -9,13 +9,13 @@ import (
 	"strings"
 	"time"
 
-	iface "github.com/valkyrieworks/iface/kinds"
-	"github.com/valkyrieworks/vault/merkle"
-	"github.com/valkyrieworks/vault/comethash"
-	cometjson "github.com/valkyrieworks/utils/json"
-	engineseed "github.com/valkyrieworks/utils/random"
-	engineproto "github.com/valkyrieworks/schema/consensuscore/kinds"
-	cometfaults "github.com/valkyrieworks/kinds/faults"
+	iface "github.com/valkyrieworks/dffc4ef0-4ec6-4346-9b6c-d0a0cb42d94b/iface/kinds"
+	"github.com/valkyrieworks/dffc4ef0-4ec6-4346-9b6c-d0a0cb42d94b/security/hashmap"
+	"github.com/valkyrieworks/dffc4ef0-4ec6-4346-9b6c-d0a0cb42d94b/security/tenderminthash"
+	strongmindjson "github.com/valkyrieworks/dffc4ef0-4ec6-4346-9b6c-d0a0cb42d94b/utils/jsn"
+	commitrand "github.com/valkyrieworks/dffc4ef0-4ec6-4346-9b6c-d0a0cb42d94b/utils/arbitrary"
+	commitchema "github.com/valkyrieworks/dffc4ef0-4ec6-4346-9b6c-d0a0cb42d94b/schema/strongmind/kinds"
+	strongminderrors "github.com/valkyrieworks/dffc4ef0-4ec6-4346-9b6c-d0a0cb42d94b/kinds/faults"
 )
 
 //
@@ -24,22 +24,22 @@ type Proof interface {
 	Iface() []iface.Malpractice //
 	Octets() []byte            //
 	Digest() []byte             //
-	Level() int64            //
-	String() string           //
-	Time() time.Time          //
-	CertifySimple() error     //
+	Altitude() int64            //
+	Text() string           //
+	Moment() time.Time          //
+	CertifyFundamental() error     //
 }
 
 //
 
 //
 type ReplicatedBallotProof struct {
-	BallotA *Ballot `json:"ballot_a"`
+	BallotAN *Ballot `json:"ballot_an"`
 	BallotBYTE *Ballot `json:"ballot_byte"`
 
 	//
-	SumPollingEnergy int64
-	RatifierEnergy   int64
+	SumBallotingPotency int64
+	AssessorPotency   int64
 	Timestamp        time.Time
 }
 
@@ -48,53 +48,53 @@ var _ Proof = &ReplicatedBallotProof{}
 //
 //
 //
-func NewReplicatedBallotProof(vote1, ballot2 *Ballot, ledgerTime time.Time, valueCollection *RatifierAssign,
+func FreshReplicatedBallotProof(ballot1, ballot2 *Ballot, ledgerMoment time.Time, itemAssign *AssessorAssign,
 ) (*ReplicatedBallotProof, error) {
-	var ballotA, ballotBYTE *Ballot
-	if vote1 == nil || ballot2 == nil {
+	var ballotAN, ballotBYTE *Ballot
+	if ballot1 == nil || ballot2 == nil {
 		return nil, errors.New("REDACTED")
 	}
-	if valueCollection == nil {
+	if itemAssign == nil {
 		return nil, errors.New("REDACTED")
 	}
-	idx, val := valueCollection.FetchByLocation(vote1.RatifierLocation)
+	idx, val := itemAssign.ObtainViaLocation(ballot1.AssessorLocation)
 	if idx == -1 {
-		return nil, fmt.Errorf("REDACTED", vote1.RatifierLocation.String())
+		return nil, fmt.Errorf("REDACTED", ballot1.AssessorLocation.Text())
 	}
 
-	if strings.Compare(vote1.LedgerUID.Key(), ballot2.LedgerUID.Key()) == -1 {
-		ballotA = vote1
+	if strings.Compare(ballot1.LedgerUUID.Key(), ballot2.LedgerUUID.Key()) == -1 {
+		ballotAN = ballot1
 		ballotBYTE = ballot2
 	} else {
-		ballotA = ballot2
-		ballotBYTE = vote1
+		ballotAN = ballot2
+		ballotBYTE = ballot1
 	}
 	return &ReplicatedBallotProof{
-		BallotA:            ballotA,
+		BallotAN:            ballotAN,
 		BallotBYTE:            ballotBYTE,
-		SumPollingEnergy: valueCollection.SumPollingEnergy(),
-		RatifierEnergy:   val.PollingEnergy,
-		Timestamp:        ledgerTime,
+		SumBallotingPotency: itemAssign.SumBallotingPotency(),
+		AssessorPotency:   val.BallotingPotency,
+		Timestamp:        ledgerMoment,
 	}, nil
 }
 
 //
 func (dve *ReplicatedBallotProof) Iface() []iface.Malpractice {
 	return []iface.Malpractice{{
-		Kind: iface.Misconductkind_REPLICATED_BALLOT,
-		Ratifier: iface.Ratifier{
-			Location: dve.BallotA.RatifierLocation,
-			Energy:   dve.RatifierEnergy,
+		Kind: iface.Malfunctionkind_REPLICATED_BALLOT,
+		Assessor: iface.Assessor{
+			Location: dve.BallotAN.AssessorLocation,
+			Potency:   dve.AssessorPotency,
 		},
-		Level:           dve.BallotA.Level,
-		Time:             dve.Timestamp,
-		SumPollingEnergy: dve.SumPollingEnergy,
+		Altitude:           dve.BallotAN.Altitude,
+		Moment:             dve.Timestamp,
+		SumBallotingPotency: dve.SumBallotingPotency,
 	}}
 }
 
 //
 func (dve *ReplicatedBallotProof) Octets() []byte {
-	pbe := dve.ToSchema()
+	pbe := dve.TowardSchema()
 	bz, err := pbe.Serialize()
 	if err != nil {
 		panic(err)
@@ -105,74 +105,74 @@ func (dve *ReplicatedBallotProof) Octets() []byte {
 
 //
 func (dve *ReplicatedBallotProof) Digest() []byte {
-	return comethash.Sum(dve.Octets())
+	return tenderminthash.Sum(dve.Octets())
 }
 
 //
-func (dve *ReplicatedBallotProof) Level() int64 {
-	return dve.BallotA.Level
+func (dve *ReplicatedBallotProof) Altitude() int64 {
+	return dve.BallotAN.Altitude
 }
 
 //
-func (dve *ReplicatedBallotProof) String() string {
-	return fmt.Sprintf("REDACTED", dve.BallotA, dve.BallotBYTE)
+func (dve *ReplicatedBallotProof) Text() string {
+	return fmt.Sprintf("REDACTED", dve.BallotAN, dve.BallotBYTE)
 }
 
 //
-func (dve *ReplicatedBallotProof) Time() time.Time {
+func (dve *ReplicatedBallotProof) Moment() time.Time {
 	return dve.Timestamp
 }
 
 //
-func (dve *ReplicatedBallotProof) CertifySimple() error {
+func (dve *ReplicatedBallotProof) CertifyFundamental() error {
 	if dve == nil {
-		return cometfaults.ErrMandatoryField{Field: "REDACTED"}
+		return strongminderrors.FaultMandatoryAttribute{Attribute: "REDACTED"}
 	}
 
-	if dve.BallotA == nil || dve.BallotBYTE == nil {
-		return fmt.Errorf("REDACTED", dve.BallotA, dve.BallotBYTE)
+	if dve.BallotAN == nil || dve.BallotBYTE == nil {
+		return fmt.Errorf("REDACTED", dve.BallotAN, dve.BallotBYTE)
 	}
-	if err := dve.BallotA.CertifySimple(); err != nil {
+	if err := dve.BallotAN.CertifyFundamental(); err != nil {
 		return fmt.Errorf("REDACTED", err)
 	}
-	if err := dve.BallotBYTE.CertifySimple(); err != nil {
+	if err := dve.BallotBYTE.CertifyFundamental(); err != nil {
 		return fmt.Errorf("REDACTED", err)
 	}
 	//
-	if strings.Compare(dve.BallotA.LedgerUID.Key(), dve.BallotBYTE.LedgerUID.Key()) >= 0 {
+	if strings.Compare(dve.BallotAN.LedgerUUID.Key(), dve.BallotBYTE.LedgerUUID.Key()) >= 0 {
 		return errors.New("REDACTED")
 	}
 	return nil
 }
 
 //
-func (dve *ReplicatedBallotProof) ToSchema() *engineproto.ReplicatedBallotProof {
-	ballotBYTE := dve.BallotBYTE.ToSchema()
-	ballotA := dve.BallotA.ToSchema()
-	tp := engineproto.ReplicatedBallotProof{
-		BallotA:            ballotA,
+func (dve *ReplicatedBallotProof) TowardSchema() *commitchema.ReplicatedBallotProof {
+	ballotBYTE := dve.BallotBYTE.TowardSchema()
+	ballotAN := dve.BallotAN.TowardSchema()
+	tp := commitchema.ReplicatedBallotProof{
+		BallotAN:            ballotAN,
 		BallotBYTE:            ballotBYTE,
-		SumPollingEnergy: dve.SumPollingEnergy,
-		RatifierEnergy:   dve.RatifierEnergy,
+		SumBallotingPotency: dve.SumBallotingPotency,
+		AssessorPotency:   dve.AssessorPotency,
 		Timestamp:        dve.Timestamp,
 	}
 	return &tp
 }
 
 //
-func ReplicatedBallotProofFromSchema(pb *engineproto.ReplicatedBallotProof) (*ReplicatedBallotProof, error) {
+func ReplicatedBallotProofOriginatingSchema(pb *commitchema.ReplicatedBallotProof) (*ReplicatedBallotProof, error) {
 	if pb == nil {
 		return nil, errors.New("REDACTED")
 	}
 
 	var vA *Ballot
-	if pb.BallotA != nil {
+	if pb.BallotAN != nil {
 		var err error
-		vA, err = BallotFromSchema(pb.BallotA)
+		vA, err = BallotOriginatingSchema(pb.BallotAN)
 		if err != nil {
 			return nil, err
 		}
-		if err = vA.CertifySimple(); err != nil {
+		if err = vA.CertifyFundamental(); err != nil {
 			return nil, err
 		}
 	}
@@ -180,24 +180,24 @@ func ReplicatedBallotProofFromSchema(pb *engineproto.ReplicatedBallotProof) (*Re
 	var vB *Ballot
 	if pb.BallotBYTE != nil {
 		var err error
-		vB, err = BallotFromSchema(pb.BallotBYTE)
+		vB, err = BallotOriginatingSchema(pb.BallotBYTE)
 		if err != nil {
 			return nil, err
 		}
-		if err = vB.CertifySimple(); err != nil {
+		if err = vB.CertifyFundamental(); err != nil {
 			return nil, err
 		}
 	}
 
 	dve := &ReplicatedBallotProof{
-		BallotA:            vA,
+		BallotAN:            vA,
 		BallotBYTE:            vB,
-		SumPollingEnergy: pb.SumPollingEnergy,
-		RatifierEnergy:   pb.RatifierEnergy,
+		SumBallotingPotency: pb.SumBallotingPotency,
+		AssessorPotency:   pb.AssessorPotency,
 		Timestamp:        pb.Timestamp,
 	}
 
-	return dve, dve.CertifySimple()
+	return dve, dve.CertifyFundamental()
 }
 
 //
@@ -207,36 +207,36 @@ func ReplicatedBallotProofFromSchema(pb *engineproto.ReplicatedBallotProof) (*Re
 //
 //
 //
-type RapidCustomerAssaultProof struct {
-	ClashingLedger *RapidLedger
-	SharedLevel     int64
+type AgileCustomerOnslaughtProof struct {
+	DiscordantLedger *AgileLedger
+	SharedAltitude     int64
 
 	//
-	FaultyRatifiers []*Ratifier //
-	SumPollingEnergy    int64        //
+	TreacherousAssessors []*Assessor //
+	SumBallotingPotency    int64        //
 	Timestamp           time.Time    //
 }
 
-var _ Proof = &RapidCustomerAssaultProof{}
+var _ Proof = &AgileCustomerOnslaughtProof{}
 
 //
-func (l *RapidCustomerAssaultProof) Iface() []iface.Malpractice {
-	ifaceEvt := make([]iface.Malpractice, len(l.FaultyRatifiers))
-	for idx, val := range l.FaultyRatifiers {
-		ifaceEvt[idx] = iface.Malpractice{
-			Kind:             iface.Misconductkind_RAPID_CUSTOMER_ASSAULT,
-			Ratifier:        Tm2schema.Ratifier(val),
-			Level:           l.Level(),
-			Time:             l.Timestamp,
-			SumPollingEnergy: l.SumPollingEnergy,
+func (l *AgileCustomerOnslaughtProof) Iface() []iface.Malpractice {
+	ifaceOccurence := make([]iface.Malpractice, len(l.TreacherousAssessors))
+	for idx, val := range l.TreacherousAssessors {
+		ifaceOccurence[idx] = iface.Malpractice{
+			Kind:             iface.Malfunctionkind_AGILE_CUSTOMER_ONSLAUGHT,
+			Assessor:        Temp2buffer.Assessor(val),
+			Altitude:           l.Altitude(),
+			Moment:             l.Timestamp,
+			SumBallotingPotency: l.SumBallotingPotency,
 		}
 	}
-	return ifaceEvt
+	return ifaceOccurence
 }
 
 //
-func (l *RapidCustomerAssaultProof) Octets() []byte {
-	pbe, err := l.ToSchema()
+func (l *AgileCustomerOnslaughtProof) Octets() []byte {
+	pbe, err := l.TowardSchema()
 	if err != nil {
 		panic(err)
 	}
@@ -250,65 +250,65 @@ func (l *RapidCustomerAssaultProof) Octets() []byte {
 //
 //
 //
-func (l *RapidCustomerAssaultProof) FetchFaultyRatifiers(sharedValues *RatifierAssign,
-	validated *AttestedHeading,
-) []*Ratifier {
-	var ratifiers []*Ratifier
+func (l *AgileCustomerOnslaughtProof) ObtainTreacherousAssessors(sharedValues *AssessorAssign,
+	reliable *NotatedHeading,
+) []*Assessor {
+	var assessors []*Assessor
 	//
 	//
-	if l.ClashingHeadingIsCorrupt(validated.Heading) {
-		for _, endorseSignature := range l.ClashingLedger.Endorse.Endorsements {
-			if endorseSignature.LedgerUIDMark != LedgerUIDMarkEndorse {
+	if l.DiscordantHeadingEqualsUnfit(reliable.Heading) {
+		for _, endorseSignature := range l.DiscordantLedger.Endorse.Notations {
+			if endorseSignature.LedgerUUIDMarker != LedgerUUIDMarkerEndorse {
 				continue
 			}
 
-			_, val := sharedValues.FetchByLocation(endorseSignature.RatifierLocation)
+			_, val := sharedValues.ObtainViaLocation(endorseSignature.AssessorLocation)
 			if val == nil {
 				//
 				continue
 			}
-			ratifiers = append(ratifiers, val)
+			assessors = append(assessors, val)
 		}
-		sort.Sort(RatifiersByPollingEnergy(ratifiers))
-		return ratifiers
-	} else if validated.Endorse.Cycle == l.ClashingLedger.Endorse.Cycle {
+		sort.Sort(AssessorsViaBallotingPotency(assessors))
+		return assessors
+	} else if reliable.Endorse.Iteration == l.DiscordantLedger.Endorse.Iteration {
 		//
 		//
 		//
 		//
-		for i := 0; i < len(l.ClashingLedger.Endorse.Endorsements); i++ {
-			signatureA := l.ClashingLedger.Endorse.Endorsements[i]
-			if signatureA.LedgerUIDMark != LedgerUIDMarkEndorse {
+		for i := 0; i < len(l.DiscordantLedger.Endorse.Notations); i++ {
+			signatureAN := l.DiscordantLedger.Endorse.Notations[i]
+			if signatureAN.LedgerUUIDMarker != LedgerUUIDMarkerEndorse {
 				continue
 			}
 
-			signatureBYTE := validated.Endorse.Endorsements[i]
-			if signatureBYTE.LedgerUIDMark != LedgerUIDMarkEndorse {
+			signatureBYTE := reliable.Endorse.Notations[i]
+			if signatureBYTE.LedgerUUIDMarker != LedgerUUIDMarkerEndorse {
 				continue
 			}
 
-			_, val := l.ClashingLedger.RatifierAssign.FetchByLocation(signatureA.RatifierLocation)
-			ratifiers = append(ratifiers, val)
+			_, val := l.DiscordantLedger.AssessorAssign.ObtainViaLocation(signatureAN.AssessorLocation)
+			assessors = append(assessors, val)
 		}
-		sort.Sort(RatifiersByPollingEnergy(ratifiers))
-		return ratifiers
+		sort.Sort(AssessorsViaBallotingPotency(assessors))
+		return assessors
 	}
 	//
 	//
 	//
-	return ratifiers
+	return assessors
 }
 
 //
 //
 //
 //
-func (l *RapidCustomerAssaultProof) ClashingHeadingIsCorrupt(validatedHeading *Heading) bool {
-	return !bytes.Equal(validatedHeading.RatifiersDigest, l.ClashingLedger.RatifiersDigest) ||
-		!bytes.Equal(validatedHeading.FollowingRatifiersDigest, l.ClashingLedger.FollowingRatifiersDigest) ||
-		!bytes.Equal(validatedHeading.AgreementDigest, l.ClashingLedger.AgreementDigest) ||
-		!bytes.Equal(validatedHeading.ApplicationDigest, l.ClashingLedger.ApplicationDigest) ||
-		!bytes.Equal(validatedHeading.FinalOutcomesDigest, l.ClashingLedger.FinalOutcomesDigest)
+func (l *AgileCustomerOnslaughtProof) DiscordantHeadingEqualsUnfit(reliableHeading *Heading) bool {
+	return !bytes.Equal(reliableHeading.AssessorsDigest, l.DiscordantLedger.AssessorsDigest) ||
+		!bytes.Equal(reliableHeading.FollowingAssessorsDigest, l.DiscordantLedger.FollowingAssessorsDigest) ||
+		!bytes.Equal(reliableHeading.AgreementDigest, l.DiscordantLedger.AgreementDigest) ||
+		!bytes.Equal(reliableHeading.PlatformDigest, l.DiscordantLedger.PlatformDigest) ||
+		!bytes.Equal(reliableHeading.FinalOutcomesDigest, l.DiscordantLedger.FinalOutcomesDigest)
 }
 
 //
@@ -319,67 +319,67 @@ func (l *RapidCustomerAssaultProof) ClashingHeadingIsCorrupt(validatedHeading *H
 //
 //
 //
-func (l *RapidCustomerAssaultProof) Digest() []byte {
+func (l *AgileCustomerOnslaughtProof) Digest() []byte {
 	buf := make([]byte, binary.MaxVarintLen64)
-	n := binary.PutVarint(buf, l.SharedLevel)
-	bz := make([]byte, comethash.Volume+n)
-	copy(bz[:comethash.Volume-1], l.ClashingLedger.Digest().Octets())
-	copy(bz[comethash.Volume:], buf)
-	return comethash.Sum(bz)
+	n := binary.PutVarint(buf, l.SharedAltitude)
+	bz := make([]byte, tenderminthash.Extent+n)
+	copy(bz[:tenderminthash.Extent-1], l.DiscordantLedger.Digest().Octets())
+	copy(bz[tenderminthash.Extent:], buf)
+	return tenderminthash.Sum(bz)
 }
 
 //
 //
 //
-func (l *RapidCustomerAssaultProof) Level() int64 {
-	return l.SharedLevel
+func (l *AgileCustomerOnslaughtProof) Altitude() int64 {
+	return l.SharedAltitude
 }
 
 //
-func (l *RapidCustomerAssaultProof) String() string {
+func (l *AgileCustomerOnslaughtProof) Text() string {
 	return fmt.Sprintf(`REDACTED{
 REDACTED,
 REDACTED,
 REDACTED,
 REDACTED,
 REDACTED`,
-		l.ClashingLedger.String(), l.SharedLevel, l.FaultyRatifiers,
-		l.SumPollingEnergy, l.Timestamp, l.Digest())
+		l.DiscordantLedger.Text(), l.SharedAltitude, l.TreacherousAssessors,
+		l.SumBallotingPotency, l.Timestamp, l.Digest())
 }
 
 //
-func (l *RapidCustomerAssaultProof) Time() time.Time {
+func (l *AgileCustomerOnslaughtProof) Moment() time.Time {
 	return l.Timestamp
 }
 
 //
-func (l *RapidCustomerAssaultProof) CertifySimple() error {
-	if l.ClashingLedger == nil {
+func (l *AgileCustomerOnslaughtProof) CertifyFundamental() error {
+	if l.DiscordantLedger == nil {
 		return errors.New("REDACTED")
 	}
 
 	//
-	if l.ClashingLedger.Heading == nil {
+	if l.DiscordantLedger.Heading == nil {
 		return errors.New("REDACTED")
 	}
 
-	if l.SumPollingEnergy <= 0 {
+	if l.SumBallotingPotency <= 0 {
 		return errors.New("REDACTED")
 	}
 
-	if l.SharedLevel <= 0 {
+	if l.SharedAltitude <= 0 {
 		return errors.New("REDACTED")
 	}
 
 	//
 	//
 	//
-	if l.SharedLevel > l.ClashingLedger.Level {
+	if l.SharedAltitude > l.DiscordantLedger.Altitude {
 		return fmt.Errorf("REDACTED",
-			l.SharedLevel, l.ClashingLedger.Level)
+			l.SharedAltitude, l.DiscordantLedger.Altitude)
 	}
 
-	if err := l.ClashingLedger.CertifySimple(l.ClashingLedger.LedgerUID); err != nil {
+	if err := l.DiscordantLedger.CertifyFundamental(l.DiscordantLedger.SuccessionUUID); err != nil {
 		return fmt.Errorf("REDACTED", err)
 	}
 
@@ -387,59 +387,59 @@ func (l *RapidCustomerAssaultProof) CertifySimple() error {
 }
 
 //
-func (l *RapidCustomerAssaultProof) ToSchema() (*engineproto.RapidCustomerAssaultProof, error) {
-	clashingLedger, err := l.ClashingLedger.ToSchema()
+func (l *AgileCustomerOnslaughtProof) TowardSchema() (*commitchema.AgileCustomerOnslaughtProof, error) {
+	discordantLedger, err := l.DiscordantLedger.TowardSchema()
 	if err != nil {
 		return nil, err
 	}
 
-	byzValues := make([]*engineproto.Ratifier, len(l.FaultyRatifiers))
-	for idx, val := range l.FaultyRatifiers {
-		valueschema, err := val.ToSchema()
+	byzantineValues := make([]*commitchema.Assessor, len(l.TreacherousAssessors))
+	for idx, val := range l.TreacherousAssessors {
+		valuepb, err := val.TowardSchema()
 		if err != nil {
 			return nil, err
 		}
-		byzValues[idx] = valueschema
+		byzantineValues[idx] = valuepb
 	}
 
-	return &engineproto.RapidCustomerAssaultProof{
-		ClashingLedger:    clashingLedger,
-		SharedLevel:        l.SharedLevel,
-		FaultyRatifiers: byzValues,
-		SumPollingEnergy:    l.SumPollingEnergy,
+	return &commitchema.AgileCustomerOnslaughtProof{
+		DiscordantLedger:    discordantLedger,
+		SharedAltitude:        l.SharedAltitude,
+		TreacherousAssessors: byzantineValues,
+		SumBallotingPotency:    l.SumBallotingPotency,
 		Timestamp:           l.Timestamp,
 	}, nil
 }
 
 //
-func RapidCustomerAssaultProofFromSchema(lpb *engineproto.RapidCustomerAssaultProof) (*RapidCustomerAssaultProof, error) {
+func AgileCustomerOnslaughtProofOriginatingSchema(lpb *commitchema.AgileCustomerOnslaughtProof) (*AgileCustomerOnslaughtProof, error) {
 	if lpb == nil {
-		return nil, cometfaults.ErrMandatoryField{Field: "REDACTED"}
+		return nil, strongminderrors.FaultMandatoryAttribute{Attribute: "REDACTED"}
 	}
 
-	clashingLedger, err := RapidLedgerFromSchema(lpb.ClashingLedger)
+	discordantLedger, err := AgileLedgerOriginatingSchema(lpb.DiscordantLedger)
 	if err != nil {
 		return nil, err
 	}
 
-	byzValues := make([]*Ratifier, len(lpb.FaultyRatifiers))
-	for idx, valueschema := range lpb.FaultyRatifiers {
-		val, err := RatifierFromSchema(valueschema)
+	byzantineValues := make([]*Assessor, len(lpb.TreacherousAssessors))
+	for idx, valuepb := range lpb.TreacherousAssessors {
+		val, err := AssessorOriginatingSchema(valuepb)
 		if err != nil {
 			return nil, err
 		}
-		byzValues[idx] = val
+		byzantineValues[idx] = val
 	}
 
-	l := &RapidCustomerAssaultProof{
-		ClashingLedger:    clashingLedger,
-		SharedLevel:        lpb.SharedLevel,
-		FaultyRatifiers: byzValues,
-		SumPollingEnergy:    lpb.SumPollingEnergy,
+	l := &AgileCustomerOnslaughtProof{
+		DiscordantLedger:    discordantLedger,
+		SharedAltitude:        lpb.SharedAltitude,
+		TreacherousAssessors: byzantineValues,
+		SumBallotingPotency:    lpb.SumBallotingPotency,
 		Timestamp:           lpb.Timestamp,
 	}
 
-	return l, l.CertifySimple()
+	return l, l.CertifyFundamental()
 }
 
 //
@@ -452,16 +452,16 @@ func (evl ProofCatalog) Digest() []byte {
 	//
 	//
 	//
-	proofBzs := make([][]byte, len(evl))
+	proofByteslices := make([][]byte, len(evl))
 	for i := 0; i < len(evl); i++ {
 		//
 		//
-		proofBzs[i] = evl[i].Octets()
+		proofByteslices[i] = evl[i].Octets()
 	}
-	return merkle.DigestFromOctetSegments(proofBzs)
+	return hashmap.DigestOriginatingOctetSegments(proofByteslices)
 }
 
-func (evl ProofCatalog) String() string {
+func (evl ProofCatalog) Text() string {
 	s := "REDACTED"
 	for _, e := range evl {
 		s += fmt.Sprintf("REDACTED", e)
@@ -481,7 +481,7 @@ func (evl ProofCatalog) Has(proof Proof) bool {
 
 //
 //
-func (evl ProofCatalog) ToIface() []iface.Malpractice {
+func (evl ProofCatalog) TowardIface() []iface.Malpractice {
 	var el []iface.Malpractice
 	for _, e := range evl {
 		el = append(el, e.Iface()...)
@@ -493,28 +493,28 @@ func (evl ProofCatalog) ToIface() []iface.Malpractice {
 
 //
 //
-func ProofToSchema(proof Proof) (*engineproto.Proof, error) {
+func ProofTowardSchema(proof Proof) (*commitchema.Proof, error) {
 	if proof == nil {
 		return nil, errors.New("REDACTED")
 	}
 
 	switch evi := proof.(type) {
 	case *ReplicatedBallotProof:
-		schemav := evi.ToSchema()
-		return &engineproto.Proof{
-			Sum: &engineproto.Proof_Duplicateballotevidence{
-				ReplicatedBallotProof: schemav,
+		schemab := evi.TowardSchema()
+		return &commitchema.Proof{
+			Sum: &commitchema.Proof_Replicatedballotevidence{
+				ReplicatedBallotProof: schemab,
 			},
 		}, nil
 
-	case *RapidCustomerAssaultProof:
-		schemav, err := evi.ToSchema()
+	case *AgileCustomerOnslaughtProof:
+		schemab, err := evi.TowardSchema()
 		if err != nil {
 			return nil, err
 		}
-		return &engineproto.Proof{
-			Sum: &engineproto.Proof_Rapidcustomerevidence{
-				RapidCustomerAssaultProof: schemav,
+		return &commitchema.Proof{
+			Sum: &commitchema.Proof_Agilecustomerattackproof{
+				AgileCustomerOnslaughtProof: schemab,
 			},
 		}, nil
 
@@ -525,57 +525,57 @@ func ProofToSchema(proof Proof) (*engineproto.Proof, error) {
 
 //
 //
-func ProofFromSchema(proof *engineproto.Proof) (Proof, error) {
+func ProofOriginatingSchema(proof *commitchema.Proof) (Proof, error) {
 	if proof == nil {
 		return nil, errors.New("REDACTED")
 	}
 
 	switch evi := proof.Sum.(type) {
-	case *engineproto.Proof_Duplicateballotevidence:
-		return ReplicatedBallotProofFromSchema(evi.ReplicatedBallotProof)
-	case *engineproto.Proof_Rapidcustomerevidence:
-		return RapidCustomerAssaultProofFromSchema(evi.RapidCustomerAssaultProof)
+	case *commitchema.Proof_Replicatedballotevidence:
+		return ReplicatedBallotProofOriginatingSchema(evi.ReplicatedBallotProof)
+	case *commitchema.Proof_Agilecustomerattackproof:
+		return AgileCustomerOnslaughtProofOriginatingSchema(evi.AgileCustomerOnslaughtProof)
 	default:
 		return nil, errors.New("REDACTED")
 	}
 }
 
-func init() {
-	cometjson.EnrollKind(&ReplicatedBallotProof{}, "REDACTED")
-	cometjson.EnrollKind(&RapidCustomerAssaultProof{}, "REDACTED")
+func initialize() {
+	strongmindjson.EnrollKind(&ReplicatedBallotProof{}, "REDACTED")
+	strongmindjson.EnrollKind(&AgileCustomerOnslaughtProof{}, "REDACTED")
 }
 
 //
 
 //
-type ErrCorruptProof struct {
+type FaultUnfitProof struct {
 	Proof Proof
-	Cause   error
+	Rationale   error
 }
 
 //
-func NewErrCorruptProof(ev Proof, err error) *ErrCorruptProof {
-	return &ErrCorruptProof{ev, err}
+func FreshFaultUnfitProof(ev Proof, err error) *FaultUnfitProof {
+	return &FaultUnfitProof{ev, err}
 }
 
 //
-func (err *ErrCorruptProof) Fault() string {
-	return fmt.Sprintf("REDACTED", err.Cause, err.Proof)
+func (err *FaultUnfitProof) Failure() string {
+	return fmt.Sprintf("REDACTED", err.Rationale, err.Proof)
 }
 
 //
-type ErrProofOverload struct {
+type FaultProofOverrun struct {
 	Max int64
 	Got int64
 }
 
 //
-func NewErrProofOverload(max, got int64) *ErrProofOverload {
-	return &ErrProofOverload{max, got}
+func FreshFaultProofOverrun(max, got int64) *FaultProofOverrun {
+	return &FaultProofOverrun{max, got}
 }
 
 //
-func (err *ErrProofOverload) Fault() string {
+func (err *FaultProofOverrun) Failure() string {
 	return fmt.Sprintf("REDACTED", err.Max, err.Got)
 }
 
@@ -585,58 +585,58 @@ func (err *ErrProofOverload) Fault() string {
 
 //
 //
-func NewEmulateReplicatedBallotProof(level int64, moment time.Time, ledgerUID string) (*ReplicatedBallotProof, error) {
-	val := NewEmulatePV()
-	return NewEmulateReplicatedBallotProofWithRatifier(level, moment, val, ledgerUID)
+func FreshSimulateReplicatedBallotProof(altitude int64, moment time.Time, successionUUID string) (*ReplicatedBallotProof, error) {
+	val := FreshSimulatePRV()
+	return FreshSimulateReplicatedBallotProofUsingAssessor(altitude, moment, val, successionUUID)
 }
 
 //
 //
-func NewEmulateReplicatedBallotProofWithRatifier(level int64, moment time.Time,
-	pv PrivateRatifier, ledgerUID string,
+func FreshSimulateReplicatedBallotProofUsingAssessor(altitude int64, moment time.Time,
+	pv PrivateAssessor, successionUUID string,
 ) (*ReplicatedBallotProof, error) {
-	publicKey, err := pv.FetchPublicKey()
+	publicToken, err := pv.ObtainPublicToken()
 	if err != nil {
 		return nil, err
 	}
-	val := NewRatifier(publicKey, 10)
-	ballotA := createEmulateBallot(level, 0, 0, publicKey.Location(), randomLedgerUID(), moment)
-	vA := ballotA.ToSchema()
-	err = pv.AttestBallot(ledgerUID, vA)
+	val := FreshAssessor(publicToken, 10)
+	ballotAN := createSimulateBallot(altitude, 0, 0, publicToken.Location(), arbitraryLedgerUUID(), moment)
+	vA := ballotAN.TowardSchema()
+	err = pv.AttestBallot(successionUUID, vA)
 	if err != nil {
 		return nil, err
 	}
-	ballotA.Autograph = vA.Autograph
-	ballotBYTE := createEmulateBallot(level, 0, 0, publicKey.Location(), randomLedgerUID(), moment)
-	vB := ballotBYTE.ToSchema()
-	err = pv.AttestBallot(ledgerUID, vB)
+	ballotAN.Notation = vA.Notation
+	ballotBYTE := createSimulateBallot(altitude, 0, 0, publicToken.Location(), arbitraryLedgerUUID(), moment)
+	vB := ballotBYTE.TowardSchema()
+	err = pv.AttestBallot(successionUUID, vB)
 	if err != nil {
 		return nil, err
 	}
-	ballotBYTE.Autograph = vB.Autograph
-	return NewReplicatedBallotProof(ballotA, ballotBYTE, moment, NewRatifierCollection([]*Ratifier{val}))
+	ballotBYTE.Notation = vB.Notation
+	return FreshReplicatedBallotProof(ballotAN, ballotBYTE, moment, FreshAssessorAssign([]*Assessor{val}))
 }
 
-func createEmulateBallot(level int64, epoch, ordinal int32, address Location,
-	ledgerUID LedgerUID, moment time.Time,
+func createSimulateBallot(altitude int64, iteration, ordinal int32, location Location,
+	ledgerUUID LedgerUUID, moment time.Time,
 ) *Ballot {
 	return &Ballot{
-		Kind:             engineproto.AttestedMessageKind(2),
-		Level:           level,
-		Cycle:            epoch,
-		LedgerUID:          ledgerUID,
+		Kind:             commitchema.AttestedSignalKind(2),
+		Altitude:           altitude,
+		Iteration:            iteration,
+		LedgerUUID:          ledgerUUID,
 		Timestamp:        moment,
-		RatifierLocation: address,
-		RatifierOrdinal:   ordinal,
+		AssessorLocation: location,
+		AssessorOrdinal:   ordinal,
 	}
 }
 
-func randomLedgerUID() LedgerUID {
-	return LedgerUID{
-		Digest: engineseed.Octets(comethash.Volume),
-		SegmentAssignHeading: SegmentAssignHeading{
+func arbitraryLedgerUUID() LedgerUUID {
+	return LedgerUUID{
+		Digest: commitrand.Octets(tenderminthash.Extent),
+		FragmentAssignHeading: FragmentAssignHeading{
 			Sum: 1,
-			Digest:  engineseed.Octets(comethash.Volume),
+			Digest:  commitrand.Octets(tenderminthash.Extent),
 		},
 	}
 }

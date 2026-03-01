@@ -1,4 +1,4 @@
-package proofs_test
+package proof_test
 
 import (
 	"bytes"
@@ -8,520 +8,573 @@ import (
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/require"
 
-	dbm "github.com/valkyrieworks/-db"
+	dbm "github.com/valkyrieworks/dffc4ef0-4ec6-4346-9b6c-d0a0cb42d94b/-db"
 
-	"github.com/valkyrieworks/vault"
-	"github.com/valkyrieworks/vault/comethash"
-	"github.com/valkyrieworks/proof"
-	"github.com/valkyrieworks/proof/simulations"
-	"github.com/valkyrieworks/intrinsic/verify"
-	"github.com/valkyrieworks/utils/log"
-	engineproto "github.com/valkyrieworks/schema/consensuscore/kinds"
-	cometrelease "github.com/valkyrieworks/schema/consensuscore/release"
-	sm "github.com/valkyrieworks/status"
-	smemulators "github.com/valkyrieworks/status/simulations"
-	"github.com/valkyrieworks/kinds"
-	"github.com/valkyrieworks/release"
+	"github.com/valkyrieworks/dffc4ef0-4ec6-4346-9b6c-d0a0cb42d94b/security"
+	"github.com/valkyrieworks/dffc4ef0-4ec6-4346-9b6c-d0a0cb42d94b/security/tenderminthash"
+	"github.com/valkyrieworks/dffc4ef0-4ec6-4346-9b6c-d0a0cb42d94b/proof"
+	"github.com/valkyrieworks/dffc4ef0-4ec6-4346-9b6c-d0a0cb42d94b/proof/simulations"
+	"github.com/valkyrieworks/dffc4ef0-4ec6-4346-9b6c-d0a0cb42d94b/intrinsic/verify"
+	"github.com/valkyrieworks/dffc4ef0-4ec6-4346-9b6c-d0a0cb42d94b/utils/log"
+	commitchema "github.com/valkyrieworks/dffc4ef0-4ec6-4346-9b6c-d0a0cb42d94b/schema/strongmind/kinds"
+	strongmindedition "github.com/valkyrieworks/dffc4ef0-4ec6-4346-9b6c-d0a0cb42d94b/schema/strongmind/edition"
+	sm "github.com/valkyrieworks/dffc4ef0-4ec6-4346-9b6c-d0a0cb42d94b/status"
+	machinestubs "github.com/valkyrieworks/dffc4ef0-4ec6-4346-9b6c-d0a0cb42d94b/status/simulations"
+	"github.com/valkyrieworks/dffc4ef0-4ec6-4346-9b6c-d0a0cb42d94b/kinds"
+	"github.com/valkyrieworks/dffc4ef0-4ec6-4346-9b6c-d0a0cb42d94b/edition"
 )
 
 const (
-	standardPollingEnergy = 10
+	fallbackBallotingPotency = 10
 )
 
-func Testvalidaterapidcustomerassault_Erratic(t *testing.T) {
+func Verifyagilecustomerexploit_Insane(t *testing.T) {
 	const (
-		level       int64 = 10
-		sharedLevel int64 = 4
+		altitude       int64 = 10
+		sharedAltitude int64 = 4
 		sumValues          = 10
-		byzValues            = 4
+		byzantineValues            = 4
 	)
-	assaultTime := standardProofTime.Add(1 * time.Hour)
+	onslaughtMoment := fallbackProofMoment.Add(1 * time.Hour)
 	//
-	ev, validated, shared := createErraticProof(
-		t, level, sharedLevel, sumValues, byzValues, sumValues-byzValues, standardProofTime, assaultTime)
-	require.NoError(t, ev.CertifySimple())
+	ev, reliable, shared := createInsaneProof(
+		t, altitude, sharedAltitude, sumValues, byzantineValues, sumValues-byzantineValues, fallbackProofMoment, onslaughtMoment)
+	require.NoError(t, ev.CertifyFundamental())
 
 	//
-	err := proof.ValidateRapidCustomerAssault(ev, shared.AttestedHeading, validated.AttestedHeading, shared.RatifierAssign,
-		standardProofTime.Add(2*time.Hour), 3*time.Hour)
+	err := proof.ValidateAgileCustomerOnslaught(ev, shared.NotatedHeading, reliable.NotatedHeading, shared.AssessorAssign,
+		fallbackProofMoment.Add(2*time.Hour), 3*time.Hour)
 	assert.NoError(t, err)
 
 	//
-	err = proof.ValidateRapidCustomerAssault(ev, shared.AttestedHeading, ev.ClashingLedger.AttestedHeading, shared.RatifierAssign,
-		standardProofTime.Add(2*time.Hour), 3*time.Hour)
+	err = proof.ValidateAgileCustomerOnslaught(ev, shared.NotatedHeading, ev.DiscordantLedger.NotatedHeading, shared.AssessorAssign,
+		fallbackProofMoment.Add(2*time.Hour), 3*time.Hour)
 	assert.Error(t, err)
 
 	//
-	ev.SumPollingEnergy = 1 * standardPollingEnergy
-	err = proof.ValidateRapidCustomerAssault(ev, shared.AttestedHeading, validated.AttestedHeading, shared.RatifierAssign,
-		standardProofTime.Add(2*time.Hour), 3*time.Hour)
+	ev.SumBallotingPotency = 1 * fallbackBallotingPotency
+	err = proof.ValidateAgileCustomerOnslaught(ev, shared.NotatedHeading, reliable.NotatedHeading, shared.AssessorAssign,
+		fallbackProofMoment.Add(2*time.Hour), 3*time.Hour)
 	assert.Error(t, err)
 
 	//
-	ev, validated, shared = createErraticProof(
-		t, level, sharedLevel, sumValues, byzValues-1, sumValues-byzValues, standardProofTime, assaultTime)
-	err = proof.ValidateRapidCustomerAssault(ev, shared.AttestedHeading, validated.AttestedHeading, shared.RatifierAssign,
-		standardProofTime.Add(2*time.Hour), 3*time.Hour)
+	ev, reliable, shared = createInsaneProof(
+		t, altitude, sharedAltitude, sumValues, byzantineValues-1, sumValues-byzantineValues, fallbackProofMoment, onslaughtMoment)
+	err = proof.ValidateAgileCustomerOnslaught(ev, shared.NotatedHeading, reliable.NotatedHeading, shared.AssessorAssign,
+		fallbackProofMoment.Add(2*time.Hour), 3*time.Hour)
 	assert.Error(t, err)
 }
 
-func Testvalidate_Erraticassaultonstate(t *testing.T) {
+func Verifytest_Insaneexploitagainststate(t *testing.T) {
 	const (
-		level       int64 = 10
-		sharedLevel int64 = 4
+		altitude       int64 = 10
+		sharedAltitude int64 = 4
 		sumValues          = 10
-		byzValues            = 4
+		byzantineValues            = 4
 	)
-	assaultTime := standardProofTime.Add(1 * time.Hour)
+	onslaughtMoment := fallbackProofMoment.Add(1 * time.Hour)
 	//
-	ev, validated, shared := createErraticProof(
-		t, level, sharedLevel, sumValues, byzValues, sumValues-byzValues, standardProofTime, assaultTime)
+	ev, reliable, shared := createInsaneProof(
+		t, altitude, sharedAltitude, sumValues, byzantineValues, sumValues-byzantineValues, fallbackProofMoment, onslaughtMoment)
 
 	//
 	status := sm.Status{
-		FinalLedgerTime:   standardProofTime.Add(2 * time.Hour),
-		FinalLedgerLevel: level + 1,
-		AgreementOptions: *kinds.StandardAgreementOptions(),
+		FinalLedgerMoment:   fallbackProofMoment.Add(2 * time.Hour),
+		FinalLedgerAltitude: altitude + 1,
+		AgreementSettings: *kinds.FallbackAgreementSettings(),
 	}
-	statusDepot := &smemulators.Depot{}
-	statusDepot.On("REDACTED", sharedLevel).Return(shared.RatifierAssign, nil)
+	statusDepot := &machinestubs.Depot{}
+	statusDepot.On("REDACTED", sharedAltitude).Return(shared.AssessorAssign, nil)
 	statusDepot.On("REDACTED").Return(status, nil)
 	ledgerDepot := &simulations.LedgerDepot{}
-	ledgerDepot.On("REDACTED", sharedLevel).Return(&kinds.LedgerMeta{Heading: *shared.Heading})
-	ledgerDepot.On("REDACTED", level).Return(&kinds.LedgerMeta{Heading: *validated.Heading})
-	ledgerDepot.On("REDACTED", sharedLevel).Return(shared.Endorse)
-	ledgerDepot.On("REDACTED", level).Return(validated.Endorse)
-	depository, err := proof.NewDepository(dbm.NewMemoryStore(), statusDepot, ledgerDepot)
+	ledgerDepot.On("REDACTED", sharedAltitude).Return(&kinds.LedgerSummary{Heading: *shared.Heading})
+	ledgerDepot.On("REDACTED", altitude).Return(&kinds.LedgerSummary{Heading: *reliable.Heading})
+	ledgerDepot.On("REDACTED", sharedAltitude).Return(shared.Endorse)
+	ledgerDepot.On("REDACTED", altitude).Return(reliable.Endorse)
+	hub, err := proof.FreshHub(dbm.FreshMemoryDatastore(), statusDepot, ledgerDepot)
 	require.NoError(t, err)
-	depository.AssignTracer(log.VerifyingTracer())
+	hub.AssignTracer(log.VerifyingTracer())
 
-	evtCatalog := kinds.ProofCatalog{ev}
+	occurenceCatalog := kinds.ProofCatalog{ev}
 	//
-	assert.NoError(t, depository.InspectProof(evtCatalog))
-
-	//
-	awaitingEvidences, _ := depository.AwaitingProof(status.AgreementOptions.Proof.MaximumOctets)
-	assert.Equal(t, 1, len(awaitingEvidences))
-	assert.Equal(t, ev, awaitingEvidences[0])
+	assert.NoError(t, hub.InspectProof(occurenceCatalog))
 
 	//
-	//
-	ev.FaultyRatifiers = ev.FaultyRatifiers[:1]
-	t.Log(evtCatalog)
-	assert.Error(t, depository.InspectProof(evtCatalog))
-	//
-	ev.FaultyRatifiers = ev.FetchFaultyRatifiers(shared.RatifierAssign, validated.AttestedHeading)
+	awaitingProofs, _ := hub.AwaitingProof(status.AgreementSettings.Proof.MaximumOctets)
+	assert.Equal(t, 1, len(awaitingProofs))
+	assert.Equal(t, ev, awaitingProofs[0])
 
 	//
-	evtCatalog = kinds.ProofCatalog{ev, ev}
-	depository, err = proof.NewDepository(dbm.NewMemoryStore(), statusDepot, ledgerDepot)
+	//
+	ev.TreacherousAssessors = ev.TreacherousAssessors[:1]
+	t.Log(occurenceCatalog)
+	assert.Error(t, hub.InspectProof(occurenceCatalog))
+	//
+	ev.TreacherousAssessors = ev.ObtainTreacherousAssessors(shared.AssessorAssign, reliable.NotatedHeading)
+
+	//
+	occurenceCatalog = kinds.ProofCatalog{ev, ev}
+	hub, err = proof.FreshHub(dbm.FreshMemoryDatastore(), statusDepot, ledgerDepot)
 	require.NoError(t, err)
-	assert.Error(t, depository.InspectProof(evtCatalog))
+	assert.Error(t, hub.InspectProof(occurenceCatalog))
 
 	//
-	ev.Timestamp = standardProofTime.Add(1 * time.Minute)
-	depository, err = proof.NewDepository(dbm.NewMemoryStore(), statusDepot, ledgerDepot)
+	ev.Timestamp = fallbackProofMoment.Add(1 * time.Minute)
+	hub, err = proof.FreshHub(dbm.FreshMemoryDatastore(), statusDepot, ledgerDepot)
 	require.NoError(t, err)
-	assert.Error(t, depository.AppendProof(ev))
-	ev.Timestamp = standardProofTime
+	assert.Error(t, hub.AppendProof(ev))
+	ev.Timestamp = fallbackProofMoment
 
 	//
-	ev.SumPollingEnergy = 1
-	depository, err = proof.NewDepository(dbm.NewMemoryStore(), statusDepot, ledgerDepot)
+	ev.SumBallotingPotency = 1
+	hub, err = proof.FreshHub(dbm.FreshMemoryDatastore(), statusDepot, ledgerDepot)
 	require.NoError(t, err)
-	assert.Error(t, depository.AppendProof(ev))
-	ev.SumPollingEnergy = shared.RatifierAssign.SumPollingEnergy()
+	assert.Error(t, hub.AppendProof(ev))
+	ev.SumBallotingPotency = shared.AssessorAssign.SumBallotingPotency()
 }
 
-func Testvalidate_Transmiterraticassault(t *testing.T) {
+func Verifytest_Insaneexploit_Byzantineassessorpubkeyswapredirectsabcimisbehavior(t *testing.T) {
 	const (
-		memberLevel   int64 = 8
-		assaultLevel int64 = 10
-		sharedLevel int64 = 4
+		altitude       int64 = 10
+		sharedAltitude int64 = 4
 		sumValues          = 10
-		byzValues            = 5
+		byzantineValues            = 4
 	)
-	assaultTime := standardProofTime.Add(1 * time.Hour)
+	onslaughtMoment := fallbackProofMoment.Add(1 * time.Hour)
+
+	ev, reliable, shared := createInsaneProof(
+		t, altitude, sharedAltitude, sumValues, byzantineValues, sumValues-byzantineValues, fallbackProofMoment, onslaughtMoment)
+
+	require.Len(t, ev.TreacherousAssessors, byzantineValues)
+	require.GreaterOrEqual(t, shared.AssessorAssign.Extent(), byzantineValues*2)
+	anotherValues := shared.AssessorAssign.Assessors[byzantineValues : byzantineValues+byzantineValues]
+
+	initialByzantine := ev.TreacherousAssessors
+	adjustedByzantine := make([]*kinds.Assessor, len(initialByzantine))
+	for i := range initialByzantine {
+		initial := initialByzantine[i]
+		another := anotherValues[i]
+		adjustedByzantine[i] = &kinds.Assessor{
+			Location:          initial.Location,
+			PublicToken:           another.PublicToken,
+			BallotingPotency:      initial.BallotingPotency,
+			NominatorUrgency: initial.NominatorUrgency,
+		}
+	}
+	ev.TreacherousAssessors = adjustedByzantine
+
+	status := sm.Status{
+		FinalLedgerMoment:   fallbackProofMoment.Add(2 * time.Hour),
+		FinalLedgerAltitude: altitude + 1,
+		AgreementSettings: *kinds.FallbackAgreementSettings(),
+	}
+	statusDepot := &machinestubs.Depot{}
+	statusDepot.On("REDACTED", sharedAltitude).Return(shared.AssessorAssign, nil)
+	statusDepot.On("REDACTED").Return(status, nil)
+	ledgerDepot := &simulations.LedgerDepot{}
+	ledgerDepot.On("REDACTED", sharedAltitude).Return(&kinds.LedgerSummary{Heading: *shared.Heading})
+	ledgerDepot.On("REDACTED", altitude).Return(&kinds.LedgerSummary{Heading: *reliable.Heading})
+	ledgerDepot.On("REDACTED", sharedAltitude).Return(shared.Endorse)
+	ledgerDepot.On("REDACTED", altitude).Return(reliable.Endorse)
+
+	hub, err := proof.FreshHub(dbm.FreshMemoryDatastore(), statusDepot, ledgerDepot)
+	require.NoError(t, err)
+	hub.AssignTracer(log.VerifyingTracer())
+
+	err = hub.AppendProof(ev)
+	require.Error(t, err)
+	require.Contains(t, err.Error(), "REDACTED")
+}
+
+func Verifytest_Relayinsaneexploit(t *testing.T) {
+	const (
+		peerAltitude   int64 = 8
+		onslaughtAltitude int64 = 10
+		sharedAltitude int64 = 4
+		sumValues          = 10
+		byzantineValues            = 5
+	)
+	onslaughtMoment := fallbackProofMoment.Add(1 * time.Hour)
 
 	//
-	ev, validated, shared := createErraticProof(
-		t, assaultLevel, sharedLevel, sumValues, byzValues, sumValues-byzValues, standardProofTime, assaultTime)
+	ev, reliable, shared := createInsaneProof(
+		t, onslaughtAltitude, sharedAltitude, sumValues, byzantineValues, sumValues-byzantineValues, fallbackProofMoment, onslaughtMoment)
 
 	//
 	status := sm.Status{
-		FinalLedgerTime:   standardProofTime.Add(2 * time.Hour),
-		FinalLedgerLevel: memberLevel,
-		AgreementOptions: *kinds.StandardAgreementOptions(),
+		FinalLedgerMoment:   fallbackProofMoment.Add(2 * time.Hour),
+		FinalLedgerAltitude: peerAltitude,
+		AgreementSettings: *kinds.FallbackAgreementSettings(),
 	}
 
 	//
-	validated.Level = status.FinalLedgerLevel
-	validated.Time = status.FinalLedgerTime
+	reliable.Altitude = status.FinalLedgerAltitude
+	reliable.Moment = status.FinalLedgerMoment
 
-	statusDepot := &smemulators.Depot{}
-	statusDepot.On("REDACTED", sharedLevel).Return(shared.RatifierAssign, nil)
+	statusDepot := &machinestubs.Depot{}
+	statusDepot.On("REDACTED", sharedAltitude).Return(shared.AssessorAssign, nil)
 	statusDepot.On("REDACTED").Return(status, nil)
 	ledgerDepot := &simulations.LedgerDepot{}
-	ledgerDepot.On("REDACTED", sharedLevel).Return(&kinds.LedgerMeta{Heading: *shared.Heading})
-	ledgerDepot.On("REDACTED", memberLevel).Return(&kinds.LedgerMeta{Heading: *validated.Heading})
-	ledgerDepot.On("REDACTED", assaultLevel).Return(nil)
-	ledgerDepot.On("REDACTED", sharedLevel).Return(shared.Endorse)
-	ledgerDepot.On("REDACTED", memberLevel).Return(validated.Endorse)
-	ledgerDepot.On("REDACTED").Return(memberLevel)
-	depository, err := proof.NewDepository(dbm.NewMemoryStore(), statusDepot, ledgerDepot)
+	ledgerDepot.On("REDACTED", sharedAltitude).Return(&kinds.LedgerSummary{Heading: *shared.Heading})
+	ledgerDepot.On("REDACTED", peerAltitude).Return(&kinds.LedgerSummary{Heading: *reliable.Heading})
+	ledgerDepot.On("REDACTED", onslaughtAltitude).Return(nil)
+	ledgerDepot.On("REDACTED", sharedAltitude).Return(shared.Endorse)
+	ledgerDepot.On("REDACTED", peerAltitude).Return(reliable.Endorse)
+	ledgerDepot.On("REDACTED").Return(peerAltitude)
+	hub, err := proof.FreshHub(dbm.FreshMemoryDatastore(), statusDepot, ledgerDepot)
 	require.NoError(t, err)
 
 	//
-	assert.NoError(t, depository.InspectProof(kinds.ProofCatalog{ev}))
+	assert.NoError(t, hub.InspectProof(kinds.ProofCatalog{ev}))
 
 	//
 	agedLedgerDepot := &simulations.LedgerDepot{}
-	agedHeading := validated.Heading
-	agedHeading.Time = standardProofTime
-	agedLedgerDepot.On("REDACTED", sharedLevel).Return(&kinds.LedgerMeta{Heading: *shared.Heading})
-	agedLedgerDepot.On("REDACTED", memberLevel).Return(&kinds.LedgerMeta{Heading: *agedHeading})
-	agedLedgerDepot.On("REDACTED", assaultLevel).Return(nil)
-	agedLedgerDepot.On("REDACTED", sharedLevel).Return(shared.Endorse)
-	agedLedgerDepot.On("REDACTED", memberLevel).Return(validated.Endorse)
-	agedLedgerDepot.On("REDACTED").Return(memberLevel)
-	require.Equal(t, standardProofTime, agedLedgerDepot.ImportLedgerMeta(memberLevel).Heading.Time)
+	agedHeadline := reliable.Heading
+	agedHeadline.Moment = fallbackProofMoment
+	agedLedgerDepot.On("REDACTED", sharedAltitude).Return(&kinds.LedgerSummary{Heading: *shared.Heading})
+	agedLedgerDepot.On("REDACTED", peerAltitude).Return(&kinds.LedgerSummary{Heading: *agedHeadline})
+	agedLedgerDepot.On("REDACTED", onslaughtAltitude).Return(nil)
+	agedLedgerDepot.On("REDACTED", sharedAltitude).Return(shared.Endorse)
+	agedLedgerDepot.On("REDACTED", peerAltitude).Return(reliable.Endorse)
+	agedLedgerDepot.On("REDACTED").Return(peerAltitude)
+	require.Equal(t, fallbackProofMoment, agedLedgerDepot.FetchLedgerSummary(peerAltitude).Heading.Moment)
 
-	depository, err = proof.NewDepository(dbm.NewMemoryStore(), statusDepot, agedLedgerDepot)
+	hub, err = proof.FreshHub(dbm.FreshMemoryDatastore(), statusDepot, agedLedgerDepot)
 	require.NoError(t, err)
-	assert.Error(t, depository.InspectProof(kinds.ProofCatalog{ev}))
+	assert.Error(t, hub.InspectProof(kinds.ProofCatalog{ev}))
 }
 
-func Testvalidaterapidcustomerassault_Ambiguity(t *testing.T) {
-	clashingValues, clashingPrivateValues := kinds.RandomRatifierCollection(5, 10)
-	validatedHeading := createHeadingArbitrary(10)
+func Verifyagilecustomerexploit_Ambiguity(t *testing.T) {
+	discordantValues, discordantPrivateValues := kinds.ArbitraryAssessorAssign(5, 10)
+	reliableHeading := createHeadingUnpredictable(10)
 
-	clashingHeading := createHeadingArbitrary(10)
-	clashingHeading.RatifiersDigest = clashingValues.Digest()
+	discordantHeadline := createHeadingUnpredictable(10)
+	discordantHeadline.AssessorsDigest = discordantValues.Digest()
 
-	validatedHeading.RatifiersDigest = clashingHeading.RatifiersDigest
-	validatedHeading.FollowingRatifiersDigest = clashingHeading.FollowingRatifiersDigest
-	validatedHeading.AgreementDigest = clashingHeading.AgreementDigest
-	validatedHeading.ApplicationDigest = clashingHeading.ApplicationDigest
-	validatedHeading.FinalOutcomesDigest = clashingHeading.FinalOutcomesDigest
+	reliableHeading.AssessorsDigest = discordantHeadline.AssessorsDigest
+	reliableHeading.FollowingAssessorsDigest = discordantHeadline.FollowingAssessorsDigest
+	reliableHeading.AgreementDigest = discordantHeadline.AgreementDigest
+	reliableHeading.PlatformDigest = discordantHeadline.PlatformDigest
+	reliableHeading.FinalOutcomesDigest = discordantHeadline.FinalOutcomesDigest
 
 	//
 	//
-	ledgerUID := createLedgerUID(clashingHeading.Digest(), 1000, []byte("REDACTED"))
-	ballotCollection := kinds.NewBallotCollection(proofSeriesUID, 10, 1, engineproto.AttestedMessageKind(2), clashingValues)
-	endorse, err := verify.CreateEndorseFromBallotCollection(ledgerUID, ballotCollection, clashingPrivateValues[:4], standardProofTime)
+	ledgerUUID := createLedgerUUID(discordantHeadline.Digest(), 1000, []byte("REDACTED"))
+	ballotAssign := kinds.FreshBallotAssign(proofSuccessionUUID, 10, 1, commitchema.AttestedSignalKind(2), discordantValues)
+	endorse, err := verify.CreateEndorseOriginatingBallotAssign(ledgerUUID, ballotAssign, discordantPrivateValues[:4], fallbackProofMoment)
 	require.NoError(t, err)
-	ev := &kinds.RapidCustomerAssaultProof{
-		ClashingLedger: &kinds.RapidLedger{
-			AttestedHeading: &kinds.AttestedHeading{
-				Heading: clashingHeading,
+	ev := &kinds.AgileCustomerOnslaughtProof{
+		DiscordantLedger: &kinds.AgileLedger{
+			NotatedHeading: &kinds.NotatedHeading{
+				Heading: discordantHeadline,
 				Endorse: endorse,
 			},
-			RatifierAssign: clashingValues,
+			AssessorAssign: discordantValues,
 		},
-		SharedLevel:        10,
-		FaultyRatifiers: clashingValues.Ratifiers[:4],
-		SumPollingEnergy:    50,
-		Timestamp:           standardProofTime,
+		SharedAltitude:        10,
+		TreacherousAssessors: discordantValues.Assessors[:4],
+		SumBallotingPotency:    50,
+		Timestamp:           fallbackProofMoment,
 	}
 
-	validatedLedgerUID := createLedgerUID(validatedHeading.Digest(), 1000, []byte("REDACTED"))
-	validatedBallotCollection := kinds.NewBallotCollection(proofSeriesUID, 10, 1, engineproto.AttestedMessageKind(2), clashingValues)
-	validatedEndorse, err := verify.CreateEndorseFromBallotCollection(validatedLedgerUID, validatedBallotCollection, clashingPrivateValues, standardProofTime)
+	reliableLedgerUUID := createLedgerUUID(reliableHeading.Digest(), 1000, []byte("REDACTED"))
+	reliableBallotAssign := kinds.FreshBallotAssign(proofSuccessionUUID, 10, 1, commitchema.AttestedSignalKind(2), discordantValues)
+	reliableEndorse, err := verify.CreateEndorseOriginatingBallotAssign(reliableLedgerUUID, reliableBallotAssign, discordantPrivateValues, fallbackProofMoment)
 	require.NoError(t, err)
-	validatedAttestedHeading := &kinds.AttestedHeading{
-		Heading: validatedHeading,
-		Endorse: validatedEndorse,
+	reliableNotatedHeadline := &kinds.NotatedHeading{
+		Heading: reliableHeading,
+		Endorse: reliableEndorse,
 	}
 
 	//
-	err = proof.ValidateRapidCustomerAssault(ev, validatedAttestedHeading, validatedAttestedHeading, clashingValues,
-		standardProofTime.Add(1*time.Minute), 2*time.Hour)
+	err = proof.ValidateAgileCustomerOnslaught(ev, reliableNotatedHeadline, reliableNotatedHeadline, discordantValues,
+		fallbackProofMoment.Add(1*time.Minute), 2*time.Hour)
 	assert.NoError(t, err)
 
 	//
-	err = proof.ValidateRapidCustomerAssault(ev, validatedAttestedHeading, ev.ClashingLedger.AttestedHeading, clashingValues,
-		standardProofTime.Add(1*time.Minute), 2*time.Hour)
+	err = proof.ValidateAgileCustomerOnslaught(ev, reliableNotatedHeadline, ev.DiscordantLedger.NotatedHeading, discordantValues,
+		fallbackProofMoment.Add(1*time.Minute), 2*time.Hour)
 	assert.Error(t, err)
 
 	//
 	//
-	ev.ClashingLedger.FollowingRatifiersDigest = vault.CRandomOctets(comethash.Volume)
-	err = proof.ValidateRapidCustomerAssault(ev, validatedAttestedHeading, validatedAttestedHeading, nil,
-		standardProofTime.Add(1*time.Minute), 2*time.Hour)
+	ev.DiscordantLedger.FollowingAssessorsDigest = security.CHARArbitraryOctets(tenderminthash.Extent)
+	err = proof.ValidateAgileCustomerOnslaught(ev, reliableNotatedHeadline, reliableNotatedHeadline, nil,
+		fallbackProofMoment.Add(1*time.Minute), 2*time.Hour)
 	assert.Error(t, err)
 	//
-	ev.ClashingLedger.FollowingRatifiersDigest = validatedHeading.FollowingRatifiersDigest
+	ev.DiscordantLedger.FollowingAssessorsDigest = reliableHeading.FollowingAssessorsDigest
 
 	status := sm.Status{
-		FinalLedgerTime:   standardProofTime.Add(1 * time.Minute),
-		FinalLedgerLevel: 11,
-		AgreementOptions: *kinds.StandardAgreementOptions(),
+		FinalLedgerMoment:   fallbackProofMoment.Add(1 * time.Minute),
+		FinalLedgerAltitude: 11,
+		AgreementSettings: *kinds.FallbackAgreementSettings(),
 	}
-	statusDepot := &smemulators.Depot{}
-	statusDepot.On("REDACTED", int64(10)).Return(clashingValues, nil)
+	statusDepot := &machinestubs.Depot{}
+	statusDepot.On("REDACTED", int64(10)).Return(discordantValues, nil)
 	statusDepot.On("REDACTED").Return(status, nil)
 	ledgerDepot := &simulations.LedgerDepot{}
-	ledgerDepot.On("REDACTED", int64(10)).Return(&kinds.LedgerMeta{Heading: *validatedHeading})
-	ledgerDepot.On("REDACTED", int64(10)).Return(validatedEndorse)
+	ledgerDepot.On("REDACTED", int64(10)).Return(&kinds.LedgerSummary{Heading: *reliableHeading})
+	ledgerDepot.On("REDACTED", int64(10)).Return(reliableEndorse)
 
-	depository, err := proof.NewDepository(dbm.NewMemoryStore(), statusDepot, ledgerDepot)
+	hub, err := proof.FreshHub(dbm.FreshMemoryDatastore(), statusDepot, ledgerDepot)
 	require.NoError(t, err)
-	depository.AssignTracer(log.VerifyingTracer())
+	hub.AssignTracer(log.VerifyingTracer())
 
-	evtCatalog := kinds.ProofCatalog{ev}
-	err = depository.InspectProof(evtCatalog)
+	occurenceCatalog := kinds.ProofCatalog{ev}
+	err = hub.InspectProof(occurenceCatalog)
 	assert.NoError(t, err)
 
-	awaitingEvidences, _ := depository.AwaitingProof(status.AgreementOptions.Proof.MaximumOctets)
-	assert.Equal(t, 1, len(awaitingEvidences))
+	awaitingProofs, _ := hub.AwaitingProof(status.AgreementSettings.Proof.MaximumOctets)
+	assert.Equal(t, 1, len(awaitingProofs))
 }
 
-func Testvalidaterapidcustomerassault_Forgetfulness(t *testing.T) {
-	clashingValues, clashingPrivateValues := kinds.RandomRatifierCollection(5, 10)
+func Verifyagilecustomerexploit_Forgetfulness(t *testing.T) {
+	discordantValues, discordantPrivateValues := kinds.ArbitraryAssessorAssign(5, 10)
 
-	clashingHeading := createHeadingArbitrary(10)
-	clashingHeading.RatifiersDigest = clashingValues.Digest()
-	validatedHeading := createHeadingArbitrary(10)
-	validatedHeading.RatifiersDigest = clashingHeading.RatifiersDigest
-	validatedHeading.FollowingRatifiersDigest = clashingHeading.FollowingRatifiersDigest
-	validatedHeading.ApplicationDigest = clashingHeading.ApplicationDigest
-	validatedHeading.AgreementDigest = clashingHeading.AgreementDigest
-	validatedHeading.FinalOutcomesDigest = clashingHeading.FinalOutcomesDigest
+	discordantHeadline := createHeadingUnpredictable(10)
+	discordantHeadline.AssessorsDigest = discordantValues.Digest()
+	reliableHeading := createHeadingUnpredictable(10)
+	reliableHeading.AssessorsDigest = discordantHeadline.AssessorsDigest
+	reliableHeading.FollowingAssessorsDigest = discordantHeadline.FollowingAssessorsDigest
+	reliableHeading.PlatformDigest = discordantHeadline.PlatformDigest
+	reliableHeading.AgreementDigest = discordantHeadline.AgreementDigest
+	reliableHeading.FinalOutcomesDigest = discordantHeadline.FinalOutcomesDigest
 
 	//
 	//
-	ledgerUID := createLedgerUID(clashingHeading.Digest(), 1000, []byte("REDACTED"))
-	ballotCollection := kinds.NewBallotCollection(proofSeriesUID, 10, 0, engineproto.AttestedMessageKind(2), clashingValues)
-	endorse, err := verify.CreateEndorseFromBallotCollection(ledgerUID, ballotCollection, clashingPrivateValues, standardProofTime)
+	ledgerUUID := createLedgerUUID(discordantHeadline.Digest(), 1000, []byte("REDACTED"))
+	ballotAssign := kinds.FreshBallotAssign(proofSuccessionUUID, 10, 0, commitchema.AttestedSignalKind(2), discordantValues)
+	endorse, err := verify.CreateEndorseOriginatingBallotAssign(ledgerUUID, ballotAssign, discordantPrivateValues, fallbackProofMoment)
 	require.NoError(t, err)
-	ev := &kinds.RapidCustomerAssaultProof{
-		ClashingLedger: &kinds.RapidLedger{
-			AttestedHeading: &kinds.AttestedHeading{
-				Heading: clashingHeading,
+	ev := &kinds.AgileCustomerOnslaughtProof{
+		DiscordantLedger: &kinds.AgileLedger{
+			NotatedHeading: &kinds.NotatedHeading{
+				Heading: discordantHeadline,
 				Endorse: endorse,
 			},
-			RatifierAssign: clashingValues,
+			AssessorAssign: discordantValues,
 		},
-		SharedLevel:        10,
-		FaultyRatifiers: nil, //
-		SumPollingEnergy:    50,
-		Timestamp:           standardProofTime,
+		SharedAltitude:        10,
+		TreacherousAssessors: nil, //
+		SumBallotingPotency:    50,
+		Timestamp:           fallbackProofMoment,
 	}
 
-	validatedLedgerUID := createLedgerUID(validatedHeading.Digest(), 1000, []byte("REDACTED"))
-	validatedBallotCollection := kinds.NewBallotCollection(proofSeriesUID, 10, 1, engineproto.AttestedMessageKind(2), clashingValues)
-	validatedEndorse, err := verify.CreateEndorseFromBallotCollection(validatedLedgerUID, validatedBallotCollection, clashingPrivateValues, standardProofTime)
+	reliableLedgerUUID := createLedgerUUID(reliableHeading.Digest(), 1000, []byte("REDACTED"))
+	reliableBallotAssign := kinds.FreshBallotAssign(proofSuccessionUUID, 10, 1, commitchema.AttestedSignalKind(2), discordantValues)
+	reliableEndorse, err := verify.CreateEndorseOriginatingBallotAssign(reliableLedgerUUID, reliableBallotAssign, discordantPrivateValues, fallbackProofMoment)
 	require.NoError(t, err)
-	validatedAttestedHeading := &kinds.AttestedHeading{
-		Heading: validatedHeading,
-		Endorse: validatedEndorse,
+	reliableNotatedHeadline := &kinds.NotatedHeading{
+		Heading: reliableHeading,
+		Endorse: reliableEndorse,
 	}
 
 	//
-	err = proof.ValidateRapidCustomerAssault(ev, validatedAttestedHeading, validatedAttestedHeading, clashingValues,
-		standardProofTime.Add(1*time.Minute), 2*time.Hour)
+	err = proof.ValidateAgileCustomerOnslaught(ev, reliableNotatedHeadline, reliableNotatedHeadline, discordantValues,
+		fallbackProofMoment.Add(1*time.Minute), 2*time.Hour)
 	assert.NoError(t, err)
 
 	//
-	err = proof.ValidateRapidCustomerAssault(ev, validatedAttestedHeading, ev.ClashingLedger.AttestedHeading, clashingValues,
-		standardProofTime.Add(1*time.Minute), 2*time.Hour)
+	err = proof.ValidateAgileCustomerOnslaught(ev, reliableNotatedHeadline, ev.DiscordantLedger.NotatedHeading, discordantValues,
+		fallbackProofMoment.Add(1*time.Minute), 2*time.Hour)
 	assert.Error(t, err)
 
 	status := sm.Status{
-		FinalLedgerTime:   standardProofTime.Add(1 * time.Minute),
-		FinalLedgerLevel: 11,
-		AgreementOptions: *kinds.StandardAgreementOptions(),
+		FinalLedgerMoment:   fallbackProofMoment.Add(1 * time.Minute),
+		FinalLedgerAltitude: 11,
+		AgreementSettings: *kinds.FallbackAgreementSettings(),
 	}
-	statusDepot := &smemulators.Depot{}
-	statusDepot.On("REDACTED", int64(10)).Return(clashingValues, nil)
+	statusDepot := &machinestubs.Depot{}
+	statusDepot.On("REDACTED", int64(10)).Return(discordantValues, nil)
 	statusDepot.On("REDACTED").Return(status, nil)
 	ledgerDepot := &simulations.LedgerDepot{}
-	ledgerDepot.On("REDACTED", int64(10)).Return(&kinds.LedgerMeta{Heading: *validatedHeading})
-	ledgerDepot.On("REDACTED", int64(10)).Return(validatedEndorse)
+	ledgerDepot.On("REDACTED", int64(10)).Return(&kinds.LedgerSummary{Heading: *reliableHeading})
+	ledgerDepot.On("REDACTED", int64(10)).Return(reliableEndorse)
 
-	depository, err := proof.NewDepository(dbm.NewMemoryStore(), statusDepot, ledgerDepot)
+	hub, err := proof.FreshHub(dbm.FreshMemoryDatastore(), statusDepot, ledgerDepot)
 	require.NoError(t, err)
-	depository.AssignTracer(log.VerifyingTracer())
+	hub.AssignTracer(log.VerifyingTracer())
 
-	evtCatalog := kinds.ProofCatalog{ev}
-	err = depository.InspectProof(evtCatalog)
+	occurenceCatalog := kinds.ProofCatalog{ev}
+	err = hub.InspectProof(occurenceCatalog)
 	assert.NoError(t, err)
 
-	awaitingEvidences, _ := depository.AwaitingProof(status.AgreementOptions.Proof.MaximumOctets)
-	assert.Equal(t, 1, len(awaitingEvidences))
+	awaitingProofs, _ := hub.AwaitingProof(status.AgreementSettings.Proof.MaximumOctets)
+	assert.Equal(t, 1, len(awaitingProofs))
 }
 
 type ballotData struct {
-	vote1 *kinds.Ballot
+	ballot1 *kinds.Ballot
 	ballot2 *kinds.Ballot
 	sound bool
 }
 
 func VerifyValidateReplicatedBallotProof(t *testing.T) {
-	val := kinds.NewEmulatePV()
-	value2 := kinds.NewEmulatePV()
-	valueCollection := kinds.NewRatifierCollection([]*kinds.Ratifier{val.RetrieveTowardRatifier(1)})
+	val := kinds.FreshSimulatePRV()
+	valid2 := kinds.FreshSimulatePRV()
+	itemAssign := kinds.FreshAssessorAssign([]*kinds.Assessor{val.DeriveWithinAssessor(1)})
 
-	ledgerUID := createLedgerUID([]byte("REDACTED"), 1000, []byte("REDACTED"))
-	ledgerUidtwo := createLedgerUID([]byte("REDACTED"), 1000, []byte("REDACTED"))
-	ledgerID3 := createLedgerUID([]byte("REDACTED"), 10000, []byte("REDACTED"))
-	ledgerID4 := createLedgerUID([]byte("REDACTED"), 10000, []byte("REDACTED"))
+	ledgerUUID := createLedgerUUID([]byte("REDACTED"), 1000, []byte("REDACTED"))
+	ledgerUuid2 := createLedgerUUID([]byte("REDACTED"), 1000, []byte("REDACTED"))
+	ledgerUuid3 := createLedgerUUID([]byte("REDACTED"), 10000, []byte("REDACTED"))
+	ledgerUuid4 := createLedgerUUID([]byte("REDACTED"), 10000, []byte("REDACTED"))
 
-	const ledgerUID = "REDACTED"
+	const successionUUID = "REDACTED"
 
-	vote1 := kinds.CreateBallotNoFault(t, val, ledgerUID, 0, 10, 2, 1, ledgerUID, standardProofTime)
+	ballot1 := kinds.CreateBallotNegativeFailure(t, val, successionUUID, 0, 10, 2, 1, ledgerUUID, fallbackProofMoment)
 
-	v1 := vote1.ToSchema()
-	err := val.AttestBallot(ledgerUID, v1)
+	v1 := ballot1.TowardSchema()
+	err := val.AttestBallot(successionUUID, v1)
 	require.NoError(t, err)
-	flawedBallot := kinds.CreateBallotNoFault(t, val, ledgerUID, 0, 10, 2, 1, ledgerUID, standardProofTime)
-	bv := flawedBallot.ToSchema()
-	err = value2.AttestBallot(ledgerUID, bv)
+	flawedBallot := kinds.CreateBallotNegativeFailure(t, val, successionUUID, 0, 10, 2, 1, ledgerUUID, fallbackProofMoment)
+	bv := flawedBallot.TowardSchema()
+	err = valid2.AttestBallot(successionUUID, bv)
 	require.NoError(t, err)
 
-	vote1.Autograph = v1.Autograph
-	flawedBallot.Autograph = bv.Autograph
+	ballot1.Notation = v1.Notation
+	flawedBallot.Notation = bv.Notation
 
 	scenarios := []ballotData{
-		{vote1, kinds.CreateBallotNoFault(t, val, ledgerUID, 0, 10, 2, 1, ledgerUidtwo, standardProofTime), true}, //
-		{vote1, kinds.CreateBallotNoFault(t, val, ledgerUID, 0, 10, 2, 1, ledgerID3, standardProofTime), true},
-		{vote1, kinds.CreateBallotNoFault(t, val, ledgerUID, 0, 10, 2, 1, ledgerID4, standardProofTime), true},
-		{vote1, kinds.CreateBallotNoFault(t, val, ledgerUID, 0, 10, 2, 1, ledgerUID, standardProofTime), false},     //
-		{vote1, kinds.CreateBallotNoFault(t, val, "REDACTED", 0, 10, 2, 1, ledgerUidtwo, standardProofTime), false}, //
-		{vote1, kinds.CreateBallotNoFault(t, val, ledgerUID, 0, 11, 2, 1, ledgerUidtwo, standardProofTime), false},    //
-		{vote1, kinds.CreateBallotNoFault(t, val, ledgerUID, 0, 10, 3, 1, ledgerUidtwo, standardProofTime), false},    //
-		{vote1, kinds.CreateBallotNoFault(t, val, ledgerUID, 0, 10, 2, 2, ledgerUidtwo, standardProofTime), false},    //
-		{vote1, kinds.CreateBallotNoFault(t, value2, ledgerUID, 0, 10, 2, 1, ledgerUidtwo, standardProofTime), false},   //
+		{ballot1, kinds.CreateBallotNegativeFailure(t, val, successionUUID, 0, 10, 2, 1, ledgerUuid2, fallbackProofMoment), true}, //
+		{ballot1, kinds.CreateBallotNegativeFailure(t, val, successionUUID, 0, 10, 2, 1, ledgerUuid3, fallbackProofMoment), true},
+		{ballot1, kinds.CreateBallotNegativeFailure(t, val, successionUUID, 0, 10, 2, 1, ledgerUuid4, fallbackProofMoment), true},
+		{ballot1, kinds.CreateBallotNegativeFailure(t, val, successionUUID, 0, 10, 2, 1, ledgerUUID, fallbackProofMoment), false},     //
+		{ballot1, kinds.CreateBallotNegativeFailure(t, val, "REDACTED", 0, 10, 2, 1, ledgerUuid2, fallbackProofMoment), false}, //
+		{ballot1, kinds.CreateBallotNegativeFailure(t, val, successionUUID, 0, 11, 2, 1, ledgerUuid2, fallbackProofMoment), false},    //
+		{ballot1, kinds.CreateBallotNegativeFailure(t, val, successionUUID, 0, 10, 3, 1, ledgerUuid2, fallbackProofMoment), false},    //
+		{ballot1, kinds.CreateBallotNegativeFailure(t, val, successionUUID, 0, 10, 2, 2, ledgerUuid2, fallbackProofMoment), false},    //
+		{ballot1, kinds.CreateBallotNegativeFailure(t, valid2, successionUUID, 0, 10, 2, 1, ledgerUuid2, fallbackProofMoment), false},   //
 		//
-		{vote1, kinds.CreateBallotNoFault(t, val, ledgerUID, 0, 10, 2, 1, ledgerUidtwo, time.Date(2020, 1, 1, 0, 0, 0, 0, time.UTC)), true},
-		{vote1, flawedBallot, false}, //
+		{ballot1, kinds.CreateBallotNegativeFailure(t, val, successionUUID, 0, 10, 2, 1, ledgerUuid2, time.Date(2020, 1, 1, 0, 0, 0, 0, time.UTC)), true},
+		{ballot1, flawedBallot, false}, //
 	}
 
 	require.NoError(t, err)
 	for _, c := range scenarios {
 		ev := &kinds.ReplicatedBallotProof{
-			BallotA:            c.vote1,
+			BallotAN:            c.ballot1,
 			BallotBYTE:            c.ballot2,
-			RatifierEnergy:   1,
-			SumPollingEnergy: 1,
-			Timestamp:        standardProofTime,
+			AssessorPotency:   1,
+			SumBallotingPotency: 1,
+			Timestamp:        fallbackProofMoment,
 		}
 		if c.sound {
-			assert.Nil(t, proof.ValidateReplicatedBallot(ev, ledgerUID, valueCollection), "REDACTED")
+			assert.Nil(t, proof.ValidateReplicatedBallot(ev, successionUUID, itemAssign), "REDACTED")
 		} else {
-			assert.NotNil(t, proof.ValidateReplicatedBallot(ev, ledgerUID, valueCollection), "REDACTED")
+			assert.NotNil(t, proof.ValidateReplicatedBallot(ev, successionUUID, itemAssign), "REDACTED")
 		}
 	}
 
 	//
-	validEvt, err := kinds.NewEmulateReplicatedBallotProofWithRatifier(10, standardProofTime, val, ledgerUID)
+	validOccurence, err := kinds.FreshSimulateReplicatedBallotProofUsingAssessor(10, fallbackProofMoment, val, successionUUID)
 	require.NoError(t, err)
-	validEvt.RatifierEnergy = 1
-	validEvt.SumPollingEnergy = 1
-	flawedEvt, err := kinds.NewEmulateReplicatedBallotProofWithRatifier(10, standardProofTime, val, ledgerUID)
+	validOccurence.AssessorPotency = 1
+	validOccurence.SumBallotingPotency = 1
+	flawedOccurence, err := kinds.FreshSimulateReplicatedBallotProofUsingAssessor(10, fallbackProofMoment, val, successionUUID)
 	require.NoError(t, err)
-	flawedTimeEvt, err := kinds.NewEmulateReplicatedBallotProofWithRatifier(10, standardProofTime.Add(1*time.Minute), val, ledgerUID)
+	flawedMomentOccurence, err := kinds.FreshSimulateReplicatedBallotProofUsingAssessor(10, fallbackProofMoment.Add(1*time.Minute), val, successionUUID)
 	require.NoError(t, err)
-	flawedTimeEvt.RatifierEnergy = 1
-	flawedTimeEvt.SumPollingEnergy = 1
+	flawedMomentOccurence.AssessorPotency = 1
+	flawedMomentOccurence.SumBallotingPotency = 1
 	status := sm.Status{
-		LedgerUID:         ledgerUID,
-		FinalLedgerTime:   standardProofTime.Add(1 * time.Minute),
-		FinalLedgerLevel: 11,
-		AgreementOptions: *kinds.StandardAgreementOptions(),
+		SuccessionUUID:         successionUUID,
+		FinalLedgerMoment:   fallbackProofMoment.Add(1 * time.Minute),
+		FinalLedgerAltitude: 11,
+		AgreementSettings: *kinds.FallbackAgreementSettings(),
 	}
-	statusDepot := &smemulators.Depot{}
-	statusDepot.On("REDACTED", int64(10)).Return(valueCollection, nil)
+	statusDepot := &machinestubs.Depot{}
+	statusDepot.On("REDACTED", int64(10)).Return(itemAssign, nil)
 	statusDepot.On("REDACTED").Return(status, nil)
 	ledgerDepot := &simulations.LedgerDepot{}
-	ledgerDepot.On("REDACTED", int64(10)).Return(&kinds.LedgerMeta{Heading: kinds.Heading{Time: standardProofTime}})
+	ledgerDepot.On("REDACTED", int64(10)).Return(&kinds.LedgerSummary{Heading: kinds.Heading{Moment: fallbackProofMoment}})
 
-	depository, err := proof.NewDepository(dbm.NewMemoryStore(), statusDepot, ledgerDepot)
+	hub, err := proof.FreshHub(dbm.FreshMemoryDatastore(), statusDepot, ledgerDepot)
 	require.NoError(t, err)
 
-	evtCatalog := kinds.ProofCatalog{validEvt}
-	err = depository.InspectProof(evtCatalog)
+	occurenceCatalog := kinds.ProofCatalog{validOccurence}
+	err = hub.InspectProof(occurenceCatalog)
 	assert.NoError(t, err)
 
 	//
-	evtCatalog = kinds.ProofCatalog{flawedEvt}
-	err = depository.InspectProof(evtCatalog)
+	occurenceCatalog = kinds.ProofCatalog{flawedOccurence}
+	err = hub.InspectProof(occurenceCatalog)
 	assert.Error(t, err)
 
 	//
-	evtCatalog = kinds.ProofCatalog{flawedTimeEvt}
-	err = depository.InspectProof(evtCatalog)
+	occurenceCatalog = kinds.ProofCatalog{flawedMomentOccurence}
+	err = hub.InspectProof(occurenceCatalog)
 	assert.Error(t, err)
 }
 
-func createErraticProof(
+func createInsaneProof(
 	t *testing.T,
-	level, sharedLevel int64,
-	sumValues, byzValues, specterValues int,
-	sharedTime, assaultTime time.Time,
-) (ev *kinds.RapidCustomerAssaultProof, validated *kinds.RapidLedger, shared *kinds.RapidLedger) {
-	sharedValueCollection, sharedPrivateValues := kinds.RandomRatifierCollection(sumValues, standardPollingEnergy)
+	altitude, sharedAltitude int64,
+	sumValues, byzantineValues, apparitionValues int,
+	sharedMoment, onslaughtMoment time.Time,
+) (ev *kinds.AgileCustomerOnslaughtProof, reliable *kinds.AgileLedger, shared *kinds.AgileLedger) {
+	sharedItemAssign, sharedPrivateValues := kinds.ArbitraryAssessorAssign(sumValues, fallbackBallotingPotency)
 
-	require.Greater(t, sumValues, byzValues)
+	require.Greater(t, sumValues, byzantineValues)
 
 	//
-	byzValueCollection, byzPrivateValues := sharedValueCollection.Ratifiers[:byzValues], sharedPrivateValues[:byzValues]
+	byzantineItemAssign, byzantinePrivateValues := sharedItemAssign.Assessors[:byzantineValues], sharedPrivateValues[:byzantineValues]
 
-	specterValueCollection, specterPrivateValues := kinds.RandomRatifierCollection(specterValues, standardPollingEnergy)
+	apparitionItemAssign, apparitionPrivateValues := kinds.ArbitraryAssessorAssign(apparitionValues, fallbackBallotingPotency)
 
-	clashingValues := specterValueCollection.Clone()
-	require.NoError(t, clashingValues.ModifyWithAlterCollection(byzValueCollection))
-	clashingPrivateValues := append(specterPrivateValues, byzPrivateValues...) //
+	discordantValues := apparitionItemAssign.Duplicate()
+	require.NoError(t, discordantValues.ReviseUsingModifyAssign(byzantineItemAssign))
+	discordantPrivateValues := append(apparitionPrivateValues, byzantinePrivateValues...) //
 
-	clashingPrivateValues = sequencePrivateValuesByValueCollection(t, clashingValues, clashingPrivateValues)
+	discordantPrivateValues = sequencePrivateValuesViaItemAssign(t, discordantValues, discordantPrivateValues)
 
-	sharedHeading := createHeadingArbitrary(sharedLevel)
-	sharedHeading.Time = sharedTime
-	validatedHeading := createHeadingArbitrary(level)
+	sharedHeadline := createHeadingUnpredictable(sharedAltitude)
+	sharedHeadline.Moment = sharedMoment
+	reliableHeading := createHeadingUnpredictable(altitude)
 
-	clashingHeading := createHeadingArbitrary(level)
-	clashingHeading.Time = assaultTime
-	clashingHeading.RatifiersDigest = clashingValues.Digest()
+	discordantHeadline := createHeadingUnpredictable(altitude)
+	discordantHeadline.Moment = onslaughtMoment
+	discordantHeadline.AssessorsDigest = discordantValues.Digest()
 
-	ledgerUID := createLedgerUID(clashingHeading.Digest(), 1000, []byte("REDACTED"))
-	ballotCollection := kinds.NewBallotCollection(proofSeriesUID, level, 1, engineproto.AttestedMessageKind(2), clashingValues)
-	endorse, err := verify.CreateEndorseFromBallotCollection(ledgerUID, ballotCollection, clashingPrivateValues, standardProofTime)
+	ledgerUUID := createLedgerUUID(discordantHeadline.Digest(), 1000, []byte("REDACTED"))
+	ballotAssign := kinds.FreshBallotAssign(proofSuccessionUUID, altitude, 1, commitchema.AttestedSignalKind(2), discordantValues)
+	endorse, err := verify.CreateEndorseOriginatingBallotAssign(ledgerUUID, ballotAssign, discordantPrivateValues, fallbackProofMoment)
 	require.NoError(t, err)
-	ev = &kinds.RapidCustomerAssaultProof{
-		ClashingLedger: &kinds.RapidLedger{
-			AttestedHeading: &kinds.AttestedHeading{
-				Heading: clashingHeading,
+	ev = &kinds.AgileCustomerOnslaughtProof{
+		DiscordantLedger: &kinds.AgileLedger{
+			NotatedHeading: &kinds.NotatedHeading{
+				Heading: discordantHeadline,
 				Endorse: endorse,
 			},
-			RatifierAssign: clashingValues,
+			AssessorAssign: discordantValues,
 		},
-		SharedLevel:        sharedLevel,
-		SumPollingEnergy:    sharedValueCollection.SumPollingEnergy(),
-		FaultyRatifiers: byzValueCollection,
-		Timestamp:           sharedTime,
+		SharedAltitude:        sharedAltitude,
+		SumBallotingPotency:    sharedItemAssign.SumBallotingPotency(),
+		TreacherousAssessors: byzantineItemAssign,
+		Timestamp:           sharedMoment,
 	}
 
-	shared = &kinds.RapidLedger{
-		AttestedHeading: &kinds.AttestedHeading{
-			Heading: sharedHeading,
+	shared = &kinds.AgileLedger{
+		NotatedHeading: &kinds.NotatedHeading{
+			Heading: sharedHeadline,
 			//
 			Endorse: &kinds.Endorse{},
 		},
-		RatifierAssign: sharedValueCollection,
+		AssessorAssign: sharedItemAssign,
 	}
-	validatedLedgerUID := createLedgerUID(validatedHeading.Digest(), 1000, []byte("REDACTED"))
-	validatedValues, privateValues := kinds.RandomRatifierCollection(sumValues, standardPollingEnergy)
-	validatedBallotCollection := kinds.NewBallotCollection(proofSeriesUID, level, 1, engineproto.AttestedMessageKind(2), validatedValues)
-	validatedEndorse, err := verify.CreateEndorseFromBallotCollection(validatedLedgerUID, validatedBallotCollection, privateValues, standardProofTime)
+	reliableLedgerUUID := createLedgerUUID(reliableHeading.Digest(), 1000, []byte("REDACTED"))
+	reliableValues, privateItems := kinds.ArbitraryAssessorAssign(sumValues, fallbackBallotingPotency)
+	reliableBallotAssign := kinds.FreshBallotAssign(proofSuccessionUUID, altitude, 1, commitchema.AttestedSignalKind(2), reliableValues)
+	reliableEndorse, err := verify.CreateEndorseOriginatingBallotAssign(reliableLedgerUUID, reliableBallotAssign, privateItems, fallbackProofMoment)
 	require.NoError(t, err)
-	validated = &kinds.RapidLedger{
-		AttestedHeading: &kinds.AttestedHeading{
-			Heading: validatedHeading,
-			Endorse: validatedEndorse,
+	reliable = &kinds.AgileLedger{
+		NotatedHeading: &kinds.NotatedHeading{
+			Heading: reliableHeading,
+			Endorse: reliableEndorse,
 		},
-		RatifierAssign: validatedValues,
+		AssessorAssign: reliableValues,
 	}
-	return ev, validated, shared
+	return ev, reliable, shared
 }
 
 //
@@ -532,55 +585,55 @@ func createErraticProof(
 
 //
 
-func createHeadingArbitrary(level int64) *kinds.Heading {
+func createHeadingUnpredictable(altitude int64) *kinds.Heading {
 	return &kinds.Heading{
-		Release:            cometrelease.Agreement{Ledger: release.LedgerProtocol, App: 1},
-		LedgerUID:            proofSeriesUID,
-		Level:             level,
-		Time:               standardProofTime,
-		FinalLedgerUID:        createLedgerUID([]byte("REDACTED"), 1000, []byte("REDACTED")),
-		FinalEndorseDigest:     vault.CRandomOctets(comethash.Volume),
-		DataDigest:           vault.CRandomOctets(comethash.Volume),
-		RatifiersDigest:     vault.CRandomOctets(comethash.Volume),
-		FollowingRatifiersDigest: vault.CRandomOctets(comethash.Volume),
-		AgreementDigest:      vault.CRandomOctets(comethash.Volume),
-		ApplicationDigest:            vault.CRandomOctets(comethash.Volume),
-		FinalOutcomesDigest:    vault.CRandomOctets(comethash.Volume),
-		ProofDigest:       vault.CRandomOctets(comethash.Volume),
-		RecommenderLocation:    vault.CRandomOctets(vault.LocationVolume),
+		Edition:            strongmindedition.Agreement{Ledger: edition.LedgerScheme, App: 1},
+		SuccessionUUID:            proofSuccessionUUID,
+		Altitude:             altitude,
+		Moment:               fallbackProofMoment,
+		FinalLedgerUUID:        createLedgerUUID([]byte("REDACTED"), 1000, []byte("REDACTED")),
+		FinalEndorseDigest:     security.CHARArbitraryOctets(tenderminthash.Extent),
+		DataDigest:           security.CHARArbitraryOctets(tenderminthash.Extent),
+		AssessorsDigest:     security.CHARArbitraryOctets(tenderminthash.Extent),
+		FollowingAssessorsDigest: security.CHARArbitraryOctets(tenderminthash.Extent),
+		AgreementDigest:      security.CHARArbitraryOctets(tenderminthash.Extent),
+		PlatformDigest:            security.CHARArbitraryOctets(tenderminthash.Extent),
+		FinalOutcomesDigest:    security.CHARArbitraryOctets(tenderminthash.Extent),
+		ProofDigest:       security.CHARArbitraryOctets(tenderminthash.Extent),
+		NominatorLocation:    security.CHARArbitraryOctets(security.LocatorExtent),
 	}
 }
 
-func createLedgerUID(digest []byte, sectionCollectionVolume uint32, sectionCollectionDigest []byte) kinds.LedgerUID {
+func createLedgerUUID(digest []byte, fragmentAssignExtent uint32, fragmentAssignDigest []byte) kinds.LedgerUUID {
 	var (
-		h   = make([]byte, comethash.Volume)
-		psH = make([]byte, comethash.Volume)
+		h   = make([]byte, tenderminthash.Extent)
+		psH = make([]byte, tenderminthash.Extent)
 	)
 	copy(h, digest)
-	copy(psH, sectionCollectionDigest)
-	return kinds.LedgerUID{
+	copy(psH, fragmentAssignDigest)
+	return kinds.LedgerUUID{
 		Digest: h,
-		SegmentAssignHeading: kinds.SegmentAssignHeading{
-			Sum: sectionCollectionVolume,
+		FragmentAssignHeading: kinds.FragmentAssignHeading{
+			Sum: fragmentAssignExtent,
 			Digest:  psH,
 		},
 	}
 }
 
-func sequencePrivateValuesByValueCollection(
-	t *testing.T, values *kinds.RatifierAssign, privateValues []kinds.PrivateRatifier,
-) []kinds.PrivateRatifier {
-	result := make([]kinds.PrivateRatifier, len(privateValues))
-	for idx, v := range values.Ratifiers {
-		for _, p := range privateValues {
-			publicKey, err := p.FetchPublicKey()
+func sequencePrivateValuesViaItemAssign(
+	t *testing.T, values *kinds.AssessorAssign, privateItems []kinds.PrivateAssessor,
+) []kinds.PrivateAssessor {
+	emission := make([]kinds.PrivateAssessor, len(privateItems))
+	for idx, v := range values.Assessors {
+		for _, p := range privateItems {
+			publicToken, err := p.ObtainPublicToken()
 			require.NoError(t, err)
-			if bytes.Equal(v.Location, publicKey.Location()) {
-				result[idx] = p
+			if bytes.Equal(v.Location, publicToken.Location()) {
+				emission[idx] = p
 				break
 			}
 		}
-		require.NotEmpty(t, result[idx])
+		require.NotEmpty(t, emission[idx])
 	}
-	return result
+	return emission
 }

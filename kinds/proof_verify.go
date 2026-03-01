@@ -8,18 +8,18 @@ import (
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/require"
 
-	"github.com/valkyrieworks/vault"
-	"github.com/valkyrieworks/vault/comethash"
-	engineseed "github.com/valkyrieworks/utils/random"
-	engineproto "github.com/valkyrieworks/schema/consensuscore/kinds"
-	cometrelease "github.com/valkyrieworks/schema/consensuscore/release"
-	"github.com/valkyrieworks/release"
+	"github.com/valkyrieworks/dffc4ef0-4ec6-4346-9b6c-d0a0cb42d94b/security"
+	"github.com/valkyrieworks/dffc4ef0-4ec6-4346-9b6c-d0a0cb42d94b/security/tenderminthash"
+	commitrand "github.com/valkyrieworks/dffc4ef0-4ec6-4346-9b6c-d0a0cb42d94b/utils/arbitrary"
+	commitchema "github.com/valkyrieworks/dffc4ef0-4ec6-4346-9b6c-d0a0cb42d94b/schema/strongmind/kinds"
+	strongmindedition "github.com/valkyrieworks/dffc4ef0-4ec6-4346-9b6c-d0a0cb42d94b/schema/strongmind/edition"
+	"github.com/valkyrieworks/dffc4ef0-4ec6-4346-9b6c-d0a0cb42d94b/edition"
 )
 
-var standardBallotTime = time.Date(2019, 1, 1, 0, 0, 0, 0, time.UTC)
+var fallbackBallotMoment = time.Date(2019, 1, 1, 0, 0, 0, 0, time.UTC)
 
 func VerifyProofCatalog(t *testing.T) {
-	ev := arbitraryReplicatedBallotProof(t)
+	ev := unpredictableReplicatedBallotProof(t)
 	evl := ProofCatalog([]Proof{ev})
 
 	assert.NotNil(t, evl.Digest())
@@ -27,282 +27,282 @@ func VerifyProofCatalog(t *testing.T) {
 	assert.False(t, evl.Has(&ReplicatedBallotProof{}))
 }
 
-func arbitraryReplicatedBallotProof(t *testing.T) *ReplicatedBallotProof {
-	val := NewEmulatePV()
-	ledgerUID := createLedgerUID([]byte("REDACTED"), 1000, []byte("REDACTED"))
-	ledgerUidtwo := createLedgerUID([]byte("REDACTED"), 1000, []byte("REDACTED"))
-	const ledgerUID = "REDACTED"
+func unpredictableReplicatedBallotProof(t *testing.T) *ReplicatedBallotProof {
+	val := FreshSimulatePRV()
+	ledgerUUID := createLedgerUUID([]byte("REDACTED"), 1000, []byte("REDACTED"))
+	ledgerUuid2 := createLedgerUUID([]byte("REDACTED"), 1000, []byte("REDACTED"))
+	const successionUUID = "REDACTED"
 	return &ReplicatedBallotProof{
-		BallotA:            CreateBallotNoFault(t, val, ledgerUID, 0, 10, 2, 1, ledgerUID, standardBallotTime),
-		BallotBYTE:            CreateBallotNoFault(t, val, ledgerUID, 0, 10, 2, 1, ledgerUidtwo, standardBallotTime.Add(1*time.Minute)),
-		SumPollingEnergy: 30,
-		RatifierEnergy:   10,
-		Timestamp:        standardBallotTime,
+		BallotAN:            CreateBallotNegativeFailure(t, val, successionUUID, 0, 10, 2, 1, ledgerUUID, fallbackBallotMoment),
+		BallotBYTE:            CreateBallotNegativeFailure(t, val, successionUUID, 0, 10, 2, 1, ledgerUuid2, fallbackBallotMoment.Add(1*time.Minute)),
+		SumBallotingPotency: 30,
+		AssessorPotency:   10,
+		Timestamp:        fallbackBallotMoment,
 	}
 }
 
 func VerifyReplicatedBallotProof(t *testing.T) {
-	const level = int64(13)
-	ev, err := NewEmulateReplicatedBallotProof(level, time.Now(), "REDACTED")
+	const altitude = int64(13)
+	ev, err := FreshSimulateReplicatedBallotProof(altitude, time.Now(), "REDACTED")
 	require.NoError(t, err)
-	assert.Equal(t, ev.Digest(), comethash.Sum(ev.Octets()))
-	assert.NotNil(t, ev.String())
-	assert.Equal(t, ev.Level(), level)
+	assert.Equal(t, ev.Digest(), tenderminthash.Sum(ev.Octets()))
+	assert.NotNil(t, ev.Text())
+	assert.Equal(t, ev.Altitude(), altitude)
 }
 
-func VerifyReplicatedBallotProofVerification(t *testing.T) {
-	val := NewEmulatePV()
-	ledgerUID := createLedgerUID(comethash.Sum([]byte("REDACTED")), math.MaxInt32, comethash.Sum([]byte("REDACTED")))
-	ledgerUidtwo := createLedgerUID(comethash.Sum([]byte("REDACTED")), math.MaxInt32, comethash.Sum([]byte("REDACTED")))
-	const ledgerUID = "REDACTED"
+func VerifyReplicatedBallotProofCertification(t *testing.T) {
+	val := FreshSimulatePRV()
+	ledgerUUID := createLedgerUUID(tenderminthash.Sum([]byte("REDACTED")), math.MaxInt32, tenderminthash.Sum([]byte("REDACTED")))
+	ledgerUuid2 := createLedgerUUID(tenderminthash.Sum([]byte("REDACTED")), math.MaxInt32, tenderminthash.Sum([]byte("REDACTED")))
+	const successionUUID = "REDACTED"
 
 	verifyScenarios := []struct {
-		verifyLabel         string
+		verifyAlias         string
 		distortProof func(*ReplicatedBallotProof)
-		anticipateErr        bool
+		anticipateFault        bool
 	}{
 		{"REDACTED", func(ev *ReplicatedBallotProof) {}, false},
-		{"REDACTED", func(ev *ReplicatedBallotProof) { ev.BallotA = nil }, true},
+		{"REDACTED", func(ev *ReplicatedBallotProof) { ev.BallotAN = nil }, true},
 		{"REDACTED", func(ev *ReplicatedBallotProof) { ev.BallotBYTE = nil }, true},
 		{"REDACTED", func(ev *ReplicatedBallotProof) {
-			ev.BallotA = nil
+			ev.BallotAN = nil
 			ev.BallotBYTE = nil
 		}, true},
 		{"REDACTED", func(ev *ReplicatedBallotProof) {
-			ev.BallotA = CreateBallotNoFault(t, val, ledgerUID, math.MaxInt32, math.MaxInt64, math.MaxInt32, 0, ledgerUidtwo, standardBallotTime)
+			ev.BallotAN = CreateBallotNegativeFailure(t, val, successionUUID, math.MaxInt32, math.MaxInt64, math.MaxInt32, 0, ledgerUuid2, fallbackBallotMoment)
 		}, true},
 		{"REDACTED", func(ev *ReplicatedBallotProof) {
-			exchange := ev.BallotA.Clone()
-			ev.BallotA = ev.BallotBYTE.Clone()
+			exchange := ev.BallotAN.Duplicate()
+			ev.BallotAN = ev.BallotBYTE.Duplicate()
 			ev.BallotBYTE = exchange
 		}, true},
 	}
 	for _, tc := range verifyScenarios {
-		t.Run(tc.verifyLabel, func(t *testing.T) {
-			vote1 := CreateBallotNoFault(t, val, ledgerUID, math.MaxInt32, math.MaxInt64, math.MaxInt32, 0x02, ledgerUID, standardBallotTime)
-			ballot2 := CreateBallotNoFault(t, val, ledgerUID, math.MaxInt32, math.MaxInt64, math.MaxInt32, 0x02, ledgerUidtwo, standardBallotTime)
-			valueCollection := NewRatifierCollection([]*Ratifier{val.RetrieveTowardRatifier(10)})
-			ev, err := NewReplicatedBallotProof(vote1, ballot2, standardBallotTime, valueCollection)
+		t.Run(tc.verifyAlias, func(t *testing.T) {
+			ballot1 := CreateBallotNegativeFailure(t, val, successionUUID, math.MaxInt32, math.MaxInt64, math.MaxInt32, 0x02, ledgerUUID, fallbackBallotMoment)
+			ballot2 := CreateBallotNegativeFailure(t, val, successionUUID, math.MaxInt32, math.MaxInt64, math.MaxInt32, 0x02, ledgerUuid2, fallbackBallotMoment)
+			itemAssign := FreshAssessorAssign([]*Assessor{val.DeriveWithinAssessor(10)})
+			ev, err := FreshReplicatedBallotProof(ballot1, ballot2, fallbackBallotMoment, itemAssign)
 			require.NoError(t, err)
 			tc.distortProof(ev)
-			assert.Equal(t, tc.anticipateErr, ev.CertifySimple() != nil, "REDACTED")
+			assert.Equal(t, tc.anticipateFault, ev.CertifyFundamental() != nil, "REDACTED")
 		})
 	}
 }
 
-func VerifyRapidCustomerAssaultProofSimple(t *testing.T) {
-	level := int64(5)
-	sharedLevel := level - 1
-	nRatifiers := 10
-	ballotCollection, valueCollection, privateValues := randomBallotCollection(level, 1, engineproto.PreendorseKind, nRatifiers, 1, false)
-	heading := createHeadingArbitrary()
-	heading.Level = level
-	ledgerUID := createLedgerUID(comethash.Sum([]byte("REDACTED")), math.MaxInt32, comethash.Sum([]byte("REDACTED")))
-	extensionEndorse, err := CreateExtensionEndorse(ledgerUID, level, 1, ballotCollection, privateValues, standardBallotTime, false)
+func VerifyAgileCustomerOnslaughtProofFundamental(t *testing.T) {
+	altitude := int64(5)
+	sharedAltitude := altitude - 1
+	nthAssessors := 10
+	ballotAssign, itemAssign, privateItems := arbitraryBallotAssign(altitude, 1, commitchema.PreendorseKind, nthAssessors, 1, false)
+	heading := createHeadingUnpredictable()
+	heading.Altitude = altitude
+	ledgerUUID := createLedgerUUID(tenderminthash.Sum([]byte("REDACTED")), math.MaxInt32, tenderminthash.Sum([]byte("REDACTED")))
+	addnEndorse, err := CreateAddnEndorse(ledgerUUID, altitude, 1, ballotAssign, privateItems, fallbackBallotMoment, false)
 	require.NoError(t, err)
-	endorse := extensionEndorse.ToEndorse()
+	endorse := addnEndorse.TowardEndorse()
 
-	rce := &RapidCustomerAssaultProof{
-		ClashingLedger: &RapidLedger{
-			AttestedHeading: &AttestedHeading{
+	agilecustomerattackevidence := &AgileCustomerOnslaughtProof{
+		DiscordantLedger: &AgileLedger{
+			NotatedHeading: &NotatedHeading{
 				Heading: heading,
 				Endorse: endorse,
 			},
-			RatifierAssign: valueCollection,
+			AssessorAssign: itemAssign,
 		},
-		SharedLevel:        sharedLevel,
-		SumPollingEnergy:    valueCollection.SumPollingEnergy(),
-		Timestamp:           heading.Time,
-		FaultyRatifiers: valueCollection.Ratifiers[:nRatifiers/2],
+		SharedAltitude:        sharedAltitude,
+		SumBallotingPotency:    itemAssign.SumBallotingPotency(),
+		Timestamp:           heading.Moment,
+		TreacherousAssessors: itemAssign.Assessors[:nthAssessors/2],
 	}
-	assert.NotNil(t, rce.String())
-	assert.NotNil(t, rce.Digest())
-	assert.Equal(t, rce.Level(), sharedLevel) //
-	assert.NotNil(t, rce.Octets())
+	assert.NotNil(t, agilecustomerattackevidence.Text())
+	assert.NotNil(t, agilecustomerattackevidence.Digest())
+	assert.Equal(t, agilecustomerattackevidence.Altitude(), sharedAltitude) //
+	assert.NotNil(t, agilecustomerattackevidence.Octets())
 
 	//
 	verifyScenarios := []struct {
-		verifyLabel         string
-		distortProof func(*RapidCustomerAssaultProof)
+		verifyAlias         string
+		distortProof func(*AgileCustomerOnslaughtProof)
 	}{
-		{"REDACTED", func(ev *RapidCustomerAssaultProof) { ev.ClashingLedger.Heading = createHeadingArbitrary() }},
-		{"REDACTED", func(ev *RapidCustomerAssaultProof) {
-			ev.SharedLevel = level + 1
+		{"REDACTED", func(ev *AgileCustomerOnslaughtProof) { ev.DiscordantLedger.Heading = createHeadingUnpredictable() }},
+		{"REDACTED", func(ev *AgileCustomerOnslaughtProof) {
+			ev.SharedAltitude = altitude + 1
 		}},
 	}
 
 	for _, tc := range verifyScenarios {
-		rce := &RapidCustomerAssaultProof{
-			ClashingLedger: &RapidLedger{
-				AttestedHeading: &AttestedHeading{
+		agilecustomerattackevidence := &AgileCustomerOnslaughtProof{
+			DiscordantLedger: &AgileLedger{
+				NotatedHeading: &NotatedHeading{
 					Heading: heading,
 					Endorse: endorse,
 				},
-				RatifierAssign: valueCollection,
+				AssessorAssign: itemAssign,
 			},
-			SharedLevel:        sharedLevel,
-			SumPollingEnergy:    valueCollection.SumPollingEnergy(),
-			Timestamp:           heading.Time,
-			FaultyRatifiers: valueCollection.Ratifiers[:nRatifiers/2],
+			SharedAltitude:        sharedAltitude,
+			SumBallotingPotency:    itemAssign.SumBallotingPotency(),
+			Timestamp:           heading.Moment,
+			TreacherousAssessors: itemAssign.Assessors[:nthAssessors/2],
 		}
-		digest := rce.Digest()
-		tc.distortProof(rce)
-		assert.NotEqual(t, digest, rce.Digest(), tc.verifyLabel)
+		digest := agilecustomerattackevidence.Digest()
+		tc.distortProof(agilecustomerattackevidence)
+		assert.NotEqual(t, digest, agilecustomerattackevidence.Digest(), tc.verifyAlias)
 	}
 }
 
-func VerifyRapidCustomerAssaultProofVerification(t *testing.T) {
-	level := int64(5)
-	sharedLevel := level - 1
-	nRatifiers := 10
-	ballotCollection, valueCollection, privateValues := randomBallotCollection(level, 1, engineproto.PreendorseKind, nRatifiers, 1, false)
-	heading := createHeadingArbitrary()
-	heading.Level = level
-	heading.RatifiersDigest = valueCollection.Digest()
-	ledgerUID := createLedgerUID(heading.Digest(), math.MaxInt32, comethash.Sum([]byte("REDACTED")))
-	extensionEndorse, err := CreateExtensionEndorse(ledgerUID, level, 1, ballotCollection, privateValues, time.Now(), false)
+func VerifyAgileCustomerOnslaughtProofCertification(t *testing.T) {
+	altitude := int64(5)
+	sharedAltitude := altitude - 1
+	nthAssessors := 10
+	ballotAssign, itemAssign, privateItems := arbitraryBallotAssign(altitude, 1, commitchema.PreendorseKind, nthAssessors, 1, false)
+	heading := createHeadingUnpredictable()
+	heading.Altitude = altitude
+	heading.AssessorsDigest = itemAssign.Digest()
+	ledgerUUID := createLedgerUUID(heading.Digest(), math.MaxInt32, tenderminthash.Sum([]byte("REDACTED")))
+	addnEndorse, err := CreateAddnEndorse(ledgerUUID, altitude, 1, ballotAssign, privateItems, time.Now(), false)
 	require.NoError(t, err)
-	endorse := extensionEndorse.ToEndorse()
+	endorse := addnEndorse.TowardEndorse()
 
-	rce := &RapidCustomerAssaultProof{
-		ClashingLedger: &RapidLedger{
-			AttestedHeading: &AttestedHeading{
+	agilecustomerattackevidence := &AgileCustomerOnslaughtProof{
+		DiscordantLedger: &AgileLedger{
+			NotatedHeading: &NotatedHeading{
 				Heading: heading,
 				Endorse: endorse,
 			},
-			RatifierAssign: valueCollection,
+			AssessorAssign: itemAssign,
 		},
-		SharedLevel:        sharedLevel,
-		SumPollingEnergy:    valueCollection.SumPollingEnergy(),
-		Timestamp:           heading.Time,
-		FaultyRatifiers: valueCollection.Ratifiers[:nRatifiers/2],
+		SharedAltitude:        sharedAltitude,
+		SumBallotingPotency:    itemAssign.SumBallotingPotency(),
+		Timestamp:           heading.Moment,
+		TreacherousAssessors: itemAssign.Assessors[:nthAssessors/2],
 	}
-	assert.NoError(t, rce.CertifySimple())
+	assert.NoError(t, agilecustomerattackevidence.CertifyFundamental())
 
 	verifyScenarios := []struct {
-		verifyLabel         string
-		distortProof func(*RapidCustomerAssaultProof)
-		anticipateErr        bool
+		verifyAlias         string
+		distortProof func(*AgileCustomerOnslaughtProof)
+		anticipateFault        bool
 	}{
-		{"REDACTED", func(ev *RapidCustomerAssaultProof) {}, false},
-		{"REDACTED", func(ev *RapidCustomerAssaultProof) { ev.SharedLevel = -10 }, true},
-		{"REDACTED", func(ev *RapidCustomerAssaultProof) {
-			ev.SharedLevel = level + 1
+		{"REDACTED", func(ev *AgileCustomerOnslaughtProof) {}, false},
+		{"REDACTED", func(ev *AgileCustomerOnslaughtProof) { ev.SharedAltitude = -10 }, true},
+		{"REDACTED", func(ev *AgileCustomerOnslaughtProof) {
+			ev.SharedAltitude = altitude + 1
 		}, true},
-		{"REDACTED", func(ev *RapidCustomerAssaultProof) {
-			ev.SharedLevel = level
+		{"REDACTED", func(ev *AgileCustomerOnslaughtProof) {
+			ev.SharedAltitude = altitude
 		}, false},
-		{"REDACTED", func(ev *RapidCustomerAssaultProof) { ev.ClashingLedger.Heading = nil }, true},
-		{"REDACTED", func(ev *RapidCustomerAssaultProof) { ev.ClashingLedger = nil }, true},
-		{"REDACTED", func(ev *RapidCustomerAssaultProof) {
-			ev.ClashingLedger.RatifierAssign = &RatifierAssign{}
+		{"REDACTED", func(ev *AgileCustomerOnslaughtProof) { ev.DiscordantLedger.Heading = nil }, true},
+		{"REDACTED", func(ev *AgileCustomerOnslaughtProof) { ev.DiscordantLedger = nil }, true},
+		{"REDACTED", func(ev *AgileCustomerOnslaughtProof) {
+			ev.DiscordantLedger.AssessorAssign = &AssessorAssign{}
 		}, true},
-		{"REDACTED", func(ev *RapidCustomerAssaultProof) {
-			ev.SumPollingEnergy = -1
+		{"REDACTED", func(ev *AgileCustomerOnslaughtProof) {
+			ev.SumBallotingPotency = -1
 		}, true},
 	}
 	for _, tc := range verifyScenarios {
-		t.Run(tc.verifyLabel, func(t *testing.T) {
-			rce := &RapidCustomerAssaultProof{
-				ClashingLedger: &RapidLedger{
-					AttestedHeading: &AttestedHeading{
+		t.Run(tc.verifyAlias, func(t *testing.T) {
+			agilecustomerattackevidence := &AgileCustomerOnslaughtProof{
+				DiscordantLedger: &AgileLedger{
+					NotatedHeading: &NotatedHeading{
 						Heading: heading,
 						Endorse: endorse,
 					},
-					RatifierAssign: valueCollection,
+					AssessorAssign: itemAssign,
 				},
-				SharedLevel:        sharedLevel,
-				SumPollingEnergy:    valueCollection.SumPollingEnergy(),
-				Timestamp:           heading.Time,
-				FaultyRatifiers: valueCollection.Ratifiers[:nRatifiers/2],
+				SharedAltitude:        sharedAltitude,
+				SumBallotingPotency:    itemAssign.SumBallotingPotency(),
+				Timestamp:           heading.Moment,
+				TreacherousAssessors: itemAssign.Assessors[:nthAssessors/2],
 			}
-			tc.distortProof(rce)
-			if tc.anticipateErr {
-				assert.Error(t, rce.CertifySimple(), tc.verifyLabel)
+			tc.distortProof(agilecustomerattackevidence)
+			if tc.anticipateFault {
+				assert.Error(t, agilecustomerattackevidence.CertifyFundamental(), tc.verifyAlias)
 			} else {
-				assert.NoError(t, rce.CertifySimple(), tc.verifyLabel)
+				assert.NoError(t, agilecustomerattackevidence.CertifyFundamental(), tc.verifyAlias)
 			}
 		})
 	}
 }
 
-func VerifyEmulateProofCertifySimple(t *testing.T) {
-	validProof, err := NewEmulateReplicatedBallotProof(int64(1), time.Now(), "REDACTED")
+func VerifySimulateProofCertifyFundamental(t *testing.T) {
+	validProof, err := FreshSimulateReplicatedBallotProof(int64(1), time.Now(), "REDACTED")
 	require.NoError(t, err)
-	assert.Nil(t, validProof.CertifySimple())
+	assert.Nil(t, validProof.CertifyFundamental())
 }
 
-func createHeadingArbitrary() *Heading {
+func createHeadingUnpredictable() *Heading {
 	return &Heading{
-		Release:            cometrelease.Agreement{Ledger: release.LedgerProtocol, App: 1},
-		LedgerUID:            engineseed.Str(12),
-		Level:             int64(engineseed.Uint16()) + 1,
-		Time:               time.Now(),
-		FinalLedgerUID:        createLedgerUIDArbitrary(),
-		FinalEndorseDigest:     vault.CRandomOctets(comethash.Volume),
-		DataDigest:           vault.CRandomOctets(comethash.Volume),
-		RatifiersDigest:     vault.CRandomOctets(comethash.Volume),
-		FollowingRatifiersDigest: vault.CRandomOctets(comethash.Volume),
-		AgreementDigest:      vault.CRandomOctets(comethash.Volume),
-		ApplicationDigest:            vault.CRandomOctets(comethash.Volume),
-		FinalOutcomesDigest:    vault.CRandomOctets(comethash.Volume),
-		ProofDigest:       vault.CRandomOctets(comethash.Volume),
-		RecommenderLocation:    vault.CRandomOctets(vault.LocationVolume),
+		Edition:            strongmindedition.Agreement{Ledger: edition.LedgerScheme, App: 1},
+		SuccessionUUID:            commitrand.Str(12),
+		Altitude:             int64(commitrand.Uint16()) + 1,
+		Moment:               time.Now(),
+		FinalLedgerUUID:        createLedgerUUIDUnpredictable(),
+		FinalEndorseDigest:     security.CHARArbitraryOctets(tenderminthash.Extent),
+		DataDigest:           security.CHARArbitraryOctets(tenderminthash.Extent),
+		AssessorsDigest:     security.CHARArbitraryOctets(tenderminthash.Extent),
+		FollowingAssessorsDigest: security.CHARArbitraryOctets(tenderminthash.Extent),
+		AgreementDigest:      security.CHARArbitraryOctets(tenderminthash.Extent),
+		PlatformDigest:            security.CHARArbitraryOctets(tenderminthash.Extent),
+		FinalOutcomesDigest:    security.CHARArbitraryOctets(tenderminthash.Extent),
+		ProofDigest:       security.CHARArbitraryOctets(tenderminthash.Extent),
+		NominatorLocation:    security.CHARArbitraryOctets(security.LocatorExtent),
 	}
 }
 
 func VerifyProofSchema(t *testing.T) {
 	//
-	val := NewEmulatePV()
-	ledgerUID := createLedgerUID(comethash.Sum([]byte("REDACTED")), math.MaxInt32, comethash.Sum([]byte("REDACTED")))
-	ledgerUidtwo := createLedgerUID(comethash.Sum([]byte("REDACTED")), math.MaxInt32, comethash.Sum([]byte("REDACTED")))
-	const ledgerUID = "REDACTED"
-	v := CreateBallotNoFault(t, val, ledgerUID, math.MaxInt32, math.MaxInt64, 1, 0x01, ledgerUID, standardBallotTime)
-	v2 := CreateBallotNoFault(t, val, ledgerUID, math.MaxInt32, math.MaxInt64, 2, 0x01, ledgerUidtwo, standardBallotTime)
+	val := FreshSimulatePRV()
+	ledgerUUID := createLedgerUUID(tenderminthash.Sum([]byte("REDACTED")), math.MaxInt32, tenderminthash.Sum([]byte("REDACTED")))
+	ledgerUuid2 := createLedgerUUID(tenderminthash.Sum([]byte("REDACTED")), math.MaxInt32, tenderminthash.Sum([]byte("REDACTED")))
+	const successionUUID = "REDACTED"
+	v := CreateBallotNegativeFailure(t, val, successionUUID, math.MaxInt32, math.MaxInt64, 1, 0x01, ledgerUUID, fallbackBallotMoment)
+	v2 := CreateBallotNegativeFailure(t, val, successionUUID, math.MaxInt32, math.MaxInt64, 2, 0x01, ledgerUuid2, fallbackBallotMoment)
 
 	//
-	const level int64 = 37
+	const altitude int64 = 37
 
 	var (
-		header1 = createHeadingArbitrary()
-		header2 = createHeadingArbitrary()
+		heading1 = createHeadingUnpredictable()
+		heading2 = createHeadingUnpredictable()
 	)
 
-	header1.Level = level
-	header1.FinalLedgerUID = ledgerUID
-	header1.LedgerUID = ledgerUID
+	heading1.Altitude = altitude
+	heading1.FinalLedgerUUID = ledgerUUID
+	heading1.SuccessionUUID = successionUUID
 
-	header2.Level = level
-	header2.FinalLedgerUID = ledgerUID
-	header2.LedgerUID = ledgerUID
+	heading2.Altitude = altitude
+	heading2.FinalLedgerUUID = ledgerUUID
+	heading2.SuccessionUUID = successionUUID
 
 	verifies := []struct {
-		verifyLabel     string
+		verifyAlias     string
 		proof     Proof
-		toSchemaErr   bool
-		fromSchemaErr bool
+		towardSchemaFault   bool
+		originatingSchemaFault bool
 	}{
 		{"REDACTED", nil, true, true},
 		{"REDACTED", &ReplicatedBallotProof{}, false, true},
-		{"REDACTED", &ReplicatedBallotProof{BallotA: v, BallotBYTE: nil}, false, true},
-		{"REDACTED", &ReplicatedBallotProof{BallotA: nil, BallotBYTE: v}, false, true},
-		{"REDACTED", &ReplicatedBallotProof{BallotA: v2, BallotBYTE: v}, false, false},
+		{"REDACTED", &ReplicatedBallotProof{BallotAN: v, BallotBYTE: nil}, false, true},
+		{"REDACTED", &ReplicatedBallotProof{BallotAN: nil, BallotBYTE: v}, false, true},
+		{"REDACTED", &ReplicatedBallotProof{BallotAN: v2, BallotBYTE: v}, false, false},
 	}
 	for _, tt := range verifies {
-		t.Run(tt.verifyLabel, func(t *testing.T) {
-			pb, err := ProofToSchema(tt.proof)
-			if tt.toSchemaErr {
-				assert.Error(t, err, tt.verifyLabel)
+		t.Run(tt.verifyAlias, func(t *testing.T) {
+			pb, err := ProofTowardSchema(tt.proof)
+			if tt.towardSchemaFault {
+				assert.Error(t, err, tt.verifyAlias)
 				return
 			}
-			assert.NoError(t, err, tt.verifyLabel)
+			assert.NoError(t, err, tt.verifyAlias)
 
-			evi, err := ProofFromSchema(pb)
-			if tt.fromSchemaErr {
-				assert.Error(t, err, tt.verifyLabel)
+			evi, err := ProofOriginatingSchema(pb)
+			if tt.originatingSchemaFault {
+				assert.Error(t, err, tt.verifyAlias)
 				return
 			}
-			require.Equal(t, tt.proof, evi, tt.verifyLabel)
+			require.Equal(t, tt.proof, evi, tt.verifyAlias)
 		})
 	}
 }

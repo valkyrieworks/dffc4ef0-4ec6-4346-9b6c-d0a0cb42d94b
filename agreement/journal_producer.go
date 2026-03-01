@@ -9,18 +9,18 @@ import (
 	"testing"
 	"time"
 
-	db "github.com/valkyrieworks/-db"
+	db "github.com/valkyrieworks/dffc4ef0-4ec6-4346-9b6c-d0a0cb42d94b/-db"
 
-	"github.com/valkyrieworks/iface/instance/objectdepot"
-	cfg "github.com/valkyrieworks/settings"
-	"github.com/valkyrieworks/intrinsic/verify"
-	"github.com/valkyrieworks/utils/log"
-	engineseed "github.com/valkyrieworks/utils/random"
-	"github.com/valkyrieworks/privatekey"
-	"github.com/valkyrieworks/gateway"
-	sm "github.com/valkyrieworks/status"
-	"github.com/valkyrieworks/depot"
-	"github.com/valkyrieworks/kinds"
+	"github.com/valkyrieworks/dffc4ef0-4ec6-4346-9b6c-d0a0cb42d94b/iface/instance/statedepot"
+	cfg "github.com/valkyrieworks/dffc4ef0-4ec6-4346-9b6c-d0a0cb42d94b/settings"
+	"github.com/valkyrieworks/dffc4ef0-4ec6-4346-9b6c-d0a0cb42d94b/intrinsic/verify"
+	"github.com/valkyrieworks/dffc4ef0-4ec6-4346-9b6c-d0a0cb42d94b/utils/log"
+	commitrand "github.com/valkyrieworks/dffc4ef0-4ec6-4346-9b6c-d0a0cb42d94b/utils/arbitrary"
+	"github.com/valkyrieworks/dffc4ef0-4ec6-4346-9b6c-d0a0cb42d94b/privatevalue"
+	"github.com/valkyrieworks/dffc4ef0-4ec6-4346-9b6c-d0a0cb42d94b/delegate"
+	sm "github.com/valkyrieworks/dffc4ef0-4ec6-4346-9b6c-d0a0cb42d94b/status"
+	"github.com/valkyrieworks/dffc4ef0-4ec6-4346-9b6c-d0a0cb42d94b/depot"
+	"github.com/valkyrieworks/dffc4ef0-4ec6-4346-9b6c-d0a0cb42d94b/kinds"
 )
 
 //
@@ -28,86 +28,86 @@ import (
 //
 //
 //
-func JournalComposeNLedgers(t *testing.T, wr io.Writer, countLedgers int, settings *cfg.Settings) (err error) {
-	app := objectdepot.NewDurableSoftware(filepath.Join(settings.StoreFolder(), "REDACTED"))
+func JournalComposeNTHLedgers(t *testing.T, wr io.Writer, countLedgers int, settings *cfg.Settings) (err error) {
+	app := statedepot.FreshEnduringPlatform(filepath.Join(settings.DatastorePath(), "REDACTED"))
 
-	tracer := log.VerifyingTracer().With("REDACTED", "REDACTED")
+	tracer := log.VerifyingTracer().Using("REDACTED", "REDACTED")
 	tracer.Details("REDACTED", "REDACTED", countLedgers)
 
 	//
 	//
 	//
-	privateRatifierKeyEntry := settings.PrivateRatifierKeyEntry()
-	privateRatifierStatusEntry := settings.PrivateRatifierStatusEntry()
-	privateRatifier := privatekey.ImportOrGenerateEntryPV(privateRatifierKeyEntry, privateRatifierStatusEntry)
-	generatePaper, err := kinds.OriginPaperFromEntry(settings.OriginEntry())
+	privateAssessorTokenRecord := settings.PrivateAssessorTokenRecord()
+	privateAssessorStatusRecord := settings.PrivateAssessorStatusRecord()
+	privateAssessor := privatevalue.FetchEitherProduceRecordPRV(privateAssessorTokenRecord, privateAssessorStatusRecord)
+	producePaper, err := kinds.InaugurationPaperOriginatingRecord(settings.InaugurationRecord())
 	if err != nil {
 		return fmt.Errorf("REDACTED", err)
 	}
-	ledgerDepotStore := db.NewMemoryStore()
-	statusStore := ledgerDepotStore
-	statusDepot := sm.NewDepot(statusStore, sm.DepotSettings{
-		DropIfaceReplies: false,
+	ledgerDepotDatastore := db.FreshMemoryDatastore()
+	statusDatastore := ledgerDepotDatastore
+	statusDepot := sm.FreshDepot(statusDatastore, sm.DepotChoices{
+		EjectIfaceReplies: false,
 	})
-	status, err := sm.CreateOriginStatus(generatePaper)
+	status, err := sm.CreateInaugurationStatus(producePaper)
 	if err != nil {
 		return fmt.Errorf("REDACTED", err)
 	}
-	status.Release.Agreement.App = objectdepot.ApplicationRelease
+	status.Edition.Agreement.App = statedepot.PlatformEdition
 	if err = statusDepot.Persist(status); err != nil {
 		t.Error(err)
 	}
 
-	ledgerDepot := depot.NewLedgerDepot(ledgerDepotStore)
+	ledgerDepot := depot.FreshLedgerDepot(ledgerDepotDatastore)
 
-	gatewayApplication := gateway.NewApplicationLinks(gateway.NewNativeCustomerOriginator(app), gateway.NoopStats())
-	gatewayApplication.AssignTracer(tracer.With("REDACTED", "REDACTED"))
-	if err := gatewayApplication.Begin(); err != nil {
+	delegatePlatform := delegate.FreshPlatformLinks(delegate.FreshRegionalCustomerOriginator(app), delegate.NooperationTelemetry())
+	delegatePlatform.AssignTracer(tracer.Using("REDACTED", "REDACTED"))
+	if err := delegatePlatform.Initiate(); err != nil {
 		return fmt.Errorf("REDACTED", err)
 	}
 	t.Cleanup(func() {
-		if err := gatewayApplication.Halt(); err != nil {
+		if err := delegatePlatform.Halt(); err != nil {
 			t.Error(err)
 		}
 	})
 
-	eventBus := kinds.NewEventBus()
-	eventBus.AssignTracer(tracer.With("REDACTED", "REDACTED"))
-	if err := eventBus.Begin(); err != nil {
+	incidentPipeline := kinds.FreshIncidentPipeline()
+	incidentPipeline.AssignTracer(tracer.Using("REDACTED", "REDACTED"))
+	if err := incidentPipeline.Initiate(); err != nil {
 		return fmt.Errorf("REDACTED", err)
 	}
 	t.Cleanup(func() {
-		if err := eventBus.Halt(); err != nil {
+		if err := incidentPipeline.Halt(); err != nil {
 			t.Error(err)
 		}
 	})
-	txpool := emptyTxpool{}
-	eventpool := sm.EmptyProofDepository{}
-	ledgerExecute := sm.NewLedgerRunner(statusDepot, log.VerifyingTracer(), gatewayApplication.Agreement(), txpool, eventpool, ledgerDepot)
-	agreementStatus := NewStatus(settings.Agreement, status.Clone(), ledgerExecute, ledgerDepot, txpool, eventpool)
+	txpool := blankTxpool{}
+	incidentpool := sm.VoidProofHub{}
+	ledgerExecute := sm.FreshLedgerHandler(statusDepot, log.VerifyingTracer(), delegatePlatform.Agreement(), txpool, incidentpool, ledgerDepot)
+	agreementStatus := FreshStatus(settings.Agreement, status.Duplicate(), ledgerExecute, ledgerDepot, txpool, incidentpool)
 	agreementStatus.AssignTracer(tracer)
-	agreementStatus.AssignEventBus(eventBus)
-	if privateRatifier != nil {
-		agreementStatus.CollectionPrivateRatifier(privateRatifier)
+	agreementStatus.AssignIncidentChannel(incidentPipeline)
+	if privateAssessor != nil {
+		agreementStatus.AssignPrivateAssessor(privateAssessor)
 	}
 	//
 
 	//
-	countLedgersInscribed := make(chan struct{})
-	wal := newOctetBufferJournal(tracer, NewJournalSerializer(wr), int64(countLedgers), countLedgersInscribed)
+	countLedgersPersisted := make(chan struct{})
+	wal := freshOctetReserveJournal(tracer, FreshJournalSerializer(wr), int64(countLedgers), countLedgersPersisted)
 	//
-	if err := wal.Record(TerminateLevelSignal{0}); err != nil {
+	if err := wal.Record(TerminateAltitudeSignal{0}); err != nil {
 		t.Error(err)
 	}
 
 	agreementStatus.wal = wal
 
-	if err := agreementStatus.Begin(); err != nil {
+	if err := agreementStatus.Initiate(); err != nil {
 		return fmt.Errorf("REDACTED", err)
 	}
 
 	select {
-	case <-countLedgersInscribed:
+	case <-countLedgersPersisted:
 		if err := agreementStatus.Halt(); err != nil {
 			t.Error(err)
 		}
@@ -121,11 +121,11 @@ func JournalComposeNLedgers(t *testing.T, wr io.Writer, countLedgers int, settin
 }
 
 //
-func JournalWithNLedgers(t *testing.T, countLedgers int, settings *cfg.Settings) (data []byte, err error) {
+func JournalUsingNTHLedgers(t *testing.T, countLedgers int, settings *cfg.Settings) (data []byte, err error) {
 	var b bytes.Buffer
 	wr := bufio.NewWriter(&b)
 
-	if err := JournalComposeNLedgers(t, wr, countLedgers, settings); err != nil {
+	if err := JournalComposeNTHLedgers(t, wr, countLedgers, settings); err != nil {
 		return []byte{}, err
 	}
 
@@ -133,51 +133,51 @@ func JournalWithNLedgers(t *testing.T, countLedgers int, settings *cfg.Settings)
 	return b.Bytes(), nil
 }
 
-func randomPort() int {
+func arbitraryChannel() int {
 	//
-	root, disperse := 20000, 20000
-	return root + engineseed.Intn(disperse)
+	foundation, disperse := 20000, 20000
+	return foundation + commitrand.Integern(disperse)
 }
 
 func createLocations() (string, string, string) {
-	begin := randomPort()
-	return fmt.Sprintf("REDACTED", begin),
-		fmt.Sprintf("REDACTED", begin+1),
-		fmt.Sprintf("REDACTED", begin+2)
+	initiate := arbitraryChannel()
+	return fmt.Sprintf("REDACTED", initiate),
+		fmt.Sprintf("REDACTED", initiate+1),
+		fmt.Sprintf("REDACTED", initiate+2)
 }
 
 //
-func fetchSettings(t *testing.T) *cfg.Settings {
+func obtainSettings(t *testing.T) *cfg.Settings {
 	c := verify.RestoreVerifyOrigin(t.Name())
 
 	//
-	cmt, rpc, grpc := createLocations()
-	c.P2P.AcceptLocation = cmt
-	c.RPC.AcceptLocation = rpc
-	c.RPC.GRPCAcceptLocation = grpc
+	cmt, rpc, grps := createLocations()
+	c.P2P.OverhearLocation = cmt
+	c.RPC.OverhearLocation = rpc
+	c.RPC.GRPSOverhearLocation = grps
 	return c
 }
 
 //
 //
 //
-type octetBufferJournal struct {
+type octetReserveJournal struct {
 	enc               *JournalSerializer
-	ceased           bool
-	levelToHalt      int64
-	alertWhenHaltsTo chan<- struct{}
+	halted           bool
+	altitudeTowardHalt      int64
+	gestureWheneverHaltsToward chan<- struct{}
 
 	tracer log.Tracer
 }
 
 //
-var staticTime, _ = time.Parse(time.RFC3339, "REDACTED")
+var staticMoment, _ = time.Parse(time.RFC3339, "REDACTED")
 
-func newOctetBufferJournal(tracer log.Tracer, enc *JournalSerializer, nLedgers int64, alertHalt chan<- struct{}) *octetBufferJournal {
-	return &octetBufferJournal{
+func freshOctetReserveJournal(tracer log.Tracer, enc *JournalSerializer, nthLedgers int64, gestureHalt chan<- struct{}) *octetReserveJournal {
+	return &octetReserveJournal{
 		enc:               enc,
-		levelToHalt:      nLedgers,
-		alertWhenHaltsTo: alertHalt,
+		altitudeTowardHalt:      nthLedgers,
+		gestureWheneverHaltsToward: gestureHalt,
 		tracer:            tracer,
 	}
 }
@@ -185,24 +185,24 @@ func newOctetBufferJournal(tracer log.Tracer, enc *JournalSerializer, nLedgers i
 //
 //
 //
-func (w *octetBufferJournal) Record(m JournalSignal) error {
-	if w.ceased {
+func (w *octetReserveJournal) Record(m JournalSignal) error {
+	if w.halted {
 		w.tracer.Diagnose("REDACTED", "REDACTED", m)
 		return nil
 	}
 
-	if terminateMessage, ok := m.(TerminateLevelSignal); ok {
-		w.tracer.Diagnose("REDACTED", "REDACTED", terminateMessage.Level, "REDACTED", w.levelToHalt)
-		if terminateMessage.Level == w.levelToHalt {
-			w.tracer.Diagnose("REDACTED", "REDACTED", terminateMessage.Level)
-			w.alertWhenHaltsTo <- struct{}{}
-			w.ceased = true
+	if terminateSignal, ok := m.(TerminateAltitudeSignal); ok {
+		w.tracer.Diagnose("REDACTED", "REDACTED", terminateSignal.Altitude, "REDACTED", w.altitudeTowardHalt)
+		if terminateSignal.Altitude == w.altitudeTowardHalt {
+			w.tracer.Diagnose("REDACTED", "REDACTED", terminateSignal.Altitude)
+			w.gestureWheneverHaltsToward <- struct{}{}
+			w.halted = true
 			return nil
 		}
 	}
 
 	w.tracer.Diagnose("REDACTED", "REDACTED", m)
-	err := w.enc.Serialize(&ScheduledJournalSignal{staticTime, m})
+	err := w.enc.Serialize(&ScheduledJournalSignal{staticMoment, m})
 	if err != nil {
 		panic(fmt.Sprintf("REDACTED", m))
 	}
@@ -210,19 +210,19 @@ func (w *octetBufferJournal) Record(m JournalSignal) error {
 	return nil
 }
 
-func (w *octetBufferJournal) RecordAlign(m JournalSignal) error {
+func (w *octetReserveJournal) RecordChronize(m JournalSignal) error {
 	return w.Record(m)
 }
 
-func (w *octetBufferJournal) PurgeAndAlign() error { return nil }
+func (w *octetReserveJournal) PurgeAlsoChronize() error { return nil }
 
-func (w *octetBufferJournal) ScanForTerminateLevel(
+func (w *octetReserveJournal) LookupForeachTerminateAltitude(
 	int64,
-	*JournalScanSettings,
-) (rd io.ReadCloser, located bool, err error) {
+	*JournalLookupChoices,
+) (rd io.ReadCloser, detected bool, err error) {
 	return nil, false, nil
 }
 
-func (w *octetBufferJournal) Begin() error { return nil }
-func (w *octetBufferJournal) Halt() error  { return nil }
-func (w *octetBufferJournal) Wait()        {}
+func (w *octetReserveJournal) Initiate() error { return nil }
+func (w *octetReserveJournal) Halt() error  { return nil }
+func (w *octetReserveJournal) Pause()        {}

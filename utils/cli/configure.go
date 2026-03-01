@@ -12,10 +12,10 @@ import (
 )
 
 const (
-	HomeMark     = "REDACTED"
-	TrackMark    = "REDACTED"
-	ResultMark   = "REDACTED"
-	CodecMark = "REDACTED"
+	DomainMarker     = "REDACTED"
+	LoggingMarker    = "REDACTED"
+	EmissionMarker   = "REDACTED"
+	SerializationMarker = "REDACTED"
 )
 
 //
@@ -25,46 +25,46 @@ type Runnable interface {
 }
 
 //
-func ArrangeRootCommand(cmd *cobra.Command, contextPrefix, standardHome string) Runner {
-	cobra.OnInitialize(func() { initContext(contextPrefix) })
-	cmd.PersistentFlags().StringP(HomeMark, "REDACTED", standardHome, "REDACTED")
-	cmd.PersistentFlags().Bool(TrackMark, false, "REDACTED")
-	cmd.PersistentPreRunE = joinCobraCommandRoutines(attachMarksImportViper, cmd.PersistentPreRunE)
-	return Runner{cmd, os.Exit}
+func ArrangeFoundationDirective(cmd *cobra.Command, environmentHeading, fallbackDomain string) Handler {
+	cobra.OnInitialize(func() { initializeEnvironment(environmentHeading) })
+	cmd.PersistentFlags().StringP(DomainMarker, "REDACTED", fallbackDomain, "REDACTED")
+	cmd.PersistentFlags().Bool(LoggingMarker, false, "REDACTED")
+	cmd.PersistentPreRunE = concatenateCommandDirectiveRoutines(attachSwitchesFetchConfigurator, cmd.PersistentPreRunE)
+	return Handler{cmd, os.Exit}
 }
 
 //
 //
 //
 //
-func ArrangeMainCommand(cmd *cobra.Command, contextPrefix, standardHome string) Runner {
-	cmd.PersistentFlags().StringP(CodecMark, "REDACTED", "REDACTED", "REDACTED")
-	cmd.PersistentFlags().StringP(ResultMark, "REDACTED", "REDACTED", "REDACTED")
-	cmd.PersistentPreRunE = joinCobraCommandRoutines(certifyResult, cmd.PersistentPreRunE)
-	return ArrangeRootCommand(cmd, contextPrefix, standardHome)
+func ArrangePrimaryDirective(cmd *cobra.Command, environmentHeading, fallbackDomain string) Handler {
+	cmd.PersistentFlags().StringP(SerializationMarker, "REDACTED", "REDACTED", "REDACTED")
+	cmd.PersistentFlags().StringP(EmissionMarker, "REDACTED", "REDACTED", "REDACTED")
+	cmd.PersistentPreRunE = concatenateCommandDirectiveRoutines(certifyEmission, cmd.PersistentPreRunE)
+	return ArrangeFoundationDirective(cmd, environmentHeading, fallbackDomain)
 }
 
 //
-func initContext(prefix string) {
-	cloneContextVars(prefix)
+func initializeEnvironment(heading string) {
+	duplicateEnvironmentVariables(heading)
 
 	//
-	viper.SetEnvPrefix(prefix)
+	viper.SetEnvPrefix(heading)
 	viper.SetEnvKeyReplacer(strings.NewReplacer("REDACTED", "REDACTED", "REDACTED", "REDACTED"))
 	viper.AutomaticEnv()
 }
 
 //
 //
-func cloneContextVars(prefix string) {
-	prefix = strings.ToUpper(prefix)
-	ps := prefix + "REDACTED"
+func duplicateEnvironmentVariables(heading string) {
+	heading = strings.ToUpper(heading)
+	ps := heading + "REDACTED"
 	for _, e := range os.Environ() {
 		kv := strings.SplitN(e, "REDACTED", 2)
 		if len(kv) == 2 {
 			k, v := kv[0], kv[1]
-			if strings.HasPrefix(k, prefix) && !strings.HasPrefix(k, ps) {
-				k2 := strings.Replace(k, prefix, ps, 1)
+			if strings.HasPrefix(k, heading) && !strings.HasPrefix(k, ps) {
+				k2 := strings.Replace(k, heading, ps, 1)
 				os.Setenv(k2, v)
 			}
 		}
@@ -72,25 +72,25 @@ func cloneContextVars(prefix string) {
 }
 
 //
-type Runner struct {
+type Handler struct {
 	*cobra.Directive
 	Quit func(int) //
 }
 
 type QuitEncoder interface {
-	QuitCode() int
+	QuitCipher() int
 }
 
 //
 //
-func (e Runner) Perform() error {
+func (e Handler) Perform() error {
 	e.SilenceUsage = true
 	e.SilenceErrors = true
 	err := e.Directive.Execute()
 	if err != nil {
-		if viper.GetBool(TrackMark) {
-			const volume = 64 << 10
-			buf := make([]byte, volume)
+		if viper.GetBool(LoggingMarker) {
+			const extent = 64 << 10
+			buf := make([]byte, extent)
 			buf = buf[:runtime.Stack(buf, false)]
 			fmt.Fprintf(os.Stderr, "REDACTED", err, buf)
 		} else {
@@ -98,24 +98,24 @@ func (e Runner) Perform() error {
 		}
 
 		//
-		quitCode := 1
+		quitCipher := 1
 		if ec, ok := err.(QuitEncoder); ok {
-			quitCode = ec.QuitCode()
+			quitCipher = ec.QuitCipher()
 		}
-		e.Quit(quitCode)
+		e.Quit(quitCipher)
 	}
 	return err
 }
 
-type cobraCommandFunction func(cmd *cobra.Command, args []string) error
+type commandDirectiveMethod func(cmd *cobra.Command, arguments []string) error
 
 //
 //
-func joinCobraCommandRoutines(fs ...cobraCommandFunction) cobraCommandFunction {
-	return func(cmd *cobra.Command, args []string) error {
+func concatenateCommandDirectiveRoutines(fs ...commandDirectiveMethod) commandDirectiveMethod {
+	return func(cmd *cobra.Command, arguments []string) error {
 		for _, f := range fs {
 			if f != nil {
-				if err := f(cmd, args); err != nil {
+				if err := f(cmd, arguments); err != nil {
 					return err
 				}
 			}
@@ -125,17 +125,17 @@ func joinCobraCommandRoutines(fs ...cobraCommandFunction) cobraCommandFunction {
 }
 
 //
-func attachMarksImportViper(cmd *cobra.Command, _ []string) error {
+func attachSwitchesFetchConfigurator(cmd *cobra.Command, _ []string) error {
 	//
 	if err := viper.BindPFlags(cmd.Flags()); err != nil {
 		return err
 	}
 
-	homeFolder := viper.GetString(HomeMark)
-	viper.Set(HomeMark, homeFolder)
+	domainPath := viper.GetString(DomainMarker)
+	viper.Set(DomainMarker, domainPath)
 	viper.SetConfigName("REDACTED")                         //
-	viper.AddConfigPath(homeFolder)                          //
-	viper.AddConfigPath(filepath.Join(homeFolder, "REDACTED")) //
+	viper.AddConfigPath(domainPath)                          //
+	viper.AddConfigPath(filepath.Join(domainPath, "REDACTED")) //
 
 	//
 	err := viper.ReadInConfig()
@@ -146,13 +146,13 @@ func attachMarksImportViper(cmd *cobra.Command, _ []string) error {
 	return nil
 }
 
-func certifyResult(_ *cobra.Command, _ []string) error {
+func certifyEmission(_ *cobra.Command, _ []string) error {
 	//
-	result := viper.GetString(ResultMark)
-	switch result {
+	emission := viper.GetString(EmissionMarker)
+	switch emission {
 	case "REDACTED", "REDACTED":
 	default:
-		return fmt.Errorf("REDACTED", result)
+		return fmt.Errorf("REDACTED", emission)
 	}
 	return nil
 }

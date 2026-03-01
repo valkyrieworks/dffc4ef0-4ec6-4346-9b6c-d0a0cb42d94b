@@ -8,20 +8,20 @@ import (
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/require"
 
-	engineseed "github.com/valkyrieworks/utils/random"
-	vtest "github.com/valkyrieworks/utils/verify"
-	engineproto "github.com/valkyrieworks/schema/consensuscore/kinds"
+	commitrand "github.com/valkyrieworks/dffc4ef0-4ec6-4346-9b6c-d0a0cb42d94b/utils/arbitrary"
+	agreementtest "github.com/valkyrieworks/dffc4ef0-4ec6-4346-9b6c-d0a0cb42d94b/utils/verify"
+	commitchema "github.com/valkyrieworks/dffc4ef0-4ec6-4346-9b6c-d0a0cb42d94b/schema/strongmind/kinds"
 )
 
-func createTrans(cnt, volume int) Txs {
+func createTrans(cnt, extent int) Txs {
 	txs := make(Txs, cnt)
 	for i := 0; i < cnt; i++ {
-		txs[i] = engineseed.Octets(volume)
+		txs[i] = commitrand.Octets(extent)
 	}
 	return txs
 }
 
-func VerifyTransferOrdinal(t *testing.T) {
+func VerifyTransferPosition(t *testing.T) {
 	for i := 0; i < 20; i++ {
 		txs := createTrans(15, 60)
 		for j := 0; j < len(txs); j++ {
@@ -34,20 +34,20 @@ func VerifyTransferOrdinal(t *testing.T) {
 	}
 }
 
-func VerifyTransferOrdinalByDigest(t *testing.T) {
+func VerifyTransferPositionViaDigest(t *testing.T) {
 	for i := 0; i < 20; i++ {
 		txs := createTrans(15, 60)
 		for j := 0; j < len(txs); j++ {
 			tx := txs[j]
-			idx := txs.OrdinalByDigest(tx.Digest())
+			idx := txs.PositionViaDigest(tx.Digest())
 			assert.Equal(t, j, idx)
 		}
-		assert.Equal(t, -1, txs.OrdinalByDigest(nil))
-		assert.Equal(t, -1, txs.OrdinalByDigest(Tx("REDACTED").Digest()))
+		assert.Equal(t, -1, txs.PositionViaDigest(nil))
+		assert.Equal(t, -1, txs.PositionViaDigest(Tx("REDACTED").Digest()))
 	}
 }
 
-func VerifySoundTransferEvidence(t *testing.T) {
+func VerifySoundTransferAttestation(t *testing.T) {
 	scenarios := []struct {
 		txs Txs
 	}{
@@ -65,28 +65,28 @@ func VerifySoundTransferEvidence(t *testing.T) {
 		//
 		for i := range txs {
 			tx := []byte(txs[i])
-			evidence := txs.Attestation(i)
-			assert.EqualValues(t, i, evidence.Attestation.Ordinal, "REDACTED", h, i)
-			assert.EqualValues(t, len(txs), evidence.Attestation.Sum, "REDACTED", h, i)
-			assert.EqualValues(t, origin, evidence.OriginDigest, "REDACTED", h, i)
-			assert.EqualValues(t, tx, evidence.Data, "REDACTED", h, i)
-			assert.EqualValues(t, txs[i].Digest(), evidence.Element(), "REDACTED", h, i)
-			assert.Nil(t, evidence.Certify(origin), "REDACTED", h, i)
-			assert.NotNil(t, evidence.Certify([]byte("REDACTED")), "REDACTED", h, i)
+			attestation := txs.Attestation(i)
+			assert.EqualValues(t, i, attestation.Attestation.Ordinal, "REDACTED", h, i)
+			assert.EqualValues(t, len(txs), attestation.Attestation.Sum, "REDACTED", h, i)
+			assert.EqualValues(t, origin, attestation.OriginDigest, "REDACTED", h, i)
+			assert.EqualValues(t, tx, attestation.Data, "REDACTED", h, i)
+			assert.EqualValues(t, txs[i].Digest(), attestation.Node(), "REDACTED", h, i)
+			assert.Nil(t, attestation.Certify(origin), "REDACTED", h, i)
+			assert.NotNil(t, attestation.Certify([]byte("REDACTED")), "REDACTED", h, i)
 
 			//
 			var (
-				p2  TransferEvidence
-				pb2 engineproto.TransferEvidence
+				p2  TransferAttestation
+				pb2 commitchema.TransferAttestation
 			)
-			pbEvidence := evidence.ToSchema()
-			bin, err := pbEvidence.Serialize()
+			bufferAttestation := attestation.TowardSchema()
+			bin, err := bufferAttestation.Serialize()
 			require.NoError(t, err)
 
-			err = pb2.Unserialize(bin)
+			err = pb2.Decode(bin)
 			require.NoError(t, err)
 
-			p2, err = TransferEvidenceFromSchema(pb2)
+			p2, err = TransferAttestationOriginatingSchema(pb2)
 			if assert.Nil(t, err, "REDACTED", h, i, err) {
 				assert.Nil(t, p2.Certify(origin), "REDACTED", h, i)
 			}
@@ -94,57 +94,57 @@ func VerifySoundTransferEvidence(t *testing.T) {
 	}
 }
 
-func VerifyTransferEvidenceImmutable(t *testing.T) {
+func VerifyTransferAttestationImmutable(t *testing.T) {
 	//
 	for i := 0; i < 40; i++ {
-		verifyTransferEvidenceImmutable(t)
+		verifyTransferAttestationImmutable(t)
 	}
 }
 
-func verifyTransferEvidenceImmutable(t *testing.T) {
+func verifyTransferAttestationImmutable(t *testing.T) {
 	//
-	txs := createTrans(randomInteger(2, 100), randomInteger(16, 128))
+	txs := createTrans(arbitraryInteger(2, 100), arbitraryInteger(16, 128))
 	origin := txs.Digest()
-	i := randomInteger(0, len(txs)-1)
-	evidence := txs.Attestation(i)
+	i := arbitraryInteger(0, len(txs)-1)
+	attestation := txs.Attestation(i)
 
 	//
-	assert.Nil(t, evidence.Certify(origin))
-	pbEvidence := evidence.ToSchema()
-	bin, err := pbEvidence.Serialize()
+	assert.Nil(t, attestation.Certify(origin))
+	bufferAttestation := attestation.TowardSchema()
+	bin, err := bufferAttestation.Serialize()
 	require.NoError(t, err)
 
 	//
 	for j := 0; j < 500; j++ {
-		bad := vtest.TransformOctetSegment(bin)
+		bad := agreementtest.TransformOctetSegment(bin)
 		if !bytes.Equal(bad, bin) {
-			affirmFlawedEvidence(t, origin, bad, evidence)
+			attestFlawedAttestation(t, origin, bad, attestation)
 		}
 	}
 }
 
 //
-func affirmFlawedEvidence(t *testing.T, origin []byte, bad []byte, sound TransferEvidence) {
+func attestFlawedAttestation(t *testing.T, origin []byte, bad []byte, valid TransferAttestation) {
 	var (
-		evidence   TransferEvidence
-		pbEvidence engineproto.TransferEvidence
+		attestation   TransferAttestation
+		bufferAttestation commitchema.TransferAttestation
 	)
-	err := pbEvidence.Unserialize(bad)
+	err := bufferAttestation.Decode(bad)
 	if err == nil {
-		evidence, err = TransferEvidenceFromSchema(pbEvidence)
+		attestation, err = TransferAttestationOriginatingSchema(bufferAttestation)
 		if err == nil {
-			err = evidence.Certify(origin)
+			err = attestation.Certify(origin)
 			if err == nil {
 				//
 				//
 				//
 				//
-				assert.NotEqual(t, evidence.Attestation.Sum, sound.Attestation.Sum, "REDACTED", evidence, sound)
+				assert.NotEqual(t, attestation.Attestation.Sum, valid.Attestation.Sum, "REDACTED", attestation, valid)
 			}
 		}
 	}
 }
 
-func randomInteger(low, elevated int) int {
-	return rand.Intn(elevated-low) + low
+func arbitraryInteger(low, tall int) int {
+	return rand.Intn(tall-low) + low
 }

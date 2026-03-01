@@ -4,67 +4,67 @@ import (
 	"net"
 	"time"
 
-	"github.com/valkyrieworks/settings"
-	engineseed "github.com/valkyrieworks/utils/random"
-	engineconnect "github.com/valkyrieworks/utils/align"
+	"github.com/valkyrieworks/dffc4ef0-4ec6-4346-9b6c-d0a0cb42d94b/settings"
+	commitrand "github.com/valkyrieworks/dffc4ef0-4ec6-4346-9b6c-d0a0cb42d94b/utils/arbitrary"
+	commitchronize "github.com/valkyrieworks/dffc4ef0-4ec6-4346-9b6c-d0a0cb42d94b/utils/chronize"
 )
 
 //
 //
-type RandomizedLinkage struct {
+type TestedLinkage struct {
 	link net.Conn
 
-	mtx    engineconnect.Lock
-	begin  <-chan time.Time
-	enabled bool
+	mtx    commitchronize.Exclusion
+	initiate  <-chan time.Time
+	dynamic bool
 
 	settings *settings.RandomizeLinkSettings
 }
 
 //
 func RandomizeLink(link net.Conn) net.Conn {
-	return RandomizeLinkFromSettings(link, settings.StandardRandomizeLinkSettings())
+	return RandomizeLinkOriginatingSettings(link, settings.FallbackRandomizeLinkSettings())
 }
 
 //
 //
-func RandomizeLinkFromSettings(link net.Conn, settings *settings.RandomizeLinkSettings) net.Conn {
-	return &RandomizedLinkage{
+func RandomizeLinkOriginatingSettings(link net.Conn, settings *settings.RandomizeLinkSettings) net.Conn {
+	return &TestedLinkage{
 		link:   link,
-		begin:  make(<-chan time.Time),
-		enabled: true,
+		initiate:  make(<-chan time.Time),
+		dynamic: true,
 		settings: settings,
 	}
 }
 
 //
 //
-func RandomizeLinkAfter(link net.Conn, d time.Duration) net.Conn {
-	return RandomizeLinkAfterFromSettings(link, d, settings.StandardRandomizeLinkSettings())
+func RandomizeLinkSubsequent(link net.Conn, d time.Duration) net.Conn {
+	return RandomizeLinkSubsequentOriginatingSettings(link, d, settings.FallbackRandomizeLinkSettings())
 }
 
 //
 //
-func RandomizeLinkAfterFromSettings(
+func RandomizeLinkSubsequentOriginatingSettings(
 	link net.Conn,
 	d time.Duration,
 	settings *settings.RandomizeLinkSettings,
 ) net.Conn {
-	return &RandomizedLinkage{
+	return &TestedLinkage{
 		link:   link,
-		begin:  time.After(d),
-		enabled: false,
+		initiate:  time.After(d),
+		dynamic: false,
 		settings: settings,
 	}
 }
 
 //
-func (fc *RandomizedLinkage) Settings() *settings.RandomizeLinkSettings {
+func (fc *TestedLinkage) Settings() *settings.RandomizeLinkSettings {
 	return fc.settings
 }
 
 //
-func (fc *RandomizedLinkage) Scan(data []byte) (n int, err error) {
+func (fc *TestedLinkage) Obtain(data []byte) (n int, err error) {
 	if fc.randomize() {
 		return 0, nil
 	}
@@ -72,7 +72,7 @@ func (fc *RandomizedLinkage) Scan(data []byte) (n int, err error) {
 }
 
 //
-func (fc *RandomizedLinkage) Record(data []byte) (n int, err error) {
+func (fc *TestedLinkage) Record(data []byte) (n int, err error) {
 	if fc.randomize() {
 		return 0, nil
 	}
@@ -80,35 +80,35 @@ func (fc *RandomizedLinkage) Record(data []byte) (n int, err error) {
 }
 
 //
-func (fc *RandomizedLinkage) End() error { return fc.link.Close() }
+func (fc *TestedLinkage) Shutdown() error { return fc.link.Close() }
 
 //
-func (fc *RandomizedLinkage) NativeAddress() net.Addr { return fc.link.LocalAddr() }
+func (fc *TestedLinkage) RegionalLocation() net.Addr { return fc.link.LocalAddr() }
 
 //
-func (fc *RandomizedLinkage) DistantAddress() net.Addr { return fc.link.RemoteAddr() }
+func (fc *TestedLinkage) DistantLocation() net.Addr { return fc.link.RemoteAddr() }
 
 //
-func (fc *RandomizedLinkage) CollectionLimit(t time.Time) error { return fc.link.SetDeadline(t) }
+func (fc *TestedLinkage) AssignExpiration(t time.Time) error { return fc.link.SetDeadline(t) }
 
 //
-func (fc *RandomizedLinkage) CollectionReadLimit(t time.Time) error {
+func (fc *TestedLinkage) AssignFetchLimit(t time.Time) error {
 	return fc.link.SetReadDeadline(t)
 }
 
 //
-func (fc *RandomizedLinkage) CollectionRecordLimit(t time.Time) error {
+func (fc *TestedLinkage) AssignPersistLimit(t time.Time) error {
 	return fc.link.SetWriteDeadline(t)
 }
 
-func (fc *RandomizedLinkage) arbitraryPeriod() time.Duration {
-	maximumDeferralMillis := int(fc.settings.MaximumDeferral.Nanoseconds() / 1000)
-	return time.Millisecond * time.Duration(engineseed.Int()%maximumDeferralMillis) //
+func (fc *TestedLinkage) unpredictableInterval() time.Duration {
+	maximumDeferralMilli := int(fc.settings.MaximumDeferral.Nanoseconds() / 1000)
+	return time.Millisecond * time.Duration(commitrand.Int()%maximumDeferralMilli) //
 }
 
 //
 //
-func (fc *RandomizedLinkage) randomize() bool {
+func (fc *TestedLinkage) randomize() bool {
 	if !fc.mustRandomize() {
 		return false
 	}
@@ -116,27 +116,27 @@ func (fc *RandomizedLinkage) randomize() bool {
 	switch fc.settings.Style {
 	case settings.RandomizeStyleDiscard:
 		//
-		r := engineseed.Float64()
+		r := commitrand.Float64()
 		switch {
 		case r <= fc.settings.LikelihoodDiscardReadwrite:
 			return true
 		case r < fc.settings.LikelihoodDiscardReadwrite+fc.settings.LikelihoodDiscardLink:
 			//
 			//
-			fc.End()
+			fc.Shutdown()
 			return true
-		case r < fc.settings.LikelihoodDiscardReadwrite+fc.settings.LikelihoodDiscardLink+fc.settings.LikelihoodPause:
-			time.Sleep(fc.arbitraryPeriod())
+		case r < fc.settings.LikelihoodDiscardReadwrite+fc.settings.LikelihoodDiscardLink+fc.settings.LikelihoodSnooze:
+			time.Sleep(fc.unpredictableInterval())
 		}
 	case settings.RandomizeStyleDeferral:
 		//
-		time.Sleep(fc.arbitraryPeriod())
+		time.Sleep(fc.unpredictableInterval())
 	}
 	return false
 }
 
-func (fc *RandomizedLinkage) mustRandomize() bool {
-	if fc.enabled {
+func (fc *TestedLinkage) mustRandomize() bool {
+	if fc.dynamic {
 		return true
 	}
 
@@ -144,8 +144,8 @@ func (fc *RandomizedLinkage) mustRandomize() bool {
 	defer fc.mtx.Unlock()
 
 	select {
-	case <-fc.begin:
-		fc.enabled = true
+	case <-fc.initiate:
+		fc.dynamic = true
 		return true
 	default:
 		return false

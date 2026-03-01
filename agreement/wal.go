@@ -11,22 +11,22 @@ import (
 
 	"github.com/cosmos/gogoproto/proto"
 
-	automatic "github.com/valkyrieworks/utils/autofile"
-	cometjson "github.com/valkyrieworks/utils/json"
-	"github.com/valkyrieworks/utils/log"
-	cometos "github.com/valkyrieworks/utils/os"
-	"github.com/valkyrieworks/utils/daemon"
-	cometconnect "github.com/valkyrieworks/schema/consensuscore/agreement"
-	cometfaults "github.com/valkyrieworks/kinds/faults"
-	engineclock "github.com/valkyrieworks/kinds/moment"
+	automatic "github.com/valkyrieworks/dffc4ef0-4ec6-4346-9b6c-d0a0cb42d94b/utils/autosave"
+	strongmindjson "github.com/valkyrieworks/dffc4ef0-4ec6-4346-9b6c-d0a0cb42d94b/utils/jsn"
+	"github.com/valkyrieworks/dffc4ef0-4ec6-4346-9b6c-d0a0cb42d94b/utils/log"
+	strongos "github.com/valkyrieworks/dffc4ef0-4ec6-4346-9b6c-d0a0cb42d94b/utils/os"
+	"github.com/valkyrieworks/dffc4ef0-4ec6-4346-9b6c-d0a0cb42d94b/utils/facility"
+	strongmindcons "github.com/valkyrieworks/dffc4ef0-4ec6-4346-9b6c-d0a0cb42d94b/schema/strongmind/agreement"
+	strongminderrors "github.com/valkyrieworks/dffc4ef0-4ec6-4346-9b6c-d0a0cb42d94b/kinds/faults"
+	committime "github.com/valkyrieworks/dffc4ef0-4ec6-4346-9b6c-d0a0cb42d94b/kinds/moment"
 )
 
 const (
 	//
-	maximumMessageVolumeOctets = maximumMessageVolume + 24
+	maximumSignalExtentOctets = maximumSignalExtent + 24
 
 	//
-	journalStandardPurgeCadence = 2 * time.Second
+	journalFallbackPurgeDuration = 2 * time.Second
 )
 
 //
@@ -34,22 +34,22 @@ const (
 
 //
 type ScheduledJournalSignal struct {
-	Time time.Time  `json:"moment"`
+	Moment time.Time  `json:"moment"`
 	Msg  JournalSignal `json:"msg"`
 }
 
 //
 //
-type TerminateLevelSignal struct {
-	Level int64 `json:"level"`
+type TerminateAltitudeSignal struct {
+	Altitude int64 `json:"altitude"`
 }
 
 type JournalSignal any
 
-func init() {
-	cometjson.EnrollKind(messageDetails{}, "REDACTED")
-	cometjson.EnrollKind(deadlineDetails{}, "REDACTED")
-	cometjson.EnrollKind(TerminateLevelSignal{}, "REDACTED")
+func initialize() {
+	strongmindjson.EnrollKind(signalDetails{}, "REDACTED")
+	strongmindjson.EnrollKind(deadlineDetails{}, "REDACTED")
+	strongmindjson.EnrollKind(TerminateAltitudeSignal{}, "REDACTED")
 }
 
 //
@@ -58,15 +58,15 @@ func init() {
 //
 type WAL interface {
 	Record(JournalSignal) error
-	RecordAlign(JournalSignal) error
-	PurgeAndAlign() error
+	RecordChronize(JournalSignal) error
+	PurgeAlsoChronize() error
 
-	ScanForTerminateLevel(level int64, options *JournalScanSettings) (rd io.ReadCloser, located bool, err error)
+	LookupForeachTerminateAltitude(altitude int64, choices *JournalLookupChoices) (rd io.ReadCloser, detected bool, err error)
 
 	//
-	Begin() error
+	Initiate() error
 	Halt() error
-	Wait()
+	Pause()
 }
 
 //
@@ -74,78 +74,78 @@ type WAL interface {
 //
 //
 //
-type RootJournal struct {
-	daemon.RootDaemon
+type FoundationJournal struct {
+	facility.FoundationFacility
 
 	cluster *automatic.Cluster
 
 	enc *JournalSerializer
 
-	purgeTimer   *time.Ticker
-	purgeCadence time.Duration
+	purgeMetronome   *time.Ticker
+	purgeDuration time.Duration
 }
 
-var _ WAL = &RootJournal{}
+var _ WAL = &FoundationJournal{}
 
 //
 //
-func NewJournal(journalEntry string, clusterSettings ...func(*automatic.Cluster)) (*RootJournal, error) {
-	err := cometos.AssureFolder(filepath.Dir(journalEntry), 0o700)
+func FreshJournal(journalRecord string, clusterChoices ...func(*automatic.Cluster)) (*FoundationJournal, error) {
+	err := strongos.AssurePath(filepath.Dir(journalRecord), 0o700)
 	if err != nil {
 		return nil, fmt.Errorf("REDACTED", err)
 	}
 
-	cluster, err := automatic.AccessCluster(journalEntry, clusterSettings...)
+	cluster, err := automatic.InitiateCluster(journalRecord, clusterChoices...)
 	if err != nil {
 		return nil, err
 	}
-	wal := &RootJournal{
+	wal := &FoundationJournal{
 		cluster:         cluster,
-		enc:           NewJournalSerializer(cluster),
-		purgeCadence: journalStandardPurgeCadence,
+		enc:           FreshJournalSerializer(cluster),
+		purgeDuration: journalFallbackPurgeDuration,
 	}
-	wal.RootDaemon = *daemon.NewRootDaemon(nil, "REDACTED", wal)
+	wal.FoundationFacility = *facility.FreshFoundationFacility(nil, "REDACTED", wal)
 	return wal, nil
 }
 
 //
-func (wal *RootJournal) AssignPurgeCadence(i time.Duration) {
-	wal.purgeCadence = i
+func (wal *FoundationJournal) AssignPurgeDuration(i time.Duration) {
+	wal.purgeDuration = i
 }
 
-func (wal *RootJournal) Cluster() *automatic.Cluster {
+func (wal *FoundationJournal) Cluster() *automatic.Cluster {
 	return wal.cluster
 }
 
-func (wal *RootJournal) AssignTracer(l log.Tracer) {
+func (wal *FoundationJournal) AssignTracer(l log.Tracer) {
 	wal.Tracer = l
 	wal.cluster.AssignTracer(l)
 }
 
-func (wal *RootJournal) OnBegin() error {
-	volume, err := wal.cluster.Front.Volume()
+func (wal *FoundationJournal) UponInitiate() error {
+	extent, err := wal.cluster.Leading.Extent()
 	if err != nil {
 		return err
-	} else if volume == 0 {
-		if err := wal.RecordAlign(TerminateLevelSignal{0}); err != nil {
+	} else if extent == 0 {
+		if err := wal.RecordChronize(TerminateAltitudeSignal{0}); err != nil {
 			return err
 		}
 	}
-	err = wal.cluster.Begin()
+	err = wal.cluster.Initiate()
 	if err != nil {
 		return err
 	}
-	wal.purgeTimer = time.NewTicker(wal.purgeCadence)
-	go wal.handlePurgeTicks()
+	wal.purgeMetronome = time.NewTicker(wal.purgeDuration)
+	go wal.handlePurgeCounts()
 	return nil
 }
 
-func (wal *RootJournal) handlePurgeTicks() {
+func (wal *FoundationJournal) handlePurgeCounts() {
 	for {
 		select {
-		case <-wal.purgeTimer.C:
-			if err := wal.PurgeAndAlign(); err != nil {
-				wal.Tracer.Fault("REDACTED", "REDACTED", err)
+		case <-wal.purgeMetronome.C:
+			if err := wal.PurgeAlsoChronize(); err != nil {
+				wal.Tracer.Failure("REDACTED", "REDACTED", err)
 			}
 		case <-wal.Exit():
 			return
@@ -155,40 +155,40 @@ func (wal *RootJournal) handlePurgeTicks() {
 
 //
 //
-func (wal *RootJournal) PurgeAndAlign() error {
-	return wal.cluster.PurgeAndAlign()
+func (wal *FoundationJournal) PurgeAlsoChronize() error {
+	return wal.cluster.PurgeAlsoChronize()
 }
 
 //
 //
 //
-func (wal *RootJournal) OnHalt() {
-	wal.purgeTimer.Stop()
-	if err := wal.PurgeAndAlign(); err != nil {
-		wal.Tracer.Fault("REDACTED", "REDACTED", err)
+func (wal *FoundationJournal) UponHalt() {
+	wal.purgeMetronome.Stop()
+	if err := wal.PurgeAlsoChronize(); err != nil {
+		wal.Tracer.Failure("REDACTED", "REDACTED", err)
 	}
 	if err := wal.cluster.Halt(); err != nil {
-		wal.Tracer.Fault("REDACTED", "REDACTED", err)
+		wal.Tracer.Failure("REDACTED", "REDACTED", err)
 	}
-	wal.cluster.End()
+	wal.cluster.Shutdown()
 }
 
 //
 //
-func (wal *RootJournal) Wait() {
-	wal.cluster.Wait()
+func (wal *FoundationJournal) Pause() {
+	wal.cluster.Pause()
 }
 
 //
 //
 //
-func (wal *RootJournal) Record(msg JournalSignal) error {
+func (wal *FoundationJournal) Record(msg JournalSignal) error {
 	if wal == nil {
 		return nil
 	}
 
-	if err := wal.enc.Serialize(&ScheduledJournalSignal{engineclock.Now(), msg}); err != nil {
-		wal.Tracer.Fault("REDACTED",
+	if err := wal.enc.Serialize(&ScheduledJournalSignal{committime.Now(), msg}); err != nil {
+		wal.Tracer.Failure("REDACTED",
 			"REDACTED", err, "REDACTED", msg)
 		return err
 	}
@@ -199,7 +199,7 @@ func (wal *RootJournal) Record(msg JournalSignal) error {
 //
 //
 //
-func (wal *RootJournal) RecordAlign(msg JournalSignal) error {
+func (wal *FoundationJournal) RecordChronize(msg JournalSignal) error {
 	if wal == nil {
 		return nil
 	}
@@ -208,8 +208,8 @@ func (wal *RootJournal) RecordAlign(msg JournalSignal) error {
 		return err
 	}
 
-	if err := wal.PurgeAndAlign(); err != nil {
-		wal.Tracer.Fault(`REDACTED.
+	if err := wal.PurgeAlsoChronize(); err != nil {
+		wal.Tracer.Failure(`REDACTED.
 REDACTED`,
 			"REDACTED", err)
 		return err
@@ -219,7 +219,7 @@ REDACTED`,
 }
 
 //
-type JournalScanSettings struct {
+type JournalLookupChoices struct {
 	//
 	BypassDataImpairmentFaults bool
 }
@@ -229,56 +229,56 @@ type JournalScanSettings struct {
 //
 //
 //
-func (wal *RootJournal) ScanForTerminateLevel(
-	level int64,
-	options *JournalScanSettings,
-) (rd io.ReadCloser, located bool, err error) {
+func (wal *FoundationJournal) LookupForeachTerminateAltitude(
+	altitude int64,
+	choices *JournalLookupChoices,
+) (rd io.ReadCloser, detected bool, err error) {
 	var (
 		msg *ScheduledJournalSignal
-		gr  *automatic.ClusterScanner
+		gr  *automatic.ClusterFetcher
 	)
-	finalLevelLocated := int64(-1)
+	finalAltitudeDetected := int64(-1)
 
 	//
 	//
 	min, max := wal.cluster.MinimumOrdinal(), wal.cluster.MaximumOrdinal()
-	wal.Tracer.Details("REDACTED", "REDACTED", level, "REDACTED", min, "REDACTED", max)
+	wal.Tracer.Details("REDACTED", "REDACTED", altitude, "REDACTED", min, "REDACTED", max)
 	for ordinal := max; ordinal >= min; ordinal-- {
-		gr, err = wal.cluster.NewScanner(ordinal)
+		gr, err = wal.cluster.FreshFetcher(ordinal)
 		if err != nil {
 			return nil, false, err
 		}
 
-		dec := NewJournalParser(gr)
+		dec := FreshJournalDeserializer(gr)
 		for {
-			msg, err = dec.Parse()
+			msg, err = dec.Deserialize()
 			if err == io.EOF {
 				//
-				if finalLevelLocated > 0 && finalLevelLocated < level {
-					gr.End()
+				if finalAltitudeDetected > 0 && finalAltitudeDetected < altitude {
+					gr.Shutdown()
 					return nil, false, nil
 				}
 				//
 				break
 			}
-			if options.BypassDataImpairmentFaults && IsDataImpairmentFault(err) {
-				wal.Tracer.Fault("REDACTED", "REDACTED", err)
+			if choices.BypassDataImpairmentFaults && EqualsDataImpairmentFailure(err) {
+				wal.Tracer.Failure("REDACTED", "REDACTED", err)
 				//
 				continue
 			} else if err != nil {
-				gr.End()
+				gr.Shutdown()
 				return nil, false, err
 			}
 
-			if m, ok := msg.Msg.(TerminateLevelSignal); ok {
-				finalLevelLocated = m.Level
-				if m.Level == level { //
-					wal.Tracer.Details("REDACTED", "REDACTED", level, "REDACTED", ordinal)
+			if m, ok := msg.Msg.(TerminateAltitudeSignal); ok {
+				finalAltitudeDetected = m.Altitude
+				if m.Altitude == altitude { //
+					wal.Tracer.Details("REDACTED", "REDACTED", altitude, "REDACTED", ordinal)
 					return gr, true, nil
 				}
 			}
 		}
-		gr.End()
+		gr.Shutdown()
 	}
 
 	return nil, false, nil
@@ -292,7 +292,7 @@ type JournalSerializer struct {
 }
 
 //
-func NewJournalSerializer(wr io.Writer) *JournalSerializer {
+func FreshJournalSerializer(wr io.Writer) *JournalSerializer {
 	return &JournalSerializer{wr}
 }
 
@@ -300,13 +300,13 @@ func NewJournalSerializer(wr io.Writer) *JournalSerializer {
 //
 //
 func (enc *JournalSerializer) Serialize(v *ScheduledJournalSignal) error {
-	pbMessage, err := JournalToSchema(v.Msg)
+	bufferSignal, err := JournalTowardSchema(v.Msg)
 	if err != nil {
 		return err
 	}
-	pv := cometconnect.ScheduledJournalSignal{
-		Time: v.Time,
-		Msg:  pbMessage,
+	pv := strongmindcons.ScheduledJournalSignal{
+		Moment: v.Moment,
+		Msg:  bufferSignal,
 	}
 
 	data, err := proto.Marshal(&pv)
@@ -314,16 +314,16 @@ func (enc *JournalSerializer) Serialize(v *ScheduledJournalSignal) error {
 		panic(fmt.Errorf("REDACTED", err))
 	}
 
-	crc := crc32.Checksum(data, crc32c)
-	extent := uint32(len(data))
-	if extent > maximumMessageVolumeOctets {
-		return fmt.Errorf("REDACTED", extent, maximumMessageVolumeOctets)
+	crc := crc32.Checksum(data, checksum32c)
+	magnitude := uint32(len(data))
+	if magnitude > maximumSignalExtentOctets {
+		return fmt.Errorf("REDACTED", magnitude, maximumSignalExtentOctets)
 	}
-	sumExtent := 8 + int(extent)
+	sumMagnitude := 8 + int(magnitude)
 
-	msg := make([]byte, sumExtent)
+	msg := make([]byte, sumMagnitude)
 	binary.BigEndian.PutUint32(msg[0:4], crc)
-	binary.BigEndian.PutUint32(msg[4:8], extent)
+	binary.BigEndian.PutUint32(msg[4:8], magnitude)
 	copy(msg[8:], data)
 
 	_, err = enc.wr.Write(msg)
@@ -331,22 +331,22 @@ func (enc *JournalSerializer) Serialize(v *ScheduledJournalSignal) error {
 }
 
 //
-func IsDataImpairmentFault(err error) bool {
-	_, ok := err.(DataImpairmentFault)
+func EqualsDataImpairmentFailure(err error) bool {
+	_, ok := err.(DataImpairmentFailure)
 	return ok
 }
 
 //
-type DataImpairmentFault struct {
-	origin error
+type DataImpairmentFailure struct {
+	reason error
 }
 
-func (e DataImpairmentFault) Fault() string {
-	return fmt.Sprintf("REDACTED", e.origin)
+func (e DataImpairmentFailure) Failure() string {
+	return fmt.Sprintf("REDACTED", e.reason)
 }
 
-func (e DataImpairmentFault) Origin() error {
-	return e.origin
+func (e DataImpairmentFailure) Reason() error {
+	return e.reason
 }
 
 //
@@ -354,17 +354,17 @@ func (e DataImpairmentFault) Origin() error {
 //
 //
 //
-type JournalParser struct {
+type JournalDeserializer struct {
 	rd io.Reader
 }
 
 //
-func NewJournalParser(rd io.Reader) *JournalParser {
-	return &JournalParser{rd}
+func FreshJournalDeserializer(rd io.Reader) *JournalDeserializer {
+	return &JournalDeserializer{rd}
 }
 
 //
-func (dec *JournalParser) Parse() (*ScheduledJournalSignal, error) {
+func (dec *JournalDeserializer) Deserialize() (*ScheduledJournalSignal, error) {
 	b := make([]byte, 4)
 
 	_, err := dec.rd.Read(b)
@@ -372,64 +372,64 @@ func (dec *JournalParser) Parse() (*ScheduledJournalSignal, error) {
 		return nil, err
 	}
 	if err != nil {
-		return nil, DataImpairmentFault{fmt.Errorf("REDACTED", err)}
+		return nil, DataImpairmentFailure{fmt.Errorf("REDACTED", err)}
 	}
 	crc := binary.BigEndian.Uint32(b)
 
 	b = make([]byte, 4)
 	_, err = dec.rd.Read(b)
 	if err != nil {
-		return nil, DataImpairmentFault{fmt.Errorf("REDACTED", err)}
+		return nil, DataImpairmentFailure{fmt.Errorf("REDACTED", err)}
 	}
-	extent := binary.BigEndian.Uint32(b)
+	magnitude := binary.BigEndian.Uint32(b)
 
-	if extent > maximumMessageVolumeOctets {
-		return nil, DataImpairmentFault{fmt.Errorf(
+	if magnitude > maximumSignalExtentOctets {
+		return nil, DataImpairmentFailure{fmt.Errorf(
 			"REDACTED",
-			extent,
-			maximumMessageVolumeOctets)}
+			magnitude,
+			maximumSignalExtentOctets)}
 	}
 
-	data := make([]byte, extent)
+	data := make([]byte, magnitude)
 	n, err := dec.rd.Read(data)
 	if err != nil {
-		return nil, DataImpairmentFault{fmt.Errorf("REDACTED", err, n, extent)}
+		return nil, DataImpairmentFailure{fmt.Errorf("REDACTED", err, n, magnitude)}
 	}
 
 	//
-	factualCRC := crc32.Checksum(data, crc32c)
-	if factualCRC != crc {
-		return nil, DataImpairmentFault{fmt.Errorf("REDACTED", crc, factualCRC)}
+	preciseChecksum := crc32.Checksum(data, checksum32c)
+	if preciseChecksum != crc {
+		return nil, DataImpairmentFailure{fmt.Errorf("REDACTED", crc, preciseChecksum)}
 	}
 
-	res := new(cometconnect.ScheduledJournalSignal)
+	res := new(strongmindcons.ScheduledJournalSignal)
 	err = proto.Unmarshal(data, res)
 	if err != nil {
-		return nil, DataImpairmentFault{fmt.Errorf("REDACTED", err)}
+		return nil, DataImpairmentFailure{fmt.Errorf("REDACTED", err)}
 	}
 
-	journalMessage, err := JournalFromSchema(res.Msg)
+	journalSignal, err := JournalOriginatingSchema(res.Msg)
 	if err != nil {
-		return nil, DataImpairmentFault{cometfaults.ErrMessageFromSchema{SignalLabel: "REDACTED", Err: err}}
+		return nil, DataImpairmentFailure{strongminderrors.FaultSignalOriginatingSchema{SignalAlias: "REDACTED", Err: err}}
 	}
-	tMessageJournal := &ScheduledJournalSignal{
-		Time: res.Time,
-		Msg:  journalMessage,
+	tempSignalJournal := &ScheduledJournalSignal{
+		Moment: res.Moment,
+		Msg:  journalSignal,
 	}
 
-	return tMessageJournal, err
+	return tempSignalJournal, err
 }
 
-type nullJournal struct{}
+type voidJournal struct{}
 
-var _ WAL = nullJournal{}
+var _ WAL = voidJournal{}
 
-func (nullJournal) Record(JournalSignal) error     { return nil }
-func (nullJournal) RecordAlign(JournalSignal) error { return nil }
-func (nullJournal) PurgeAndAlign() error        { return nil }
-func (nullJournal) ScanForTerminateLevel(int64, *JournalScanSettings) (rd io.ReadCloser, located bool, err error) {
+func (voidJournal) Record(JournalSignal) error     { return nil }
+func (voidJournal) RecordChronize(JournalSignal) error { return nil }
+func (voidJournal) PurgeAlsoChronize() error        { return nil }
+func (voidJournal) LookupForeachTerminateAltitude(int64, *JournalLookupChoices) (rd io.ReadCloser, detected bool, err error) {
 	return nil, false, nil
 }
-func (nullJournal) Begin() error { return nil }
-func (nullJournal) Halt() error  { return nil }
-func (nullJournal) Wait()        {}
+func (voidJournal) Initiate() error { return nil }
+func (voidJournal) Halt() error  { return nil }
+func (voidJournal) Pause()        {}

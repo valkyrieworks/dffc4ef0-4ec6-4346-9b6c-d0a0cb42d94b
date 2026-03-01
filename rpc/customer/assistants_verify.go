@@ -1,4 +1,4 @@
-package agent_test
+package cust_test
 
 import (
 	"errors"
@@ -8,70 +8,70 @@ import (
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/require"
 
-	"github.com/valkyrieworks/rpc/customer"
-	"github.com/valkyrieworks/rpc/customer/emulate"
-	ctypes "github.com/valkyrieworks/rpc/core/kinds"
+	"github.com/valkyrieworks/dffc4ef0-4ec6-4346-9b6c-d0a0cb42d94b/rpc/customer"
+	"github.com/valkyrieworks/dffc4ef0-4ec6-4346-9b6c-d0a0cb42d94b/rpc/customer/simulate"
+	ktypes "github.com/valkyrieworks/dffc4ef0-4ec6-4346-9b6c-d0a0cb42d94b/rpc/base/kinds"
 )
 
-func VerifyWaitForLevel(t *testing.T) {
+func VerifyPauseForeachAltitude(t *testing.T) {
 	affirm, demand := assert.New(t), require.New(t)
 
 	//
-	m := &emulate.StateEmulate{
-		Invoke: emulate.Invoke{
-			Fault: errors.New("REDACTED"),
+	m := &simulate.ConditionSimulate{
+		Invocation: simulate.Invocation{
+			Failure: errors.New("REDACTED"),
 		},
 	}
-	r := emulate.NewStateTracer(m)
+	r := simulate.FreshConditionTracer(m)
 
 	//
-	err := customer.WaitForLevel(r, 8, nil)
+	err := customer.PauseForeachAltitude(r, 8, nil)
 	require.NotNil(err)
 	require.Equal("REDACTED", err.Error())
 	//
 	require.Equal(1, len(r.Invocations))
 
 	//
-	m.Invoke = emulate.Invoke{
-		Reply: &ctypes.OutcomeState{AlignDetails: ctypes.AlignDetails{NewestLedgerLevel: 10}},
+	m.Invocation = simulate.Invocation{
+		Reply: &ktypes.OutcomeCondition{ChronizeDetails: ktypes.ChronizeDetails{NewestLedgerAltitude: 10}},
 	}
 
 	//
-	err = customer.WaitForLevel(r, 40, nil)
+	err = customer.PauseForeachAltitude(r, 40, nil)
 	require.NotNil(err)
 	require.True(strings.Contains(err.Error(), "REDACTED"))
 	//
 	require.Equal(2, len(r.Invocations))
 
 	//
-	err = customer.WaitForLevel(r, 5, nil)
+	err = customer.PauseForeachAltitude(r, 5, nil)
 	require.Nil(err)
 	//
 	require.Equal(3, len(r.Invocations))
 
 	//
 	//
-	mineObserver := func(variance int64) error {
+	selfPauser := func(variation int64) error {
 		//
-		m.Reply = &ctypes.OutcomeState{AlignDetails: ctypes.AlignDetails{NewestLedgerLevel: 15}}
-		return customer.StandardWaitTactic(variance)
+		m.Reply = &ktypes.OutcomeCondition{ChronizeDetails: ktypes.ChronizeDetails{NewestLedgerAltitude: 15}}
+		return customer.FallbackPauseTactic(variation)
 	}
 
 	//
-	err = customer.WaitForLevel(r, 12, mineObserver)
+	err = customer.PauseForeachAltitude(r, 12, selfPauser)
 	require.Nil(err)
 	//
 	require.Equal(5, len(r.Invocations))
 
 	pre := r.Invocations[3]
-	require.Nil(pre.Fault)
-	pout, ok := pre.Reply.(*ctypes.OutcomeState)
+	require.Nil(pre.Failure)
+	precheckr, ok := pre.Reply.(*ktypes.OutcomeCondition)
 	require.True(ok)
-	assert.Equal(int64(10), pout.AlignDetails.NewestLedgerLevel)
+	assert.Equal(int64(10), precheckr.ChronizeDetails.NewestLedgerAltitude)
 
 	submit := r.Invocations[4]
-	require.Nil(submit.Fault)
-	submitter, ok := submit.Reply.(*ctypes.OutcomeState)
+	require.Nil(submit.Failure)
+	submitr, ok := submit.Reply.(*ktypes.OutcomeCondition)
 	require.True(ok)
-	assert.Equal(int64(15), submitter.AlignDetails.NewestLedgerLevel)
+	assert.Equal(int64(15), submitr.ChronizeDetails.NewestLedgerAltitude)
 }

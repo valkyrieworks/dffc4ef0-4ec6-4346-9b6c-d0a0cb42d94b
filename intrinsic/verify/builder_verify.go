@@ -5,12 +5,12 @@ import (
 
 	"github.com/stretchr/testify/require"
 
-	"github.com/valkyrieworks/kinds"
+	"github.com/valkyrieworks/dffc4ef0-4ec6-4346-9b6c-d0a0cb42d94b/kinds"
 )
 
-func VerifyCreateHeading(t *testing.T) {
-	heading := CreateHeading(t, &kinds.Heading{})
+func VerifyCreateHeadline(t *testing.T) {
+	heading := CreateHeadline(t, &kinds.Heading{})
 	require.NotNil(t, heading)
 
-	require.NoError(t, heading.CertifySimple())
+	require.NoError(t, heading.CertifyFundamental())
 }

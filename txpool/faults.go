@@ -6,37 +6,37 @@ import (
 )
 
 //
-var ErrTransferNegateLocated = errors.New("REDACTED")
+var FaultTransferNegationDetected = errors.New("REDACTED")
 
 //
-var ErrTransferInRepository = errors.New("REDACTED")
-
-//
-//
-var ErrRevalidateComplete = errors.New("REDACTED")
+var FaultTransferInsideStash = errors.New("REDACTED")
 
 //
 //
-type ErrTransferTooBulky struct {
+var FaultReinspectComplete = errors.New("REDACTED")
+
+//
+//
+type FaultTransferExcessivelyAmple struct {
 	Max    int
-	Factual int
+	Existing int
 }
 
-func (e ErrTransferTooBulky) Fault() string {
-	return fmt.Sprintf("REDACTED", e.Max, e.Factual)
+func (e FaultTransferExcessivelyAmple) Failure() string {
+	return fmt.Sprintf("REDACTED", e.Max, e.Existing)
 }
 
 //
 //
-type ErrTxpoolIsComplete struct {
+type FaultTxpoolEqualsComplete struct {
 	CountTrans      int
 	MaximumTrans      int
 	TransOctets    int64
 	MaximumTransOctets int64
-	RevalidateComplete bool
+	ReinspectComplete bool
 }
 
-func (e ErrTxpoolIsComplete) Fault() string {
+func (e FaultTxpoolEqualsComplete) Failure() string {
 	return fmt.Sprintf(
 		"REDACTED",
 		e.CountTrans,
@@ -47,43 +47,43 @@ func (e ErrTxpoolIsComplete) Fault() string {
 }
 
 //
-type ErrPreInspect struct {
+type FaultAnteInspect struct {
 	Err error
 }
 
-func (e ErrPreInspect) Fault() string {
+func (e FaultAnteInspect) Failure() string {
 	return fmt.Sprintf("REDACTED", e.Err)
 }
 
-func (e ErrPreInspect) Disclose() error {
+func (e FaultAnteInspect) Disclose() error {
 	return e.Err
 }
 
 //
-func IsPreInspectFault(err error) bool {
-	return errors.As(err, &ErrPreInspect{})
+func EqualsPriorInspectFailure(err error) bool {
+	return errors.As(err, &FaultAnteInspect{})
 }
 
-type ErrApplicationLinkTxpool struct {
+type FaultApplicationLinkTxpool struct {
 	Err error
 }
 
-func (e ErrApplicationLinkTxpool) Fault() string {
+func (e FaultApplicationLinkTxpool) Failure() string {
 	return fmt.Sprintf("REDACTED", e.Err)
 }
 
-func (e ErrApplicationLinkTxpool) Disclose() error {
+func (e FaultApplicationLinkTxpool) Disclose() error {
 	return e.Err
 }
 
-type ErrPurgeApplicationLink struct {
+type FaultPurgeApplicationLink struct {
 	Err error
 }
 
-func (e ErrPurgeApplicationLink) Fault() string {
+func (e FaultPurgeApplicationLink) Failure() string {
 	return fmt.Sprintf("REDACTED", e.Err)
 }
 
-func (e ErrPurgeApplicationLink) Disclose() error {
+func (e FaultPurgeApplicationLink) Disclose() error {
 	return e.Err
 }

@@ -2,10 +2,10 @@ package customer
 
 //
 //
-type IfaceInquireSettings struct {
-	Level int64
-	Demonstrate  bool
+type IfaceInquireChoices struct {
+	Altitude int64
+	Validate  bool
 }
 
 //
-var StandardIfaceInquireSettings = IfaceInquireSettings{Level: 0, Demonstrate: false}
+var FallbackIfaceInquireChoices = IfaceInquireChoices{Altitude: 0, Validate: false}

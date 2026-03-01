@@ -1,22 +1,22 @@
-package trace_t_test
+package report_typ_test
 
 import (
 	"bytes"
 	"strings"
 	"testing"
 
-	"github.com/valkyrieworks/utils/log"
+	"github.com/valkyrieworks/dffc4ef0-4ec6-4346-9b6c-d0a0cb42d94b/utils/log"
 )
 
-func VerifyDiverseTiers(t *testing.T) {
+func VerifySundryTiers(t *testing.T) {
 	verifyScenarios := []struct {
-		label    string
-		permitted log.Setting
+		alias    string
+		permitted log.Selection
 		desire    string
 	}{
 		{
 			"REDACTED",
-			log.PermitAll(),
+			log.PermitEvery(),
 			strings.Join([]string{
 				"REDACTED",
 				"REDACTED",
@@ -42,27 +42,27 @@ func VerifyDiverseTiers(t *testing.T) {
 		},
 		{
 			"REDACTED",
-			log.PermitFault(),
+			log.PermitFailure(),
 			strings.Join([]string{
 				"REDACTED",
 			}, "REDACTED"),
 		},
 		{
 			"REDACTED",
-			log.PermitNone(),
+			log.PermitNil(),
 			"REDACTED",
 		},
 	}
 
 	for _, tc := range verifyScenarios {
 
-		t.Run(tc.label, func(t *testing.T) {
+		t.Run(tc.alias, func(t *testing.T) {
 			var buf bytes.Buffer
-			tracer := log.NewRefine(log.NewTmjsonTracerNoTS(&buf), tc.permitted)
+			tracer := log.FreshRefine(log.FreshTempjsonTracerNegativeTimestamp(&buf), tc.permitted)
 
 			tracer.Diagnose("REDACTED", "REDACTED", "REDACTED")
 			tracer.Details("REDACTED", "REDACTED", "REDACTED")
-			tracer.Fault("REDACTED", "REDACTED", "REDACTED")
+			tracer.Failure("REDACTED", "REDACTED", "REDACTED")
 
 			if desire, possess := tc.desire, strings.TrimSpace(buf.String()); desire != possess {
 				t.Errorf("REDACTED", desire, possess)
@@ -71,14 +71,14 @@ func VerifyDiverseTiers(t *testing.T) {
 	}
 }
 
-func VerifyLayerContext(t *testing.T) {
+func VerifyStratumEnv(t *testing.T) {
 	var buf bytes.Buffer
 
-	tracer := log.NewTmjsonTracerNoTS(&buf)
-	tracer = log.NewRefine(tracer, log.PermitFault())
-	tracer = tracer.With("REDACTED", "REDACTED")
+	tracer := log.FreshTempjsonTracerNegativeTimestamp(&buf)
+	tracer = log.FreshRefine(tracer, log.PermitFailure())
+	tracer = tracer.Using("REDACTED", "REDACTED")
 
-	tracer.Fault("REDACTED", "REDACTED", "REDACTED")
+	tracer.Failure("REDACTED", "REDACTED", "REDACTED")
 
 	desire := "REDACTED"
 	possess := strings.TrimSpace(buf.String())
@@ -93,13 +93,13 @@ func VerifyLayerContext(t *testing.T) {
 	}
 }
 
-func VerifyDiversePermitWith(t *testing.T) {
+func VerifySundryPermitUsing(t *testing.T) {
 	var buf bytes.Buffer
 
-	tracer := log.NewTmjsonTracerNoTS(&buf)
+	tracer := log.FreshTempjsonTracerNegativeTimestamp(&buf)
 
-	tracer1 := log.NewRefine(tracer, log.PermitFault(), log.PermitDetailsWith("REDACTED", "REDACTED"))
-	tracer1.With("REDACTED", "REDACTED").Details("REDACTED", "REDACTED", "REDACTED")
+	tracer1 := log.FreshRefine(tracer, log.PermitFailure(), log.PermitDetailsUsing("REDACTED", "REDACTED"))
+	tracer1.Using("REDACTED", "REDACTED").Details("REDACTED", "REDACTED", "REDACTED")
 
 	desire := "REDACTED"
 	possess := strings.TrimSpace(buf.String())
@@ -109,28 +109,28 @@ func VerifyDiversePermitWith(t *testing.T) {
 
 	buf.Reset()
 
-	tracer2 := log.NewRefine(
+	tracer2 := log.FreshRefine(
 		tracer,
-		log.PermitFault(),
-		log.PermitDetailsWith("REDACTED", "REDACTED"),
-		log.PermitNoneWith("REDACTED", "REDACTED"),
+		log.PermitFailure(),
+		log.PermitDetailsUsing("REDACTED", "REDACTED"),
+		log.PermitNilUsing("REDACTED", "REDACTED"),
 	)
 
-	tracer2.With("REDACTED", "REDACTED", "REDACTED", "REDACTED").Details("REDACTED", "REDACTED", "REDACTED")
+	tracer2.Using("REDACTED", "REDACTED", "REDACTED", "REDACTED").Details("REDACTED", "REDACTED", "REDACTED")
 	if desire, possess := "REDACTED", strings.TrimSpace(buf.String()); desire != possess {
 		t.Errorf("REDACTED", desire, possess)
 	}
 
 	buf.Reset()
 
-	tracer3 := log.NewRefine(
+	tracer3 := log.FreshRefine(
 		tracer,
-		log.PermitFault(),
-		log.PermitDetailsWith("REDACTED", "REDACTED"),
-		log.PermitNoneWith("REDACTED", "REDACTED"),
+		log.PermitFailure(),
+		log.PermitDetailsUsing("REDACTED", "REDACTED"),
+		log.PermitNilUsing("REDACTED", "REDACTED"),
 	)
 
-	tracer3.With("REDACTED", "REDACTED").With("REDACTED", "REDACTED").Details("REDACTED", "REDACTED", "REDACTED")
+	tracer3.Using("REDACTED", "REDACTED").Using("REDACTED", "REDACTED").Details("REDACTED", "REDACTED", "REDACTED")
 
 	desire = "REDACTED"
 	possess = strings.TrimSpace(buf.String())

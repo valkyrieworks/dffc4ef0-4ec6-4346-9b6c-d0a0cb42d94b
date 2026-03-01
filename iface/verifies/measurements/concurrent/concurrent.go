@@ -1,16 +1,16 @@
-package main
+package primary
 
 import (
 	"bufio"
 	"fmt"
 	"log"
 
-	"github.com/valkyrieworks/iface/kinds"
-	cometnet "github.com/valkyrieworks/utils/net"
+	"github.com/valkyrieworks/dffc4ef0-4ec6-4346-9b6c-d0a0cb42d94b/iface/kinds"
+	strongmindnet "github.com/valkyrieworks/dffc4ef0-4ec6-4346-9b6c-d0a0cb42d94b/utils/net"
 )
 
-func main() {
-	link, err := cometnet.Link("REDACTED")
+func primary() {
+	link, err := strongmindnet.Relate("REDACTED")
 	if err != nil {
 		log.Fatal(err.Error())
 	}
@@ -20,7 +20,7 @@ func main() {
 		tally := 0
 		for {
 			res := &kinds.Reply{}
-			err := kinds.ScanSignal(link, res)
+			err := kinds.FetchArtifact(link, res)
 			if err != nil {
 				log.Fatal(err.Error())
 			}
@@ -34,14 +34,14 @@ func main() {
 	//
 	tally := 0
 	for i := 0; ; i++ {
-		bufferRecorder := bufio.NewWriter(link)
-		req := kinds.ToQueryReverberate("REDACTED")
+		bufferPersistor := bufio.NewWriter(link)
+		req := kinds.TowardSolicitReverberate("REDACTED")
 
-		err := kinds.RecordSignal(req, bufferRecorder)
+		err := kinds.PersistArtifact(req, bufferPersistor)
 		if err != nil {
 			log.Fatal(err.Error())
 		}
-		err = bufferRecorder.Flush()
+		err = bufferPersistor.Flush()
 		if err != nil {
 			log.Fatal(err.Error())
 		}

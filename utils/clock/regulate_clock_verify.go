@@ -8,22 +8,22 @@ import (
 
 	asrt "github.com/stretchr/testify/assert"
 
-	engineconnect "github.com/valkyrieworks/utils/align"
+	commitchronize "github.com/valkyrieworks/dffc4ef0-4ec6-4346-9b6c-d0a0cb42d94b/utils/chronize"
 )
 
-type thTally struct {
+type threadTally struct {
 	influx chan struct{}
-	mtx   engineconnect.Lock
+	mtx   commitchronize.Exclusion
 	tally int
 }
 
-func (c *thTally) Augment() {
+func (c *threadTally) Advance() {
 	c.mtx.Lock()
 	c.tally++
 	c.mtx.Unlock()
 }
 
-func (c *thTally) Number() int {
+func (c *threadTally) Tally() int {
 	c.mtx.Lock()
 	val := c.tally
 	c.mtx.Unlock()
@@ -32,9 +32,9 @@ func (c *thTally) Number() int {
 
 //
 //
-func (c *thTally) Scan() {
+func (c *threadTally) Obtain() {
 	for range c.influx {
-		c.Augment()
+		c.Advance()
 	}
 }
 
@@ -43,29 +43,29 @@ func VerifyRegulate(verify *testing.T) {
 
 	ms := 50
 	deferral := time.Duration(ms) * time.Millisecond
-	longwait := time.Duration(2) * deferral
-	t := NewRegulateClock("REDACTED", deferral)
+	extendedpause := time.Duration(2) * deferral
+	t := FreshRegulateClock("REDACTED", deferral)
 
 	//
-	c := &thTally{influx: t.Ch}
-	affirm.Equal(0, c.Number())
-	go c.Scan()
+	c := &threadTally{influx: t.Ch}
+	affirm.Equal(0, c.Tally())
+	go c.Obtain()
 
 	//
-	time.Sleep(longwait)
-	affirm.Equal(0, c.Number())
+	time.Sleep(extendedpause)
+	affirm.Equal(0, c.Tally())
 
 	//
 	t.Set()
-	time.Sleep(longwait)
-	affirm.Equal(1, c.Number())
+	time.Sleep(extendedpause)
+	affirm.Equal(1, c.Tally())
 
 	//
 	for i := 0; i < 5; i++ {
 		t.Set()
 	}
-	time.Sleep(longwait)
-	affirm.Equal(2, c.Number())
+	time.Sleep(extendedpause)
+	affirm.Equal(2, c.Tally())
 
 	//
 	//
@@ -75,8 +75,8 @@ func VerifyRegulate(verify *testing.T) {
 		t.Set()
 		time.Sleep(brief)
 	}
-	time.Sleep(longwait)
-	affirm.LessOrEqual(5, c.Number())
+	time.Sleep(extendedpause)
+	affirm.LessOrEqual(5, c.Tally())
 
 	close(t.Ch)
 }

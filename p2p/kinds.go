@@ -3,26 +3,26 @@ package p2p
 import (
 	"github.com/cosmos/gogoproto/proto"
 
-	"github.com/valkyrieworks/p2p/link"
-	tmp2p "github.com/valkyrieworks/schema/consensuscore/p2p"
+	"github.com/valkyrieworks/dffc4ef0-4ec6-4346-9b6c-d0a0cb42d94b/p2p/link"
+	tmpfabric "github.com/valkyrieworks/dffc4ef0-4ec6-4346-9b6c-d0a0cb42d94b/schema/strongmind/p2p"
 )
 
 type (
-	StreamDefinition = link.StreamDefinition
-	LinkageState  = link.LinkageState
+	ConduitDefinition = link.ConduitDefinition
+	LinkageCondition  = link.LinkageCondition
 )
 
 //
-type Packet struct {
+type Wrapper struct {
 	Src       Node          //
 	Signal   proto.Message //
-	StreamUID byte
+	ConduitUUID byte
 }
 
 //
 //
 //
-type Extractor interface {
+type Unwrapper interface {
 	proto.Message
 
 	//
@@ -30,7 +30,7 @@ type Extractor interface {
 }
 
 //
-type Adapter interface {
+type Encapsulator interface {
 	proto.Message
 
 	//
@@ -38,6 +38,6 @@ type Adapter interface {
 }
 
 var (
-	_ Adapter = &tmp2p.PexQuery{}
-	_ Adapter = &tmp2p.PexLocations{}
+	_ Encapsulator = &tmpfabric.PeerxSolicit{}
+	_ Encapsulator = &tmpfabric.PeerxLocations{}
 )

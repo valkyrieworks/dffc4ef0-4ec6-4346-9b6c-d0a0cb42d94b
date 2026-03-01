@@ -10,576 +10,576 @@ import (
 	"testing"
 	"time"
 
-	ifacetypes "github.com/valkyrieworks/iface/kinds"
-	"github.com/valkyrieworks/settings"
-	"github.com/valkyrieworks/scrutinize"
-	"github.com/valkyrieworks/intrinsic/verify"
-	"github.com/valkyrieworks/utils/broadcast/inquire"
-	httpcustomer "github.com/valkyrieworks/rpc/customer/http"
-	ordinalermocks "github.com/valkyrieworks/status/ordinaler/simulations"
-	statemulators "github.com/valkyrieworks/status/simulations"
-	transferindexmocks "github.com/valkyrieworks/status/transordinal/simulations"
-	"github.com/valkyrieworks/kinds"
+	ifacetypes "github.com/valkyrieworks/dffc4ef0-4ec6-4346-9b6c-d0a0cb42d94b/iface/kinds"
+	"github.com/valkyrieworks/dffc4ef0-4ec6-4346-9b6c-d0a0cb42d94b/settings"
+	"github.com/valkyrieworks/dffc4ef0-4ec6-4346-9b6c-d0a0cb42d94b/scrutinize"
+	"github.com/valkyrieworks/dffc4ef0-4ec6-4346-9b6c-d0a0cb42d94b/intrinsic/verify"
+	"github.com/valkyrieworks/dffc4ef0-4ec6-4346-9b6c-d0a0cb42d94b/utils/broadcastlisten/inquire"
+	webcustomer "github.com/valkyrieworks/dffc4ef0-4ec6-4346-9b6c-d0a0cb42d94b/rpc/customer/httpsvc"
+	indexsimulate "github.com/valkyrieworks/dffc4ef0-4ec6-4346-9b6c-d0a0cb42d94b/status/ordinalizer/simulations"
+	machinestubs "github.com/valkyrieworks/dffc4ef0-4ec6-4346-9b6c-d0a0cb42d94b/status/simulations"
+	transindexsimulate "github.com/valkyrieworks/dffc4ef0-4ec6-4346-9b6c-d0a0cb42d94b/status/transferordinal/simulations"
+	"github.com/valkyrieworks/dffc4ef0-4ec6-4346-9b6c-d0a0cb42d94b/kinds"
 	"github.com/fortytw2/leaktest"
 	"github.com/stretchr/testify/mock"
 	"github.com/stretchr/testify/require"
 )
 
-func VerifyScrutinizeBuilder(t *testing.T) {
+func VerifyScrutinizeInitializer(t *testing.T) {
 	cfg := verify.RestoreVerifyOrigin("REDACTED")
 	t.Cleanup(leaktest.Check(t))
-	defer func() { _ = os.RemoveAll(cfg.OriginFolder) }()
+	defer func() { _ = os.RemoveAll(cfg.OriginPath) }()
 	t.Run("REDACTED", func(t *testing.T) {
-		d, err := scrutinize.NewFromSettings(cfg)
+		d, err := scrutinize.FreshOriginatingSettings(cfg)
 		require.NoError(t, err)
 		require.NotNil(t, d)
 	})
 }
 
-func VerifyScrutinizeRun(t *testing.T) {
+func VerifyScrutinizeExecute(t *testing.T) {
 	cfg := verify.RestoreVerifyOrigin("REDACTED")
 	t.Cleanup(leaktest.Check(t))
-	defer func() { _ = os.RemoveAll(cfg.OriginFolder) }()
+	defer func() { _ = os.RemoveAll(cfg.OriginPath) }()
 	t.Run("REDACTED", func(t *testing.T) {
-		d, err := scrutinize.NewFromSettings(cfg)
+		d, err := scrutinize.FreshOriginatingSettings(cfg)
 		require.NoError(t, err)
-		ctx, revoke := context.WithCancel(context.Background())
-		ceasedGroup := &sync.WaitGroup{}
-		ceasedGroup.Add(1)
+		ctx, abort := context.WithCancel(context.Background())
+		haltedGroup := &sync.WaitGroup{}
+		haltedGroup.Add(1)
 		go func() {
 			require.NoError(t, d.Run(ctx))
-			ceasedGroup.Done()
+			haltedGroup.Done()
 		}()
-		revoke()
-		ceasedGroup.Wait()
+		abort()
+		haltedGroup.Wait()
 	})
 }
 
 func VerifyLedger(t *testing.T) {
-	verifyLevel := int64(1)
+	verifyAltitude := int64(1)
 	verifyLedger := new(kinds.Ledger)
-	verifyLedger.Level = verifyLevel
+	verifyLedger.Altitude = verifyAltitude
 	verifyLedger.FinalEndorseDigest = []byte("REDACTED")
-	statusDepotEmulate := &statemulators.Depot{}
-	statusDepotEmulate.On("REDACTED").Return(nil)
+	statusDepotSimulate := &machinestubs.Depot{}
+	statusDepotSimulate.On("REDACTED").Return(nil)
 
-	ledgerDepotEmulate := &statemulators.LedgerDepot{}
-	ledgerDepotEmulate.On("REDACTED").Return(verifyLevel)
-	ledgerDepotEmulate.On("REDACTED").Return(int64(0))
-	ledgerDepotEmulate.On("REDACTED", verifyLevel).Return(&kinds.LedgerMeta{})
-	ledgerDepotEmulate.On("REDACTED", verifyLevel).Return(verifyLedger)
-	ledgerDepotEmulate.On("REDACTED").Return(nil)
+	ledgerDepotSimulate := &machinestubs.LedgerDepot{}
+	ledgerDepotSimulate.On("REDACTED").Return(verifyAltitude)
+	ledgerDepotSimulate.On("REDACTED").Return(int64(0))
+	ledgerDepotSimulate.On("REDACTED", verifyAltitude).Return(&kinds.LedgerSummary{})
+	ledgerDepotSimulate.On("REDACTED", verifyAltitude).Return(verifyLedger)
+	ledgerDepotSimulate.On("REDACTED").Return(nil)
 
-	transferOrdinalerEmulate := &transferindexmocks.TransOrdinaler{}
-	recordIndexEmulate := &ordinalermocks.LedgerOrdinaler{}
+	transferOrdinalizerSimulate := &transindexsimulate.TransferOrdinalizer{}
+	ldgOffsetSimulate := &indexsimulate.LedgerOrdinalizer{}
 
-	rpcSettings := settings.VerifyRPCSettings()
-	d := scrutinize.New(rpcSettings, ledgerDepotEmulate, statusDepotEmulate, transferOrdinalerEmulate, recordIndexEmulate)
-	ctx, revoke := context.WithCancel(context.Background())
+	remoteSettings := settings.VerifyRemoteSettings()
+	d := scrutinize.New(remoteSettings, ledgerDepotSimulate, statusDepotSimulate, transferOrdinalizerSimulate, ldgOffsetSimulate)
+	ctx, abort := context.WithCancel(context.Background())
 	wg := &sync.WaitGroup{}
 	wg.Add(1)
 
-	launchedGroup := &sync.WaitGroup{}
-	launchedGroup.Add(1)
+	initiatedGroup := &sync.WaitGroup{}
+	initiatedGroup.Add(1)
 	go func() {
-		launchedGroup.Done()
+		initiatedGroup.Done()
 		defer wg.Done()
 		require.NoError(t, d.Run(ctx))
 	}()
 	//
 	//
-	launchedGroup.Wait()
-	demandAttach(t, rpcSettings.AcceptLocation, 20)
-	cli, err := httpcustomer.New(rpcSettings.AcceptLocation, "REDACTED")
+	initiatedGroup.Wait()
+	demandRelate(t, remoteSettings.OverhearLocation, 20)
+	cli, err := webcustomer.New(remoteSettings.OverhearLocation, "REDACTED")
 	require.NoError(t, err)
-	outcomeLedger, err := cli.Ledger(context.Background(), &verifyLevel)
+	outcomeLedger, err := cli.Ledger(context.Background(), &verifyAltitude)
 	require.NoError(t, err)
-	require.Equal(t, verifyLedger.Level, outcomeLedger.Ledger.Level)
+	require.Equal(t, verifyLedger.Altitude, outcomeLedger.Ledger.Altitude)
 	require.Equal(t, verifyLedger.FinalEndorseDigest, outcomeLedger.Ledger.FinalEndorseDigest)
-	revoke()
+	abort()
 	wg.Wait()
 
-	ledgerDepotEmulate.AssertExpectations(t)
-	statusDepotEmulate.AssertExpectations(t)
+	ledgerDepotSimulate.AssertExpectations(t)
+	statusDepotSimulate.AssertExpectations(t)
 }
 
-func VerifyTransferScan(t *testing.T) {
+func VerifyTransferLookup(t *testing.T) {
 	verifyDigest := []byte("REDACTED")
 	verifyTransfer := []byte("REDACTED")
 	verifyInquire := fmt.Sprintf("REDACTED", string(verifyDigest))
-	verifyTransferOutcome := &ifacetypes.TransOutcome{
-		Level: 1,
+	verifyTransferOutcome := &ifacetypes.TransferOutcome{
+		Altitude: 1,
 		Ordinal:  100,
 		Tx:     verifyTransfer,
 	}
 
-	statusDepotEmulate := &statemulators.Depot{}
-	statusDepotEmulate.On("REDACTED").Return(nil)
-	ledgerDepotEmulate := &statemulators.LedgerDepot{}
-	ledgerDepotEmulate.On("REDACTED").Return(nil)
-	transferOrdinalerEmulate := &transferindexmocks.TransOrdinaler{}
-	recordIndexEmulate := &ordinalermocks.LedgerOrdinaler{}
-	transferOrdinalerEmulate.On("REDACTED", mock.Anything,
+	statusDepotSimulate := &machinestubs.Depot{}
+	statusDepotSimulate.On("REDACTED").Return(nil)
+	ledgerDepotSimulate := &machinestubs.LedgerDepot{}
+	ledgerDepotSimulate.On("REDACTED").Return(nil)
+	transferOrdinalizerSimulate := &transindexsimulate.TransferOrdinalizer{}
+	ldgOffsetSimulate := &indexsimulate.LedgerOrdinalizer{}
+	transferOrdinalizerSimulate.On("REDACTED", mock.Anything,
 		mock.MatchedBy(func(q *inquire.Inquire) bool {
-			return verifyInquire == strings.ReplaceAll(q.String(), "REDACTED", "REDACTED")
+			return verifyInquire == strings.ReplaceAll(q.Text(), "REDACTED", "REDACTED")
 		})).
-		Return([]*ifacetypes.TransOutcome{verifyTransferOutcome}, nil)
+		Return([]*ifacetypes.TransferOutcome{verifyTransferOutcome}, nil)
 
-	rpcSettings := settings.VerifyRPCSettings()
-	d := scrutinize.New(rpcSettings, ledgerDepotEmulate, statusDepotEmulate, transferOrdinalerEmulate, recordIndexEmulate)
-	ctx, revoke := context.WithCancel(context.Background())
+	remoteSettings := settings.VerifyRemoteSettings()
+	d := scrutinize.New(remoteSettings, ledgerDepotSimulate, statusDepotSimulate, transferOrdinalizerSimulate, ldgOffsetSimulate)
+	ctx, abort := context.WithCancel(context.Background())
 	wg := &sync.WaitGroup{}
 	wg.Add(1)
 
-	launchedGroup := &sync.WaitGroup{}
-	launchedGroup.Add(1)
+	initiatedGroup := &sync.WaitGroup{}
+	initiatedGroup.Add(1)
 	go func() {
-		launchedGroup.Done()
+		initiatedGroup.Done()
 		defer wg.Done()
 		require.NoError(t, d.Run(ctx))
 	}()
 	//
 	//
-	launchedGroup.Wait()
-	demandAttach(t, rpcSettings.AcceptLocation, 20)
-	cli, err := httpcustomer.New(rpcSettings.AcceptLocation, "REDACTED")
+	initiatedGroup.Wait()
+	demandRelate(t, remoteSettings.OverhearLocation, 20)
+	cli, err := webcustomer.New(remoteSettings.OverhearLocation, "REDACTED")
 	require.NoError(t, err)
 
 	screen := 1
-	outcomeTransferScan, err := cli.TransferScan(context.Background(), verifyInquire, false, &screen, &screen, "REDACTED")
+	outcomeTransferLookup, err := cli.TransferLookup(context.Background(), verifyInquire, false, &screen, &screen, "REDACTED")
 	require.NoError(t, err)
-	require.Len(t, outcomeTransferScan.Txs, 1)
-	require.Equal(t, kinds.Tx(verifyTransfer), outcomeTransferScan.Txs[0].Tx)
+	require.Len(t, outcomeTransferLookup.Txs, 1)
+	require.Equal(t, kinds.Tx(verifyTransfer), outcomeTransferLookup.Txs[0].Tx)
 
-	revoke()
+	abort()
 	wg.Wait()
 
-	transferOrdinalerEmulate.AssertExpectations(t)
-	statusDepotEmulate.AssertExpectations(t)
-	ledgerDepotEmulate.AssertExpectations(t)
+	transferOrdinalizerSimulate.AssertExpectations(t)
+	statusDepotSimulate.AssertExpectations(t)
+	ledgerDepotSimulate.AssertExpectations(t)
 }
 
 func VerifyTransfer(t *testing.T) {
 	verifyDigest := []byte("REDACTED")
 	verifyTransfer := []byte("REDACTED")
 
-	statusDepotEmulate := &statemulators.Depot{}
-	statusDepotEmulate.On("REDACTED").Return(nil)
-	ledgerDepotEmulate := &statemulators.LedgerDepot{}
-	ledgerDepotEmulate.On("REDACTED").Return(nil)
-	recordIndexEmulate := &ordinalermocks.LedgerOrdinaler{}
-	transferOrdinalerEmulate := &transferindexmocks.TransOrdinaler{}
-	transferOrdinalerEmulate.On("REDACTED", verifyDigest).Return(&ifacetypes.TransOutcome{
+	statusDepotSimulate := &machinestubs.Depot{}
+	statusDepotSimulate.On("REDACTED").Return(nil)
+	ledgerDepotSimulate := &machinestubs.LedgerDepot{}
+	ledgerDepotSimulate.On("REDACTED").Return(nil)
+	ldgOffsetSimulate := &indexsimulate.LedgerOrdinalizer{}
+	transferOrdinalizerSimulate := &transindexsimulate.TransferOrdinalizer{}
+	transferOrdinalizerSimulate.On("REDACTED", verifyDigest).Return(&ifacetypes.TransferOutcome{
 		Tx: verifyTransfer,
 	}, nil)
 
-	rpcSettings := settings.VerifyRPCSettings()
-	d := scrutinize.New(rpcSettings, ledgerDepotEmulate, statusDepotEmulate, transferOrdinalerEmulate, recordIndexEmulate)
-	ctx, revoke := context.WithCancel(context.Background())
+	remoteSettings := settings.VerifyRemoteSettings()
+	d := scrutinize.New(remoteSettings, ledgerDepotSimulate, statusDepotSimulate, transferOrdinalizerSimulate, ldgOffsetSimulate)
+	ctx, abort := context.WithCancel(context.Background())
 	wg := &sync.WaitGroup{}
 	wg.Add(1)
 
-	launchedGroup := &sync.WaitGroup{}
-	launchedGroup.Add(1)
+	initiatedGroup := &sync.WaitGroup{}
+	initiatedGroup.Add(1)
 	go func() {
-		launchedGroup.Done()
+		initiatedGroup.Done()
 		defer wg.Done()
 		require.NoError(t, d.Run(ctx))
 	}()
 	//
 	//
-	launchedGroup.Wait()
-	demandAttach(t, rpcSettings.AcceptLocation, 20)
-	cli, err := httpcustomer.New(rpcSettings.AcceptLocation, "REDACTED")
+	initiatedGroup.Wait()
+	demandRelate(t, remoteSettings.OverhearLocation, 20)
+	cli, err := webcustomer.New(remoteSettings.OverhearLocation, "REDACTED")
 	require.NoError(t, err)
 
 	res, err := cli.Tx(context.Background(), verifyDigest, false)
 	require.NoError(t, err)
 	require.Equal(t, kinds.Tx(verifyTransfer), res.Tx)
 
-	revoke()
+	abort()
 	wg.Wait()
 
-	transferOrdinalerEmulate.AssertExpectations(t)
-	statusDepotEmulate.AssertExpectations(t)
-	ledgerDepotEmulate.AssertExpectations(t)
+	transferOrdinalizerSimulate.AssertExpectations(t)
+	statusDepotSimulate.AssertExpectations(t)
+	ledgerDepotSimulate.AssertExpectations(t)
 }
 
-func VerifyAgreementOptions(t *testing.T) {
-	verifyLevel := int64(1)
+func VerifyAgreementParameters(t *testing.T) {
+	verifyAltitude := int64(1)
 	verifyMaximumFuel := int64(55)
-	statusDepotEmulate := &statemulators.Depot{}
-	statusDepotEmulate.On("REDACTED").Return(nil)
-	ledgerDepotEmulate := &statemulators.LedgerDepot{}
-	ledgerDepotEmulate.On("REDACTED").Return(nil)
-	ledgerDepotEmulate.On("REDACTED").Return(verifyLevel)
-	ledgerDepotEmulate.On("REDACTED").Return(int64(0))
-	statusDepotEmulate.On("REDACTED", verifyLevel).Return(kinds.AgreementOptions{
-		Ledger: kinds.LedgerOptions{
+	statusDepotSimulate := &machinestubs.Depot{}
+	statusDepotSimulate.On("REDACTED").Return(nil)
+	ledgerDepotSimulate := &machinestubs.LedgerDepot{}
+	ledgerDepotSimulate.On("REDACTED").Return(nil)
+	ledgerDepotSimulate.On("REDACTED").Return(verifyAltitude)
+	ledgerDepotSimulate.On("REDACTED").Return(int64(0))
+	statusDepotSimulate.On("REDACTED", verifyAltitude).Return(kinds.AgreementSettings{
+		Ledger: kinds.LedgerParameters{
 			MaximumFuel: verifyMaximumFuel,
 		},
 	}, nil)
-	transferOrdinalerEmulate := &transferindexmocks.TransOrdinaler{}
-	recordIndexEmulate := &ordinalermocks.LedgerOrdinaler{}
-	rpcSettings := settings.VerifyRPCSettings()
-	d := scrutinize.New(rpcSettings, ledgerDepotEmulate, statusDepotEmulate, transferOrdinalerEmulate, recordIndexEmulate)
+	transferOrdinalizerSimulate := &transindexsimulate.TransferOrdinalizer{}
+	ldgOffsetSimulate := &indexsimulate.LedgerOrdinalizer{}
+	remoteSettings := settings.VerifyRemoteSettings()
+	d := scrutinize.New(remoteSettings, ledgerDepotSimulate, statusDepotSimulate, transferOrdinalizerSimulate, ldgOffsetSimulate)
 
-	ctx, revoke := context.WithCancel(context.Background())
+	ctx, abort := context.WithCancel(context.Background())
 	wg := &sync.WaitGroup{}
 	wg.Add(1)
 
-	launchedGroup := &sync.WaitGroup{}
-	launchedGroup.Add(1)
+	initiatedGroup := &sync.WaitGroup{}
+	initiatedGroup.Add(1)
 	go func() {
-		launchedGroup.Done()
+		initiatedGroup.Done()
 		defer wg.Done()
 		require.NoError(t, d.Run(ctx))
 	}()
 	//
 	//
-	launchedGroup.Wait()
-	demandAttach(t, rpcSettings.AcceptLocation, 20)
-	cli, err := httpcustomer.New(rpcSettings.AcceptLocation, "REDACTED")
+	initiatedGroup.Wait()
+	demandRelate(t, remoteSettings.OverhearLocation, 20)
+	cli, err := webcustomer.New(remoteSettings.OverhearLocation, "REDACTED")
 	require.NoError(t, err)
-	options, err := cli.AgreementOptions(context.Background(), &verifyLevel)
+	parameters, err := cli.AgreementSettings(context.Background(), &verifyAltitude)
 	require.NoError(t, err)
-	require.Equal(t, options.AgreementOptions.Ledger.MaximumFuel, verifyMaximumFuel)
+	require.Equal(t, parameters.AgreementSettings.Ledger.MaximumFuel, verifyMaximumFuel)
 
-	revoke()
+	abort()
 	wg.Wait()
 
-	ledgerDepotEmulate.AssertExpectations(t)
-	statusDepotEmulate.AssertExpectations(t)
+	ledgerDepotSimulate.AssertExpectations(t)
+	statusDepotSimulate.AssertExpectations(t)
 }
 
 func VerifyLedgerOutcomes(t *testing.T) {
-	verifyLevel := int64(1)
-	verifyFuelApplied := int64(100)
-	statusDepotEmulate := &statemulators.Depot{}
-	statusDepotEmulate.On("REDACTED").Return(nil)
+	verifyAltitude := int64(1)
+	verifyFuelUtilized := int64(100)
+	statusDepotSimulate := &machinestubs.Depot{}
+	statusDepotSimulate.On("REDACTED").Return(nil)
 	//
-	statusDepotEmulate.On("REDACTED", verifyLevel).Return(&ifacetypes.ReplyCompleteLedger{
-		TransOutcomes: []*ifacetypes.InvokeTransferOutcome{
+	statusDepotSimulate.On("REDACTED", verifyAltitude).Return(&ifacetypes.ReplyCulminateLedger{
+		TransferOutcomes: []*ifacetypes.InvokeTransferOutcome{
 			{
-				FuelApplied: verifyFuelApplied,
+				FuelUtilized: verifyFuelUtilized,
 			},
 		},
 	}, nil)
-	ledgerDepotEmulate := &statemulators.LedgerDepot{}
-	ledgerDepotEmulate.On("REDACTED").Return(nil)
-	ledgerDepotEmulate.On("REDACTED").Return(int64(0))
-	ledgerDepotEmulate.On("REDACTED").Return(verifyLevel)
-	transferOrdinalerEmulate := &transferindexmocks.TransOrdinaler{}
-	recordIndexEmulate := &ordinalermocks.LedgerOrdinaler{}
-	rpcSettings := settings.VerifyRPCSettings()
-	d := scrutinize.New(rpcSettings, ledgerDepotEmulate, statusDepotEmulate, transferOrdinalerEmulate, recordIndexEmulate)
+	ledgerDepotSimulate := &machinestubs.LedgerDepot{}
+	ledgerDepotSimulate.On("REDACTED").Return(nil)
+	ledgerDepotSimulate.On("REDACTED").Return(int64(0))
+	ledgerDepotSimulate.On("REDACTED").Return(verifyAltitude)
+	transferOrdinalizerSimulate := &transindexsimulate.TransferOrdinalizer{}
+	ldgOffsetSimulate := &indexsimulate.LedgerOrdinalizer{}
+	remoteSettings := settings.VerifyRemoteSettings()
+	d := scrutinize.New(remoteSettings, ledgerDepotSimulate, statusDepotSimulate, transferOrdinalizerSimulate, ldgOffsetSimulate)
 
-	ctx, revoke := context.WithCancel(context.Background())
+	ctx, abort := context.WithCancel(context.Background())
 	wg := &sync.WaitGroup{}
 	wg.Add(1)
 
-	launchedGroup := &sync.WaitGroup{}
-	launchedGroup.Add(1)
+	initiatedGroup := &sync.WaitGroup{}
+	initiatedGroup.Add(1)
 	go func() {
-		launchedGroup.Done()
+		initiatedGroup.Done()
 		defer wg.Done()
 		require.NoError(t, d.Run(ctx))
 	}()
 	//
 	//
-	launchedGroup.Wait()
-	demandAttach(t, rpcSettings.AcceptLocation, 20)
-	cli, err := httpcustomer.New(rpcSettings.AcceptLocation, "REDACTED")
+	initiatedGroup.Wait()
+	demandRelate(t, remoteSettings.OverhearLocation, 20)
+	cli, err := webcustomer.New(remoteSettings.OverhearLocation, "REDACTED")
 	require.NoError(t, err)
-	res, err := cli.LedgerOutcomes(context.Background(), &verifyLevel)
+	res, err := cli.LedgerOutcomes(context.Background(), &verifyAltitude)
 	require.NoError(t, err)
-	require.Equal(t, res.TransOutcomes[0].FuelApplied, verifyFuelApplied)
+	require.Equal(t, res.TransOutcomes[0].FuelUtilized, verifyFuelUtilized)
 
-	revoke()
+	abort()
 	wg.Wait()
 
-	ledgerDepotEmulate.AssertExpectations(t)
-	statusDepotEmulate.AssertExpectations(t)
+	ledgerDepotSimulate.AssertExpectations(t)
+	statusDepotSimulate.AssertExpectations(t)
 }
 
 func VerifyEndorse(t *testing.T) {
-	verifyLevel := int64(1)
-	verifyEpoch := int32(101)
-	statusDepotEmulate := &statemulators.Depot{}
-	statusDepotEmulate.On("REDACTED").Return(nil)
-	ledgerDepotEmulate := &statemulators.LedgerDepot{}
-	ledgerDepotEmulate.On("REDACTED").Return(nil)
-	ledgerDepotEmulate.On("REDACTED").Return(int64(0))
-	ledgerDepotEmulate.On("REDACTED").Return(verifyLevel)
-	ledgerDepotEmulate.On("REDACTED", verifyLevel).Return(&kinds.LedgerMeta{}, nil)
-	ledgerDepotEmulate.On("REDACTED", verifyLevel).Return(&kinds.Endorse{
-		Level: verifyLevel,
-		Cycle:  verifyEpoch,
+	verifyAltitude := int64(1)
+	verifyIteration := int32(101)
+	statusDepotSimulate := &machinestubs.Depot{}
+	statusDepotSimulate.On("REDACTED").Return(nil)
+	ledgerDepotSimulate := &machinestubs.LedgerDepot{}
+	ledgerDepotSimulate.On("REDACTED").Return(nil)
+	ledgerDepotSimulate.On("REDACTED").Return(int64(0))
+	ledgerDepotSimulate.On("REDACTED").Return(verifyAltitude)
+	ledgerDepotSimulate.On("REDACTED", verifyAltitude).Return(&kinds.LedgerSummary{}, nil)
+	ledgerDepotSimulate.On("REDACTED", verifyAltitude).Return(&kinds.Endorse{
+		Altitude: verifyAltitude,
+		Iteration:  verifyIteration,
 	}, nil)
-	transferOrdinalerEmulate := &transferindexmocks.TransOrdinaler{}
-	recordIndexEmulate := &ordinalermocks.LedgerOrdinaler{}
-	rpcSettings := settings.VerifyRPCSettings()
-	d := scrutinize.New(rpcSettings, ledgerDepotEmulate, statusDepotEmulate, transferOrdinalerEmulate, recordIndexEmulate)
+	transferOrdinalizerSimulate := &transindexsimulate.TransferOrdinalizer{}
+	ldgOffsetSimulate := &indexsimulate.LedgerOrdinalizer{}
+	remoteSettings := settings.VerifyRemoteSettings()
+	d := scrutinize.New(remoteSettings, ledgerDepotSimulate, statusDepotSimulate, transferOrdinalizerSimulate, ldgOffsetSimulate)
 
-	ctx, revoke := context.WithCancel(context.Background())
+	ctx, abort := context.WithCancel(context.Background())
 	wg := &sync.WaitGroup{}
 	wg.Add(1)
 
-	launchedGroup := &sync.WaitGroup{}
-	launchedGroup.Add(1)
+	initiatedGroup := &sync.WaitGroup{}
+	initiatedGroup.Add(1)
 	go func() {
-		launchedGroup.Done()
+		initiatedGroup.Done()
 		defer wg.Done()
 		require.NoError(t, d.Run(ctx))
 	}()
 	//
 	//
-	launchedGroup.Wait()
-	demandAttach(t, rpcSettings.AcceptLocation, 20)
-	cli, err := httpcustomer.New(rpcSettings.AcceptLocation, "REDACTED")
+	initiatedGroup.Wait()
+	demandRelate(t, remoteSettings.OverhearLocation, 20)
+	cli, err := webcustomer.New(remoteSettings.OverhearLocation, "REDACTED")
 	require.NoError(t, err)
-	res, err := cli.Endorse(context.Background(), &verifyLevel)
+	res, err := cli.Endorse(context.Background(), &verifyAltitude)
 	require.NoError(t, err)
 	require.NotNil(t, res)
-	require.Equal(t, res.Endorse.Cycle, verifyEpoch)
+	require.Equal(t, res.Endorse.Iteration, verifyIteration)
 
-	revoke()
+	abort()
 	wg.Wait()
 
-	ledgerDepotEmulate.AssertExpectations(t)
-	statusDepotEmulate.AssertExpectations(t)
+	ledgerDepotSimulate.AssertExpectations(t)
+	statusDepotSimulate.AssertExpectations(t)
 }
 
-func VerifyLedgerByDigest(t *testing.T) {
-	verifyLevel := int64(1)
+func VerifyLedgerViaDigest(t *testing.T) {
+	verifyAltitude := int64(1)
 	verifyDigest := []byte("REDACTED")
 	verifyLedger := new(kinds.Ledger)
-	verifyLedger.Level = verifyLevel
+	verifyLedger.Altitude = verifyAltitude
 	verifyLedger.FinalEndorseDigest = verifyDigest
-	statusDepotEmulate := &statemulators.Depot{}
-	statusDepotEmulate.On("REDACTED").Return(nil)
-	ledgerDepotEmulate := &statemulators.LedgerDepot{}
-	ledgerDepotEmulate.On("REDACTED").Return(nil)
-	ledgerDepotEmulate.On("REDACTED", verifyLevel).Return(&kinds.LedgerMeta{
-		LedgerUID: kinds.LedgerUID{
+	statusDepotSimulate := &machinestubs.Depot{}
+	statusDepotSimulate.On("REDACTED").Return(nil)
+	ledgerDepotSimulate := &machinestubs.LedgerDepot{}
+	ledgerDepotSimulate.On("REDACTED").Return(nil)
+	ledgerDepotSimulate.On("REDACTED", verifyAltitude).Return(&kinds.LedgerSummary{
+		LedgerUUID: kinds.LedgerUUID{
 			Digest: verifyDigest,
 		},
 		Heading: kinds.Heading{
-			Level: verifyLevel,
+			Altitude: verifyAltitude,
 		},
 	}, nil)
-	ledgerDepotEmulate.On("REDACTED", verifyDigest).Return(verifyLedger, nil)
-	transferOrdinalerEmulate := &transferindexmocks.TransOrdinaler{}
-	recordIndexEmulate := &ordinalermocks.LedgerOrdinaler{}
-	rpcSettings := settings.VerifyRPCSettings()
-	d := scrutinize.New(rpcSettings, ledgerDepotEmulate, statusDepotEmulate, transferOrdinalerEmulate, recordIndexEmulate)
+	ledgerDepotSimulate.On("REDACTED", verifyDigest).Return(verifyLedger, nil)
+	transferOrdinalizerSimulate := &transindexsimulate.TransferOrdinalizer{}
+	ldgOffsetSimulate := &indexsimulate.LedgerOrdinalizer{}
+	remoteSettings := settings.VerifyRemoteSettings()
+	d := scrutinize.New(remoteSettings, ledgerDepotSimulate, statusDepotSimulate, transferOrdinalizerSimulate, ldgOffsetSimulate)
 
-	ctx, revoke := context.WithCancel(context.Background())
+	ctx, abort := context.WithCancel(context.Background())
 	wg := &sync.WaitGroup{}
 	wg.Add(1)
 
-	launchedGroup := &sync.WaitGroup{}
-	launchedGroup.Add(1)
+	initiatedGroup := &sync.WaitGroup{}
+	initiatedGroup.Add(1)
 	go func() {
-		launchedGroup.Done()
+		initiatedGroup.Done()
 		defer wg.Done()
 		require.NoError(t, d.Run(ctx))
 	}()
 	//
 	//
-	launchedGroup.Wait()
-	demandAttach(t, rpcSettings.AcceptLocation, 20)
-	cli, err := httpcustomer.New(rpcSettings.AcceptLocation, "REDACTED")
+	initiatedGroup.Wait()
+	demandRelate(t, remoteSettings.OverhearLocation, 20)
+	cli, err := webcustomer.New(remoteSettings.OverhearLocation, "REDACTED")
 	require.NoError(t, err)
-	res, err := cli.LedgerByDigest(context.Background(), verifyDigest)
+	res, err := cli.LedgerViaDigest(context.Background(), verifyDigest)
 	require.NoError(t, err)
 	require.NotNil(t, res)
-	require.Equal(t, []byte(res.LedgerUID.Digest), verifyDigest)
+	require.Equal(t, []byte(res.LedgerUUID.Digest), verifyDigest)
 
-	revoke()
+	abort()
 	wg.Wait()
 
-	ledgerDepotEmulate.AssertExpectations(t)
-	statusDepotEmulate.AssertExpectations(t)
+	ledgerDepotSimulate.AssertExpectations(t)
+	statusDepotSimulate.AssertExpectations(t)
 }
 
 func VerifyLedgerchain(t *testing.T) {
-	verifyLevel := int64(1)
+	verifyAltitude := int64(1)
 	verifyLedger := new(kinds.Ledger)
 	verifyLedgerDigest := []byte("REDACTED")
-	verifyLedger.Level = verifyLevel
+	verifyLedger.Altitude = verifyAltitude
 	verifyLedger.FinalEndorseDigest = verifyLedgerDigest
-	statusDepotEmulate := &statemulators.Depot{}
-	statusDepotEmulate.On("REDACTED").Return(nil)
+	statusDepotSimulate := &machinestubs.Depot{}
+	statusDepotSimulate.On("REDACTED").Return(nil)
 
-	ledgerDepotEmulate := &statemulators.LedgerDepot{}
-	ledgerDepotEmulate.On("REDACTED").Return(nil)
-	ledgerDepotEmulate.On("REDACTED").Return(verifyLevel)
-	ledgerDepotEmulate.On("REDACTED").Return(int64(0))
-	ledgerDepotEmulate.On("REDACTED", verifyLevel).Return(&kinds.LedgerMeta{
-		LedgerUID: kinds.LedgerUID{
+	ledgerDepotSimulate := &machinestubs.LedgerDepot{}
+	ledgerDepotSimulate.On("REDACTED").Return(nil)
+	ledgerDepotSimulate.On("REDACTED").Return(verifyAltitude)
+	ledgerDepotSimulate.On("REDACTED").Return(int64(0))
+	ledgerDepotSimulate.On("REDACTED", verifyAltitude).Return(&kinds.LedgerSummary{
+		LedgerUUID: kinds.LedgerUUID{
 			Digest: verifyLedgerDigest,
 		},
 	})
-	transferOrdinalerEmulate := &transferindexmocks.TransOrdinaler{}
-	recordIndexEmulate := &ordinalermocks.LedgerOrdinaler{}
-	rpcSettings := settings.VerifyRPCSettings()
-	d := scrutinize.New(rpcSettings, ledgerDepotEmulate, statusDepotEmulate, transferOrdinalerEmulate, recordIndexEmulate)
+	transferOrdinalizerSimulate := &transindexsimulate.TransferOrdinalizer{}
+	ldgOffsetSimulate := &indexsimulate.LedgerOrdinalizer{}
+	remoteSettings := settings.VerifyRemoteSettings()
+	d := scrutinize.New(remoteSettings, ledgerDepotSimulate, statusDepotSimulate, transferOrdinalizerSimulate, ldgOffsetSimulate)
 
-	ctx, revoke := context.WithCancel(context.Background())
+	ctx, abort := context.WithCancel(context.Background())
 	wg := &sync.WaitGroup{}
 	wg.Add(1)
 
-	launchedGroup := &sync.WaitGroup{}
-	launchedGroup.Add(1)
+	initiatedGroup := &sync.WaitGroup{}
+	initiatedGroup.Add(1)
 	go func() {
-		launchedGroup.Done()
+		initiatedGroup.Done()
 		defer wg.Done()
 		require.NoError(t, d.Run(ctx))
 	}()
 	//
 	//
-	launchedGroup.Wait()
-	demandAttach(t, rpcSettings.AcceptLocation, 20)
-	cli, err := httpcustomer.New(rpcSettings.AcceptLocation, "REDACTED")
+	initiatedGroup.Wait()
+	demandRelate(t, remoteSettings.OverhearLocation, 20)
+	cli, err := webcustomer.New(remoteSettings.OverhearLocation, "REDACTED")
 	require.NoError(t, err)
 	res, err := cli.LedgerchainDetails(context.Background(), 0, 100)
 	require.NoError(t, err)
 	require.NotNil(t, res)
-	require.Equal(t, verifyLedgerDigest, []byte(res.LedgerMetadata[0].LedgerUID.Digest))
+	require.Equal(t, verifyLedgerDigest, []byte(res.LedgerMetadata[0].LedgerUUID.Digest))
 
-	revoke()
+	abort()
 	wg.Wait()
 
-	ledgerDepotEmulate.AssertExpectations(t)
-	statusDepotEmulate.AssertExpectations(t)
+	ledgerDepotSimulate.AssertExpectations(t)
+	statusDepotSimulate.AssertExpectations(t)
 }
 
-func VerifyRatifiers(t *testing.T) {
-	verifyLevel := int64(1)
-	verifyPollingEnergy := int64(100)
-	verifyRatifiers := kinds.RatifierAssign{
-		Ratifiers: []*kinds.Ratifier{
+func VerifyAssessors(t *testing.T) {
+	verifyAltitude := int64(1)
+	verifyBallotingPotency := int64(100)
+	verifyAssessors := kinds.AssessorAssign{
+		Assessors: []*kinds.Assessor{
 			{
-				PollingEnergy: verifyPollingEnergy,
+				BallotingPotency: verifyBallotingPotency,
 			},
 		},
 	}
-	statusDepotEmulate := &statemulators.Depot{}
-	statusDepotEmulate.On("REDACTED").Return(nil)
-	statusDepotEmulate.On("REDACTED", verifyLevel).Return(&verifyRatifiers, nil)
+	statusDepotSimulate := &machinestubs.Depot{}
+	statusDepotSimulate.On("REDACTED").Return(nil)
+	statusDepotSimulate.On("REDACTED", verifyAltitude).Return(&verifyAssessors, nil)
 
-	ledgerDepotEmulate := &statemulators.LedgerDepot{}
-	ledgerDepotEmulate.On("REDACTED").Return(nil)
-	ledgerDepotEmulate.On("REDACTED").Return(verifyLevel)
-	ledgerDepotEmulate.On("REDACTED").Return(int64(0))
-	transferOrdinalerEmulate := &transferindexmocks.TransOrdinaler{}
-	recordIndexEmulate := &ordinalermocks.LedgerOrdinaler{}
-	rpcSettings := settings.VerifyRPCSettings()
-	d := scrutinize.New(rpcSettings, ledgerDepotEmulate, statusDepotEmulate, transferOrdinalerEmulate, recordIndexEmulate)
+	ledgerDepotSimulate := &machinestubs.LedgerDepot{}
+	ledgerDepotSimulate.On("REDACTED").Return(nil)
+	ledgerDepotSimulate.On("REDACTED").Return(verifyAltitude)
+	ledgerDepotSimulate.On("REDACTED").Return(int64(0))
+	transferOrdinalizerSimulate := &transindexsimulate.TransferOrdinalizer{}
+	ldgOffsetSimulate := &indexsimulate.LedgerOrdinalizer{}
+	remoteSettings := settings.VerifyRemoteSettings()
+	d := scrutinize.New(remoteSettings, ledgerDepotSimulate, statusDepotSimulate, transferOrdinalizerSimulate, ldgOffsetSimulate)
 
-	ctx, revoke := context.WithCancel(context.Background())
+	ctx, abort := context.WithCancel(context.Background())
 	wg := &sync.WaitGroup{}
 	wg.Add(1)
 
-	launchedGroup := &sync.WaitGroup{}
-	launchedGroup.Add(1)
+	initiatedGroup := &sync.WaitGroup{}
+	initiatedGroup.Add(1)
 	go func() {
-		launchedGroup.Done()
+		initiatedGroup.Done()
 		defer wg.Done()
 		require.NoError(t, d.Run(ctx))
 	}()
 	//
 	//
-	launchedGroup.Wait()
-	demandAttach(t, rpcSettings.AcceptLocation, 20)
-	cli, err := httpcustomer.New(rpcSettings.AcceptLocation, "REDACTED")
+	initiatedGroup.Wait()
+	demandRelate(t, remoteSettings.OverhearLocation, 20)
+	cli, err := webcustomer.New(remoteSettings.OverhearLocation, "REDACTED")
 	require.NoError(t, err)
 
 	verifyScreen := 1
-	verifyEachScreen := 100
-	res, err := cli.Ratifiers(context.Background(), &verifyLevel, &verifyScreen, &verifyEachScreen)
+	verifyEveryScreen := 100
+	res, err := cli.Assessors(context.Background(), &verifyAltitude, &verifyScreen, &verifyEveryScreen)
 	require.NoError(t, err)
 	require.NotNil(t, res)
-	require.Equal(t, verifyPollingEnergy, res.Ratifiers[0].PollingEnergy)
+	require.Equal(t, verifyBallotingPotency, res.Assessors[0].BallotingPotency)
 
-	revoke()
+	abort()
 	wg.Wait()
 
-	ledgerDepotEmulate.AssertExpectations(t)
-	statusDepotEmulate.AssertExpectations(t)
+	ledgerDepotSimulate.AssertExpectations(t)
+	statusDepotSimulate.AssertExpectations(t)
 }
 
-func VerifyLedgerScan(t *testing.T) {
-	verifyLevel := int64(1)
+func VerifyLedgerLookup(t *testing.T) {
+	verifyAltitude := int64(1)
 	verifyLedgerDigest := []byte("REDACTED")
 	verifyInquire := "REDACTED"
-	statusDepotEmulate := &statemulators.Depot{}
-	statusDepotEmulate.On("REDACTED").Return(nil)
+	statusDepotSimulate := &machinestubs.Depot{}
+	statusDepotSimulate.On("REDACTED").Return(nil)
 
-	ledgerDepotEmulate := &statemulators.LedgerDepot{}
-	ledgerDepotEmulate.On("REDACTED").Return(nil)
+	ledgerDepotSimulate := &machinestubs.LedgerDepot{}
+	ledgerDepotSimulate.On("REDACTED").Return(nil)
 
-	transferOrdinalerEmulate := &transferindexmocks.TransOrdinaler{}
-	recordIndexEmulate := &ordinalermocks.LedgerOrdinaler{}
-	ledgerDepotEmulate.On("REDACTED", verifyLevel).Return(&kinds.Ledger{
+	transferOrdinalizerSimulate := &transindexsimulate.TransferOrdinalizer{}
+	ldgOffsetSimulate := &indexsimulate.LedgerOrdinalizer{}
+	ledgerDepotSimulate.On("REDACTED", verifyAltitude).Return(&kinds.Ledger{
 		Heading: kinds.Heading{
-			Level: verifyLevel,
+			Altitude: verifyAltitude,
 		},
 	}, nil)
-	ledgerDepotEmulate.On("REDACTED", verifyLevel).Return(&kinds.LedgerMeta{
-		LedgerUID: kinds.LedgerUID{
+	ledgerDepotSimulate.On("REDACTED", verifyAltitude).Return(&kinds.LedgerSummary{
+		LedgerUUID: kinds.LedgerUUID{
 			Digest: verifyLedgerDigest,
 		},
 	})
-	recordIndexEmulate.On("REDACTED", mock.Anything,
-		mock.MatchedBy(func(q *inquire.Inquire) bool { return verifyInquire == q.String() })).
-		Return([]int64{verifyLevel}, nil)
-	rpcSettings := settings.VerifyRPCSettings()
-	d := scrutinize.New(rpcSettings, ledgerDepotEmulate, statusDepotEmulate, transferOrdinalerEmulate, recordIndexEmulate)
+	ldgOffsetSimulate.On("REDACTED", mock.Anything,
+		mock.MatchedBy(func(q *inquire.Inquire) bool { return verifyInquire == q.Text() })).
+		Return([]int64{verifyAltitude}, nil)
+	remoteSettings := settings.VerifyRemoteSettings()
+	d := scrutinize.New(remoteSettings, ledgerDepotSimulate, statusDepotSimulate, transferOrdinalizerSimulate, ldgOffsetSimulate)
 
-	ctx, revoke := context.WithCancel(context.Background())
+	ctx, abort := context.WithCancel(context.Background())
 	wg := &sync.WaitGroup{}
 	wg.Add(1)
 
-	launchedGroup := &sync.WaitGroup{}
-	launchedGroup.Add(1)
+	initiatedGroup := &sync.WaitGroup{}
+	initiatedGroup.Add(1)
 	go func() {
-		launchedGroup.Done()
+		initiatedGroup.Done()
 		defer wg.Done()
 		require.NoError(t, d.Run(ctx))
 	}()
 	//
 	//
-	launchedGroup.Wait()
-	demandAttach(t, rpcSettings.AcceptLocation, 20)
-	cli, err := httpcustomer.New(rpcSettings.AcceptLocation, "REDACTED")
+	initiatedGroup.Wait()
+	demandRelate(t, remoteSettings.OverhearLocation, 20)
+	cli, err := webcustomer.New(remoteSettings.OverhearLocation, "REDACTED")
 	require.NoError(t, err)
 
 	verifyScreen := 1
-	verifyEachScreen := 100
-	verifySequenceBy := "REDACTED"
-	res, err := cli.LedgerScan(context.Background(), verifyInquire, &verifyScreen, &verifyEachScreen, verifySequenceBy)
+	verifyEveryScreen := 100
+	verifySequenceVia := "REDACTED"
+	res, err := cli.LedgerLookup(context.Background(), verifyInquire, &verifyScreen, &verifyEveryScreen, verifySequenceVia)
 	require.NoError(t, err)
 	require.NotNil(t, res)
-	require.Equal(t, verifyLedgerDigest, []byte(res.Ledgers[0].LedgerUID.Digest))
+	require.Equal(t, verifyLedgerDigest, []byte(res.Ledgers[0].LedgerUUID.Digest))
 
-	revoke()
+	abort()
 	wg.Wait()
 
-	ledgerDepotEmulate.AssertExpectations(t)
-	statusDepotEmulate.AssertExpectations(t)
+	ledgerDepotSimulate.AssertExpectations(t)
+	statusDepotSimulate.AssertExpectations(t)
 }
 
-func demandAttach(t testing.TB, address string, attempts int) {
-	segments := strings.SplitN(address, "REDACTED", 2)
-	if len(segments) != 2 {
-		t.Fatalf("REDACTED", address)
+func demandRelate(t testing.TB, location string, attempts int) {
+	fragments := strings.SplitN(location, "REDACTED", 2)
+	if len(fragments) != 2 {
+		t.Fatalf("REDACTED", location)
 	}
 	var err error
 	for i := 0; i < attempts; i++ {
 		var link net.Conn
-		link, err = net.Dial(segments[0], segments[1])
+		link, err = net.Dial(fragments[0], fragments[1])
 		if err == nil {
 			link.Close()
 			return
@@ -587,5 +587,5 @@ func demandAttach(t testing.TB, address string, attempts int) {
 		//
 		time.Sleep(time.Microsecond * 100)
 	}
-	t.Fatalf("REDACTED", address, attempts, err)
+	t.Fatalf("REDACTED", location, attempts, err)
 }

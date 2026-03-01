@@ -10,29 +10,29 @@ import (
 
 	"github.com/cosmos/gogoproto/proto"
 
-	"github.com/valkyrieworks/vault"
-	"github.com/valkyrieworks/utils/protoio"
-	"github.com/valkyrieworks/p2p/link"
-	tmp2p "github.com/valkyrieworks/schema/consensuscore/p2p"
+	"github.com/valkyrieworks/dffc4ef0-4ec6-4346-9b6c-d0a0cb42d94b/security"
+	"github.com/valkyrieworks/dffc4ef0-4ec6-4346-9b6c-d0a0cb42d94b/utils/protocolio"
+	"github.com/valkyrieworks/dffc4ef0-4ec6-4346-9b6c-d0a0cb42d94b/p2p/link"
+	tmpfabric "github.com/valkyrieworks/dffc4ef0-4ec6-4346-9b6c-d0a0cb42d94b/schema/strongmind/p2p"
 )
 
 const (
-	standardCallDeadline      = time.Second
-	standardRefineDeadline    = 5 * time.Second
-	standardGreetingDeadline = 3 * time.Second
+	fallbackCallDeadline      = time.Second
+	fallbackRefineDeadline    = 5 * time.Second
+	fallbackNegotiationDeadline = 3 * time.Second
 )
 
 //
-type IPDecoder interface {
-	SearchIPAddress(context.Context, string) ([]net.IPAddr, error)
+type INETDecrypter interface {
+	SearchINETLocation(context.Context, string) ([]net.IPAddr, error)
 }
 
 //
 //
-type allow struct {
-	netAddress  *NetLocation
+type embrace struct {
+	networkLocation  *NetworkLocator
 	link     net.Conn
-	memberDetails MemberDetails
+	peerDetails PeerDetails
 	err      error
 }
 
@@ -43,17 +43,17 @@ type allow struct {
 //
 //
 type nodeSettings struct {
-	chanTraits     []*link.StreamDefinition
-	onNodeFault func(Node, any)
+	chnlDescriptions     []*link.ConduitDefinition
+	uponNodeFailure func(Node, any)
 	outgoing    bool
 	//
 	//
 	//
-	isDurable  func(*NetLocation) bool
-	handlersByChan  map[byte]Handler
-	messageKindByChanUID map[byte]proto.Message
-	stats       *Stats
-	mlc           *statsTagRepository
+	equalsEnduring  func(*NetworkLocator) bool
+	enginesViaChnl  map[byte]Handler
+	signalKindViaChnlUUID map[byte]proto.Message
+	telemetry       *Telemetry
+	mlc           *telemetryTagStash
 }
 
 //
@@ -61,13 +61,13 @@ type nodeSettings struct {
 //
 type Carrier interface {
 	//
-	NetLocation() NetLocation
+	NetworkLocator() NetworkLocator
 
 	//
-	Allow(nodeSettings) (Node, error)
+	Embrace(nodeSettings) (Node, error)
 
 	//
-	Call(NetLocation, nodeSettings) (Node, error)
+	Call(NetworkLocator, nodeSettings) (Node, error)
 
 	//
 	Sanitize(Node)
@@ -75,26 +75,26 @@ type Carrier interface {
 
 //
 //
-type carrierActuality interface {
-	End() error
-	Observe(NetLocation) error
+type carrierDuration interface {
+	Shutdown() error
+	Overhear(NetworkLocator) error
 }
 
 //
 //
 //
-type LinkRefineFunction func(LinkCollection, net.Conn, []net.IP) error
+type LinkRefineMethod func(LinkAssign, net.Conn, []net.IP) error
 
 //
 //
-func LinkReplicatedIPRefine() LinkRefineFunction {
-	return func(cs LinkCollection, c net.Conn, ips []net.IP) error {
+func LinkReplicatedINETRefine() LinkRefineMethod {
+	return func(cs LinkAssign, c net.Conn, ips []net.IP) error {
 		for _, ip := range ips {
-			if cs.HasIP(ip) {
-				return ErrDeclined{
+			if cs.OwnsINET(ip) {
+				return FaultDeclined{
 					link:        c,
 					err:         fmt.Errorf("REDACTED", ip),
-					isReplicated: true,
+					equalsReplicated: true,
 				}
 			}
 		}
@@ -105,124 +105,124 @@ func LinkReplicatedIPRefine() LinkRefineFunction {
 
 //
 //
-type MulticastCarrierSetting func(*MulticastCarrier)
+type MultiplexCarrierSelection func(*MultiplexCarrier)
 
 //
-func MulticastCarrierLinkScreens(
-	screens ...LinkRefineFunction,
-) MulticastCarrierSetting {
-	return func(mt *MulticastCarrier) { mt.linkScreens = screens }
+func MultiplexCarrierLinkCriteria(
+	criteria ...LinkRefineMethod,
+) MultiplexCarrierSelection {
+	return func(mt *MultiplexCarrier) { mt.linkCriteria = criteria }
 }
 
 //
 //
-func MulticastCarrierRefineDeadline(
+func MultiplexCarrierRefineDeadline(
 	deadline time.Duration,
-) MulticastCarrierSetting {
-	return func(mt *MulticastCarrier) { mt.refineDeadline = deadline }
+) MultiplexCarrierSelection {
+	return func(mt *MultiplexCarrier) { mt.refineDeadline = deadline }
 }
 
 //
 //
-func MulticastCarrierDecoder(decoder IPDecoder) MulticastCarrierSetting {
-	return func(mt *MulticastCarrier) { mt.decoder = decoder }
+func MultiplexCarrierDecrypter(decrypter INETDecrypter) MultiplexCarrierSelection {
+	return func(mt *MultiplexCarrier) { mt.decrypter = decrypter }
 }
 
 //
 //
-func MulticastCarrierMaximumIncomingLinkages(n int) MulticastCarrierSetting {
-	return func(mt *MulticastCarrier) { mt.maximumIncomingLinkages = n }
+func MultiplexCarrierMaximumArrivingLinkages(n int) MultiplexCarrierSelection {
+	return func(mt *MultiplexCarrier) { mt.maximumArrivingLinkages = n }
 }
 
 //
 //
-type MulticastCarrier struct {
-	netAddress                NetLocation
+type MultiplexCarrier struct {
+	networkLocation                NetworkLocator
 	observer               net.Listener
-	maximumIncomingLinkages int //
+	maximumArrivingLinkages int //
 
-	acceptc chan allow
-	closec  chan struct{}
+	approvechnl chan embrace
+	terminatechnl  chan struct{}
 
 	//
-	links       LinkCollection
-	linkScreens []LinkRefineFunction
+	links       LinkAssign
+	linkCriteria []LinkRefineMethod
 
 	callDeadline      time.Duration
 	refineDeadline    time.Duration
-	greetingDeadline time.Duration
-	memberDetails         MemberDetails
-	memberKey          MemberKey
-	decoder         IPDecoder
+	negotiationDeadline time.Duration
+	peerDetails         PeerDetails
+	peerToken          PeerToken
+	decrypter         INETDecrypter
 
 	//
 	//
 	//
-	mSettings link.MLinkSettings
+	moduleSettings link.ModuleLinkSettings
 }
 
 //
 var (
-	_ Carrier          = (*MulticastCarrier)(nil)
-	_ carrierActuality = (*MulticastCarrier)(nil)
+	_ Carrier          = (*MultiplexCarrier)(nil)
+	_ carrierDuration = (*MultiplexCarrier)(nil)
 )
 
 //
-func NewMulticastCarrier(
-	memberDetails MemberDetails,
-	memberKey MemberKey,
-	mSettings link.MLinkSettings,
-) *MulticastCarrier {
-	return &MulticastCarrier{
-		acceptc:          make(chan allow),
-		closec:           make(chan struct{}),
-		callDeadline:      standardCallDeadline,
-		refineDeadline:    standardRefineDeadline,
-		greetingDeadline: standardGreetingDeadline,
-		mSettings:          mSettings,
-		memberDetails:         memberDetails,
-		memberKey:          memberKey,
-		links:            NewLinkCollection(),
-		decoder:         net.DefaultResolver,
+func FreshMultiplexCarrier(
+	peerDetails PeerDetails,
+	peerToken PeerToken,
+	moduleSettings link.ModuleLinkSettings,
+) *MultiplexCarrier {
+	return &MultiplexCarrier{
+		approvechnl:          make(chan embrace),
+		terminatechnl:           make(chan struct{}),
+		callDeadline:      fallbackCallDeadline,
+		refineDeadline:    fallbackRefineDeadline,
+		negotiationDeadline: fallbackNegotiationDeadline,
+		moduleSettings:          moduleSettings,
+		peerDetails:         peerDetails,
+		peerToken:          peerToken,
+		links:            FreshLinkAssign(),
+		decrypter:         net.DefaultResolver,
 	}
 }
 
 //
-func (mt *MulticastCarrier) NetLocation() NetLocation {
-	return mt.netAddress
+func (mt *MultiplexCarrier) NetworkLocator() NetworkLocator {
+	return mt.networkLocation
 }
 
 //
-func (mt *MulticastCarrier) Allow(cfg nodeSettings) (Node, error) {
+func (mt *MultiplexCarrier) Embrace(cfg nodeSettings) (Node, error) {
 	select {
 	//
 	//
-	case a := <-mt.acceptc:
+	case a := <-mt.approvechnl:
 		if a.err != nil {
 			return nil, a.err
 		}
 
 		cfg.outgoing = false
 
-		return mt.encloseNode(a.link, a.memberDetails, cfg, a.netAddress), nil
-	case <-mt.closec:
-		return nil, ErrCarrierHalted{}
+		return mt.encloseNode(a.link, a.peerDetails, cfg, a.networkLocation), nil
+	case <-mt.terminatechnl:
+		return nil, FaultCarrierTerminated{}
 	}
 }
 
 //
-func (mt *MulticastCarrier) Call(
-	address NetLocation,
+func (mt *MultiplexCarrier) Call(
+	location NetworkLocator,
 	cfg nodeSettings,
 ) (Node, error) {
-	c, err := address.CallDeadline(mt.callDeadline)
+	c, err := location.CallDeadline(mt.callDeadline)
 	if err != nil {
 		return nil, err
 	}
 
-	if mt.mSettings.VerifyRandomize {
+	if mt.moduleSettings.VerifyRandomize {
 		//
-		c = RandomizeLinkAfterFromSettings(c, 10*time.Second, mt.mSettings.VerifyRandomizeSettings)
+		c = RandomizeLinkSubsequentOriginatingSettings(c, 10*time.Second, mt.moduleSettings.VerifyRandomizeSettings)
 	}
 
 	//
@@ -230,21 +230,21 @@ func (mt *MulticastCarrier) Call(
 		return nil, err
 	}
 
-	tokenLink, memberDetails, err := mt.enhance(c, &address)
+	credentialLink, peerDetails, err := mt.modernize(c, &location)
 	if err != nil {
 		return nil, err
 	}
 
 	cfg.outgoing = true
 
-	p := mt.encloseNode(tokenLink, memberDetails, cfg, &address)
+	p := mt.encloseNode(credentialLink, peerDetails, cfg, &location)
 
 	return p, nil
 }
 
 //
-func (mt *MulticastCarrier) End() error {
-	close(mt.closec)
+func (mt *MultiplexCarrier) Shutdown() error {
+	close(mt.terminatechnl)
 
 	if mt.observer != nil {
 		return mt.observer.Close()
@@ -254,20 +254,20 @@ func (mt *MulticastCarrier) End() error {
 }
 
 //
-func (mt *MulticastCarrier) Observe(address NetLocation) error {
-	ln, err := net.Listen("REDACTED", address.CallString())
+func (mt *MultiplexCarrier) Overhear(location NetworkLocator) error {
+	ln, err := net.Listen("REDACTED", location.CallText())
 	if err != nil {
 		return err
 	}
 
-	if mt.maximumIncomingLinkages > 0 {
-		ln = netutil.LimitListener(ln, mt.maximumIncomingLinkages)
+	if mt.maximumArrivingLinkages > 0 {
+		ln = netutil.LimitListener(ln, mt.maximumArrivingLinkages)
 	}
 
-	mt.netAddress = address
+	mt.networkLocation = location
 	mt.observer = ln
 
-	go mt.allowNodes()
+	go mt.embraceNodes()
 
 	return nil
 }
@@ -276,22 +276,22 @@ func (mt *MulticastCarrier) Observe(address NetLocation) error {
 //
 //
 //
-func (mt *MulticastCarrier) AppendConduit(chanUID byte) {
-	if ni, ok := mt.memberDetails.(StandardMemberDetails); ok {
-		if !ni.HasConduit(chanUID) {
-			ni.Streams = append(ni.Streams, chanUID)
+func (mt *MultiplexCarrier) AppendConduit(chnlUUID byte) {
+	if ni, ok := mt.peerDetails.(FallbackPeerDetails); ok {
+		if !ni.OwnsConduit(chnlUUID) {
+			ni.Conduits = append(ni.Conduits, chnlUUID)
 		}
-		mt.memberDetails = ni
+		mt.peerDetails = ni
 	}
 }
 
-func (mt *MulticastCarrier) allowNodes() {
+func (mt *MultiplexCarrier) embraceNodes() {
 	for {
 		c, err := mt.observer.Accept()
 		if err != nil {
 			//
 			select {
-			case _, ok := <-mt.closec:
+			case _, ok := <-mt.terminatechnl:
 				if !ok {
 					return
 				}
@@ -299,7 +299,7 @@ func (mt *MulticastCarrier) allowNodes() {
 				//
 			}
 
-			mt.acceptc <- allow{err: err}
+			mt.approvechnl <- embrace{err: err}
 			return
 		}
 
@@ -311,14 +311,14 @@ func (mt *MulticastCarrier) allowNodes() {
 		go func(c net.Conn) {
 			defer func() {
 				if r := recover(); r != nil {
-					err := ErrDeclined{
+					err := FaultDeclined{
 						link:          c,
 						err:           fmt.Errorf("REDACTED", r),
-						isAuthBreakdown: true,
+						equalsAuthBreakdown: true,
 					}
 					select {
-					case mt.acceptc <- allow{err: err}:
-					case <-mt.closec:
+					case mt.approvechnl <- embrace{err: err}:
+					case <-mt.terminatechnl:
 						//
 						_ = c.Close()
 						return
@@ -327,25 +327,25 @@ func (mt *MulticastCarrier) allowNodes() {
 			}()
 
 			var (
-				memberDetails   MemberDetails
-				tokenLink *link.TokenLinkage
-				netAddress    *NetLocation
+				peerDetails   PeerDetails
+				credentialLink *link.CredentialLinkage
+				networkLocation    *NetworkLocator
 			)
 
 			err := mt.refineLink(c)
 			if err == nil {
-				tokenLink, memberDetails, err = mt.enhance(c, nil)
+				credentialLink, peerDetails, err = mt.modernize(c, nil)
 				if err == nil {
-					address := c.RemoteAddr()
-					id := PublicKeyToUID(tokenLink.DistantPublicKey())
-					netAddress = NewNetLocation(id, address)
+					location := c.RemoteAddr()
+					id := PublicTokenTowardUUID(credentialLink.DistantPublicToken())
+					networkLocation = FreshNetworkLocator(id, location)
 				}
 			}
 
 			select {
-			case mt.acceptc <- allow{netAddress, tokenLink, memberDetails, err}:
+			case mt.approvechnl <- embrace{networkLocation, credentialLink, peerDetails, err}:
 				//
-			case <-mt.closec:
+			case <-mt.terminatechnl:
 				//
 				_ = c.Close()
 				return
@@ -356,18 +356,18 @@ func (mt *MulticastCarrier) allowNodes() {
 
 //
 //
-func (mt *MulticastCarrier) Sanitize(p Node) {
-	mt.links.DeleteAddress(p.DistantAddress())
-	_ = p.EndLink()
+func (mt *MultiplexCarrier) Sanitize(p Node) {
+	mt.links.DiscardLocation(p.DistantLocation())
+	_ = p.ShutdownLink()
 }
 
-func (mt *MulticastCarrier) sanitize(c net.Conn) error {
-	mt.links.Delete(c)
+func (mt *MultiplexCarrier) sanitize(c net.Conn) error {
+	mt.links.Discard(c)
 
 	return c.Close()
 }
 
-func (mt *MulticastCarrier) refineLink(c net.Conn) (err error) {
+func (mt *MultiplexCarrier) refineLink(c net.Conn) (err error) {
 	defer func() {
 		if err != nil {
 			_ = c.Close()
@@ -376,31 +376,31 @@ func (mt *MulticastCarrier) refineLink(c net.Conn) (err error) {
 
 	//
 	if mt.links.Has(c) {
-		return ErrDeclined{link: c, isReplicated: true}
+		return FaultDeclined{link: c, equalsReplicated: true}
 	}
 
 	//
-	ips, err := decipherIDXPs(mt.decoder, c)
+	ips, err := decipherIDXProcesses(mt.decrypter, c)
 	if err != nil {
 		return err
 	}
 
-	faultc := make(chan error, len(mt.linkScreens))
+	faultchnl := make(chan error, len(mt.linkCriteria))
 
-	for _, f := range mt.linkScreens {
-		go func(f LinkRefineFunction, c net.Conn, ips []net.IP, faultc chan<- error) {
-			faultc <- f(mt.links, c, ips)
-		}(f, c, ips, faultc)
+	for _, f := range mt.linkCriteria {
+		go func(f LinkRefineMethod, c net.Conn, ips []net.IP, faultchnl chan<- error) {
+			faultchnl <- f(mt.links, c, ips)
+		}(f, c, ips, faultchnl)
 	}
 
-	for i := 0; i < cap(faultc); i++ {
+	for i := 0; i < cap(faultchnl); i++ {
 		select {
-		case err := <-faultc:
+		case err := <-faultchnl:
 			if err != nil {
-				return ErrDeclined{link: c, err: err, isScreened: true}
+				return FaultDeclined{link: c, err: err, equalsScreened: true}
 			}
 		case <-time.After(mt.refineDeadline):
-			return ErrRefineDeadline{}
+			return FaultRefineDeadline{}
 		}
 	}
 
@@ -409,209 +409,209 @@ func (mt *MulticastCarrier) refineLink(c net.Conn) (err error) {
 	return nil
 }
 
-func (mt *MulticastCarrier) enhance(
+func (mt *MultiplexCarrier) modernize(
 	c net.Conn,
-	calledAddress *NetLocation,
-) (tokenLink *link.TokenLinkage, memberDetails MemberDetails, err error) {
+	calledLocation *NetworkLocator,
+) (credentialLink *link.CredentialLinkage, peerDetails PeerDetails, err error) {
 	defer func() {
 		if err != nil {
 			_ = mt.sanitize(c)
 		}
 	}()
 
-	tokenLink, err = enhanceTokenLink(c, mt.greetingDeadline, mt.memberKey.PrivateKey)
+	credentialLink, err = modernizeCredentialLink(c, mt.negotiationDeadline, mt.peerToken.PrivateToken)
 	if err != nil {
-		return nil, nil, ErrDeclined{
+		return nil, nil, FaultDeclined{
 			link:          c,
 			err:           fmt.Errorf("REDACTED", err),
-			isAuthBreakdown: true,
+			equalsAuthBreakdown: true,
 		}
 	}
 
 	//
-	linkUID := PublicKeyToUID(tokenLink.DistantPublicKey())
-	if calledAddress != nil {
-		if calledUID := calledAddress.ID; linkUID != calledUID {
-			return nil, nil, ErrDeclined{
+	linkUUID := PublicTokenTowardUUID(credentialLink.DistantPublicToken())
+	if calledLocation != nil {
+		if calledUUID := calledLocation.ID; linkUUID != calledUUID {
+			return nil, nil, FaultDeclined{
 				link: c,
-				id:   linkUID,
+				id:   linkUUID,
 				err: fmt.Errorf(
 					"REDACTED",
-					linkUID,
-					calledUID,
+					linkUUID,
+					calledUUID,
 				),
-				isAuthBreakdown: true,
+				equalsAuthBreakdown: true,
 			}
 		}
 	}
 
-	memberDetails, err = greeting(tokenLink, mt.greetingDeadline, mt.memberDetails)
+	peerDetails, err = negotiation(credentialLink, mt.negotiationDeadline, mt.peerDetails)
 	if err != nil {
-		return nil, nil, ErrDeclined{
+		return nil, nil, FaultDeclined{
 			link:          c,
 			err:           fmt.Errorf("REDACTED", err),
-			isAuthBreakdown: true,
+			equalsAuthBreakdown: true,
 		}
 	}
 
-	if err := memberDetails.Certify(); err != nil {
-		return nil, nil, ErrDeclined{
+	if err := peerDetails.Certify(); err != nil {
+		return nil, nil, FaultDeclined{
 			link:              c,
 			err:               err,
-			isMemberDetailsCorrupt: true,
+			equalsPeerDetailsUnfit: true,
 		}
 	}
 
 	//
-	if linkUID != memberDetails.ID() {
-		return nil, nil, ErrDeclined{
+	if linkUUID != peerDetails.ID() {
+		return nil, nil, FaultDeclined{
 			link: c,
-			id:   linkUID,
+			id:   linkUUID,
 			err: fmt.Errorf(
 				"REDACTED",
-				linkUID,
-				memberDetails.ID(),
+				linkUUID,
+				peerDetails.ID(),
 			),
-			isAuthBreakdown: true,
+			equalsAuthBreakdown: true,
 		}
 	}
 
 	//
-	if mt.memberDetails.ID() == memberDetails.ID() {
-		return nil, nil, ErrDeclined{
-			address:   *NewNetLocation(memberDetails.ID(), c.RemoteAddr()),
+	if mt.peerDetails.ID() == peerDetails.ID() {
+		return nil, nil, FaultDeclined{
+			location:   *FreshNetworkLocator(peerDetails.ID(), c.RemoteAddr()),
 			link:   c,
-			id:     memberDetails.ID(),
-			isEgo: true,
+			id:     peerDetails.ID(),
+			equalsEgo: true,
 		}
 	}
 
-	if err := mt.memberDetails.HarmoniousWith(memberDetails); err != nil {
-		return nil, nil, ErrDeclined{
+	if err := mt.peerDetails.MatchedUsing(peerDetails); err != nil {
+		return nil, nil, FaultDeclined{
 			link:           c,
 			err:            err,
-			id:             memberDetails.ID(),
-			isDiscordant: true,
+			id:             peerDetails.ID(),
+			equalsUnmatched: true,
 		}
 	}
 
-	return tokenLink, memberDetails, nil
+	return credentialLink, peerDetails, nil
 }
 
-func (mt *MulticastCarrier) encloseNode(
+func (mt *MultiplexCarrier) encloseNode(
 	c net.Conn,
-	ni MemberDetails,
+	ni PeerDetails,
 	cfg nodeSettings,
-	socketAddress *NetLocation,
+	portLocation *NetworkLocator,
 ) Node {
-	durable := false
-	if cfg.isDurable != nil {
+	enduring := false
+	if cfg.equalsEnduring != nil {
 		if cfg.outgoing {
-			durable = cfg.isDurable(socketAddress)
+			enduring = cfg.equalsEnduring(portLocation)
 		} else {
-			egoRegisteredAddress, err := ni.NetLocation()
+			egoIndicatedLocation, err := ni.NetworkLocator()
 			if err == nil {
-				durable = cfg.isDurable(egoRegisteredAddress)
+				enduring = cfg.equalsEnduring(egoIndicatedLocation)
 			}
 		}
 	}
 
-	nodeLink := newNodeLink(
+	nodeLink := freshNodeLink(
 		cfg.outgoing,
-		durable,
+		enduring,
 		c,
-		socketAddress,
+		portLocation,
 	)
 
-	p := newNode(
+	p := freshNode(
 		nodeLink,
-		mt.mSettings,
+		mt.moduleSettings,
 		ni,
-		cfg.handlersByChan,
-		cfg.messageKindByChanUID,
-		cfg.chanTraits,
-		cfg.onNodeFault,
+		cfg.enginesViaChnl,
+		cfg.signalKindViaChnlUUID,
+		cfg.chnlDescriptions,
+		cfg.uponNodeFailure,
 		cfg.mlc,
-		NodeStats(cfg.stats),
+		NodeTelemetry(cfg.telemetry),
 	)
 
 	return p
 }
 
-func greeting(
+func negotiation(
 	c net.Conn,
 	deadline time.Duration,
-	memberDetails MemberDetails,
-) (MemberDetails, error) {
+	peerDetails PeerDetails,
+) (PeerDetails, error) {
 	if err := c.SetDeadline(time.Now().Add(deadline)); err != nil {
 		return nil, err
 	}
 
 	var (
-		faultc = make(chan error, 2)
+		faultchnl = make(chan error, 2)
 
-		pbpeerMemberDetails tmp2p.StandardMemberDetails
-		nodeMemberDetails   StandardMemberDetails
-		ourMemberDetails    = memberDetails.(StandardMemberDetails)
+		fabricpeerPeerDetails tmpfabric.FallbackPeerDetails
+		nodePeerDetails   FallbackPeerDetails
+		minePeerDetails    = peerDetails.(FallbackPeerDetails)
 	)
 
-	go func(faultc chan<- error, c net.Conn) {
-		_, err := protoio.NewSeparatedRecorder(c).RecordMessage(ourMemberDetails.ToSchema())
-		faultc <- err
-	}(faultc, c)
-	go func(faultc chan<- error, c net.Conn) {
-		schemaScanner := protoio.NewSeparatedScanner(c, MaximumMemberDetailsVolume())
-		_, err := schemaScanner.ScanMessage(&pbpeerMemberDetails)
-		faultc <- err
-	}(faultc, c)
+	go func(faultchnl chan<- error, c net.Conn) {
+		_, err := protocolio.FreshSeparatedPersistor(c).PersistSignal(minePeerDetails.TowardSchema())
+		faultchnl <- err
+	}(faultchnl, c)
+	go func(faultchnl chan<- error, c net.Conn) {
+		schemaFetcher := protocolio.FreshSeparatedFetcher(c, MaximumPeerDetailsExtent())
+		_, err := schemaFetcher.FetchSignal(&fabricpeerPeerDetails)
+		faultchnl <- err
+	}(faultchnl, c)
 
-	for i := 0; i < cap(faultc); i++ {
-		err := <-faultc
+	for i := 0; i < cap(faultchnl); i++ {
+		err := <-faultchnl
 		if err != nil {
 			return nil, err
 		}
 	}
 
-	nodeMemberDetails, err := StandardMemberDetailsFromToSchema(&pbpeerMemberDetails)
+	nodePeerDetails, err := FallbackPeerDetailsOriginatingTowardSchema(&fabricpeerPeerDetails)
 	if err != nil {
 		return nil, err
 	}
 
-	return nodeMemberDetails, c.SetDeadline(time.Time{})
+	return nodePeerDetails, c.SetDeadline(time.Time{})
 }
 
-func enhanceTokenLink(
+func modernizeCredentialLink(
 	c net.Conn,
 	deadline time.Duration,
-	privateKey vault.PrivateKey,
-) (*link.TokenLinkage, error) {
+	privateToken security.PrivateToken,
+) (*link.CredentialLinkage, error) {
 	if err := c.SetDeadline(time.Now().Add(deadline)); err != nil {
 		return nil, err
 	}
 
-	sc, err := link.CreateTokenLinkage(c, privateKey)
+	sc, err := link.CreateCredentialLinkage(c, privateToken)
 	if err != nil {
 		return nil, err
 	}
 
-	return sc, sc.CollectionLimit(time.Time{})
+	return sc, sc.AssignExpiration(time.Time{})
 }
 
-func decipherIDXPs(decoder IPDecoder, c net.Conn) ([]net.IP, error) {
+func decipherIDXProcesses(decrypter INETDecrypter, c net.Conn) ([]net.IP, error) {
 	machine, _, err := net.SplitHostPort(c.RemoteAddr().String())
 	if err != nil {
 		return nil, err
 	}
 
-	locations, err := decoder.SearchIPAddress(context.Background(), machine)
+	locations, err := decrypter.SearchINETLocation(context.Background(), machine)
 	if err != nil {
 		return nil, err
 	}
 
 	ips := []net.IP{}
 
-	for _, address := range locations {
-		ips = append(ips, address.IP)
+	for _, location := range locations {
+		ips = append(ips, location.IP)
 	}
 
 	return ips, nil

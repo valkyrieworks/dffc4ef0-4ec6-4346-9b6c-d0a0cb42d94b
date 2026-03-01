@@ -3,7 +3,7 @@ package clock
 import (
 	"time"
 
-	engineconnect "github.com/valkyrieworks/utils/align"
+	commitchronize "github.com/valkyrieworks/dffc4ef0-4ec6-4346-9b6c-d0a0cb42d94b/utils/chronize"
 )
 
 /**
@@ -13,20 +13,20 @@ s
 .
 */
 type RegulateClock struct {
-	Label string
+	Alias string
 	Ch   chan struct{}
 	exit chan struct{}
 	dur  time.Duration
 
-	mtx   engineconnect.Lock
+	mtx   commitchronize.Exclusion
 	clock *time.Timer
-	isCollection bool
+	equalsAssign bool
 }
 
-func NewRegulateClock(label string, dur time.Duration) *RegulateClock {
+func FreshRegulateClock(alias string, dur time.Duration) *RegulateClock {
 	ch := make(chan struct{})
 	exit := make(chan struct{})
-	t := &RegulateClock{Label: label, Ch: ch, dur: dur, exit: exit}
+	t := &RegulateClock{Alias: alias, Ch: ch, dur: dur, exit: exit}
 	t.mtx.Lock()
 	t.clock = time.AfterFunc(dur, t.triggerProcedure)
 	t.mtx.Unlock()
@@ -39,7 +39,7 @@ func (t *RegulateClock) triggerProcedure() {
 	defer t.mtx.Unlock()
 	select {
 	case t.Ch <- struct{}{}:
-		t.isCollection = false
+		t.equalsAssign = false
 	case <-t.exit:
 		//
 	default:
@@ -50,16 +50,16 @@ func (t *RegulateClock) triggerProcedure() {
 func (t *RegulateClock) Set() {
 	t.mtx.Lock()
 	defer t.mtx.Unlock()
-	if !t.isCollection {
-		t.isCollection = true
+	if !t.equalsAssign {
+		t.equalsAssign = true
 		t.clock.Reset(t.dur)
 	}
 }
 
-func (t *RegulateClock) Clear() {
+func (t *RegulateClock) Deassign() {
 	t.mtx.Lock()
 	defer t.mtx.Unlock()
-	t.isCollection = false
+	t.equalsAssign = false
 	t.clock.Stop()
 }
 

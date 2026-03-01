@@ -12,20 +12,20 @@ import (
 	"github.com/stretchr/testify/mock"
 	"github.com/stretchr/testify/require"
 
-	"github.com/valkyrieworks/iface/instance/objectdepot"
-	iface "github.com/valkyrieworks/iface/kinds"
-	abciemulators "github.com/valkyrieworks/iface/kinds/simulations"
-	cskinds "github.com/valkyrieworks/agreement/kinds"
-	"github.com/valkyrieworks/vault/comethash"
-	"github.com/valkyrieworks/intrinsic/verify"
-	cometbytes "github.com/valkyrieworks/utils/octets"
-	"github.com/valkyrieworks/utils/log"
-	"github.com/valkyrieworks/utils/protoio"
-	cometbroadcast "github.com/valkyrieworks/utils/broadcast"
-	engineseed "github.com/valkyrieworks/utils/random"
-	p2pemulator "github.com/valkyrieworks/p2p/emulate"
-	engineproto "github.com/valkyrieworks/schema/consensuscore/kinds"
-	"github.com/valkyrieworks/kinds"
+	"github.com/valkyrieworks/dffc4ef0-4ec6-4346-9b6c-d0a0cb42d94b/iface/instance/statedepot"
+	iface "github.com/valkyrieworks/dffc4ef0-4ec6-4346-9b6c-d0a0cb42d94b/iface/kinds"
+	abcistubs "github.com/valkyrieworks/dffc4ef0-4ec6-4346-9b6c-d0a0cb42d94b/iface/kinds/simulations"
+	controlkinds "github.com/valkyrieworks/dffc4ef0-4ec6-4346-9b6c-d0a0cb42d94b/agreement/kinds"
+	"github.com/valkyrieworks/dffc4ef0-4ec6-4346-9b6c-d0a0cb42d94b/security/tenderminthash"
+	"github.com/valkyrieworks/dffc4ef0-4ec6-4346-9b6c-d0a0cb42d94b/intrinsic/verify"
+	tendermintoctets "github.com/valkyrieworks/dffc4ef0-4ec6-4346-9b6c-d0a0cb42d94b/utils/octets"
+	"github.com/valkyrieworks/dffc4ef0-4ec6-4346-9b6c-d0a0cb42d94b/utils/log"
+	"github.com/valkyrieworks/dffc4ef0-4ec6-4346-9b6c-d0a0cb42d94b/utils/protocolio"
+	tendermintpubsub "github.com/valkyrieworks/dffc4ef0-4ec6-4346-9b6c-d0a0cb42d94b/utils/broadcastlisten"
+	commitrand "github.com/valkyrieworks/dffc4ef0-4ec6-4346-9b6c-d0a0cb42d94b/utils/arbitrary"
+	nodestub "github.com/valkyrieworks/dffc4ef0-4ec6-4346-9b6c-d0a0cb42d94b/p2p/simulate"
+	commitchema "github.com/valkyrieworks/dffc4ef0-4ec6-4346-9b6c-d0a0cb42d94b/schema/strongmind/kinds"
+	"github.com/valkyrieworks/dffc4ef0-4ec6-4346-9b6c-d0a0cb42d94b/kinds"
 )
 
 /**
@@ -62,292 +62,292 @@ t
 //
 //
 
-func VerifyStatusRecommenderChoice0(t *testing.T) {
-	cs1, vss := randomStatus(4)
-	level, duration := cs1.Level, cs1.Cycle
+func VerifyStatusNominatorOption0(t *testing.T) {
+	cs1, vss := arbitraryStatus(4)
+	altitude, iteration := cs1.Altitude, cs1.Iteration
 
-	newEpochChan := enrol(cs1.eventBus, kinds.EventInquireNewEpoch)
-	nominationChan := enrol(cs1.eventBus, kinds.EventInquireFinishedNomination)
+	freshIterationChnl := listen(cs1.incidentChannel, kinds.IncidentInquireFreshIteration)
+	nominationChnl := listen(cs1.incidentChannel, kinds.IncidentInquireFinishNomination)
 
-	beginVerifyEpoch(cs1, level, duration)
-
-	//
-	assureNewEpoch(newEpochChan, level, duration)
+	initiateVerifyIteration(cs1, altitude, iteration)
 
 	//
-	nomination := cs1.FetchDurationStatus().Ratifiers.FetchRecommender()
-	pv, err := cs1.privateRatifier.FetchPublicKey()
+	assureFreshIteration(freshIterationChnl, altitude, iteration)
+
+	//
+	item := cs1.ObtainIterationStatus().Assessors.ObtainNominator()
+	pv, err := cs1.privateAssessor.ObtainPublicToken()
 	require.NoError(t, err)
 	location := pv.Location()
-	if !bytes.Equal(nomination.Location, location) {
-		t.Fatalf("REDACTED", 0, nomination.Location)
+	if !bytes.Equal(item.Location, location) {
+		t.Fatalf("REDACTED", 0, item.Location)
 	}
 
 	//
-	assureNewNomination(nominationChan, level, duration)
+	assureFreshNomination(nominationChnl, altitude, iteration)
 
-	rs := cs1.FetchDurationStatus()
-	attestAppendBallots(cs1, engineproto.PreendorseKind, rs.NominationLedger.Digest(), rs.NominationLedgerSegments.Heading(), true, vss[1:]...)
+	rs := cs1.ObtainIterationStatus()
+	attestAppendBallots(cs1, commitchema.PreendorseKind, rs.NominationLedger.Digest(), rs.NominationLedgerFragments.Heading(), true, vss[1:]...)
 
 	//
-	assureNewEpoch(newEpochChan, level+1, 0)
+	assureFreshIteration(freshIterationChnl, altitude+1, 0)
 
-	nomination = cs1.FetchDurationStatus().Ratifiers.FetchRecommender()
-	pv1, err := vss[1].FetchPublicKey()
+	item = cs1.ObtainIterationStatus().Assessors.ObtainNominator()
+	pv1, err := vss[1].ObtainPublicToken()
 	require.NoError(t, err)
-	address := pv1.Location()
-	if !bytes.Equal(nomination.Location, address) {
-		panic(fmt.Sprintf("REDACTED", 1, nomination.Location))
+	location := pv1.Location()
+	if !bytes.Equal(item.Location, location) {
+		panic(fmt.Sprintf("REDACTED", 1, item.Location))
 	}
 }
 
 //
-func VerifyStatusRecommenderChoice2(t *testing.T) {
-	cs1, vss := randomStatus(4) //
-	level := cs1.Level
-	newEpochChan := enrol(cs1.eventBus, kinds.EventInquireNewEpoch)
+func VerifyStatusNominatorOption2(t *testing.T) {
+	cs1, vss := arbitraryStatus(4) //
+	altitude := cs1.Altitude
+	freshIterationChnl := listen(cs1.incidentChannel, kinds.IncidentInquireFreshIteration)
 
 	//
-	augmentEpoch(vss[1:]...)
-	augmentEpoch(vss[1:]...)
+	advanceIteration(vss[1:]...)
+	advanceIteration(vss[1:]...)
 
-	var duration int32 = 2
-	beginVerifyEpoch(cs1, level, duration)
+	var iteration int32 = 2
+	initiateVerifyIteration(cs1, altitude, iteration)
 
-	assureNewEpoch(newEpochChan, level, duration) //
+	assureFreshIteration(freshIterationChnl, altitude, iteration) //
 
 	//
 	for i := int32(0); int(i) < len(vss); i++ {
-		nomination := cs1.FetchDurationStatus().Ratifiers.FetchRecommender()
-		pvk, err := vss[int(i+duration)%len(vss)].FetchPublicKey()
+		item := cs1.ObtainIterationStatus().Assessors.ObtainNominator()
+		pvk, err := vss[int(i+iteration)%len(vss)].ObtainPublicToken()
 		require.NoError(t, err)
-		address := pvk.Location()
-		accurateRecommender := address
-		if !bytes.Equal(nomination.Location, accurateRecommender) {
+		location := pvk.Location()
+		preciseNominator := location
+		if !bytes.Equal(item.Location, preciseNominator) {
 			panic(fmt.Sprintf(
 				"REDACTED",
 				int(i+2)%len(vss),
-				nomination.Location))
+				item.Location))
 		}
 
-		rs := cs1.FetchDurationStatus()
-		attestAppendBallots(cs1, engineproto.PreendorseKind, nil, rs.NominationLedgerSegments.Heading(), true, vss[1:]...)
-		assureNewEpoch(newEpochChan, level, i+duration+1) //
-		augmentEpoch(vss[1:]...)
+		rs := cs1.ObtainIterationStatus()
+		attestAppendBallots(cs1, commitchema.PreendorseKind, nil, rs.NominationLedgerFragments.Heading(), true, vss[1:]...)
+		assureFreshIteration(freshIterationChnl, altitude, i+iteration+1) //
+		advanceIteration(vss[1:]...)
 	}
 }
 
 //
-func VerifyStatusJoinNominateNoPrivateRatifier(t *testing.T) {
-	cs, _ := randomStatus(1)
-	cs.CollectionPrivateRatifier(nil)
-	level, duration := cs.Level, cs.Cycle
+func VerifyStatusJoinNominateNegativePrivateAssessor(t *testing.T) {
+	cs, _ := arbitraryStatus(1)
+	cs.AssignPrivateAssessor(nil)
+	altitude, iteration := cs.Altitude, cs.Iteration
 
 	//
-	deadlineChan := enrol(cs.eventBus, kinds.EventInquireDeadlineNominate)
+	deadlineChnl := listen(cs.incidentChannel, kinds.IncidentInquireDeadlineNominate)
 
-	beginVerifyEpoch(cs, level, duration)
+	initiateVerifyIteration(cs, altitude, iteration)
 
 	//
-	assureNewDeadline(deadlineChan, level, duration, cs.settings.DeadlineNominate.Nanoseconds())
+	assureFreshDeadline(deadlineChnl, altitude, iteration, cs.settings.DeadlineNominate.Nanoseconds())
 
-	if cs.FetchDurationStatus().Nomination != nil {
+	if cs.ObtainIterationStatus().Nomination != nil {
 		t.Error("REDACTED")
 	}
 }
 
 //
-func VerifyStatusJoinNominateYesPrivateRatifier(t *testing.T) {
-	cs, _ := randomStatus(1)
-	level, duration := cs.Level, cs.Cycle
+func VerifyStatusJoinNominateTruePrivateAssessor(t *testing.T) {
+	cs, _ := arbitraryStatus(1)
+	altitude, iteration := cs.Altitude, cs.Iteration
 
 	//
 
-	deadlineChan := enrol(cs.eventBus, kinds.EventInquireDeadlineNominate)
-	nominationChan := enrol(cs.eventBus, kinds.EventInquireFinishedNomination)
+	deadlineChnl := listen(cs.incidentChannel, kinds.IncidentInquireDeadlineNominate)
+	nominationChnl := listen(cs.incidentChannel, kinds.IncidentInquireFinishNomination)
 
-	cs.joinNewEpoch(level, duration)
-	cs.beginProcedures(3)
+	cs.joinFreshIteration(altitude, iteration)
+	cs.initiateThreads(3)
 
-	assureNewNomination(nominationChan, level, duration)
+	assureFreshNomination(nominationChnl, altitude, iteration)
 
 	//
-	rs := cs.FetchDurationStatus()
+	rs := cs.ObtainIterationStatus()
 	if rs.Nomination == nil {
 		t.Error("REDACTED")
 	}
 	if rs.NominationLedger == nil {
 		t.Error("REDACTED")
 	}
-	if rs.NominationLedgerSegments.Sum() == 0 {
+	if rs.NominationLedgerFragments.Sum() == 0 {
 		t.Error("REDACTED")
 	}
 
 	//
-	assureNoNewDeadline(deadlineChan, cs.settings.DeadlineNominate.Nanoseconds())
+	assureNegativeFreshDeadline(deadlineChnl, cs.settings.DeadlineNominate.Nanoseconds())
 }
 
 func VerifyStatusFlawedNomination(t *testing.T) {
 	ctx := t.Context()
 
-	cs1, vss := randomStatus(2)
-	level, duration := cs1.Level, cs1.Cycle
+	cs1, vss := arbitraryStatus(2)
+	altitude, iteration := cs1.Altitude, cs1.Iteration
 	vs2 := vss[1]
 
-	segmentVolume := kinds.LedgerSegmentVolumeOctets
+	fragmentExtent := kinds.LedgerFragmentExtentOctets
 
-	nominationChan := enrol(cs1.eventBus, kinds.EventInquireFinishedNomination)
-	ballotChan := enrol(cs1.eventBus, kinds.EventInquireBallot)
+	nominationChnl := listen(cs1.incidentChannel, kinds.IncidentInquireFinishNomination)
+	ballotChnl := listen(cs1.incidentChannel, kinds.IncidentInquireBallot)
 
-	nominationLedger, err := cs1.instantiateNominationLedger(ctx) //
+	itemLedger, err := cs1.generateNominationLedger(ctx) //
 	require.NoError(t, err)
 
 	//
-	duration++
-	augmentEpoch(vss[1:]...)
+	iteration++
+	advanceIteration(vss[1:]...)
 
 	//
-	statusDigest := nominationLedger.ApplicationDigest
+	statusDigest := itemLedger.PlatformDigest
 	if len(statusDigest) == 0 {
 		statusDigest = make([]byte, 32)
 	}
 	statusDigest[0] = (statusDigest[0] + 1) % 255
-	nominationLedger.ApplicationDigest = statusDigest
-	nominationLedgerSegments, err := nominationLedger.CreateSegmentAssign(segmentVolume)
+	itemLedger.PlatformDigest = statusDigest
+	itemLedgerFragments, err := itemLedger.CreateFragmentAssign(fragmentExtent)
 	require.NoError(t, err)
-	ledgerUID := kinds.LedgerUID{Digest: nominationLedger.Digest(), SegmentAssignHeading: nominationLedgerSegments.Heading()}
-	nomination := kinds.NewNomination(vs2.Level, duration, -1, ledgerUID)
-	p := nomination.ToSchema()
-	if err := vs2.AttestNomination(cs1.status.LedgerUID, p); err != nil {
+	ledgerUUID := kinds.LedgerUUID{Digest: itemLedger.Digest(), FragmentAssignHeading: itemLedgerFragments.Heading()}
+	nomination := kinds.FreshNomination(vs2.Altitude, iteration, -1, ledgerUUID)
+	p := nomination.TowardSchema()
+	if err := vs2.AttestNomination(cs1.status.SuccessionUUID, p); err != nil {
 		t.Fatal("REDACTED", err)
 	}
 
-	nomination.Autograph = p.Autograph
+	nomination.Notation = p.Notation
 
 	//
-	if err := cs1.CollectionNominationAndLedger(nomination, nominationLedger, nominationLedgerSegments, "REDACTED"); err != nil {
+	if err := cs1.AssignNominationAlsoLedger(nomination, itemLedger, itemLedgerFragments, "REDACTED"); err != nil {
 		t.Fatal(err)
 	}
 
 	//
-	beginVerifyEpoch(cs1, level, duration)
+	initiateVerifyIteration(cs1, altitude, iteration)
 
 	//
-	assureNomination(nominationChan, level, duration, ledgerUID)
+	assureNomination(nominationChnl, altitude, iteration, ledgerUUID)
 
 	//
-	assurePreballot(ballotChan, level, duration)
-	certifyPreballot(t, cs1, duration, vss[0], nil)
+	assurePreballot(ballotChnl, altitude, iteration)
+	certifyPreballot(t, cs1, iteration, vss[0], nil)
 
 	//
-	bps, err := nominationLedger.CreateSegmentAssign(segmentVolume)
+	bps, err := itemLedger.CreateFragmentAssign(fragmentExtent)
 	require.NoError(t, err)
 
-	attestAppendBallots(cs1, engineproto.PreballotKind, nominationLedger.Digest(), bps.Heading(), false, vs2)
-	assurePreballot(ballotChan, level, duration)
+	attestAppendBallots(cs1, commitchema.PreballotKind, itemLedger.Digest(), bps.Heading(), false, vs2)
+	assurePreballot(ballotChnl, altitude, iteration)
 
 	//
-	assurePreendorse(ballotChan, level, duration)
-	certifyPreendorse(t, cs1, duration, -1, vss[0], nil, nil)
+	assurePreendorse(ballotChnl, altitude, iteration)
+	certifyPreendorse(t, cs1, iteration, -1, vss[0], nil, nil)
 
-	bps2, err := nominationLedger.CreateSegmentAssign(segmentVolume)
+	bpp2, err := itemLedger.CreateFragmentAssign(fragmentExtent)
 	require.NoError(t, err)
-	attestAppendBallots(cs1, engineproto.PreendorseKind, nominationLedger.Digest(), bps2.Heading(), true, vs2)
+	attestAppendBallots(cs1, commitchema.PreendorseKind, itemLedger.Digest(), bpp2.Heading(), true, vs2)
 }
 
-func VerifyStatusExcessiveLedger(t *testing.T) {
-	const maximumOctets = int64(kinds.LedgerSegmentVolumeOctets)
+func VerifyStatusBulkyLedger(t *testing.T) {
+	const maximumOctets = int64(kinds.LedgerFragmentExtentOctets)
 
 	for _, verifyInstance := range []struct {
-		label      string
-		excessive bool
+		alias      string
+		bulky bool
 	}{
 		{
-			label:      "REDACTED",
-			excessive: false,
+			alias:      "REDACTED",
+			bulky: false,
 		},
 		{
-			label:      "REDACTED",
-			excessive: true,
+			alias:      "REDACTED",
+			bulky: true,
 		},
 	} {
-		t.Run(verifyInstance.label, func(t *testing.T) {
-			cs1, vss := randomStatus(2)
-			cs1.status.AgreementOptions.Ledger.MaximumOctets = maximumOctets
-			level, duration := cs1.Level, cs1.Cycle
+		t.Run(verifyInstance.alias, func(t *testing.T) {
+			cs1, vss := arbitraryStatus(2)
+			cs1.status.AgreementSettings.Ledger.MaximumOctets = maximumOctets
+			altitude, iteration := cs1.Altitude, cs1.Iteration
 			vs2 := vss[1]
 
-			segmentVolume := kinds.LedgerSegmentVolumeOctets
+			fragmentExtent := kinds.LedgerFragmentExtentOctets
 
-			nominationLedger, nominationLedgerSegments := locateLedgerVolumeCeiling(t, level, maximumOctets, cs1, segmentVolume, verifyInstance.excessive)
+			itemLedger, itemLedgerFragments := locateLedgerExtentThreshold(t, altitude, maximumOctets, cs1, fragmentExtent, verifyInstance.bulky)
 
-			deadlineNominateChan := enrol(cs1.eventBus, kinds.EventInquireDeadlineNominate)
-			ballotChan := enrol(cs1.eventBus, kinds.EventInquireBallot)
+			deadlineNominateChnl := listen(cs1.incidentChannel, kinds.IncidentInquireDeadlineNominate)
+			ballotChnl := listen(cs1.incidentChannel, kinds.IncidentInquireBallot)
 
 			//
-			duration++
-			augmentEpoch(vss[1:]...)
+			iteration++
+			advanceIteration(vss[1:]...)
 
-			ledgerUID := kinds.LedgerUID{Digest: nominationLedger.Digest(), SegmentAssignHeading: nominationLedgerSegments.Heading()}
-			nomination := kinds.NewNomination(level, duration, -1, ledgerUID)
-			p := nomination.ToSchema()
-			if err := vs2.AttestNomination(cs1.status.LedgerUID, p); err != nil {
+			ledgerUUID := kinds.LedgerUUID{Digest: itemLedger.Digest(), FragmentAssignHeading: itemLedgerFragments.Heading()}
+			nomination := kinds.FreshNomination(altitude, iteration, -1, ledgerUUID)
+			p := nomination.TowardSchema()
+			if err := vs2.AttestNomination(cs1.status.SuccessionUUID, p); err != nil {
 				t.Fatal("REDACTED", err)
 			}
-			nomination.Autograph = p.Autograph
+			nomination.Notation = p.Notation
 
 			sumOctets := 0
-			for i := 0; i < int(nominationLedgerSegments.Sum()); i++ {
-				segment := nominationLedgerSegments.FetchSegment(i)
-				sumOctets += len(segment.Octets)
+			for i := 0; i < int(itemLedgerFragments.Sum()); i++ {
+				fragment := itemLedgerFragments.ObtainFragment(i)
+				sumOctets += len(fragment.Octets)
 			}
 
-			maximumLedgerSegments := maximumOctets / int64(kinds.LedgerSegmentVolumeOctets)
-			if maximumOctets > maximumLedgerSegments*int64(kinds.LedgerSegmentVolumeOctets) {
-				maximumLedgerSegments++
+			maximumLedgerFragments := maximumOctets / int64(kinds.LedgerFragmentExtentOctets)
+			if maximumOctets > maximumLedgerFragments*int64(kinds.LedgerFragmentExtentOctets) {
+				maximumLedgerFragments++
 			}
-			countLedgerSegments := int64(nominationLedgerSegments.Sum())
+			countLedgerFragments := int64(itemLedgerFragments.Sum())
 
-			if err := cs1.CollectionNominationAndLedger(nomination, nominationLedger, nominationLedgerSegments, "REDACTED"); err != nil {
+			if err := cs1.AssignNominationAlsoLedger(nomination, itemLedger, itemLedgerFragments, "REDACTED"); err != nil {
 				t.Fatal(err)
 			}
 
 			//
-			beginVerifyEpoch(cs1, level, duration)
+			initiateVerifyIteration(cs1, altitude, iteration)
 
 			t.Log("REDACTED", "REDACTED", maximumOctets, "REDACTED", sumOctets)
-			t.Log("REDACTED", "REDACTED", maximumLedgerSegments, "REDACTED", countLedgerSegments)
+			t.Log("REDACTED", "REDACTED", maximumLedgerFragments, "REDACTED", countLedgerFragments)
 
-			certifyDigest := nominationLedger.Digest()
-			latchedEpoch := int32(1)
-			if verifyInstance.excessive {
+			certifyDigest := itemLedger.Digest()
+			securedIteration := int32(1)
+			if verifyInstance.bulky {
 				certifyDigest = nil
-				latchedEpoch = -1
+				securedIteration = -1
 				//
 				//
-				assureNewDeadline(deadlineNominateChan, level, duration, cs1.settings.Nominate(duration).Nanoseconds())
+				assureFreshDeadline(deadlineNominateChnl, altitude, iteration, cs1.settings.Nominate(iteration).Nanoseconds())
 				//
 				//
 			}
-			assurePreballot(ballotChan, level, duration)
-			certifyPreballot(t, cs1, duration, vss[0], certifyDigest)
+			assurePreballot(ballotChnl, altitude, iteration)
+			certifyPreballot(t, cs1, iteration, vss[0], certifyDigest)
 
 			//
-			if countLedgerSegments > maximumLedgerSegments {
+			if countLedgerFragments > maximumLedgerFragments {
 				require.Nil(t, cs1.Nomination)
 			}
 
-			bps, err := nominationLedger.CreateSegmentAssign(segmentVolume)
+			bps, err := itemLedger.CreateFragmentAssign(fragmentExtent)
 			require.NoError(t, err)
 
-			attestAppendBallots(cs1, engineproto.PreballotKind, nominationLedger.Digest(), bps.Heading(), false, vs2)
-			assurePreballot(ballotChan, level, duration)
-			assurePreendorse(ballotChan, level, duration)
-			certifyPreendorse(t, cs1, duration, latchedEpoch, vss[0], certifyDigest, certifyDigest)
+			attestAppendBallots(cs1, commitchema.PreballotKind, itemLedger.Digest(), bps.Heading(), false, vs2)
+			assurePreballot(ballotChnl, altitude, iteration)
+			assurePreendorse(ballotChnl, altitude, iteration)
+			certifyPreendorse(t, cs1, iteration, securedIteration, vss[0], certifyDigest, certifyDigest)
 
-			bps2, err := nominationLedger.CreateSegmentAssign(segmentVolume)
+			bpp2, err := itemLedger.CreateFragmentAssign(fragmentExtent)
 			require.NoError(t, err)
-			attestAppendBallots(cs1, engineproto.PreendorseKind, nominationLedger.Digest(), bps2.Heading(), true, vs2)
+			attestAppendBallots(cs1, commitchema.PreendorseKind, itemLedger.Digest(), bpp2.Heading(), true, vs2)
 		})
 	}
 }
@@ -356,94 +356,94 @@ func VerifyStatusExcessiveLedger(t *testing.T) {
 //
 
 //
-func VerifyStatusCompleteEpoch1(t *testing.T) {
-	cs, vss := randomStatus(1)
-	level, duration := cs.Level, cs.Cycle
+func VerifyStatusCompleteCycle1(t *testing.T) {
+	cs, vss := arbitraryStatus(1)
+	altitude, iteration := cs.Altitude, cs.Iteration
 
 	//
 	//
-	if err := cs.eventBus.Halt(); err != nil {
+	if err := cs.incidentChannel.Halt(); err != nil {
 		t.Error(err)
 	}
-	eventBus := kinds.NewEventBusWithBufferVolume(0)
-	eventBus.AssignTracer(log.VerifyingTracer().With("REDACTED", "REDACTED"))
-	cs.AssignEventBus(eventBus)
-	if err := eventBus.Begin(); err != nil {
+	incidentChannel := kinds.FreshIncidentPipelineUsingReserveVolume(0)
+	incidentChannel.AssignTracer(log.VerifyingTracer().Using("REDACTED", "REDACTED"))
+	cs.AssignIncidentChannel(incidentChannel)
+	if err := incidentChannel.Initiate(); err != nil {
 		t.Error(err)
 	}
 
-	ballotChan := enrolUnCached(cs.eventBus, kinds.EventInquireBallot)
-	nominationChan := enrol(cs.eventBus, kinds.EventInquireFinishedNomination)
-	newEpochChan := enrol(cs.eventBus, kinds.EventInquireNewEpoch)
+	ballotChnl := listenNegCached(cs.incidentChannel, kinds.IncidentInquireBallot)
+	itemChnl := listen(cs.incidentChannel, kinds.IncidentInquireFinishNomination)
+	freshIterationChnl := listen(cs.incidentChannel, kinds.IncidentInquireFreshIteration)
 
 	//
-	beginVerifyEpoch(cs, level, duration)
+	initiateVerifyIteration(cs, altitude, iteration)
 
-	assureNewEpoch(newEpochChan, level, duration)
+	assureFreshIteration(freshIterationChnl, altitude, iteration)
 
-	assureNewNomination(nominationChan, level, duration)
-	nominationLedgerDigest := cs.FetchDurationStatus().NominationLedger.Digest()
+	assureFreshNomination(itemChnl, altitude, iteration)
+	itemLedgerDigest := cs.ObtainIterationStatus().NominationLedger.Digest()
 
-	assurePreballot(ballotChan, level, duration) //
-	certifyPreballot(t, cs, duration, vss[0], nominationLedgerDigest)
+	assurePreballot(ballotChnl, altitude, iteration) //
+	certifyPreballot(t, cs, iteration, vss[0], itemLedgerDigest)
 
-	assurePreendorse(ballotChan, level, duration) //
+	assurePreendorse(ballotChnl, altitude, iteration) //
 
 	//
-	assureNewEpoch(newEpochChan, level+1, 0)
+	assureFreshIteration(freshIterationChnl, altitude+1, 0)
 
-	certifyFinalPreendorse(t, cs, vss[0], nominationLedgerDigest)
+	certifyFinalPreendorse(t, cs, vss[0], itemLedgerDigest)
 }
 
 //
-func VerifyStatusCompleteEpochNull(t *testing.T) {
-	cs, _ := randomStatus(1)
-	level, duration := cs.Level, cs.Cycle
+func VerifyStatusCompleteIterationVoid(t *testing.T) {
+	cs, _ := arbitraryStatus(1)
+	altitude, iteration := cs.Altitude, cs.Iteration
 
-	ballotChan := enrolUnCached(cs.eventBus, kinds.EventInquireBallot)
+	ballotChnl := listenNegCached(cs.incidentChannel, kinds.IncidentInquireBallot)
 
-	cs.joinPreballot(level, duration)
-	cs.beginProcedures(4)
+	cs.joinPreballot(altitude, iteration)
+	cs.initiateThreads(4)
 
-	assurePreballotAlign(t, ballotChan, level, duration, nil)   //
-	assurePreendorseAlign(t, ballotChan, level, duration, nil) //
+	assurePreballotAlign(t, ballotChnl, altitude, iteration, nil)   //
+	assurePreendorseAlign(t, ballotChnl, altitude, iteration, nil) //
 }
 
 //
 //
-func VerifyStatusCompleteEpoch2(t *testing.T) {
-	cs1, vss := randomStatus(2)
+func VerifyStatusCompleteCycle2(t *testing.T) {
+	cs1, vss := arbitraryStatus(2)
 	vs2 := vss[1]
-	level, duration := cs1.Level, cs1.Cycle
+	altitude, iteration := cs1.Altitude, cs1.Iteration
 
-	ballotChan := enrolUnCached(cs1.eventBus, kinds.EventInquireBallot)
-	newLedgerChan := enrol(cs1.eventBus, kinds.EventInquireNewLedger)
-
-	//
-	beginVerifyEpoch(cs1, level, duration)
-
-	assurePreballot(ballotChan, level, duration) //
+	ballotChnl := listenNegCached(cs1.incidentChannel, kinds.IncidentInquireBallot)
+	freshLedgerChnl := listen(cs1.incidentChannel, kinds.IncidentInquireFreshLedger)
 
 	//
-	rs := cs1.FetchDurationStatus()
-	nominationLedgerDigest, nominationSegmentCollectionHeading := rs.NominationLedger.Digest(), rs.NominationLedgerSegments.Heading()
+	initiateVerifyIteration(cs1, altitude, iteration)
+
+	assurePreballot(ballotChnl, altitude, iteration) //
 
 	//
-	attestAppendBallots(cs1, engineproto.PreballotKind, nominationLedgerDigest, nominationSegmentCollectionHeading, false, vs2)
-	assurePreballot(ballotChan, level, duration) //
-
-	assurePreendorse(ballotChan, level, duration) //
-	//
-	certifyPreendorse(t, cs1, 0, 0, vss[0], nominationLedgerDigest, nominationLedgerDigest)
+	rs := cs1.ObtainIterationStatus()
+	itemLedgerDigest, itemFragmentAssignHeading := rs.NominationLedger.Digest(), rs.NominationLedgerFragments.Heading()
 
 	//
+	attestAppendBallots(cs1, commitchema.PreballotKind, itemLedgerDigest, itemFragmentAssignHeading, false, vs2)
+	assurePreballot(ballotChnl, altitude, iteration) //
+
+	assurePreendorse(ballotChnl, altitude, iteration) //
+	//
+	certifyPreendorse(t, cs1, 0, 0, vss[0], itemLedgerDigest, itemLedgerDigest)
 
 	//
-	attestAppendBallots(cs1, engineproto.PreendorseKind, nominationLedgerDigest, nominationSegmentCollectionHeading, true, vs2)
-	assurePreendorse(ballotChan, level, duration)
 
 	//
-	assureNewLedger(newLedgerChan, level)
+	attestAppendBallots(cs1, commitchema.PreendorseKind, itemLedgerDigest, itemFragmentAssignHeading, true, vs2)
+	assurePreendorse(ballotChnl, altitude, iteration)
+
+	//
+	assureFreshLedger(freshLedgerChnl, altitude)
 }
 
 //
@@ -451,165 +451,165 @@ func VerifyStatusCompleteEpoch2(t *testing.T) {
 
 //
 //
-func VerifyStatusSecureNoPOL(t *testing.T) {
+func VerifyStatusSecureNegativePolicy(t *testing.T) {
 	ctx := t.Context()
 
-	cs1, vss := randomStatus(2)
+	cs1, vss := arbitraryStatus(2)
 	vs2 := vss[1]
-	level, duration := cs1.Level, cs1.Cycle
+	altitude, iteration := cs1.Altitude, cs1.Iteration
 
-	segmentVolume := kinds.LedgerSegmentVolumeOctets
+	fragmentExtent := kinds.LedgerFragmentExtentOctets
 
-	deadlineNominateChan := enrol(cs1.eventBus, kinds.EventInquireDeadlineNominate)
-	deadlineWaitChan := enrol(cs1.eventBus, kinds.EventInquireDeadlineWait)
-	ballotChan := enrolUnCached(cs1.eventBus, kinds.EventInquireBallot)
-	nominationChan := enrol(cs1.eventBus, kinds.EventInquireFinishedNomination)
-	newEpochChan := enrol(cs1.eventBus, kinds.EventInquireNewEpoch)
+	deadlineNominateChnl := listen(cs1.incidentChannel, kinds.IncidentInquireDeadlineNominate)
+	deadlinePauseChnl := listen(cs1.incidentChannel, kinds.IncidentInquireDeadlinePause)
+	ballotChnl := listenNegCached(cs1.incidentChannel, kinds.IncidentInquireBallot)
+	nominationChnl := listen(cs1.incidentChannel, kinds.IncidentInquireFinishNomination)
+	freshIterationChnl := listen(cs1.incidentChannel, kinds.IncidentInquireFreshIteration)
 
 	/**
 2
 */
 
 	//
-	cs1.joinNewEpoch(level, duration)
-	cs1.beginProcedures(0)
+	cs1.joinFreshIteration(altitude, iteration)
+	cs1.initiateThreads(0)
 
-	assureNewEpoch(newEpochChan, level, duration)
+	assureFreshIteration(freshIterationChnl, altitude, iteration)
 
-	assureNewNomination(nominationChan, level, duration)
-	epochStatus := cs1.FetchDurationStatus()
-	theLedgerDigest := epochStatus.NominationLedger.Digest()
-	theSegmentCollectionHeading := epochStatus.NominationLedgerSegments.Heading()
+	assureFreshNomination(nominationChnl, altitude, iteration)
+	iterationStatus := cs1.ObtainIterationStatus()
+	thatLedgerDigest := iterationStatus.NominationLedger.Digest()
+	thatFragmentAssignHeading := iterationStatus.NominationLedgerFragments.Heading()
 
-	assurePreballot(ballotChan, level, duration) //
-
-	//
-	//
-	attestAppendBallots(cs1, engineproto.PreballotKind, theLedgerDigest, theSegmentCollectionHeading, false, vs2)
-	assurePreballot(ballotChan, level, duration) //
-
-	assurePreendorse(ballotChan, level, duration) //
-	//
-	certifyPreendorse(t, cs1, duration, duration, vss[0], theLedgerDigest, theLedgerDigest)
+	assurePreballot(ballotChnl, altitude, iteration) //
 
 	//
 	//
-	digest := make([]byte, len(theLedgerDigest))
-	copy(digest, theLedgerDigest)
+	attestAppendBallots(cs1, commitchema.PreballotKind, thatLedgerDigest, thatFragmentAssignHeading, false, vs2)
+	assurePreballot(ballotChnl, altitude, iteration) //
+
+	assurePreendorse(ballotChnl, altitude, iteration) //
+	//
+	certifyPreendorse(t, cs1, iteration, iteration, vss[0], thatLedgerDigest, thatLedgerDigest)
+
+	//
+	//
+	digest := make([]byte, len(thatLedgerDigest))
+	copy(digest, thatLedgerDigest)
 	digest[0] = (digest[0] + 1) % 255
-	attestAppendBallots(cs1, engineproto.PreendorseKind, digest, theSegmentCollectionHeading, true, vs2)
-	assurePreendorse(ballotChan, level, duration) //
+	attestAppendBallots(cs1, commitchema.PreendorseKind, digest, thatFragmentAssignHeading, true, vs2)
+	assurePreendorse(ballotChnl, altitude, iteration) //
 
 	//
 	//
-	assureNewDeadline(deadlineWaitChan, level, duration, cs1.settings.Preendorse(duration).Nanoseconds())
+	assureFreshDeadline(deadlinePauseChnl, altitude, iteration, cs1.settings.Preendorse(iteration).Nanoseconds())
 
 	//
 
-	duration++ //
-	assureNewEpoch(newEpochChan, level, duration)
+	iteration++ //
+	assureFreshIteration(freshIterationChnl, altitude, iteration)
 	t.Log("REDACTED")
 	/**
 2
 */
 
-	augmentEpoch(vs2)
+	advanceIteration(vs2)
 
 	//
-	assureNewDeadline(deadlineNominateChan, level, duration, cs1.settings.Nominate(duration).Nanoseconds())
+	assureFreshDeadline(deadlineNominateChnl, altitude, iteration, cs1.settings.Nominate(iteration).Nanoseconds())
 
-	rs := cs1.FetchDurationStatus()
+	rs := cs1.ObtainIterationStatus()
 
 	require.Nil(t, rs.NominationLedger, "REDACTED")
 
 	//
-	assurePreballot(ballotChan, level, duration)
+	assurePreballot(ballotChnl, altitude, iteration)
 	//
-	certifyPreballot(t, cs1, duration, vss[0], rs.LatchedLedger.Digest())
+	certifyPreballot(t, cs1, iteration, vss[0], rs.SecuredLedger.Digest())
 
 	//
-	bps, err := rs.LatchedLedger.CreateSegmentAssign(segmentVolume)
+	bps, err := rs.SecuredLedger.CreateFragmentAssign(fragmentExtent)
 	require.NoError(t, err)
 
-	attestAppendBallots(cs1, engineproto.PreballotKind, digest, bps.Heading(), false, vs2)
-	assurePreballot(ballotChan, level, duration)
+	attestAppendBallots(cs1, commitchema.PreballotKind, digest, bps.Heading(), false, vs2)
+	assurePreballot(ballotChnl, altitude, iteration)
 
 	//
 	//
-	assureNewDeadline(deadlineWaitChan, level, duration, cs1.settings.Preballot(duration).Nanoseconds())
+	assureFreshDeadline(deadlinePauseChnl, altitude, iteration, cs1.settings.Preballot(iteration).Nanoseconds())
 
-	assurePreendorse(ballotChan, level, duration) //
+	assurePreendorse(ballotChnl, altitude, iteration) //
 	//
 	//
-	certifyPreendorse(t, cs1, duration, 0, vss[0], nil, theLedgerDigest)
+	certifyPreendorse(t, cs1, iteration, 0, vss[0], nil, thatLedgerDigest)
 
 	//
-	bps2, err := rs.LatchedLedger.CreateSegmentAssign(segmentVolume)
+	bpp2, err := rs.SecuredLedger.CreateFragmentAssign(fragmentExtent)
 	require.NoError(t, err)
-	attestAppendBallots(cs1, engineproto.PreendorseKind, digest, bps2.Heading(), true, vs2)
-	assurePreendorse(ballotChan, level, duration)
+	attestAppendBallots(cs1, commitchema.PreendorseKind, digest, bpp2.Heading(), true, vs2)
+	assurePreendorse(ballotChnl, altitude, iteration)
 
 	//
 	//
-	assureNewDeadline(deadlineWaitChan, level, duration, cs1.settings.Preendorse(duration).Nanoseconds())
+	assureFreshDeadline(deadlinePauseChnl, altitude, iteration, cs1.settings.Preendorse(iteration).Nanoseconds())
 
-	duration++ //
-	assureNewEpoch(newEpochChan, level, duration)
+	iteration++ //
+	assureFreshIteration(freshIterationChnl, altitude, iteration)
 	t.Log("REDACTED")
 	/**
 2
 */
 
-	augmentEpoch(vs2)
+	advanceIteration(vs2)
 
-	assureNewNomination(nominationChan, level, duration)
-	rs = cs1.FetchDurationStatus()
+	assureFreshNomination(nominationChnl, altitude, iteration)
+	rs = cs1.ObtainIterationStatus()
 
 	//
-	if !bytes.Equal(rs.NominationLedger.Digest(), rs.LatchedLedger.Digest()) {
+	if !bytes.Equal(rs.NominationLedger.Digest(), rs.SecuredLedger.Digest()) {
 		panic(fmt.Sprintf(
 			"REDACTED",
 			rs.NominationLedger,
-			rs.LatchedLedger))
+			rs.SecuredLedger))
 	}
 
-	assurePreballot(ballotChan, level, duration) //
-	certifyPreballot(t, cs1, duration, vss[0], rs.LatchedLedger.Digest())
+	assurePreballot(ballotChnl, altitude, iteration) //
+	certifyPreballot(t, cs1, iteration, vss[0], rs.SecuredLedger.Digest())
 
-	bps0, err := rs.NominationLedger.CreateSegmentAssign(segmentVolume)
+	bpp0, err := rs.NominationLedger.CreateFragmentAssign(fragmentExtent)
 	require.NoError(t, err)
-	attestAppendBallots(cs1, engineproto.PreballotKind, digest, bps0.Heading(), false, vs2)
-	assurePreballot(ballotChan, level, duration)
+	attestAppendBallots(cs1, commitchema.PreballotKind, digest, bpp0.Heading(), false, vs2)
+	assurePreballot(ballotChnl, altitude, iteration)
 
-	assureNewDeadline(deadlineWaitChan, level, duration, cs1.settings.Preballot(duration).Nanoseconds())
-	assurePreendorse(ballotChan, level, duration) //
+	assureFreshDeadline(deadlinePauseChnl, altitude, iteration, cs1.settings.Preballot(iteration).Nanoseconds())
+	assurePreendorse(ballotChnl, altitude, iteration) //
 
-	certifyPreendorse(t, cs1, duration, 0, vss[0], nil, theLedgerDigest) //
+	certifyPreendorse(t, cs1, iteration, 0, vss[0], nil, thatLedgerDigest) //
 
-	bps1, err := rs.NominationLedger.CreateSegmentAssign(segmentVolume)
+	bpp1, err := rs.NominationLedger.CreateFragmentAssign(fragmentExtent)
 	require.NoError(t, err)
 	attestAppendBallots(
 		cs1,
-		engineproto.PreendorseKind,
+		commitchema.PreendorseKind,
 		digest,
-		bps1.Heading(),
+		bpp1.Heading(),
 		true,
 		vs2) //
-	assurePreendorse(ballotChan, level, duration)
+	assurePreendorse(ballotChnl, altitude, iteration)
 
-	assureNewDeadline(deadlineWaitChan, level, duration, cs1.settings.Preendorse(duration).Nanoseconds())
+	assureFreshDeadline(deadlinePauseChnl, altitude, iteration, cs1.settings.Preendorse(iteration).Nanoseconds())
 
-	cs2, _ := randomStatus(2) //
+	cs2, _ := arbitraryStatus(2) //
 	//
-	nomination, nominationLedger := determineNomination(ctx, t, cs2, vs2, vs2.Level, vs2.Cycle+1)
-	if nomination == nil || nominationLedger == nil {
+	item, itemLedger := resolveNomination(ctx, t, cs2, vs2, vs2.Altitude, vs2.Iteration+1)
+	if item == nil || itemLedger == nil {
 		t.Fatal("REDACTED")
 	}
 
-	augmentEpoch(vs2)
+	advanceIteration(vs2)
 
-	duration++ //
-	assureNewEpoch(newEpochChan, level, duration)
+	iteration++ //
+	assureFreshIteration(freshIterationChnl, altitude, iteration)
 	t.Log("REDACTED")
 	/**
 C
@@ -617,61 +617,61 @@ C
 
 	//
 	//
-	bps3, err := nominationLedger.CreateSegmentAssign(segmentVolume)
+	bpp3, err := itemLedger.CreateFragmentAssign(fragmentExtent)
 	require.NoError(t, err)
-	if err := cs1.CollectionNominationAndLedger(nomination, nominationLedger, bps3, "REDACTED"); err != nil {
+	if err := cs1.AssignNominationAlsoLedger(item, itemLedger, bpp3, "REDACTED"); err != nil {
 		t.Fatal(err)
 	}
 
-	assureNewNomination(nominationChan, level, duration)
-	assurePreballot(ballotChan, level, duration) //
+	assureFreshNomination(nominationChnl, altitude, iteration)
+	assurePreballot(ballotChnl, altitude, iteration) //
 	//
-	certifyPreballot(t, cs1, 3, vss[0], cs1.LatchedLedger.Digest())
+	certifyPreballot(t, cs1, 3, vss[0], cs1.SecuredLedger.Digest())
 
 	//
-	bps4, err := nominationLedger.CreateSegmentAssign(segmentVolume)
+	bpp4, err := itemLedger.CreateFragmentAssign(fragmentExtent)
 	require.NoError(t, err)
 
-	attestAppendBallots(cs1, engineproto.PreballotKind, nominationLedger.Digest(), bps4.Heading(), false, vs2)
-	assurePreballot(ballotChan, level, duration)
+	attestAppendBallots(cs1, commitchema.PreballotKind, itemLedger.Digest(), bpp4.Heading(), false, vs2)
+	assurePreballot(ballotChnl, altitude, iteration)
 
-	assureNewDeadline(deadlineWaitChan, level, duration, cs1.settings.Preballot(duration).Nanoseconds())
-	assurePreendorse(ballotChan, level, duration)
-	certifyPreendorse(t, cs1, duration, 0, vss[0], nil, theLedgerDigest) //
+	assureFreshDeadline(deadlinePauseChnl, altitude, iteration, cs1.settings.Preballot(iteration).Nanoseconds())
+	assurePreendorse(ballotChnl, altitude, iteration)
+	certifyPreendorse(t, cs1, iteration, 0, vss[0], nil, thatLedgerDigest) //
 
-	bps5, err := nominationLedger.CreateSegmentAssign(segmentVolume)
+	bpp5, err := itemLedger.CreateFragmentAssign(fragmentExtent)
 	require.NoError(t, err)
 	attestAppendBallots(
 		cs1,
-		engineproto.PreendorseKind,
-		nominationLedger.Digest(),
-		bps5.Heading(),
+		commitchema.PreendorseKind,
+		itemLedger.Digest(),
+		bpp5.Heading(),
 		true,
 		vs2) //
-	assurePreendorse(ballotChan, level, duration)
+	assurePreendorse(ballotChnl, altitude, iteration)
 }
 
 //
 //
 //
 //
-func VerifyStatusSecurePOLResecure(t *testing.T) {
+func VerifyStatusSecurePolicyResecure(t *testing.T) {
 	ctx := t.Context()
 
-	cs1, vss := randomStatus(4)
+	cs1, vss := arbitraryStatus(4)
 	vs2, vs3, vs4 := vss[1], vss[2], vss[3]
-	level, duration := cs1.Level, cs1.Cycle
+	altitude, iteration := cs1.Altitude, cs1.Iteration
 
-	segmentVolume := kinds.LedgerSegmentVolumeOctets
+	fragmentExtent := kinds.LedgerFragmentExtentOctets
 
-	deadlineWaitChan := enrol(cs1.eventBus, kinds.EventInquireDeadlineWait)
-	nominationChan := enrol(cs1.eventBus, kinds.EventInquireFinishedNomination)
-	pv1, err := cs1.privateRatifier.FetchPublicKey()
+	deadlinePauseChnl := listen(cs1.incidentChannel, kinds.IncidentInquireDeadlinePause)
+	nominationChnl := listen(cs1.incidentChannel, kinds.IncidentInquireFinishNomination)
+	pv1, err := cs1.privateAssessor.ObtainPublicToken()
 	require.NoError(t, err)
-	address := pv1.Location()
-	ballotChan := enrolToPoller(cs1, address)
-	newEpochChan := enrol(cs1.eventBus, kinds.EventInquireNewEpoch)
-	newLedgerChan := enrol(cs1.eventBus, kinds.EventInquireNewLedgerHeading)
+	location := pv1.Location()
+	ballotChnl := listenTowardBalloter(cs1, location)
+	freshIterationChnl := listen(cs1.incidentChannel, kinds.IncidentInquireFreshIteration)
+	freshLedgerChnl := listen(cs1.incidentChannel, kinds.IncidentInquireFreshLedgerHeading)
 
 	//
 
@@ -682,49 +682,49 @@ s
 */
 
 	//
-	beginVerifyEpoch(cs1, level, duration)
+	initiateVerifyIteration(cs1, altitude, iteration)
 
-	assureNewEpoch(newEpochChan, level, duration)
-	assureNewNomination(nominationChan, level, duration)
-	rs := cs1.FetchDurationStatus()
-	theLedgerDigest := rs.NominationLedger.Digest()
-	theLedgerSegments := rs.NominationLedgerSegments.Heading()
+	assureFreshIteration(freshIterationChnl, altitude, iteration)
+	assureFreshNomination(nominationChnl, altitude, iteration)
+	rs := cs1.ObtainIterationStatus()
+	thatLedgerDigest := rs.NominationLedger.Digest()
+	thatLedgerFragments := rs.NominationLedgerFragments.Heading()
 
-	assurePreballot(ballotChan, level, duration) //
+	assurePreballot(ballotChnl, altitude, iteration) //
 
-	attestAppendBallots(cs1, engineproto.PreballotKind, theLedgerDigest, theLedgerSegments, false, vs2, vs3, vs4)
+	attestAppendBallots(cs1, commitchema.PreballotKind, thatLedgerDigest, thatLedgerFragments, false, vs2, vs3, vs4)
 
-	assurePreendorse(ballotChan, level, duration) //
+	assurePreendorse(ballotChnl, altitude, iteration) //
 	//
-	certifyPreendorse(t, cs1, duration, duration, vss[0], theLedgerDigest, theLedgerDigest)
-
-	//
-	attestAppendBallots(cs1, engineproto.PreendorseKind, nil, kinds.SegmentAssignHeading{}, true, vs2, vs3, vs4)
+	certifyPreendorse(t, cs1, iteration, iteration, vss[0], thatLedgerDigest, thatLedgerDigest)
 
 	//
-	cs2 := newStatus(cs1.status, vs2, objectdepot.NewInRamSoftware())
-	nomination, nominationLedger := determineNomination(ctx, t, cs2, vs2, vs2.Level, vs2.Cycle+1)
-	if nomination == nil || nominationLedger == nil {
+	attestAppendBallots(cs1, commitchema.PreendorseKind, nil, kinds.FragmentAssignHeading{}, true, vs2, vs3, vs4)
+
+	//
+	cs2 := freshStatus(cs1.status, vs2, statedepot.FreshInsideRamPlatform())
+	item, itemLedger := resolveNomination(ctx, t, cs2, vs2, vs2.Altitude, vs2.Iteration+1)
+	if item == nil || itemLedger == nil {
 		t.Fatal("REDACTED")
 	}
-	nominationLedgerSegments, err := nominationLedger.CreateSegmentAssign(segmentVolume)
+	itemLedgerFragments, err := itemLedger.CreateFragmentAssign(fragmentExtent)
 	require.NoError(t, err)
 
-	nominationLedgerDigest := nominationLedger.Digest()
-	require.NotEqual(t, nominationLedgerDigest, theLedgerDigest)
+	itemLedgerDigest := itemLedger.Digest()
+	require.NotEqual(t, itemLedgerDigest, thatLedgerDigest)
 
-	augmentEpoch(vs2, vs3, vs4)
+	advanceIteration(vs2, vs3, vs4)
 
 	//
-	assureNewDeadline(deadlineWaitChan, level, duration, cs1.settings.Preendorse(duration).Nanoseconds())
+	assureFreshDeadline(deadlinePauseChnl, altitude, iteration, cs1.settings.Preendorse(iteration).Nanoseconds())
 
-	duration++ //
+	iteration++ //
 	//
-	if err := cs1.CollectionNominationAndLedger(nomination, nominationLedger, nominationLedgerSegments, "REDACTED"); err != nil {
+	if err := cs1.AssignNominationAlsoLedger(item, itemLedger, itemLedgerFragments, "REDACTED"); err != nil {
 		t.Fatal(err)
 	}
 
-	assureNewEpoch(newEpochChan, level, duration)
+	assureFreshIteration(freshIterationChnl, altitude, iteration)
 	t.Log("REDACTED")
 
 	/**
@@ -735,44 +735,44 @@ s
 
 	//
 	//
-	assureNewNomination(nominationChan, level, duration)
+	assureFreshNomination(nominationChnl, altitude, iteration)
 
 	//
-	assurePreballot(ballotChan, level, duration)
-	certifyPreballot(t, cs1, duration, vss[0], theLedgerDigest)
+	assurePreballot(ballotChnl, altitude, iteration)
+	certifyPreballot(t, cs1, iteration, vss[0], thatLedgerDigest)
 
 	//
-	attestAppendBallots(cs1, engineproto.PreballotKind, nominationLedgerDigest, nominationLedgerSegments.Heading(), false, vs2, vs3, vs4)
+	attestAppendBallots(cs1, commitchema.PreballotKind, itemLedgerDigest, itemLedgerFragments.Heading(), false, vs2, vs3, vs4)
 
-	assurePreendorse(ballotChan, level, duration)
+	assurePreendorse(ballotChnl, altitude, iteration)
 	//
-	certifyPreendorse(t, cs1, duration, duration, vss[0], nominationLedgerDigest, nominationLedgerDigest)
+	certifyPreendorse(t, cs1, iteration, iteration, vss[0], itemLedgerDigest, itemLedgerDigest)
 
 	//
-	attestAppendBallots(cs1, engineproto.PreendorseKind, nominationLedgerDigest, nominationLedgerSegments.Heading(), true, vs2, vs3)
-	assureNewLedgerHeading(newLedgerChan, level, nominationLedgerDigest)
+	attestAppendBallots(cs1, commitchema.PreendorseKind, itemLedgerDigest, itemLedgerFragments.Heading(), true, vs2, vs3)
+	assureFreshLedgerHeading(freshLedgerChnl, altitude, itemLedgerDigest)
 
-	assureNewEpoch(newEpochChan, level+1, 0)
+	assureFreshIteration(freshIterationChnl, altitude+1, 0)
 }
 
 //
-func VerifyStatusSecurePOLRelease(t *testing.T) {
+func VerifyStatusSecurePolicyRelease(t *testing.T) {
 	ctx := t.Context()
 
-	cs1, vss := randomStatus(4)
+	cs1, vss := arbitraryStatus(4)
 	vs2, vs3, vs4 := vss[1], vss[2], vss[3]
-	level, duration := cs1.Level, cs1.Cycle
+	altitude, iteration := cs1.Altitude, cs1.Iteration
 
-	segmentVolume := kinds.LedgerSegmentVolumeOctets
+	fragmentExtent := kinds.LedgerFragmentExtentOctets
 
-	nominationChan := enrol(cs1.eventBus, kinds.EventInquireFinishedNomination)
-	deadlineWaitChan := enrol(cs1.eventBus, kinds.EventInquireDeadlineWait)
-	newEpochChan := enrol(cs1.eventBus, kinds.EventInquireNewEpoch)
-	releaseChan := enrol(cs1.eventBus, kinds.EventInquireRelease)
-	pv1, err := cs1.privateRatifier.FetchPublicKey()
+	nominationChnl := listen(cs1.incidentChannel, kinds.IncidentInquireFinishNomination)
+	deadlinePauseChnl := listen(cs1.incidentChannel, kinds.IncidentInquireDeadlinePause)
+	freshIterationChnl := listen(cs1.incidentChannel, kinds.IncidentInquireFreshIteration)
+	releaseChnl := listen(cs1.incidentChannel, kinds.IncidentInquireRelease)
+	pv1, err := cs1.privateAssessor.ObtainPublicToken()
 	require.NoError(t, err)
-	address := pv1.Location()
-	ballotChan := enrolToPoller(cs1, address)
+	location := pv1.Location()
+	ballotChnl := listenTowardBalloter(cs1, location)
 
 	//
 
@@ -782,91 +782,91 @@ s
 */
 
 	//
-	beginVerifyEpoch(cs1, level, duration)
-	assureNewEpoch(newEpochChan, level, duration)
+	initiateVerifyIteration(cs1, altitude, iteration)
+	assureFreshIteration(freshIterationChnl, altitude, iteration)
 
-	assureNewNomination(nominationChan, level, duration)
-	rs := cs1.FetchDurationStatus()
-	theLedgerDigest := rs.NominationLedger.Digest()
-	theLedgerSegments := rs.NominationLedgerSegments.Heading()
+	assureFreshNomination(nominationChnl, altitude, iteration)
+	rs := cs1.ObtainIterationStatus()
+	thatLedgerDigest := rs.NominationLedger.Digest()
+	thatLedgerFragments := rs.NominationLedgerFragments.Heading()
 
-	assurePreballot(ballotChan, level, duration)
-	certifyPreballot(t, cs1, duration, vss[0], theLedgerDigest)
+	assurePreballot(ballotChnl, altitude, iteration)
+	certifyPreballot(t, cs1, iteration, vss[0], thatLedgerDigest)
 
-	attestAppendBallots(cs1, engineproto.PreballotKind, theLedgerDigest, theLedgerSegments, false, vs2, vs3, vs4)
+	attestAppendBallots(cs1, commitchema.PreballotKind, thatLedgerDigest, thatLedgerFragments, false, vs2, vs3, vs4)
 
-	assurePreendorse(ballotChan, level, duration)
+	assurePreendorse(ballotChnl, altitude, iteration)
 	//
-	certifyPreendorse(t, cs1, duration, duration, vss[0], theLedgerDigest, theLedgerDigest)
-
-	//
-	attestAppendBallots(cs1, engineproto.PreendorseKind, nil, kinds.SegmentAssignHeading{}, true, vs2, vs4)
-	attestAppendBallots(cs1, engineproto.PreendorseKind, theLedgerDigest, theLedgerSegments, true, vs3)
+	certifyPreendorse(t, cs1, iteration, iteration, vss[0], thatLedgerDigest, thatLedgerDigest)
 
 	//
-	nomination, nominationLedger := determineNomination(ctx, t, cs1, vs2, vs2.Level, vs2.Cycle+1)
-	nominationLedgerSegments, err := nominationLedger.CreateSegmentAssign(segmentVolume)
+	attestAppendBallots(cs1, commitchema.PreendorseKind, nil, kinds.FragmentAssignHeading{}, true, vs2, vs4)
+	attestAppendBallots(cs1, commitchema.PreendorseKind, thatLedgerDigest, thatLedgerFragments, true, vs3)
+
+	//
+	item, itemLedger := resolveNomination(ctx, t, cs1, vs2, vs2.Altitude, vs2.Iteration+1)
+	itemLedgerFragments, err := itemLedger.CreateFragmentAssign(fragmentExtent)
 	require.NoError(t, err)
 
 	//
-	assureNewDeadline(deadlineWaitChan, level, duration, cs1.settings.Preendorse(duration).Nanoseconds())
-	rs = cs1.FetchDurationStatus()
-	latchedLedgerDigest := rs.LatchedLedger.Digest()
+	assureFreshDeadline(deadlinePauseChnl, altitude, iteration, cs1.settings.Preendorse(iteration).Nanoseconds())
+	rs = cs1.ObtainIterationStatus()
+	securedLedgerDigest := rs.SecuredLedger.Digest()
 
-	augmentEpoch(vs2, vs3, vs4)
-	duration++ //
+	advanceIteration(vs2, vs3, vs4)
+	iteration++ //
 
-	assureNewEpoch(newEpochChan, level, duration)
+	assureFreshIteration(freshIterationChnl, altitude, iteration)
 	t.Log("REDACTED")
 	/**
 _
 !
 */
 	//
-	if err := cs1.CollectionNominationAndLedger(nomination, nominationLedger, nominationLedgerSegments, "REDACTED"); err != nil {
+	if err := cs1.AssignNominationAlsoLedger(item, itemLedger, itemLedgerFragments, "REDACTED"); err != nil {
 		t.Fatal(err)
 	}
 
-	assureNewNomination(nominationChan, level, duration)
+	assureFreshNomination(nominationChnl, altitude, iteration)
 
 	//
-	assurePreballot(ballotChan, level, duration)
-	certifyPreballot(t, cs1, duration, vss[0], latchedLedgerDigest)
+	assurePreballot(ballotChnl, altitude, iteration)
+	certifyPreballot(t, cs1, iteration, vss[0], securedLedgerDigest)
 	//
-	attestAppendBallots(cs1, engineproto.PreballotKind, nil, kinds.SegmentAssignHeading{}, false, vs2, vs3, vs4)
+	attestAppendBallots(cs1, commitchema.PreballotKind, nil, kinds.FragmentAssignHeading{}, false, vs2, vs3, vs4)
 
 	//
-	assureNewRelease(releaseChan, level, duration)
-	assurePreendorse(ballotChan, level, duration)
+	assureFreshRelease(releaseChnl, altitude, iteration)
+	assurePreendorse(ballotChnl, altitude, iteration)
 
 	//
 	//
-	certifyPreendorse(t, cs1, duration, -1, vss[0], nil, nil)
+	certifyPreendorse(t, cs1, iteration, -1, vss[0], nil, nil)
 
-	attestAppendBallots(cs1, engineproto.PreendorseKind, nil, kinds.SegmentAssignHeading{}, true, vs2, vs3)
-	assureNewEpoch(newEpochChan, level, duration+1)
+	attestAppendBallots(cs1, commitchema.PreendorseKind, nil, kinds.FragmentAssignHeading{}, true, vs2, vs3)
+	assureFreshIteration(freshIterationChnl, altitude, iteration+1)
 }
 
 //
 //
 //
 //
-func VerifyStatusSecurePOLReleaseOnUnclearLedger(t *testing.T) {
+func VerifyStatusSecurePolicyReleaseUponUnfamiliarLedger(t *testing.T) {
 	ctx := t.Context()
 
-	cs1, vss := randomStatus(4)
+	cs1, vss := arbitraryStatus(4)
 	vs2, vs3, vs4 := vss[1], vss[2], vss[3]
-	level, duration := cs1.Level, cs1.Cycle
+	altitude, iteration := cs1.Altitude, cs1.Iteration
 
-	segmentVolume := kinds.LedgerSegmentVolumeOctets
+	fragmentExtent := kinds.LedgerFragmentExtentOctets
 
-	deadlineWaitChan := enrol(cs1.eventBus, kinds.EventInquireDeadlineWait)
-	nominationChan := enrol(cs1.eventBus, kinds.EventInquireFinishedNomination)
-	pv1, err := cs1.privateRatifier.FetchPublicKey()
+	deadlinePauseChnl := listen(cs1.incidentChannel, kinds.IncidentInquireDeadlinePause)
+	nominationChnl := listen(cs1.incidentChannel, kinds.IncidentInquireFinishNomination)
+	pv1, err := cs1.privateAssessor.ObtainPublicToken()
 	require.NoError(t, err)
-	address := pv1.Location()
-	ballotChan := enrolToPoller(cs1, address)
-	newEpochChan := enrol(cs1.eventBus, kinds.EventInquireNewEpoch)
+	location := pv1.Location()
+	ballotChnl := listenTowardBalloter(cs1, location)
+	freshIterationChnl := listen(cs1.incidentChannel, kinds.IncidentInquireFreshIteration)
 	//
 
 	/**
@@ -874,45 +874,45 @@ l
 */
 
 	//
-	beginVerifyEpoch(cs1, level, duration)
+	initiateVerifyIteration(cs1, altitude, iteration)
 
-	assureNewEpoch(newEpochChan, level, duration)
-	assureNewNomination(nominationChan, level, duration)
-	rs := cs1.FetchDurationStatus()
+	assureFreshIteration(freshIterationChnl, altitude, iteration)
+	assureFreshNomination(nominationChnl, altitude, iteration)
+	rs := cs1.ObtainIterationStatus()
 	initialLedgerDigest := rs.NominationLedger.Digest()
-	initialLedgerSegments := rs.NominationLedgerSegments.Heading()
+	initialLedgerFragments := rs.NominationLedgerFragments.Heading()
 
-	assurePreballot(ballotChan, level, duration) //
+	assurePreballot(ballotChnl, altitude, iteration) //
 
-	attestAppendBallots(cs1, engineproto.PreballotKind, initialLedgerDigest, initialLedgerSegments, false, vs2, vs3, vs4)
+	attestAppendBallots(cs1, commitchema.PreballotKind, initialLedgerDigest, initialLedgerFragments, false, vs2, vs3, vs4)
 
-	assurePreendorse(ballotChan, level, duration) //
+	assurePreendorse(ballotChnl, altitude, iteration) //
 	//
-	certifyPreendorse(t, cs1, duration, duration, vss[0], initialLedgerDigest, initialLedgerDigest)
-
-	//
-	attestAppendBallots(cs1, engineproto.PreendorseKind, nil, kinds.SegmentAssignHeading{}, true, vs2, vs3, vs4)
+	certifyPreendorse(t, cs1, iteration, iteration, vss[0], initialLedgerDigest, initialLedgerDigest)
 
 	//
-	cs2 := newStatus(cs1.status, vs2, objectdepot.NewInRamSoftware())
-	nomination, nominationLedger := determineNomination(ctx, t, cs2, vs2, vs2.Level, vs2.Cycle+1)
-	if nomination == nil || nominationLedger == nil {
+	attestAppendBallots(cs1, commitchema.PreendorseKind, nil, kinds.FragmentAssignHeading{}, true, vs2, vs3, vs4)
+
+	//
+	cs2 := freshStatus(cs1.status, vs2, statedepot.FreshInsideRamPlatform())
+	item, itemLedger := resolveNomination(ctx, t, cs2, vs2, vs2.Altitude, vs2.Iteration+1)
+	if item == nil || itemLedger == nil {
 		t.Fatal("REDACTED")
 	}
-	momentLedgerSegments, err := nominationLedger.CreateSegmentAssign(segmentVolume)
+	ordinalLedgerFragments, err := itemLedger.CreateFragmentAssign(fragmentExtent)
 	require.NoError(t, err)
 
-	momentLedgerDigest := nominationLedger.Digest()
-	require.NotEqual(t, momentLedgerDigest, initialLedgerDigest)
+	ordinalLedgerDigest := itemLedger.Digest()
+	require.NotEqual(t, ordinalLedgerDigest, initialLedgerDigest)
 
-	augmentEpoch(vs2, vs3, vs4)
+	advanceIteration(vs2, vs3, vs4)
 
 	//
-	assureNewDeadline(deadlineWaitChan, level, duration, cs1.settings.Preendorse(duration).Nanoseconds())
+	assureFreshDeadline(deadlinePauseChnl, altitude, iteration, cs1.settings.Preendorse(iteration).Nanoseconds())
 
-	duration++ //
+	iteration++ //
 
-	assureNewEpoch(newEpochChan, level, duration)
+	assureFreshIteration(freshIterationChnl, altitude, iteration)
 	t.Log("REDACTED")
 
 	/**
@@ -922,124 +922,124 @@ l
 	//
 
 	//
-	assurePreballot(ballotChan, level, duration)
-	certifyPreballot(t, cs1, duration, vss[0], initialLedgerDigest)
+	assurePreballot(ballotChnl, altitude, iteration)
+	certifyPreballot(t, cs1, iteration, vss[0], initialLedgerDigest)
 
 	//
-	attestAppendBallots(cs1, engineproto.PreballotKind, momentLedgerDigest, momentLedgerSegments.Heading(), false, vs2, vs3, vs4)
+	attestAppendBallots(cs1, commitchema.PreballotKind, ordinalLedgerDigest, ordinalLedgerFragments.Heading(), false, vs2, vs3, vs4)
 
-	assurePreendorse(ballotChan, level, duration)
+	assurePreendorse(ballotChnl, altitude, iteration)
 	//
-	certifyPreendorse(t, cs1, duration, -1, vss[0], nil, nil)
+	certifyPreendorse(t, cs1, iteration, -1, vss[0], nil, nil)
 
-	if err := cs1.CollectionNominationAndLedger(nomination, nominationLedger, momentLedgerSegments, "REDACTED"); err != nil {
+	if err := cs1.AssignNominationAlsoLedger(item, itemLedger, ordinalLedgerFragments, "REDACTED"); err != nil {
 		t.Fatal(err)
 	}
 
 	//
-	attestAppendBallots(cs1, engineproto.PreendorseKind, nil, kinds.SegmentAssignHeading{}, true, vs2, vs3, vs4)
+	attestAppendBallots(cs1, commitchema.PreendorseKind, nil, kinds.FragmentAssignHeading{}, true, vs2, vs3, vs4)
 
 	//
-	cs3 := newStatus(cs1.status, vs3, objectdepot.NewInRamSoftware())
-	nomination, nominationLedger = determineNomination(ctx, t, cs3, vs3, vs3.Level, vs3.Cycle+1)
-	if nomination == nil || nominationLedger == nil {
+	cs3 := freshStatus(cs1.status, vs3, statedepot.FreshInsideRamPlatform())
+	item, itemLedger = resolveNomination(ctx, t, cs3, vs3, vs3.Altitude, vs3.Iteration+1)
+	if item == nil || itemLedger == nil {
 		t.Fatal("REDACTED")
 	}
-	tertiaryNominationLedgerSegments, err := nominationLedger.CreateSegmentAssign(segmentVolume)
+	tertiaryItemLedgerFragments, err := itemLedger.CreateFragmentAssign(fragmentExtent)
 	require.NoError(t, err)
-	tertiaryNominationLedgerDigest := nominationLedger.Digest()
-	require.NotEqual(t, momentLedgerDigest, tertiaryNominationLedgerDigest)
+	tertiaryItemLedgerDigest := itemLedger.Digest()
+	require.NotEqual(t, ordinalLedgerDigest, tertiaryItemLedgerDigest)
 
-	augmentEpoch(vs2, vs3, vs4)
+	advanceIteration(vs2, vs3, vs4)
 
 	//
-	assureNewDeadline(deadlineWaitChan, level, duration, cs1.settings.Preendorse(duration).Nanoseconds())
+	assureFreshDeadline(deadlinePauseChnl, altitude, iteration, cs1.settings.Preendorse(iteration).Nanoseconds())
 
-	duration++ //
-	assureNewEpoch(newEpochChan, level, duration)
+	iteration++ //
+	assureFreshIteration(freshIterationChnl, altitude, iteration)
 	t.Log("REDACTED")
 
 	/**
 )
 */
 
-	if err := cs1.CollectionNominationAndLedger(nomination, nominationLedger, tertiaryNominationLedgerSegments, "REDACTED"); err != nil {
+	if err := cs1.AssignNominationAlsoLedger(item, itemLedger, tertiaryItemLedgerFragments, "REDACTED"); err != nil {
 		t.Fatal(err)
 	}
 
-	assurePreballot(ballotChan, level, duration)
+	assurePreballot(ballotChnl, altitude, iteration)
 	//
-	certifyPreballot(t, cs1, duration, vss[0], tertiaryNominationLedgerDigest)
+	certifyPreballot(t, cs1, iteration, vss[0], tertiaryItemLedgerDigest)
 
-	attestAppendBallots(cs1, engineproto.PreballotKind, tertiaryNominationLedgerDigest, tertiaryNominationLedgerSegments.Heading(), false, vs2, vs3, vs4)
+	attestAppendBallots(cs1, commitchema.PreballotKind, tertiaryItemLedgerDigest, tertiaryItemLedgerFragments.Heading(), false, vs2, vs3, vs4)
 
-	assurePreendorse(ballotChan, level, duration)
+	assurePreendorse(ballotChnl, altitude, iteration)
 	//
-	certifyPreendorse(t, cs1, duration, duration, vss[0], tertiaryNominationLedgerDigest, tertiaryNominationLedgerDigest)
+	certifyPreendorse(t, cs1, iteration, iteration, vss[0], tertiaryItemLedgerDigest, tertiaryItemLedgerDigest)
 }
 
 //
 //
 //
 //
-func VerifyStatusSecurePOLSecurity1(t *testing.T) {
+func VerifyStatusSecurePolicySecurity1(t *testing.T) {
 	ctx := t.Context()
 
-	cs1, vss := randomStatus(4)
+	cs1, vss := arbitraryStatus(4)
 	vs2, vs3, vs4 := vss[1], vss[2], vss[3]
-	level, duration := cs1.Level, cs1.Cycle
+	altitude, iteration := cs1.Altitude, cs1.Iteration
 
-	segmentVolume := kinds.LedgerSegmentVolumeOctets
+	fragmentExtent := kinds.LedgerFragmentExtentOctets
 
-	nominationChan := enrol(cs1.eventBus, kinds.EventInquireFinishedNomination)
-	deadlineNominateChan := enrol(cs1.eventBus, kinds.EventInquireDeadlineNominate)
-	deadlineWaitChan := enrol(cs1.eventBus, kinds.EventInquireDeadlineWait)
-	newEpochChan := enrol(cs1.eventBus, kinds.EventInquireNewEpoch)
-	pv1, err := cs1.privateRatifier.FetchPublicKey()
+	nominationChnl := listen(cs1.incidentChannel, kinds.IncidentInquireFinishNomination)
+	deadlineNominateChnl := listen(cs1.incidentChannel, kinds.IncidentInquireDeadlineNominate)
+	deadlinePauseChnl := listen(cs1.incidentChannel, kinds.IncidentInquireDeadlinePause)
+	freshIterationChnl := listen(cs1.incidentChannel, kinds.IncidentInquireFreshIteration)
+	pv1, err := cs1.privateAssessor.ObtainPublicToken()
 	require.NoError(t, err)
-	address := pv1.Location()
-	ballotChan := enrolToPoller(cs1, address)
+	location := pv1.Location()
+	ballotChnl := listenTowardBalloter(cs1, location)
 
 	//
-	beginVerifyEpoch(cs1, cs1.Level, duration)
-	assureNewEpoch(newEpochChan, level, duration)
+	initiateVerifyIteration(cs1, cs1.Altitude, iteration)
+	assureFreshIteration(freshIterationChnl, altitude, iteration)
 
-	assureNewNomination(nominationChan, level, duration)
-	rs := cs1.FetchDurationStatus()
-	nominationLedger := rs.NominationLedger
+	assureFreshNomination(nominationChnl, altitude, iteration)
+	rs := cs1.ObtainIterationStatus()
+	itemLedger := rs.NominationLedger
 
-	assurePreballot(ballotChan, level, duration)
-	certifyPreballot(t, cs1, duration, vss[0], nominationLedger.Digest())
+	assurePreballot(ballotChnl, altitude, iteration)
+	certifyPreballot(t, cs1, iteration, vss[0], itemLedger.Digest())
 
 	//
-	bps, err := nominationLedger.CreateSegmentAssign(segmentVolume)
+	bps, err := itemLedger.CreateFragmentAssign(fragmentExtent)
 	require.NoError(t, err)
 
-	preballots := attestBallots(engineproto.PreballotKind, nominationLedger.Digest(), bps.Heading(), false, vs2, vs3, vs4)
+	preballots := attestBallots(commitchema.PreballotKind, itemLedger.Digest(), bps.Heading(), false, vs2, vs3, vs4)
 
-	t.Logf("REDACTED", fmt.Sprintf("REDACTED", nominationLedger.Digest()))
-
-	//
-	attestAppendBallots(cs1, engineproto.PreendorseKind, nil, kinds.SegmentAssignHeading{}, true, vs2, vs3, vs4)
+	t.Logf("REDACTED", fmt.Sprintf("REDACTED", itemLedger.Digest()))
 
 	//
-	assurePreendorse(ballotChan, level, duration)
-	assureNewDeadline(deadlineWaitChan, level, duration, cs1.settings.Preendorse(duration).Nanoseconds())
+	attestAppendBallots(cs1, commitchema.PreendorseKind, nil, kinds.FragmentAssignHeading{}, true, vs2, vs3, vs4)
+
+	//
+	assurePreendorse(ballotChnl, altitude, iteration)
+	assureFreshDeadline(deadlinePauseChnl, altitude, iteration, cs1.settings.Preendorse(iteration).Nanoseconds())
 
 	t.Log("REDACTED")
 
-	nomination, nominationLedger := determineNomination(ctx, t, cs1, vs2, vs2.Level, vs2.Cycle+1)
-	nominationLedgerDigest := nominationLedger.Digest()
-	nominationLedgerSegments, err := nominationLedger.CreateSegmentAssign(segmentVolume)
+	item, itemLedger := resolveNomination(ctx, t, cs1, vs2, vs2.Altitude, vs2.Iteration+1)
+	itemLedgerDigest := itemLedger.Digest()
+	itemLedgerFragments, err := itemLedger.CreateFragmentAssign(fragmentExtent)
 	require.NoError(t, err)
 
-	augmentEpoch(vs2, vs3, vs4)
+	advanceIteration(vs2, vs3, vs4)
 
-	duration++ //
-	assureNewEpoch(newEpochChan, level, duration)
+	iteration++ //
+	assureFreshIteration(freshIterationChnl, altitude, iteration)
 
 	//
-	if err := cs1.CollectionNominationAndLedger(nomination, nominationLedger, nominationLedgerSegments, "REDACTED"); err != nil {
+	if err := cs1.AssignNominationAlsoLedger(item, itemLedger, itemLedgerFragments, "REDACTED"); err != nil {
 		t.Fatal(err)
 	}
 	/*2
@@ -1047,34 +1047,34 @@ k
 !
 */
 
-	assureNewNomination(nominationChan, level, duration)
+	assureFreshNomination(nominationChnl, altitude, iteration)
 
-	rs = cs1.FetchDurationStatus()
+	rs = cs1.ObtainIterationStatus()
 
-	if rs.LatchedLedger != nil {
+	if rs.SecuredLedger != nil {
 		panic("REDACTED")
 	}
-	t.Logf("REDACTED", fmt.Sprintf("REDACTED", nominationLedgerDigest))
+	t.Logf("REDACTED", fmt.Sprintf("REDACTED", itemLedgerDigest))
 
 	//
-	assurePreballot(ballotChan, level, duration)
-	certifyPreballot(t, cs1, duration, vss[0], nominationLedgerDigest)
+	assurePreballot(ballotChnl, altitude, iteration)
+	certifyPreballot(t, cs1, iteration, vss[0], itemLedgerDigest)
 
 	//
-	attestAppendBallots(cs1, engineproto.PreballotKind, nominationLedgerDigest, nominationLedgerSegments.Heading(), false, vs2, vs3, vs4)
+	attestAppendBallots(cs1, commitchema.PreballotKind, itemLedgerDigest, itemLedgerFragments.Heading(), false, vs2, vs3, vs4)
 
-	assurePreendorse(ballotChan, level, duration)
+	assurePreendorse(ballotChnl, altitude, iteration)
 	//
-	certifyPreendorse(t, cs1, duration, duration, vss[0], nominationLedgerDigest, nominationLedgerDigest)
+	certifyPreendorse(t, cs1, iteration, iteration, vss[0], itemLedgerDigest, itemLedgerDigest)
 
-	attestAppendBallots(cs1, engineproto.PreendorseKind, nil, kinds.SegmentAssignHeading{}, true, vs2, vs3, vs4)
+	attestAppendBallots(cs1, commitchema.PreendorseKind, nil, kinds.FragmentAssignHeading{}, true, vs2, vs3, vs4)
 
-	assureNewDeadline(deadlineWaitChan, level, duration, cs1.settings.Preendorse(duration).Nanoseconds())
+	assureFreshDeadline(deadlinePauseChnl, altitude, iteration, cs1.settings.Preendorse(iteration).Nanoseconds())
 
-	augmentEpoch(vs2, vs3, vs4)
-	duration++ //
+	advanceIteration(vs2, vs3, vs4)
+	iteration++ //
 
-	assureNewEpoch(newEpochChan, level, duration)
+	assureFreshIteration(freshIterationChnl, altitude, iteration)
 
 	t.Log("REDACTED")
 	/*3
@@ -1082,14 +1082,14 @@ k
 */
 
 	//
-	assureNewDeadline(deadlineNominateChan, level, duration, cs1.settings.Nominate(duration).Nanoseconds())
+	assureFreshDeadline(deadlineNominateChnl, altitude, iteration, cs1.settings.Nominate(iteration).Nanoseconds())
 
 	//
-	assurePreballot(ballotChan, level, duration)
+	assurePreballot(ballotChnl, altitude, iteration)
 	//
-	certifyPreballot(t, cs1, duration, vss[0], nominationLedgerDigest)
+	certifyPreballot(t, cs1, iteration, vss[0], itemLedgerDigest)
 
-	newPhaseChan := enrol(cs1.eventBus, kinds.EventInquireNewEpochPhase)
+	freshPhaseChnl := listen(cs1.incidentChannel, kinds.IncidentInquireFreshIterationPhase)
 
 	//
 	//
@@ -1097,7 +1097,7 @@ k
 
 	t.Log("REDACTED")
 
-	assureNoNewEpochPhase(newPhaseChan)
+	assureNegativeFreshIterationPhase(freshPhaseChnl)
 }
 
 //
@@ -1107,99 +1107,99 @@ k
 
 //
 //
-func VerifyStatusSecurePOLSecurity2(t *testing.T) {
+func VerifyStatusSecurePolicySecurity2(t *testing.T) {
 	ctx := t.Context()
 
-	cs1, vss := randomStatus(4)
+	cs1, vss := arbitraryStatus(4)
 	vs2, vs3, vs4 := vss[1], vss[2], vss[3]
-	level, duration := cs1.Level, cs1.Cycle
+	altitude, iteration := cs1.Altitude, cs1.Iteration
 
-	segmentVolume := kinds.LedgerSegmentVolumeOctets
+	fragmentExtent := kinds.LedgerFragmentExtentOctets
 
-	nominationChan := enrol(cs1.eventBus, kinds.EventInquireFinishedNomination)
-	deadlineWaitChan := enrol(cs1.eventBus, kinds.EventInquireDeadlineWait)
-	newEpochChan := enrol(cs1.eventBus, kinds.EventInquireNewEpoch)
-	releaseChan := enrol(cs1.eventBus, kinds.EventInquireRelease)
-	pv1, err := cs1.privateRatifier.FetchPublicKey()
+	nominationChnl := listen(cs1.incidentChannel, kinds.IncidentInquireFinishNomination)
+	deadlinePauseChnl := listen(cs1.incidentChannel, kinds.IncidentInquireDeadlinePause)
+	freshIterationChnl := listen(cs1.incidentChannel, kinds.IncidentInquireFreshIteration)
+	releaseChnl := listen(cs1.incidentChannel, kinds.IncidentInquireRelease)
+	pv1, err := cs1.privateAssessor.ObtainPublicToken()
 	require.NoError(t, err)
-	address := pv1.Location()
-	ballotChan := enrolToPoller(cs1, address)
+	location := pv1.Location()
+	ballotChnl := listenTowardBalloter(cs1, location)
 
 	//
 	//
-	_, nominationLedger0 := determineNomination(ctx, t, cs1, vss[0], level, duration)
-	nominationLedgerDigest0 := nominationLedger0.Digest()
-	nominationLedgerSegments0, err := nominationLedger0.CreateSegmentAssign(segmentVolume)
+	_, itemLedger0 := resolveNomination(ctx, t, cs1, vss[0], altitude, iteration)
+	itemLedgerDigest0 := itemLedger0.Digest()
+	itemLedgerFragments0, err := itemLedger0.CreateFragmentAssign(fragmentExtent)
 	require.NoError(t, err)
-	nominationLedgerID0 := kinds.LedgerUID{Digest: nominationLedgerDigest0, SegmentAssignHeading: nominationLedgerSegments0.Heading()}
+	itemLedgerUuid0 := kinds.LedgerUUID{Digest: itemLedgerDigest0, FragmentAssignHeading: itemLedgerFragments0.Heading()}
 
 	//
-	preballots := attestBallots(engineproto.PreballotKind, nominationLedgerDigest0, nominationLedgerSegments0.Heading(), false, vs2, vs3, vs4)
+	preballots := attestBallots(commitchema.PreballotKind, itemLedgerDigest0, itemLedgerFragments0.Heading(), false, vs2, vs3, vs4)
 
 	//
-	nomination1, nominationLedger1 := determineNomination(ctx, t, cs1, vs2, vs2.Level, vs2.Cycle+1)
-	nominationLedgerDigest1 := nominationLedger1.Digest()
-	nominationLedgerSegments1, err := nominationLedger1.CreateSegmentAssign(segmentVolume)
+	item1, itemLedger1 := resolveNomination(ctx, t, cs1, vs2, vs2.Altitude, vs2.Iteration+1)
+	itemLedgerDigest1 := itemLedger1.Digest()
+	itemLedgerFragments1, err := itemLedger1.CreateFragmentAssign(fragmentExtent)
 	require.NoError(t, err)
 
-	augmentEpoch(vs2, vs3, vs4)
+	advanceIteration(vs2, vs3, vs4)
 
-	duration++ //
+	iteration++ //
 	t.Log("REDACTED")
 	//
-	beginVerifyEpoch(cs1, level, duration)
-	assureNewEpoch(newEpochChan, level, duration)
+	initiateVerifyIteration(cs1, altitude, iteration)
+	assureFreshIteration(freshIterationChnl, altitude, iteration)
 
-	if err := cs1.CollectionNominationAndLedger(nomination1, nominationLedger1, nominationLedgerSegments1, "REDACTED"); err != nil {
+	if err := cs1.AssignNominationAlsoLedger(item1, itemLedger1, itemLedgerFragments1, "REDACTED"); err != nil {
 		t.Fatal(err)
 	}
-	assureNewNomination(nominationChan, level, duration)
+	assureFreshNomination(nominationChnl, altitude, iteration)
 
-	assurePreballot(ballotChan, level, duration)
-	certifyPreballot(t, cs1, duration, vss[0], nominationLedgerDigest1)
+	assurePreballot(ballotChnl, altitude, iteration)
+	certifyPreballot(t, cs1, iteration, vss[0], itemLedgerDigest1)
 
-	attestAppendBallots(cs1, engineproto.PreballotKind, nominationLedgerDigest1, nominationLedgerSegments1.Heading(), false, vs2, vs3, vs4)
+	attestAppendBallots(cs1, commitchema.PreballotKind, itemLedgerDigest1, itemLedgerFragments1.Heading(), false, vs2, vs3, vs4)
 
-	assurePreendorse(ballotChan, level, duration)
+	assurePreendorse(ballotChnl, altitude, iteration)
 	//
-	certifyPreendorse(t, cs1, duration, duration, vss[0], nominationLedgerDigest1, nominationLedgerDigest1)
-
-	//
-	attestAppendBallots(cs1, engineproto.PreendorseKind, nil, kinds.SegmentAssignHeading{}, true, vs2, vs4)
-	attestAppendBallots(cs1, engineproto.PreendorseKind, nominationLedgerDigest1, nominationLedgerSegments1.Heading(), true, vs3)
-
-	augmentEpoch(vs2, vs3, vs4)
+	certifyPreendorse(t, cs1, iteration, iteration, vss[0], itemLedgerDigest1, itemLedgerDigest1)
 
 	//
-	assureNewDeadline(deadlineWaitChan, level, duration, cs1.settings.Preendorse(duration).Nanoseconds())
+	attestAppendBallots(cs1, commitchema.PreendorseKind, nil, kinds.FragmentAssignHeading{}, true, vs2, vs4)
+	attestAppendBallots(cs1, commitchema.PreendorseKind, itemLedgerDigest1, itemLedgerFragments1.Heading(), true, vs3)
 
-	duration++ //
+	advanceIteration(vs2, vs3, vs4)
+
 	//
-	newNomination := kinds.NewNomination(level, duration, 0, nominationLedgerID0)
-	p := newNomination.ToSchema()
-	if err := vs3.AttestNomination(cs1.status.LedgerUID, p); err != nil {
+	assureFreshDeadline(deadlinePauseChnl, altitude, iteration, cs1.settings.Preendorse(iteration).Nanoseconds())
+
+	iteration++ //
+	//
+	freshItem := kinds.FreshNomination(altitude, iteration, 0, itemLedgerUuid0)
+	p := freshItem.TowardSchema()
+	if err := vs3.AttestNomination(cs1.status.SuccessionUUID, p); err != nil {
 		t.Fatal(err)
 	}
 
-	newNomination.Autograph = p.Autograph
+	freshItem.Notation = p.Notation
 
-	if err := cs1.CollectionNominationAndLedger(newNomination, nominationLedger0, nominationLedgerSegments0, "REDACTED"); err != nil {
+	if err := cs1.AssignNominationAlsoLedger(freshItem, itemLedger0, itemLedgerFragments0, "REDACTED"); err != nil {
 		t.Fatal(err)
 	}
 
 	//
 	appendBallots(cs1, preballots...)
 
-	assureNewEpoch(newEpochChan, level, duration)
+	assureFreshIteration(freshIterationChnl, altitude, iteration)
 	t.Log("REDACTED")
 	/*2
 k
 */
-	assureNewNomination(nominationChan, level, duration)
+	assureFreshNomination(nominationChnl, altitude, iteration)
 
-	assureNoNewRelease(releaseChan)
-	assurePreballot(ballotChan, level, duration)
-	certifyPreballot(t, cs1, duration, vss[0], nominationLedgerDigest1)
+	assureNegativeFreshRelease(releaseChnl)
+	assurePreballot(ballotChnl, altitude, iteration)
+	certifyPreballot(t, cs1, iteration, vss[0], itemLedgerDigest1)
 }
 
 //
@@ -1208,357 +1208,357 @@ k
 //
 //
 func VerifyNominateSoundLedger(t *testing.T) {
-	cs1, vss := randomStatus(4)
+	cs1, vss := arbitraryStatus(4)
 	vs2, vs3, vs4 := vss[1], vss[2], vss[3]
-	level, duration := cs1.Level, cs1.Cycle
+	altitude, iteration := cs1.Altitude, cs1.Iteration
 
-	segmentVolume := kinds.LedgerSegmentVolumeOctets
+	fragmentExtent := kinds.LedgerFragmentExtentOctets
 
-	nominationChan := enrol(cs1.eventBus, kinds.EventInquireFinishedNomination)
-	deadlineWaitChan := enrol(cs1.eventBus, kinds.EventInquireDeadlineWait)
-	deadlineNominateChan := enrol(cs1.eventBus, kinds.EventInquireDeadlineNominate)
-	newEpochChan := enrol(cs1.eventBus, kinds.EventInquireNewEpoch)
-	releaseChan := enrol(cs1.eventBus, kinds.EventInquireRelease)
-	pv1, err := cs1.privateRatifier.FetchPublicKey()
+	nominationChnl := listen(cs1.incidentChannel, kinds.IncidentInquireFinishNomination)
+	deadlinePauseChnl := listen(cs1.incidentChannel, kinds.IncidentInquireDeadlinePause)
+	deadlineNominateChnl := listen(cs1.incidentChannel, kinds.IncidentInquireDeadlineNominate)
+	freshIterationChnl := listen(cs1.incidentChannel, kinds.IncidentInquireFreshIteration)
+	releaseChnl := listen(cs1.incidentChannel, kinds.IncidentInquireRelease)
+	pv1, err := cs1.privateAssessor.ObtainPublicToken()
 	require.NoError(t, err)
-	address := pv1.Location()
-	ballotChan := enrolToPoller(cs1, address)
+	location := pv1.Location()
+	ballotChnl := listenTowardBalloter(cs1, location)
 
 	//
-	beginVerifyEpoch(cs1, cs1.Level, duration)
-	assureNewEpoch(newEpochChan, level, duration)
+	initiateVerifyIteration(cs1, cs1.Altitude, iteration)
+	assureFreshIteration(freshIterationChnl, altitude, iteration)
 
-	assureNewNomination(nominationChan, level, duration)
-	rs := cs1.FetchDurationStatus()
-	nominationLedger := rs.NominationLedger
-	nominationLedgerDigest := nominationLedger.Digest()
+	assureFreshNomination(nominationChnl, altitude, iteration)
+	rs := cs1.ObtainIterationStatus()
+	itemLedger := rs.NominationLedger
+	itemLedgerDigest := itemLedger.Digest()
 
-	assurePreballot(ballotChan, level, duration)
-	certifyPreballot(t, cs1, duration, vss[0], nominationLedgerDigest)
+	assurePreballot(ballotChnl, altitude, iteration)
+	certifyPreballot(t, cs1, iteration, vss[0], itemLedgerDigest)
 
 	//
-	bps, err := nominationLedger.CreateSegmentAssign(segmentVolume)
+	bps, err := itemLedger.CreateFragmentAssign(fragmentExtent)
 	require.NoError(t, err)
-	attestAppendBallots(cs1, engineproto.PreballotKind, nominationLedgerDigest, bps.Heading(), false, vs2, vs3, vs4)
+	attestAppendBallots(cs1, commitchema.PreballotKind, itemLedgerDigest, bps.Heading(), false, vs2, vs3, vs4)
 
-	assurePreendorse(ballotChan, level, duration)
+	assurePreendorse(ballotChnl, altitude, iteration)
 	//
-	certifyPreendorse(t, cs1, duration, duration, vss[0], nominationLedgerDigest, nominationLedgerDigest)
+	certifyPreendorse(t, cs1, iteration, iteration, vss[0], itemLedgerDigest, itemLedgerDigest)
 
-	attestAppendBallots(cs1, engineproto.PreendorseKind, nil, kinds.SegmentAssignHeading{}, true, vs2, vs3, vs4)
+	attestAppendBallots(cs1, commitchema.PreendorseKind, nil, kinds.FragmentAssignHeading{}, true, vs2, vs3, vs4)
 
-	assureNewDeadline(deadlineWaitChan, level, duration, cs1.settings.Preendorse(duration).Nanoseconds())
+	assureFreshDeadline(deadlinePauseChnl, altitude, iteration, cs1.settings.Preendorse(iteration).Nanoseconds())
 
-	augmentEpoch(vs2, vs3, vs4)
-	duration++ //
+	advanceIteration(vs2, vs3, vs4)
+	iteration++ //
 
-	assureNewEpoch(newEpochChan, level, duration)
+	assureFreshIteration(freshIterationChnl, altitude, iteration)
 
 	t.Log("REDACTED")
 
 	//
-	assureNewDeadline(deadlineNominateChan, level, duration, cs1.settings.Nominate(duration).Nanoseconds())
+	assureFreshDeadline(deadlineNominateChnl, altitude, iteration, cs1.settings.Nominate(iteration).Nanoseconds())
 
-	assurePreballot(ballotChan, level, duration)
-	certifyPreballot(t, cs1, duration, vss[0], nominationLedgerDigest)
+	assurePreballot(ballotChnl, altitude, iteration)
+	certifyPreballot(t, cs1, iteration, vss[0], itemLedgerDigest)
 
-	attestAppendBallots(cs1, engineproto.PreballotKind, nil, kinds.SegmentAssignHeading{}, false, vs2, vs3, vs4)
+	attestAppendBallots(cs1, commitchema.PreballotKind, nil, kinds.FragmentAssignHeading{}, false, vs2, vs3, vs4)
 
-	assureNewRelease(releaseChan, level, duration)
+	assureFreshRelease(releaseChnl, altitude, iteration)
 
-	assurePreendorse(ballotChan, level, duration)
+	assurePreendorse(ballotChnl, altitude, iteration)
 	//
-	certifyPreendorse(t, cs1, duration, -1, vss[0], nil, nil)
+	certifyPreendorse(t, cs1, iteration, -1, vss[0], nil, nil)
 
-	augmentEpoch(vs2, vs3, vs4)
-	augmentEpoch(vs2, vs3, vs4)
+	advanceIteration(vs2, vs3, vs4)
+	advanceIteration(vs2, vs3, vs4)
 
-	attestAppendBallots(cs1, engineproto.PreendorseKind, nil, kinds.SegmentAssignHeading{}, true, vs2, vs3, vs4)
+	attestAppendBallots(cs1, commitchema.PreendorseKind, nil, kinds.FragmentAssignHeading{}, true, vs2, vs3, vs4)
 
-	duration += 2 //
+	iteration += 2 //
 
-	assureNewEpoch(newEpochChan, level, duration)
+	assureFreshIteration(freshIterationChnl, altitude, iteration)
 	t.Log("REDACTED")
 
-	assureNewDeadline(deadlineWaitChan, level, duration, cs1.settings.Preendorse(duration).Nanoseconds())
+	assureFreshDeadline(deadlinePauseChnl, altitude, iteration, cs1.settings.Preendorse(iteration).Nanoseconds())
 
-	duration++ //
+	iteration++ //
 
-	assureNewEpoch(newEpochChan, level, duration)
+	assureFreshIteration(freshIterationChnl, altitude, iteration)
 
 	t.Log("REDACTED")
 
-	assureNewNomination(nominationChan, level, duration)
+	assureFreshNomination(nominationChnl, altitude, iteration)
 
-	rs = cs1.FetchDurationStatus()
-	assert.True(t, bytes.Equal(rs.NominationLedger.Digest(), nominationLedgerDigest))
+	rs = cs1.ObtainIterationStatus()
+	assert.True(t, bytes.Equal(rs.NominationLedger.Digest(), itemLedgerDigest))
 	assert.True(t, bytes.Equal(rs.NominationLedger.Digest(), rs.SoundLedger.Digest()))
-	assert.True(t, rs.Nomination.POLDuration == rs.SoundEpoch)
-	assert.True(t, bytes.Equal(rs.Nomination.LedgerUID.Digest, rs.SoundLedger.Digest()))
+	assert.True(t, rs.Nomination.PolicyIteration == rs.SoundIteration)
+	assert.True(t, bytes.Equal(rs.Nomination.LedgerUUID.Digest, rs.SoundLedger.Digest()))
 }
 
 //
 //
-func VerifyCollectionSoundLedgerOnDeferredPreballot(t *testing.T) {
-	cs1, vss := randomStatus(4)
+func VerifyAssignSoundLedgerUponPostponedPreballot(t *testing.T) {
+	cs1, vss := arbitraryStatus(4)
 	vs2, vs3, vs4 := vss[1], vss[2], vss[3]
-	level, duration := cs1.Level, cs1.Cycle
+	altitude, iteration := cs1.Altitude, cs1.Iteration
 
-	segmentVolume := kinds.LedgerSegmentVolumeOctets
+	fragmentExtent := kinds.LedgerFragmentExtentOctets
 
-	nominationChan := enrol(cs1.eventBus, kinds.EventInquireFinishedNomination)
-	deadlineWaitChan := enrol(cs1.eventBus, kinds.EventInquireDeadlineWait)
-	newEpochChan := enrol(cs1.eventBus, kinds.EventInquireNewEpoch)
-	soundLedgerChan := enrol(cs1.eventBus, kinds.EventInquireSoundLedger)
-	pv1, err := cs1.privateRatifier.FetchPublicKey()
+	nominationChnl := listen(cs1.incidentChannel, kinds.IncidentInquireFinishNomination)
+	deadlinePauseChnl := listen(cs1.incidentChannel, kinds.IncidentInquireDeadlinePause)
+	freshIterationChnl := listen(cs1.incidentChannel, kinds.IncidentInquireFreshIteration)
+	soundLedgerChnl := listen(cs1.incidentChannel, kinds.IncidentInquireSoundLedger)
+	pv1, err := cs1.privateAssessor.ObtainPublicToken()
 	require.NoError(t, err)
-	address := pv1.Location()
-	ballotChan := enrolToPoller(cs1, address)
+	location := pv1.Location()
+	ballotChnl := listenTowardBalloter(cs1, location)
 
 	//
-	beginVerifyEpoch(cs1, cs1.Level, duration)
-	assureNewEpoch(newEpochChan, level, duration)
+	initiateVerifyIteration(cs1, cs1.Altitude, iteration)
+	assureFreshIteration(freshIterationChnl, altitude, iteration)
 
-	assureNewNomination(nominationChan, level, duration)
-	rs := cs1.FetchDurationStatus()
-	nominationLedger := rs.NominationLedger
-	nominationLedgerDigest := nominationLedger.Digest()
-	nominationLedgerSegments, err := nominationLedger.CreateSegmentAssign(segmentVolume)
+	assureFreshNomination(nominationChnl, altitude, iteration)
+	rs := cs1.ObtainIterationStatus()
+	itemLedger := rs.NominationLedger
+	itemLedgerDigest := itemLedger.Digest()
+	itemLedgerFragments, err := itemLedger.CreateFragmentAssign(fragmentExtent)
 	require.NoError(t, err)
 
-	assurePreballot(ballotChan, level, duration)
-	certifyPreballot(t, cs1, duration, vss[0], nominationLedgerDigest)
+	assurePreballot(ballotChnl, altitude, iteration)
+	certifyPreballot(t, cs1, iteration, vss[0], itemLedgerDigest)
 
 	//
-	attestAppendBallots(cs1, engineproto.PreballotKind, nominationLedgerDigest, nominationLedgerSegments.Heading(), false, vs2)
+	attestAppendBallots(cs1, commitchema.PreballotKind, itemLedgerDigest, itemLedgerFragments.Heading(), false, vs2)
 
 	//
-	attestAppendBallots(cs1, engineproto.PreballotKind, nil, kinds.SegmentAssignHeading{}, false, vs3)
+	attestAppendBallots(cs1, commitchema.PreballotKind, nil, kinds.FragmentAssignHeading{}, false, vs3)
 
-	assureNewDeadline(deadlineWaitChan, level, duration, cs1.settings.Preballot(duration).Nanoseconds())
+	assureFreshDeadline(deadlinePauseChnl, altitude, iteration, cs1.settings.Preballot(iteration).Nanoseconds())
 
-	assurePreendorse(ballotChan, level, duration)
+	assurePreendorse(ballotChnl, altitude, iteration)
 	//
-	certifyPreendorse(t, cs1, duration, -1, vss[0], nil, nil)
+	certifyPreendorse(t, cs1, iteration, -1, vss[0], nil, nil)
 
-	rs = cs1.FetchDurationStatus()
+	rs = cs1.ObtainIterationStatus()
 
 	assert.True(t, rs.SoundLedger == nil)
-	assert.True(t, rs.SoundLedgerSegments == nil)
-	assert.True(t, rs.SoundEpoch == -1)
+	assert.True(t, rs.SoundLedgerFragments == nil)
+	assert.True(t, rs.SoundIteration == -1)
 
 	//
-	attestAppendBallots(cs1, engineproto.PreballotKind, nominationLedgerDigest, nominationLedgerSegments.Heading(), false, vs4)
+	attestAppendBallots(cs1, commitchema.PreballotKind, itemLedgerDigest, itemLedgerFragments.Heading(), false, vs4)
 
-	assureNewSoundLedger(soundLedgerChan, level, duration)
+	assureFreshSoundLedger(soundLedgerChnl, altitude, iteration)
 
-	rs = cs1.FetchDurationStatus()
+	rs = cs1.ObtainIterationStatus()
 
-	assert.True(t, bytes.Equal(rs.SoundLedger.Digest(), nominationLedgerDigest))
-	assert.True(t, rs.SoundLedgerSegments.Heading().Matches(nominationLedgerSegments.Heading()))
-	assert.True(t, rs.SoundEpoch == duration)
+	assert.True(t, bytes.Equal(rs.SoundLedger.Digest(), itemLedgerDigest))
+	assert.True(t, rs.SoundLedgerFragments.Heading().Matches(itemLedgerFragments.Heading()))
+	assert.True(t, rs.SoundIteration == iteration)
 }
 
 //
 //
 //
-func VerifyCollectionSoundLedgerOnDeferredNomination(t *testing.T) {
+func VerifyAssignSoundLedgerUponPostponedNomination(t *testing.T) {
 	ctx := t.Context()
 
-	cs1, vss := randomStatus(4)
+	cs1, vss := arbitraryStatus(4)
 	vs2, vs3, vs4 := vss[1], vss[2], vss[3]
-	level, duration := cs1.Level, cs1.Cycle
+	altitude, iteration := cs1.Altitude, cs1.Iteration
 
-	segmentVolume := kinds.LedgerSegmentVolumeOctets
+	fragmentExtent := kinds.LedgerFragmentExtentOctets
 
-	deadlineWaitChan := enrol(cs1.eventBus, kinds.EventInquireDeadlineWait)
-	deadlineNominateChan := enrol(cs1.eventBus, kinds.EventInquireDeadlineNominate)
-	newEpochChan := enrol(cs1.eventBus, kinds.EventInquireNewEpoch)
-	soundLedgerChan := enrol(cs1.eventBus, kinds.EventInquireSoundLedger)
-	pv1, err := cs1.privateRatifier.FetchPublicKey()
+	deadlinePauseChnl := listen(cs1.incidentChannel, kinds.IncidentInquireDeadlinePause)
+	deadlineNominateChnl := listen(cs1.incidentChannel, kinds.IncidentInquireDeadlineNominate)
+	freshIterationChnl := listen(cs1.incidentChannel, kinds.IncidentInquireFreshIteration)
+	soundLedgerChnl := listen(cs1.incidentChannel, kinds.IncidentInquireSoundLedger)
+	pv1, err := cs1.privateAssessor.ObtainPublicToken()
 	require.NoError(t, err)
-	address := pv1.Location()
-	ballotChan := enrolToPoller(cs1, address)
-	nominationChan := enrol(cs1.eventBus, kinds.EventInquireFinishedNomination)
+	location := pv1.Location()
+	ballotChnl := listenTowardBalloter(cs1, location)
+	nominationChnl := listen(cs1.incidentChannel, kinds.IncidentInquireFinishNomination)
 
-	duration++ //
-	augmentEpoch(vs2, vs3, vs4)
+	iteration++ //
+	advanceIteration(vs2, vs3, vs4)
 
-	beginVerifyEpoch(cs1, cs1.Level, duration)
-	assureNewEpoch(newEpochChan, level, duration)
+	initiateVerifyIteration(cs1, cs1.Altitude, iteration)
+	assureFreshIteration(freshIterationChnl, altitude, iteration)
 
-	assureNewDeadline(deadlineNominateChan, level, duration, cs1.settings.Nominate(duration).Nanoseconds())
+	assureFreshDeadline(deadlineNominateChnl, altitude, iteration, cs1.settings.Nominate(iteration).Nanoseconds())
 
-	assurePreballot(ballotChan, level, duration)
-	certifyPreballot(t, cs1, duration, vss[0], nil)
+	assurePreballot(ballotChnl, altitude, iteration)
+	certifyPreballot(t, cs1, iteration, vss[0], nil)
 
-	nomination, nominationLedger := determineNomination(ctx, t, cs1, vs2, vs2.Level, vs2.Cycle+1)
-	nominationLedgerDigest := nominationLedger.Digest()
-	nominationLedgerSegments, err := nominationLedger.CreateSegmentAssign(segmentVolume)
+	item, itemLedger := resolveNomination(ctx, t, cs1, vs2, vs2.Altitude, vs2.Iteration+1)
+	itemLedgerDigest := itemLedger.Digest()
+	itemLedgerFragments, err := itemLedger.CreateFragmentAssign(fragmentExtent)
 	require.NoError(t, err)
 
 	//
-	attestAppendBallots(cs1, engineproto.PreballotKind, nominationLedgerDigest, nominationLedgerSegments.Heading(), false, vs2, vs3, vs4)
-	assureNewSoundLedger(soundLedgerChan, level, duration)
+	attestAppendBallots(cs1, commitchema.PreballotKind, itemLedgerDigest, itemLedgerFragments.Heading(), false, vs2, vs3, vs4)
+	assureFreshSoundLedger(soundLedgerChnl, altitude, iteration)
 
-	assureNewDeadline(deadlineWaitChan, level, duration, cs1.settings.Preballot(duration).Nanoseconds())
+	assureFreshDeadline(deadlinePauseChnl, altitude, iteration, cs1.settings.Preballot(iteration).Nanoseconds())
 
-	assurePreendorse(ballotChan, level, duration)
-	certifyPreendorse(t, cs1, duration, -1, vss[0], nil, nil)
+	assurePreendorse(ballotChnl, altitude, iteration)
+	certifyPreendorse(t, cs1, iteration, -1, vss[0], nil, nil)
 
-	if err := cs1.CollectionNominationAndLedger(nomination, nominationLedger, nominationLedgerSegments, "REDACTED"); err != nil {
+	if err := cs1.AssignNominationAlsoLedger(item, itemLedger, itemLedgerFragments, "REDACTED"); err != nil {
 		t.Fatal(err)
 	}
 
-	assureNewNomination(nominationChan, level, duration)
-	rs := cs1.FetchDurationStatus()
+	assureFreshNomination(nominationChnl, altitude, iteration)
+	rs := cs1.ObtainIterationStatus()
 
-	assert.True(t, bytes.Equal(rs.SoundLedger.Digest(), nominationLedgerDigest))
-	assert.True(t, rs.SoundLedgerSegments.Heading().Matches(nominationLedgerSegments.Heading()))
-	assert.True(t, rs.SoundEpoch == duration)
+	assert.True(t, bytes.Equal(rs.SoundLedger.Digest(), itemLedgerDigest))
+	assert.True(t, rs.SoundLedgerFragments.Heading().Matches(itemLedgerFragments.Heading()))
+	assert.True(t, rs.SoundIteration == iteration)
 }
 
-func VerifyHandleNominationAllow(t *testing.T) {
+func VerifyHandleNominationEmbrace(t *testing.T) {
 	for _, verifyInstance := range []struct {
-		label               string
-		allow             bool
-		anticipatedNullPreballot bool
+		alias               string
+		embrace             bool
+		anticipatedVoidPreballot bool
 	}{
 		{
-			label:               "REDACTED",
-			allow:             true,
-			anticipatedNullPreballot: false,
+			alias:               "REDACTED",
+			embrace:             true,
+			anticipatedVoidPreballot: false,
 		},
 		{
-			label:               "REDACTED",
-			allow:             false,
-			anticipatedNullPreballot: true,
+			alias:               "REDACTED",
+			embrace:             false,
+			anticipatedVoidPreballot: true,
 		},
 	} {
-		t.Run(verifyInstance.label, func(t *testing.T) {
-			m := abciemulators.NewSoftware(t)
-			state := iface.Responseprocessnomination_DECLINE
-			if verifyInstance.allow {
-				state = iface.Responseprocessnomination_ALLOW
+		t.Run(verifyInstance.alias, func(t *testing.T) {
+			m := abcistubs.FreshPlatform(t)
+			condition := iface.Responseexecuteitem_DECLINE
+			if verifyInstance.embrace {
+				condition = iface.Responseexecuteitem_EMBRACE
 			}
-			m.On("REDACTED", mock.Anything, mock.Anything).Return(&iface.ReplyHandleNomination{Status: state}, nil)
+			m.On("REDACTED", mock.Anything, mock.Anything).Return(&iface.ReplyHandleNomination{Condition: condition}, nil)
 			m.On("REDACTED", mock.Anything, mock.Anything).Return(&iface.ReplyArrangeNomination{}, nil).Maybe()
-			cs1, _ := randomStatusWithApplication(4, m)
-			level, duration := cs1.Level, cs1.Cycle
+			cs1, _ := arbitraryStatusUsingApplication(4, m)
+			altitude, iteration := cs1.Altitude, cs1.Iteration
 
-			nominationChan := enrol(cs1.eventBus, kinds.EventInquireFinishedNomination)
-			newEpochChan := enrol(cs1.eventBus, kinds.EventInquireNewEpoch)
-			pv1, err := cs1.privateRatifier.FetchPublicKey()
+			nominationChnl := listen(cs1.incidentChannel, kinds.IncidentInquireFinishNomination)
+			freshIterationChnl := listen(cs1.incidentChannel, kinds.IncidentInquireFreshIteration)
+			pv1, err := cs1.privateAssessor.ObtainPublicToken()
 			require.NoError(t, err)
-			address := pv1.Location()
-			ballotChan := enrolToPoller(cs1, address)
+			location := pv1.Location()
+			ballotChnl := listenTowardBalloter(cs1, location)
 
-			beginVerifyEpoch(cs1, cs1.Level, duration)
-			assureNewEpoch(newEpochChan, level, duration)
+			initiateVerifyIteration(cs1, cs1.Altitude, iteration)
+			assureFreshIteration(freshIterationChnl, altitude, iteration)
 
-			assureNewNomination(nominationChan, level, duration)
-			rs := cs1.FetchDurationStatus()
-			var preballotDigest cometbytes.HexOctets
-			if !verifyInstance.anticipatedNullPreballot {
+			assureFreshNomination(nominationChnl, altitude, iteration)
+			rs := cs1.ObtainIterationStatus()
+			var preballotDigest tendermintoctets.HexadecimalOctets
+			if !verifyInstance.anticipatedVoidPreballot {
 				preballotDigest = rs.NominationLedger.Digest()
 			}
-			assurePreballotAlign(t, ballotChan, level, duration, preballotDigest)
+			assurePreballotAlign(t, ballotChnl, altitude, iteration, preballotDigest)
 		})
 	}
 }
 
 //
 //
-func VerifyExpandBallotInvokedWhenActivated(t *testing.T) {
+func VerifyBroadenBallotInvokedWheneverActivated(t *testing.T) {
 	for _, verifyInstance := range []struct {
-		label    string
+		alias    string
 		activated bool
 	}{
 		{
-			label:    "REDACTED",
+			alias:    "REDACTED",
 			activated: true,
 		},
 		{
-			label:    "REDACTED",
+			alias:    "REDACTED",
 			activated: false,
 		},
 	} {
-		t.Run(verifyInstance.label, func(t *testing.T) {
-			m := abciemulators.NewSoftware(t)
+		t.Run(verifyInstance.alias, func(t *testing.T) {
+			m := abcistubs.FreshPlatform(t)
 			m.On("REDACTED", mock.Anything, mock.Anything).Return(&iface.ReplyArrangeNomination{}, nil)
-			m.On("REDACTED", mock.Anything, mock.Anything).Return(&iface.ReplyHandleNomination{Status: iface.Responseprocessnomination_ALLOW}, nil)
+			m.On("REDACTED", mock.Anything, mock.Anything).Return(&iface.ReplyHandleNomination{Condition: iface.Responseexecuteitem_EMBRACE}, nil)
 			if verifyInstance.activated {
-				m.On("REDACTED", mock.Anything, mock.Anything).Return(&iface.ReplyExpandBallot{
+				m.On("REDACTED", mock.Anything, mock.Anything).Return(&iface.ReplyBroadenBallot{
 					BallotAddition: []byte("REDACTED"),
 				}, nil)
 				m.On("REDACTED", mock.Anything, mock.Anything).Return(&iface.ReplyValidateBallotAddition{
-					Status: iface.Responseverifyballotextension_ALLOW,
+					Condition: iface.Responsecertifyballotaddition_EMBRACE,
 				}, nil)
 			}
 			m.On("REDACTED", mock.Anything, mock.Anything).Return(&iface.ReplyEndorse{}, nil).Maybe()
-			m.On("REDACTED", mock.Anything, mock.Anything).Return(&iface.ReplyCompleteLedger{}, nil).Maybe()
-			level := int64(1)
+			m.On("REDACTED", mock.Anything, mock.Anything).Return(&iface.ReplyCulminateLedger{}, nil).Maybe()
+			altitude := int64(1)
 			if !verifyInstance.activated {
-				level = 0
+				altitude = 0
 			}
-			cs1, vss := randomStatusWithApplicationWithLevel(4, m, level)
+			cs1, vss := arbitraryStatusUsingApplicationUsingAltitude(4, m, altitude)
 
-			level, duration := cs1.Level, cs1.Cycle
+			altitude, iteration := cs1.Altitude, cs1.Iteration
 
-			nominationChan := enrol(cs1.eventBus, kinds.EventInquireFinishedNomination)
-			newEpochChan := enrol(cs1.eventBus, kinds.EventInquireNewEpoch)
-			pv1, err := cs1.privateRatifier.FetchPublicKey()
+			nominationChnl := listen(cs1.incidentChannel, kinds.IncidentInquireFinishNomination)
+			freshIterationChnl := listen(cs1.incidentChannel, kinds.IncidentInquireFreshIteration)
+			pv1, err := cs1.privateAssessor.ObtainPublicToken()
 			require.NoError(t, err)
-			address := pv1.Location()
-			ballotChan := enrolToPoller(cs1, address)
+			location := pv1.Location()
+			ballotChnl := listenTowardBalloter(cs1, location)
 
-			beginVerifyEpoch(cs1, cs1.Level, duration)
-			assureNewEpoch(newEpochChan, level, duration)
-			assureNewNomination(nominationChan, level, duration)
+			initiateVerifyIteration(cs1, cs1.Altitude, iteration)
+			assureFreshIteration(freshIterationChnl, altitude, iteration)
+			assureFreshNomination(nominationChnl, altitude, iteration)
 
 			m.AssertNotCalled(t, "REDACTED", mock.Anything, mock.Anything)
 
-			rs := cs1.FetchDurationStatus()
+			rs := cs1.ObtainIterationStatus()
 
-			ledgerUID := kinds.LedgerUID{
+			ledgerUUID := kinds.LedgerUUID{
 				Digest:          rs.NominationLedger.Digest(),
-				SegmentAssignHeading: rs.NominationLedgerSegments.Heading(),
+				FragmentAssignHeading: rs.NominationLedgerFragments.Heading(),
 			}
-			attestAppendBallots(cs1, engineproto.PreballotKind, ledgerUID.Digest, ledgerUID.SegmentAssignHeading, false, vss[1:]...)
-			assurePreballotAlign(t, ballotChan, level, duration, ledgerUID.Digest)
+			attestAppendBallots(cs1, commitchema.PreballotKind, ledgerUUID.Digest, ledgerUUID.FragmentAssignHeading, false, vss[1:]...)
+			assurePreballotAlign(t, ballotChnl, altitude, iteration, ledgerUUID.Digest)
 
-			assurePreendorse(ballotChan, level, duration)
+			assurePreendorse(ballotChnl, altitude, iteration)
 
 			if verifyInstance.activated {
-				m.AssertCalled(t, "REDACTED", context.TODO(), &iface.QueryExpandBallot{
-					Level:             level,
-					Digest:               ledgerUID.Digest,
-					Time:               rs.NominationLedger.Time,
-					Txs:                rs.NominationLedger.Txs.ToSegmentOfOctets(),
-					NominatedFinalEndorse: iface.EndorseDetails{},
-					Malpractice:        rs.NominationLedger.Proof.Proof.ToIface(),
-					FollowingRatifiersDigest: rs.NominationLedger.FollowingRatifiersDigest,
-					RecommenderLocation:    rs.NominationLedger.RecommenderLocation,
+				m.AssertCalled(t, "REDACTED", context.TODO(), &iface.SolicitBroadenBallot{
+					Altitude:             altitude,
+					Digest:               ledgerUUID.Digest,
+					Moment:               rs.NominationLedger.Moment,
+					Txs:                rs.NominationLedger.Txs.TowardSegmentBelongingOctets(),
+					ItemizedFinalEndorse: iface.EndorseDetails{},
+					Malpractice:        rs.NominationLedger.Proof.Proof.TowardIface(),
+					FollowingAssessorsDigest: rs.NominationLedger.FollowingAssessorsDigest,
+					NominatorLocation:    rs.NominationLedger.NominatorLocation,
 				})
 			} else {
 				m.AssertNotCalled(t, "REDACTED", mock.Anything, mock.Anything)
 			}
 
-			attestAppendBallots(cs1, engineproto.PreendorseKind, ledgerUID.Digest, ledgerUID.SegmentAssignHeading, verifyInstance.activated, vss[1:]...)
-			assureNewEpoch(newEpochChan, level+1, 0)
+			attestAppendBallots(cs1, commitchema.PreendorseKind, ledgerUUID.Digest, ledgerUUID.FragmentAssignHeading, verifyInstance.activated, vss[1:]...)
+			assureFreshIteration(freshIterationChnl, altitude+1, 0)
 			m.AssertExpectations(t)
 
 			//
 			//
 			for _, pv := range vss[1:3] {
-				pv, err := pv.FetchPublicKey()
+				pv, err := pv.ObtainPublicToken()
 				require.NoError(t, err)
-				address := pv.Location()
+				location := pv.Location()
 				if verifyInstance.activated {
-					m.AssertCalled(t, "REDACTED", context.TODO(), &iface.QueryValidateBallotAddition{
-						Digest:             ledgerUID.Digest,
-						RatifierLocation: address,
-						Level:           level,
+					m.AssertCalled(t, "REDACTED", context.TODO(), &iface.SolicitValidateBallotAddition{
+						Digest:             ledgerUUID.Digest,
+						AssessorLocation: location,
+						Altitude:           altitude,
 						BallotAddition:    []byte("REDACTED"),
 					})
 				} else {
@@ -1571,68 +1571,68 @@ func VerifyExpandBallotInvokedWhenActivated(t *testing.T) {
 
 //
 //
-func VerifyValidateBallotAdditionNotInvokedOnMissingPreendorse(t *testing.T) {
-	m := abciemulators.NewSoftware(t)
+func VerifyValidateBallotAdditionNegationInvokedUponMissingPreendorse(t *testing.T) {
+	m := abcistubs.FreshPlatform(t)
 	m.On("REDACTED", mock.Anything, mock.Anything).Return(&iface.ReplyArrangeNomination{}, nil)
-	m.On("REDACTED", mock.Anything, mock.Anything).Return(&iface.ReplyHandleNomination{Status: iface.Responseprocessnomination_ALLOW}, nil)
-	m.On("REDACTED", mock.Anything, mock.Anything).Return(&iface.ReplyExpandBallot{
+	m.On("REDACTED", mock.Anything, mock.Anything).Return(&iface.ReplyHandleNomination{Condition: iface.Responseexecuteitem_EMBRACE}, nil)
+	m.On("REDACTED", mock.Anything, mock.Anything).Return(&iface.ReplyBroadenBallot{
 		BallotAddition: []byte("REDACTED"),
 	}, nil)
 	m.On("REDACTED", mock.Anything, mock.Anything).Return(&iface.ReplyValidateBallotAddition{
-		Status: iface.Responseverifyballotextension_ALLOW,
+		Condition: iface.Responsecertifyballotaddition_EMBRACE,
 	}, nil)
-	m.On("REDACTED", mock.Anything, mock.Anything).Return(&iface.ReplyCompleteLedger{}, nil).Maybe()
+	m.On("REDACTED", mock.Anything, mock.Anything).Return(&iface.ReplyCulminateLedger{}, nil).Maybe()
 	m.On("REDACTED", mock.Anything, mock.Anything).Return(&iface.ReplyEndorse{}, nil).Maybe()
-	cs1, vss := randomStatusWithApplication(4, m)
-	level, duration := cs1.Level, cs1.Cycle
-	cs1.status.AgreementOptions.Iface.BallotPluginsActivateLevel = cs1.Level
+	cs1, vss := arbitraryStatusUsingApplication(4, m)
+	altitude, iteration := cs1.Altitude, cs1.Iteration
+	cs1.status.AgreementSettings.Iface.BallotAdditionsActivateAltitude = cs1.Altitude
 
-	nominationChan := enrol(cs1.eventBus, kinds.EventInquireFinishedNomination)
-	newEpochChan := enrol(cs1.eventBus, kinds.EventInquireNewEpoch)
-	pv1, err := cs1.privateRatifier.FetchPublicKey()
+	nominationChnl := listen(cs1.incidentChannel, kinds.IncidentInquireFinishNomination)
+	freshIterationChnl := listen(cs1.incidentChannel, kinds.IncidentInquireFreshIteration)
+	pv1, err := cs1.privateAssessor.ObtainPublicToken()
 	require.NoError(t, err)
-	address := pv1.Location()
-	ballotChan := enrolToPoller(cs1, address)
+	location := pv1.Location()
+	ballotChnl := listenTowardBalloter(cs1, location)
 
-	beginVerifyEpoch(cs1, cs1.Level, duration)
-	assureNewEpoch(newEpochChan, level, duration)
-	assureNewNomination(nominationChan, level, duration)
-	rs := cs1.FetchDurationStatus()
+	initiateVerifyIteration(cs1, cs1.Altitude, iteration)
+	assureFreshIteration(freshIterationChnl, altitude, iteration)
+	assureFreshNomination(nominationChnl, altitude, iteration)
+	rs := cs1.ObtainIterationStatus()
 
-	ledgerUID := kinds.LedgerUID{
+	ledgerUUID := kinds.LedgerUUID{
 		Digest:          rs.NominationLedger.Digest(),
-		SegmentAssignHeading: rs.NominationLedgerSegments.Heading(),
+		FragmentAssignHeading: rs.NominationLedgerFragments.Heading(),
 	}
-	attestAppendBallots(cs1, engineproto.PreballotKind, ledgerUID.Digest, ledgerUID.SegmentAssignHeading, false, vss...)
-	assurePreballotAlign(t, ballotChan, level, duration, ledgerUID.Digest)
+	attestAppendBallots(cs1, commitchema.PreballotKind, ledgerUUID.Digest, ledgerUUID.FragmentAssignHeading, false, vss...)
+	assurePreballotAlign(t, ballotChnl, altitude, iteration, ledgerUUID.Digest)
 
-	assurePreendorse(ballotChan, level, duration)
+	assurePreendorse(ballotChnl, altitude, iteration)
 
-	m.AssertCalled(t, "REDACTED", context.TODO(), &iface.QueryExpandBallot{
-		Level:             level,
-		Digest:               ledgerUID.Digest,
-		Time:               rs.NominationLedger.Time,
-		Txs:                rs.NominationLedger.Txs.ToSegmentOfOctets(),
-		NominatedFinalEndorse: iface.EndorseDetails{},
-		Malpractice:        rs.NominationLedger.Proof.Proof.ToIface(),
-		FollowingRatifiersDigest: rs.NominationLedger.FollowingRatifiersDigest,
-		RecommenderLocation:    rs.NominationLedger.RecommenderLocation,
+	m.AssertCalled(t, "REDACTED", context.TODO(), &iface.SolicitBroadenBallot{
+		Altitude:             altitude,
+		Digest:               ledgerUUID.Digest,
+		Moment:               rs.NominationLedger.Moment,
+		Txs:                rs.NominationLedger.Txs.TowardSegmentBelongingOctets(),
+		ItemizedFinalEndorse: iface.EndorseDetails{},
+		Malpractice:        rs.NominationLedger.Proof.Proof.TowardIface(),
+		FollowingAssessorsDigest: rs.NominationLedger.FollowingAssessorsDigest,
+		NominatorLocation:    rs.NominationLedger.NominatorLocation,
 	})
 
-	attestAppendBallots(cs1, engineproto.PreendorseKind, ledgerUID.Digest, ledgerUID.SegmentAssignHeading, true, vss[2:]...)
-	assureNewEpoch(newEpochChan, level+1, 0)
+	attestAppendBallots(cs1, commitchema.PreendorseKind, ledgerUUID.Digest, ledgerUUID.FragmentAssignHeading, true, vss[2:]...)
+	assureFreshIteration(freshIterationChnl, altitude+1, 0)
 	m.AssertExpectations(t)
 
 	//
 	//
-	pv, err := vss[1].FetchPublicKey()
+	pv, err := vss[1].ObtainPublicToken()
 	require.NoError(t, err)
-	address = pv.Location()
+	location = pv.Location()
 
-	m.AssertNotCalled(t, "REDACTED", context.TODO(), &iface.QueryValidateBallotAddition{
-		Digest:             ledgerUID.Digest,
-		RatifierLocation: address,
-		Level:           level,
+	m.AssertNotCalled(t, "REDACTED", context.TODO(), &iface.SolicitValidateBallotAddition{
+		Digest:             ledgerUUID.Digest,
+		AssessorLocation: location,
+		Altitude:           altitude,
 		BallotAddition:    []byte("REDACTED"),
 	})
 }
@@ -1643,168 +1643,168 @@ func VerifyValidateBallotAdditionNotInvokedOnMissingPreendorse(t *testing.T) {
 //
 //
 //
-func VerifyArrangeNominationAcceptsBallotPlugins(t *testing.T) {
+func VerifyArrangeNominationAcceptsBallotAdditions(t *testing.T) {
 	//
-	ballotPlugins := [][]byte{
+	ballotAdditions := [][]byte{
 		[]byte("REDACTED"),
 		[]byte("REDACTED"),
 		[]byte("REDACTED"),
 		[]byte("REDACTED"),
 	}
 
-	m := abciemulators.NewSoftware(t)
-	m.On("REDACTED", mock.Anything, mock.Anything).Return(&iface.ReplyExpandBallot{
-		BallotAddition: ballotPlugins[0],
+	m := abcistubs.FreshPlatform(t)
+	m.On("REDACTED", mock.Anything, mock.Anything).Return(&iface.ReplyBroadenBallot{
+		BallotAddition: ballotAdditions[0],
 	}, nil)
-	m.On("REDACTED", mock.Anything, mock.Anything).Return(&iface.ReplyHandleNomination{Status: iface.Responseprocessnomination_ALLOW}, nil)
+	m.On("REDACTED", mock.Anything, mock.Anything).Return(&iface.ReplyHandleNomination{Condition: iface.Responseexecuteitem_EMBRACE}, nil)
 
 	//
-	rpp := &iface.QueryArrangeNomination{}
-	m.On("REDACTED", mock.Anything, mock.MatchedBy(func(r *iface.QueryArrangeNomination) bool {
+	rpp := &iface.SolicitArrangeNomination{}
+	m.On("REDACTED", mock.Anything, mock.MatchedBy(func(r *iface.SolicitArrangeNomination) bool {
 		rpp = r
 		return true
 	})).Return(&iface.ReplyArrangeNomination{}, nil)
 
-	m.On("REDACTED", mock.Anything, mock.Anything).Return(&iface.ReplyValidateBallotAddition{Status: iface.Responseverifyballotextension_ALLOW}, nil)
+	m.On("REDACTED", mock.Anything, mock.Anything).Return(&iface.ReplyValidateBallotAddition{Condition: iface.Responsecertifyballotaddition_EMBRACE}, nil)
 	m.On("REDACTED", mock.Anything, mock.Anything).Return(&iface.ReplyEndorse{}, nil).Maybe()
-	m.On("REDACTED", mock.Anything, mock.Anything).Return(&iface.ReplyCompleteLedger{}, nil)
+	m.On("REDACTED", mock.Anything, mock.Anything).Return(&iface.ReplyCulminateLedger{}, nil)
 
-	cs1, vss := randomStatusWithApplication(4, m)
-	level, duration := cs1.Level, cs1.Cycle
+	cs1, vss := arbitraryStatusUsingApplication(4, m)
+	altitude, iteration := cs1.Altitude, cs1.Iteration
 
-	newEpochChan := enrol(cs1.eventBus, kinds.EventInquireNewEpoch)
-	nominationChan := enrol(cs1.eventBus, kinds.EventInquireFinishedNomination)
-	pv1, err := cs1.privateRatifier.FetchPublicKey()
+	freshIterationChnl := listen(cs1.incidentChannel, kinds.IncidentInquireFreshIteration)
+	nominationChnl := listen(cs1.incidentChannel, kinds.IncidentInquireFinishNomination)
+	pv1, err := cs1.privateAssessor.ObtainPublicToken()
 	require.NoError(t, err)
-	address := pv1.Location()
-	ballotChan := enrolToPoller(cs1, address)
+	location := pv1.Location()
+	ballotChnl := listenTowardBalloter(cs1, location)
 
-	beginVerifyEpoch(cs1, level, duration)
-	assureNewEpoch(newEpochChan, level, duration)
-	assureNewNomination(nominationChan, level, duration)
+	initiateVerifyIteration(cs1, altitude, iteration)
+	assureFreshIteration(freshIterationChnl, altitude, iteration)
+	assureFreshNomination(nominationChnl, altitude, iteration)
 
-	rs := cs1.FetchDurationStatus()
-	ledgerUID := kinds.LedgerUID{
+	rs := cs1.ObtainIterationStatus()
+	ledgerUUID := kinds.LedgerUUID{
 		Digest:          rs.NominationLedger.Digest(),
-		SegmentAssignHeading: rs.NominationLedgerSegments.Heading(),
+		FragmentAssignHeading: rs.NominationLedgerFragments.Heading(),
 	}
-	attestAppendBallots(cs1, engineproto.PreballotKind, ledgerUID.Digest, ledgerUID.SegmentAssignHeading, false, vss[1:]...)
+	attestAppendBallots(cs1, commitchema.PreballotKind, ledgerUUID.Digest, ledgerUUID.FragmentAssignHeading, false, vss[1:]...)
 
 	//
 	for i, vs := range vss[1:] {
-		attestAppendPreendorseWithAddition(t, cs1, ledgerUID.Digest, ledgerUID.SegmentAssignHeading, ballotPlugins[i+1], vs)
+		attestAppendPreendorseUsingAddition(t, cs1, ledgerUUID.Digest, ledgerUUID.FragmentAssignHeading, ballotAdditions[i+1], vs)
 	}
 
-	assurePreballot(ballotChan, level, duration)
+	assurePreballot(ballotChnl, altitude, iteration)
 
 	//
-	assurePreendorseAlign(t, ballotChan, level, duration, ledgerUID.Digest)
-	augmentLevel(vss[1:]...)
+	assurePreendorseAlign(t, ballotChnl, altitude, iteration, ledgerUUID.Digest)
+	advanceAltitude(vss[1:]...)
 
-	level++
-	duration = 0
-	assureNewEpoch(newEpochChan, level, duration)
-	augmentEpoch(vss[1:]...)
-	augmentEpoch(vss[1:]...)
-	augmentEpoch(vss[1:]...)
-	duration = 3
+	altitude++
+	iteration = 0
+	assureFreshIteration(freshIterationChnl, altitude, iteration)
+	advanceIteration(vss[1:]...)
+	advanceIteration(vss[1:]...)
+	advanceIteration(vss[1:]...)
+	iteration = 3
 
-	ledgerUidtwo := kinds.LedgerUID{}
-	attestAppendBallots(cs1, engineproto.PreendorseKind, ledgerUidtwo.Digest, ledgerUidtwo.SegmentAssignHeading, true, vss[1:]...)
-	assureNewEpoch(newEpochChan, level, duration)
-	assureNewNomination(nominationChan, level, duration)
+	ledgerUuid2 := kinds.LedgerUUID{}
+	attestAppendBallots(cs1, commitchema.PreendorseKind, ledgerUuid2.Digest, ledgerUuid2.FragmentAssignHeading, true, vss[1:]...)
+	assureFreshIteration(freshIterationChnl, altitude, iteration)
+	assureFreshNomination(nominationChnl, altitude, iteration)
 
 	//
 	//
-	require.Len(t, rpp.NativeFinalEndorse.Ballots, len(vss))
+	require.Len(t, rpp.RegionalFinalEndorse.Ballots, len(vss))
 	for i := range vss {
-		ballot := &rpp.NativeFinalEndorse.Ballots[i]
-		require.Equal(t, ballot.BallotAddition, ballotPlugins[i])
+		ballot := &rpp.RegionalFinalEndorse.Ballots[i]
+		require.Equal(t, ballot.BallotAddition, ballotAdditions[i])
 
-		require.NotZero(t, len(ballot.AdditionAutograph))
-		cve := engineproto.StandardBallotAddition{
+		require.NotZero(t, len(ballot.AdditionNotation))
+		cve := commitchema.StandardBallotAddition{
 			Addition: ballot.BallotAddition,
-			Level:    level - 1, //
-			Cycle:     int64(rpp.NativeFinalEndorse.Cycle),
-			SeriesUid:   verify.StandardVerifyLedgerUID,
+			Altitude:    altitude - 1, //
+			Iteration:     int64(rpp.RegionalFinalEndorse.Iteration),
+			SuccessionUuid:   verify.FallbackVerifySuccessionUUID,
 		}
-		extensionAttestOctets, err := protoio.SerializeSeparated(&cve)
+		addnAttestOctets, err := protocolio.SerializeSeparated(&cve)
 		require.NoError(t, err)
-		publicKey, err := vss[i].FetchPublicKey()
+		publicToken, err := vss[i].ObtainPublicToken()
 		require.NoError(t, err)
-		require.True(t, publicKey.ValidateAutograph(extensionAttestOctets, ballot.AdditionAutograph))
+		require.True(t, publicToken.ValidateNotation(addnAttestOctets, ballot.AdditionNotation))
 	}
 }
 
-func VerifyCompleteLedgerInvoked(t *testing.T) {
+func VerifyCulminateLedgerInvoked(t *testing.T) {
 	for _, verifyInstance := range []struct {
-		label         string
-		ballotNull      bool
+		alias         string
+		ballotVoid      bool
 		anticipateInvoked bool
 	}{
 		{
-			label:         "REDACTED",
-			ballotNull:      false,
+			alias:         "REDACTED",
+			ballotVoid:      false,
 			anticipateInvoked: true,
 		},
 		{
-			label:         "REDACTED",
-			ballotNull:      true,
+			alias:         "REDACTED",
+			ballotVoid:      true,
 			anticipateInvoked: false,
 		},
 	} {
-		t.Run(verifyInstance.label, func(t *testing.T) {
-			m := abciemulators.NewSoftware(t)
+		t.Run(verifyInstance.alias, func(t *testing.T) {
+			m := abcistubs.FreshPlatform(t)
 			m.On("REDACTED", mock.Anything, mock.Anything).Return(&iface.ReplyHandleNomination{
-				Status: iface.Responseprocessnomination_ALLOW,
+				Condition: iface.Responseexecuteitem_EMBRACE,
 			}, nil)
 			m.On("REDACTED", mock.Anything, mock.Anything).Return(&iface.ReplyArrangeNomination{}, nil)
 			//
 			//
-			if !verifyInstance.ballotNull {
-				m.On("REDACTED", mock.Anything, mock.Anything).Return(&iface.ReplyExpandBallot{}, nil)
+			if !verifyInstance.ballotVoid {
+				m.On("REDACTED", mock.Anything, mock.Anything).Return(&iface.ReplyBroadenBallot{}, nil)
 				m.On("REDACTED", mock.Anything, mock.Anything).Return(&iface.ReplyValidateBallotAddition{
-					Status: iface.Responseverifyballotextension_ALLOW,
+					Condition: iface.Responsecertifyballotaddition_EMBRACE,
 				}, nil)
 			}
-			r := &iface.ReplyCompleteLedger{ApplicationDigest: []byte("REDACTED")}
+			r := &iface.ReplyCulminateLedger{PlatformDigest: []byte("REDACTED")}
 			m.On("REDACTED", mock.Anything, mock.Anything).Return(r, nil).Maybe()
 			m.On("REDACTED", mock.Anything, mock.Anything).Return(&iface.ReplyEndorse{}, nil).Maybe()
 
-			cs1, vss := randomStatusWithApplication(4, m)
-			level, duration := cs1.Level, cs1.Cycle
+			cs1, vss := arbitraryStatusUsingApplication(4, m)
+			altitude, iteration := cs1.Altitude, cs1.Iteration
 
-			nominationChan := enrol(cs1.eventBus, kinds.EventInquireFinishedNomination)
-			newEpochChan := enrol(cs1.eventBus, kinds.EventInquireNewEpoch)
-			pv1, err := cs1.privateRatifier.FetchPublicKey()
+			nominationChnl := listen(cs1.incidentChannel, kinds.IncidentInquireFinishNomination)
+			freshIterationChnl := listen(cs1.incidentChannel, kinds.IncidentInquireFreshIteration)
+			pv1, err := cs1.privateAssessor.ObtainPublicToken()
 			require.NoError(t, err)
-			address := pv1.Location()
-			ballotChan := enrolToPoller(cs1, address)
+			location := pv1.Location()
+			ballotChnl := listenTowardBalloter(cs1, location)
 
-			beginVerifyEpoch(cs1, cs1.Level, duration)
-			assureNewEpoch(newEpochChan, level, duration)
-			assureNewNomination(nominationChan, level, duration)
-			rs := cs1.FetchDurationStatus()
+			initiateVerifyIteration(cs1, cs1.Altitude, iteration)
+			assureFreshIteration(freshIterationChnl, altitude, iteration)
+			assureFreshNomination(nominationChnl, altitude, iteration)
+			rs := cs1.ObtainIterationStatus()
 
-			ledgerUID := kinds.LedgerUID{}
-			followingEpoch := duration + 1
-			followingLevel := level
-			if !verifyInstance.ballotNull {
-				followingEpoch = 0
-				followingLevel = level + 1
-				ledgerUID = kinds.LedgerUID{
+			ledgerUUID := kinds.LedgerUUID{}
+			followingIteration := iteration + 1
+			followingAltitude := altitude
+			if !verifyInstance.ballotVoid {
+				followingIteration = 0
+				followingAltitude = altitude + 1
+				ledgerUUID = kinds.LedgerUUID{
 					Digest:          rs.NominationLedger.Digest(),
-					SegmentAssignHeading: rs.NominationLedgerSegments.Heading(),
+					FragmentAssignHeading: rs.NominationLedgerFragments.Heading(),
 				}
 			}
 
-			attestAppendBallots(cs1, engineproto.PreballotKind, ledgerUID.Digest, ledgerUID.SegmentAssignHeading, false, vss[1:]...)
-			assurePreballotAlign(t, ballotChan, level, duration, rs.NominationLedger.Digest())
+			attestAppendBallots(cs1, commitchema.PreballotKind, ledgerUUID.Digest, ledgerUUID.FragmentAssignHeading, false, vss[1:]...)
+			assurePreballotAlign(t, ballotChnl, altitude, iteration, rs.NominationLedger.Digest())
 
-			attestAppendBallots(cs1, engineproto.PreendorseKind, ledgerUID.Digest, ledgerUID.SegmentAssignHeading, true, vss[1:]...)
-			assurePreendorse(ballotChan, level, duration)
+			attestAppendBallots(cs1, commitchema.PreendorseKind, ledgerUUID.Digest, ledgerUUID.FragmentAssignHeading, true, vss[1:]...)
+			assurePreendorse(ballotChnl, altitude, iteration)
 
-			assureNewEpoch(newEpochChan, followingLevel, followingEpoch)
+			assureFreshIteration(freshIterationChnl, followingAltitude, followingIteration)
 			m.AssertExpectations(t)
 
 			if !verifyInstance.anticipateInvoked {
@@ -1819,110 +1819,110 @@ func VerifyCompleteLedgerInvoked(t *testing.T) {
 //
 //
 //
-func VerifyBallotAdditionActivateLevel(t *testing.T) {
+func VerifyBallotAdditionActivateAltitude(t *testing.T) {
 	for _, verifyInstance := range []struct {
-		label                  string
-		activateLevel          int64
-		hasAddition          bool
-		anticipateExpandInvoked    bool
+		alias                  string
+		activateAltitude          int64
+		ownsAddition          bool
+		anticipateBroadenInvoked    bool
 		anticipateValidateInvoked    bool
-		anticipateTriumphantEpoch bool
+		anticipateTriumphantIteration bool
 	}{
 		{
-			label:                  "REDACTED",
-			hasAddition:          true,
-			activateLevel:          0,
-			anticipateExpandInvoked:    false,
+			alias:                  "REDACTED",
+			ownsAddition:          true,
+			activateAltitude:          0,
+			anticipateBroadenInvoked:    false,
 			anticipateValidateInvoked:    false,
-			anticipateTriumphantEpoch: false,
+			anticipateTriumphantIteration: false,
 		},
 		{
-			label:                  "REDACTED",
-			hasAddition:          false,
-			activateLevel:          0,
-			anticipateExpandInvoked:    false,
+			alias:                  "REDACTED",
+			ownsAddition:          false,
+			activateAltitude:          0,
+			anticipateBroadenInvoked:    false,
 			anticipateValidateInvoked:    false,
-			anticipateTriumphantEpoch: true,
+			anticipateTriumphantIteration: true,
 		},
 		{
-			label:                  "REDACTED",
-			hasAddition:          true,
-			activateLevel:          1,
-			anticipateExpandInvoked:    true,
+			alias:                  "REDACTED",
+			ownsAddition:          true,
+			activateAltitude:          1,
+			anticipateBroadenInvoked:    true,
 			anticipateValidateInvoked:    true,
-			anticipateTriumphantEpoch: true,
+			anticipateTriumphantIteration: true,
 		},
 		{
-			label:                  "REDACTED",
-			hasAddition:          false,
-			activateLevel:          1,
-			anticipateExpandInvoked:    true,
+			alias:                  "REDACTED",
+			ownsAddition:          false,
+			activateAltitude:          1,
+			anticipateBroadenInvoked:    true,
 			anticipateValidateInvoked:    false,
-			anticipateTriumphantEpoch: false,
+			anticipateTriumphantIteration: false,
 		},
 		{
-			label:                  "REDACTED",
-			hasAddition:          false,
-			activateLevel:          2,
-			anticipateExpandInvoked:    false,
+			alias:                  "REDACTED",
+			ownsAddition:          false,
+			activateAltitude:          2,
+			anticipateBroadenInvoked:    false,
 			anticipateValidateInvoked:    false,
-			anticipateTriumphantEpoch: true,
+			anticipateTriumphantIteration: true,
 		},
 	} {
-		t.Run(verifyInstance.label, func(t *testing.T) {
-			countRatifiers := 3
-			m := abciemulators.NewSoftware(t)
+		t.Run(verifyInstance.alias, func(t *testing.T) {
+			countAssessors := 3
+			m := abcistubs.FreshPlatform(t)
 			m.On("REDACTED", mock.Anything, mock.Anything).Return(&iface.ReplyHandleNomination{
-				Status: iface.Responseprocessnomination_ALLOW,
+				Condition: iface.Responseexecuteitem_EMBRACE,
 			}, nil)
 			m.On("REDACTED", mock.Anything, mock.Anything).Return(&iface.ReplyArrangeNomination{}, nil)
-			if verifyInstance.anticipateExpandInvoked {
-				m.On("REDACTED", mock.Anything, mock.Anything).Return(&iface.ReplyExpandBallot{}, nil)
+			if verifyInstance.anticipateBroadenInvoked {
+				m.On("REDACTED", mock.Anything, mock.Anything).Return(&iface.ReplyBroadenBallot{}, nil)
 			}
 			if verifyInstance.anticipateValidateInvoked {
 				m.On("REDACTED", mock.Anything, mock.Anything).Return(&iface.ReplyValidateBallotAddition{
-					Status: iface.Responseverifyballotextension_ALLOW,
-				}, nil).Times(countRatifiers - 1)
+					Condition: iface.Responsecertifyballotaddition_EMBRACE,
+				}, nil).Times(countAssessors - 1)
 			}
-			m.On("REDACTED", mock.Anything, mock.Anything).Return(&iface.ReplyCompleteLedger{}, nil).Maybe()
+			m.On("REDACTED", mock.Anything, mock.Anything).Return(&iface.ReplyCulminateLedger{}, nil).Maybe()
 			m.On("REDACTED", mock.Anything, mock.Anything).Return(&iface.ReplyEndorse{}, nil).Maybe()
-			cs1, vss := randomStatusWithApplicationWithLevel(countRatifiers, m, verifyInstance.activateLevel)
-			cs1.status.AgreementOptions.Iface.BallotPluginsActivateLevel = verifyInstance.activateLevel
-			level, duration := cs1.Level, cs1.Cycle
+			cs1, vss := arbitraryStatusUsingApplicationUsingAltitude(countAssessors, m, verifyInstance.activateAltitude)
+			cs1.status.AgreementSettings.Iface.BallotAdditionsActivateAltitude = verifyInstance.activateAltitude
+			altitude, iteration := cs1.Altitude, cs1.Iteration
 
-			deadlineChan := enrol(cs1.eventBus, kinds.EventInquireDeadlineNominate)
-			nominationChan := enrol(cs1.eventBus, kinds.EventInquireFinishedNomination)
-			newEpochChan := enrol(cs1.eventBus, kinds.EventInquireNewEpoch)
-			pv1, err := cs1.privateRatifier.FetchPublicKey()
+			deadlineChnl := listen(cs1.incidentChannel, kinds.IncidentInquireDeadlineNominate)
+			nominationChnl := listen(cs1.incidentChannel, kinds.IncidentInquireFinishNomination)
+			freshIterationChnl := listen(cs1.incidentChannel, kinds.IncidentInquireFreshIteration)
+			pv1, err := cs1.privateAssessor.ObtainPublicToken()
 			require.NoError(t, err)
-			address := pv1.Location()
-			ballotChan := enrolToPoller(cs1, address)
+			location := pv1.Location()
+			ballotChnl := listenTowardBalloter(cs1, location)
 
-			beginVerifyEpoch(cs1, cs1.Level, duration)
-			assureNewEpoch(newEpochChan, level, duration)
-			assureNewNomination(nominationChan, level, duration)
-			rs := cs1.FetchDurationStatus()
+			initiateVerifyIteration(cs1, cs1.Altitude, iteration)
+			assureFreshIteration(freshIterationChnl, altitude, iteration)
+			assureFreshNomination(nominationChnl, altitude, iteration)
+			rs := cs1.ObtainIterationStatus()
 
 			//
-			attestAppendBallots(cs1, engineproto.PreballotKind, rs.NominationLedger.Digest(), rs.NominationLedgerSegments.Heading(), false, vss[1:]...)
-			assurePreballotAlign(t, ballotChan, level, duration, rs.NominationLedger.Digest())
+			attestAppendBallots(cs1, commitchema.PreballotKind, rs.NominationLedger.Digest(), rs.NominationLedgerFragments.Heading(), false, vss[1:]...)
+			assurePreballotAlign(t, ballotChnl, altitude, iteration, rs.NominationLedger.Digest())
 
 			var ext []byte
-			if verifyInstance.hasAddition {
+			if verifyInstance.ownsAddition {
 				ext = []byte("REDACTED")
 			}
 
 			for _, vs := range vss[1:] {
-				ballot, err := vs.attestBallot(engineproto.PreendorseKind, rs.NominationLedger.Digest(), rs.NominationLedgerSegments.Heading(), ext, verifyInstance.hasAddition)
+				ballot, err := vs.attestBallot(commitchema.PreendorseKind, rs.NominationLedger.Digest(), rs.NominationLedgerFragments.Heading(), ext, verifyInstance.ownsAddition)
 				require.NoError(t, err)
 				appendBallots(cs1, ballot)
 			}
-			if verifyInstance.anticipateTriumphantEpoch {
-				assurePreendorse(ballotChan, level, duration)
-				level++
-				assureNewEpoch(newEpochChan, level, duration)
+			if verifyInstance.anticipateTriumphantIteration {
+				assurePreendorse(ballotChnl, altitude, iteration)
+				altitude++
+				assureFreshIteration(freshIterationChnl, altitude, iteration)
 			} else {
-				assureNoNewDeadline(deadlineChan, cs1.settings.Preendorse(duration).Nanoseconds())
+				assureNegativeFreshDeadline(deadlineChnl, cs1.settings.Preendorse(iteration).Nanoseconds())
 			}
 
 			m.AssertExpectations(t)
@@ -1933,26 +1933,26 @@ func VerifyBallotAdditionActivateLevel(t *testing.T) {
 //
 //
 //
-func VerifyStatusDoesntCollapseOnCorruptBallot(t *testing.T) {
-	cs, vss := randomStatus(2)
-	level, duration := cs.Level, cs.Cycle
+func VerifyStatusNotCollapseUponUnfitBallot(t *testing.T) {
+	cs, vss := arbitraryStatus(2)
+	altitude, iteration := cs.Altitude, cs.Iteration
 	//
-	node := p2pemulator.NewNode(nil)
+	node := nodestub.FreshNode(nil)
 
-	beginVerifyEpoch(cs, level, duration)
+	initiateVerifyIteration(cs, altitude, iteration)
 
-	_, nominationLedger := determineNomination(context.Background(), t, cs, vss[0], level, duration)
-	nominationLedgerSegments, err := nominationLedger.CreateSegmentAssign(kinds.LedgerSegmentVolumeOctets)
+	_, itemLedger := resolveNomination(context.Background(), t, cs, vss[0], altitude, iteration)
+	itemLedgerFragments, err := itemLedger.CreateFragmentAssign(kinds.LedgerFragmentExtentOctets)
 	assert.NoError(t, err)
 
-	ballot := attestBallot(vss[1], engineproto.PreendorseKind, nominationLedger.Digest(), nominationLedgerSegments.Heading(), true)
+	ballot := attestBallot(vss[1], commitchema.PreendorseKind, itemLedger.Digest(), itemLedgerFragments.Heading(), true)
 
 	//
-	ballot.RatifierOrdinal = int32(len(vss))
+	ballot.AssessorOrdinal = int32(len(vss))
 
 	ballotSignal := &BallotSignal{ballot}
 	assert.NotPanics(t, func() {
-		cs.processMessage(messageDetails{ballotSignal, node.ID()})
+		cs.processSignal(signalDetails{ballotSignal, node.ID()})
 	})
 
 	appended, err := cs.AppendBallot(ballot, node.ID())
@@ -1965,333 +1965,333 @@ func VerifyStatusDoesntCollapseOnCorruptBallot(t *testing.T) {
 //
 //
 //
-func VerifyPendingDeadlineOnNullPolka(*testing.T) {
-	cs1, vss := randomStatus(4)
+func VerifyPausingDeadlineUponVoidSpeck(*testing.T) {
+	cs1, vss := arbitraryStatus(4)
 	vs2, vs3, vs4 := vss[1], vss[2], vss[3]
-	level, duration := cs1.Level, cs1.Cycle
+	altitude, iteration := cs1.Altitude, cs1.Iteration
 
-	deadlineWaitChan := enrol(cs1.eventBus, kinds.EventInquireDeadlineWait)
-	newEpochChan := enrol(cs1.eventBus, kinds.EventInquireNewEpoch)
+	deadlinePauseChnl := listen(cs1.incidentChannel, kinds.IncidentInquireDeadlinePause)
+	freshIterationChnl := listen(cs1.incidentChannel, kinds.IncidentInquireFreshIteration)
 
 	//
-	beginVerifyEpoch(cs1, level, duration)
-	assureNewEpoch(newEpochChan, level, duration)
+	initiateVerifyIteration(cs1, altitude, iteration)
+	assureFreshIteration(freshIterationChnl, altitude, iteration)
 
-	attestAppendBallots(cs1, engineproto.PreendorseKind, nil, kinds.SegmentAssignHeading{}, true, vs2, vs3, vs4)
+	attestAppendBallots(cs1, commitchema.PreendorseKind, nil, kinds.FragmentAssignHeading{}, true, vs2, vs3, vs4)
 
-	assureNewDeadline(deadlineWaitChan, level, duration, cs1.settings.Preendorse(duration).Nanoseconds())
-	assureNewEpoch(newEpochChan, level, duration+1)
+	assureFreshDeadline(deadlinePauseChnl, altitude, iteration, cs1.settings.Preendorse(iteration).Nanoseconds())
+	assureFreshIteration(freshIterationChnl, altitude, iteration+1)
 }
 
 //
 //
 //
-func VerifyPendingDeadlineNominateOnNewEpoch(t *testing.T) {
-	cs1, vss := randomStatus(4)
+func VerifyPausingDeadlineNominateUponFreshIteration(t *testing.T) {
+	cs1, vss := arbitraryStatus(4)
 	vs2, vs3, vs4 := vss[1], vss[2], vss[3]
-	level, duration := cs1.Level, cs1.Cycle
+	altitude, iteration := cs1.Altitude, cs1.Iteration
 
-	deadlineWaitChan := enrol(cs1.eventBus, kinds.EventInquireDeadlineNominate)
-	newEpochChan := enrol(cs1.eventBus, kinds.EventInquireNewEpoch)
-	pv1, err := cs1.privateRatifier.FetchPublicKey()
+	deadlinePauseChnl := listen(cs1.incidentChannel, kinds.IncidentInquireDeadlineNominate)
+	freshIterationChnl := listen(cs1.incidentChannel, kinds.IncidentInquireFreshIteration)
+	pv1, err := cs1.privateAssessor.ObtainPublicToken()
 	require.NoError(t, err)
-	address := pv1.Location()
-	ballotChan := enrolToPoller(cs1, address)
+	location := pv1.Location()
+	ballotChnl := listenTowardBalloter(cs1, location)
 
 	//
-	beginVerifyEpoch(cs1, level, duration)
-	assureNewEpoch(newEpochChan, level, duration)
+	initiateVerifyIteration(cs1, altitude, iteration)
+	assureFreshIteration(freshIterationChnl, altitude, iteration)
 
-	assurePreballot(ballotChan, level, duration)
+	assurePreballot(ballotChnl, altitude, iteration)
 
-	augmentEpoch(vss[1:]...)
-	attestAppendBallots(cs1, engineproto.PreballotKind, nil, kinds.SegmentAssignHeading{}, false, vs2, vs3, vs4)
+	advanceIteration(vss[1:]...)
+	attestAppendBallots(cs1, commitchema.PreballotKind, nil, kinds.FragmentAssignHeading{}, false, vs2, vs3, vs4)
 
-	duration++ //
-	assureNewEpoch(newEpochChan, level, duration)
+	iteration++ //
+	assureFreshIteration(freshIterationChnl, altitude, iteration)
 
-	rs := cs1.FetchDurationStatus()
-	assert.True(t, rs.Phase == cskinds.DurationPhaseNominate) //
+	rs := cs1.ObtainIterationStatus()
+	assert.True(t, rs.Phase == controlkinds.IterationPhaseNominate) //
 
-	assureNewDeadline(deadlineWaitChan, level, duration, cs1.settings.Nominate(duration).Nanoseconds())
+	assureFreshDeadline(deadlinePauseChnl, altitude, iteration, cs1.settings.Nominate(iteration).Nanoseconds())
 
-	assurePreballot(ballotChan, level, duration)
-	certifyPreballot(t, cs1, duration, vss[0], nil)
+	assurePreballot(ballotChnl, altitude, iteration)
+	certifyPreballot(t, cs1, iteration, vss[0], nil)
 }
 
 //
 //
 //
-func VerifyEpochOmitOnNullPolkaFromSuperiorEpoch(t *testing.T) {
-	cs1, vss := randomStatus(4)
+func VerifyIterationOmitUponVoidSpeckOriginatingSuperiorIteration(t *testing.T) {
+	cs1, vss := arbitraryStatus(4)
 	vs2, vs3, vs4 := vss[1], vss[2], vss[3]
-	level, duration := cs1.Level, cs1.Cycle
+	altitude, iteration := cs1.Altitude, cs1.Iteration
 
-	deadlineWaitChan := enrol(cs1.eventBus, kinds.EventInquireDeadlineWait)
-	newEpochChan := enrol(cs1.eventBus, kinds.EventInquireNewEpoch)
-	pv1, err := cs1.privateRatifier.FetchPublicKey()
+	deadlinePauseChnl := listen(cs1.incidentChannel, kinds.IncidentInquireDeadlinePause)
+	freshIterationChnl := listen(cs1.incidentChannel, kinds.IncidentInquireFreshIteration)
+	pv1, err := cs1.privateAssessor.ObtainPublicToken()
 	require.NoError(t, err)
-	address := pv1.Location()
-	ballotChan := enrolToPoller(cs1, address)
+	location := pv1.Location()
+	ballotChnl := listenTowardBalloter(cs1, location)
 
 	//
-	beginVerifyEpoch(cs1, level, duration)
-	assureNewEpoch(newEpochChan, level, duration)
+	initiateVerifyIteration(cs1, altitude, iteration)
+	assureFreshIteration(freshIterationChnl, altitude, iteration)
 
-	assurePreballot(ballotChan, level, duration)
+	assurePreballot(ballotChnl, altitude, iteration)
 
-	augmentEpoch(vss[1:]...)
-	attestAppendBallots(cs1, engineproto.PreendorseKind, nil, kinds.SegmentAssignHeading{}, true, vs2, vs3, vs4)
+	advanceIteration(vss[1:]...)
+	attestAppendBallots(cs1, commitchema.PreendorseKind, nil, kinds.FragmentAssignHeading{}, true, vs2, vs3, vs4)
 
-	duration++ //
-	assureNewEpoch(newEpochChan, level, duration)
+	iteration++ //
+	assureFreshIteration(freshIterationChnl, altitude, iteration)
 
-	assurePreendorse(ballotChan, level, duration)
-	certifyPreendorse(t, cs1, duration, -1, vss[0], nil, nil)
+	assurePreendorse(ballotChnl, altitude, iteration)
+	certifyPreendorse(t, cs1, iteration, -1, vss[0], nil, nil)
 
-	assureNewDeadline(deadlineWaitChan, level, duration, cs1.settings.Preendorse(duration).Nanoseconds())
+	assureFreshDeadline(deadlinePauseChnl, altitude, iteration, cs1.settings.Preendorse(iteration).Nanoseconds())
 
-	duration++ //
-	assureNewEpoch(newEpochChan, level, duration)
+	iteration++ //
+	assureFreshIteration(freshIterationChnl, altitude, iteration)
 }
 
 //
 //
 //
-func VerifyWaitDeadlineNominateOnNullPolkaForTheOngoingEpoch(t *testing.T) {
-	cs1, vss := randomStatus(4)
+func VerifyPauseDeadlineNominateUponVoidSpeckForeachThatPrevailingIteration(t *testing.T) {
+	cs1, vss := arbitraryStatus(4)
 	vs2, vs3, vs4 := vss[1], vss[2], vss[3]
-	level, duration := cs1.Level, int32(1)
+	altitude, iteration := cs1.Altitude, int32(1)
 
-	deadlineNominateChan := enrol(cs1.eventBus, kinds.EventInquireDeadlineNominate)
-	newEpochChan := enrol(cs1.eventBus, kinds.EventInquireNewEpoch)
-	pv1, err := cs1.privateRatifier.FetchPublicKey()
+	deadlineNominateChnl := listen(cs1.incidentChannel, kinds.IncidentInquireDeadlineNominate)
+	freshIterationChnl := listen(cs1.incidentChannel, kinds.IncidentInquireFreshIteration)
+	pv1, err := cs1.privateAssessor.ObtainPublicToken()
 	require.NoError(t, err)
-	address := pv1.Location()
-	ballotChan := enrolToPoller(cs1, address)
+	location := pv1.Location()
+	ballotChnl := listenTowardBalloter(cs1, location)
 
 	//
-	beginVerifyEpoch(cs1, level, duration)
-	assureNewEpoch(newEpochChan, level, duration)
+	initiateVerifyIteration(cs1, altitude, iteration)
+	assureFreshIteration(freshIterationChnl, altitude, iteration)
 
-	augmentEpoch(vss[1:]...)
-	attestAppendBallots(cs1, engineproto.PreballotKind, nil, kinds.SegmentAssignHeading{}, false, vs2, vs3, vs4)
+	advanceIteration(vss[1:]...)
+	attestAppendBallots(cs1, commitchema.PreballotKind, nil, kinds.FragmentAssignHeading{}, false, vs2, vs3, vs4)
 
-	assureNewDeadline(deadlineNominateChan, level, duration, cs1.settings.Nominate(duration).Nanoseconds())
+	assureFreshDeadline(deadlineNominateChnl, altitude, iteration, cs1.settings.Nominate(iteration).Nanoseconds())
 
-	assurePreballot(ballotChan, level, duration)
-	certifyPreballot(t, cs1, duration, vss[0], nil)
+	assurePreballot(ballotChnl, altitude, iteration)
+	certifyPreballot(t, cs1, iteration, vss[0], nil)
 }
 
 //
 //
-func VerifyIssueNewSoundLedgerEventOnEndorseLackingLedger(t *testing.T) {
+func VerifyRelayFreshSoundLedgerIncidentUponEndorseLackingLedger(t *testing.T) {
 	ctx := t.Context()
 
-	cs1, vss := randomStatus(4)
+	cs1, vss := arbitraryStatus(4)
 	vs2, vs3, vs4 := vss[1], vss[2], vss[3]
-	level, duration := cs1.Level, int32(1)
+	altitude, iteration := cs1.Altitude, int32(1)
 
-	augmentEpoch(vs2, vs3, vs4)
+	advanceIteration(vs2, vs3, vs4)
 
-	segmentVolume := kinds.LedgerSegmentVolumeOctets
+	fragmentExtent := kinds.LedgerFragmentExtentOctets
 
-	newEpochChan := enrol(cs1.eventBus, kinds.EventInquireNewEpoch)
-	soundLedgerChan := enrol(cs1.eventBus, kinds.EventInquireSoundLedger)
+	freshIterationChnl := listen(cs1.incidentChannel, kinds.IncidentInquireFreshIteration)
+	soundLedgerChnl := listen(cs1.incidentChannel, kinds.IncidentInquireSoundLedger)
 
-	_, nominationLedger := determineNomination(ctx, t, cs1, vs2, vs2.Level, vs2.Cycle)
-	nominationLedgerDigest := nominationLedger.Digest()
-	nominationLedgerSegments, err := nominationLedger.CreateSegmentAssign(segmentVolume)
+	_, itemLedger := resolveNomination(ctx, t, cs1, vs2, vs2.Altitude, vs2.Iteration)
+	itemLedgerDigest := itemLedger.Digest()
+	itemLedgerFragments, err := itemLedger.CreateFragmentAssign(fragmentExtent)
 	require.NoError(t, err)
 
 	//
-	beginVerifyEpoch(cs1, level, duration)
-	assureNewEpoch(newEpochChan, level, duration)
+	initiateVerifyIteration(cs1, altitude, iteration)
+	assureFreshIteration(freshIterationChnl, altitude, iteration)
 
 	//
-	attestAppendBallots(cs1, engineproto.PreendorseKind, nominationLedgerDigest, nominationLedgerSegments.Heading(), true, vs2, vs3, vs4)
-	assureNewSoundLedger(soundLedgerChan, level, duration)
+	attestAppendBallots(cs1, commitchema.PreendorseKind, itemLedgerDigest, itemLedgerFragments.Heading(), true, vs2, vs3, vs4)
+	assureFreshSoundLedger(soundLedgerChnl, altitude, iteration)
 
-	rs := cs1.FetchDurationStatus()
-	assert.True(t, rs.Phase == cskinds.DurationPhaseEndorse)
+	rs := cs1.ObtainIterationStatus()
+	assert.True(t, rs.Phase == controlkinds.IterationPhaseEndorse)
 	assert.True(t, rs.NominationLedger == nil)
-	assert.True(t, rs.NominationLedgerSegments.Heading().Matches(nominationLedgerSegments.Heading()))
+	assert.True(t, rs.NominationLedgerFragments.Heading().Matches(itemLedgerFragments.Heading()))
 }
 
 //
 //
 //
-func VerifyEndorseFromPrecedingEpoch(t *testing.T) {
+func VerifyEndorseOriginatingPrecedingIteration(t *testing.T) {
 	ctx := t.Context()
 
-	cs1, vss := randomStatus(4)
+	cs1, vss := arbitraryStatus(4)
 	vs2, vs3, vs4 := vss[1], vss[2], vss[3]
-	level, duration := cs1.Level, int32(1)
+	altitude, iteration := cs1.Altitude, int32(1)
 
-	segmentVolume := kinds.LedgerSegmentVolumeOctets
+	fragmentExtent := kinds.LedgerFragmentExtentOctets
 
-	newEpochChan := enrol(cs1.eventBus, kinds.EventInquireNewEpoch)
-	soundLedgerChan := enrol(cs1.eventBus, kinds.EventInquireSoundLedger)
-	nominationChan := enrol(cs1.eventBus, kinds.EventInquireFinishedNomination)
+	freshIterationChnl := listen(cs1.incidentChannel, kinds.IncidentInquireFreshIteration)
+	soundLedgerChnl := listen(cs1.incidentChannel, kinds.IncidentInquireSoundLedger)
+	nominationChnl := listen(cs1.incidentChannel, kinds.IncidentInquireFinishNomination)
 
-	nomination, nominationLedger := determineNomination(ctx, t, cs1, vs2, vs2.Level, vs2.Cycle)
-	nominationLedgerDigest := nominationLedger.Digest()
-	nominationLedgerSegments, err := nominationLedger.CreateSegmentAssign(segmentVolume)
+	item, itemLedger := resolveNomination(ctx, t, cs1, vs2, vs2.Altitude, vs2.Iteration)
+	itemLedgerDigest := itemLedger.Digest()
+	itemLedgerFragments, err := itemLedger.CreateFragmentAssign(fragmentExtent)
 	require.NoError(t, err)
 
 	//
-	beginVerifyEpoch(cs1, level, duration)
-	assureNewEpoch(newEpochChan, level, duration)
+	initiateVerifyIteration(cs1, altitude, iteration)
+	assureFreshIteration(freshIterationChnl, altitude, iteration)
 
 	//
-	attestAppendBallots(cs1, engineproto.PreendorseKind, nominationLedgerDigest, nominationLedgerSegments.Heading(), true, vs2, vs3, vs4)
+	attestAppendBallots(cs1, commitchema.PreendorseKind, itemLedgerDigest, itemLedgerFragments.Heading(), true, vs2, vs3, vs4)
 
-	assureNewSoundLedger(soundLedgerChan, level, duration)
+	assureFreshSoundLedger(soundLedgerChnl, altitude, iteration)
 
-	rs := cs1.FetchDurationStatus()
-	assert.True(t, rs.Phase == cskinds.DurationPhaseEndorse)
-	assert.True(t, rs.EndorseEpoch == vs2.Cycle)
+	rs := cs1.ObtainIterationStatus()
+	assert.True(t, rs.Phase == controlkinds.IterationPhaseEndorse)
+	assert.True(t, rs.EndorseIteration == vs2.Iteration)
 	assert.True(t, rs.NominationLedger == nil)
-	assert.True(t, rs.NominationLedgerSegments.Heading().Matches(nominationLedgerSegments.Heading()))
+	assert.True(t, rs.NominationLedgerFragments.Heading().Matches(itemLedgerFragments.Heading()))
 
-	if err := cs1.CollectionNominationAndLedger(nomination, nominationLedger, nominationLedgerSegments, "REDACTED"); err != nil {
+	if err := cs1.AssignNominationAlsoLedger(item, itemLedger, itemLedgerFragments, "REDACTED"); err != nil {
 		t.Fatal(err)
 	}
 
-	assureNewNomination(nominationChan, level, duration)
-	assureNewEpoch(newEpochChan, level+1, 0)
+	assureFreshNomination(nominationChnl, altitude, iteration)
+	assureFreshIteration(freshIterationChnl, altitude+1, 0)
 }
 
-type mockTransferAlerter struct {
+type mockedTransferObserver struct {
 	ch chan struct{}
 }
 
-func (n *mockTransferAlerter) TransAccessible() <-chan struct{} {
+func (n *mockedTransferObserver) TransAccessible() <-chan struct{} {
 	return n.ch
 }
 
-func (n *mockTransferAlerter) Alert() {
+func (n *mockedTransferObserver) Alert() {
 	n.ch <- struct{}{}
 }
 
 //
 //
 //
-func VerifyBeginFollowingLevelAccuratelyAfterDeadline(t *testing.T) {
+func VerifyInitiateFollowingAltitudeAccuratelySubsequentDeadline(t *testing.T) {
 	settings.Agreement.OmitDeadlineEndorse = false
-	cs1, vss := randomStatus(4)
-	cs1.transferAlerter = &mockTransferAlerter{ch: make(chan struct{})}
+	cs1, vss := arbitraryStatus(4)
+	cs1.transferObserver = &mockedTransferObserver{ch: make(chan struct{})}
 
 	vs2, vs3, vs4 := vss[1], vss[2], vss[3]
-	level, duration := cs1.Level, cs1.Cycle
+	altitude, iteration := cs1.Altitude, cs1.Iteration
 
-	nominationChan := enrol(cs1.eventBus, kinds.EventInquireFinishedNomination)
-	deadlineNominateChan := enrol(cs1.eventBus, kinds.EventInquireDeadlineNominate)
-	preendorseDeadlineChan := enrol(cs1.eventBus, kinds.EventInquireDeadlineWait)
+	nominationChnl := listen(cs1.incidentChannel, kinds.IncidentInquireFinishNomination)
+	deadlineNominateChnl := listen(cs1.incidentChannel, kinds.IncidentInquireDeadlineNominate)
+	preendorseDeadlineChnl := listen(cs1.incidentChannel, kinds.IncidentInquireDeadlinePause)
 
-	newEpochChan := enrol(cs1.eventBus, kinds.EventInquireNewEpoch)
-	newLedgerHeading := enrol(cs1.eventBus, kinds.EventInquireNewLedgerHeading)
-	pv1, err := cs1.privateRatifier.FetchPublicKey()
+	freshIterationChnl := listen(cs1.incidentChannel, kinds.IncidentInquireFreshIteration)
+	freshLedgerHeading := listen(cs1.incidentChannel, kinds.IncidentInquireFreshLedgerHeading)
+	pv1, err := cs1.privateAssessor.ObtainPublicToken()
 	require.NoError(t, err)
-	address := pv1.Location()
-	ballotChan := enrolToPoller(cs1, address)
+	location := pv1.Location()
+	ballotChnl := listenTowardBalloter(cs1, location)
 
 	//
-	beginVerifyEpoch(cs1, level, duration)
-	assureNewEpoch(newEpochChan, level, duration)
+	initiateVerifyIteration(cs1, altitude, iteration)
+	assureFreshIteration(freshIterationChnl, altitude, iteration)
 
-	assureNewNomination(nominationChan, level, duration)
-	rs := cs1.FetchDurationStatus()
-	theLedgerDigest := rs.NominationLedger.Digest()
-	theLedgerSegments := rs.NominationLedgerSegments.Heading()
+	assureFreshNomination(nominationChnl, altitude, iteration)
+	rs := cs1.ObtainIterationStatus()
+	thatLedgerDigest := rs.NominationLedger.Digest()
+	thatLedgerFragments := rs.NominationLedgerFragments.Heading()
 
-	assurePreballot(ballotChan, level, duration)
-	certifyPreballot(t, cs1, duration, vss[0], theLedgerDigest)
+	assurePreballot(ballotChnl, altitude, iteration)
+	certifyPreballot(t, cs1, iteration, vss[0], thatLedgerDigest)
 
-	attestAppendBallots(cs1, engineproto.PreballotKind, theLedgerDigest, theLedgerSegments, false, vs2, vs3, vs4)
+	attestAppendBallots(cs1, commitchema.PreballotKind, thatLedgerDigest, thatLedgerFragments, false, vs2, vs3, vs4)
 
-	assurePreendorse(ballotChan, level, duration)
+	assurePreendorse(ballotChnl, altitude, iteration)
 	//
-	certifyPreendorse(t, cs1, duration, duration, vss[0], theLedgerDigest, theLedgerDigest)
-
-	//
-	attestAppendBallots(cs1, engineproto.PreendorseKind, nil, kinds.SegmentAssignHeading{}, true, vs2)
-	attestAppendBallots(cs1, engineproto.PreendorseKind, theLedgerDigest, theLedgerSegments, true, vs3)
+	certifyPreendorse(t, cs1, iteration, iteration, vss[0], thatLedgerDigest, thatLedgerDigest)
 
 	//
-	assurePreendorseDeadline(preendorseDeadlineChan)
-
-	assureNewEpoch(newEpochChan, level, duration+1)
+	attestAppendBallots(cs1, commitchema.PreendorseKind, nil, kinds.FragmentAssignHeading{}, true, vs2)
+	attestAppendBallots(cs1, commitchema.PreendorseKind, thatLedgerDigest, thatLedgerFragments, true, vs3)
 
 	//
-	attestAppendBallots(cs1, engineproto.PreendorseKind, theLedgerDigest, theLedgerSegments, true, vs4)
+	assurePreendorseDeadline(preendorseDeadlineChnl)
 
-	assureNewLedgerHeading(newLedgerHeading, level, theLedgerDigest)
+	assureFreshIteration(freshIterationChnl, altitude, iteration+1)
 
-	cs1.transferAlerter.(*mockTransferAlerter).Alert()
+	//
+	attestAppendBallots(cs1, commitchema.PreendorseKind, thatLedgerDigest, thatLedgerFragments, true, vs4)
 
-	assureNewDeadline(deadlineNominateChan, level+1, duration, cs1.settings.Nominate(duration).Nanoseconds())
-	rs = cs1.FetchDurationStatus()
+	assureFreshLedgerHeading(freshLedgerHeading, altitude, thatLedgerDigest)
+
+	cs1.transferObserver.(*mockedTransferObserver).Alert()
+
+	assureFreshDeadline(deadlineNominateChnl, altitude+1, iteration, cs1.settings.Nominate(iteration).Nanoseconds())
+	rs = cs1.ObtainIterationStatus()
 	assert.False(
 		t,
 		rs.ActivatedDeadlinePreendorse,
 		"REDACTED")
 }
 
-func VerifyRestoreDeadlinePreendorseOnNewLevel(t *testing.T) {
+func VerifyRestoreDeadlinePreendorseOnFreshAltitude(t *testing.T) {
 	ctx := t.Context()
 
 	settings.Agreement.OmitDeadlineEndorse = false
-	cs1, vss := randomStatus(4)
+	cs1, vss := arbitraryStatus(4)
 
 	vs2, vs3, vs4 := vss[1], vss[2], vss[3]
-	level, duration := cs1.Level, cs1.Cycle
+	altitude, iteration := cs1.Altitude, cs1.Iteration
 
-	segmentVolume := kinds.LedgerSegmentVolumeOctets
+	fragmentExtent := kinds.LedgerFragmentExtentOctets
 
-	nominationChan := enrol(cs1.eventBus, kinds.EventInquireFinishedNomination)
+	nominationChnl := listen(cs1.incidentChannel, kinds.IncidentInquireFinishNomination)
 
-	newEpochChan := enrol(cs1.eventBus, kinds.EventInquireNewEpoch)
-	newLedgerHeading := enrol(cs1.eventBus, kinds.EventInquireNewLedgerHeading)
-	pv1, err := cs1.privateRatifier.FetchPublicKey()
+	freshIterationChnl := listen(cs1.incidentChannel, kinds.IncidentInquireFreshIteration)
+	freshLedgerHeading := listen(cs1.incidentChannel, kinds.IncidentInquireFreshLedgerHeading)
+	pv1, err := cs1.privateAssessor.ObtainPublicToken()
 	require.NoError(t, err)
-	address := pv1.Location()
-	ballotChan := enrolToPoller(cs1, address)
+	location := pv1.Location()
+	ballotChnl := listenTowardBalloter(cs1, location)
 
 	//
-	beginVerifyEpoch(cs1, level, duration)
-	assureNewEpoch(newEpochChan, level, duration)
+	initiateVerifyIteration(cs1, altitude, iteration)
+	assureFreshIteration(freshIterationChnl, altitude, iteration)
 
-	assureNewNomination(nominationChan, level, duration)
-	rs := cs1.FetchDurationStatus()
-	theLedgerDigest := rs.NominationLedger.Digest()
-	theLedgerSegments := rs.NominationLedgerSegments.Heading()
+	assureFreshNomination(nominationChnl, altitude, iteration)
+	rs := cs1.ObtainIterationStatus()
+	thatLedgerDigest := rs.NominationLedger.Digest()
+	thatLedgerFragments := rs.NominationLedgerFragments.Heading()
 
-	assurePreballot(ballotChan, level, duration)
-	certifyPreballot(t, cs1, duration, vss[0], theLedgerDigest)
+	assurePreballot(ballotChnl, altitude, iteration)
+	certifyPreballot(t, cs1, iteration, vss[0], thatLedgerDigest)
 
-	attestAppendBallots(cs1, engineproto.PreballotKind, theLedgerDigest, theLedgerSegments, false, vs2, vs3, vs4)
+	attestAppendBallots(cs1, commitchema.PreballotKind, thatLedgerDigest, thatLedgerFragments, false, vs2, vs3, vs4)
 
-	assurePreendorse(ballotChan, level, duration)
-	certifyPreendorse(t, cs1, duration, duration, vss[0], theLedgerDigest, theLedgerDigest)
+	assurePreendorse(ballotChnl, altitude, iteration)
+	certifyPreendorse(t, cs1, iteration, iteration, vss[0], thatLedgerDigest, thatLedgerDigest)
 
 	//
-	attestAppendBallots(cs1, engineproto.PreendorseKind, nil, kinds.SegmentAssignHeading{}, true, vs2)
-	attestAppendBallots(cs1, engineproto.PreendorseKind, theLedgerDigest, theLedgerSegments, true, vs3)
-	attestAppendBallots(cs1, engineproto.PreendorseKind, theLedgerDigest, theLedgerSegments, true, vs4)
+	attestAppendBallots(cs1, commitchema.PreendorseKind, nil, kinds.FragmentAssignHeading{}, true, vs2)
+	attestAppendBallots(cs1, commitchema.PreendorseKind, thatLedgerDigest, thatLedgerFragments, true, vs3)
+	attestAppendBallots(cs1, commitchema.PreendorseKind, thatLedgerDigest, thatLedgerFragments, true, vs4)
 
-	assureNewLedgerHeading(newLedgerHeading, level, theLedgerDigest)
+	assureFreshLedgerHeading(freshLedgerHeading, altitude, thatLedgerDigest)
 
-	nomination, nominationLedger := determineNomination(ctx, t, cs1, vs2, level+1, 0)
-	nominationLedgerSegments, err := nominationLedger.CreateSegmentAssign(segmentVolume)
+	item, itemLedger := resolveNomination(ctx, t, cs1, vs2, altitude+1, 0)
+	itemLedgerFragments, err := itemLedger.CreateFragmentAssign(fragmentExtent)
 	require.NoError(t, err)
 
-	if err := cs1.CollectionNominationAndLedger(nomination, nominationLedger, nominationLedgerSegments, "REDACTED"); err != nil {
+	if err := cs1.AssignNominationAlsoLedger(item, itemLedger, itemLedgerFragments, "REDACTED"); err != nil {
 		t.Fatal(err)
 	}
-	assureNewNomination(nominationChan, level+1, 0)
+	assureFreshNomination(nominationChnl, altitude+1, 0)
 
-	rs = cs1.FetchDurationStatus()
+	rs = cs1.ObtainIterationStatus()
 	assert.False(
 		t,
 		rs.ActivatedDeadlinePreendorse,
@@ -2383,54 +2383,54 @@ o
 
 //
 //
-func VerifyStatusHalt1(t *testing.T) {
-	cs1, vss := randomStatus(4)
+func VerifyStatusStop1(t *testing.T) {
+	cs1, vss := arbitraryStatus(4)
 	vs2, vs3, vs4 := vss[1], vss[2], vss[3]
-	level, duration := cs1.Level, cs1.Cycle
-	segmentVolume := kinds.LedgerSegmentVolumeOctets
+	altitude, iteration := cs1.Altitude, cs1.Iteration
+	fragmentExtent := kinds.LedgerFragmentExtentOctets
 
-	nominationChan := enrol(cs1.eventBus, kinds.EventInquireFinishedNomination)
-	deadlineWaitChan := enrol(cs1.eventBus, kinds.EventInquireDeadlineWait)
-	newEpochChan := enrol(cs1.eventBus, kinds.EventInquireNewEpoch)
-	newLedgerChan := enrol(cs1.eventBus, kinds.EventInquireNewLedger)
-	pv1, err := cs1.privateRatifier.FetchPublicKey()
+	nominationChnl := listen(cs1.incidentChannel, kinds.IncidentInquireFinishNomination)
+	deadlinePauseChnl := listen(cs1.incidentChannel, kinds.IncidentInquireDeadlinePause)
+	freshIterationChnl := listen(cs1.incidentChannel, kinds.IncidentInquireFreshIteration)
+	freshLedgerChnl := listen(cs1.incidentChannel, kinds.IncidentInquireFreshLedger)
+	pv1, err := cs1.privateAssessor.ObtainPublicToken()
 	require.NoError(t, err)
-	address := pv1.Location()
-	ballotChan := enrolToPoller(cs1, address)
+	location := pv1.Location()
+	ballotChnl := listenTowardBalloter(cs1, location)
 
 	//
-	beginVerifyEpoch(cs1, level, duration)
-	assureNewEpoch(newEpochChan, level, duration)
+	initiateVerifyIteration(cs1, altitude, iteration)
+	assureFreshIteration(freshIterationChnl, altitude, iteration)
 
-	assureNewNomination(nominationChan, level, duration)
-	rs := cs1.FetchDurationStatus()
-	nominationLedger := rs.NominationLedger
-	nominationLedgerSegments, err := nominationLedger.CreateSegmentAssign(segmentVolume)
+	assureFreshNomination(nominationChnl, altitude, iteration)
+	rs := cs1.ObtainIterationStatus()
+	itemLedger := rs.NominationLedger
+	itemLedgerFragments, err := itemLedger.CreateFragmentAssign(fragmentExtent)
 	require.NoError(t, err)
 
-	assurePreballot(ballotChan, level, duration)
+	assurePreballot(ballotChnl, altitude, iteration)
 
-	attestAppendBallots(cs1, engineproto.PreballotKind, nominationLedger.Digest(), nominationLedgerSegments.Heading(), false, vs2, vs3, vs4)
+	attestAppendBallots(cs1, commitchema.PreballotKind, itemLedger.Digest(), itemLedgerFragments.Heading(), false, vs2, vs3, vs4)
 
-	assurePreendorse(ballotChan, level, duration)
+	assurePreendorse(ballotChnl, altitude, iteration)
 	//
-	certifyPreendorse(t, cs1, duration, duration, vss[0], nominationLedger.Digest(), nominationLedger.Digest())
-
-	//
-	attestAppendBallots(cs1, engineproto.PreendorseKind, nil, kinds.SegmentAssignHeading{}, true, vs2) //
-	attestAppendBallots(cs1, engineproto.PreendorseKind, nominationLedger.Digest(), nominationLedgerSegments.Heading(), true, vs3)
-	//
-	preendorse4 := attestBallot(vs4, engineproto.PreendorseKind, nominationLedger.Digest(), nominationLedgerSegments.Heading(), true)
-
-	augmentEpoch(vs2, vs3, vs4)
+	certifyPreendorse(t, cs1, iteration, iteration, vss[0], itemLedger.Digest(), itemLedger.Digest())
 
 	//
-	assureNewDeadline(deadlineWaitChan, level, duration, cs1.settings.Preendorse(duration).Nanoseconds())
+	attestAppendBallots(cs1, commitchema.PreendorseKind, nil, kinds.FragmentAssignHeading{}, true, vs2) //
+	attestAppendBallots(cs1, commitchema.PreendorseKind, itemLedger.Digest(), itemLedgerFragments.Heading(), true, vs3)
+	//
+	preendorse4 := attestBallot(vs4, commitchema.PreendorseKind, itemLedger.Digest(), itemLedgerFragments.Heading(), true)
 
-	duration++ //
+	advanceIteration(vs2, vs3, vs4)
 
-	assureNewEpoch(newEpochChan, level, duration)
-	rs = cs1.FetchDurationStatus()
+	//
+	assureFreshDeadline(deadlinePauseChnl, altitude, iteration, cs1.settings.Preendorse(iteration).Nanoseconds())
+
+	iteration++ //
+
+	assureFreshIteration(freshIterationChnl, altitude, iteration)
+	rs = cs1.ObtainIterationStatus()
 
 	t.Log("REDACTED")
 	/*2
@@ -2439,108 +2439,108 @@ k
 */
 
 	//
-	assurePreballot(ballotChan, level, duration)
-	certifyPreballot(t, cs1, duration, vss[0], rs.LatchedLedger.Digest())
+	assurePreballot(ballotChnl, altitude, iteration)
+	certifyPreballot(t, cs1, iteration, vss[0], rs.SecuredLedger.Digest())
 
 	//
 	appendBallots(cs1, preendorse4)
 
 	//
-	assureNewLedger(newLedgerChan, level)
+	assureFreshLedger(freshLedgerChnl, altitude)
 
-	assureNewEpoch(newEpochChan, level+1, 0)
+	assureFreshIteration(freshIterationChnl, altitude+1, 0)
 }
 
-func VerifyStatusResultsLedgerSegmentsMetrics(t *testing.T) {
+func VerifyStatusYieldsLedgerFragmentsMetrics(t *testing.T) {
 	//
-	cs, _ := randomStatus(1)
-	node := p2pemulator.NewNode(nil)
+	cs, _ := arbitraryStatus(1)
+	node := nodestub.FreshNode(nil)
 
 	//
-	segments := kinds.NewSegmentCollectionFromData(engineseed.Octets(100), 10)
-	msg := &LedgerSegmentSignal{
-		Level: 1,
-		Cycle:  0,
-		Segment:   segments.FetchSegment(0),
+	fragments := kinds.FreshFragmentAssignOriginatingData(commitrand.Octets(100), 10)
+	msg := &LedgerFragmentSignal{
+		Altitude: 1,
+		Iteration:  0,
+		Fragment:   fragments.ObtainFragment(0),
 	}
 
-	cs.NominationLedgerSegments = kinds.NewSegmentCollectionFromHeading(segments.Heading())
-	cs.processMessage(messageDetails{msg, node.ID()})
+	cs.NominationLedgerFragments = kinds.FreshFragmentAssignOriginatingHeading(fragments.Heading())
+	cs.processSignal(signalDetails{msg, node.ID()})
 
-	metricsSignal := <-cs.metricsMessageBuffer
+	metricsSignal := <-cs.metricsSignalStaging
 	require.Equal(t, msg, metricsSignal.Msg, "REDACTED")
-	require.Equal(t, node.ID(), metricsSignal.NodeUID, "REDACTED")
+	require.Equal(t, node.ID(), metricsSignal.NodeUUID, "REDACTED")
 
 	//
-	cs.processMessage(messageDetails{msg, "REDACTED"})
+	cs.processSignal(signalDetails{msg, "REDACTED"})
 
 	//
-	msg.Cycle = 1
-	cs.processMessage(messageDetails{msg, node.ID()})
+	msg.Iteration = 1
+	cs.processSignal(signalDetails{msg, node.ID()})
 
 	//
-	msg.Level = 0
-	cs.processMessage(messageDetails{msg, node.ID()})
+	msg.Altitude = 0
+	cs.processSignal(signalDetails{msg, node.ID()})
 
 	//
-	msg.Level = 3
-	cs.processMessage(messageDetails{msg, node.ID()})
+	msg.Altitude = 3
+	cs.processSignal(signalDetails{msg, node.ID()})
 
 	select {
-	case <-cs.metricsMessageBuffer:
+	case <-cs.metricsSignalStaging:
 		t.Errorf("REDACTED")
 	case <-time.After(50 * time.Millisecond):
 	}
 }
 
-func VerifyStatusResultBallotMetrics(t *testing.T) {
-	cs, vss := randomStatus(2)
+func VerifyStatusEmissionBallotMetrics(t *testing.T) {
+	cs, vss := arbitraryStatus(2)
 	//
-	node := p2pemulator.NewNode(nil)
+	node := nodestub.FreshNode(nil)
 
-	randomOctets := engineseed.Octets(comethash.Volume)
+	arbitraryOctets := commitrand.Octets(tenderminthash.Extent)
 
-	ballot := attestBallot(vss[1], engineproto.PreendorseKind, randomOctets, kinds.SegmentAssignHeading{}, true)
+	ballot := attestBallot(vss[1], commitchema.PreendorseKind, arbitraryOctets, kinds.FragmentAssignHeading{}, true)
 
 	ballotSignal := &BallotSignal{ballot}
-	cs.processMessage(messageDetails{ballotSignal, node.ID()})
+	cs.processSignal(signalDetails{ballotSignal, node.ID()})
 
-	metricsSignal := <-cs.metricsMessageBuffer
+	metricsSignal := <-cs.metricsSignalStaging
 	require.Equal(t, ballotSignal, metricsSignal.Msg, "REDACTED")
-	require.Equal(t, node.ID(), metricsSignal.NodeUID, "REDACTED")
+	require.Equal(t, node.ID(), metricsSignal.NodeUUID, "REDACTED")
 
 	//
-	cs.processMessage(messageDetails{&BallotSignal{ballot}, "REDACTED"})
+	cs.processSignal(signalDetails{&BallotSignal{ballot}, "REDACTED"})
 
 	//
-	augmentLevel(vss[1])
-	ballot = attestBallot(vss[1], engineproto.PreendorseKind, randomOctets, kinds.SegmentAssignHeading{}, true)
+	advanceAltitude(vss[1])
+	ballot = attestBallot(vss[1], commitchema.PreendorseKind, arbitraryOctets, kinds.FragmentAssignHeading{}, true)
 
-	cs.processMessage(messageDetails{&BallotSignal{ballot}, node.ID()})
+	cs.processSignal(signalDetails{&BallotSignal{ballot}, node.ID()})
 
 	select {
-	case <-cs.metricsMessageBuffer:
+	case <-cs.metricsSignalStaging:
 		t.Errorf("REDACTED")
 	case <-time.After(50 * time.Millisecond):
 	}
 }
 
-func VerifyAttestIdenticalBallotTwice(t *testing.T) {
-	_, vss := randomStatus(2)
+func VerifyAttestIdenticalBallotBis(t *testing.T) {
+	_, vss := arbitraryStatus(2)
 
-	randomOctets := engineseed.Octets(comethash.Volume)
+	arbitraryOctets := commitrand.Octets(tenderminthash.Extent)
 
 	ballot := attestBallot(vss[1],
-		engineproto.PreendorseKind,
-		randomOctets,
-		kinds.SegmentAssignHeading{Sum: 10, Digest: randomOctets},
+		commitchema.PreendorseKind,
+		arbitraryOctets,
+		kinds.FragmentAssignHeading{Sum: 10, Digest: arbitraryOctets},
 		true,
 	)
 
 	ballot2 := attestBallot(vss[1],
-		engineproto.PreendorseKind,
-		randomOctets,
-		kinds.SegmentAssignHeading{Sum: 10, Digest: randomOctets},
+		commitchema.PreendorseKind,
+		arbitraryOctets,
+		kinds.FragmentAssignHeading{Sum: 10, Digest: arbitraryOctets},
 		true,
 	)
 
@@ -2548,61 +2548,61 @@ func VerifyAttestIdenticalBallotTwice(t *testing.T) {
 }
 
 //
-func enrol(eventBus *kinds.EventBus, q cometbroadcast.Inquire) <-chan cometbroadcast.Signal {
-	sub, err := eventBus.Enrol(context.Background(), verifyEnrollee, q)
+func listen(incidentChannel *kinds.IncidentChannel, q tendermintpubsub.Inquire) <-chan tendermintpubsub.Signal {
+	sub, err := incidentChannel.Listen(context.Background(), verifyListener, q)
 	if err != nil {
-		panic(fmt.Sprintf("REDACTED", verifyEnrollee, q))
+		panic(fmt.Sprintf("REDACTED", verifyListener, q))
 	}
 	return sub.Out()
 }
 
 //
-func enrolUnCached(eventBus *kinds.EventBus, q cometbroadcast.Inquire) <-chan cometbroadcast.Signal {
-	sub, err := eventBus.EnrolUnbuffered(context.Background(), verifyEnrollee, q)
+func listenNegCached(incidentChannel *kinds.IncidentChannel, q tendermintpubsub.Inquire) <-chan tendermintpubsub.Signal {
+	sub, err := incidentChannel.ListenUncached(context.Background(), verifyListener, q)
 	if err != nil {
-		panic(fmt.Sprintf("REDACTED", verifyEnrollee, q))
+		panic(fmt.Sprintf("REDACTED", verifyListener, q))
 	}
 	return sub.Out()
 }
 
-func attestAppendPreendorseWithAddition(
+func attestAppendPreendorseUsingAddition(
 	t *testing.T,
 	cs *Status,
 	digest []byte,
-	heading kinds.SegmentAssignHeading,
+	heading kinds.FragmentAssignHeading,
 	addition []byte,
-	proxy *ratifierProxy,
+	mock *assessorMock,
 ) {
-	v, err := proxy.attestBallot(engineproto.PreendorseKind, digest, heading, addition, true)
+	v, err := mock.attestBallot(commitchema.PreendorseKind, digest, heading, addition, true)
 	require.NoError(t, err, "REDACTED")
 	appendBallots(cs, v)
 }
 
-func locateLedgerVolumeCeiling(t *testing.T, level, maximumOctets int64, cs *Status, segmentVolume uint32, excessive bool) (*kinds.Ledger, *kinds.SegmentCollection) {
+func locateLedgerExtentThreshold(t *testing.T, altitude, maximumOctets int64, cs *Status, fragmentExtent uint32, bulky bool) (*kinds.Ledger, *kinds.FragmentAssign) {
 	var displacement int64
-	if !excessive {
+	if !bulky {
 		displacement = -2
 	}
 	gentleMaximumDataOctets := int(kinds.MaximumDataOctets(maximumOctets, 0, 0))
 	for i := gentleMaximumDataOctets; i < gentleMaximumDataOctets*2; i++ {
-		nominationLedger, err := cs.status.CreateLedger(
-			level,
+		itemLedger, err := cs.status.CreateLedger(
+			altitude,
 			[]kinds.Tx{[]byte("REDACTED" + strings.Repeat("REDACTED", i-2))},
 			&kinds.Endorse{},
 			nil,
-			cs.privateRatifierPublicKey.Location(),
+			cs.privateAssessorPublicToken.Location(),
 		)
 		require.NoError(t, err)
 
-		nominationLedgerSegments, err := nominationLedger.CreateSegmentAssign(segmentVolume)
+		itemLedgerFragments, err := itemLedger.CreateFragmentAssign(fragmentExtent)
 		require.NoError(t, err)
-		if nominationLedgerSegments.OctetVolume() > maximumOctets+displacement {
+		if itemLedgerFragments.OctetExtent() > maximumOctets+displacement {
 			s := "REDACTED"
-			if excessive {
+			if bulky {
 				s = "REDACTED"
 			}
 			t.Log("REDACTED"+s+"REDACTED", "REDACTED", i, "REDACTED", gentleMaximumDataOctets)
-			return nominationLedger, nominationLedgerSegments
+			return itemLedger, itemLedgerFragments
 		}
 	}
 	require.Fail(t, "REDACTED")

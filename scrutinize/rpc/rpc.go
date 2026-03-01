@@ -7,89 +7,89 @@ import (
 
 	"github.com/rs/cors"
 
-	"github.com/valkyrieworks/settings"
-	"github.com/valkyrieworks/utils/log"
-	"github.com/valkyrieworks/rpc/core"
-	"github.com/valkyrieworks/rpc/jsonrpc/host"
-	"github.com/valkyrieworks/status"
-	"github.com/valkyrieworks/status/ordinaler"
-	"github.com/valkyrieworks/status/transordinal"
+	"github.com/valkyrieworks/dffc4ef0-4ec6-4346-9b6c-d0a0cb42d94b/settings"
+	"github.com/valkyrieworks/dffc4ef0-4ec6-4346-9b6c-d0a0cb42d94b/utils/log"
+	"github.com/valkyrieworks/dffc4ef0-4ec6-4346-9b6c-d0a0cb42d94b/rpc/base"
+	"github.com/valkyrieworks/dffc4ef0-4ec6-4346-9b6c-d0a0cb42d94b/rpc/jsoniface/node"
+	"github.com/valkyrieworks/dffc4ef0-4ec6-4346-9b6c-d0a0cb42d94b/status"
+	"github.com/valkyrieworks/dffc4ef0-4ec6-4346-9b6c-d0a0cb42d94b/status/ordinalizer"
+	"github.com/valkyrieworks/dffc4ef0-4ec6-4346-9b6c-d0a0cb42d94b/status/transferordinal"
 )
 
 //
-type Host struct {
-	Address    string //
-	Manager http.Handler
+type Daemon struct {
+	Location    string //
+	Processor http.Handler
 	Tracer  log.Tracer
-	Settings  *settings.RPCSettings
+	Settings  *settings.RemoteSettings
 }
 
 //
-func Paths(cfg settings.RPCSettings, s status.Depot, bs status.LedgerDepot, transferidx transordinal.TransOrdinaler, ledgeridx ordinaler.LedgerOrdinaler, tracer log.Tracer) core.PathsIndex { //
-	env := &core.Context{
+func Paths(cfg settings.RemoteSettings, s status.Depot, bs status.LedgerDepot, transoffset transferordinal.TransferOrdinalizer, ldgoffset ordinalizer.LedgerOrdinalizer, tracer log.Tracer) base.PathsIndex { //
+	env := &base.Context{
 		Settings:           cfg,
-		LedgerOrdinaler:     ledgeridx,
-		TransOrdinaler:        transferidx,
+		LedgerOrdinalizer:     ldgoffset,
+		TransferOrdinalizer:        transoffset,
 		StatusDepot:       s,
 		LedgerDepot:       bs,
-		AgreementHandler: waitAlignValidatorImpl{},
+		AgreementHandler: pauseChronizeValidatorImplementation{},
 		Tracer:           tracer,
 	}
-	return core.PathsIndex{
-		"REDACTED":       host.NewRPCFunction(env.LedgerchainDetails, "REDACTED"),
-		"REDACTED": host.NewRPCFunction(env.AgreementOptions, "REDACTED"),
-		"REDACTED":            host.NewRPCFunction(env.Ledger, "REDACTED"),
-		"REDACTED":    host.NewRPCFunction(env.LedgerByDigest, "REDACTED"),
-		"REDACTED":    host.NewRPCFunction(env.LedgerOutcomes, "REDACTED"),
-		"REDACTED":           host.NewRPCFunction(env.Endorse, "REDACTED"),
-		"REDACTED":           host.NewRPCFunction(env.Heading, "REDACTED"),
-		"REDACTED":   host.NewRPCFunction(env.HeadingByDigest, "REDACTED"),
-		"REDACTED":       host.NewRPCFunction(env.Ratifiers, "REDACTED"),
-		"REDACTED":               host.NewRPCFunction(env.Tx, "REDACTED"),
-		"REDACTED":        host.NewRPCFunction(env.TransferScan, "REDACTED"),
-		"REDACTED":     host.NewRPCFunction(env.LedgerScan, "REDACTED"),
+	return base.PathsIndex{
+		"REDACTED":       node.FreshRemoteMethod(env.LedgerchainDetails, "REDACTED"),
+		"REDACTED": node.FreshRemoteMethod(env.AgreementSettings, "REDACTED"),
+		"REDACTED":            node.FreshRemoteMethod(env.Ledger, "REDACTED"),
+		"REDACTED":    node.FreshRemoteMethod(env.LedgerViaDigest, "REDACTED"),
+		"REDACTED":    node.FreshRemoteMethod(env.LedgerOutcomes, "REDACTED"),
+		"REDACTED":           node.FreshRemoteMethod(env.Endorse, "REDACTED"),
+		"REDACTED":           node.FreshRemoteMethod(env.Heading, "REDACTED"),
+		"REDACTED":   node.FreshRemoteMethod(env.HeadingViaDigest, "REDACTED"),
+		"REDACTED":       node.FreshRemoteMethod(env.Assessors, "REDACTED"),
+		"REDACTED":               node.FreshRemoteMethod(env.Tx, "REDACTED"),
+		"REDACTED":        node.FreshRemoteMethod(env.TransferLookup, "REDACTED"),
+		"REDACTED":     node.FreshRemoteMethod(env.LedgerLookup, "REDACTED"),
 	}
 }
 
 //
 //
 //
-func Manager(rpcSettings *settings.RPCSettings, paths core.PathsIndex, tracer log.Tracer) http.Handler {
+func Processor(remoteSettings *settings.RemoteSettings, paths base.PathsIndex, tracer log.Tracer) http.Handler {
 	mux := http.NewServeMux()
-	wmTracer := tracer.With("REDACTED", "REDACTED")
-	wm := host.NewWebchannelOverseer(paths,
-		host.ScanCeiling(rpcSettings.MaximumContentOctets))
-	wm.AssignTracer(wmTracer)
-	mux.HandleFunc("REDACTED", wm.WebchannelManager)
+	watermarkTracer := tracer.Using("REDACTED", "REDACTED")
+	wm := node.FreshWebterminalAdministrator(paths,
+		node.RetrieveThreshold(remoteSettings.MaximumContentOctets))
+	wm.AssignTracer(watermarkTracer)
+	mux.HandleFunc("REDACTED", wm.WebterminalProcessor)
 
-	host.EnrollRPCRoutines(mux, paths, tracer)
-	var originManager http.Handler = mux
-	if rpcSettings.IsCorsActivated() {
-		originManager = appendCORSManager(rpcSettings, mux)
+	node.EnrollRemoteRoutines(mux, paths, tracer)
+	var originProcessor http.Handler = mux
+	if remoteSettings.EqualsCrossoriginActivated() {
+		originProcessor = appendCrossoriginProcessor(remoteSettings, mux)
 	}
-	return originManager
+	return originProcessor
 }
 
-func appendCORSManager(rpcSettings *settings.RPCSettings, h http.Handler) http.Handler {
-	corsInterceptor := cors.New(cors.Options{
-		AllowedOrigins: rpcSettings.CORSPermittedSources,
-		AllowedMethods: rpcSettings.CORSPermittedTechniques,
-		AllowedHeaders: rpcSettings.CORSPermittedHeadings,
+func appendCrossoriginProcessor(remoteSettings *settings.RemoteSettings, h http.Handler) http.Handler {
+	crossoriginIntermediary := cors.New(cors.Options{
+		AllowedOrigins: remoteSettings.CrossoriginPermittedSources,
+		AllowedMethods: remoteSettings.CrossoriginPermittedApproaches,
+		AllowedHeaders: remoteSettings.CrossoriginPermittedHeadings,
 	})
-	h = corsInterceptor.Handler(h)
+	h = crossoriginIntermediary.Handler(h)
 	return h
 }
 
-type waitAlignValidatorImpl struct{}
+type pauseChronizeValidatorImplementation struct{}
 
-func (waitAlignValidatorImpl) WaitAlign() bool {
+func (pauseChronizeValidatorImplementation) AwaitChronize() bool {
 	return false
 }
 
 //
 //
-func (srv *Host) AcceptAndHost(ctx context.Context) error {
-	observer, err := host.Observe(srv.Address, srv.Settings.MaximumAccessLinks)
+func (srv *Daemon) OverhearAlsoAttend(ctx context.Context) error {
+	observer, err := node.Overhear(srv.Location, srv.Settings.MaximumInitiateLinks)
 	if err != nil {
 		return err
 	}
@@ -97,13 +97,13 @@ func (srv *Host) AcceptAndHost(ctx context.Context) error {
 		<-ctx.Done()
 		observer.Close()
 	}()
-	return host.Attend(observer, srv.Manager, srv.Tracer, hostRPCSettings(srv.Settings))
+	return node.Attend(observer, srv.Processor, srv.Tracer, daemonRemoteSettings(srv.Settings))
 }
 
 //
 //
-func (srv *Host) ObserveAndAttendTLS(ctx context.Context, tokenEntry, keyEntry string) error {
-	observer, err := host.Observe(srv.Address, srv.Settings.MaximumAccessLinks)
+func (srv *Daemon) OverhearAlsoAttendTransportsec(ctx context.Context, licenseRecord, tokenRecord string) error {
+	observer, err := node.Overhear(srv.Location, srv.Settings.MaximumInitiateLinks)
 	if err != nil {
 		return err
 	}
@@ -111,18 +111,18 @@ func (srv *Host) ObserveAndAttendTLS(ctx context.Context, tokenEntry, keyEntry s
 		<-ctx.Done()
 		observer.Close()
 	}()
-	return host.AttendTLS(observer, srv.Manager, tokenEntry, keyEntry, srv.Tracer, hostRPCSettings(srv.Settings))
+	return node.AttendTransportsec(observer, srv.Processor, licenseRecord, tokenRecord, srv.Tracer, daemonRemoteSettings(srv.Settings))
 }
 
-func hostRPCSettings(r *settings.RPCSettings) *host.Settings {
-	cfg := host.StandardSettings()
+func daemonRemoteSettings(r *settings.RemoteSettings) *node.Settings {
+	cfg := node.FallbackSettings()
 	cfg.MaximumContentOctets = r.MaximumContentOctets
 	cfg.MaximumHeadingOctets = r.MaximumHeadingOctets
 	//
 	//
 	//
-	if cfg.RecordDeadline <= r.DeadlineMulticastTransEndorse {
-		cfg.RecordDeadline = r.DeadlineMulticastTransEndorse + 1*time.Second
+	if cfg.PersistDeadline <= r.DeadlineMulticastTransferEndorse {
+		cfg.PersistDeadline = r.DeadlineMulticastTransferEndorse + 1*time.Second
 	}
 	return cfg
 }

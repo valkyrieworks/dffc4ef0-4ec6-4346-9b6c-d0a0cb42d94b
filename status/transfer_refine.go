@@ -1,26 +1,26 @@
 package status
 
 import (
-	txpool "github.com/valkyrieworks/txpool"
-	"github.com/valkyrieworks/kinds"
+	txpooll "github.com/valkyrieworks/dffc4ef0-4ec6-4346-9b6c-d0a0cb42d94b/txpool"
+	"github.com/valkyrieworks/dffc4ef0-4ec6-4346-9b6c-d0a0cb42d94b/kinds"
 )
 
 //
 //
-func TransferPreInspect(status Status) txpool.PreInspectFunction {
-	maximumOctets := status.AgreementOptions.Ledger.MaximumOctets
+func TransferPriorInspect(status Status) txpooll.PriorInspectMethod {
+	maximumOctets := status.AgreementSettings.Ledger.MaximumOctets
 	if maximumOctets == -1 {
-		maximumOctets = int64(kinds.MaximumLedgerVolumeOctets)
+		maximumOctets = int64(kinds.MaximumLedgerExtentOctets)
 	}
-	maximumDataOctets := kinds.MaximumDataOctetsNoProof(
+	maximumDataOctets := kinds.MaximumDataOctetsNegativeProof(
 		maximumOctets,
-		status.Ratifiers.Volume(),
+		status.Assessors.Extent(),
 	)
-	return txpool.PreInspectMaximumOctets(maximumDataOctets)
+	return txpooll.PriorInspectMaximumOctets(maximumDataOctets)
 }
 
 //
 //
-func TransferSubmitInspect(status Status) txpool.SubmitInspectFunction {
-	return txpool.SubmitInspectMaximumFuel(status.AgreementOptions.Ledger.MaximumFuel)
+func TransferRelayInspect(status Status) txpooll.RelayInspectMethod {
+	return txpooll.SubmitInspectMaximumFuel(status.AgreementSettings.Ledger.MaximumFuel)
 }

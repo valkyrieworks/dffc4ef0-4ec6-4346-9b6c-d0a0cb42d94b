@@ -1,4 +1,4 @@
-package main
+package primary
 
 import (
 	"bytes"
@@ -10,101 +10,101 @@ import (
 	"path/filepath"
 	"time"
 
-	"github.com/valkyrieworks/vault"
-	"github.com/valkyrieworks/vault/comethash"
-	"github.com/valkyrieworks/intrinsic/verify"
-	cometjson "github.com/valkyrieworks/utils/json"
-	"github.com/valkyrieworks/privatekey"
-	engineproto "github.com/valkyrieworks/schema/consensuscore/kinds"
-	cometrelease "github.com/valkyrieworks/schema/consensuscore/release"
-	e2e "github.com/valkyrieworks/verify/e2e/pkg"
-	"github.com/valkyrieworks/kinds"
-	"github.com/valkyrieworks/release"
+	"github.com/valkyrieworks/dffc4ef0-4ec6-4346-9b6c-d0a0cb42d94b/security"
+	"github.com/valkyrieworks/dffc4ef0-4ec6-4346-9b6c-d0a0cb42d94b/security/tenderminthash"
+	"github.com/valkyrieworks/dffc4ef0-4ec6-4346-9b6c-d0a0cb42d94b/intrinsic/verify"
+	strongmindjson "github.com/valkyrieworks/dffc4ef0-4ec6-4346-9b6c-d0a0cb42d94b/utils/jsn"
+	"github.com/valkyrieworks/dffc4ef0-4ec6-4346-9b6c-d0a0cb42d94b/privatevalue"
+	commitchema "github.com/valkyrieworks/dffc4ef0-4ec6-4346-9b6c-d0a0cb42d94b/schema/strongmind/kinds"
+	strongmindedition "github.com/valkyrieworks/dffc4ef0-4ec6-4346-9b6c-d0a0cb42d94b/schema/strongmind/edition"
+	e2e "github.com/valkyrieworks/dffc4ef0-4ec6-4346-9b6c-d0a0cb42d94b/verify/e2e/pkg"
+	"github.com/valkyrieworks/dffc4ef0-4ec6-4346-9b6c-d0a0cb42d94b/kinds"
+	"github.com/valkyrieworks/dffc4ef0-4ec6-4346-9b6c-d0a0cb42d94b/edition"
 )
 
 //
-const rapidCustomerProofProportion = 4
+const agileCustomerProofProportion = 4
 
 //
 //
 //
 //
-func InsertProof(ctx context.Context, r *rand.Rand, verifychain *e2e.Verifychain, quantity int) error {
+func IntroduceProof(ctx context.Context, r *rand.Rand, simnet *e2e.Simnet, quantity int) error {
 	//
-	var objectiveMember *e2e.Member
+	var objectivePeer *e2e.Peer
 
-	for _, idx := range r.Perm(len(verifychain.Instances)) {
-		objectiveMember = verifychain.Instances[idx]
+	for _, idx := range r.Perm(len(simnet.Peers)) {
+		objectivePeer = simnet.Peers[idx]
 
-		if objectiveMember.Style == e2e.StyleOrigin || objectiveMember.Style == e2e.StyleRapid {
-			objectiveMember = nil
+		if objectivePeer.Style == e2e.StyleGerm || objectivePeer.Style == e2e.StyleAgile {
+			objectivePeer = nil
 			continue
 		}
 
 		break
 	}
 
-	if objectiveMember == nil {
+	if objectivePeer == nil {
 		return errors.New("REDACTED")
 	}
 
-	tracer.Details(fmt.Sprintf("REDACTED", objectiveMember.Label, quantity))
+	tracer.Details(fmt.Sprintf("REDACTED", objectivePeer.Alias, quantity))
 
-	customer, err := objectiveMember.Customer()
+	customer, err := objectivePeer.Customer()
 	if err != nil {
 		return err
 	}
 
 	//
-	ledgerOutput, err := customer.Ledger(ctx, nil)
+	ledgerResult, err := customer.Ledger(ctx, nil)
 	if err != nil {
 		return err
 	}
-	proofLevel := ledgerOutput.Ledger.Level
-	waitLevel := ledgerOutput.Ledger.Level + 3
+	proofAltitude := ledgerResult.Ledger.Altitude
+	pauseAltitude := ledgerResult.Ledger.Altitude + 3
 
-	nRatifiers := 100
-	valueOutput, err := customer.Ratifiers(ctx, &proofLevel, nil, &nRatifiers)
-	if err != nil {
-		return err
-	}
-
-	valueCollection, err := kinds.RatifierCollectionFromPresentRatifiers(valueOutput.Ratifiers)
+	nthAssessors := 100
+	itemResult, err := customer.Assessors(ctx, &proofAltitude, nil, &nthAssessors)
 	if err != nil {
 		return err
 	}
 
-	//
-	privateValues, err := fetchPrivateRatifierKeys(verifychain)
+	itemAssign, err := kinds.AssessorAssignOriginatingCurrentAssessors(itemResult.Assessors)
 	if err != nil {
 		return err
 	}
 
 	//
+	privateItems, err := obtainSecludedAssessorTokens(simnet)
+	if err != nil {
+		return err
+	}
+
 	//
-	_, err = waitForMember(ctx, objectiveMember, waitLevel, time.Minute)
+	//
+	_, err = pauseForeachPeer(ctx, objectivePeer, pauseAltitude, time.Minute)
 	if err != nil {
 		return err
 	}
 
 	var ev kinds.Proof
 	for i := 0; i < quantity; i++ {
-		soundEvt := true
-		if i%rapidCustomerProofProportion == 0 {
-			soundEvt = i%(rapidCustomerProofProportion*2) != 0 //
-			ev, err = composeRapidCustomerAssaultProof(
-				ctx, privateValues, proofLevel, valueCollection, verifychain.Label, ledgerOutput.Ledger.Time, soundEvt,
+		soundOccurence := true
+		if i%agileCustomerProofProportion == 0 {
+			soundOccurence = i%(agileCustomerProofProportion*2) != 0 //
+			ev, err = composeAgileCustomerOnslaughtProof(
+				ctx, privateItems, proofAltitude, itemAssign, simnet.Alias, ledgerResult.Ledger.Moment, soundOccurence,
 			)
 		} else {
 			var dve *kinds.ReplicatedBallotProof
 			dve, err = composeReplicatedBallotProof(
-				privateValues, proofLevel, valueCollection, verifychain.Label, ledgerOutput.Ledger.Time,
+				privateItems, proofAltitude, itemAssign, simnet.Alias, ledgerResult.Ledger.Moment,
 			)
-			if dve.BallotA.Level < verifychain.BallotPluginsActivateLevel {
-				dve.BallotA.Addition = nil
-				dve.BallotA.AdditionAutograph = nil
+			if dve.BallotAN.Altitude < simnet.BallotAdditionsActivateAltitude {
+				dve.BallotAN.Addition = nil
+				dve.BallotAN.AdditionNotation = nil
 				dve.BallotBYTE.Addition = nil
-				dve.BallotBYTE.AdditionAutograph = nil
+				dve.BallotBYTE.AdditionNotation = nil
 			}
 			ev = dve
 		}
@@ -113,12 +113,12 @@ func InsertProof(ctx context.Context, r *rand.Rand, verifychain *e2e.Verifychain
 		}
 
 		_, err := customer.MulticastProof(ctx, ev)
-		if !soundEvt {
+		if !soundOccurence {
 			//
 			//
 			quantity++
 		}
-		if soundEvt != (err == nil) {
+		if soundOccurence != (err == nil) {
 			if err == nil {
 				return errors.New("REDACTED")
 			}
@@ -129,88 +129,88 @@ func InsertProof(ctx context.Context, r *rand.Rand, verifychain *e2e.Verifychain
 
 	//
 	//
-	_, err = waitForMember(ctx, objectiveMember, ledgerOutput.Ledger.Level+2, 30*time.Second)
+	_, err = pauseForeachPeer(ctx, objectivePeer, ledgerResult.Ledger.Altitude+2, 30*time.Second)
 	if err != nil {
 		return err
 	}
 
-	tracer.Details(fmt.Sprintf("REDACTED", ledgerOutput.Ledger.Level+2))
+	tracer.Details(fmt.Sprintf("REDACTED", ledgerResult.Ledger.Altitude+2))
 
 	return nil
 }
 
-func fetchPrivateRatifierKeys(verifychain *e2e.Verifychain) ([]kinds.EmulatePV, error) {
-	privateValues := []kinds.EmulatePV{}
+func obtainSecludedAssessorTokens(simnet *e2e.Simnet) ([]kinds.SimulatePRV, error) {
+	privateItems := []kinds.SimulatePRV{}
 
-	for _, member := range verifychain.Instances {
-		if member.Style == e2e.StyleRatifier {
-			privateKeyRoute := filepath.Join(verifychain.Dir, member.Label, PrivatekeyKeyEntry)
-			privateKey, err := fetchPrivateKey(privateKeyRoute)
+	for _, peer := range simnet.Peers {
+		if peer.Style == e2e.StyleAssessor {
+			privateTokenRoute := filepath.Join(simnet.Dir, peer.Alias, PrivatevalueTokenRecord)
+			privateToken, err := retrievePrivateToken(privateTokenRoute)
 			if err != nil {
 				return nil, err
 			}
 			//
 			//
-			privateValues = append(privateValues, kinds.NewEmulatePVWithOptions(privateKey, false, false))
+			privateItems = append(privateItems, kinds.FreshSimulatePRVUsingParameters(privateToken, false, false))
 		}
 	}
 
-	return privateValues, nil
+	return privateItems, nil
 }
 
 //
 //
-func composeRapidCustomerAssaultProof(
+func composeAgileCustomerOnslaughtProof(
 	ctx context.Context,
-	privateValues []kinds.EmulatePV,
-	level int64,
-	values *kinds.RatifierAssign,
-	ledgerUID string,
-	evtTime time.Time,
+	privateItems []kinds.SimulatePRV,
+	altitude int64,
+	values *kinds.AssessorAssign,
+	successionUUID string,
+	occurenceMoment time.Time,
 	soundProof bool,
-) (*kinds.RapidCustomerAssaultProof, error) {
+) (*kinds.AgileCustomerOnslaughtProof, error) {
 	//
-	falsifiedLevel := level + 2
-	falsifiedTime := evtTime.Add(1 * time.Second)
-	heading := createHeadingArbitrary(ledgerUID, falsifiedLevel)
-	heading.Time = falsifiedTime
+	fabricatedAltitude := altitude + 2
+	fabricatedMoment := occurenceMoment.Add(1 * time.Second)
+	heading := createHeadingUnpredictable(successionUUID, fabricatedAltitude)
+	heading.Moment = fabricatedMoment
 
 	//
 	//
-	pv, clashingValues, err := transformRatifierCollection(ctx, privateValues, values, !soundProof)
+	pv, discordantValues, err := transformAssessorGroup(ctx, privateItems, values, !soundProof)
 	if err != nil {
 		return nil, err
 	}
 
-	heading.RatifiersDigest = clashingValues.Digest()
+	heading.AssessorsDigest = discordantValues.Digest()
 
 	//
-	ledgerUID := createLedgerUID(heading.Digest(), 1000, []byte("REDACTED"))
-	ballotCollection := kinds.NewBallotCollection(ledgerUID, falsifiedLevel, 0, engineproto.AttestedMessageKind(2), clashingValues)
-	endorse, err := verify.CreateEndorseFromBallotCollection(ledgerUID, ballotCollection, pv, falsifiedTime)
+	ledgerUUID := createLedgerUUID(heading.Digest(), 1000, []byte("REDACTED"))
+	ballotAssign := kinds.FreshBallotAssign(successionUUID, fabricatedAltitude, 0, commitchema.AttestedSignalKind(2), discordantValues)
+	endorse, err := verify.CreateEndorseOriginatingBallotAssign(ledgerUUID, ballotAssign, pv, fabricatedMoment)
 	if err != nil {
 		return nil, err
 	}
 
 	//
 	if !soundProof {
-		endorse.Endorsements[len(endorse.Endorsements)-1].Autograph[0]++
+		endorse.Notations[len(endorse.Notations)-1].Notation[0]++
 	}
 
-	ev := &kinds.RapidCustomerAssaultProof{
-		ClashingLedger: &kinds.RapidLedger{
-			AttestedHeading: &kinds.AttestedHeading{
+	ev := &kinds.AgileCustomerOnslaughtProof{
+		DiscordantLedger: &kinds.AgileLedger{
+			NotatedHeading: &kinds.NotatedHeading{
 				Heading: heading,
 				Endorse: endorse,
 			},
-			RatifierAssign: clashingValues,
+			AssessorAssign: discordantValues,
 		},
-		SharedLevel:     level,
-		SumPollingEnergy: values.SumPollingEnergy(),
-		Timestamp:        evtTime,
+		SharedAltitude:     altitude,
+		SumBallotingPotency: values.SumBallotingPotency(),
+		Timestamp:        occurenceMoment,
 	}
-	ev.FaultyRatifiers = ev.FetchFaultyRatifiers(values, &kinds.AttestedHeading{
-		Heading: createHeadingArbitrary(ledgerUID, falsifiedLevel),
+	ev.TreacherousAssessors = ev.ObtainTreacherousAssessors(values, &kinds.NotatedHeading{
+		Heading: createHeadingUnpredictable(successionUUID, fabricatedAltitude),
 	})
 	return ev, nil
 }
@@ -218,25 +218,25 @@ func composeRapidCustomerAssaultProof(
 //
 //
 func composeReplicatedBallotProof(
-	privateValues []kinds.EmulatePV,
-	level int64,
-	values *kinds.RatifierAssign,
-	ledgerUID string,
+	privateItems []kinds.SimulatePRV,
+	altitude int64,
+	values *kinds.AssessorAssign,
+	successionUUID string,
 	moment time.Time,
 ) (*kinds.ReplicatedBallotProof, error) {
-	privateValue, valueIdx, err := fetchArbitraryRatifierOrdinal(privateValues, values)
+	privateItem, itemOffset, err := obtainUnpredictableAssessorPosition(privateItems, values)
 	if err != nil {
 		return nil, err
 	}
-	ballotA, err := kinds.CreateBallot(privateValue, ledgerUID, valueIdx, level, 0, 2, createArbitraryLedgerUID(), moment)
+	ballotAN, err := kinds.CreateBallot(privateItem, successionUUID, itemOffset, altitude, 0, 2, createUnpredictableLedgerUUID(), moment)
 	if err != nil {
 		return nil, err
 	}
-	ballotBYTE, err := kinds.CreateBallot(privateValue, ledgerUID, valueIdx, level, 0, 2, createArbitraryLedgerUID(), moment)
+	ballotBYTE, err := kinds.CreateBallot(privateItem, successionUUID, itemOffset, altitude, 0, 2, createUnpredictableLedgerUUID(), moment)
 	if err != nil {
 		return nil, err
 	}
-	ev, err := kinds.NewReplicatedBallotProof(ballotA, ballotBYTE, moment, values)
+	ev, err := kinds.FreshReplicatedBallotProof(ballotAN, ballotBYTE, moment, values)
 	if err != nil {
 		return nil, fmt.Errorf("REDACTED", err)
 	}
@@ -246,107 +246,107 @@ func composeReplicatedBallotProof(
 
 //
 //
-func fetchArbitraryRatifierOrdinal(privateValues []kinds.EmulatePV, values *kinds.RatifierAssign) (kinds.EmulatePV, int32, error) {
-	for _, idx := range rand.Perm(len(privateValues)) {
-		pv := privateValues[idx]
-		valueIdx, _ := values.FetchByLocation(pv.PrivateKey.PublicKey().Location())
-		if valueIdx >= 0 {
-			return pv, valueIdx, nil
+func obtainUnpredictableAssessorPosition(privateItems []kinds.SimulatePRV, values *kinds.AssessorAssign) (kinds.SimulatePRV, int32, error) {
+	for _, idx := range rand.Perm(len(privateItems)) {
+		pv := privateItems[idx]
+		itemOffset, _ := values.ObtainViaLocation(pv.PrivateToken.PublicToken().Location())
+		if itemOffset >= 0 {
+			return pv, itemOffset, nil
 		}
 	}
-	return kinds.EmulatePV{}, -1, errors.New("REDACTED")
+	return kinds.SimulatePRV{}, -1, errors.New("REDACTED")
 }
 
-func fetchPrivateKey(keyEntryRoute string) (vault.PrivateKey, error) {
-	keyJSONOctets, err := os.ReadFile(keyEntryRoute)
+func retrievePrivateToken(tokenRecordRoute string) (security.PrivateToken, error) {
+	tokenJSNOctets, err := os.ReadFile(tokenRecordRoute)
 	if err != nil {
 		return nil, err
 	}
-	pvKey := privatekey.EntryPVKey{}
-	err = cometjson.Unserialize(keyJSONOctets, &pvKey)
+	prvToken := privatevalue.RecordPRVToken{}
+	err = strongmindjson.Decode(tokenJSNOctets, &prvToken)
 	if err != nil {
-		return nil, fmt.Errorf("REDACTED", keyEntryRoute, err)
+		return nil, fmt.Errorf("REDACTED", tokenRecordRoute, err)
 	}
 
-	return pvKey.PrivateKey, nil
+	return prvToken.PrivateToken, nil
 }
 
-func createHeadingArbitrary(ledgerUID string, level int64) *kinds.Heading {
+func createHeadingUnpredictable(successionUUID string, altitude int64) *kinds.Heading {
 	return &kinds.Heading{
-		Release:            cometrelease.Agreement{Ledger: release.LedgerProtocol, App: 1},
-		LedgerUID:            ledgerUID,
-		Level:             level,
-		Time:               time.Now(),
-		FinalLedgerUID:        createLedgerUID([]byte("REDACTED"), 1000, []byte("REDACTED")),
-		FinalEndorseDigest:     vault.CRandomOctets(comethash.Volume),
-		DataDigest:           vault.CRandomOctets(comethash.Volume),
-		RatifiersDigest:     vault.CRandomOctets(comethash.Volume),
-		FollowingRatifiersDigest: vault.CRandomOctets(comethash.Volume),
-		AgreementDigest:      vault.CRandomOctets(comethash.Volume),
-		ApplicationDigest:            vault.CRandomOctets(comethash.Volume),
-		FinalOutcomesDigest:    vault.CRandomOctets(comethash.Volume),
-		ProofDigest:       vault.CRandomOctets(comethash.Volume),
-		RecommenderLocation:    vault.CRandomOctets(vault.LocationVolume),
+		Edition:            strongmindedition.Agreement{Ledger: edition.LedgerScheme, App: 1},
+		SuccessionUUID:            successionUUID,
+		Altitude:             altitude,
+		Moment:               time.Now(),
+		FinalLedgerUUID:        createLedgerUUID([]byte("REDACTED"), 1000, []byte("REDACTED")),
+		FinalEndorseDigest:     security.CHARArbitraryOctets(tenderminthash.Extent),
+		DataDigest:           security.CHARArbitraryOctets(tenderminthash.Extent),
+		AssessorsDigest:     security.CHARArbitraryOctets(tenderminthash.Extent),
+		FollowingAssessorsDigest: security.CHARArbitraryOctets(tenderminthash.Extent),
+		AgreementDigest:      security.CHARArbitraryOctets(tenderminthash.Extent),
+		PlatformDigest:            security.CHARArbitraryOctets(tenderminthash.Extent),
+		FinalOutcomesDigest:    security.CHARArbitraryOctets(tenderminthash.Extent),
+		ProofDigest:       security.CHARArbitraryOctets(tenderminthash.Extent),
+		NominatorLocation:    security.CHARArbitraryOctets(security.LocatorExtent),
 	}
 }
 
-func createArbitraryLedgerUID() kinds.LedgerUID {
-	return createLedgerUID(vault.CRandomOctets(comethash.Volume), 100, vault.CRandomOctets(comethash.Volume))
+func createUnpredictableLedgerUUID() kinds.LedgerUUID {
+	return createLedgerUUID(security.CHARArbitraryOctets(tenderminthash.Extent), 100, security.CHARArbitraryOctets(tenderminthash.Extent))
 }
 
-func createLedgerUID(digest []byte, sectionCollectionVolume uint32, sectionCollectionDigest []byte) kinds.LedgerUID {
+func createLedgerUUID(digest []byte, fragmentAssignExtent uint32, fragmentAssignDigest []byte) kinds.LedgerUUID {
 	var (
-		h   = make([]byte, comethash.Volume)
-		psH = make([]byte, comethash.Volume)
+		h   = make([]byte, tenderminthash.Extent)
+		psH = make([]byte, tenderminthash.Extent)
 	)
 	copy(h, digest)
-	copy(psH, sectionCollectionDigest)
-	return kinds.LedgerUID{
+	copy(psH, fragmentAssignDigest)
+	return kinds.LedgerUUID{
 		Digest: h,
-		SegmentAssignHeading: kinds.SegmentAssignHeading{
-			Sum: sectionCollectionVolume,
+		FragmentAssignHeading: kinds.FragmentAssignHeading{
+			Sum: fragmentAssignExtent,
 			Digest:  psH,
 		},
 	}
 }
 
-func transformRatifierCollection(
+func transformAssessorGroup(
 	ctx context.Context,
-	privateValues []kinds.EmulatePV,
-	values *kinds.RatifierAssign,
+	privateItems []kinds.SimulatePRV,
+	values *kinds.AssessorAssign,
 	nop bool,
-) ([]kinds.PrivateRatifier, *kinds.RatifierAssign, error) {
-	newValue, newPrivateValue, err := verify.Ratifier(ctx, 10)
+) ([]kinds.PrivateAssessor, *kinds.AssessorAssign, error) {
+	freshItem, freshPrivateItem, err := verify.Assessor(ctx, 10)
 	if err != nil {
 		return nil, nil, err
 	}
 
-	var newValues *kinds.RatifierAssign
+	var freshValues *kinds.AssessorAssign
 	if nop {
-		newValues = kinds.NewRatifierCollection(values.Clone().Ratifiers)
+		freshValues = kinds.FreshAssessorAssign(values.Duplicate().Assessors)
 	} else {
-		if values.Volume() > 2 {
-			newValues = kinds.NewRatifierCollection(append(values.Clone().Ratifiers[:values.Volume()-1], newValue))
+		if values.Extent() > 2 {
+			freshValues = kinds.FreshAssessorAssign(append(values.Duplicate().Assessors[:values.Extent()-1], freshItem))
 		} else {
-			newValues = kinds.NewRatifierCollection(append(values.Clone().Ratifiers, newValue))
+			freshValues = kinds.FreshAssessorAssign(append(values.Duplicate().Assessors, freshItem))
 		}
 	}
 
 	//
-	pv := make([]kinds.PrivateRatifier, newValues.Volume())
-	for idx, val := range newValues.Ratifiers {
-		located := false
-		for _, p := range append(privateValues, newPrivateValue.(kinds.EmulatePV)) {
-			if bytes.Equal(p.PrivateKey.PublicKey().Location(), val.Location) {
+	pv := make([]kinds.PrivateAssessor, freshValues.Extent())
+	for idx, val := range freshValues.Assessors {
+		detected := false
+		for _, p := range append(privateItems, freshPrivateItem.(kinds.SimulatePRV)) {
+			if bytes.Equal(p.PrivateToken.PublicToken().Location(), val.Location) {
 				pv[idx] = p
-				located = true
+				detected = true
 				break
 			}
 		}
-		if !located {
+		if !detected {
 			return nil, nil, fmt.Errorf("REDACTED", val.Location)
 		}
 	}
 
-	return pv, newValues, nil
+	return pv, freshValues, nil
 }

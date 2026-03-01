@@ -3,69 +3,69 @@ package txpool
 import (
 	"fmt"
 
-	engineconnect "github.com/valkyrieworks/utils/align"
-	"github.com/valkyrieworks/p2p"
+	commitchronize "github.com/valkyrieworks/dffc4ef0-4ec6-4346-9b6c-d0a0cb42d94b/utils/chronize"
+	"github.com/valkyrieworks/dffc4ef0-4ec6-4346-9b6c-d0a0cb42d94b/p2p"
 )
 
-type txpoolIDXDatastore struct {
-	mtx       engineconnect.ReadwriteLock
+type txpoolIDXDstore struct {
+	mtx       commitchronize.ReadwriteExclusion
 	nodeIndex   map[p2p.ID]uint16
-	followingUID    uint16              //
-	enabledIDXDatastore map[uint16]struct{} //
+	followingUUID    uint16              //
+	dynamicIDXDstore map[uint16]struct{} //
 }
 
 //
 //
-func (ids *txpoolIDXDatastore) AllocateForNode(node p2p.Node) {
+func (ids *txpoolIDXDstore) AllocateForeachNode(node p2p.Node) {
 	ids.mtx.Lock()
 	defer ids.mtx.Unlock()
 
-	currentUID := ids.followingNodeUID()
-	ids.nodeIndex[node.ID()] = currentUID
-	ids.enabledIDXDatastore[currentUID] = struct{}{}
+	currentUUID := ids.followingNodeUUID()
+	ids.nodeIndex[node.ID()] = currentUUID
+	ids.dynamicIDXDstore[currentUUID] = struct{}{}
 }
 
 //
 //
-func (ids *txpoolIDXDatastore) followingNodeUID() uint16 {
-	if len(ids.enabledIDXDatastore) == MaximumEnabledIDXDatastore {
-		panic(fmt.Sprintf("REDACTED", MaximumEnabledIDXDatastore))
+func (ids *txpoolIDXDstore) followingNodeUUID() uint16 {
+	if len(ids.dynamicIDXDstore) == MaximumDynamicIDXDstore {
+		panic(fmt.Sprintf("REDACTED", MaximumDynamicIDXDstore))
 	}
 
-	_, uidPresent := ids.enabledIDXDatastore[ids.followingUID]
-	for uidPresent {
-		ids.followingUID++
-		_, uidPresent = ids.enabledIDXDatastore[ids.followingUID]
+	_, uuidPresent := ids.dynamicIDXDstore[ids.followingUUID]
+	for uuidPresent {
+		ids.followingUUID++
+		_, uuidPresent = ids.dynamicIDXDstore[ids.followingUUID]
 	}
-	currentUID := ids.followingUID
-	ids.followingUID++
-	return currentUID
+	currentUUID := ids.followingUUID
+	ids.followingUUID++
+	return currentUUID
 }
 
 //
-func (ids *txpoolIDXDatastore) Recover(node p2p.Node) {
+func (ids *txpoolIDXDstore) Recover(node p2p.Node) {
 	ids.mtx.Lock()
 	defer ids.mtx.Unlock()
 
-	deletedUID, ok := ids.nodeIndex[node.ID()]
+	discardedUUID, ok := ids.nodeIndex[node.ID()]
 	if ok {
-		delete(ids.enabledIDXDatastore, deletedUID)
+		delete(ids.dynamicIDXDstore, discardedUUID)
 		delete(ids.nodeIndex, node.ID())
 	}
 }
 
 //
-func (ids *txpoolIDXDatastore) FetchForNode(node p2p.Node) uint16 {
+func (ids *txpoolIDXDstore) ObtainForeachNode(node p2p.Node) uint16 {
 	ids.mtx.RLock()
 	defer ids.mtx.RUnlock()
 
 	return ids.nodeIndex[node.ID()]
 }
 
-func newTxpoolIDXDatastore() *txpoolIDXDatastore {
-	return &txpoolIDXDatastore{
+func freshTxpoolIDXDstore() *txpoolIDXDstore {
+	return &txpoolIDXDstore{
 		nodeIndex:   make(map[p2p.ID]uint16),
-		enabledIDXDatastore: map[uint16]struct{}{0: {}},
-		followingUID:    1, //
+		dynamicIDXDstore: map[uint16]struct{}{0: {}},
+		followingUUID:    1, //
 	}
 }

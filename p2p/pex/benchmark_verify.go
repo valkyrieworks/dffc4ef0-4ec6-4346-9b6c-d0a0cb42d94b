@@ -3,22 +3,22 @@ package pex
 import (
 	"testing"
 
-	"github.com/valkyrieworks/p2p"
+	"github.com/valkyrieworks/dffc4ef0-4ec6-4346-9b6c-d0a0cb42d94b/p2p"
 )
 
-func Benchmarkaddressbook_digest(b *testing.B) {
-	registry := &addressRegistry{
-		ourLocations:          make(map[string]struct{}),
-		internalIDXDatastore:        make(map[p2p.ID]struct{}),
-		addressSearch:        make(map[p2p.ID]*recognizedLocation),
-		flawedNodes:          make(map[p2p.ID]*recognizedLocation),
-		entryRoute:          "REDACTED",
-		forwardingPrecise: true,
+func Assessmentaddrbook_digest(b *testing.B) {
+	register := &locationRegister{
+		mineLocations:          make(map[string]struct{}),
+		secludedIDXDstore:        make(map[p2p.ID]struct{}),
+		locationSearch:        make(map[p2p.ID]*recognizedLocator),
+		flawedNodes:          make(map[p2p.ID]*recognizedLocator),
+		recordRoute:          "REDACTED",
+		reachabilityStringent: true,
 	}
-	registry.init()
+	register.initialize()
 	msg := []byte("REDACTED")
 	b.ResetTimer()
 	for i := 0; i < b.N; i++ {
-		_, _ = registry.digest(msg)
+		_, _ = register.digest(msg)
 	}
 }

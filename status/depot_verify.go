@@ -8,74 +8,74 @@ import (
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/require"
 
-	dbm "github.com/valkyrieworks/-db"
+	dbm "github.com/valkyrieworks/dffc4ef0-4ec6-4346-9b6c-d0a0cb42d94b/-db"
 
-	iface "github.com/valkyrieworks/iface/kinds"
-	"github.com/valkyrieworks/vault/ed25519"
-	"github.com/valkyrieworks/intrinsic/verify"
-	cometstatus "github.com/valkyrieworks/schema/consensuscore/status"
-	sm "github.com/valkyrieworks/status"
-	"github.com/valkyrieworks/kinds"
+	iface "github.com/valkyrieworks/dffc4ef0-4ec6-4346-9b6c-d0a0cb42d94b/iface/kinds"
+	"github.com/valkyrieworks/dffc4ef0-4ec6-4346-9b6c-d0a0cb42d94b/security/edwards25519"
+	"github.com/valkyrieworks/dffc4ef0-4ec6-4346-9b6c-d0a0cb42d94b/intrinsic/verify"
+	strongstatus "github.com/valkyrieworks/dffc4ef0-4ec6-4346-9b6c-d0a0cb42d94b/schema/strongmind/status"
+	sm "github.com/valkyrieworks/dffc4ef0-4ec6-4346-9b6c-d0a0cb42d94b/status"
+	"github.com/valkyrieworks/dffc4ef0-4ec6-4346-9b6c-d0a0cb42d94b/kinds"
 )
 
-func VerifyDepotImportRatifiers(t *testing.T) {
-	statusStore := dbm.NewMemoryStore()
-	statusDepot := sm.NewDepot(statusStore, sm.DepotSettings{
-		DropIfaceReplies: false,
+func VerifyDepotFetchAssessors(t *testing.T) {
+	statusDatastore := dbm.FreshMemoryDatastore()
+	statusDepot := sm.FreshDepot(statusDatastore, sm.DepotChoices{
+		EjectIfaceReplies: false,
 	})
-	val, _ := kinds.RandomRatifier(true, 10)
-	values := kinds.NewRatifierCollection([]*kinds.Ratifier{val})
+	val, _ := kinds.ArbitraryAssessor(true, 10)
+	values := kinds.FreshAssessorAssign([]*kinds.Assessor{val})
 
 	//
-	err := sm.PersistRatifiersDetails(statusStore, 1, 1, values)
+	err := sm.PersistAssessorsDetails(statusDatastore, 1, 1, values)
 	require.NoError(t, err)
-	err = sm.PersistRatifiersDetails(statusStore, 2, 1, values)
+	err = sm.PersistAssessorsDetails(statusDatastore, 2, 1, values)
 	require.NoError(t, err)
-	retrievedValues, err := statusDepot.ImportRatifiers(2)
+	retrievedValues, err := statusDepot.FetchAssessors(2)
 	require.NoError(t, err)
-	assert.NotZero(t, retrievedValues.Volume())
+	assert.NotZero(t, retrievedValues.Extent())
 
 	//
 
-	err = sm.PersistRatifiersDetails(statusStore, sm.ValueCollectionMilestoneCadence, 1, values)
+	err = sm.PersistAssessorsDetails(statusDatastore, sm.ItemAssignMilestoneDuration, 1, values)
 	require.NoError(t, err)
 
-	retrievedValues, err = statusDepot.ImportRatifiers(sm.ValueCollectionMilestoneCadence)
+	retrievedValues, err = statusDepot.FetchAssessors(sm.ItemAssignMilestoneDuration)
 	require.NoError(t, err)
-	assert.NotZero(t, retrievedValues.Volume())
+	assert.NotZero(t, retrievedValues.Extent())
 }
 
-func CriterionImportRatifiers(b *testing.B) {
-	const valueCollectionVolume = 100
+func AssessmentFetchAssessors(b *testing.B) {
+	const itemAssignExtent = 100
 
 	settings := verify.RestoreVerifyOrigin("REDACTED")
-	defer os.RemoveAll(settings.OriginFolder)
-	storeKind := dbm.OriginKind(settings.StoreOrigin)
-	statusStore, err := dbm.NewStore("REDACTED", storeKind, settings.StoreFolder())
+	defer os.RemoveAll(settings.OriginPath)
+	datastoreKind := dbm.OriginKind(settings.DatastoreRepository)
+	statusDatastore, err := dbm.FreshDatastore("REDACTED", datastoreKind, settings.DatastorePath())
 	require.NoError(b, err)
-	statusDepot := sm.NewDepot(statusStore, sm.DepotSettings{
-		DropIfaceReplies: false,
+	statusDepot := sm.FreshDepot(statusDatastore, sm.DepotChoices{
+		EjectIfaceReplies: false,
 	})
-	status, err := statusDepot.ImportFromStoreOrOriginEntry(settings.OriginEntry())
+	status, err := statusDepot.FetchOriginatingDatastoreEitherInaugurationRecord(settings.InaugurationRecord())
 	if err != nil {
 		b.Fatal(err)
 	}
 
-	status.Ratifiers = generateValueCollection(valueCollectionVolume)
-	status.FollowingRatifiers = status.Ratifiers.CloneAugmentRecommenderUrgency(1)
+	status.Assessors = produceItemAssign(itemAssignExtent)
+	status.FollowingAssessors = status.Assessors.DuplicateAdvanceNominatorUrgency(1)
 	err = statusDepot.Persist(status)
 	require.NoError(b, err)
 
 	for i := 10; i < 10000000000; i *= 10 { //
 
-		if err := sm.PersistRatifiersDetails(statusStore,
-			int64(i), status.FinalLevelRatifiersModified, status.FollowingRatifiers); err != nil {
+		if err := sm.PersistAssessorsDetails(statusDatastore,
+			int64(i), status.FinalAltitudeAssessorsAltered, status.FollowingAssessors); err != nil {
 			b.Fatal(err)
 		}
 
 		b.Run(fmt.Sprintf("REDACTED", i), func(b *testing.B) {
 			for n := 0; n < b.N; n++ {
-				_, err := statusDepot.ImportRatifiers(int64(i))
+				_, err := statusDepot.FetchAssessors(int64(i))
 				if err != nil {
 					b.Fatal(err)
 				}
@@ -84,15 +84,15 @@ func CriterionImportRatifiers(b *testing.B) {
 	}
 }
 
-func VerifyTrimConditions(t *testing.T) {
-	verifyscenarios := map[string]struct {
-		createLevels             int64
-		trimFrom               int64
-		trimTo                 int64
-		proofLimitLevel int64
-		anticipateErr               bool
+func VerifyTrimStatuses(t *testing.T) {
+	verifycases := map[string]struct {
+		createElevations             int64
+		trimOriginating               int64
+		trimToward                 int64
+		proofLimitAltitude int64
+		anticipateFault               bool
 		anticipateValues              []int64
-		anticipateOptions            []int64
+		anticipateParameters            []int64
 		anticipateIface              []int64
 	}{
 		"REDACTED":      {100, 0, 5, 100, true, nil, nil, nil},
@@ -114,101 +114,101 @@ func VerifyTrimConditions(t *testing.T) {
 		},
 		"REDACTED": {20, 1, 18, 17, false, []int64{13, 17, 18, 19, 20}, []int64{15, 18, 19, 20}, []int64{18, 19, 20}},
 	}
-	for label, tc := range verifyscenarios {
+	for alias, tc := range verifycases {
 
-		t.Run(label, func(t *testing.T) {
-			db := dbm.NewMemoryStore()
-			statusDepot := sm.NewDepot(db, sm.DepotSettings{
-				DropIfaceReplies: false,
+		t.Run(alias, func(t *testing.T) {
+			db := dbm.FreshMemoryDatastore()
+			statusDepot := sm.FreshDepot(db, sm.DepotChoices{
+				EjectIfaceReplies: false,
 			})
-			pk := ed25519.GeneratePrivateKey().PublicKey()
+			pk := edwards25519.ProducePrivateToken().PublicToken()
 
 			//
 			//
-			ratifier := &kinds.Ratifier{Location: pk.Location(), PollingEnergy: 100, PublicKey: pk}
-			ratifierCollection := &kinds.RatifierAssign{
-				Ratifiers: []*kinds.Ratifier{ratifier},
-				Recommender:   ratifier,
+			assessor := &kinds.Assessor{Location: pk.Location(), BallotingPotency: 100, PublicToken: pk}
+			assessorAssign := &kinds.AssessorAssign{
+				Assessors: []*kinds.Assessor{assessor},
+				Nominator:   assessor,
 			}
-			valuesModified := int64(0)
-			optionsModified := int64(0)
+			valuesAltered := int64(0)
+			parametersAltered := int64(0)
 
-			for h := int64(1); h <= tc.createLevels; h++ {
-				if valuesModified == 0 || h%10 == 2 {
-					valuesModified = h + 1 //
+			for h := int64(1); h <= tc.createElevations; h++ {
+				if valuesAltered == 0 || h%10 == 2 {
+					valuesAltered = h + 1 //
 				}
-				if optionsModified == 0 || h%10 == 5 {
-					optionsModified = h
+				if parametersAltered == 0 || h%10 == 5 {
+					parametersAltered = h
 				}
 
 				status := sm.Status{
-					PrimaryLevel:   1,
-					FinalLedgerLevel: h - 1,
-					Ratifiers:      ratifierCollection,
-					FollowingRatifiers:  ratifierCollection,
-					AgreementOptions: kinds.AgreementOptions{
-						Ledger: kinds.LedgerOptions{MaximumOctets: 10e6},
+					PrimaryAltitude:   1,
+					FinalLedgerAltitude: h - 1,
+					Assessors:      assessorAssign,
+					FollowingAssessors:  assessorAssign,
+					AgreementSettings: kinds.AgreementSettings{
+						Ledger: kinds.LedgerParameters{MaximumOctets: 10e6},
 					},
-					FinalLevelRatifiersModified:      valuesModified,
-					FinalLevelAgreementOptionsModified: optionsModified,
+					FinalAltitudeAssessorsAltered:      valuesAltered,
+					FinalAltitudeAgreementParametersAltered: parametersAltered,
 				}
 
-				if status.FinalLedgerLevel >= 1 {
-					status.FinalRatifiers = status.Ratifiers
+				if status.FinalLedgerAltitude >= 1 {
+					status.FinalAssessors = status.Assessors
 				}
 
 				err := statusDepot.Persist(status)
 				require.NoError(t, err)
 
-				err = statusDepot.PersistCompleteLedgerReply(h, &iface.ReplyCompleteLedger{
-					TransOutcomes: []*iface.InvokeTransferOutcome{
+				err = statusDepot.PersistCulminateLedgerReply(h, &iface.ReplyCulminateLedger{
+					TransferOutcomes: []*iface.InvokeTransferOutcome{
 						{Data: []byte{1}},
 						{Data: []byte{2}},
 						{Data: []byte{3}},
 					},
-					ApplicationDigest: make([]byte, 1),
+					PlatformDigest: make([]byte, 1),
 				})
 				require.NoError(t, err)
 			}
 
 			//
-			err := statusDepot.TrimConditions(tc.trimFrom, tc.trimTo, tc.proofLimitLevel)
-			if tc.anticipateErr {
+			err := statusDepot.TrimStatuses(tc.trimOriginating, tc.trimToward, tc.proofLimitAltitude)
+			if tc.anticipateFault {
 				require.Error(t, err)
 				return
 			}
 			require.NoError(t, err)
 
-			anticipateValues := segmentToIndex(tc.anticipateValues)
-			anticipateOptions := segmentToIndex(tc.anticipateOptions)
-			anticipateIface := segmentToIndex(tc.anticipateIface)
+			anticipateValues := sectionTowardIndex(tc.anticipateValues)
+			anticipateParameters := sectionTowardIndex(tc.anticipateParameters)
+			anticipateIface := sectionTowardIndex(tc.anticipateIface)
 
-			for h := int64(1); h <= tc.createLevels; h++ {
-				values, err := statusDepot.ImportRatifiers(h)
+			for h := int64(1); h <= tc.createElevations; h++ {
+				values, err := statusDepot.FetchAssessors(h)
 				if anticipateValues[h] {
 					require.NoError(t, err, "REDACTED", h)
 					require.NotNil(t, values)
 				} else {
 					require.Error(t, err, "REDACTED", h)
-					require.Equal(t, sm.ErrNoValueCollectionForLevel{Level: h}, err)
+					require.Equal(t, sm.FaultNegativeItemAssignForeachAltitude{Altitude: h}, err)
 				}
 
-				options, err := statusDepot.ImportAgreementOptions(h)
-				if anticipateOptions[h] {
+				parameters, err := statusDepot.FetchAgreementParameters(h)
+				if anticipateParameters[h] {
 					require.NoError(t, err, "REDACTED", h)
-					require.NotEmpty(t, options)
+					require.NotEmpty(t, parameters)
 				} else {
 					require.Error(t, err, "REDACTED", h)
-					require.Empty(t, options)
+					require.Empty(t, parameters)
 				}
 
-				iface, err := statusDepot.ImportCompleteLedgerReply(h)
+				iface, err := statusDepot.FetchCulminateLedgerReply(h)
 				if anticipateIface[h] {
 					require.NoError(t, err, "REDACTED", h)
 					require.NotNil(t, iface)
 				} else {
 					require.Error(t, err, "REDACTED", h)
-					require.Equal(t, sm.ErrNoIfaceRepliesForLevel{Level: h}, err)
+					require.Equal(t, sm.FaultNegativeIfaceRepliesForeachAltitude{Altitude: h}, err)
 				}
 			}
 		})
@@ -217,23 +217,23 @@ func VerifyTrimConditions(t *testing.T) {
 
 func VerifyTransferOutcomesDigest(t *testing.T) {
 	transferOutcomes := []*iface.InvokeTransferOutcome{
-		{Code: 32, Data: []byte("REDACTED"), Log: "REDACTED"},
+		{Cipher: 32, Data: []byte("REDACTED"), Log: "REDACTED"},
 	}
 
 	origin := sm.TransferOutcomesDigest(transferOutcomes)
 
 	//
-	outcomes := kinds.NewOutcomes(transferOutcomes)
+	outcomes := kinds.FreshOutcomes(transferOutcomes)
 	assert.Equal(t, origin, outcomes.Digest())
 
 	//
-	evidence := outcomes.DemonstrateOutcome(0)
+	attestation := outcomes.AscertainOutcome(0)
 	bz, err := outcomes[0].Serialize()
 	require.NoError(t, err)
-	assert.NoError(t, evidence.Validate(origin, bz))
+	assert.NoError(t, attestation.Validate(origin, bz))
 }
 
-func segmentToIndex(s []int64) map[int64]bool {
+func sectionTowardIndex(s []int64) map[int64]bool {
 	m := make(map[int64]bool, len(s))
 	for _, i := range s {
 		m[i] = true
@@ -241,118 +241,118 @@ func segmentToIndex(s []int64) map[int64]bool {
 	return m
 }
 
-func VerifyFinalCompleteLedgerReplies(t *testing.T) {
+func VerifyFinalCulminateLedgerReplies(t *testing.T) {
 	//
 	t.Run("REDACTED", func(t *testing.T) {
-		statusStore := dbm.NewMemoryStore()
-		statusDepot := sm.NewDepot(statusStore, sm.DepotSettings{
-			DropIfaceReplies: false,
+		statusDatastore := dbm.FreshMemoryDatastore()
+		statusDepot := sm.FreshDepot(statusDatastore, sm.DepotChoices{
+			EjectIfaceReplies: false,
 		})
-		replies, err := statusDepot.ImportCompleteLedgerReply(1)
+		replies, err := statusDepot.FetchCulminateLedgerReply(1)
 		require.Error(t, err)
 		require.Nil(t, replies)
 		//
-		reply1 := &iface.ReplyCompleteLedger{
-			TransOutcomes: []*iface.InvokeTransferOutcome{
-				{Code: 32, Data: []byte("REDACTED"), Log: "REDACTED"},
+		reply1 := &iface.ReplyCulminateLedger{
+			TransferOutcomes: []*iface.InvokeTransferOutcome{
+				{Cipher: 32, Data: []byte("REDACTED"), Log: "REDACTED"},
 			},
-			ApplicationDigest: make([]byte, 1),
+			PlatformDigest: make([]byte, 1),
 		}
 		//
-		statusStore = dbm.NewMemoryStore()
-		statusDepot = sm.NewDepot(statusStore, sm.DepotSettings{DropIfaceReplies: false})
-		level := int64(10)
+		statusDatastore = dbm.FreshMemoryDatastore()
+		statusDepot = sm.FreshDepot(statusDatastore, sm.DepotChoices{EjectIfaceReplies: false})
+		altitude := int64(10)
 		//
-		err = statusDepot.PersistCompleteLedgerReply(level, reply1)
+		err = statusDepot.PersistCulminateLedgerReply(altitude, reply1)
 		require.NoError(t, err)
 		//
-		finalReply, err := statusDepot.ImportFinalCompleteLedgerReply(level)
+		finalReply, err := statusDepot.FetchFinalCulminateLedgerReply(altitude)
 		require.NoError(t, err)
 		//
 		assert.Equal(t, finalReply, reply1)
 		//
-		_, err = statusDepot.ImportFinalCompleteLedgerReply(level + 1)
+		_, err = statusDepot.FetchFinalCulminateLedgerReply(altitude + 1)
 		assert.Error(t, err)
 		//
-		replies, err = statusDepot.ImportCompleteLedgerReply(level)
+		replies, err = statusDepot.FetchCulminateLedgerReply(altitude)
 		require.NoError(t, err, replies)
 		require.Equal(t, reply1, replies)
 	})
 
 	t.Run("REDACTED", func(t *testing.T) {
-		statusStore := dbm.NewMemoryStore()
-		level := int64(10)
+		statusDatastore := dbm.FreshMemoryDatastore()
+		altitude := int64(10)
 		//
-		reply2 := &iface.ReplyCompleteLedger{
-			TransOutcomes: []*iface.InvokeTransferOutcome{
-				{Code: 44, Data: []byte("REDACTED"), Log: "REDACTED"},
+		reply2 := &iface.ReplyCulminateLedger{
+			TransferOutcomes: []*iface.InvokeTransferOutcome{
+				{Cipher: 44, Data: []byte("REDACTED"), Log: "REDACTED"},
 			},
 		}
 		//
-		statusDepot := sm.NewDepot(statusStore, sm.DepotSettings{
-			DropIfaceReplies: true,
+		statusDepot := sm.FreshDepot(statusDatastore, sm.DepotChoices{
+			EjectIfaceReplies: true,
 		})
 		//
-		err := statusDepot.PersistCompleteLedgerReply(level+1, reply2)
+		err := statusDepot.PersistCulminateLedgerReply(altitude+1, reply2)
 		require.NoError(t, err)
 		//
-		finalReply2, err := statusDepot.ImportFinalCompleteLedgerReply(level + 1)
+		finalReply2, err := statusDepot.FetchFinalCulminateLedgerReply(altitude + 1)
 		require.NoError(t, err)
 		//
 		assert.Equal(t, reply2, finalReply2)
 		//
-		_, err = statusDepot.ImportCompleteLedgerReply(level + 1)
-		assert.Equal(t, sm.ErrCompleteLedgerRepliesNotSustained, err)
+		_, err = statusDepot.FetchCulminateLedgerReply(altitude + 1)
+		assert.Equal(t, sm.FaultCulminateLedgerRepliesNegationStored, err)
 	})
 }
 
-func VerifyCompleteLedgerRestoreUtilizingPastIfaceReplies(t *testing.T) {
+func VerifyCulminateLedgerRecuperationApplyingHeritageIfaceReplies(t *testing.T) {
 	var (
-		level              int64 = 10
-		finalIfaceReplyKey       = []byte("REDACTED")
-		memoryStore                     = dbm.NewMemoryStore()
-		cp                        = kinds.StandardAgreementOptions().ToSchema()
-		pastReply                = cometstatus.IfaceRepliesDetails{
-			PastIfaceReplies: &cometstatus.PastIfaceReplies{
-				InitiateLedger: &cometstatus.AnswerInitiateLedger{
-					Events: []iface.Event{{
+		altitude              int64 = 10
+		finalIfaceReplyToken       = []byte("REDACTED")
+		memoryDatastore                     = dbm.FreshMemoryDatastore()
+		cp                        = kinds.FallbackAgreementSettings().TowardSchema()
+		heritageAnswer                = strongstatus.IfaceRepliesDetails{
+			HeritageIfaceReplies: &strongstatus.HeritageIfaceReplies{
+				InitiateLedger: &strongstatus.ReplyInitiateLedger{
+					Incidents: []iface.Incident{{
 						Kind: "REDACTED",
-						Properties: []iface.EventProperty{{
+						Properties: []iface.IncidentProperty{{
 							Key:   "REDACTED",
-							Item: "REDACTED",
+							Datum: "REDACTED",
 						}},
 					}},
 				},
 				DispatchTrans: []*iface.InvokeTransferOutcome{{
-					Events: []iface.Event{{
+					Incidents: []iface.Incident{{
 						Kind: "REDACTED",
-						Properties: []iface.EventProperty{{
+						Properties: []iface.IncidentProperty{{
 							Key:   "REDACTED",
-							Item: "REDACTED",
+							Datum: "REDACTED",
 						}},
 					}},
 				}},
-				TerminateLedger: &cometstatus.AnswerTerminateLedger{
-					AgreementArgumentRefreshes: &cp,
+				TerminateLedger: &strongstatus.ReplyTerminateLedger{
+					AgreementArgumentRevisions: &cp,
 				},
 			},
-			Level: level,
+			Altitude: altitude,
 		}
 	)
-	bz, err := pastReply.Serialize()
+	bz, err := heritageAnswer.Serialize()
 	require.NoError(t, err)
 	//
-	require.NoError(t, memoryStore.Set(finalIfaceReplyKey, bz))
-	statusDepot := sm.NewDepot(memoryStore, sm.DepotSettings{DropIfaceReplies: false})
-	reply, err := statusDepot.ImportFinalCompleteLedgerReply(level)
+	require.NoError(t, memoryDatastore.Set(finalIfaceReplyToken, bz))
+	statusDepot := sm.FreshDepot(memoryDatastore, sm.DepotChoices{EjectIfaceReplies: false})
+	reply, err := statusDepot.FetchFinalCulminateLedgerReply(altitude)
 	require.NoError(t, err)
-	require.Equal(t, reply.AgreementArgumentRefreshes, &cp)
-	require.Equal(t, len(reply.Events), len(pastReply.PastIfaceReplies.InitiateLedger.Events))
-	require.Equal(t, reply.TransOutcomes[0], pastReply.PastIfaceReplies.DispatchTrans[0])
+	require.Equal(t, reply.AgreementArgumentRevisions, &cp)
+	require.Equal(t, len(reply.Incidents), len(heritageAnswer.HeritageIfaceReplies.InitiateLedger.Incidents))
+	require.Equal(t, reply.TransferOutcomes[0], heritageAnswer.HeritageIfaceReplies.DispatchTrans[0])
 }
 
-func VerifyIntegerTransform(t *testing.T) {
+func VerifyIntegerAdaptation(t *testing.T) {
 	x := int64(10)
-	b := sm.Int64toOctets(x)
-	require.Equal(t, x, sm.Int64fromOctets(b))
+	b := sm.Integer64towOctets(x)
+	require.Equal(t, x, sm.Integer64fromOctets(b))
 }

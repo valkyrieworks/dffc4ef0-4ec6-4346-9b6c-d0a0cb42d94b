@@ -3,17 +3,17 @@
 package simulations
 
 import (
-	ifacetypes "github.com/valkyrieworks/iface/kinds"
+	ifacetypes "github.com/valkyrieworks/dffc4ef0-4ec6-4346-9b6c-d0a0cb42d94b/iface/kinds"
 	mock "github.com/stretchr/testify/mock"
 
-	status "github.com/valkyrieworks/status"
+	status "github.com/valkyrieworks/dffc4ef0-4ec6-4346-9b6c-d0a0cb42d94b/status"
 
-	kinds "github.com/valkyrieworks/kinds"
+	kinds "github.com/valkyrieworks/dffc4ef0-4ec6-4346-9b6c-d0a0cb42d94b/kinds"
 )
 
 //
 type Depot struct {
-	mock.Emulate
+	mock.Simulate
 }
 
 //
@@ -35,7 +35,7 @@ func (_m *Depot) Onboard(_a0 status.Status) error {
 }
 
 //
-func (_m *Depot) End() error {
+func (_m *Depot) Shutdown() error {
 	ret := _m.Called()
 
 	if len(ret) == 0 {
@@ -53,7 +53,7 @@ func (_m *Depot) End() error {
 }
 
 //
-func (_m *Depot) FetchInactiveStatusAlignLevel() (int64, error) {
+func (_m *Depot) ObtainInactiveStatusChronizeAltitude() (int64, error) {
 	ret := _m.Called()
 
 	if len(ret) == 0 {
@@ -81,7 +81,7 @@ func (_m *Depot) FetchInactiveStatusAlignLevel() (int64, error) {
 }
 
 //
-func (_m *Depot) Import() (status.Status, error) {
+func (_m *Depot) Fetch() (status.Status, error) {
 	ret := _m.Called()
 
 	if len(ret) == 0 {
@@ -109,22 +109,22 @@ func (_m *Depot) Import() (status.Status, error) {
 }
 
 //
-func (_m *Depot) ImportAgreementOptions(_a0 int64) (kinds.AgreementOptions, error) {
+func (_m *Depot) FetchAgreementParameters(_a0 int64) (kinds.AgreementSettings, error) {
 	ret := _m.Called(_a0)
 
 	if len(ret) == 0 {
 		panic("REDACTED")
 	}
 
-	var r0 kinds.AgreementOptions
+	var r0 kinds.AgreementSettings
 	var r1 error
-	if rf, ok := ret.Get(0).(func(int64) (kinds.AgreementOptions, error)); ok {
+	if rf, ok := ret.Get(0).(func(int64) (kinds.AgreementSettings, error)); ok {
 		return rf(_a0)
 	}
-	if rf, ok := ret.Get(0).(func(int64) kinds.AgreementOptions); ok {
+	if rf, ok := ret.Get(0).(func(int64) kinds.AgreementSettings); ok {
 		r0 = rf(_a0)
 	} else {
-		r0 = ret.Get(0).(kinds.AgreementOptions)
+		r0 = ret.Get(0).(kinds.AgreementSettings)
 	}
 
 	if rf, ok := ret.Get(1).(func(int64) error); ok {
@@ -137,23 +137,23 @@ func (_m *Depot) ImportAgreementOptions(_a0 int64) (kinds.AgreementOptions, erro
 }
 
 //
-func (_m *Depot) ImportCompleteLedgerReply(_a0 int64) (*ifacetypes.ReplyCompleteLedger, error) {
+func (_m *Depot) FetchCulminateLedgerReply(_a0 int64) (*ifacetypes.ReplyCulminateLedger, error) {
 	ret := _m.Called(_a0)
 
 	if len(ret) == 0 {
 		panic("REDACTED")
 	}
 
-	var r0 *ifacetypes.ReplyCompleteLedger
+	var r0 *ifacetypes.ReplyCulminateLedger
 	var r1 error
-	if rf, ok := ret.Get(0).(func(int64) (*ifacetypes.ReplyCompleteLedger, error)); ok {
+	if rf, ok := ret.Get(0).(func(int64) (*ifacetypes.ReplyCulminateLedger, error)); ok {
 		return rf(_a0)
 	}
-	if rf, ok := ret.Get(0).(func(int64) *ifacetypes.ReplyCompleteLedger); ok {
+	if rf, ok := ret.Get(0).(func(int64) *ifacetypes.ReplyCulminateLedger); ok {
 		r0 = rf(_a0)
 	} else {
 		if ret.Get(0) != nil {
-			r0 = ret.Get(0).(*ifacetypes.ReplyCompleteLedger)
+			r0 = ret.Get(0).(*ifacetypes.ReplyCulminateLedger)
 		}
 	}
 
@@ -167,7 +167,7 @@ func (_m *Depot) ImportCompleteLedgerReply(_a0 int64) (*ifacetypes.ReplyComplete
 }
 
 //
-func (_m *Depot) ImportFromStoreOrOriginPaper(_a0 *kinds.OriginPaper) (status.Status, error) {
+func (_m *Depot) FetchOriginatingDatastoreEitherOriginPaper(_a0 *kinds.OriginPaper) (status.Status, error) {
 	ret := _m.Called(_a0)
 
 	if len(ret) == 0 {
@@ -195,7 +195,7 @@ func (_m *Depot) ImportFromStoreOrOriginPaper(_a0 *kinds.OriginPaper) (status.St
 }
 
 //
-func (_m *Depot) ImportFromStoreOrOriginEntry(_a0 string) (status.Status, error) {
+func (_m *Depot) FetchOriginatingDatastoreEitherInaugurationRecord(_a0 string) (status.Status, error) {
 	ret := _m.Called(_a0)
 
 	if len(ret) == 0 {
@@ -223,23 +223,23 @@ func (_m *Depot) ImportFromStoreOrOriginEntry(_a0 string) (status.Status, error)
 }
 
 //
-func (_m *Depot) ImportFinalCompleteLedgerReply(_a0 int64) (*ifacetypes.ReplyCompleteLedger, error) {
+func (_m *Depot) FetchFinalCulminateLedgerReply(_a0 int64) (*ifacetypes.ReplyCulminateLedger, error) {
 	ret := _m.Called(_a0)
 
 	if len(ret) == 0 {
 		panic("REDACTED")
 	}
 
-	var r0 *ifacetypes.ReplyCompleteLedger
+	var r0 *ifacetypes.ReplyCulminateLedger
 	var r1 error
-	if rf, ok := ret.Get(0).(func(int64) (*ifacetypes.ReplyCompleteLedger, error)); ok {
+	if rf, ok := ret.Get(0).(func(int64) (*ifacetypes.ReplyCulminateLedger, error)); ok {
 		return rf(_a0)
 	}
-	if rf, ok := ret.Get(0).(func(int64) *ifacetypes.ReplyCompleteLedger); ok {
+	if rf, ok := ret.Get(0).(func(int64) *ifacetypes.ReplyCulminateLedger); ok {
 		r0 = rf(_a0)
 	} else {
 		if ret.Get(0) != nil {
-			r0 = ret.Get(0).(*ifacetypes.ReplyCompleteLedger)
+			r0 = ret.Get(0).(*ifacetypes.ReplyCulminateLedger)
 		}
 	}
 
@@ -253,23 +253,23 @@ func (_m *Depot) ImportFinalCompleteLedgerReply(_a0 int64) (*ifacetypes.ReplyCom
 }
 
 //
-func (_m *Depot) ImportRatifiers(_a0 int64) (*kinds.RatifierAssign, error) {
+func (_m *Depot) FetchAssessors(_a0 int64) (*kinds.AssessorAssign, error) {
 	ret := _m.Called(_a0)
 
 	if len(ret) == 0 {
 		panic("REDACTED")
 	}
 
-	var r0 *kinds.RatifierAssign
+	var r0 *kinds.AssessorAssign
 	var r1 error
-	if rf, ok := ret.Get(0).(func(int64) (*kinds.RatifierAssign, error)); ok {
+	if rf, ok := ret.Get(0).(func(int64) (*kinds.AssessorAssign, error)); ok {
 		return rf(_a0)
 	}
-	if rf, ok := ret.Get(0).(func(int64) *kinds.RatifierAssign); ok {
+	if rf, ok := ret.Get(0).(func(int64) *kinds.AssessorAssign); ok {
 		r0 = rf(_a0)
 	} else {
 		if ret.Get(0) != nil {
-			r0 = ret.Get(0).(*kinds.RatifierAssign)
+			r0 = ret.Get(0).(*kinds.AssessorAssign)
 		}
 	}
 
@@ -283,7 +283,7 @@ func (_m *Depot) ImportRatifiers(_a0 int64) (*kinds.RatifierAssign, error) {
 }
 
 //
-func (_m *Depot) TrimConditions(_a0 int64, _a1 int64, _a2 int64) error {
+func (_m *Depot) TrimStatuses(_a0 int64, _a1 int64, _a2 int64) error {
 	ret := _m.Called(_a0, _a1, _a2)
 
 	if len(ret) == 0 {
@@ -319,7 +319,7 @@ func (_m *Depot) Persist(_a0 status.Status) error {
 }
 
 //
-func (_m *Depot) PersistCompleteLedgerReply(_a0 int64, _a1 *ifacetypes.ReplyCompleteLedger) error {
+func (_m *Depot) PersistCulminateLedgerReply(_a0 int64, _a1 *ifacetypes.ReplyCulminateLedger) error {
 	ret := _m.Called(_a0, _a1)
 
 	if len(ret) == 0 {
@@ -327,7 +327,7 @@ func (_m *Depot) PersistCompleteLedgerReply(_a0 int64, _a1 *ifacetypes.ReplyComp
 	}
 
 	var r0 error
-	if rf, ok := ret.Get(0).(func(int64, *ifacetypes.ReplyCompleteLedger) error); ok {
+	if rf, ok := ret.Get(0).(func(int64, *ifacetypes.ReplyCulminateLedger) error); ok {
 		r0 = rf(_a0, _a1)
 	} else {
 		r0 = ret.Error(0)
@@ -337,8 +337,8 @@ func (_m *Depot) PersistCompleteLedgerReply(_a0 int64, _a1 *ifacetypes.ReplyComp
 }
 
 //
-func (_m *Depot) CollectionInactiveStatusAlignLevel(level int64) error {
-	ret := _m.Called(level)
+func (_m *Depot) AssignInactiveStatusChronizeAltitude(altitude int64) error {
+	ret := _m.Called(altitude)
 
 	if len(ret) == 0 {
 		panic("REDACTED")
@@ -346,7 +346,7 @@ func (_m *Depot) CollectionInactiveStatusAlignLevel(level int64) error {
 
 	var r0 error
 	if rf, ok := ret.Get(0).(func(int64) error); ok {
-		r0 = rf(level)
+		r0 = rf(altitude)
 	} else {
 		r0 = ret.Error(0)
 	}
@@ -356,14 +356,14 @@ func (_m *Depot) CollectionInactiveStatusAlignLevel(level int64) error {
 
 //
 //
-func NewDepot(t interface {
+func FreshDepot(t interface {
 	mock.TestingT
 	Sanitize(func())
 }) *Depot {
-	emulate := &Depot{}
-	mock.Emulate.Test(t)
+	simulate := &Depot{}
+	mock.Simulate.Test(t)
 
 	t.Sanitize(func() { mock.AssertExpectations(t) })
 
-	return emulate
+	return simulate
 }

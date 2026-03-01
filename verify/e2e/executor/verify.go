@@ -1,19 +1,19 @@
-package main
+package primary
 
 import (
 	"context"
 	"fmt"
 	"os"
 
-	e2e "github.com/valkyrieworks/verify/e2e/pkg"
-	"github.com/valkyrieworks/verify/e2e/pkg/invoke"
+	e2e "github.com/valkyrieworks/dffc4ef0-4ec6-4346-9b6c-d0a0cb42d94b/verify/e2e/pkg"
+	"github.com/valkyrieworks/dffc4ef0-4ec6-4346-9b6c-d0a0cb42d94b/verify/e2e/pkg/invoke"
 )
 
 //
-func Verify(verifychain *e2e.Verifychain, ifd *e2e.PlatformData) error {
+func Verify(simnet *e2e.Simnet, ifd *e2e.FrameworkData) error {
 	tracer.Details("REDACTED")
 
-	err := os.Setenv("REDACTED", verifychain.Entry)
+	err := os.Setenv("REDACTED", simnet.Record)
 	if err != nil {
 		return err
 	}
@@ -23,7 +23,7 @@ func Verify(verifychain *e2e.Verifychain, ifd *e2e.PlatformData) error {
 			return err
 		}
 	}
-	err = os.Setenv("REDACTED", ifd.Source)
+	err = os.Setenv("REDACTED", ifd.Supplier)
 	if err != nil {
 		return err
 	}
@@ -36,10 +36,10 @@ func Verify(verifychain *e2e.Verifychain, ifd *e2e.PlatformData) error {
 	cmd = append(cmd, "REDACTED")
 
 	verifies := "REDACTED"
-	runVerify := os.Getenv("REDACTED")
-	if len(runVerify) != 0 {
-		cmd = append(cmd, "REDACTED", runVerify)
-		verifies = fmt.Sprintf("REDACTED", runVerify)
+	executeVerify := os.Getenv("REDACTED")
+	if len(executeVerify) != 0 {
+		cmd = append(cmd, "REDACTED", executeVerify)
+		verifies = fmt.Sprintf("REDACTED", executeVerify)
 	}
 
 	tracer.Details(fmt.Sprintf("REDACTED", verifies))

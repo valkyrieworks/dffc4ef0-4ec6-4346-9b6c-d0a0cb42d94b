@@ -6,92 +6,80 @@ import (
 
 	"github.com/go-kit/kit/metrics"
 
-	statetypes "github.com/valkyrieworks/agreement/kinds"
-	ctschema "github.com/valkyrieworks/schema/consensuscore/kinds"
-	kinds "github.com/valkyrieworks/kinds"
+	controlkinds "github.com/valkyrieworks/dffc4ef0-4ec6-4346-9b6c-d0a0cb42d94b/agreement/kinds"
+	commitchema "github.com/valkyrieworks/dffc4ef0-4ec6-4346-9b6c-d0a0cb42d94b/schema/strongmind/kinds"
+	kinds "github.com/valkyrieworks/dffc4ef0-4ec6-4346-9b6c-d0a0cb42d94b/kinds"
 )
 
 const (
 	//
 	//
-	MetricsSubsystem = "REDACTED"
+	TelemetryComponent = "REDACTED"
 )
 
 //
 
 //
-type Metrics struct {
+type Telemetry struct {
 	//
-	Height metrics.Gauge
+	Altitude metrics.Gauge
 
 	//
-	ValidatorLastSignedHeight metrics.Gauge `metrics_labels:"certifier_location"`
+	AssessorFinalAttestedAltitude metrics.Gauge `metrics_labels:"assessor_location"`
 
 	//
-	Rounds metrics.Gauge
+	Cycles metrics.Gauge
 
 	//
-	RoundDurationSeconds metrics.Histogram `metrics_buckettype:"boundrange" metrics_bucketsizes:"0.1, 100, 8"`
+	IterationIntervalMoments metrics.Histogram `metrics_buckettype:"experscope" metrics_bucketsizes:"0.1, 100, 8"`
 
 	//
-	Validators metrics.Gauge
+	Assessors metrics.Gauge
 	//
-	ValidatorsPower metrics.Gauge
+	AssessorsPotency metrics.Gauge
 	//
-	ValidatorPower metrics.Gauge `metrics_labels:"certifier_location"`
+	AssessorPotency metrics.Gauge `metrics_labels:"assessor_location"`
 	//
-	ValidatorMissedBlocks metrics.Gauge `metrics_labels:"certifier_location"`
+	AssessorOmittedLedgers metrics.Gauge `metrics_labels:"assessor_location"`
 	//
-	MissingValidators metrics.Gauge
+	AbsentAssessors metrics.Gauge
 	//
-	MissingValidatorsPower metrics.Gauge
+	AbsentAssessorsPotency metrics.Gauge
 	//
-	ByzantineValidators metrics.Gauge
+	TreacherousAssessors metrics.Gauge
 	//
-	ByzantineValidatorsPower metrics.Gauge
+	TreacherousAssessorsPotency metrics.Gauge
 
 	//
-	BlockIntervalSeconds metrics.Histogram
+	LedgerDurationMoments metrics.Histogram
 
 	//
-	NumTxs metrics.Gauge
+	CountTrans metrics.Gauge
 	//
-	BlockSizeBytes metrics.Gauge
+	LedgerExtentOctets metrics.Gauge
 	//
-	ChainSizeBytes metrics.Counter
+	SuccessionExtentOctets metrics.Counter
 	//
-	TotalTxs metrics.Gauge
+	SumTrans metrics.Gauge
 	//
-	CommittedHeight metrics.Gauge `metrics_name:"newest_record_altitude"`
+	RatifiedAltitude metrics.Gauge `metrics_name:"newest_ledger_altitude"`
 
 	//
-	BlockParts metrics.Counter `metrics_labels:"node_uuid"`
+	LedgerFragments metrics.Counter `metrics_labels:"node_uuid"`
 
 	//
-	DuplicateBlockPart metrics.Counter
+	ReplicatedLedgerFragment metrics.Counter
 
 	//
-	DuplicateVote metrics.Counter
+	ReplicatedBallot metrics.Counter
 
 	//
-	StepDurationSeconds metrics.Histogram `metrics_labels:"phase" metrics_buckettype:"boundrange" metrics_bucketsizes:"0.1, 100, 8"`
-	stepStart           time.Time
-
-	//
-	//
-	BlockGossipPartsReceived metrics.Counter `metrics_labels:"aligns_present"`
+	PhaseIntervalMoments metrics.Histogram `metrics_labels:"phase" metrics_buckettype:"experscope" metrics_bucketsizes:"0.1, 100, 8"`
+	phaseInitiate           time.Time
 
 	//
 	//
-	//
-	//
-	//
-	//
-	//
-	//
-	//
-	//
-	QuorumPrevoteDelay metrics.Gauge `metrics_labels:"nominator_location"`
+	LedgerBroadcastFragmentsAccepted metrics.Counter `metrics_labels:"aligns_prevailing"`
 
 	//
 	//
@@ -103,106 +91,118 @@ type Metrics struct {
 	//
 	//
 	//
-	QuorumPrecommitDelay metrics.Gauge `metrics_labels:"nominator_location"`
+	AssemblyPreballotDeferral metrics.Gauge `metrics_labels:"nominator_location"`
 
 	//
 	//
 	//
 	//
-	FullPrevoteDelay metrics.Gauge `metrics_labels:"nominator_location"`
-
-	//
-	PrecommitsCounted metrics.Gauge
-
-	//
-	PrecommitsStakingPercentage metrics.Gauge
-
 	//
 	//
 	//
-	VoteExtensionReceiveCount metrics.Counter `metrics_labels:"condition"`
+	//
+	//
+	//
+	AssemblyPreendorseDeferral metrics.Gauge `metrics_labels:"nominator_location"`
 
 	//
 	//
 	//
 	//
-	ProposalReceiveCount metrics.Counter `metrics_labels:"condition"`
+	CompletePreballotDeferral metrics.Gauge `metrics_labels:"nominator_location"`
+
+	//
+	PreendorsementsTallied metrics.Gauge
+
+	//
+	PreendorsementsPledgingFraction metrics.Gauge
+
+	//
+	//
+	//
+	BallotAdditionAcceptTally metrics.Counter `metrics_labels:"condition"`
 
 	//
 	//
 	//
 	//
-	ProposalCreateCount metrics.Counter
+	NominationAcceptTally metrics.Counter `metrics_labels:"condition"`
 
 	//
 	//
 	//
-	RoundVotingPowerPercent metrics.Gauge `metrics_labels:"ballot_kind"`
+	//
+	NominationGenerateTally metrics.Counter
 
 	//
 	//
 	//
-	LateVotes metrics.Counter `metrics_labels:"ballot_kind"`
+	IterationBallotingPotencyRatio metrics.Gauge `metrics_labels:"ballot_kind"`
 
 	//
 	//
 	//
-	PeerHeight metrics.Gauge `metrics_labels:"node_uuid"`
+	TardyBallots metrics.Counter `metrics_labels:"ballot_kind"`
 
 	//
 	//
-	RoundIncrementTotal metrics.Counter `metrics_labels:"phase"`
+	//
+	NodeAltitude metrics.Gauge `metrics_labels:"node_uuid"`
+
+	//
+	//
+	IterationAdvanceSum metrics.Counter `metrics_labels:"phase"`
 }
 
-func (m *Metrics) MarkRoundIncremented(step statetypes.RoundStepType) {
-	stepName := strings.TrimPrefix(step.String(), "REDACTED")
-	m.RoundIncrementTotal.With("REDACTED", stepName).Add(1)
+func (m *Telemetry) LabelIterationAdvanced(phase controlkinds.IterationPhaseKind) {
+	phaseAlias := strings.TrimPrefix(phase.Text(), "REDACTED")
+	m.IterationAdvanceSum.With("REDACTED", phaseAlias).Add(1)
 }
 
-func (m *Metrics) MarkProposalProcessed(accepted bool) {
-	status := "REDACTED"
-	if !accepted {
-		status = "REDACTED"
+func (m *Telemetry) LabelNominationHandled(approved bool) {
+	condition := "REDACTED"
+	if !approved {
+		condition = "REDACTED"
 	}
-	m.ProposalReceiveCount.With("REDACTED", status).Add(1)
+	m.NominationAcceptTally.With("REDACTED", condition).Add(1)
 }
 
-func (m *Metrics) MarkVoteExtensionReceived(accepted bool) {
-	status := "REDACTED"
-	if !accepted {
-		status = "REDACTED"
+func (m *Telemetry) LabelBallotAdditionAccepted(approved bool) {
+	condition := "REDACTED"
+	if !approved {
+		condition = "REDACTED"
 	}
-	m.VoteExtensionReceiveCount.With("REDACTED", status).Add(1)
+	m.BallotAdditionAcceptTally.With("REDACTED", condition).Add(1)
 }
 
-func (m *Metrics) MarkVoteReceived(vt ctschema.SignedMsgType, power, totalPower int64) {
-	p := float64(power) / float64(totalPower)
-	n := kinds.SignedMsgTypeToShortString(vt)
-	m.RoundVotingPowerPercent.With("REDACTED", n).Add(p)
+func (m *Telemetry) LabelBallotAccepted(vt commitchema.AttestedSignalKind, potency, sumPotency int64) {
+	p := float64(potency) / float64(sumPotency)
+	n := kinds.AttestedSignalKindTowardBriefText(vt)
+	m.IterationBallotingPotencyRatio.With("REDACTED", n).Add(p)
 }
 
-func (m *Metrics) MarkRound(r int32, st time.Time) {
-	m.Rounds.Set(float64(r))
-	roundTime := time.Since(st).Seconds()
-	m.RoundDurationSeconds.Observe(roundTime)
+func (m *Telemetry) LabelIteration(r int32, st time.Time) {
+	m.Cycles.Set(float64(r))
+	iterationMoment := time.Since(st).Seconds()
+	m.IterationIntervalMoments.Observe(iterationMoment)
 
-	pvn := kinds.SignedMsgTypeToShortString(ctschema.PrevoteType)
-	m.RoundVotingPowerPercent.With("REDACTED", pvn).Set(0)
+	pvn := kinds.AttestedSignalKindTowardBriefText(commitchema.PreballotKind)
+	m.IterationBallotingPotencyRatio.With("REDACTED", pvn).Set(0)
 
-	pcn := kinds.SignedMsgTypeToShortString(ctschema.PrecommitType)
-	m.RoundVotingPowerPercent.With("REDACTED", pcn).Set(0)
+	pcn := kinds.AttestedSignalKindTowardBriefText(commitchema.PreendorseKind)
+	m.IterationBallotingPotencyRatio.With("REDACTED", pcn).Set(0)
 }
 
-func (m *Metrics) MarkLateVote(vt ctschema.SignedMsgType) {
-	n := kinds.SignedMsgTypeToShortString(vt)
-	m.LateVotes.With("REDACTED", n).Add(1)
+func (m *Telemetry) LabelTardyBallot(vt commitchema.AttestedSignalKind) {
+	n := kinds.AttestedSignalKindTowardBriefText(vt)
+	m.TardyBallots.With("REDACTED", n).Add(1)
 }
 
-func (m *Metrics) MarkStep(s statetypes.RoundStepType) {
-	if !m.stepStart.IsZero() {
-		stepTime := time.Since(m.stepStart).Seconds()
-		stepName := strings.TrimPrefix(s.String(), "REDACTED")
-		m.StepDurationSeconds.With("REDACTED", stepName).Observe(stepTime)
+func (m *Telemetry) LabelPhase(s controlkinds.IterationPhaseKind) {
+	if !m.phaseInitiate.IsZero() {
+		phaseMoment := time.Since(m.phaseInitiate).Seconds()
+		phaseAlias := strings.TrimPrefix(s.Text(), "REDACTED")
+		m.PhaseIntervalMoments.With("REDACTED", phaseAlias).Observe(phaseMoment)
 	}
-	m.stepStart = time.Now()
+	m.phaseInitiate = time.Now()
 }

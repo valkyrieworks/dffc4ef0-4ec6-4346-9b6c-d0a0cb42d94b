@@ -1,4 +1,4 @@
-package main
+package primary
 
 import (
 	"context"
@@ -6,20 +6,20 @@ import (
 	"fmt"
 	"time"
 
-	rpchttp "github.com/valkyrieworks/rpc/customer/http"
-	rpctypes "github.com/valkyrieworks/rpc/core/kinds"
-	e2e "github.com/valkyrieworks/verify/e2e/pkg"
-	"github.com/valkyrieworks/kinds"
+	rpchttpsvc "github.com/valkyrieworks/dffc4ef0-4ec6-4346-9b6c-d0a0cb42d94b/rpc/customer/httpsvc"
+	remoteifacetypes "github.com/valkyrieworks/dffc4ef0-4ec6-4346-9b6c-d0a0cb42d94b/rpc/base/kinds"
+	e2e "github.com/valkyrieworks/dffc4ef0-4ec6-4346-9b6c-d0a0cb42d94b/verify/e2e/pkg"
+	"github.com/valkyrieworks/dffc4ef0-4ec6-4346-9b6c-d0a0cb42d94b/kinds"
 )
 
 //
 //
 //
-func waitForLevel(ctx context.Context, verifychain *e2e.Verifychain, level int64) (*kinds.Ledger, *kinds.LedgerUID, error) {
+func pauseForeachAltitude(ctx context.Context, simnet *e2e.Simnet, altitude int64) (*kinds.Ledger, *kinds.LedgerUUID, error) {
 	var (
 		err          error
-		maximumOutcome    *rpctypes.OutcomeLedger
-		agents      = map[string]*rpchttp.HTTP{}
+		maximumOutcome    *remoteifacetypes.OutcomeLedger
+		customers      = map[string]*rpchttpsvc.Httpsvc{}
 		finalAugment = time.Now()
 	)
 
@@ -30,22 +30,22 @@ func waitForLevel(ctx context.Context, verifychain *e2e.Verifychain, level int64
 		case <-ctx.Done():
 			return nil, nil, ctx.Err()
 		case <-clock.C:
-			for _, member := range verifychain.Instances {
-				if member.Untracked() {
+			for _, peer := range simnet.Peers {
+				if peer.Untracked() {
 					continue
 				}
 
-				customer, ok := agents[member.Label]
+				customer, ok := customers[peer.Alias]
 				if !ok {
-					customer, err = member.Customer()
+					customer, err = peer.Customer()
 					if err != nil {
 						continue
 					}
-					agents[member.Label] = customer
+					customers[peer.Alias] = customer
 				}
 
-				subcontext, revoke := context.WithTimeout(ctx, 1*time.Second)
-				defer revoke()
+				subcontext, abort := context.WithTimeout(ctx, 1*time.Second)
+				defer abort()
 
 				outcome, err := customer.Ledger(subcontext, nil)
 				if err == context.DeadlineExceeded || err == context.Canceled {
@@ -54,23 +54,23 @@ func waitForLevel(ctx context.Context, verifychain *e2e.Verifychain, level int64
 				if err != nil {
 					continue
 				}
-				if outcome.Ledger != nil && (maximumOutcome == nil || outcome.Ledger.Level > maximumOutcome.Ledger.Level) {
+				if outcome.Ledger != nil && (maximumOutcome == nil || outcome.Ledger.Altitude > maximumOutcome.Ledger.Altitude) {
 					maximumOutcome = outcome
 					finalAugment = time.Now()
 				}
-				if maximumOutcome != nil && maximumOutcome.Ledger.Level >= level {
-					return maximumOutcome.Ledger, &maximumOutcome.LedgerUID, nil
+				if maximumOutcome != nil && maximumOutcome.Ledger.Altitude >= altitude {
+					return maximumOutcome.Ledger, &maximumOutcome.LedgerUUID, nil
 				}
 			}
 
-			if len(agents) == 0 {
+			if len(customers) == 0 {
 				return nil, nil, errors.New("REDACTED")
 			}
 			if time.Since(finalAugment) >= 20*time.Second {
 				if maximumOutcome == nil {
 					return nil, nil, errors.New("REDACTED")
 				}
-				return nil, nil, fmt.Errorf("REDACTED", maximumOutcome.Ledger.Level)
+				return nil, nil, fmt.Errorf("REDACTED", maximumOutcome.Ledger.Altitude)
 			}
 			clock.Reset(1 * time.Second)
 		}
@@ -78,31 +78,31 @@ func waitForLevel(ctx context.Context, verifychain *e2e.Verifychain, level int64
 }
 
 //
-func waitForMember(ctx context.Context, member *e2e.Member, level int64, deadline time.Duration) (*rpctypes.OutcomeState, error) {
-	customer, err := member.Customer()
+func pauseForeachPeer(ctx context.Context, peer *e2e.Peer, altitude int64, deadline time.Duration) (*remoteifacetypes.OutcomeCondition, error) {
+	customer, err := peer.Customer()
 	if err != nil {
 		return nil, err
 	}
 
 	clock := time.NewTimer(0)
 	defer clock.Stop()
-	var currentLevel int64
-	finalModified := time.Now()
+	var currentAltitude int64
+	finalAltered := time.Now()
 	for {
 		select {
 		case <-ctx.Done():
 			return nil, ctx.Err()
 		case <-clock.C:
-			state, err := customer.Status(ctx)
+			condition, err := customer.Condition(ctx)
 			switch {
-			case time.Since(finalModified) > deadline:
-				return nil, fmt.Errorf("REDACTED", member.Label, level)
+			case time.Since(finalAltered) > deadline:
+				return nil, fmt.Errorf("REDACTED", peer.Alias, altitude)
 			case err != nil:
-			case state.AlignDetails.NewestLedgerLevel >= level && (level == 0 || !state.AlignDetails.TrappingUp):
-				return state, nil
-			case currentLevel < state.AlignDetails.NewestLedgerLevel:
-				currentLevel = state.AlignDetails.NewestLedgerLevel
-				finalModified = time.Now()
+			case condition.ChronizeDetails.NewestLedgerAltitude >= altitude && (altitude == 0 || !condition.ChronizeDetails.ObtainingAscend):
+				return condition, nil
+			case currentAltitude < condition.ChronizeDetails.NewestLedgerAltitude:
+				currentAltitude = condition.ChronizeDetails.NewestLedgerAltitude
+				finalAltered = time.Now()
 			}
 
 			clock.Reset(300 * time.Millisecond)
@@ -111,25 +111,25 @@ func waitForMember(ctx context.Context, member *e2e.Member, level int64, deadlin
 }
 
 //
-func waitForAllInstances(ctx context.Context, verifychain *e2e.Verifychain, level int64, deadline time.Duration) (int64, error) {
-	var finalLevel int64
+func pauseForeachEveryPeers(ctx context.Context, simnet *e2e.Simnet, altitude int64, deadline time.Duration) (int64, error) {
+	var finalAltitude int64
 
 	limit := time.Now().Add(deadline)
 
-	for _, member := range verifychain.Instances {
-		if member.Style == e2e.StyleOrigin {
+	for _, peer := range simnet.Peers {
+		if peer.Style == e2e.StyleGerm {
 			continue
 		}
 
-		state, err := waitForMember(ctx, member, level, time.Until(limit))
+		condition, err := pauseForeachPeer(ctx, peer, altitude, time.Until(limit))
 		if err != nil {
 			return 0, err
 		}
 
-		if state.AlignDetails.NewestLedgerLevel > finalLevel {
-			finalLevel = state.AlignDetails.NewestLedgerLevel
+		if condition.ChronizeDetails.NewestLedgerAltitude > finalAltitude {
+			finalAltitude = condition.ChronizeDetails.NewestLedgerAltitude
 		}
 	}
 
-	return finalLevel, nil
+	return finalAltitude, nil
 }

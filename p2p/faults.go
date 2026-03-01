@@ -6,38 +6,38 @@ import (
 )
 
 //
-type ErrRefineDeadline struct{}
+type FaultRefineDeadline struct{}
 
-func (e ErrRefineDeadline) Fault() string {
+func (e FaultRefineDeadline) Failure() string {
 	return "REDACTED"
 }
 
 //
 //
-type ErrDeclined struct {
-	address              NetLocation
+type FaultDeclined struct {
+	location              NetworkLocator
 	link              net.Conn
 	err               error
 	id                ID
-	isAuthBreakdown     bool
-	isReplicated       bool
-	isScreened        bool
-	isDiscordant    bool
-	isMemberDetailsCorrupt bool
-	isEgo            bool
+	equalsAuthBreakdown     bool
+	equalsReplicated       bool
+	equalsScreened        bool
+	equalsUnmatched    bool
+	equalsPeerDetailsUnfit bool
+	equalsEgo            bool
 }
 
 //
-func (e ErrDeclined) Address() NetLocation {
-	return e.address
+func (e FaultDeclined) Location() NetworkLocator {
+	return e.location
 }
 
-func (e ErrDeclined) Fault() string {
-	if e.isAuthBreakdown {
+func (e FaultDeclined) Failure() string {
+	if e.equalsAuthBreakdown {
 		return fmt.Sprintf("REDACTED", e.err)
 	}
 
-	if e.isReplicated {
+	if e.equalsReplicated {
 		if e.link != nil {
 			return fmt.Sprintf(
 				"REDACTED",
@@ -49,7 +49,7 @@ func (e ErrDeclined) Fault() string {
 		}
 	}
 
-	if e.isScreened {
+	if e.equalsScreened {
 		if e.link != nil {
 			return fmt.Sprintf(
 				"REDACTED",
@@ -63,15 +63,15 @@ func (e ErrDeclined) Fault() string {
 		}
 	}
 
-	if e.isDiscordant {
+	if e.equalsUnmatched {
 		return fmt.Sprintf("REDACTED", e.err)
 	}
 
-	if e.isMemberDetailsCorrupt {
+	if e.equalsPeerDetailsUnfit {
 		return fmt.Sprintf("REDACTED", e.err)
 	}
 
-	if e.isEgo {
+	if e.equalsEgo {
 		return fmt.Sprintf("REDACTED", e.id)
 	}
 
@@ -79,58 +79,58 @@ func (e ErrDeclined) Fault() string {
 }
 
 //
-func (e ErrDeclined) IsAuthBreakdown() bool { return e.isAuthBreakdown }
+func (e FaultDeclined) EqualsAuthBreakdown() bool { return e.equalsAuthBreakdown }
 
 //
-func (e ErrDeclined) IsReplicated() bool { return e.isReplicated }
+func (e FaultDeclined) EqualsReplicated() bool { return e.equalsReplicated }
 
 //
-func (e ErrDeclined) IsScreened() bool { return e.isScreened }
+func (e FaultDeclined) EqualsScreened() bool { return e.equalsScreened }
 
 //
-func (e ErrDeclined) IsDiscordant() bool { return e.isDiscordant }
+func (e FaultDeclined) EqualsUnmatched() bool { return e.equalsUnmatched }
 
 //
-func (e ErrDeclined) IsMemberDetailsCorrupt() bool { return e.isMemberDetailsCorrupt }
+func (e FaultDeclined) EqualsPeerDetailsUnfit() bool { return e.equalsPeerDetailsUnfit }
 
 //
-func (e ErrDeclined) IsEgo() bool { return e.isEgo }
+func (e FaultDeclined) EqualsEgo() bool { return e.equalsEgo }
 
 //
 //
-type ErrRouterReplicatedNodeUID struct {
+type FaultRouterReplicatedNodeUUID struct {
 	ID ID
 }
 
-func (e ErrRouterReplicatedNodeUID) Fault() string {
+func (e FaultRouterReplicatedNodeUUID) Failure() string {
 	return fmt.Sprintf("REDACTED", e.ID)
 }
 
 //
 //
-type ErrRouterReplicatedNodeIP struct {
+type FaultRouterReplicatedNodeINET struct {
 	IP net.IP
 }
 
-func (e ErrRouterReplicatedNodeIP) Fault() string {
+func (e FaultRouterReplicatedNodeINET) Failure() string {
 	return fmt.Sprintf("REDACTED", e.IP.String())
 }
 
 //
-type ErrRouterEstablishToEgo struct {
-	Address *NetLocation
+type FaultRouterRelateTowardEgo struct {
+	Location *NetworkLocator
 }
 
-func (e ErrRouterEstablishToEgo) Fault() string {
-	return fmt.Sprintf("REDACTED", e.Address)
+func (e FaultRouterRelateTowardEgo) Failure() string {
+	return fmt.Sprintf("REDACTED", e.Location)
 }
 
-type ErrRouterAuthorizationBreakdown struct {
-	Called *NetLocation
+type FaultRouterAuthorizationBreakdown struct {
+	Called *NetworkLocator
 	Got    ID
 }
 
-func (e ErrRouterAuthorizationBreakdown) Fault() string {
+func (e FaultRouterAuthorizationBreakdown) Failure() string {
 	return fmt.Sprintf(
 		"REDACTED",
 		e.Called,
@@ -139,53 +139,53 @@ func (e ErrRouterAuthorizationBreakdown) Fault() string {
 }
 
 //
-type ErrCarrierHalted struct{}
+type FaultCarrierTerminated struct{}
 
-func (e ErrCarrierHalted) Fault() string {
+func (e FaultCarrierTerminated) Failure() string {
 	return "REDACTED"
 }
 
 //
-type ErrNodeDeletion struct{}
+type FaultNodeDeletion struct{}
 
-func (e ErrNodeDeletion) Fault() string {
+func (e FaultNodeDeletion) Failure() string {
 	return "REDACTED"
 }
 
 //
 
-type ErrNetLocationNoUID struct {
-	Address string
+type FaultNetworkLocatorNegativeUUID struct {
+	Location string
 }
 
-func (e ErrNetLocationNoUID) Fault() string {
-	return fmt.Sprintf("REDACTED", e.Address)
+func (e FaultNetworkLocatorNegativeUUID) Failure() string {
+	return fmt.Sprintf("REDACTED", e.Location)
 }
 
-type ErrNetLocationCorrupt struct {
-	Address string
+type FaultNetworkLocatorUnfit struct {
+	Location string
 	Err  error
 }
 
-func (e ErrNetLocationCorrupt) Fault() string {
-	return fmt.Sprintf("REDACTED", e.Address, e.Err)
+func (e FaultNetworkLocatorUnfit) Failure() string {
+	return fmt.Sprintf("REDACTED", e.Location, e.Err)
 }
 
-type ErrNetLocationSearch struct {
-	Address string
+type FaultNetworkLocatorSearch struct {
+	Location string
 	Err  error
 }
 
-func (e ErrNetLocationSearch) Fault() string {
-	return fmt.Sprintf("REDACTED", e.Address, e.Err)
+func (e FaultNetworkLocatorSearch) Failure() string {
+	return fmt.Sprintf("REDACTED", e.Location, e.Err)
 }
 
 //
 //
-type ErrPresentlyCallingOrCurrentLocation struct {
-	Address string
+type FaultPresentlyCallingEitherPresentLocator struct {
+	Location string
 }
 
-func (e ErrPresentlyCallingOrCurrentLocation) Fault() string {
-	return fmt.Sprintf("REDACTED", e.Address)
+func (e FaultPresentlyCallingEitherPresentLocator) Failure() string {
+	return fmt.Sprintf("REDACTED", e.Location)
 }

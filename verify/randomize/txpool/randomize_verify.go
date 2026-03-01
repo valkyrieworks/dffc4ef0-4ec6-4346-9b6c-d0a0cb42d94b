@@ -8,27 +8,27 @@ import (
 
 	"github.com/stretchr/testify/require"
 
-	txpool "github.com/valkyrieworks/verify/randomize/txpool"
+	txpooll "github.com/valkyrieworks/dffc4ef0-4ec6-4346-9b6c-d0a0cb42d94b/verify/randomize/txpool"
 )
 
-const mockdataScenariosFolder = "REDACTED"
+const verifydataScenariosPath = "REDACTED"
 
-func VerifyTxpoolMockdataScenarios(t *testing.T) {
-	records, err := os.ReadDir(mockdataScenariosFolder)
+func VerifyTxpoolVerifydataScenarios(t *testing.T) {
+	listings, err := os.ReadDir(verifydataScenariosPath)
 	require.NoError(t, err)
 
-	for _, e := range records {
-		entry := e
-		t.Run(entry.Name(), func(t *testing.T) {
+	for _, e := range listings {
+		record := e
+		t.Run(record.Name(), func(t *testing.T) {
 			defer func() {
 				r := recover()
 				require.Nilf(t, r, "REDACTED")
 			}()
-			f, err := os.Open(filepath.Join(mockdataScenariosFolder, entry.Name()))
+			f, err := os.Open(filepath.Join(verifydataScenariosPath, record.Name()))
 			require.NoError(t, err)
 			influx, err := io.ReadAll(f)
 			require.NoError(t, err)
-			txpool.Randomize(influx)
+			txpooll.Randomize(influx)
 		})
 	}
 }

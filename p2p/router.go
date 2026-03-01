@@ -9,61 +9,61 @@ import (
 
 	"github.com/cosmos/gogoproto/proto"
 
-	"github.com/valkyrieworks/settings"
-	"github.com/valkyrieworks/utils/cmap"
-	"github.com/valkyrieworks/utils/log"
-	"github.com/valkyrieworks/utils/random"
-	"github.com/valkyrieworks/utils/daemon"
-	"github.com/valkyrieworks/p2p/link"
+	"github.com/valkyrieworks/dffc4ef0-4ec6-4346-9b6c-d0a0cb42d94b/settings"
+	"github.com/valkyrieworks/dffc4ef0-4ec6-4346-9b6c-d0a0cb42d94b/utils/componentindex"
+	"github.com/valkyrieworks/dffc4ef0-4ec6-4346-9b6c-d0a0cb42d94b/utils/log"
+	"github.com/valkyrieworks/dffc4ef0-4ec6-4346-9b6c-d0a0cb42d94b/utils/arbitrary"
+	"github.com/valkyrieworks/dffc4ef0-4ec6-4346-9b6c-d0a0cb42d94b/utils/facility"
+	"github.com/valkyrieworks/dffc4ef0-4ec6-4346-9b6c-d0a0cb42d94b/p2p/link"
 )
 
 const (
 	//
 	//
-	callShufflerCadenceMilliseconds = 3000
+	callGeneratorDurationMillis = 3000
 
 	//
 	//
-	reestablishTries = 20
-	reestablishCadence = 5 * time.Second
+	reestablishEndeavors = 20
+	reestablishDuration = 5 * time.Second
 
 	//
 	//
-	reestablishRearOffsetTries    = 10
-	reestablishRearOffsetRootMoments = 3
+	reestablishRearUnactivatedEndeavors    = 10
+	reestablishRearUnactivatedFoundationMoments = 3
 )
 
 //
 //
-func MLinkSettings(cfg *settings.P2PSettings) link.MLinkSettings {
-	mSettings := link.StandardMLinkSettings()
-	mSettings.PurgeRegulate = cfg.PurgeRegulateDeadline
-	mSettings.TransmitRatio = cfg.TransmitRatio
-	mSettings.ReceiveRatio = cfg.ReceiveRatio
-	mSettings.MaximumPackageMessageShipmentVolume = cfg.MaximumPackageMessageShipmentVolume
-	mSettings.VerifyRandomize = cfg.VerifyRandomize
-	mSettings.VerifyRandomizeSettings = cfg.VerifyRandomizeSettings
-	return mSettings
+func ModuleLinkSettings(cfg *settings.Peer2peerSettings) link.ModuleLinkSettings {
+	moduleSettings := link.FallbackModuleLinkSettings()
+	moduleSettings.PurgeRegulate = cfg.PurgeRegulateDeadline
+	moduleSettings.TransmitFrequency = cfg.TransmitFrequency
+	moduleSettings.ObtainFrequency = cfg.ObtainFrequency
+	moduleSettings.MaximumPacketSignalWorkloadExtent = cfg.MaximumPacketSignalWorkloadExtent
+	moduleSettings.VerifyRandomize = cfg.VerifyRandomize
+	moduleSettings.VerifyRandomizeSettings = cfg.VerifyRandomizeSettings
+	return moduleSettings
 }
 
 //
 
 //
 //
-type AddressLedger interface {
-	AppendLocation(address *NetLocation, src *NetLocation) error
-	AppendInternalIDXDatastore([]string)
-	AppendOurLocation(*NetLocation)
-	OurLocation(*NetLocation) bool
-	StampValid(ID)
-	DeleteLocation(*NetLocation)
-	HasLocation(*NetLocation) bool
+type LocationRegister interface {
+	AppendLocator(location *NetworkLocator, src *NetworkLocator) error
+	AppendSecludedIDXDstore([]string)
+	AppendMineLocator(*NetworkLocator)
+	MineLocator(*NetworkLocator) bool
+	LabelValid(ID)
+	DiscardLocator(*NetworkLocator)
+	OwnsLocation(*NetworkLocator) bool
 	Persist()
 }
 
 //
 //
-type NodeRefineFunction func(IDXNodeCollection, Node) error
+type NodeRefineMethod func(IDXNodeAssign, Node) error
 
 //
 
@@ -72,93 +72,93 @@ type NodeRefineFunction func(IDXNodeCollection, Node) error
 //
 //
 type Router struct {
-	daemon.RootDaemon
+	facility.FoundationFacility
 
-	settings        *settings.P2PSettings
-	handlers      map[string]Handler
-	chanTraits       []*link.StreamDefinition
-	handlersByChan  map[byte]Handler
-	messageKindByChanUID map[byte]proto.Message
-	nodes         *NodeCollection
-	calling       *cmap.CIndex
-	reestablishing  *cmap.CIndex
-	memberDetails      MemberDetails //
-	memberKey       *MemberKey //
-	addressRegistry      AddressLedger
+	settings        *settings.Peer2peerSettings
+	engines      map[string]Handler
+	chnlDescriptions       []*link.ConduitDefinition
+	enginesViaChnl  map[byte]Handler
+	signalKindViaChnlUUID map[byte]proto.Message
+	nodes         *NodeAssign
+	calling       *componentindex.CNIndex
+	reestablishing  *componentindex.CNIndex
+	peerDetails      PeerDetails //
+	peerToken       *PeerToken //
+	locationRegister      LocationRegister
 	//
-	durableNodesLocations []*NetLocation
-	absoluteNodeIDXDatastore map[ID]struct{}
+	enduringNodesLocations []*NetworkLocator
+	absoluteNodeIDXDstore map[ID]struct{}
 
 	carrier Carrier
 
 	refineDeadline time.Duration
-	nodeScreens   []NodeRefineFunction
+	nodeCriteria   []NodeRefineMethod
 
-	rng *random.Random //
+	rng *arbitrary.Arbitrary //
 
-	stats *Stats
-	mlc     *statsTagRepository
+	telemetry *Telemetry
+	mlc     *telemetryTagStash
 }
 
-var _ Toggeler = (*Router)(nil)
+var _ Router = (*Router)(nil)
 
 //
-func (sw *Router) NetLocation() *NetLocation {
-	address := sw.carrier.NetLocation()
-	return &address
+func (sw *Router) NetworkLocator() *NetworkLocator {
+	location := sw.carrier.NetworkLocator()
+	return &location
 }
 
 //
-type RouterSetting func(*Router)
+type RouterSelection func(*Router)
 
 //
-func NewRouter(
-	cfg *settings.P2PSettings,
+func FreshRouter(
+	cfg *settings.Peer2peerSettings,
 	carrier Carrier,
-	options ...RouterSetting,
+	choices ...RouterSelection,
 ) *Router {
 	sw := &Router{
 		settings:               cfg,
-		handlers:             make(map[string]Handler),
-		chanTraits:              make([]*link.StreamDefinition, 0),
-		handlersByChan:         make(map[byte]Handler),
-		messageKindByChanUID:        make(map[byte]proto.Message),
-		nodes:                NewNodeCollection(),
-		calling:              cmap.NewCIndex(),
-		reestablishing:         cmap.NewCIndex(),
-		stats:              NoopStats(),
+		engines:             make(map[string]Handler),
+		chnlDescriptions:              make([]*link.ConduitDefinition, 0),
+		enginesViaChnl:         make(map[byte]Handler),
+		signalKindViaChnlUUID:        make(map[byte]proto.Message),
+		nodes:                FreshNodeAssign(),
+		calling:              componentindex.FreshCNIndex(),
+		reestablishing:         componentindex.FreshCNIndex(),
+		telemetry:              NooperationTelemetry(),
 		carrier:            carrier,
-		refineDeadline:        standardRefineDeadline,
-		durableNodesLocations: make([]*NetLocation, 0),
-		absoluteNodeIDXDatastore: make(map[ID]struct{}),
-		mlc:                  newStatsTagRepository(),
+		refineDeadline:        fallbackRefineDeadline,
+		enduringNodesLocations: make([]*NetworkLocator, 0),
+		absoluteNodeIDXDstore: make(map[ID]struct{}),
+		mlc:                  freshTelemetryTagStash(),
 	}
 
 	//
-	sw.rng = random.NewRandom()
+	sw.rng = arbitrary.FreshArbitrary()
 
-	sw.RootDaemon = *daemon.NewRootDaemon(nil, "REDACTED", sw)
+	sw.FoundationFacility = *facility.FreshFoundationFacility(nil, "REDACTED", sw)
 
-	for _, setting := range options {
-		setting(sw)
+	for _, selection := range choices {
+		selection(sw)
 	}
 
 	return sw
 }
 
 //
-func RouterRefineDeadline(deadline time.Duration) RouterSetting {
+func RouterRefineDeadline(deadline time.Duration) RouterSelection {
 	return func(sw *Router) { sw.refineDeadline = deadline }
 }
 
 //
-func RouterNodeScreens(screens ...NodeRefineFunction) RouterSetting {
-	return func(sw *Router) { sw.nodeScreens = screens }
+func RouterNodeCriteria(criteria ...NodeRefineMethod) RouterSelection {
+	return func(sw *Router) { sw.nodeCriteria = criteria }
 }
 
 //
-func WithStats(stats *Stats) RouterSetting {
-	return func(sw *Router) { sw.stats = stats }
+func UsingTelemetry(telemetry *Telemetry) RouterSelection {
+	return func(sw *Router) { sw.telemetry = telemetry }
 }
 
 //
@@ -166,102 +166,102 @@ func WithStats(stats *Stats) RouterSetting {
 
 //
 //
-func (sw *Router) AppendHandler(label string, handler Handler) Handler {
-	for _, chanNote := range handler.FetchStreams() {
-		chanUID := chanNote.ID
+func (sw *Router) AppendHandler(alias string, handler Handler) Handler {
+	for _, chnlDescription := range handler.ObtainConduits() {
+		chnlUUID := chnlDescription.ID
 		//
-		if sw.handlersByChan[chanUID] != nil {
-			panic(fmt.Sprintf("REDACTED", chanUID, sw.handlersByChan[chanUID], handler))
+		if sw.enginesViaChnl[chnlUUID] != nil {
+			panic(fmt.Sprintf("REDACTED", chnlUUID, sw.enginesViaChnl[chnlUUID], handler))
 		}
-		sw.chanTraits = append(sw.chanTraits, chanNote)
-		sw.handlersByChan[chanUID] = handler
-		sw.messageKindByChanUID[chanUID] = chanNote.SignalKind
+		sw.chnlDescriptions = append(sw.chnlDescriptions, chnlDescription)
+		sw.enginesViaChnl[chnlUUID] = handler
+		sw.signalKindViaChnlUUID[chnlUUID] = chnlDescription.SignalKind
 	}
-	sw.handlers[label] = handler
-	handler.CollectionRouter(sw)
+	sw.engines[alias] = handler
+	handler.AssignRouter(sw)
 	return handler
 }
 
 //
 //
-func (sw *Router) DeleteHandler(label string, handler Handler) {
-	for _, chanNote := range handler.FetchStreams() {
+func (sw *Router) DiscardHandler(alias string, handler Handler) {
+	for _, chnlDescription := range handler.ObtainConduits() {
 		//
-		for i := 0; i < len(sw.chanTraits); i++ {
-			if chanNote.ID == sw.chanTraits[i].ID {
-				sw.chanTraits = append(sw.chanTraits[:i], sw.chanTraits[i+1:]...)
+		for i := 0; i < len(sw.chnlDescriptions); i++ {
+			if chnlDescription.ID == sw.chnlDescriptions[i].ID {
+				sw.chnlDescriptions = append(sw.chnlDescriptions[:i], sw.chnlDescriptions[i+1:]...)
 				break
 			}
 		}
-		delete(sw.handlersByChan, chanNote.ID)
-		delete(sw.messageKindByChanUID, chanNote.ID)
+		delete(sw.enginesViaChnl, chnlDescription.ID)
+		delete(sw.signalKindViaChnlUUID, chnlDescription.ID)
 	}
-	delete(sw.handlers, label)
-	handler.CollectionRouter(nil)
+	delete(sw.engines, alias)
+	handler.AssignRouter(nil)
 }
 
 //
 //
-func (sw *Router) Handlers() map[string]Handler {
-	return sw.handlers
+func (sw *Router) Engines() map[string]Handler {
+	return sw.engines
 }
 
 //
 //
-func (sw *Router) Handler(label string) (Handler, bool) {
-	handler, ok := sw.handlers[label]
+func (sw *Router) Handler(alias string) (Handler, bool) {
+	handler, ok := sw.engines[alias]
 	return handler, ok
 }
 
 //
 //
-func (sw *Router) CollectionMemberDetails(memberDetails MemberDetails) {
-	sw.memberDetails = memberDetails
+func (sw *Router) AssignPeerDetails(peerDetails PeerDetails) {
+	sw.peerDetails = peerDetails
 }
 
 //
 //
-func (sw *Router) MemberDetails() MemberDetails {
-	return sw.memberDetails
+func (sw *Router) PeerDetails() PeerDetails {
+	return sw.peerDetails
 }
 
 //
 //
-func (sw *Router) CollectionMemberKey(memberKey *MemberKey) {
-	sw.memberKey = memberKey
+func (sw *Router) AssignPeerToken(peerToken *PeerToken) {
+	sw.peerToken = peerToken
 }
 
 //
 //
 
 //
-func (sw *Router) OnBegin() error {
+func (sw *Router) UponInitiate() error {
 	//
-	for _, handler := range sw.handlers {
-		err := handler.Begin()
+	for _, handler := range sw.engines {
+		err := handler.Initiate()
 		if err != nil {
 			return fmt.Errorf("REDACTED", handler, err)
 		}
 	}
 
 	//
-	go sw.allowProcedure()
+	go sw.embraceProcedure()
 
 	return nil
 }
 
 //
-func (sw *Router) OnHalt() {
+func (sw *Router) UponHalt() {
 	//
-	for _, p := range sw.nodes.Clone() {
-		sw.haltAndDeleteNode(p, nil)
+	for _, p := range sw.nodes.Duplicate() {
+		sw.haltAlsoDiscardNode(p, nil)
 	}
 
 	//
 	sw.Tracer.Diagnose("REDACTED")
-	for _, handler := range sw.handlers {
+	for _, handler := range sw.engines {
 		if err := handler.Halt(); err != nil {
-			sw.Tracer.Fault("REDACTED", "REDACTED", handler, "REDACTED", err)
+			sw.Tracer.Failure("REDACTED", "REDACTED", handler, "REDACTED", err)
 		}
 	}
 }
@@ -275,20 +275,20 @@ func (sw *Router) OnHalt() {
 //
 //
 //
-func (sw *Router) Multicast(e Packet) chan bool {
-	sw.Tracer.Diagnose("REDACTED", "REDACTED", e.StreamUID)
+func (sw *Router) Multicast(e Wrapper) chan bool {
+	sw.Tracer.Diagnose("REDACTED", "REDACTED", e.ConduitUUID)
 
 	var wg sync.WaitGroup
-	successChannel := make(chan bool, sw.nodes.Volume())
+	triumphChn := make(chan bool, sw.nodes.Extent())
 
-	sw.nodes.ForEach(func(p Node) {
+	sw.nodes.ForeachEvery(func(p Node) {
 		wg.Add(1) //
 		go func(node Node) {
 			defer wg.Done()
-			success := node.Transmit(e)
+			triumph := node.Transmit(e)
 			//
 			select {
-			case successChannel <- success:
+			case triumphChn <- triumph:
 			default:
 			}
 		}(p)
@@ -296,10 +296,10 @@ func (sw *Router) Multicast(e Packet) chan bool {
 
 	go func() {
 		wg.Wait()
-		close(successChannel)
+		close(triumphChn)
 	}()
 
-	return successChannel
+	return triumphChn
 }
 
 //
@@ -307,13 +307,13 @@ func (sw *Router) Multicast(e Packet) chan bool {
 //
 //
 //
-func (sw *Router) MulticastAsync(e Packet) {
-	sw.Tracer.Diagnose("REDACTED", "REDACTED", e.StreamUID)
+func (sw *Router) MulticastAsyncronous(e Wrapper) {
+	sw.Tracer.Diagnose("REDACTED", "REDACTED", e.ConduitUUID)
 
-	sw.nodes.ForEach(func(p Node) {
+	sw.nodes.ForeachEvery(func(p Node) {
 		go func(node Node) {
-			success := node.Transmit(e)
-			_ = success
+			triumph := node.Transmit(e)
+			_ = triumph
 		}(p)
 	})
 }
@@ -324,8 +324,8 @@ func (sw *Router) MulticastAsync(e Packet) {
 //
 //
 //
-func (sw *Router) AttemptMulticast(e Packet) {
-	sw.nodes.ForEach(func(p Node) {
+func (sw *Router) AttemptMulticast(e Wrapper) {
+	sw.nodes.ForeachEvery(func(p Node) {
 		go func(node Node) {
 			node.AttemptTransmit(e)
 		}(p)
@@ -335,19 +335,19 @@ func (sw *Router) AttemptMulticast(e Packet) {
 //
 //
 func (sw *Router) CountNodes() (outgoing, incoming, calling int) {
-	sw.nodes.ForEach(func(node Node) {
-		if node.IsOutgoing() && !sw.IsNodeAbsolute(node.ID()) {
+	sw.nodes.ForeachEvery(func(node Node) {
+		if node.EqualsOutgoing() && !sw.EqualsNodeAbsolute(node.ID()) {
 			outgoing++
-		} else if !sw.IsNodeAbsolute(node.ID()) {
+		} else if !sw.EqualsNodeAbsolute(node.ID()) {
 			incoming++
 		}
 	})
-	calling = sw.calling.Volume()
+	calling = sw.calling.Extent()
 	return
 }
 
-func (sw *Router) IsNodeAbsolute(id ID) bool {
-	_, ok := sw.absoluteNodeIDXDatastore[id]
+func (sw *Router) EqualsNodeAbsolute(id ID) bool {
+	_, ok := sw.absoluteNodeIDXDstore[id]
 	return ok
 }
 
@@ -357,35 +357,35 @@ func (sw *Router) MaximumCountOutgoingNodes() int {
 }
 
 //
-func (sw *Router) Nodes() IDXNodeCollection {
+func (sw *Router) Nodes() IDXNodeAssign {
 	return sw.nodes
 }
 
 //
 //
 //
-func (sw *Router) HaltNodeForFault(node Node, cause any) {
-	if !node.IsActive() {
+func (sw *Router) HaltNodeForeachFailure(node Node, rationale any) {
+	if !node.EqualsActive() {
 		return
 	}
 
-	sw.Tracer.Fault("REDACTED", "REDACTED", node, "REDACTED", cause)
-	sw.haltAndDeleteNode(node, cause)
+	sw.Tracer.Failure("REDACTED", "REDACTED", node, "REDACTED", rationale)
+	sw.haltAlsoDiscardNode(node, rationale)
 
-	if node.IsDurable() {
-		var address *NetLocation
-		if node.IsOutgoing() { //
-			address = node.SocketAddress()
+	if node.EqualsEnduring() {
+		var location *NetworkLocator
+		if node.EqualsOutgoing() { //
+			location = node.PortLocation()
 		} else { //
 			var err error
-			address, err = node.MemberDetails().NetLocation()
+			location, err = node.PeerDetails().NetworkLocator()
 			if err != nil {
-				sw.Tracer.Fault("REDACTED",
+				sw.Tracer.Failure("REDACTED",
 					"REDACTED", node, "REDACTED", err)
 				return
 			}
 		}
-		go sw.reestablishToNode(address)
+		go sw.reestablishTowardNode(location)
 	}
 }
 
@@ -393,34 +393,34 @@ func (sw *Router) HaltNodeForFault(node Node, cause any) {
 //
 func (sw *Router) HaltNodeSmoothly(node Node) {
 	sw.Tracer.Details("REDACTED")
-	sw.haltAndDeleteNode(node, nil)
+	sw.haltAlsoDiscardNode(node, nil)
 }
 
-func (sw *Router) haltAndDeleteNode(node Node, cause any) {
+func (sw *Router) haltAlsoDiscardNode(node Node, rationale any) {
 	//
 	//
 	if err := node.Halt(); err != nil {
-		sw.Tracer.Fault("REDACTED", "REDACTED", node.ID(), "REDACTED", err)
+		sw.Tracer.Failure("REDACTED", "REDACTED", node.ID(), "REDACTED", err)
 		return
 	}
 
 	sw.carrier.Sanitize(node)
-	for _, handler := range sw.handlers {
-		handler.DeleteNode(node, cause)
+	for _, handler := range sw.engines {
+		handler.DiscardNode(node, rationale)
 	}
 
 	//
 	//
 	//
 	//
-	if !sw.nodes.Delete(node) {
+	if !sw.nodes.Discard(node) {
 		//
 		//
 		sw.Tracer.Diagnose("REDACTED", "REDACTED", node.ID())
 		return
 	}
 
-	sw.stats.Nodes.Add(float64(-1))
+	sw.telemetry.Nodes.Add(float64(-1))
 }
 
 //
@@ -432,79 +432,79 @@ func (sw *Router) haltAndDeleteNode(node Node, cause any) {
 //
 //
 //
-func (sw *Router) reestablishToNode(address *NetLocation) {
-	if sw.reestablishing.Has(string(address.ID)) {
+func (sw *Router) reestablishTowardNode(location *NetworkLocator) {
+	if sw.reestablishing.Has(string(location.ID)) {
 		return
 	}
-	sw.reestablishing.Set(string(address.ID), address)
-	defer sw.reestablishing.Erase(string(address.ID))
+	sw.reestablishing.Set(string(location.ID), location)
+	defer sw.reestablishing.Erase(string(location.ID))
 
-	begin := time.Now()
-	sw.Tracer.Details("REDACTED", "REDACTED", address)
+	initiate := time.Now()
+	sw.Tracer.Details("REDACTED", "REDACTED", location)
 
-	for i := 0; i < reestablishTries; i++ {
-		if !sw.IsActive() {
+	for i := 0; i < reestablishEndeavors; i++ {
+		if !sw.EqualsActive() {
 			return
 		}
 
-		err := sw.CallNodeWithLocation(address)
+		err := sw.CallNodeUsingLocator(location)
 		if err == nil {
 			return //
-		} else if _, ok := err.(ErrPresentlyCallingOrCurrentLocation); ok {
+		} else if _, ok := err.(FaultPresentlyCallingEitherPresentLocator); ok {
 			return
 		}
 
-		sw.Tracer.Details("REDACTED", "REDACTED", i, "REDACTED", err, "REDACTED", address)
+		sw.Tracer.Details("REDACTED", "REDACTED", i, "REDACTED", err, "REDACTED", location)
 		//
-		sw.arbitraryPause(reestablishCadence)
+		sw.unpredictableSnooze(reestablishDuration)
 		continue
 	}
 
-	sw.Tracer.Fault("REDACTED",
-		"REDACTED", address, "REDACTED", time.Since(begin))
-	for i := 1; i <= reestablishRearOffsetTries; i++ {
-		if !sw.IsActive() {
+	sw.Tracer.Failure("REDACTED",
+		"REDACTED", location, "REDACTED", time.Since(initiate))
+	for i := 1; i <= reestablishRearUnactivatedEndeavors; i++ {
+		if !sw.EqualsActive() {
 			return
 		}
 
 		//
-		pauseCadenceMoments := math.Pow(reestablishRearOffsetRootMoments, float64(i))
-		sw.arbitraryPause(time.Duration(pauseCadenceMoments) * time.Second)
+		snoozeDurationMoments := math.Pow(reestablishRearUnactivatedFoundationMoments, float64(i))
+		sw.unpredictableSnooze(time.Duration(snoozeDurationMoments) * time.Second)
 
-		err := sw.CallNodeWithLocation(address)
+		err := sw.CallNodeUsingLocator(location)
 		if err == nil {
 			return //
-		} else if _, ok := err.(ErrPresentlyCallingOrCurrentLocation); ok {
+		} else if _, ok := err.(FaultPresentlyCallingEitherPresentLocator); ok {
 			return
 		}
-		sw.Tracer.Details("REDACTED", "REDACTED", i, "REDACTED", err, "REDACTED", address)
+		sw.Tracer.Details("REDACTED", "REDACTED", i, "REDACTED", err, "REDACTED", location)
 	}
-	sw.Tracer.Fault("REDACTED", "REDACTED", address, "REDACTED", time.Since(begin))
+	sw.Tracer.Failure("REDACTED", "REDACTED", location, "REDACTED", time.Since(initiate))
 }
 
 //
-func (sw *Router) CollectionAddressRegistry(addressRegistry AddressLedger) {
-	sw.addressRegistry = addressRegistry
+func (sw *Router) AssignLocationRegister(locationRegister LocationRegister) {
+	sw.locationRegister = locationRegister
 }
 
 //
 //
-func (sw *Router) StampNodeAsSound(node Node) {
-	if sw.addressRegistry != nil {
-		sw.addressRegistry.StampValid(node.ID())
+func (sw *Router) LabelNodeLikeValid(node Node) {
+	if sw.locationRegister != nil {
+		sw.locationRegister.LabelValid(node.ID())
 	}
 }
 
 //
 //
 
-type internalAddress interface {
-	InternalAddress() bool
+type secludedLocation interface {
+	SecludedLocation() bool
 }
 
-func isInternalAddress(err error) bool {
-	te, ok := err.(internalAddress)
-	return ok && te.InternalAddress()
+func equalsSecludedLocation(err error) bool {
+	te, ok := err.(secludedLocation)
+	return ok && te.SecludedLocation()
 }
 
 //
@@ -512,70 +512,70 @@ func isInternalAddress(err error) bool {
 //
 //
 //
-func (sw *Router) CallNodesAsync(nodes []string) error {
-	netLocations, faults := NewNetLocationStrings(nodes)
+func (sw *Router) CallNodesAsyncronous(nodes []string) error {
+	networkLocations, errors := FreshNetworkLocatorTexts(nodes)
 	//
-	for _, err := range faults {
-		sw.Tracer.Fault("REDACTED", "REDACTED", err)
+	for _, err := range errors {
+		sw.Tracer.Failure("REDACTED", "REDACTED", err)
 	}
 	//
-	for _, err := range faults {
-		if _, ok := err.(ErrNetLocationSearch); ok {
+	for _, err := range errors {
+		if _, ok := err.(FaultNetworkLocatorSearch); ok {
 			continue
 		}
 		return err
 	}
-	sw.callNodesAsync(netLocations)
+	sw.callNodesAsyncronous(networkLocations)
 	return nil
 }
 
-func (sw *Router) callNodesAsync(netLocations []*NetLocation) {
-	ourAddress := sw.NetLocation()
+func (sw *Router) callNodesAsyncronous(networkLocations []*NetworkLocator) {
+	mineLocation := sw.NetworkLocator()
 
 	//
 	//
 	//
 	//
-	if sw.addressRegistry != nil {
+	if sw.locationRegister != nil {
 		//
-		for _, netAddress := range netLocations {
+		for _, networkLocation := range networkLocations {
 			//
-			if !netAddress.Identical(ourAddress) {
-				if err := sw.addressRegistry.AppendLocation(netAddress, ourAddress); err != nil {
-					if isInternalAddress(err) {
+			if !networkLocation.Identical(mineLocation) {
+				if err := sw.locationRegister.AppendLocator(networkLocation, mineLocation); err != nil {
+					if equalsSecludedLocation(err) {
 						sw.Tracer.Diagnose("REDACTED", "REDACTED", err)
 					} else {
-						sw.Tracer.Fault("REDACTED", "REDACTED", err)
+						sw.Tracer.Failure("REDACTED", "REDACTED", err)
 					}
 				}
 			}
 		}
 		//
 		//
-		sw.addressRegistry.Persist()
+		sw.locationRegister.Persist()
 	}
 
 	//
-	mode := sw.rng.Mode(len(netLocations))
+	mode := sw.rng.Mode(len(networkLocations))
 	for i := 0; i < len(mode); i++ {
 		go func(i int) {
 			j := mode[i]
-			address := netLocations[j]
+			location := networkLocations[j]
 
-			if address.Identical(ourAddress) {
-				sw.Tracer.Diagnose("REDACTED", "REDACTED", address, "REDACTED", ourAddress)
+			if location.Identical(mineLocation) {
+				sw.Tracer.Diagnose("REDACTED", "REDACTED", location, "REDACTED", mineLocation)
 				return
 			}
 
-			sw.arbitraryPause(0)
+			sw.unpredictableSnooze(0)
 
-			err := sw.CallNodeWithLocation(address)
+			err := sw.CallNodeUsingLocator(location)
 			if err != nil {
 				switch err.(type) {
-				case ErrRouterEstablishToEgo, ErrRouterReplicatedNodeUID, ErrPresentlyCallingOrCurrentLocation:
+				case FaultRouterRelateTowardEgo, FaultRouterReplicatedNodeUUID, FaultPresentlyCallingEitherPresentLocator:
 					sw.Tracer.Diagnose("REDACTED", "REDACTED", err)
 				default:
-					sw.Tracer.Fault("REDACTED", "REDACTED", err)
+					sw.Tracer.Failure("REDACTED", "REDACTED", err)
 				}
 			}
 		}(i)
@@ -586,81 +586,81 @@ func (sw *Router) callNodesAsync(netLocations []*NetLocation) {
 //
 //
 //
-func (sw *Router) CallNodeWithLocation(address *NetLocation) error {
-	if sw.IsCallingOrCurrentLocation(address) {
-		return ErrPresentlyCallingOrCurrentLocation{address.String()}
+func (sw *Router) CallNodeUsingLocator(location *NetworkLocator) error {
+	if sw.EqualsCallingEitherCurrentLocator(location) {
+		return FaultPresentlyCallingEitherPresentLocator{location.Text()}
 	}
 
-	sw.calling.Set(string(address.ID), address)
-	defer sw.calling.Erase(string(address.ID))
+	sw.calling.Set(string(location.ID), location)
+	defer sw.calling.Erase(string(location.ID))
 
-	return sw.appendOutgoingNodeWithSettings(address, sw.settings)
+	return sw.appendOutgoingNodeUsingSettings(location, sw.settings)
 }
 
 //
-func (sw *Router) arbitraryPause(cadence time.Duration) {
-	r := time.Duration(sw.rng.Int64count(callShufflerCadenceMilliseconds)) * time.Millisecond
-	time.Sleep(r + cadence)
-}
-
-//
-//
-func (sw *Router) IsCallingOrCurrentLocation(address *NetLocation) bool {
-	return sw.calling.Has(string(address.ID)) ||
-		sw.nodes.Has(address.ID) ||
-		(!sw.settings.PermitReplicatedIP && sw.nodes.HasIP(address.IP))
+func (sw *Router) unpredictableSnooze(duration time.Duration) {
+	r := time.Duration(sw.rng.Int63num(callGeneratorDurationMillis)) * time.Millisecond
+	time.Sleep(r + duration)
 }
 
 //
 //
+func (sw *Router) EqualsCallingEitherCurrentLocator(location *NetworkLocator) bool {
+	return sw.calling.Has(string(location.ID)) ||
+		sw.nodes.Has(location.ID) ||
+		(!sw.settings.PermitReplicatedINET && sw.nodes.OwnsINET(location.IP))
+}
+
 //
-func (sw *Router) AppendDurableNodes(locations []string) error {
+//
+//
+func (sw *Router) AppendEnduringNodes(locations []string) error {
 	sw.Tracer.Details("REDACTED", "REDACTED", locations)
-	netLocations, faults := NewNetLocationStrings(locations)
+	networkLocations, errors := FreshNetworkLocatorTexts(locations)
 	//
-	for _, err := range faults {
-		sw.Tracer.Fault("REDACTED", "REDACTED", err)
+	for _, err := range errors {
+		sw.Tracer.Failure("REDACTED", "REDACTED", err)
 	}
 	//
-	for _, err := range faults {
-		if _, ok := err.(ErrNetLocationSearch); ok {
+	for _, err := range errors {
+		if _, ok := err.(FaultNetworkLocatorSearch); ok {
 			continue
 		}
 		return err
 	}
-	sw.durableNodesLocations = netLocations
+	sw.enduringNodesLocations = networkLocations
 	return nil
 }
 
-func (sw *Router) AppendAbsoluteNodeIDXDatastore(ids []string) error {
+func (sw *Router) AppendAbsoluteNodeIDXDstore(ids []string) error {
 	sw.Tracer.Details("REDACTED", "REDACTED", ids)
 	for i, id := range ids {
-		err := certifyUID(ID(id))
+		err := certifyUUID(ID(id))
 		if err != nil {
 			return fmt.Errorf("REDACTED", i, err)
 		}
-		sw.absoluteNodeIDXDatastore[ID(id)] = struct{}{}
+		sw.absoluteNodeIDXDstore[ID(id)] = struct{}{}
 	}
 	return nil
 }
 
-func (sw *Router) AppendInternalNodeIDXDatastore(ids []string) error {
-	soundIDXDatastore := make([]string, 0, len(ids))
+func (sw *Router) AppendSecludedNodeIDXDstore(ids []string) error {
+	soundIDXDstore := make([]string, 0, len(ids))
 	for i, id := range ids {
-		err := certifyUID(ID(id))
+		err := certifyUUID(ID(id))
 		if err != nil {
 			return fmt.Errorf("REDACTED", i, err)
 		}
-		soundIDXDatastore = append(soundIDXDatastore, id)
+		soundIDXDstore = append(soundIDXDstore, id)
 	}
 
-	sw.addressRegistry.AppendInternalIDXDatastore(soundIDXDatastore)
+	sw.locationRegister.AppendSecludedIDXDstore(soundIDXDstore)
 
 	return nil
 }
 
-func (sw *Router) IsNodeDurable(na *NetLocation) bool {
-	for _, pa := range sw.durableNodesLocations {
+func (sw *Router) EqualsNodeEnduring(na *NetworkLocator) bool {
+	for _, pa := range sw.enduringNodesLocations {
 		if pa.Matches(na) {
 			return true
 		}
@@ -672,52 +672,52 @@ func (sw *Router) Log() log.Tracer {
 	return sw.Tracer
 }
 
-func (sw *Router) allowProcedure() {
+func (sw *Router) embraceProcedure() {
 	for {
-		p, err := sw.carrier.Allow(nodeSettings{
-			chanTraits:       sw.chanTraits,
-			onNodeFault:   sw.HaltNodeForFault,
-			handlersByChan:  sw.handlersByChan,
-			messageKindByChanUID: sw.messageKindByChanUID,
-			stats:       sw.stats,
+		p, err := sw.carrier.Embrace(nodeSettings{
+			chnlDescriptions:       sw.chnlDescriptions,
+			uponNodeFailure:   sw.HaltNodeForeachFailure,
+			enginesViaChnl:  sw.enginesViaChnl,
+			signalKindViaChnlUUID: sw.signalKindViaChnlUUID,
+			telemetry:       sw.telemetry,
 			mlc:           sw.mlc,
-			isDurable:  sw.IsNodeDurable,
+			equalsEnduring:  sw.EqualsNodeEnduring,
 		})
 		if err != nil {
 			switch err := err.(type) {
-			case ErrDeclined:
-				if err.IsEgo() {
+			case FaultDeclined:
+				if err.EqualsEgo() {
 					//
 					//
-					address := err.Address()
-					sw.addressRegistry.DeleteLocation(&address)
-					sw.addressRegistry.AppendOurLocation(&address)
+					location := err.Location()
+					sw.locationRegister.DiscardLocator(&location)
+					sw.locationRegister.AppendMineLocator(&location)
 				}
 
 				sw.Tracer.Details(
 					"REDACTED",
 					"REDACTED", err,
-					"REDACTED", sw.nodes.Volume(),
+					"REDACTED", sw.nodes.Extent(),
 				)
 
 				continue
-			case ErrRefineDeadline:
-				sw.Tracer.Fault(
+			case FaultRefineDeadline:
+				sw.Tracer.Failure(
 					"REDACTED",
 					"REDACTED", err,
 				)
 
 				continue
-			case ErrCarrierHalted:
-				sw.Tracer.Fault(
+			case FaultCarrierTerminated:
+				sw.Tracer.Failure(
 					"REDACTED",
-					"REDACTED", sw.nodes.Volume(),
+					"REDACTED", sw.nodes.Extent(),
 				)
 			default:
-				sw.Tracer.Fault(
+				sw.Tracer.Failure(
 					"REDACTED",
 					"REDACTED", err,
-					"REDACTED", sw.nodes.Volume(),
+					"REDACTED", sw.nodes.Extent(),
 				)
 				//
 				//
@@ -730,13 +730,13 @@ func (sw *Router) allowProcedure() {
 			break
 		}
 
-		if !sw.IsNodeAbsolute(p.MemberDetails().ID()) {
+		if !sw.EqualsNodeAbsolute(p.PeerDetails().ID()) {
 			//
 			_, in, _ := sw.CountNodes()
 			if in >= sw.settings.MaximumCountIncomingNodes {
 				sw.Tracer.Details(
 					"REDACTED",
-					"REDACTED", p.SocketAddress(),
+					"REDACTED", p.PortLocation(),
 					"REDACTED", in,
 					"REDACTED", sw.settings.MaximumCountIncomingNodes,
 				)
@@ -750,7 +750,7 @@ func (sw *Router) allowProcedure() {
 
 		if err := sw.appendNode(p); err != nil {
 			sw.carrier.Sanitize(p)
-			if p.IsActive() {
+			if p.EqualsActive() {
 				_ = p.Halt()
 			}
 			sw.Tracer.Details(
@@ -767,34 +767,34 @@ func (sw *Router) allowProcedure() {
 //
 //
 //
-func (sw *Router) appendOutgoingNodeWithSettings(
-	address *NetLocation,
-	cfg *settings.P2PSettings,
+func (sw *Router) appendOutgoingNodeUsingSettings(
+	location *NetworkLocator,
+	cfg *settings.Peer2peerSettings,
 ) error {
-	sw.Tracer.Diagnose("REDACTED", "REDACTED", address)
+	sw.Tracer.Diagnose("REDACTED", "REDACTED", location)
 
 	//
-	if cfg.VerifyCallAbort {
-		go sw.reestablishToNode(address)
+	if cfg.VerifyCallMishap {
+		go sw.reestablishTowardNode(location)
 		return fmt.Errorf("REDACTED")
 	}
 
-	p, err := sw.carrier.Call(*address, nodeSettings{
-		chanTraits:       sw.chanTraits,
-		onNodeFault:   sw.HaltNodeForFault,
-		isDurable:  sw.IsNodeDurable,
-		handlersByChan:  sw.handlersByChan,
-		messageKindByChanUID: sw.messageKindByChanUID,
-		stats:       sw.stats,
+	p, err := sw.carrier.Call(*location, nodeSettings{
+		chnlDescriptions:       sw.chnlDescriptions,
+		uponNodeFailure:   sw.HaltNodeForeachFailure,
+		equalsEnduring:  sw.EqualsNodeEnduring,
+		enginesViaChnl:  sw.enginesViaChnl,
+		signalKindViaChnlUUID: sw.signalKindViaChnlUUID,
+		telemetry:       sw.telemetry,
 		mlc:           sw.mlc,
 	})
 	if err != nil {
-		if e, ok := err.(ErrDeclined); ok {
-			if e.IsEgo() {
+		if e, ok := err.(FaultDeclined); ok {
+			if e.EqualsEgo() {
 				//
 				//
-				sw.addressRegistry.DeleteLocation(address)
-				sw.addressRegistry.AppendOurLocation(address)
+				sw.locationRegister.DiscardLocator(location)
+				sw.locationRegister.AppendMineLocator(location)
 
 				return err
 			}
@@ -802,8 +802,8 @@ func (sw *Router) appendOutgoingNodeWithSettings(
 
 		//
 		//
-		if sw.IsNodeDurable(address) {
-			go sw.reestablishToNode(address)
+		if sw.EqualsNodeEnduring(location) {
+			go sw.reestablishTowardNode(location)
 		}
 
 		return err
@@ -811,7 +811,7 @@ func (sw *Router) appendOutgoingNodeWithSettings(
 
 	if err := sw.appendNode(p); err != nil {
 		sw.carrier.Sanitize(p)
-		if p.IsActive() {
+		if p.EqualsActive() {
 			_ = p.Halt()
 		}
 		return err
@@ -823,25 +823,25 @@ func (sw *Router) appendOutgoingNodeWithSettings(
 func (sw *Router) refineNode(p Node) error {
 	//
 	if sw.nodes.Has(p.ID()) {
-		return ErrDeclined{id: p.ID(), isReplicated: true}
+		return FaultDeclined{id: p.ID(), equalsReplicated: true}
 	}
 
-	faultc := make(chan error, len(sw.nodeScreens))
+	faultchnl := make(chan error, len(sw.nodeCriteria))
 
-	for _, f := range sw.nodeScreens {
-		go func(f NodeRefineFunction, p Node, faultc chan<- error) {
-			faultc <- f(sw.nodes, p)
-		}(f, p, faultc)
+	for _, f := range sw.nodeCriteria {
+		go func(f NodeRefineMethod, p Node, faultchnl chan<- error) {
+			faultchnl <- f(sw.nodes, p)
+		}(f, p, faultchnl)
 	}
 
-	for i := 0; i < cap(faultc); i++ {
+	for i := 0; i < cap(faultchnl); i++ {
 		select {
-		case err := <-faultc:
+		case err := <-faultchnl:
 			if err != nil {
-				return ErrDeclined{id: p.ID(), err: err, isScreened: true}
+				return FaultDeclined{id: p.ID(), err: err, equalsScreened: true}
 			}
 		case <-time.After(sw.refineDeadline):
-			return ErrRefineDeadline{}
+			return FaultRefineDeadline{}
 		}
 	}
 
@@ -855,28 +855,28 @@ func (sw *Router) appendNode(p Node) error {
 		return err
 	}
 
-	p.AssignTracer(sw.Tracer.With("REDACTED", p.SocketAddress()))
+	p.AssignTracer(sw.Tracer.Using("REDACTED", p.PortLocation()))
 
 	//
 	//
-	if !sw.IsActive() {
+	if !sw.EqualsActive() {
 		//
-		sw.Tracer.Fault("REDACTED", "REDACTED", p)
+		sw.Tracer.Failure("REDACTED", "REDACTED", p)
 		return nil
 	}
 
 	//
-	for _, handler := range sw.handlers {
-		p = handler.InitNode(p)
+	for _, handler := range sw.engines {
+		p = handler.InitializeNode(p)
 	}
 
 	//
 	//
 	//
-	err := p.Begin()
+	err := p.Initiate()
 	if err != nil {
 		//
-		sw.Tracer.Fault("REDACTED", "REDACTED", err, "REDACTED", p)
+		sw.Tracer.Failure("REDACTED", "REDACTED", err, "REDACTED", p)
 		return err
 	}
 
@@ -884,18 +884,18 @@ func (sw *Router) appendNode(p Node) error {
 	//
 	//
 	if err := sw.nodes.Add(p); err != nil {
-		var errNodeDeletion ErrNodeDeletion
-		if errors.As(err, &errNodeDeletion) {
-			sw.Tracer.Fault("REDACTED",
+		var faultNodeDeletion FaultNodeDeletion
+		if errors.As(err, &faultNodeDeletion) {
+			sw.Tracer.Failure("REDACTED",
 				"REDACTED", "REDACTED",
 				"REDACTED", p.ID())
 		}
 		return err
 	}
-	sw.stats.Nodes.Add(float64(1))
+	sw.telemetry.Nodes.Add(float64(1))
 
 	//
-	for _, handler := range sw.handlers {
+	for _, handler := range sw.engines {
 		handler.AppendNode(p)
 	}
 

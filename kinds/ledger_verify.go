@@ -16,68 +16,68 @@ import (
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/require"
 
-	"github.com/valkyrieworks/vault"
-	"github.com/valkyrieworks/vault/merkle"
-	"github.com/valkyrieworks/vault/comethash"
-	"github.com/valkyrieworks/utils/bits"
-	"github.com/valkyrieworks/utils/octets"
-	engineseed "github.com/valkyrieworks/utils/random"
-	engineproto "github.com/valkyrieworks/schema/consensuscore/kinds"
-	cometrelease "github.com/valkyrieworks/schema/consensuscore/release"
-	engineclock "github.com/valkyrieworks/kinds/moment"
-	"github.com/valkyrieworks/release"
+	"github.com/valkyrieworks/dffc4ef0-4ec6-4346-9b6c-d0a0cb42d94b/security"
+	"github.com/valkyrieworks/dffc4ef0-4ec6-4346-9b6c-d0a0cb42d94b/security/hashmap"
+	"github.com/valkyrieworks/dffc4ef0-4ec6-4346-9b6c-d0a0cb42d94b/security/tenderminthash"
+	"github.com/valkyrieworks/dffc4ef0-4ec6-4346-9b6c-d0a0cb42d94b/utils/digits"
+	"github.com/valkyrieworks/dffc4ef0-4ec6-4346-9b6c-d0a0cb42d94b/utils/octets"
+	commitrand "github.com/valkyrieworks/dffc4ef0-4ec6-4346-9b6c-d0a0cb42d94b/utils/arbitrary"
+	commitchema "github.com/valkyrieworks/dffc4ef0-4ec6-4346-9b6c-d0a0cb42d94b/schema/strongmind/kinds"
+	strongmindedition "github.com/valkyrieworks/dffc4ef0-4ec6-4346-9b6c-d0a0cb42d94b/schema/strongmind/edition"
+	committime "github.com/valkyrieworks/dffc4ef0-4ec6-4346-9b6c-d0a0cb42d94b/kinds/moment"
+	"github.com/valkyrieworks/dffc4ef0-4ec6-4346-9b6c-d0a0cb42d94b/edition"
 )
 
-func VerifyMain(m *testing.M) {
-	code := m.Run()
-	os.Exit(code)
+func VerifyPrimary(m *testing.M) {
+	cipher := m.Run()
+	os.Exit(cipher)
 }
 
 func VerifyLedgerAppendProof(t *testing.T) {
 	txs := []Tx{Tx("REDACTED"), Tx("REDACTED")}
-	finalUID := createLedgerUIDArbitrary()
+	finalUUID := createLedgerUUIDUnpredictable()
 	h := int64(3)
 
-	ballotCollection, _, values := randomBallotCollection(h-1, 1, engineproto.PreendorseKind, 10, 1, false)
-	extensionEndorse, err := CreateExtensionEndorse(finalUID, h-1, 1, ballotCollection, values, time.Now(), false)
+	ballotAssign, _, values := arbitraryBallotAssign(h-1, 1, commitchema.PreendorseKind, 10, 1, false)
+	addnEndorse, err := CreateAddnEndorse(finalUUID, h-1, 1, ballotAssign, values, time.Now(), false)
 	require.NoError(t, err)
 
-	ev, err := NewEmulateReplicatedBallotProofWithRatifier(h, time.Now(), values[0], "REDACTED")
+	ev, err := FreshSimulateReplicatedBallotProofUsingAssessor(h, time.Now(), values[0], "REDACTED")
 	require.NoError(t, err)
-	evtCatalog := []Proof{ev}
+	occurenceCatalog := []Proof{ev}
 
-	ledger := CreateLedger(h, txs, extensionEndorse.ToEndorse(), evtCatalog)
+	ledger := CreateLedger(h, txs, addnEndorse.TowardEndorse(), occurenceCatalog)
 	require.NotNil(t, ledger)
 	require.Equal(t, 1, len(ledger.Proof.Proof))
 	require.NotNil(t, ledger.ProofDigest)
 }
 
-func VerifyLedgerCertifySimple(t *testing.T) {
-	require.Error(t, (*Ledger)(nil).CertifySimple())
+func VerifyLedgerCertifyFundamental(t *testing.T) {
+	require.Error(t, (*Ledger)(nil).CertifyFundamental())
 
 	txs := []Tx{Tx("REDACTED"), Tx("REDACTED")}
-	finalUID := createLedgerUIDArbitrary()
+	finalUUID := createLedgerUUIDUnpredictable()
 	h := int64(3)
 
-	ballotCollection, valueCollection, values := randomBallotCollection(h-1, 1, engineproto.PreendorseKind, 10, 1, false)
-	extensionEndorse, err := CreateExtensionEndorse(finalUID, h-1, 1, ballotCollection, values, time.Now(), false)
+	ballotAssign, itemAssign, values := arbitraryBallotAssign(h-1, 1, commitchema.PreendorseKind, 10, 1, false)
+	addnEndorse, err := CreateAddnEndorse(finalUUID, h-1, 1, ballotAssign, values, time.Now(), false)
 	require.NoError(t, err)
-	endorse := extensionEndorse.ToEndorse()
+	endorse := addnEndorse.TowardEndorse()
 
-	ev, err := NewEmulateReplicatedBallotProofWithRatifier(h, time.Now(), values[0], "REDACTED")
+	ev, err := FreshSimulateReplicatedBallotProofUsingAssessor(h, time.Now(), values[0], "REDACTED")
 	require.NoError(t, err)
-	evtCatalog := []Proof{ev}
+	occurenceCatalog := []Proof{ev}
 
 	verifyScenarios := []struct {
-		verifyLabel      string
+		verifyAlias      string
 		distortLedger func(*Ledger)
-		expirationErr        bool
+		expirationFault        bool
 	}{
 		{"REDACTED", func(blk *Ledger) {}, false},
-		{"REDACTED", func(blk *Ledger) { blk.RecommenderLocation = valueCollection.FetchRecommender().Location }, false},
-		{"REDACTED", func(blk *Ledger) { blk.Level = -1 }, true},
+		{"REDACTED", func(blk *Ledger) { blk.NominatorLocation = itemAssign.ObtainNominator().Location }, false},
+		{"REDACTED", func(blk *Ledger) { blk.Altitude = -1 }, true},
 		{"REDACTED", func(blk *Ledger) {
-			blk.FinalEndorse.Endorsements = endorse.Endorsements[:endorse.Volume()/2]
+			blk.FinalEndorse.Notations = endorse.Notations[:endorse.Extent()/2]
 			blk.FinalEndorse.digest = nil //
 		}, true},
 		{"REDACTED", func(blk *Ledger) { blk.FinalEndorseDigest = []byte("REDACTED") }, true},
@@ -86,22 +86,22 @@ func VerifyLedgerCertifySimple(t *testing.T) {
 			blk.digest = nil //
 		}, true},
 		{"REDACTED", func(blk *Ledger) {
-			blk.DataDigest = engineseed.Octets(len(blk.DataDigest))
+			blk.DataDigest = commitrand.Octets(len(blk.DataDigest))
 		}, true},
 		{"REDACTED", func(blk *Ledger) {
 			blk.ProofDigest = []byte("REDACTED")
 		}, true},
 		{"REDACTED", func(blk *Ledger) {
-			blk.Release.Ledger = 1
+			blk.Edition.Ledger = 1
 		}, true},
 	}
 	for i, tc := range verifyScenarios {
-		t.Run(tc.verifyLabel, func(t *testing.T) {
-			ledger := CreateLedger(h, txs, endorse, evtCatalog)
-			ledger.RecommenderLocation = valueCollection.FetchRecommender().Location
+		t.Run(tc.verifyAlias, func(t *testing.T) {
+			ledger := CreateLedger(h, txs, endorse, occurenceCatalog)
+			ledger.NominatorLocation = itemAssign.ObtainNominator().Location
 			tc.distortLedger(ledger)
-			err = ledger.CertifySimple()
-			assert.Equal(t, tc.expirationErr, err != nil, "REDACTED", i, err)
+			err = ledger.CertifyFundamental()
+			assert.Equal(t, tc.expirationFault, err != nil, "REDACTED", i, err)
 		})
 	}
 }
@@ -111,160 +111,160 @@ func VerifyLedgerDigest(t *testing.T) {
 	assert.Nil(t, CreateLedger(int64(3), []Tx{Tx("REDACTED")}, nil, nil).Digest())
 }
 
-func VerifyLedgerCreateSectionCollection(t *testing.T) {
-	bps, err := (*Ledger)(nil).CreateSegmentAssign(2)
+func VerifyLedgerCreateFragmentAssign(t *testing.T) {
+	bps, err := (*Ledger)(nil).CreateFragmentAssign(2)
 	assert.Error(t, err)
 	assert.Nil(t, bps)
 
-	sectionCollection, err := CreateLedger(int64(3), []Tx{Tx("REDACTED")}, nil, nil).CreateSegmentAssign(1024)
+	fragmentAssign, err := CreateLedger(int64(3), []Tx{Tx("REDACTED")}, nil, nil).CreateFragmentAssign(1024)
 	require.NoError(t, err)
-	assert.NotNil(t, sectionCollection)
-	assert.EqualValues(t, 1, sectionCollection.Sum())
+	assert.NotNil(t, fragmentAssign)
+	assert.EqualValues(t, 1, fragmentAssign.Sum())
 }
 
-func VerifyLedgerCreateSectionCollectionWithProof(t *testing.T) {
-	bps, err := (*Ledger)(nil).CreateSegmentAssign(2)
+func VerifyLedgerCreateFragmentAssignUsingProof(t *testing.T) {
+	bps, err := (*Ledger)(nil).CreateFragmentAssign(2)
 	assert.Error(t, err)
 	assert.Nil(t, bps)
 
-	finalUID := createLedgerUIDArbitrary()
+	finalUUID := createLedgerUUIDUnpredictable()
 	h := int64(3)
 
-	ballotCollection, _, values := randomBallotCollection(h-1, 1, engineproto.PreendorseKind, 10, 1, false)
-	extensionEndorse, err := CreateExtensionEndorse(finalUID, h-1, 1, ballotCollection, values, time.Now(), false)
+	ballotAssign, _, values := arbitraryBallotAssign(h-1, 1, commitchema.PreendorseKind, 10, 1, false)
+	addnEndorse, err := CreateAddnEndorse(finalUUID, h-1, 1, ballotAssign, values, time.Now(), false)
 	require.NoError(t, err)
 
-	ev, err := NewEmulateReplicatedBallotProofWithRatifier(h, time.Now(), values[0], "REDACTED")
+	ev, err := FreshSimulateReplicatedBallotProofUsingAssessor(h, time.Now(), values[0], "REDACTED")
 	require.NoError(t, err)
-	evtCatalog := []Proof{ev}
+	occurenceCatalog := []Proof{ev}
 
-	sectionCollection, err := CreateLedger(h, []Tx{Tx("REDACTED")}, extensionEndorse.ToEndorse(), evtCatalog).CreateSegmentAssign(512)
+	fragmentAssign, err := CreateLedger(h, []Tx{Tx("REDACTED")}, addnEndorse.TowardEndorse(), occurenceCatalog).CreateFragmentAssign(512)
 	require.NoError(t, err)
 
-	assert.NotNil(t, sectionCollection)
-	assert.EqualValues(t, 4, sectionCollection.Sum())
+	assert.NotNil(t, fragmentAssign)
+	assert.EqualValues(t, 4, fragmentAssign.Sum())
 }
 
-func VerifyLedgerDigestsTo(t *testing.T) {
-	assert.False(t, (*Ledger)(nil).DigestsTo(nil))
+func VerifyLedgerDigestsToward(t *testing.T) {
+	assert.False(t, (*Ledger)(nil).DigestsToward(nil))
 
-	finalUID := createLedgerUIDArbitrary()
+	finalUUID := createLedgerUUIDUnpredictable()
 	h := int64(3)
-	ballotCollection, valueCollection, values := randomBallotCollection(h-1, 1, engineproto.PreendorseKind, 10, 1, false)
-	extensionEndorse, err := CreateExtensionEndorse(finalUID, h-1, 1, ballotCollection, values, time.Now(), false)
+	ballotAssign, itemAssign, values := arbitraryBallotAssign(h-1, 1, commitchema.PreendorseKind, 10, 1, false)
+	addnEndorse, err := CreateAddnEndorse(finalUUID, h-1, 1, ballotAssign, values, time.Now(), false)
 	require.NoError(t, err)
 
-	ev, err := NewEmulateReplicatedBallotProofWithRatifier(h, time.Now(), values[0], "REDACTED")
+	ev, err := FreshSimulateReplicatedBallotProofUsingAssessor(h, time.Now(), values[0], "REDACTED")
 	require.NoError(t, err)
-	evtCatalog := []Proof{ev}
+	occurenceCatalog := []Proof{ev}
 
-	ledger := CreateLedger(h, []Tx{Tx("REDACTED")}, extensionEndorse.ToEndorse(), evtCatalog)
-	ledger.RatifiersDigest = valueCollection.Digest()
-	assert.False(t, ledger.DigestsTo([]byte{}))
-	assert.False(t, ledger.DigestsTo([]byte("REDACTED")))
-	assert.True(t, ledger.DigestsTo(ledger.Digest()))
+	ledger := CreateLedger(h, []Tx{Tx("REDACTED")}, addnEndorse.TowardEndorse(), occurenceCatalog)
+	ledger.AssessorsDigest = itemAssign.Digest()
+	assert.False(t, ledger.DigestsToward([]byte{}))
+	assert.False(t, ledger.DigestsToward([]byte("REDACTED")))
+	assert.True(t, ledger.DigestsToward(ledger.Digest()))
 }
 
-func VerifyLedgerVolume(t *testing.T) {
-	volume := CreateLedger(int64(3), []Tx{Tx("REDACTED")}, nil, nil).Volume()
-	if volume <= 0 {
+func VerifyLedgerExtent(t *testing.T) {
+	extent := CreateLedger(int64(3), []Tx{Tx("REDACTED")}, nil, nil).Extent()
+	if extent <= 0 {
 		t.Fatal("REDACTED")
 	}
 }
 
-func VerifyLedgerString(t *testing.T) {
-	assert.Equal(t, "REDACTED", (*Ledger)(nil).String())
-	assert.Equal(t, "REDACTED", (*Ledger)(nil).StringIndented("REDACTED"))
-	assert.Equal(t, "REDACTED", (*Ledger)(nil).StringBrief())
+func VerifyLedgerText(t *testing.T) {
+	assert.Equal(t, "REDACTED", (*Ledger)(nil).Text())
+	assert.Equal(t, "REDACTED", (*Ledger)(nil).TextFormatted("REDACTED"))
+	assert.Equal(t, "REDACTED", (*Ledger)(nil).TextBrief())
 
 	ledger := CreateLedger(int64(3), []Tx{Tx("REDACTED")}, nil, nil)
-	assert.NotEqual(t, "REDACTED", ledger.String())
-	assert.NotEqual(t, "REDACTED", ledger.StringIndented("REDACTED"))
-	assert.NotEqual(t, "REDACTED", ledger.StringBrief())
+	assert.NotEqual(t, "REDACTED", ledger.Text())
+	assert.NotEqual(t, "REDACTED", ledger.TextFormatted("REDACTED"))
+	assert.NotEqual(t, "REDACTED", ledger.TextBrief())
 }
 
-func createLedgerUIDArbitrary() LedgerUID {
+func createLedgerUUIDUnpredictable() LedgerUUID {
 	var (
-		ledgerDigest   = make([]byte, comethash.Volume)
-		sectionCollectionDigest = make([]byte, comethash.Volume)
+		ledgerDigest   = make([]byte, tenderminthash.Extent)
+		fragmentAssignDigest = make([]byte, tenderminthash.Extent)
 	)
 	rand.Read(ledgerDigest)   //
-	rand.Read(sectionCollectionDigest) //
-	return LedgerUID{ledgerDigest, SegmentAssignHeading{123, sectionCollectionDigest}}
+	rand.Read(fragmentAssignDigest) //
+	return LedgerUUID{ledgerDigest, FragmentAssignHeading{123, fragmentAssignDigest}}
 }
 
-func createLedgerUID(digest []byte, sectionCollectionVolume uint32, sectionCollectionDigest []byte) LedgerUID {
+func createLedgerUUID(digest []byte, fragmentAssignExtent uint32, fragmentAssignDigest []byte) LedgerUUID {
 	var (
-		h   = make([]byte, comethash.Volume)
-		psH = make([]byte, comethash.Volume)
+		h   = make([]byte, tenderminthash.Extent)
+		psH = make([]byte, tenderminthash.Extent)
 	)
 	copy(h, digest)
-	copy(psH, sectionCollectionDigest)
-	return LedgerUID{
+	copy(psH, fragmentAssignDigest)
+	return LedgerUUID{
 		Digest: h,
-		SegmentAssignHeading: SegmentAssignHeading{
-			Sum: sectionCollectionVolume,
+		FragmentAssignHeading: FragmentAssignHeading{
+			Sum: fragmentAssignExtent,
 			Digest:  psH,
 		},
 	}
 }
 
-var nullOctets []byte
+var voidOctets []byte
 
 //
-var emptyOctets = []byte{
+var blankOctets = []byte{
 	0xe3, 0xb0, 0xc4, 0x42, 0x98, 0xfc, 0x1c, 0x14, 0x9a, 0xfb, 0xf4, 0xc8,
 	0x99, 0x6f, 0xb9, 0x24, 0x27, 0xae, 0x41, 0xe4, 0x64, 0x9b, 0x93, 0x4c, 0xa4, 0x95, 0x99, 0x1b,
 	0x78, 0x52, 0xb8, 0x55,
 }
 
-func VerifyNullHeadingDigestDoesntCollapse(t *testing.T) {
-	assert.Equal(t, nullOctets, []byte((*Heading)(nil).Digest()))
-	assert.Equal(t, nullOctets, []byte((new(Heading)).Digest()))
+func VerifyVoidHeadingDigestNotCollapse(t *testing.T) {
+	assert.Equal(t, voidOctets, []byte((*Heading)(nil).Digest()))
+	assert.Equal(t, voidOctets, []byte((new(Heading)).Digest()))
 }
 
-func VerifyNullDataDigestDoesntCollapse(t *testing.T) {
-	assert.Equal(t, emptyOctets, []byte((*Data)(nil).Digest()))
-	assert.Equal(t, emptyOctets, []byte(new(Data).Digest()))
+func VerifyVoidDataDigestNotCollapse(t *testing.T) {
+	assert.Equal(t, blankOctets, []byte((*Data)(nil).Digest()))
+	assert.Equal(t, blankOctets, []byte(new(Data).Digest()))
 }
 
 func VerifyEndorse(t *testing.T) {
-	finalUID := createLedgerUIDArbitrary()
+	finalUUID := createLedgerUUIDUnpredictable()
 	h := int64(3)
-	ballotCollection, _, values := randomBallotCollection(h-1, 1, engineproto.PreendorseKind, 10, 1, true)
-	extensionEndorse, err := CreateExtensionEndorse(finalUID, h-1, 1, ballotCollection, values, time.Now(), true)
+	ballotAssign, _, values := arbitraryBallotAssign(h-1, 1, commitchema.PreendorseKind, 10, 1, true)
+	addnEndorse, err := CreateAddnEndorse(finalUUID, h-1, 1, ballotAssign, values, time.Now(), true)
 	require.NoError(t, err)
 
-	assert.Equal(t, h-1, extensionEndorse.Level)
-	assert.EqualValues(t, 1, extensionEndorse.Cycle)
-	assert.Equal(t, engineproto.PreendorseKind, engineproto.AttestedMessageKind(extensionEndorse.Kind()))
-	if extensionEndorse.Volume() <= 0 {
-		t.Fatalf("REDACTED", extensionEndorse, extensionEndorse.Volume())
+	assert.Equal(t, h-1, addnEndorse.Altitude)
+	assert.EqualValues(t, 1, addnEndorse.Iteration)
+	assert.Equal(t, commitchema.PreendorseKind, commitchema.AttestedSignalKind(addnEndorse.Kind()))
+	if addnEndorse.Extent() <= 0 {
+		t.Fatalf("REDACTED", addnEndorse, addnEndorse.Extent())
 	}
 
-	require.NotNil(t, extensionEndorse.BitList())
-	assert.Equal(t, bits.NewBitList(10).Volume(), extensionEndorse.BitList().Volume())
+	require.NotNil(t, addnEndorse.DigitSeries())
+	assert.Equal(t, digits.FreshDigitCollection(10).Extent(), addnEndorse.DigitSeries().Extent())
 
-	assert.Equal(t, ballotCollection.FetchByOrdinal(0), extensionEndorse.FetchByOrdinal(0))
-	assert.True(t, extensionEndorse.IsEndorse())
+	assert.Equal(t, ballotAssign.ObtainViaOrdinal(0), addnEndorse.ObtainViaOrdinal(0))
+	assert.True(t, addnEndorse.EqualsEndorse())
 }
 
-func VerifyEndorseCertifySimple(t *testing.T) {
+func VerifyEndorseCertifyFundamental(t *testing.T) {
 	verifyScenarios := []struct {
-		verifyLabel       string
+		verifyAlias       string
 		distortEndorse func(*Endorse)
-		anticipateErr      bool
+		anticipateFault      bool
 	}{
 		{"REDACTED", func(com *Endorse) {}, false},
-		{"REDACTED", func(com *Endorse) { com.Endorsements[0].Autograph = []byte{0} }, false},
-		{"REDACTED", func(com *Endorse) { com.Level = int64(-100) }, true},
-		{"REDACTED", func(com *Endorse) { com.Cycle = -100 }, true},
+		{"REDACTED", func(com *Endorse) { com.Notations[0].Notation = []byte{0} }, false},
+		{"REDACTED", func(com *Endorse) { com.Altitude = int64(-100) }, true},
+		{"REDACTED", func(com *Endorse) { com.Iteration = -100 }, true},
 	}
 	for _, tc := range verifyScenarios {
-		t.Run(tc.verifyLabel, func(t *testing.T) {
-			com := randomEndorse(time.Now())
+		t.Run(tc.verifyAlias, func(t *testing.T) {
+			com := arbitraryEndorse(time.Now())
 			tc.distortEndorse(com)
-			assert.Equal(t, tc.anticipateErr, com.CertifySimple() != nil, "REDACTED")
+			assert.Equal(t, tc.anticipateFault, com.CertifyFundamental() != nil, "REDACTED")
 		})
 	}
 }
@@ -275,86 +275,86 @@ func VerifyMaximumEndorseOctets(t *testing.T) {
 	timestamp := time.Date(math.MaxInt64, 0, 0, 0, 0, 0, math.MaxInt64, time.UTC)
 
 	cs := EndorseSignature{
-		LedgerUIDMark:      LedgerUIDMarkNull,
-		RatifierLocation: vault.LocationDigest([]byte("REDACTED")),
+		LedgerUUIDMarker:      LedgerUUIDMarkerVoid,
+		AssessorLocation: security.LocatorDigest([]byte("REDACTED")),
 		Timestamp:        timestamp,
-		Autograph:        vault.CRandomOctets(MaximumAutographVolume),
+		Notation:        security.CHARArbitraryOctets(MaximumSigningExtent),
 	}
 
-	pbSignature := cs.ToSchema()
+	bufferSignature := cs.TowardSchema()
 	//
-	assert.EqualValues(t, MaximumEndorseSignatureOctets, pbSignature.Volume())
+	assert.EqualValues(t, MaximumEndorseSignatureOctets, bufferSignature.Extent())
 
 	//
 	endorse := &Endorse{
-		Level: math.MaxInt64,
-		Cycle:  math.MaxInt32,
-		LedgerUID: LedgerUID{
-			Digest: comethash.Sum([]byte("REDACTED")),
-			SegmentAssignHeading: SegmentAssignHeading{
+		Altitude: math.MaxInt64,
+		Iteration:  math.MaxInt32,
+		LedgerUUID: LedgerUUID{
+			Digest: tenderminthash.Sum([]byte("REDACTED")),
+			FragmentAssignHeading: FragmentAssignHeading{
 				Sum: math.MaxInt32,
-				Digest:  comethash.Sum([]byte("REDACTED")),
+				Digest:  tenderminthash.Sum([]byte("REDACTED")),
 			},
 		},
-		Endorsements: []EndorseSignature{cs},
+		Notations: []EndorseSignature{cs},
 	}
 
-	pb := endorse.ToSchema()
+	pb := endorse.TowardSchema()
 
-	assert.EqualValues(t, MaximumEndorseOctets(1), int64(pb.Volume()))
+	assert.EqualValues(t, MaximumEndorseOctets(1), int64(pb.Extent()))
 
 	//
 	for i := 1; i < MaximumBallotsTally; i++ {
-		endorse.Endorsements = append(endorse.Endorsements, cs)
+		endorse.Notations = append(endorse.Notations, cs)
 	}
 
-	pb = endorse.ToSchema()
+	pb = endorse.TowardSchema()
 
-	assert.EqualValues(t, MaximumEndorseOctets(MaximumBallotsTally), int64(pb.Volume()))
+	assert.EqualValues(t, MaximumEndorseOctets(MaximumBallotsTally), int64(pb.Extent()))
 }
 
 func VerifyHeadingDigest(t *testing.T) {
 	verifyScenarios := []struct {
-		note       string
+		description       string
 		heading     *Heading
-		anticipateDigest octets.HexOctets
+		anticipateDigest octets.HexadecimalOctets
 	}{
 		{"REDACTED", &Heading{
-			Release:            cometrelease.Agreement{Ledger: 1, App: 2},
-			LedgerUID:            "REDACTED",
-			Level:             3,
-			Time:               time.Date(2019, 10, 13, 16, 14, 44, 0, time.UTC),
-			FinalLedgerUID:        createLedgerUID(make([]byte, comethash.Volume), 6, make([]byte, comethash.Volume)),
-			FinalEndorseDigest:     comethash.Sum([]byte("REDACTED")),
-			DataDigest:           comethash.Sum([]byte("REDACTED")),
-			RatifiersDigest:     comethash.Sum([]byte("REDACTED")),
-			FollowingRatifiersDigest: comethash.Sum([]byte("REDACTED")),
-			AgreementDigest:      comethash.Sum([]byte("REDACTED")),
-			ApplicationDigest:            comethash.Sum([]byte("REDACTED")),
-			FinalOutcomesDigest:    comethash.Sum([]byte("REDACTED")),
-			ProofDigest:       comethash.Sum([]byte("REDACTED")),
-			RecommenderLocation:    vault.LocationDigest([]byte("REDACTED")),
-		}, hexOctetsFromString("REDACTED")},
+			Edition:            strongmindedition.Agreement{Ledger: 1, App: 2},
+			SuccessionUUID:            "REDACTED",
+			Altitude:             3,
+			Moment:               time.Date(2019, 10, 13, 16, 14, 44, 0, time.UTC),
+			FinalLedgerUUID:        createLedgerUUID(make([]byte, tenderminthash.Extent), 6, make([]byte, tenderminthash.Extent)),
+			FinalEndorseDigest:     tenderminthash.Sum([]byte("REDACTED")),
+			DataDigest:           tenderminthash.Sum([]byte("REDACTED")),
+			AssessorsDigest:     tenderminthash.Sum([]byte("REDACTED")),
+			FollowingAssessorsDigest: tenderminthash.Sum([]byte("REDACTED")),
+			AgreementDigest:      tenderminthash.Sum([]byte("REDACTED")),
+			PlatformDigest:            tenderminthash.Sum([]byte("REDACTED")),
+			FinalOutcomesDigest:    tenderminthash.Sum([]byte("REDACTED")),
+			ProofDigest:       tenderminthash.Sum([]byte("REDACTED")),
+			NominatorLocation:    security.LocatorDigest([]byte("REDACTED")),
+		}, hexadecimalOctetsOriginatingText("REDACTED")},
 		{"REDACTED", nil, nil},
 		{"REDACTED", &Heading{
-			Release:            cometrelease.Agreement{Ledger: 1, App: 2},
-			LedgerUID:            "REDACTED",
-			Level:             3,
-			Time:               time.Date(2019, 10, 13, 16, 14, 44, 0, time.UTC),
-			FinalLedgerUID:        createLedgerUID(make([]byte, comethash.Volume), 6, make([]byte, comethash.Volume)),
-			FinalEndorseDigest:     comethash.Sum([]byte("REDACTED")),
-			DataDigest:           comethash.Sum([]byte("REDACTED")),
-			RatifiersDigest:     nil,
-			FollowingRatifiersDigest: comethash.Sum([]byte("REDACTED")),
-			AgreementDigest:      comethash.Sum([]byte("REDACTED")),
-			ApplicationDigest:            comethash.Sum([]byte("REDACTED")),
-			FinalOutcomesDigest:    comethash.Sum([]byte("REDACTED")),
-			ProofDigest:       comethash.Sum([]byte("REDACTED")),
-			RecommenderLocation:    vault.LocationDigest([]byte("REDACTED")),
+			Edition:            strongmindedition.Agreement{Ledger: 1, App: 2},
+			SuccessionUUID:            "REDACTED",
+			Altitude:             3,
+			Moment:               time.Date(2019, 10, 13, 16, 14, 44, 0, time.UTC),
+			FinalLedgerUUID:        createLedgerUUID(make([]byte, tenderminthash.Extent), 6, make([]byte, tenderminthash.Extent)),
+			FinalEndorseDigest:     tenderminthash.Sum([]byte("REDACTED")),
+			DataDigest:           tenderminthash.Sum([]byte("REDACTED")),
+			AssessorsDigest:     nil,
+			FollowingAssessorsDigest: tenderminthash.Sum([]byte("REDACTED")),
+			AgreementDigest:      tenderminthash.Sum([]byte("REDACTED")),
+			PlatformDigest:            tenderminthash.Sum([]byte("REDACTED")),
+			FinalOutcomesDigest:    tenderminthash.Sum([]byte("REDACTED")),
+			ProofDigest:       tenderminthash.Sum([]byte("REDACTED")),
+			NominatorLocation:    security.LocatorDigest([]byte("REDACTED")),
 		}, nil},
 	}
 	for _, tc := range verifyScenarios {
-		t.Run(tc.note, func(t *testing.T) {
+		t.Run(tc.description, func(t *testing.T) {
 			assert.Equal(t, tc.anticipateDigest, tc.heading.Digest())
 
 			//
@@ -370,19 +370,19 @@ func VerifyHeadingDigest(t *testing.T) {
 						s.Type().Field(i).Name)
 
 					switch f := f.Interface().(type) {
-					case int64, octets.HexOctets, string:
-						octetSegments = append(octetSegments, cdcEncode(f))
+					case int64, octets.HexadecimalOctets, string:
+						octetSegments = append(octetSegments, codecSerialize(f))
 					case time.Time:
 						bz, err := gogotypes.StdTimeMarshal(f)
 						require.NoError(t, err)
 						octetSegments = append(octetSegments, bz)
-					case cometrelease.Agreement:
+					case strongmindedition.Agreement:
 						bz, err := f.Serialize()
 						require.NoError(t, err)
 						octetSegments = append(octetSegments, bz)
-					case LedgerUID:
-						pbbi := f.ToSchema()
-						bz, err := pbbi.Serialize()
+					case LedgerUUID:
+						bufferbi := f.TowardSchema()
+						bz, err := bufferbi.Serialize()
 						require.NoError(t, err)
 						octetSegments = append(octetSegments, bz)
 					default:
@@ -390,7 +390,7 @@ func VerifyHeadingDigest(t *testing.T) {
 					}
 				}
 				assert.Equal(t,
-					octets.HexOctets(merkle.DigestFromOctetSegments(octetSegments)), tc.heading.Digest())
+					octets.HexadecimalOctets(hashmap.DigestOriginatingOctetSegments(octetSegments)), tc.heading.Digest())
 			}
 		})
 	}
@@ -401,9 +401,9 @@ func VerifyMaximumHeadingOctets(t *testing.T) {
 	//
 	//
 	//
-	maximumSeriesUID := "REDACTED"
-	for i := 0; i < MaximumSeriesUIDSize; i++ {
-		maximumSeriesUID += "REDACTED"
+	maximumSuccessionUUID := "REDACTED"
+	for i := 0; i < MaximumSuccessionUUIDSize; i++ {
+		maximumSuccessionUUID += "REDACTED"
 	}
 
 	//
@@ -411,45 +411,45 @@ func VerifyMaximumHeadingOctets(t *testing.T) {
 	timestamp := time.Date(math.MaxInt64, 0, 0, 0, 0, 0, math.MaxInt64, time.UTC)
 
 	h := Heading{
-		Release:            cometrelease.Agreement{Ledger: math.MaxInt64, App: math.MaxInt64},
-		LedgerUID:            maximumSeriesUID,
-		Level:             math.MaxInt64,
-		Time:               timestamp,
-		FinalLedgerUID:        createLedgerUID(make([]byte, comethash.Volume), math.MaxInt32, make([]byte, comethash.Volume)),
-		FinalEndorseDigest:     comethash.Sum([]byte("REDACTED")),
-		DataDigest:           comethash.Sum([]byte("REDACTED")),
-		RatifiersDigest:     comethash.Sum([]byte("REDACTED")),
-		FollowingRatifiersDigest: comethash.Sum([]byte("REDACTED")),
-		AgreementDigest:      comethash.Sum([]byte("REDACTED")),
-		ApplicationDigest:            comethash.Sum([]byte("REDACTED")),
-		FinalOutcomesDigest:    comethash.Sum([]byte("REDACTED")),
-		ProofDigest:       comethash.Sum([]byte("REDACTED")),
-		RecommenderLocation:    vault.LocationDigest([]byte("REDACTED")),
+		Edition:            strongmindedition.Agreement{Ledger: math.MaxInt64, App: math.MaxInt64},
+		SuccessionUUID:            maximumSuccessionUUID,
+		Altitude:             math.MaxInt64,
+		Moment:               timestamp,
+		FinalLedgerUUID:        createLedgerUUID(make([]byte, tenderminthash.Extent), math.MaxInt32, make([]byte, tenderminthash.Extent)),
+		FinalEndorseDigest:     tenderminthash.Sum([]byte("REDACTED")),
+		DataDigest:           tenderminthash.Sum([]byte("REDACTED")),
+		AssessorsDigest:     tenderminthash.Sum([]byte("REDACTED")),
+		FollowingAssessorsDigest: tenderminthash.Sum([]byte("REDACTED")),
+		AgreementDigest:      tenderminthash.Sum([]byte("REDACTED")),
+		PlatformDigest:            tenderminthash.Sum([]byte("REDACTED")),
+		FinalOutcomesDigest:    tenderminthash.Sum([]byte("REDACTED")),
+		ProofDigest:       tenderminthash.Sum([]byte("REDACTED")),
+		NominatorLocation:    security.LocatorDigest([]byte("REDACTED")),
 	}
 
-	bz, err := h.ToSchema().Serialize()
+	bz, err := h.TowardSchema().Serialize()
 	require.NoError(t, err)
 
 	assert.EqualValues(t, MaximumHeadingOctets, int64(len(bz)))
 }
 
-func randomEndorse(now time.Time) *Endorse {
-	finalUID := createLedgerUIDArbitrary()
+func arbitraryEndorse(now time.Time) *Endorse {
+	finalUUID := createLedgerUUIDUnpredictable()
 	h := int64(3)
-	ballotCollection, _, values := randomBallotCollection(h-1, 1, engineproto.PreendorseKind, 10, 1, false)
-	extensionEndorse, err := CreateExtensionEndorse(finalUID, h-1, 1, ballotCollection, values, now, false)
+	ballotAssign, _, values := arbitraryBallotAssign(h-1, 1, commitchema.PreendorseKind, 10, 1, false)
+	addnEndorse, err := CreateAddnEndorse(finalUUID, h-1, 1, ballotAssign, values, now, false)
 	if err != nil {
 		panic(err)
 	}
-	return extensionEndorse.ToEndorse()
+	return addnEndorse.TowardEndorse()
 }
 
-func hexOctetsFromString(s string) octets.HexOctets {
+func hexadecimalOctetsOriginatingText(s string) octets.HexadecimalOctets {
 	b, err := hex.DecodeString(s)
 	if err != nil {
 		panic(err)
 	}
-	return octets.HexOctets(b)
+	return octets.HexadecimalOctets(b)
 }
 
 func VerifyLedgerMaximumDataOctets(t *testing.T) {
@@ -482,7 +482,7 @@ func VerifyLedgerMaximumDataOctets(t *testing.T) {
 	}
 }
 
-func VerifyLedgerMaximumDataOctetsNoProof(t *testing.T) {
+func VerifyLedgerMaximumDataOctetsNegativeProof(t *testing.T) {
 	verifyScenarios := []struct {
 		maximumOctets  int64
 		valuesTally int
@@ -499,12 +499,12 @@ func VerifyLedgerMaximumDataOctetsNoProof(t *testing.T) {
 	for i, tc := range verifyScenarios {
 		if tc.alarms {
 			assert.Panics(t, func() {
-				MaximumDataOctetsNoProof(tc.maximumOctets, tc.valuesTally)
+				MaximumDataOctetsNegativeProof(tc.maximumOctets, tc.valuesTally)
 			}, "REDACTED", i)
 		} else {
 			assert.Equal(t,
 				tc.outcome,
-				MaximumDataOctetsNoProof(tc.maximumOctets, tc.valuesTally),
+				MaximumDataOctetsNegativeProof(tc.maximumOctets, tc.valuesTally),
 				"REDACTED", i)
 		}
 	}
@@ -514,68 +514,68 @@ func VerifyLedgerMaximumDataOctetsNoProof(t *testing.T) {
 //
 //
 //
-func VerifyBallotCollectionToExpandedEndorse(t *testing.T) {
+func VerifyBallotAssignTowardExpandedEndorse(t *testing.T) {
 	for _, verifyInstance := range []struct {
-		label             string
+		alias             string
 		encompassAddition bool
 	}{
 		{
-			label:             "REDACTED",
+			alias:             "REDACTED",
 			encompassAddition: false,
 		},
 		{
-			label:             "REDACTED",
+			alias:             "REDACTED",
 			encompassAddition: true,
 		},
 	} {
-		t.Run(verifyInstance.label, func(t *testing.T) {
-			ledgerUID := createLedgerUIDArbitrary()
+		t.Run(verifyInstance.alias, func(t *testing.T) {
+			ledgerUUID := createLedgerUUIDUnpredictable()
 
-			valueCollection, values := RandomRatifierCollection(10, 1)
-			var ballotCollection *BallotCollection
+			itemAssign, values := ArbitraryAssessorAssign(10, 1)
+			var ballotAssign *BallotAssign
 			if verifyInstance.encompassAddition {
-				ballotCollection = NewExpandedBallotCollection("REDACTED", 3, 1, engineproto.PreendorseKind, valueCollection)
+				ballotAssign = FreshExpandedBallotAssign("REDACTED", 3, 1, commitchema.PreendorseKind, itemAssign)
 			} else {
-				ballotCollection = NewBallotCollection("REDACTED", 3, 1, engineproto.PreendorseKind, valueCollection)
+				ballotAssign = FreshBallotAssign("REDACTED", 3, 1, commitchema.PreendorseKind, itemAssign)
 			}
 			for i := 0; i < len(values); i++ {
-				publicKey, err := values[i].FetchPublicKey()
+				publicToken, err := values[i].ObtainPublicToken()
 				require.NoError(t, err)
 				ballot := &Ballot{
-					RatifierLocation: publicKey.Location(),
-					RatifierOrdinal:   int32(i),
-					Level:           3,
-					Cycle:            1,
-					Kind:             engineproto.PreendorseKind,
-					LedgerUID:          ledgerUID,
+					AssessorLocation: publicToken.Location(),
+					AssessorOrdinal:   int32(i),
+					Altitude:           3,
+					Iteration:            1,
+					Kind:             commitchema.PreendorseKind,
+					LedgerUUID:          ledgerUUID,
 					Timestamp:        time.Now(),
 				}
-				v := ballot.ToSchema()
-				err = values[i].AttestBallot(ballotCollection.LedgerUID(), v)
+				v := ballot.TowardSchema()
+				err = values[i].AttestBallot(ballotAssign.SuccessionUUID(), v)
 				require.NoError(t, err)
-				ballot.Autograph = v.Autograph
+				ballot.Notation = v.Notation
 				if verifyInstance.encompassAddition {
-					ballot.AdditionAutograph = v.AdditionAutograph
+					ballot.AdditionNotation = v.AdditionNotation
 				}
-				appended, err := ballotCollection.AppendBallot(ballot)
+				appended, err := ballotAssign.AppendBallot(ballot)
 				require.NoError(t, err)
 				require.True(t, appended)
 			}
-			var veLevel int64
+			var verAltitude int64
 			if verifyInstance.encompassAddition {
-				veLevel = 1
+				verAltitude = 1
 			}
-			ec := ballotCollection.CreateExpandedEndorse(IfaceOptions{BallotPluginsActivateLevel: veLevel})
+			ec := ballotAssign.CreateExpandedEndorse(IfaceParameters{BallotAdditionsActivateAltitude: verAltitude})
 
 			for i := int32(0); int(i) < len(values); i++ {
-				vote1 := ballotCollection.FetchByOrdinal(i)
-				ballot2 := ec.FetchExpandedBallot(i)
+				ballot1 := ballotAssign.ObtainViaOrdinal(i)
+				ballot2 := ec.ObtainExpandedBallot(i)
 
-				vote1bz, err := vote1.ToSchema().Serialize()
+				ballot1bz, err := ballot1.TowardSchema().Serialize()
 				require.NoError(t, err)
-				vote2bz, err := ballot2.ToSchema().Serialize()
+				ballot2bz, err := ballot2.TowardSchema().Serialize()
 				require.NoError(t, err)
-				assert.Equal(t, vote1bz, vote2bz)
+				assert.Equal(t, ballot1bz, ballot2bz)
 			}
 		})
 	}
@@ -584,112 +584,112 @@ func VerifyBallotCollectionToExpandedEndorse(t *testing.T) {
 //
 //
 //
-func toBallotCollection(ec *ExpandedEndorse, ledgerUID string, values *RatifierAssign) *BallotCollection {
-	ballotCollection := NewBallotCollection(ledgerUID, ec.Level, ec.Cycle, engineproto.PreendorseKind, values)
-	ec.appendAutographsToBallotCollection(ballotCollection)
-	return ballotCollection
+func towardBallotAssign(ec *ExpandedEndorse, successionUUID string, values *AssessorAssign) *BallotAssign {
+	ballotAssign := FreshBallotAssign(successionUUID, ec.Altitude, ec.Iteration, commitchema.PreendorseKind, values)
+	ec.appendSignaturesTowardBallotAssign(ballotAssign)
+	return ballotAssign
 }
 
 //
 //
 //
 //
-func VerifyExpandedEndorseToBallotCollection(t *testing.T) {
+func VerifyExpandedEndorseTowardBallotAssign(t *testing.T) {
 	for _, verifyInstance := range []struct {
-		label             string
+		alias             string
 		encompassAddition bool
 	}{
 		{
-			label:             "REDACTED",
+			alias:             "REDACTED",
 			encompassAddition: false,
 		},
 		{
-			label:             "REDACTED",
+			alias:             "REDACTED",
 			encompassAddition: true,
 		},
 	} {
-		t.Run(verifyInstance.label, func(t *testing.T) {
-			finalUID := createLedgerUIDArbitrary()
+		t.Run(verifyInstance.alias, func(t *testing.T) {
+			finalUUID := createLedgerUUIDUnpredictable()
 			h := int64(3)
 
-			ballotCollection, valueCollection, values := randomBallotCollection(h-1, 1, engineproto.PreendorseKind, 10, 1, true)
-			extensionEndorse, err := CreateExtensionEndorse(finalUID, h-1, 1, ballotCollection, values, time.Now(), true)
+			ballotAssign, itemAssign, values := arbitraryBallotAssign(h-1, 1, commitchema.PreendorseKind, 10, 1, true)
+			addnEndorse, err := CreateAddnEndorse(finalUUID, h-1, 1, ballotAssign, values, time.Now(), true)
 			assert.NoError(t, err)
 
 			if !verifyInstance.encompassAddition {
 				for i := 0; i < len(values); i++ {
-					v := ballotCollection.FetchByOrdinal(int32(i))
+					v := ballotAssign.ObtainViaOrdinal(int32(i))
 					v.Addition = nil
-					v.AdditionAutograph = nil
-					extensionEndorse.ExpandedEndorsements[i].Addition = nil
-					extensionEndorse.ExpandedEndorsements[i].AdditionAutograph = nil
+					v.AdditionNotation = nil
+					addnEndorse.ExpandedNotations[i].Addition = nil
+					addnEndorse.ExpandedNotations[i].AdditionNotation = nil
 				}
 			}
 
-			ledgerUID := ballotCollection.LedgerUID()
-			var ballotSet2 *BallotCollection
+			successionUUID := ballotAssign.SuccessionUUID()
+			var ballotGroup2 *BallotAssign
 			if verifyInstance.encompassAddition {
-				ballotSet2 = extensionEndorse.ToExpandedBallotCollection(ledgerUID, valueCollection)
+				ballotGroup2 = addnEndorse.TowardExpandedBallotAssign(successionUUID, itemAssign)
 			} else {
-				ballotSet2 = toBallotCollection(extensionEndorse, ledgerUID, valueCollection)
+				ballotGroup2 = towardBallotAssign(addnEndorse, successionUUID, itemAssign)
 			}
 
 			for i := int32(0); int(i) < len(values); i++ {
-				vote1 := ballotCollection.FetchByOrdinal(i)
-				ballot2 := ballotSet2.FetchByOrdinal(i)
-				vote3 := extensionEndorse.FetchExpandedBallot(i)
+				ballot1 := ballotAssign.ObtainViaOrdinal(i)
+				ballot2 := ballotGroup2.ObtainViaOrdinal(i)
+				ballot3 := addnEndorse.ObtainExpandedBallot(i)
 
-				vote1bz, err := vote1.ToSchema().Serialize()
+				ballot1bz, err := ballot1.TowardSchema().Serialize()
 				require.NoError(t, err)
-				vote2bz, err := ballot2.ToSchema().Serialize()
+				ballot2bz, err := ballot2.TowardSchema().Serialize()
 				require.NoError(t, err)
-				vote3bz, err := vote3.ToSchema().Serialize()
+				ballot3bz, err := ballot3.TowardSchema().Serialize()
 				require.NoError(t, err)
-				assert.Equal(t, vote1bz, vote2bz)
-				assert.Equal(t, vote1bz, vote3bz)
+				assert.Equal(t, ballot1bz, ballot2bz)
+				assert.Equal(t, ballot1bz, ballot3bz)
 			}
 		})
 	}
 }
 
-func VerifyEndorseToBallotCollectionWithBallotsForNullLedger(t *testing.T) {
-	ledgerUID := createLedgerUID([]byte("REDACTED"), 1000, []byte("REDACTED"))
+func VerifyEndorseTowardBallotAssignUsingBallotsForeachVoidLedger(t *testing.T) {
+	ledgerUUID := createLedgerUUID([]byte("REDACTED"), 1000, []byte("REDACTED"))
 
 	const (
-		level = int64(3)
-		epoch  = 0
+		altitude = int64(3)
+		iteration  = 0
 	)
 
 	type endorseBallotVerify struct {
-		ledgerIDXDatastore      []LedgerUID
+		ledgerIDXDstore      []LedgerUUID
 		countBallots      []int //
-		countRatifiers int
+		countAssessors int
 		sound         bool
 	}
 
 	verifyScenarios := []endorseBallotVerify{
-		{[]LedgerUID{ledgerUID, {}}, []int{67, 33}, 100, true},
+		{[]LedgerUUID{ledgerUUID, {}}, []int{67, 33}, 100, true},
 	}
 
 	for _, tc := range verifyScenarios {
-		ballotCollection, valueCollection, values := randomBallotCollection(level-1, epoch, engineproto.PreendorseKind, tc.countRatifiers, 1, false)
+		ballotAssign, itemAssign, values := arbitraryBallotAssign(altitude-1, iteration, commitchema.PreendorseKind, tc.countAssessors, 1, false)
 
 		vi := int32(0)
-		for n := range tc.ledgerIDXDatastore {
+		for n := range tc.ledgerIDXDstore {
 			for i := 0; i < tc.countBallots[n]; i++ {
-				publicKey, err := values[vi].FetchPublicKey()
+				publicToken, err := values[vi].ObtainPublicToken()
 				require.NoError(t, err)
 				ballot := &Ballot{
-					RatifierLocation: publicKey.Location(),
-					RatifierOrdinal:   vi,
-					Level:           level - 1,
-					Cycle:            epoch,
-					Kind:             engineproto.PreendorseKind,
-					LedgerUID:          tc.ledgerIDXDatastore[n],
-					Timestamp:        engineclock.Now(),
+					AssessorLocation: publicToken.Location(),
+					AssessorOrdinal:   vi,
+					Altitude:           altitude - 1,
+					Iteration:            iteration,
+					Kind:             commitchema.PreendorseKind,
+					LedgerUUID:          tc.ledgerIDXDstore[n],
+					Timestamp:        committime.Now(),
 				}
 
-				appended, err := attestAppendBallot(values[vi], ballot, ballotCollection)
+				appended, err := attestAppendBallot(values[vi], ballot, ballotAssign)
 				assert.NoError(t, err)
 				assert.True(t, appended)
 
@@ -697,78 +697,78 @@ func VerifyEndorseToBallotCollectionWithBallotsForNullLedger(t *testing.T) {
 			}
 		}
 
-		veLevelArgument := IfaceOptions{BallotPluginsActivateLevel: 0}
+		verAltitudeArgument := IfaceParameters{BallotAdditionsActivateAltitude: 0}
 		if tc.sound {
-			extensionEndorse := ballotCollection.CreateExpandedEndorse(veLevelArgument) //
-			assert.NotNil(t, extensionEndorse)
-			err := valueCollection.ValidateEndorse(ballotCollection.LedgerUID(), ledgerUID, level-1, extensionEndorse.ToEndorse())
+			addnEndorse := ballotAssign.CreateExpandedEndorse(verAltitudeArgument) //
+			assert.NotNil(t, addnEndorse)
+			err := itemAssign.ValidateEndorse(ballotAssign.SuccessionUUID(), ledgerUUID, altitude-1, addnEndorse.TowardEndorse())
 			assert.Nil(t, err)
 		} else {
-			assert.Panics(t, func() { ballotCollection.CreateExpandedEndorse(veLevelArgument) })
+			assert.Panics(t, func() { ballotAssign.CreateExpandedEndorse(verAltitudeArgument) })
 		}
 	}
 }
 
-func VerifyLedgerUIDCertifySimple(t *testing.T) {
-	soundLedgerUID := LedgerUID{
-		Digest: octets.HexOctets{},
-		SegmentAssignHeading: SegmentAssignHeading{
+func VerifyLedgerUUIDCertifyFundamental(t *testing.T) {
+	soundLedgerUUID := LedgerUUID{
+		Digest: octets.HexadecimalOctets{},
+		FragmentAssignHeading: FragmentAssignHeading{
 			Sum: 1,
-			Digest:  octets.HexOctets{},
+			Digest:  octets.HexadecimalOctets{},
 		},
 	}
 
-	corruptLedgerUID := LedgerUID{
+	unfitLedgerUUID := LedgerUUID{
 		Digest: []byte{0},
-		SegmentAssignHeading: SegmentAssignHeading{
+		FragmentAssignHeading: FragmentAssignHeading{
 			Sum: 1,
 			Digest:  []byte{0},
 		},
 	}
 
 	verifyScenarios := []struct {
-		verifyLabel             string
-		ledgerUIDDigest          octets.HexOctets
-		ledgerUIDSectionCollectionHeading SegmentAssignHeading
-		anticipateErr            bool
+		verifyAlias             string
+		ledgerUUIDDigest          octets.HexadecimalOctets
+		ledgerUUIDFragmentAssignHeading FragmentAssignHeading
+		anticipateFault            bool
 	}{
-		{"REDACTED", soundLedgerUID.Digest, soundLedgerUID.SegmentAssignHeading, false},
-		{"REDACTED", corruptLedgerUID.Digest, soundLedgerUID.SegmentAssignHeading, true},
-		{"REDACTED", soundLedgerUID.Digest, corruptLedgerUID.SegmentAssignHeading, true},
+		{"REDACTED", soundLedgerUUID.Digest, soundLedgerUUID.FragmentAssignHeading, false},
+		{"REDACTED", unfitLedgerUUID.Digest, soundLedgerUUID.FragmentAssignHeading, true},
+		{"REDACTED", soundLedgerUUID.Digest, unfitLedgerUUID.FragmentAssignHeading, true},
 	}
 
 	for _, tc := range verifyScenarios {
-		t.Run(tc.verifyLabel, func(t *testing.T) {
-			ledgerUID := LedgerUID{
-				Digest:          tc.ledgerUIDDigest,
-				SegmentAssignHeading: tc.ledgerUIDSectionCollectionHeading,
+		t.Run(tc.verifyAlias, func(t *testing.T) {
+			ledgerUUID := LedgerUUID{
+				Digest:          tc.ledgerUUIDDigest,
+				FragmentAssignHeading: tc.ledgerUUIDFragmentAssignHeading,
 			}
-			assert.Equal(t, tc.anticipateErr, ledgerUID.CertifySimple() != nil, "REDACTED")
+			assert.Equal(t, tc.anticipateFault, ledgerUUID.CertifyFundamental() != nil, "REDACTED")
 		})
 	}
 }
 
 func VerifyLedgerSchemaBuffer(t *testing.T) {
-	h := engineseed.Int63()
-	c1 := randomEndorse(time.Now())
-	b1 := CreateLedger(h, []Tx{Tx([]byte{1})}, &Endorse{Endorsements: []EndorseSignature{}}, []Proof{})
-	b1.RecommenderLocation = engineseed.Octets(vault.LocationVolume)
+	h := commitrand.Int63n()
+	c1 := arbitraryEndorse(time.Now())
+	b1 := CreateLedger(h, []Tx{Tx([]byte{1})}, &Endorse{Notations: []EndorseSignature{}}, []Proof{})
+	b1.NominatorLocation = commitrand.Octets(security.LocatorExtent)
 
 	b2 := CreateLedger(h, []Tx{Tx([]byte{1})}, c1, []Proof{})
-	b2.RecommenderLocation = engineseed.Octets(vault.LocationVolume)
-	proofTime := time.Date(2019, 1, 1, 0, 0, 0, 0, time.UTC)
-	evi, err := NewEmulateReplicatedBallotProof(h, proofTime, "REDACTED")
+	b2.NominatorLocation = commitrand.Octets(security.LocatorExtent)
+	proofMoment := time.Date(2019, 1, 1, 0, 0, 0, 0, time.UTC)
+	evi, err := FreshSimulateReplicatedBallotProof(h, proofMoment, "REDACTED")
 	require.NoError(t, err)
 	b2.Proof = ProofData{Proof: ProofCatalog{evi}}
 	b2.ProofDigest = b2.Proof.Digest()
 
 	b3 := CreateLedger(h, []Tx{}, c1, []Proof{})
-	b3.RecommenderLocation = engineseed.Octets(vault.LocationVolume)
+	b3.NominatorLocation = commitrand.Octets(security.LocatorExtent)
 	verifyScenarios := []struct {
 		msg      string
 		b1       *Ledger
-		expirationPass  bool
-		expirationPass2 bool
+		expirationPhrase  bool
+		expirationPhase2 bool
 	}{
 		{"REDACTED", nil, false, false},
 		{"REDACTED", b1, true, true},
@@ -776,15 +776,15 @@ func VerifyLedgerSchemaBuffer(t *testing.T) {
 		{"REDACTED", b3, true, true},
 	}
 	for _, tc := range verifyScenarios {
-		pb, err := tc.b1.ToSchema()
-		if tc.expirationPass {
+		pb, err := tc.b1.TowardSchema()
+		if tc.expirationPhrase {
 			require.NoError(t, err, tc.msg)
 		} else {
 			require.Error(t, err, tc.msg)
 		}
 
-		ledger, err := LedgerFromSchema(pb)
-		if tc.expirationPass2 {
+		ledger, err := LedgerOriginatingSchema(pb)
+		if tc.expirationPhase2 {
 			require.NoError(t, err, tc.msg)
 			require.EqualValues(t, tc.b1.Heading, ledger.Heading, tc.msg)
 			require.EqualValues(t, tc.b1.Data, ledger.Data, tc.msg)
@@ -798,21 +798,21 @@ func VerifyLedgerSchemaBuffer(t *testing.T) {
 
 func VerifyDataSchemaBuffer(t *testing.T) {
 	data := &Data{Txs: Txs{Tx([]byte{1}), Tx([]byte{2}), Tx([]byte{3})}}
-	data2 := &Data{Txs: Txs{}}
+	datum2 := &Data{Txs: Txs{}}
 	verifyScenarios := []struct {
 		msg     string
-		data1   *Data
-		expirationPass bool
+		item1   *Data
+		expirationPhrase bool
 	}{
 		{"REDACTED", data, true},
-		{"REDACTED", data2, true},
+		{"REDACTED", datum2, true},
 	}
 	for _, tc := range verifyScenarios {
-		schemaData := tc.data1.ToSchema()
-		d, err := DataFromSchema(&schemaData)
-		if tc.expirationPass {
+		schemaData := tc.item1.TowardSchema()
+		d, err := DataOriginatingSchema(&schemaData)
+		if tc.expirationPhrase {
 			require.NoError(t, err, tc.msg)
-			require.EqualValues(t, tc.data1, &d, tc.msg)
+			require.EqualValues(t, tc.item1, &d, tc.msg)
 		} else {
 			require.Error(t, err, tc.msg)
 		}
@@ -821,16 +821,16 @@ func VerifyDataSchemaBuffer(t *testing.T) {
 
 //
 func VerifyProofDataSchemaBuffer(t *testing.T) {
-	const ledgerUID = "REDACTED"
-	ev, err := NewEmulateReplicatedBallotProof(math.MaxInt64, time.Now(), ledgerUID)
+	const successionUUID = "REDACTED"
+	ev, err := FreshSimulateReplicatedBallotProof(math.MaxInt64, time.Now(), successionUUID)
 	require.NoError(t, err)
 	data := &ProofData{Proof: ProofCatalog{ev}}
-	_ = data.OctetVolume()
+	_ = data.OctetExtent()
 	verifyScenarios := []struct {
 		msg      string
-		data1    *ProofData
-		expirationPass1 bool
-		expirationPass2 bool
+		item1    *ProofData
+		expirationPhase1 bool
+		expirationPhase2 bool
 	}{
 		{"REDACTED", data, true, true},
 		{"REDACTED", &ProofData{Proof: ProofCatalog{}}, true, true},
@@ -838,58 +838,58 @@ func VerifyProofDataSchemaBuffer(t *testing.T) {
 	}
 
 	for _, tc := range verifyScenarios {
-		schemaData, err := tc.data1.ToSchema()
-		if tc.expirationPass1 {
+		schemaData, err := tc.item1.TowardSchema()
+		if tc.expirationPhase1 {
 			require.NoError(t, err, tc.msg)
 		} else {
 			require.Error(t, err, tc.msg)
 		}
 
-		eviD := new(ProofData)
-		err = eviD.FromSchema(schemaData)
-		if tc.expirationPass2 {
+		evidenceDelta := new(ProofData)
+		err = evidenceDelta.OriginatingSchema(schemaData)
+		if tc.expirationPhase2 {
 			require.NoError(t, err, tc.msg)
-			require.Equal(t, tc.data1, eviD, tc.msg)
+			require.Equal(t, tc.item1, evidenceDelta, tc.msg)
 		} else {
 			require.Error(t, err, tc.msg)
 		}
 	}
 }
 
-func createRandomHeading() Heading {
-	ledgerUID := "REDACTED"
+func createArbitraryHeading() Heading {
+	successionUUID := "REDACTED"
 	t := time.Now()
-	level := engineseed.Int63()
-	randomOctets := engineseed.Octets(comethash.Volume)
-	randomLocation := engineseed.Octets(vault.LocationVolume)
+	altitude := commitrand.Int63n()
+	arbitraryOctets := commitrand.Octets(tenderminthash.Extent)
+	arbitraryLocator := commitrand.Octets(security.LocatorExtent)
 	h := Heading{
-		Release:            cometrelease.Agreement{Ledger: release.LedgerProtocol, App: 1},
-		LedgerUID:            ledgerUID,
-		Level:             level,
-		Time:               t,
-		FinalLedgerUID:        LedgerUID{},
-		FinalEndorseDigest:     randomOctets,
-		DataDigest:           randomOctets,
-		RatifiersDigest:     randomOctets,
-		FollowingRatifiersDigest: randomOctets,
-		AgreementDigest:      randomOctets,
-		ApplicationDigest:            randomOctets,
+		Edition:            strongmindedition.Agreement{Ledger: edition.LedgerScheme, App: 1},
+		SuccessionUUID:            successionUUID,
+		Altitude:             altitude,
+		Moment:               t,
+		FinalLedgerUUID:        LedgerUUID{},
+		FinalEndorseDigest:     arbitraryOctets,
+		DataDigest:           arbitraryOctets,
+		AssessorsDigest:     arbitraryOctets,
+		FollowingAssessorsDigest: arbitraryOctets,
+		AgreementDigest:      arbitraryOctets,
+		PlatformDigest:            arbitraryOctets,
 
-		FinalOutcomesDigest: randomOctets,
+		FinalOutcomesDigest: arbitraryOctets,
 
-		ProofDigest:    randomOctets,
-		RecommenderLocation: randomLocation,
+		ProofDigest:    arbitraryOctets,
+		NominatorLocation: arbitraryLocator,
 	}
 
 	return h
 }
 
 func VerifyHeadingSchema(t *testing.T) {
-	h1 := createRandomHeading()
+	h1 := createArbitraryHeading()
 	tc := []struct {
 		msg     string
 		h1      *Heading
-		expirationPass bool
+		expirationPhrase bool
 	}{
 		{"REDACTED", &h1, true},
 		{"REDACTED", &Heading{}, false},
@@ -897,9 +897,9 @@ func VerifyHeadingSchema(t *testing.T) {
 
 	for _, tt := range tc {
 		t.Run(tt.msg, func(t *testing.T) {
-			pb := tt.h1.ToSchema()
-			h, err := HeadingFromSchema(pb)
-			if tt.expirationPass {
+			pb := tt.h1.TowardSchema()
+			h, err := HeadingOriginatingSchema(pb)
+			if tt.expirationPhrase {
 				require.NoError(t, err, tt.msg)
 				require.Equal(t, tt.h1, &h, tt.msg)
 			} else {
@@ -909,51 +909,51 @@ func VerifyHeadingSchema(t *testing.T) {
 	}
 }
 
-func VerifyLedgerUIDSchemaBuffer(t *testing.T) {
-	ledgerUID := createLedgerUID([]byte("REDACTED"), 2, []byte("REDACTED"))
+func VerifyLedgerUUIDSchemaBuffer(t *testing.T) {
+	ledgerUUID := createLedgerUUID([]byte("REDACTED"), 2, []byte("REDACTED"))
 	verifyScenarios := []struct {
 		msg     string
-		bid1    *LedgerUID
-		expirationPass bool
+		offer1    *LedgerUUID
+		expirationPhrase bool
 	}{
-		{"REDACTED", &ledgerUID, true},
-		{"REDACTED", &LedgerUID{}, true},
+		{"REDACTED", &ledgerUUID, true},
+		{"REDACTED", &LedgerUUID{}, true},
 		{"REDACTED", nil, false},
 	}
 	for _, tc := range verifyScenarios {
-		schemaLedgerUID := tc.bid1.ToSchema()
+		schemaLedgerUUID := tc.offer1.TowardSchema()
 
-		bi, err := LedgerUIDFromSchema(&schemaLedgerUID)
-		if tc.expirationPass {
+		bi, err := LedgerUUIDOriginatingSchema(&schemaLedgerUUID)
+		if tc.expirationPhrase {
 			require.NoError(t, err)
-			require.Equal(t, tc.bid1, bi, tc.msg)
+			require.Equal(t, tc.offer1, bi, tc.msg)
 		} else {
-			require.NotEqual(t, tc.bid1, bi, tc.msg)
+			require.NotEqual(t, tc.offer1, bi, tc.msg)
 		}
 	}
 }
 
-func VerifyAttestedHeadingSchemaBuffer(t *testing.T) {
-	endorse := randomEndorse(time.Now())
-	h := createRandomHeading()
+func VerifyNotatedHeadingSchemaBuffer(t *testing.T) {
+	endorse := arbitraryEndorse(time.Now())
+	h := createArbitraryHeading()
 
-	sh := AttestedHeading{Heading: &h, Endorse: endorse}
+	sh := NotatedHeading{Heading: &h, Endorse: endorse}
 
 	verifyScenarios := []struct {
 		msg     string
-		sh1     *AttestedHeading
-		expirationPass bool
+		sh1     *NotatedHeading
+		expirationPhrase bool
 	}{
-		{"REDACTED", &AttestedHeading{}, true},
+		{"REDACTED", &NotatedHeading{}, true},
 		{"REDACTED", &sh, true},
 		{"REDACTED", nil, false},
 	}
 	for _, tc := range verifyScenarios {
-		schemaAttestedHeading := tc.sh1.ToSchema()
+		schemaNotatedHeading := tc.sh1.TowardSchema()
 
-		sh, err := AttestedHeadingFromSchema(schemaAttestedHeading)
+		sh, err := NotatedHeadingOriginatingSchema(schemaNotatedHeading)
 
-		if tc.expirationPass {
+		if tc.expirationPhrase {
 			require.NoError(t, err, tc.msg)
 			require.Equal(t, tc.sh1, sh, tc.msg)
 		} else {
@@ -962,17 +962,17 @@ func VerifyAttestedHeadingSchemaBuffer(t *testing.T) {
 	}
 }
 
-func VerifyLedgerUIDMatches(t *testing.T) {
+func VerifyLedgerUUIDMatches(t *testing.T) {
 	var (
-		ledgerUID          = createLedgerUID([]byte("REDACTED"), 2, []byte("REDACTED"))
-		ledgerUIDReplicated = createLedgerUID([]byte("REDACTED"), 2, []byte("REDACTED"))
-		ledgerUIDDistinct = createLedgerUID([]byte("REDACTED"), 2, []byte("REDACTED"))
-		ledgerUIDEmpty     = LedgerUID{}
+		ledgerUUID          = createLedgerUUID([]byte("REDACTED"), 2, []byte("REDACTED"))
+		ledgerUUIDReplicated = createLedgerUUID([]byte("REDACTED"), 2, []byte("REDACTED"))
+		ledgerUUIDDistinct = createLedgerUUID([]byte("REDACTED"), 2, []byte("REDACTED"))
+		ledgerUUIDBlank     = LedgerUUID{}
 	)
 
-	assert.True(t, ledgerUID.Matches(ledgerUIDReplicated))
-	assert.False(t, ledgerUID.Matches(ledgerUIDDistinct))
-	assert.False(t, ledgerUID.Matches(ledgerUIDEmpty))
-	assert.True(t, ledgerUIDEmpty.Matches(ledgerUIDEmpty)) //
-	assert.False(t, ledgerUIDEmpty.Matches(ledgerUIDDistinct))
+	assert.True(t, ledgerUUID.Matches(ledgerUUIDReplicated))
+	assert.False(t, ledgerUUID.Matches(ledgerUUIDDistinct))
+	assert.False(t, ledgerUUID.Matches(ledgerUUIDBlank))
+	assert.True(t, ledgerUUIDBlank.Matches(ledgerUUIDBlank)) //
+	assert.False(t, ledgerUUIDBlank.Matches(ledgerUUIDDistinct))
 }

@@ -9,54 +9,54 @@ import (
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/require"
 
-	"github.com/valkyrieworks/vault"
-	"github.com/valkyrieworks/vault/ed25519"
-	"github.com/valkyrieworks/vault/comethash"
-	"github.com/valkyrieworks/utils/protoio"
-	engineproto "github.com/valkyrieworks/schema/consensuscore/kinds"
-	engineclock "github.com/valkyrieworks/kinds/moment"
+	"github.com/valkyrieworks/dffc4ef0-4ec6-4346-9b6c-d0a0cb42d94b/security"
+	"github.com/valkyrieworks/dffc4ef0-4ec6-4346-9b6c-d0a0cb42d94b/security/edwards25519"
+	"github.com/valkyrieworks/dffc4ef0-4ec6-4346-9b6c-d0a0cb42d94b/security/tenderminthash"
+	"github.com/valkyrieworks/dffc4ef0-4ec6-4346-9b6c-d0a0cb42d94b/utils/protocolio"
+	commitchema "github.com/valkyrieworks/dffc4ef0-4ec6-4346-9b6c-d0a0cb42d94b/schema/strongmind/kinds"
+	committime "github.com/valkyrieworks/dffc4ef0-4ec6-4346-9b6c-d0a0cb42d94b/kinds/moment"
 )
 
 func instancePreballot() *Ballot {
-	return instanceBallot(byte(engineproto.PreballotKind))
+	return instanceBallot(byte(commitchema.PreballotKind))
 }
 
 func instancePreendorse() *Ballot {
-	ballot := instanceBallot(byte(engineproto.PreendorseKind))
+	ballot := instanceBallot(byte(commitchema.PreendorseKind))
 	ballot.Addition = []byte("REDACTED")
-	ballot.AdditionAutograph = []byte("REDACTED")
+	ballot.AdditionNotation = []byte("REDACTED")
 	return ballot
 }
 
 func instanceBallot(t byte) *Ballot {
-	imprint, err := time.Parse(TimeLayout, "REDACTED")
+	imprint, err := time.Parse(MomentLayout, "REDACTED")
 	if err != nil {
 		panic(err)
 	}
 
 	return &Ballot{
-		Kind:      engineproto.AttestedMessageKind(t),
-		Level:    12345,
-		Cycle:     2,
+		Kind:      commitchema.AttestedSignalKind(t),
+		Altitude:    12345,
+		Iteration:     2,
 		Timestamp: imprint,
-		LedgerUID: LedgerUID{
-			Digest: comethash.Sum([]byte("REDACTED")),
-			SegmentAssignHeading: SegmentAssignHeading{
+		LedgerUUID: LedgerUUID{
+			Digest: tenderminthash.Sum([]byte("REDACTED")),
+			FragmentAssignHeading: FragmentAssignHeading{
 				Sum: 1000000,
-				Digest:  comethash.Sum([]byte("REDACTED")),
+				Digest:  tenderminthash.Sum([]byte("REDACTED")),
 			},
 		},
-		RatifierLocation: vault.LocationDigest([]byte("REDACTED")),
-		RatifierOrdinal:   56789,
+		AssessorLocation: security.LocatorDigest([]byte("REDACTED")),
+		AssessorOrdinal:   56789,
 	}
 }
 
-func VerifyBallotSignable(t *testing.T) {
+func VerifyBallotNotatable(t *testing.T) {
 	ballot := instancePreendorse()
-	v := ballot.ToSchema()
+	v := ballot.TowardSchema()
 	attestOctets := BallotAttestOctets("REDACTED", v)
-	pb := StandardizeBallot("REDACTED", v)
-	anticipated, err := protoio.SerializeSeparated(&pb)
+	pb := NormalizeBallot("REDACTED", v)
+	anticipated, err := protocolio.SerializeSeparated(&pb)
 	require.NoError(t, err)
 
 	require.Equal(t, anticipated, attestOctets, "REDACTED")
@@ -64,7 +64,7 @@ func VerifyBallotSignable(t *testing.T) {
 
 func VerifyBallotAttestOctetsVerifyArrays(t *testing.T) {
 	verifies := []struct {
-		ledgerUID string
+		successionUUID string
 		ballot    *Ballot
 		desire    []byte
 	}{
@@ -75,7 +75,7 @@ func VerifyBallotAttestOctetsVerifyArrays(t *testing.T) {
 		},
 		//
 		1: {
-			"REDACTED", &Ballot{Level: 1, Cycle: 1, Kind: engineproto.PreendorseKind},
+			"REDACTED", &Ballot{Altitude: 1, Iteration: 1, Kind: commitchema.PreendorseKind},
 			[]byte{
 				0x21,                                   //
 				0x8,                                    //
@@ -91,7 +91,7 @@ func VerifyBallotAttestOctetsVerifyArrays(t *testing.T) {
 		},
 		//
 		2: {
-			"REDACTED", &Ballot{Level: 1, Cycle: 1, Kind: engineproto.PreballotKind},
+			"REDACTED", &Ballot{Altitude: 1, Iteration: 1, Kind: commitchema.PreballotKind},
 			[]byte{
 				0x21,                                   //
 				0x8,                                    //
@@ -106,7 +106,7 @@ func VerifyBallotAttestOctetsVerifyArrays(t *testing.T) {
 			},
 		},
 		3: {
-			"REDACTED", &Ballot{Level: 1, Cycle: 1},
+			"REDACTED", &Ballot{Altitude: 1, Iteration: 1},
 			[]byte{
 				0x1f,                                   //
 				0x11,                                   //
@@ -120,7 +120,7 @@ func VerifyBallotAttestOctetsVerifyArrays(t *testing.T) {
 		},
 		//
 		4: {
-			"REDACTED", &Ballot{Level: 1, Cycle: 1},
+			"REDACTED", &Ballot{Altitude: 1, Iteration: 1},
 			[]byte{
 				0x2e,                                   //
 				0x11,                                   //
@@ -138,8 +138,8 @@ func VerifyBallotAttestOctetsVerifyArrays(t *testing.T) {
 		//
 		5: {
 			"REDACTED", &Ballot{
-				Level:    1,
-				Cycle:     1,
+				Altitude:    1,
+				Iteration:     1,
 				Addition: []byte("REDACTED"),
 			},
 			[]byte{
@@ -158,16 +158,16 @@ func VerifyBallotAttestOctetsVerifyArrays(t *testing.T) {
 		},
 	}
 	for i, tc := range verifies {
-		v := tc.ballot.ToSchema()
-		got := BallotAttestOctets(tc.ledgerUID, v)
+		v := tc.ballot.TowardSchema()
+		got := BallotAttestOctets(tc.successionUUID, v)
 		assert.Equal(t, len(tc.desire), len(got), "REDACTED", i)
 		assert.Equal(t, tc.desire, got, "REDACTED", i)
 	}
 }
 
-func VerifyBallotNominationNoEqual(t *testing.T) {
-	cv := StandardizeBallot("REDACTED", &engineproto.Ballot{Level: 1, Cycle: 1})
-	p := StandardizeNomination("REDACTED", &engineproto.Nomination{Level: 1, Cycle: 1})
+func VerifyBallotNominationNegationEquals(t *testing.T) {
+	cv := NormalizeBallot("REDACTED", &commitchema.Ballot{Altitude: 1, Iteration: 1})
+	p := NormalizeNomination("REDACTED", &commitchema.Nomination{Altitude: 1, Iteration: 1})
 	vb, err := proto.Marshal(&cv)
 	require.NoError(t, err)
 	pb, err := proto.Marshal(&p)
@@ -175,34 +175,34 @@ func VerifyBallotNominationNoEqual(t *testing.T) {
 	require.NotEqual(t, vb, pb)
 }
 
-func VerifyBallotValidateAutograph(t *testing.T) {
-	privateValue := NewEmulatePV()
-	publickey, err := privateValue.FetchPublicKey()
+func VerifyBallotValidateNotation(t *testing.T) {
+	privateItem := FreshSimulatePRV()
+	publickey, err := privateItem.ObtainPublicToken()
 	require.NoError(t, err)
 
 	ballot := instancePreendorse()
-	v := ballot.ToSchema()
+	v := ballot.TowardSchema()
 	attestOctets := BallotAttestOctets("REDACTED", v)
 
 	//
-	err = privateValue.AttestBallot("REDACTED", v)
+	err = privateItem.AttestBallot("REDACTED", v)
 	require.NoError(t, err)
 
 	//
-	sound := publickey.ValidateAutograph(BallotAttestOctets("REDACTED", v), v.Autograph)
+	sound := publickey.ValidateNotation(BallotAttestOctets("REDACTED", v), v.Notation)
 	require.True(t, sound)
 
 	//
-	preendorse := new(engineproto.Ballot)
+	preendorse := new(commitchema.Ballot)
 	bs, err := proto.Marshal(v)
 	require.NoError(t, err)
 	err = proto.Unmarshal(bs, preendorse)
 	require.NoError(t, err)
 
 	//
-	newAttestOctets := BallotAttestOctets("REDACTED", preendorse)
-	require.Equal(t, string(attestOctets), string(newAttestOctets))
-	sound = publickey.ValidateAutograph(newAttestOctets, preendorse.Autograph)
+	freshAttestOctets := BallotAttestOctets("REDACTED", preendorse)
+	require.Equal(t, string(attestOctets), string(freshAttestOctets))
+	sound = publickey.ValidateNotation(freshAttestOctets, preendorse.Notation)
 	require.True(t, sound)
 }
 
@@ -210,60 +210,60 @@ func VerifyBallotValidateAutograph(t *testing.T) {
 //
 func VerifyBallotAddition(t *testing.T) {
 	verifyScenarios := []struct {
-		label             string
+		alias             string
 		addition        []byte
-		encompassAutograph bool
-		anticipateFault      bool
+		encompassNotation bool
+		anticipateFailure      bool
 	}{
 		{
-			label:             "REDACTED",
+			alias:             "REDACTED",
 			addition:        []byte("REDACTED"),
-			encompassAutograph: true,
-			anticipateFault:      false,
+			encompassNotation: true,
+			anticipateFailure:      false,
 		},
 		{
-			label:             "REDACTED",
+			alias:             "REDACTED",
 			addition:        []byte("REDACTED"),
-			encompassAutograph: false,
-			anticipateFault:      true,
+			encompassNotation: false,
+			anticipateFailure:      true,
 		},
 		{
-			label:             "REDACTED",
-			encompassAutograph: true,
-			anticipateFault:      false,
+			alias:             "REDACTED",
+			encompassNotation: true,
+			anticipateFailure:      false,
 		},
 		{
-			label:             "REDACTED",
-			encompassAutograph: false,
-			anticipateFault:      true,
+			alias:             "REDACTED",
+			encompassNotation: false,
+			anticipateFailure:      true,
 		},
 	}
 
 	for _, tc := range verifyScenarios {
-		t.Run(tc.label, func(t *testing.T) {
-			level, epoch := int64(1), int32(0)
-			privateValue := NewEmulatePV()
-			pk, err := privateValue.FetchPublicKey()
+		t.Run(tc.alias, func(t *testing.T) {
+			altitude, iteration := int64(1), int32(0)
+			privateItem := FreshSimulatePRV()
+			pk, err := privateItem.ObtainPublicToken()
 			require.NoError(t, err)
 			ballot := &Ballot{
-				RatifierLocation: pk.Location(),
-				RatifierOrdinal:   0,
-				Level:           level,
-				Cycle:            epoch,
-				Timestamp:        engineclock.Now(),
-				Kind:             engineproto.PreendorseKind,
-				LedgerUID:          createLedgerUIDArbitrary(),
+				AssessorLocation: pk.Location(),
+				AssessorOrdinal:   0,
+				Altitude:           altitude,
+				Iteration:            iteration,
+				Timestamp:        committime.Now(),
+				Kind:             commitchema.PreendorseKind,
+				LedgerUUID:          createLedgerUUIDUnpredictable(),
 			}
 
-			v := ballot.ToSchema()
-			err = privateValue.AttestBallot("REDACTED", v)
+			v := ballot.TowardSchema()
+			err = privateItem.AttestBallot("REDACTED", v)
 			require.NoError(t, err)
-			ballot.Autograph = v.Autograph
-			if tc.encompassAutograph {
-				ballot.AdditionAutograph = v.AdditionAutograph
+			ballot.Notation = v.Notation
+			if tc.encompassNotation {
+				ballot.AdditionNotation = v.AdditionNotation
 			}
 			err = ballot.ValidateAddition("REDACTED", pk)
-			if tc.anticipateFault {
+			if tc.anticipateFailure {
 				require.Error(t, err)
 			} else {
 				require.NoError(t, err)
@@ -272,20 +272,20 @@ func VerifyBallotAddition(t *testing.T) {
 	}
 }
 
-func VerifyIsBallotKindSound(t *testing.T) {
+func VerifyEqualsBallotKindSound(t *testing.T) {
 	tc := []struct {
-		label string
-		in   engineproto.AttestedMessageKind
+		alias string
+		in   commitchema.AttestedSignalKind
 		out  bool
 	}{
-		{"REDACTED", engineproto.PreballotKind, true},
-		{"REDACTED", engineproto.PreendorseKind, true},
-		{"REDACTED", engineproto.AttestedMessageKind(0x3), false},
+		{"REDACTED", commitchema.PreballotKind, true},
+		{"REDACTED", commitchema.PreendorseKind, true},
+		{"REDACTED", commitchema.AttestedSignalKind(0x3), false},
 	}
 
 	for _, tt := range tc {
-		t.Run(tt.label, func(st *testing.T) {
-			if rs := IsBallotKindSound(tt.in); rs != tt.out {
+		t.Run(tt.alias, func(st *testing.T) {
+			if rs := EqualsBallotKindSound(tt.in); rs != tt.out {
 				t.Errorf("REDACTED", rs, tt.out)
 			}
 		})
@@ -293,52 +293,52 @@ func VerifyIsBallotKindSound(t *testing.T) {
 }
 
 func VerifyBallotValidate(t *testing.T) {
-	privateValue := NewEmulatePV()
-	publickey, err := privateValue.FetchPublicKey()
+	privateItem := FreshSimulatePRV()
+	publickey, err := privateItem.ObtainPublicToken()
 	require.NoError(t, err)
 
 	ballot := instancePreballot()
-	ballot.RatifierLocation = publickey.Location()
+	ballot.AssessorLocation = publickey.Location()
 
-	err = ballot.Validate("REDACTED", ed25519.GeneratePrivateKey().PublicKey())
+	err = ballot.Validate("REDACTED", edwards25519.ProducePrivateToken().PublicToken())
 	if assert.Error(t, err) {
-		assert.Equal(t, ErrBallotCorruptRatifierLocation, err)
+		assert.Equal(t, FaultBallotUnfitAssessorLocator, err)
 	}
 
 	err = ballot.Validate("REDACTED", publickey)
 	if assert.Error(t, err) {
-		assert.Equal(t, ErrBallotCorruptAutograph, err)
+		assert.Equal(t, FaultBallotUnfitSigning, err)
 	}
 }
 
-func VerifyBallotString(t *testing.T) {
-	str := instancePreendorse().String()
+func VerifyBallotText(t *testing.T) {
+	str := instancePreendorse().Text()
 	anticipated := "REDACTED" //
 	if str != anticipated {
 		t.Errorf("REDACTED", anticipated, str)
 	}
 
-	str2 := instancePreballot().String()
+	string2 := instancePreballot().Text()
 	anticipated = "REDACTED" //
-	if str2 != anticipated {
-		t.Errorf("REDACTED", anticipated, str2)
+	if string2 != anticipated {
+		t.Errorf("REDACTED", anticipated, string2)
 	}
 }
 
-func attestBallot(t *testing.T, pv PrivateRatifier, ledgerUID string, ballot *Ballot) {
+func attestBallot(t *testing.T, pv PrivateAssessor, successionUUID string, ballot *Ballot) {
 	t.Helper()
 
-	v := ballot.ToSchema()
-	require.NoError(t, pv.AttestBallot(ledgerUID, v))
-	ballot.Autograph = v.Autograph
-	ballot.AdditionAutograph = v.AdditionAutograph
+	v := ballot.TowardSchema()
+	require.NoError(t, pv.AttestBallot(successionUUID, v))
+	ballot.Notation = v.Notation
+	ballot.AdditionNotation = v.AdditionNotation
 }
 
 func VerifySoundBallots(t *testing.T) {
-	privateValue := NewEmulatePV()
+	privateItem := FreshSimulatePRV()
 
 	verifyScenarios := []struct {
-		label         string
+		alias         string
 		ballot         *Ballot
 		distortBallot func(*Ballot)
 	}{
@@ -347,142 +347,142 @@ func VerifySoundBallots(t *testing.T) {
 		{"REDACTED", instancePreendorse(), func(v *Ballot) { v.Addition = []byte("REDACTED") }},
 	}
 	for _, tc := range verifyScenarios {
-		attestBallot(t, privateValue, "REDACTED", tc.ballot)
+		attestBallot(t, privateItem, "REDACTED", tc.ballot)
 		tc.distortBallot(tc.ballot)
-		require.NoError(t, tc.ballot.CertifySimple(), "REDACTED", tc.label)
-		require.NoError(t, tc.ballot.AssureAddition(), "REDACTED", tc.label)
+		require.NoError(t, tc.ballot.CertifyFundamental(), "REDACTED", tc.alias)
+		require.NoError(t, tc.ballot.AssureAddition(), "REDACTED", tc.alias)
 	}
 }
 
-func VerifyCorruptBallots(t *testing.T) {
-	privateValue := NewEmulatePV()
+func VerifyUnfitBallots(t *testing.T) {
+	privateItem := FreshSimulatePRV()
 
 	verifyScenarios := []struct {
-		label         string
+		alias         string
 		distortBallot func(*Ballot)
 	}{
-		{"REDACTED", func(v *Ballot) { v.Level = -1 }},
-		{"REDACTED", func(v *Ballot) { v.Cycle = -1 }},
-		{"REDACTED", func(v *Ballot) { v.Level = 0 }},
-		{"REDACTED", func(v *Ballot) { v.LedgerUID = LedgerUID{[]byte{1, 2, 3}, SegmentAssignHeading{111, []byte("REDACTED")}} }},
-		{"REDACTED", func(v *Ballot) { v.RatifierLocation = make([]byte, 1) }},
-		{"REDACTED", func(v *Ballot) { v.RatifierOrdinal = -1 }},
-		{"REDACTED", func(v *Ballot) { v.Autograph = nil }},
-		{"REDACTED", func(v *Ballot) { v.Autograph = make([]byte, MaximumAutographVolume+1) }},
+		{"REDACTED", func(v *Ballot) { v.Altitude = -1 }},
+		{"REDACTED", func(v *Ballot) { v.Iteration = -1 }},
+		{"REDACTED", func(v *Ballot) { v.Altitude = 0 }},
+		{"REDACTED", func(v *Ballot) { v.LedgerUUID = LedgerUUID{[]byte{1, 2, 3}, FragmentAssignHeading{111, []byte("REDACTED")}} }},
+		{"REDACTED", func(v *Ballot) { v.AssessorLocation = make([]byte, 1) }},
+		{"REDACTED", func(v *Ballot) { v.AssessorOrdinal = -1 }},
+		{"REDACTED", func(v *Ballot) { v.Notation = nil }},
+		{"REDACTED", func(v *Ballot) { v.Notation = make([]byte, MaximumSigningExtent+1) }},
 	}
 	for _, tc := range verifyScenarios {
 		preballot := instancePreballot()
-		attestBallot(t, privateValue, "REDACTED", preballot)
+		attestBallot(t, privateItem, "REDACTED", preballot)
 		tc.distortBallot(preballot)
-		require.Error(t, preballot.CertifySimple(), "REDACTED", tc.label)
-		require.NoError(t, preballot.AssureAddition(), "REDACTED", tc.label)
+		require.Error(t, preballot.CertifyFundamental(), "REDACTED", tc.alias)
+		require.NoError(t, preballot.AssureAddition(), "REDACTED", tc.alias)
 
 		preendorse := instancePreendorse()
-		attestBallot(t, privateValue, "REDACTED", preendorse)
+		attestBallot(t, privateItem, "REDACTED", preendorse)
 		tc.distortBallot(preendorse)
-		require.Error(t, preendorse.CertifySimple(), "REDACTED", tc.label)
-		require.NoError(t, preendorse.AssureAddition(), "REDACTED", tc.label)
+		require.Error(t, preendorse.CertifyFundamental(), "REDACTED", tc.alias)
+		require.NoError(t, preendorse.AssureAddition(), "REDACTED", tc.alias)
 	}
 }
 
-func VerifyCorruptPreballots(t *testing.T) {
-	privateValue := NewEmulatePV()
+func VerifyUnfitPreballots(t *testing.T) {
+	privateItem := FreshSimulatePRV()
 
 	verifyScenarios := []struct {
-		label         string
+		alias         string
 		distortBallot func(*Ballot)
 	}{
 		{"REDACTED", func(v *Ballot) { v.Addition = []byte("REDACTED") }},
-		{"REDACTED", func(v *Ballot) { v.AdditionAutograph = []byte("REDACTED") }},
+		{"REDACTED", func(v *Ballot) { v.AdditionNotation = []byte("REDACTED") }},
 	}
 	for _, tc := range verifyScenarios {
 		preballot := instancePreballot()
-		attestBallot(t, privateValue, "REDACTED", preballot)
+		attestBallot(t, privateItem, "REDACTED", preballot)
 		tc.distortBallot(preballot)
-		require.Error(t, preballot.CertifySimple(), "REDACTED", tc.label)
-		require.NoError(t, preballot.AssureAddition(), "REDACTED", tc.label)
+		require.Error(t, preballot.CertifyFundamental(), "REDACTED", tc.alias)
+		require.NoError(t, preballot.AssureAddition(), "REDACTED", tc.alias)
 	}
 }
 
-func VerifyCorruptPreendorsePlugins(t *testing.T) {
-	privateValue := NewEmulatePV()
+func VerifyUnfitPreendorseAdditions(t *testing.T) {
+	privateItem := FreshSimulatePRV()
 
 	verifyScenarios := []struct {
-		label         string
+		alias         string
 		distortBallot func(*Ballot)
 	}{
 		{"REDACTED", func(v *Ballot) {
 			v.Addition = []byte("REDACTED")
-			v.AdditionAutograph = nil
+			v.AdditionNotation = nil
 		}},
-		{"REDACTED", func(v *Ballot) { v.AdditionAutograph = make([]byte, MaximumAutographVolume+1) }},
+		{"REDACTED", func(v *Ballot) { v.AdditionNotation = make([]byte, MaximumSigningExtent+1) }},
 	}
 	for _, tc := range verifyScenarios {
 		preendorse := instancePreendorse()
-		attestBallot(t, privateValue, "REDACTED", preendorse)
+		attestBallot(t, privateItem, "REDACTED", preendorse)
 		tc.distortBallot(preendorse)
 		//
-		require.Error(t, preendorse.CertifySimple(), "REDACTED", tc.label)
+		require.Error(t, preendorse.CertifyFundamental(), "REDACTED", tc.alias)
 	}
 }
 
 func VerifyAssureBallotAddition(t *testing.T) {
-	privateValue := NewEmulatePV()
+	privateItem := FreshSimulatePRV()
 
 	verifyScenarios := []struct {
-		label         string
+		alias         string
 		distortBallot func(*Ballot)
-		anticipateFault  bool
+		anticipateFailure  bool
 	}{
 		{"REDACTED", func(v *Ballot) {
 			v.Addition = nil
-			v.AdditionAutograph = nil
+			v.AdditionNotation = nil
 		}, true},
 		{"REDACTED", func(v *Ballot) {
-			v.AdditionAutograph = []byte("REDACTED")
+			v.AdditionNotation = []byte("REDACTED")
 		}, false},
 	}
 	for _, tc := range verifyScenarios {
 		preendorse := instancePreendorse()
-		attestBallot(t, privateValue, "REDACTED", preendorse)
+		attestBallot(t, privateItem, "REDACTED", preendorse)
 		tc.distortBallot(preendorse)
-		if tc.anticipateFault {
-			require.Error(t, preendorse.AssureAddition(), "REDACTED", tc.label)
+		if tc.anticipateFailure {
+			require.Error(t, preendorse.AssureAddition(), "REDACTED", tc.alias)
 		} else {
-			require.NoError(t, preendorse.AssureAddition(), "REDACTED", tc.label)
+			require.NoError(t, preendorse.AssureAddition(), "REDACTED", tc.alias)
 		}
 	}
 }
 
-func VerifyBallotProtobuf(t *testing.T) {
-	privateValue := NewEmulatePV()
+func VerifyBallotSchemaformat(t *testing.T) {
+	privateItem := FreshSimulatePRV()
 	ballot := instancePreendorse()
-	v := ballot.ToSchema()
-	err := privateValue.AttestBallot("REDACTED", v)
-	ballot.Autograph = v.Autograph
+	v := ballot.TowardSchema()
+	err := privateItem.AttestBallot("REDACTED", v)
+	ballot.Notation = v.Notation
 	require.NoError(t, err)
 
 	verifyScenarios := []struct {
 		msg                 string
 		ballot                *Ballot
-		transformsOk          bool
-		succeedsCertifySimple bool
+		transformsOkay          bool
+		phasesCertifyFundamental bool
 	}{
 		{"REDACTED", ballot, true, true},
 		{"REDACTED", &Ballot{}, true, false},
 	}
 	for _, tc := range verifyScenarios {
-		schemaNomination := tc.ballot.ToSchema()
+		schemaNomination := tc.ballot.TowardSchema()
 
-		v, err := BallotFromSchema(schemaNomination)
-		if tc.transformsOk {
+		v, err := BallotOriginatingSchema(schemaNomination)
+		if tc.transformsOkay {
 			require.NoError(t, err)
 		} else {
 			require.Error(t, err)
 		}
 
-		err = v.CertifySimple()
-		if tc.succeedsCertifySimple {
+		err = v.CertifyFundamental()
+		if tc.phasesCertifyFundamental {
 			require.NoError(t, err)
 			require.Equal(t, tc.ballot, v, tc.msg)
 		} else {
@@ -491,105 +491,105 @@ func VerifyBallotProtobuf(t *testing.T) {
 	}
 }
 
-func VerifyAttestAndInspectBallot(t *testing.T) {
-	privateValue := NewEmulatePV()
+func VerifyAttestAlsoInspectBallot(t *testing.T) {
+	privateItem := FreshSimulatePRV()
 
 	verifyScenarios := []struct {
-		label              string
-		pluginsActivated bool
+		alias              string
+		additionsActivated bool
 		ballot              *Ballot
-		anticipateFault       bool
+		anticipateFailure       bool
 	}{
 		{
-			label:              "REDACTED",
-			pluginsActivated: true,
+			alias:              "REDACTED",
+			additionsActivated: true,
 			ballot:              instancePreendorse(),
-			anticipateFault:       false,
+			anticipateFailure:       false,
 		},
 		{
-			label:              "REDACTED",
-			pluginsActivated: false,
+			alias:              "REDACTED",
+			additionsActivated: false,
 			ballot:              instancePreendorse(),
-			anticipateFault:       false,
+			anticipateFailure:       false,
 		},
 		{
-			label:              "REDACTED",
-			pluginsActivated: true,
+			alias:              "REDACTED",
+			additionsActivated: true,
 			ballot: func() *Ballot {
 				v := instancePreendorse()
-				v.LedgerUID = LedgerUID{make([]byte, 0), SegmentAssignHeading{0, make([]byte, 0)}}
+				v.LedgerUUID = LedgerUUID{make([]byte, 0), FragmentAssignHeading{0, make([]byte, 0)}}
 				return v
 			}(),
-			anticipateFault: true,
+			anticipateFailure: true,
 		},
 		{
-			label:              "REDACTED",
-			pluginsActivated: false,
+			alias:              "REDACTED",
+			additionsActivated: false,
 			ballot: func() *Ballot {
 				v := instancePreendorse()
-				v.LedgerUID = LedgerUID{make([]byte, 0), SegmentAssignHeading{0, make([]byte, 0)}}
+				v.LedgerUUID = LedgerUUID{make([]byte, 0), FragmentAssignHeading{0, make([]byte, 0)}}
 				return v
 			}(),
-			anticipateFault: true,
+			anticipateFailure: true,
 		},
 		{
-			label:              "REDACTED",
-			pluginsActivated: true,
+			alias:              "REDACTED",
+			additionsActivated: true,
 			ballot: func() *Ballot {
 				v := instancePreendorse()
 				v.Addition = make([]byte, 0)
 				return v
 			}(),
-			anticipateFault: false,
+			anticipateFailure: false,
 		},
 		{
-			label:              "REDACTED",
-			pluginsActivated: false,
+			alias:              "REDACTED",
+			additionsActivated: false,
 			ballot: func() *Ballot {
 				v := instancePreendorse()
 				v.Addition = make([]byte, 0)
 				return v
 			}(),
-			anticipateFault: false,
+			anticipateFailure: false,
 		},
 		{
-			label:              "REDACTED",
-			pluginsActivated: true,
+			alias:              "REDACTED",
+			additionsActivated: true,
 			ballot:              instancePreballot(),
-			anticipateFault:       true,
+			anticipateFailure:       true,
 		},
 		{
-			label:              "REDACTED",
-			pluginsActivated: false,
+			alias:              "REDACTED",
+			additionsActivated: false,
 			ballot:              instancePreballot(),
-			anticipateFault:       false,
+			anticipateFailure:       false,
 		},
 		{
-			label:              "REDACTED",
-			pluginsActivated: true,
+			alias:              "REDACTED",
+			additionsActivated: true,
 			ballot: func() *Ballot {
 				v := instancePreballot()
 				v.Addition = []byte("REDACTED")
 				return v
 			}(),
-			anticipateFault: true,
+			anticipateFailure: true,
 		},
 		{
-			label:              "REDACTED",
-			pluginsActivated: false,
+			alias:              "REDACTED",
+			additionsActivated: false,
 			ballot: func() *Ballot {
 				v := instancePreballot()
 				v.Addition = []byte("REDACTED")
 				return v
 			}(),
-			anticipateFault: true,
+			anticipateFailure: true,
 		},
 	}
 
 	for _, tc := range verifyScenarios {
-		t.Run(fmt.Sprintf("REDACTED", tc.label, tc.pluginsActivated), func(t *testing.T) {
-			_, err := AttestAndInspectBallot(tc.ballot, privateValue, "REDACTED", tc.pluginsActivated)
-			if tc.anticipateFault {
+		t.Run(fmt.Sprintf("REDACTED", tc.alias, tc.additionsActivated), func(t *testing.T) {
+			_, err := AttestAlsoInspectBallot(tc.ballot, privateItem, "REDACTED", tc.additionsActivated)
+			if tc.anticipateFailure {
 				require.Error(t, err)
 			} else {
 				require.NoError(t, err)

@@ -3,233 +3,233 @@ package agreement
 import (
 	"fmt"
 
-	engineerrors "github.com/valkyrieworks/kinds/faults"
+	strongminderrors "github.com/valkyrieworks/dffc4ef0-4ec6-4346-9b6c-d0a0cb42d94b/kinds/faults"
 	"github.com/cosmos/gogoproto/proto"
 
-	statetypes "github.com/valkyrieworks/agreement/kinds"
-	"github.com/valkyrieworks/utils/units"
-	ctalgebra "github.com/valkyrieworks/utils/algebra"
-	"github.com/valkyrieworks/p2p"
-	enginecons "github.com/valkyrieworks/schema/consensuscore/agreement"
-	ctschema "github.com/valkyrieworks/schema/consensuscore/kinds"
-	"github.com/valkyrieworks/kinds"
+	controlkinds "github.com/valkyrieworks/dffc4ef0-4ec6-4346-9b6c-d0a0cb42d94b/agreement/kinds"
+	"github.com/valkyrieworks/dffc4ef0-4ec6-4346-9b6c-d0a0cb42d94b/utils/digits"
+	strongarithmetic "github.com/valkyrieworks/dffc4ef0-4ec6-4346-9b6c-d0a0cb42d94b/utils/arithmetic"
+	"github.com/valkyrieworks/dffc4ef0-4ec6-4346-9b6c-d0a0cb42d94b/p2p"
+	strongmindcons "github.com/valkyrieworks/dffc4ef0-4ec6-4346-9b6c-d0a0cb42d94b/schema/strongmind/agreement"
+	commitchema "github.com/valkyrieworks/dffc4ef0-4ec6-4346-9b6c-d0a0cb42d94b/schema/strongmind/kinds"
+	"github.com/valkyrieworks/dffc4ef0-4ec6-4346-9b6c-d0a0cb42d94b/kinds"
 )
 
 //
 //
 //
-func MsgToProto(msg Message) (proto.Message, error) {
+func SignalTowardSchema(msg Signal) (proto.Message, error) {
 	if msg == nil {
-		return nil, ErrNilMessage
+		return nil, FaultVoidSignal
 	}
 	var pb proto.Message
 
 	switch msg := msg.(type) {
-	case *NewRoundStepMessage:
-		pb = &enginecons.NewRoundStep{
-			Height:                msg.Height,
-			Round:                 msg.Round,
-			Step:                  uint32(msg.Step),
-			SecondsSinceStartTime: msg.SecondsSinceStartTime,
-			LastCommitRound:       msg.LastCommitRound,
+	case *FreshIterationPhaseSignal:
+		pb = &strongmindcons.FreshIterationPhase{
+			Altitude:                msg.Altitude,
+			Iteration:                 msg.Iteration,
+			Phase:                  uint32(msg.Phase),
+			MomentsBecauseInitiateMoment: msg.MomentsBecauseInitiateMoment,
+			FinalEndorseIteration:       msg.FinalEndorseIteration,
 		}
 
-	case *NewValidBlockMessage:
-		pbPartSetHeader := msg.BlockPartSetHeader.ToProto()
-		pbBits := msg.BlockParts.ToProto()
-		pb = &enginecons.NewValidBlock{
-			Height:             msg.Height,
-			Round:              msg.Round,
-			BlockPartSetHeader: pbPartSetHeader,
-			BlockParts:         pbBits,
-			IsCommit:           msg.IsCommit,
+	case *FreshSoundLedgerSignal:
+		bufferFragmentAssignHeading := msg.LedgerFragmentAssignHeading.TowardSchema()
+		bufferDigits := msg.LedgerFragments.TowardSchema()
+		pb = &strongmindcons.FreshSoundLedger{
+			Altitude:             msg.Altitude,
+			Iteration:              msg.Iteration,
+			LedgerFragmentAssignHeading: bufferFragmentAssignHeading,
+			LedgerFragments:         bufferDigits,
+			EqualsEndorse:           msg.EqualsEndorse,
 		}
 
-	case *ProposalMessage:
-		pbP := msg.Proposal.ToProto()
-		pb = &enginecons.Proposal{
-			Proposal: *pbP,
+	case *NominationSignal:
+		pbP := msg.Nomination.TowardSchema()
+		pb = &strongmindcons.Nomination{
+			Nomination: *pbP,
 		}
 
-	case *ProposalPOLMessage:
-		pbBits := msg.ProposalPOL.ToProto()
-		pb = &enginecons.ProposalPOL{
-			Height:           msg.Height,
-			ProposalPolRound: msg.ProposalPOLRound,
-			ProposalPol:      *pbBits,
+	case *NominationPolicySignal:
+		bufferDigits := msg.NominationPolicy.TowardSchema()
+		pb = &strongmindcons.NominationPolicy{
+			Altitude:           msg.Altitude,
+			NominationPolicyIteration: msg.NominationPolicyIteration,
+			NominationPolicy:      *bufferDigits,
 		}
 
-	case *BlockPartMessage:
-		parts, err := msg.Part.ToProto()
+	case *LedgerFragmentSignal:
+		fragments, err := msg.Fragment.TowardSchema()
 		if err != nil {
-			return nil, engineerrors.ErrMsgToProto{MessageName: "REDACTED", Err: err}
+			return nil, strongminderrors.FaultSignalTowardSchema{SignalAlias: "REDACTED", Err: err}
 		}
-		pb = &enginecons.BlockPart{
-			Height: msg.Height,
-			Round:  msg.Round,
-			Part:   *parts,
-		}
-
-	case *VoteMessage:
-		vote := msg.Vote.ToProto()
-		pb = &enginecons.Vote{
-			Vote: vote,
+		pb = &strongmindcons.LedgerFragment{
+			Altitude: msg.Altitude,
+			Iteration:  msg.Iteration,
+			Fragment:   *fragments,
 		}
 
-	case *HasVoteMessage:
-		pb = &enginecons.HasVote{
-			Height: msg.Height,
-			Round:  msg.Round,
-			Type:   msg.Type,
-			Index:  msg.Index,
+	case *BallotSignal:
+		ballot := msg.Ballot.TowardSchema()
+		pb = &strongmindcons.Ballot{
+			Ballot: ballot,
 		}
 
-	case *VoteSetMaj23Message:
-		bi := msg.BlockID.ToProto()
-		pb = &enginecons.VoteSetMaj23{
-			Height:  msg.Height,
-			Round:   msg.Round,
-			Type:    msg.Type,
-			BlockID: bi,
+	case *OwnsBallotSignal:
+		pb = &strongmindcons.OwnsBallot{
+			Altitude: msg.Altitude,
+			Iteration:  msg.Iteration,
+			Kind:   msg.Kind,
+			Ordinal:  msg.Ordinal,
 		}
 
-	case *VoteSetBitsMessage:
-		bi := msg.BlockID.ToProto()
-		bits := msg.Votes.ToProto()
-
-		vsb := &enginecons.VoteSetBits{
-			Height:  msg.Height,
-			Round:   msg.Round,
-			Type:    msg.Type,
-			BlockID: bi,
+	case *BallotAssignMajor23signal:
+		bi := msg.LedgerUUID.TowardSchema()
+		pb = &strongmindcons.BallotAssignMajor23{
+			Altitude:  msg.Altitude,
+			Iteration:   msg.Iteration,
+			Kind:    msg.Kind,
+			LedgerUUID: bi,
 		}
 
-		if bits != nil {
-			vsb.Votes = *bits
+	case *BallotAssignDigitsSignal:
+		bi := msg.LedgerUUID.TowardSchema()
+		digits := msg.Ballots.TowardSchema()
+
+		vsb := &strongmindcons.BallotAssignDigits{
+			Altitude:  msg.Altitude,
+			Iteration:   msg.Iteration,
+			Kind:    msg.Kind,
+			LedgerUUID: bi,
+		}
+
+		if digits != nil {
+			vsb.Ballots = *digits
 		}
 
 		pb = vsb
 
 	default:
-		return nil, ErrConsensusMessageNotRecognized{msg}
+		return nil, FaultAgreementSignalNegationIdentified{msg}
 	}
 
 	return pb, nil
 }
 
 //
-func MsgFromProto(p proto.Message) (Message, error) {
+func SignalOriginatingSchema(p proto.Message) (Signal, error) {
 	if p == nil {
-		return nil, ErrNilMessage
+		return nil, FaultVoidSignal
 	}
-	var pb Message
+	var pb Signal
 
 	switch msg := p.(type) {
-	case *enginecons.NewRoundStep:
-		rs, err := ctalgebra.SafeConvertUint8(int64(msg.Step))
+	case *strongmindcons.FreshIterationPhase:
+		rs, err := strongarithmetic.SecureTransformOctet(int64(msg.Phase))
 		//
 		if err != nil {
-			return nil, ErrDenyMessageOverflow{err}
+			return nil, FaultRefuseSignalOverrun{err}
 		}
-		pb = &NewRoundStepMessage{
-			Height:                msg.Height,
-			Round:                 msg.Round,
-			Step:                  statetypes.RoundStepType(rs),
-			SecondsSinceStartTime: msg.SecondsSinceStartTime,
-			LastCommitRound:       msg.LastCommitRound,
+		pb = &FreshIterationPhaseSignal{
+			Altitude:                msg.Altitude,
+			Iteration:                 msg.Iteration,
+			Phase:                  controlkinds.IterationPhaseKind(rs),
+			MomentsBecauseInitiateMoment: msg.MomentsBecauseInitiateMoment,
+			FinalEndorseIteration:       msg.FinalEndorseIteration,
 		}
-	case *enginecons.NewValidBlock:
-		pbPartSetHeader, err := kinds.PartSetHeaderFromProto(&msg.BlockPartSetHeader)
+	case *strongmindcons.FreshSoundLedger:
+		bufferFragmentAssignHeading, err := kinds.FragmentAssignHeadingOriginatingSchema(&msg.LedgerFragmentAssignHeading)
 		if err != nil {
-			return nil, engineerrors.ErrMsgToProto{MessageName: "REDACTED", Err: err}
+			return nil, strongminderrors.FaultSignalTowardSchema{SignalAlias: "REDACTED", Err: err}
 		}
 
-		pbBits := new(units.BitArray)
-		pbBits.FromProto(msg.BlockParts)
+		bufferDigits := new(digits.DigitSeries)
+		bufferDigits.OriginatingSchema(msg.LedgerFragments)
 
-		pb = &NewValidBlockMessage{
-			Height:             msg.Height,
-			Round:              msg.Round,
-			BlockPartSetHeader: *pbPartSetHeader,
-			BlockParts:         pbBits,
-			IsCommit:           msg.IsCommit,
+		pb = &FreshSoundLedgerSignal{
+			Altitude:             msg.Altitude,
+			Iteration:              msg.Iteration,
+			LedgerFragmentAssignHeading: *bufferFragmentAssignHeading,
+			LedgerFragments:         bufferDigits,
+			EqualsEndorse:           msg.EqualsEndorse,
 		}
-	case *enginecons.Proposal:
-		pbP, err := kinds.ProposalFromProto(&msg.Proposal)
+	case *strongmindcons.Nomination:
+		pbP, err := kinds.NominationOriginatingSchema(&msg.Nomination)
 		if err != nil {
-			return nil, engineerrors.ErrMsgToProto{MessageName: "REDACTED", Err: err}
+			return nil, strongminderrors.FaultSignalTowardSchema{SignalAlias: "REDACTED", Err: err}
 		}
 
-		pb = &ProposalMessage{
-			Proposal: pbP,
+		pb = &NominationSignal{
+			Nomination: pbP,
 		}
-	case *enginecons.ProposalPOL:
-		pbBits := new(units.BitArray)
-		pbBits.FromProto(&msg.ProposalPol)
-		pb = &ProposalPOLMessage{
-			Height:           msg.Height,
-			ProposalPOLRound: msg.ProposalPolRound,
-			ProposalPOL:      pbBits,
+	case *strongmindcons.NominationPolicy:
+		bufferDigits := new(digits.DigitSeries)
+		bufferDigits.OriginatingSchema(&msg.NominationPolicy)
+		pb = &NominationPolicySignal{
+			Altitude:           msg.Altitude,
+			NominationPolicyIteration: msg.NominationPolicyIteration,
+			NominationPolicy:      bufferDigits,
 		}
-	case *enginecons.BlockPart:
-		parts, err := kinds.PartFromProto(&msg.Part)
+	case *strongmindcons.LedgerFragment:
+		fragments, err := kinds.FragmentOriginatingSchema(&msg.Fragment)
 		if err != nil {
-			return nil, engineerrors.ErrMsgToProto{MessageName: "REDACTED", Err: err}
+			return nil, strongminderrors.FaultSignalTowardSchema{SignalAlias: "REDACTED", Err: err}
 		}
-		pb = &BlockPartMessage{
-			Height: msg.Height,
-			Round:  msg.Round,
-			Part:   parts,
+		pb = &LedgerFragmentSignal{
+			Altitude: msg.Altitude,
+			Iteration:  msg.Iteration,
+			Fragment:   fragments,
 		}
-	case *enginecons.Vote:
+	case *strongmindcons.Ballot:
 		//
 		//
-		vote, err := kinds.VoteFromProto(msg.Vote)
+		ballot, err := kinds.BallotOriginatingSchema(msg.Ballot)
 		if err != nil {
-			return nil, engineerrors.ErrMsgToProto{MessageName: "REDACTED", Err: err}
+			return nil, strongminderrors.FaultSignalTowardSchema{SignalAlias: "REDACTED", Err: err}
 		}
 
-		pb = &VoteMessage{
-			Vote: vote,
+		pb = &BallotSignal{
+			Ballot: ballot,
 		}
-	case *enginecons.HasVote:
-		pb = &HasVoteMessage{
-			Height: msg.Height,
-			Round:  msg.Round,
-			Type:   msg.Type,
-			Index:  msg.Index,
+	case *strongmindcons.OwnsBallot:
+		pb = &OwnsBallotSignal{
+			Altitude: msg.Altitude,
+			Iteration:  msg.Iteration,
+			Kind:   msg.Kind,
+			Ordinal:  msg.Ordinal,
 		}
-	case *enginecons.VoteSetMaj23:
-		bi, err := kinds.BlockIDFromProto(&msg.BlockID)
+	case *strongmindcons.BallotAssignMajor23:
+		bi, err := kinds.LedgerUUIDOriginatingSchema(&msg.LedgerUUID)
 		if err != nil {
-			return nil, engineerrors.ErrMsgToProto{MessageName: "REDACTED", Err: err}
+			return nil, strongminderrors.FaultSignalTowardSchema{SignalAlias: "REDACTED", Err: err}
 		}
-		pb = &VoteSetMaj23Message{
-			Height:  msg.Height,
-			Round:   msg.Round,
-			Type:    msg.Type,
-			BlockID: *bi,
+		pb = &BallotAssignMajor23signal{
+			Altitude:  msg.Altitude,
+			Iteration:   msg.Iteration,
+			Kind:    msg.Kind,
+			LedgerUUID: *bi,
 		}
-	case *enginecons.VoteSetBits:
-		bi, err := kinds.BlockIDFromProto(&msg.BlockID)
+	case *strongmindcons.BallotAssignDigits:
+		bi, err := kinds.LedgerUUIDOriginatingSchema(&msg.LedgerUUID)
 		if err != nil {
-			return nil, engineerrors.ErrMsgToProto{MessageName: "REDACTED", Err: err}
+			return nil, strongminderrors.FaultSignalTowardSchema{SignalAlias: "REDACTED", Err: err}
 		}
-		bits := new(units.BitArray)
-		units.FromProto(&msg.Votes)
+		digits := new(digits.DigitSeries)
+		digits.OriginatingSchema(&msg.Ballots)
 
-		pb = &VoteSetBitsMessage{
-			Height:  msg.Height,
-			Round:   msg.Round,
-			Type:    msg.Type,
-			BlockID: *bi,
-			Votes:   bits,
+		pb = &BallotAssignDigitsSignal{
+			Altitude:  msg.Altitude,
+			Iteration:   msg.Iteration,
+			Kind:    msg.Kind,
+			LedgerUUID: *bi,
+			Ballots:   digits,
 		}
 	default:
-		return nil, ErrConsensusMessageNotRecognized{msg}
+		return nil, FaultAgreementSignalNegationIdentified{msg}
 	}
 
-	if err := pb.ValidateBasic(); err != nil {
+	if err := pb.CertifyFundamental(); err != nil {
 		return nil, err
 	}
 
@@ -237,53 +237,53 @@ func MsgFromProto(p proto.Message) (Message, error) {
 }
 
 //
-func WALToProto(msg WALMessage) (*enginecons.WALMessage, error) {
-	var pb enginecons.WALMessage
+func JournalTowardSchema(msg JournalSignal) (*strongmindcons.JournalSignal, error) {
+	var pb strongmindcons.JournalSignal
 
 	switch msg := msg.(type) {
-	case kinds.EventDataRoundState:
-		pb = enginecons.WALMessage{
-			Sum: &enginecons.WALMessage_EventDataRoundState{
-				EventDataRoundState: &ctschema.EventDataRoundState{
-					Height: msg.Height,
-					Round:  msg.Round,
-					Step:   msg.Step,
+	case kinds.IncidentDataIterationStatus:
+		pb = strongmindcons.JournalSignal{
+			Sum: &strongmindcons.Walrecord_Incidentiterationstate{
+				IncidentDataIterationStatus: &commitchema.IncidentDataIterationStatus{
+					Altitude: msg.Altitude,
+					Iteration:  msg.Iteration,
+					Phase:   msg.Phase,
 				},
 			},
 		}
-	case msgInfo:
-		consMsg, err := MsgToProto(msg.Msg)
+	case signalDetails:
+		consensusSignal, err := SignalTowardSchema(msg.Msg)
 		if err != nil {
 			return nil, err
 		}
-		if w, ok := consMsg.(p2p.Wrapper); ok {
-			consMsg = w.Wrap()
+		if w, ok := consensusSignal.(p2p.Encapsulator); ok {
+			consensusSignal = w.Enclose()
 		}
-		cm := consMsg.(*enginecons.Message)
-		pb = enginecons.WALMessage{
-			Sum: &enginecons.WALMessage_MsgInfo{
-				MsgInfo: &enginecons.MsgInfo{
+		cm := consensusSignal.(*strongmindcons.Signal)
+		pb = strongmindcons.JournalSignal{
+			Sum: &strongmindcons.Walrecord_Signalinfo{
+				SignalDetails: &strongmindcons.SignalDetails{
 					Msg:    *cm,
-					PeerID: string(msg.PeerID),
+					NodeUUID: string(msg.NodeUUID),
 				},
 			},
 		}
-	case timeoutInfo:
-		pb = enginecons.WALMessage{
-			Sum: &enginecons.WALMessage_TimeoutInfo{
-				TimeoutInfo: &enginecons.TimeoutInfo{
-					Duration: msg.Duration,
-					Height:   msg.Height,
-					Round:    msg.Round,
-					Step:     uint32(msg.Step),
+	case deadlineDetails:
+		pb = strongmindcons.JournalSignal{
+			Sum: &strongmindcons.Walrecord_Alarminfo{
+				DeadlineDetails: &strongmindcons.DeadlineDetails{
+					Interval: msg.Interval,
+					Altitude:   msg.Altitude,
+					Iteration:    msg.Iteration,
+					Phase:     uint32(msg.Phase),
 				},
 			},
 		}
-	case EndHeightMessage:
-		pb = enginecons.WALMessage{
-			Sum: &enginecons.WALMessage_EndHeight{
-				EndHeight: &enginecons.EndHeight{
-					Height: msg.Height,
+	case TerminateAltitudeSignal:
+		pb = strongmindcons.JournalSignal{
+			Sum: &strongmindcons.Walrecord_Finalheight{
+				TerminateAltitude: &strongmindcons.TerminateAltitude{
+					Altitude: msg.Altitude,
 				},
 			},
 		}
@@ -295,49 +295,49 @@ func WALToProto(msg WALMessage) (*enginecons.WALMessage, error) {
 }
 
 //
-func WALFromProto(msg *enginecons.WALMessage) (WALMessage, error) {
+func JournalOriginatingSchema(msg *strongmindcons.JournalSignal) (JournalSignal, error) {
 	if msg == nil {
-		return nil, ErrNilMessage
+		return nil, FaultVoidSignal
 	}
-	var pb WALMessage
+	var pb JournalSignal
 
 	switch msg := msg.Sum.(type) {
-	case *enginecons.WALMessage_EventDataRoundState:
-		pb = kinds.EventDataRoundState{
-			Height: msg.EventDataRoundState.Height,
-			Round:  msg.EventDataRoundState.Round,
-			Step:   msg.EventDataRoundState.Step,
+	case *strongmindcons.Walrecord_Incidentiterationstate:
+		pb = kinds.IncidentDataIterationStatus{
+			Altitude: msg.IncidentDataIterationStatus.Altitude,
+			Iteration:  msg.IncidentDataIterationStatus.Iteration,
+			Phase:   msg.IncidentDataIterationStatus.Phase,
 		}
-	case *enginecons.WALMessage_MsgInfo:
-		um, err := msg.MsgInfo.Msg.Unwrap()
+	case *strongmindcons.Walrecord_Signalinfo:
+		um, err := msg.SignalDetails.Msg.Disclose()
 		if err != nil {
 			return nil, fmt.Errorf("REDACTED", err)
 		}
-		walMsg, err := MsgFromProto(um)
+		journalSignal, err := SignalOriginatingSchema(um)
 		if err != nil {
-			return nil, engineerrors.ErrMsgFromProto{MessageName: "REDACTED", Err: err}
+			return nil, strongminderrors.FaultSignalOriginatingSchema{SignalAlias: "REDACTED", Err: err}
 		}
-		pb = msgInfo{
-			Msg:    walMsg,
-			PeerID: p2p.ID(msg.MsgInfo.PeerID),
+		pb = signalDetails{
+			Msg:    journalSignal,
+			NodeUUID: p2p.ID(msg.SignalDetails.NodeUUID),
 		}
 
-	case *enginecons.WALMessage_TimeoutInfo:
-		tis, err := ctalgebra.SafeConvertUint8(int64(msg.TimeoutInfo.Step))
+	case *strongmindcons.Walrecord_Alarminfo:
+		tis, err := strongarithmetic.SecureTransformOctet(int64(msg.DeadlineDetails.Phase))
 		//
 		if err != nil {
-			return nil, ErrDenyMessageOverflow{err}
+			return nil, FaultRefuseSignalOverrun{err}
 		}
-		pb = timeoutInfo{
-			Duration: msg.TimeoutInfo.Duration,
-			Height:   msg.TimeoutInfo.Height,
-			Round:    msg.TimeoutInfo.Round,
-			Step:     statetypes.RoundStepType(tis),
+		pb = deadlineDetails{
+			Interval: msg.DeadlineDetails.Interval,
+			Altitude:   msg.DeadlineDetails.Altitude,
+			Iteration:    msg.DeadlineDetails.Iteration,
+			Phase:     controlkinds.IterationPhaseKind(tis),
 		}
 		return pb, nil
-	case *enginecons.WALMessage_EndHeight:
-		pb := EndHeightMessage{
-			Height: msg.EndHeight.Height,
+	case *strongmindcons.Walrecord_Finalheight:
+		pb := TerminateAltitudeSignal{
+			Altitude: msg.TerminateAltitude.Altitude,
 		}
 		return pb, nil
 	default:

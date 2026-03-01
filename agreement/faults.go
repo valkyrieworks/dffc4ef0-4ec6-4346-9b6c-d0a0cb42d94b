@@ -6,48 +6,55 @@ import (
 )
 
 var (
-	ErrNullSignal                    = errors.New("REDACTED")
-	ErrNodeStatusLevelRelapse     = errors.New("REDACTED")
-	ErrNodeStatusCorruptBeginTime     = errors.New("REDACTED")
-	ErrEndorseAssemblyNotFulfilled            = errors.New("REDACTED")
-	ErrNullPrivateRatifier              = errors.New("REDACTED")
-	ErrNominationLackingPrecedingEndorse = errors.New("REDACTED")
+	FaultVoidSignal                    = errors.New("REDACTED")
+	FaultNodeStatusAltitudeRelapse     = errors.New("REDACTED")
+	FaultNodeStatusUnfitInitiateMoment     = errors.New("REDACTED")
+	FaultEndorseAssemblyNegationFulfilled            = errors.New("REDACTED")
+	FaultVoidPrivateAssessor              = errors.New("REDACTED")
+	FaultNominationLackingPriorEndorse = errors.New("REDACTED")
 )
 
 //
 var (
-	ErrCorruptNominationAutograph   = errors.New("REDACTED")
-	ErrCorruptNominationPOLEpoch    = errors.New("REDACTED")
-	ErrAppendingBallot                 = errors.New("REDACTED")
-	ErrAutographLocatedInElapsedLedgers = errors.New("REDACTED")
-	ErrPublicKeyIsNotCollection             = errors.New("REDACTED")
-	ErrNominationTooNumerousSegments       = errors.New("REDACTED")
+	FaultUnfitNominationSigning   = errors.New("REDACTED")
+	FaultUnfitNominationPolicyIteration    = errors.New("REDACTED")
+	FaultAppendingBallot                 = errors.New("REDACTED")
+	FaultSigningDetectedInsideElapsedLedgers = errors.New("REDACTED")
+	FaultPublicTokenEqualsNegationAssign             = errors.New("REDACTED")
+	FaultNominationExcessivelyMultipleFragments       = errors.New("REDACTED")
 )
 
-type ErrAgreementSignalNotIdentified struct {
+//
+var (
+	FaultCertification      = errors.New("REDACTED")
+	FaultEarlierComprised = errors.New("REDACTED")
+	FaultAltitudeBreach       = errors.New("REDACTED")
+)
+
+type FaultAgreementSignalNegationIdentified struct {
 	Signal any
 }
 
-func (e ErrAgreementSignalNotIdentified) Fault() string {
+func (e FaultAgreementSignalNegationIdentified) Failure() string {
 	return fmt.Sprintf("REDACTED", e.Signal)
 }
 
-type ErrRefuseSignalOverload struct {
+type FaultRefuseSignalOverrun struct {
 	Err error
 }
 
-func (e ErrRefuseSignalOverload) Fault() string {
+func (e FaultRefuseSignalOverrun) Failure() string {
 	return fmt.Sprintf("REDACTED", e.Err.Error())
 }
 
-func (e ErrRefuseSignalOverload) Disclose() error {
+func (e FaultRefuseSignalOverrun) Disclose() error {
 	return e.Err
 }
 
-type ErrCorruptBallot struct {
-	Cause string
+type FaultUnfitBallot struct {
+	Rationale string
 }
 
-func (e ErrCorruptBallot) Fault() string {
-	return "REDACTED" + e.Cause
+func (e FaultUnfitBallot) Failure() string {
+	return "REDACTED" + e.Rationale
 }

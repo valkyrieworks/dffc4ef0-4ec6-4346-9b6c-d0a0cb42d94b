@@ -1,4 +1,4 @@
-package main
+package primary
 
 import (
 	"bytes"
@@ -15,56 +15,56 @@ import (
 
 	"github.com/BurntSushi/toml"
 
-	"github.com/valkyrieworks/settings"
-	"github.com/valkyrieworks/vault/ed25519"
-	"github.com/valkyrieworks/netpeer"
-	"github.com/valkyrieworks/p2p"
-	"github.com/valkyrieworks/privatekey"
-	e2e "github.com/valkyrieworks/verify/e2e/pkg"
-	"github.com/valkyrieworks/verify/e2e/pkg/platform"
-	"github.com/valkyrieworks/kinds"
+	"github.com/valkyrieworks/dffc4ef0-4ec6-4346-9b6c-d0a0cb42d94b/settings"
+	"github.com/valkyrieworks/dffc4ef0-4ec6-4346-9b6c-d0a0cb42d94b/security/edwards25519"
+	"github.com/valkyrieworks/dffc4ef0-4ec6-4346-9b6c-d0a0cb42d94b/netp2p"
+	"github.com/valkyrieworks/dffc4ef0-4ec6-4346-9b6c-d0a0cb42d94b/p2p"
+	"github.com/valkyrieworks/dffc4ef0-4ec6-4346-9b6c-d0a0cb42d94b/privatevalue"
+	e2e "github.com/valkyrieworks/dffc4ef0-4ec6-4346-9b6c-d0a0cb42d94b/verify/e2e/pkg"
+	"github.com/valkyrieworks/dffc4ef0-4ec6-4346-9b6c-d0a0cb42d94b/verify/e2e/pkg/platform"
+	"github.com/valkyrieworks/dffc4ef0-4ec6-4346-9b6c-d0a0cb42d94b/kinds"
 )
 
 const (
-	ApplicationLocationTCP  = "REDACTED"
-	ApplicationLocationUNIX = "REDACTED"
+	ApplicationLocatorTcpsocket  = "REDACTED"
+	ApplicationLocatorPosix = "REDACTED"
 
-	PrivatekeyLocationTCP     = "REDACTED"
-	PrivatekeyLocationUNIX    = "REDACTED"
-	PrivatekeyKeyEntry        = "REDACTED"
-	PrivatekeyStatusEntry      = "REDACTED"
-	PrivatekeyMockKeyEntry   = "REDACTED"
-	PrivatekeyMockStatusEntry = "REDACTED"
+	PrivatevalueLocatorTcpsocket     = "REDACTED"
+	PrivatevalueLocatorPosix    = "REDACTED"
+	PrivatevalueTokenRecord        = "REDACTED"
+	PrivatevalueStatusRecord      = "REDACTED"
+	PrivatevaluePlaceholderTokenRecord   = "REDACTED"
+	PrivatevaluePlaceholderStatusRecord = "REDACTED"
 )
 
 //
-func Configure(verifychain *e2e.Verifychain, infp platform.Source) error {
-	tracer.Details("REDACTED", "REDACTED", verifychain.Dir)
+func Configure(simnet *e2e.Simnet, infpnt platform.Supplier) error {
+	tracer.Details("REDACTED", "REDACTED", simnet.Dir)
 
-	if err := os.MkdirAll(verifychain.Dir, os.ModePerm); err != nil {
+	if err := os.MkdirAll(simnet.Dir, os.ModePerm); err != nil {
 		return err
 	}
 
-	if err := infp.Configure(); err != nil {
+	if err := infpnt.Configure(); err != nil {
 		return err
 	}
 
-	origin, err := CreateOrigin(verifychain)
+	inauguration, err := CreateInauguration(simnet)
 	if err != nil {
 		return err
 	}
 
-	for _, member := range verifychain.Instances {
-		memberFolder := filepath.Join(verifychain.Dir, member.Label)
+	for _, peer := range simnet.Peers {
+		peerPath := filepath.Join(simnet.Dir, peer.Alias)
 
 		folders := []string{
-			filepath.Join(memberFolder, "REDACTED"),
-			filepath.Join(memberFolder, "REDACTED"),
-			filepath.Join(memberFolder, "REDACTED", "REDACTED"),
+			filepath.Join(peerPath, "REDACTED"),
+			filepath.Join(peerPath, "REDACTED"),
+			filepath.Join(peerPath, "REDACTED", "REDACTED"),
 		}
 		for _, dir := range folders {
 			//
-			if member.Style == e2e.StyleRapid && strings.Contains(dir, "REDACTED") {
+			if peer.Style == e2e.StyleAgile && strings.Contains(dir, "REDACTED") {
 				continue
 			}
 			err := os.MkdirAll(dir, 0o755)
@@ -73,51 +73,51 @@ func Configure(verifychain *e2e.Verifychain, infp platform.Source) error {
 			}
 		}
 
-		cfg, err := CreateSettings(member)
+		cfg, err := CreateSettings(peer)
 		if err != nil {
 			return err
 		}
-		settings.RecordSettingsEntry(filepath.Join(memberFolder, "REDACTED", "REDACTED"), cfg) //
+		settings.PersistSettingsRecord(filepath.Join(peerPath, "REDACTED", "REDACTED"), cfg) //
 
-		applicationConfig, err := CreateApplicationSettings(member)
+		applicationConfig, err := CreateApplicationSettings(peer)
 		if err != nil {
 			return err
 		}
-		err = os.WriteFile(filepath.Join(memberFolder, "REDACTED", "REDACTED"), applicationConfig, 0o644) //
+		err = os.WriteFile(filepath.Join(peerPath, "REDACTED", "REDACTED"), applicationConfig, 0o644) //
 		if err != nil {
 			return err
 		}
 
-		if member.Style == e2e.StyleRapid {
+		if peer.Style == e2e.StyleAgile {
 			//
 			continue
 		}
 
-		err = origin.PersistAs(filepath.Join(memberFolder, "REDACTED", "REDACTED"))
+		err = inauguration.PersistLike(filepath.Join(peerPath, "REDACTED", "REDACTED"))
 		if err != nil {
 			return err
 		}
 
-		err = (&p2p.MemberKey{PrivateKey: member.MemberKey}).PersistAs(filepath.Join(memberFolder, "REDACTED", "REDACTED"))
+		err = (&p2p.PeerToken{PrivateToken: peer.PeerToken}).PersistLike(filepath.Join(peerPath, "REDACTED", "REDACTED"))
 		if err != nil {
 			return err
 		}
 
-		(privatekey.NewEntryPV(member.PrivatekeyKey,
-			filepath.Join(memberFolder, PrivatekeyKeyEntry),
-			filepath.Join(memberFolder, PrivatekeyStatusEntry),
+		(privatevalue.FreshRecordPRV(peer.PrivatevalueToken,
+			filepath.Join(peerPath, PrivatevalueTokenRecord),
+			filepath.Join(peerPath, PrivatevalueStatusRecord),
 		)).Persist()
 
 		//
 		//
-		(privatekey.NewEntryPV(ed25519.GeneratePrivateKey(),
-			filepath.Join(memberFolder, PrivatekeyMockKeyEntry),
-			filepath.Join(memberFolder, PrivatekeyMockStatusEntry),
+		(privatevalue.FreshRecordPRV(edwards25519.ProducePrivateToken(),
+			filepath.Join(peerPath, PrivatevaluePlaceholderTokenRecord),
+			filepath.Join(peerPath, PrivatevaluePlaceholderStatusRecord),
 		)).Persist()
 	}
 
-	if verifychain.Monitorstats {
-		if err := verifychain.RecordMonitorstatsSettings(); err != nil {
+	if simnet.Titan {
+		if err := simnet.PersistTitanSettings(); err != nil {
 			return err
 		}
 	}
@@ -126,239 +126,240 @@ func Configure(verifychain *e2e.Verifychain, infp platform.Source) error {
 }
 
 //
-func CreateOrigin(verifychain *e2e.Verifychain) (kinds.OriginPaper, error) {
-	origin := kinds.OriginPaper{
+func CreateInauguration(simnet *e2e.Simnet) (kinds.OriginPaper, error) {
+	inauguration := kinds.OriginPaper{
 		OriginMoment:     time.Now(),
-		LedgerUID:         verifychain.Label,
-		AgreementOptions: kinds.StandardAgreementOptions(),
-		PrimaryLevel:   verifychain.PrimaryLevel,
+		SuccessionUUID:         simnet.Alias,
+		AgreementSettings: kinds.FallbackAgreementSettings(),
+		PrimaryAltitude:   simnet.PrimaryAltitude,
 	}
 	//
-	origin.AgreementOptions.Release.App = 1
-	origin.AgreementOptions.Proof.MaximumDurationCountLedgers = e2e.ProofEraLevel
-	origin.AgreementOptions.Proof.MaximumDurationPeriod = e2e.ProofEraTime
-	origin.AgreementOptions.Ratifier.PublicKeyKinds = []string{verifychain.KeyKind}
-	if verifychain.LedgerMaximumOctets != 0 {
-		origin.AgreementOptions.Ledger.MaximumOctets = verifychain.LedgerMaximumOctets
+	inauguration.AgreementSettings.Edition.App = 1
+	inauguration.AgreementSettings.Proof.MaximumLifespanCountLedgers = e2e.ProofLifespanAltitude
+	inauguration.AgreementSettings.Proof.MaximumLifespanInterval = e2e.ProofLifespanMoment
+	inauguration.AgreementSettings.Assessor.PublicTokenKinds = []string{simnet.TokenKind}
+	if simnet.LedgerMaximumOctets != 0 {
+		inauguration.AgreementSettings.Ledger.MaximumOctets = simnet.LedgerMaximumOctets
 	}
-	if verifychain.BallotPluginsModifyLevel == -1 {
-		origin.AgreementOptions.Iface.BallotPluginsActivateLevel = verifychain.BallotPluginsActivateLevel
+	if simnet.BallotAdditionsReviseAltitude == -1 {
+		inauguration.AgreementSettings.Iface.BallotAdditionsActivateAltitude = simnet.BallotAdditionsActivateAltitude
 	}
-	for ratifier, energy := range verifychain.Ratifiers {
-		origin.Ratifiers = append(origin.Ratifiers, kinds.OriginRatifier{
-			Label:    ratifier.Label,
-			Location: ratifier.PrivatekeyKey.PublicKey().Location(),
-			PublicKey:  ratifier.PrivatekeyKey.PublicKey(),
-			Energy:   energy,
+	for assessor, potency := range simnet.Assessors {
+		inauguration.Assessors = append(inauguration.Assessors, kinds.OriginAssessor{
+			Alias:    assessor.Alias,
+			Location: assessor.PrivatevalueToken.PublicToken().Location(),
+			PublicToken:  assessor.PrivatevalueToken.PublicToken(),
+			Potency:   potency,
 		})
 	}
 	//
 	//
-	sort.Slice(origin.Ratifiers, func(i, j int) bool {
-		return strings.Compare(origin.Ratifiers[i].Label, origin.Ratifiers[j].Label) == -1
+	sort.Slice(inauguration.Assessors, func(i, j int) bool {
+		return strings.Compare(inauguration.Assessors[i].Alias, inauguration.Assessors[j].Alias) == -1
 	})
-	if len(verifychain.PrimaryStatus) > 0 {
-		applicationStatus, err := json.Marshal(verifychain.PrimaryStatus)
+	if len(simnet.PrimaryStatus) > 0 {
+		applicationStatus, err := json.Marshal(simnet.PrimaryStatus)
 		if err != nil {
-			return origin, err
+			return inauguration, err
 		}
-		origin.ApplicationStatus = applicationStatus
+		inauguration.ApplicationStatus = applicationStatus
 	}
-	return origin, origin.CertifyAndFinished()
+	return inauguration, inauguration.CertifyAlsoFinish()
 }
 
 //
-func CreateSettings(member *e2e.Member) (*settings.Settings, error) {
-	cfg := settings.StandardSettings()
-	cfg.Moniker = member.Label
-	cfg.GatewayApplication = ApplicationLocationTCP
-	cfg.RPC.AcceptLocation = "REDACTED"
-	cfg.RPC.PprofAcceptLocation = "REDACTED"
-	cfg.P2P.OutsideLocation = fmt.Sprintf("REDACTED", member.LocationP2P(false))
-	cfg.P2P.AddressLedgerPrecise = false
-	cfg.StoreOrigin = member.Datastore
-	cfg.StatusAlign.DetectionTime = 5 * time.Second
-	cfg.LedgerAlign.Release = member.LedgerAlignRelease
-	cfg.Txpool.ExploratoryMaximumGossipLinkagesToNotDurableNodes = int(member.Verifychain.ExploratoryMaximumGossipLinkagesToNotDurableNodes)
-	cfg.Txpool.ExploratoryMaximumGossipLinkagesToDurableNodes = int(member.Verifychain.ExploratoryMaximumGossipLinkagesToDurableNodes)
+func CreateSettings(peer *e2e.Peer) (*settings.Settings, error) {
+	cfg := settings.FallbackSettings()
+	cfg.Pseudonym = peer.Alias
+	cfg.DelegateApplication = ApplicationLocatorTcpsocket
+	cfg.RPC.OverhearLocation = "REDACTED"
+	cfg.RPC.ProfilerOverhearLocation = "REDACTED"
+	cfg.P2P.OutsideLocation = fmt.Sprintf("REDACTED", peer.LocatorPeer2peer(false))
+	cfg.P2P.LocationRegisterPrecise = false
+	cfg.DatastoreRepository = peer.Repository
+	cfg.StatusChronize.ExplorationMoment = 5 * time.Second
+	cfg.LedgerChronize.Edition = peer.LedgerChronizeEdition
+	cfg.LedgerChronize.AggregateStyle = peer.LedgerChronizeAggregateStyle
+	cfg.Txpool.ExploratoryMaximumBroadcastLinkagesTowardUnEnduringNodes = int(peer.Simnet.ExploratoryMaximumBroadcastLinkagesTowardUnEnduringNodes)
+	cfg.Txpool.ExploratoryMaximumBroadcastLinkagesTowardEnduringNodes = int(peer.Simnet.ExploratoryMaximumBroadcastLinkagesTowardEnduringNodes)
 
-	switch member.TxpoolKind {
-	case settings.TxpoolKindOverflow, settings.TxpoolKindApplication, settings.TxpoolKindNoop:
-		cfg.Txpool.Kind = member.TxpoolKind
+	switch peer.TxpoolKind {
+	case settings.TxpoolKindOverflow, settings.TxpoolKindApplication, settings.TxpoolKindNooperation:
+		cfg.Txpool.Kind = peer.TxpoolKind
 	case "REDACTED":
 		cfg.Txpool.Kind = settings.TxpoolKindOverflow
 	default:
-		return nil, fmt.Errorf("REDACTED", member.TxpoolKind)
+		return nil, fmt.Errorf("REDACTED", peer.TxpoolKind)
 	}
 
-	switch member.IfaceProtocol {
-	case e2e.ProtocolUNIX:
-		cfg.GatewayApplication = ApplicationLocationUNIX
-	case e2e.ProtocolTCP:
-		cfg.GatewayApplication = ApplicationLocationTCP
-	case e2e.ProtocolGRPC:
-		cfg.GatewayApplication = ApplicationLocationTCP
+	switch peer.IfaceScheme {
+	case e2e.SchemePosix:
+		cfg.DelegateApplication = ApplicationLocatorPosix
+	case e2e.SchemeTcpsocket:
+		cfg.DelegateApplication = ApplicationLocatorTcpsocket
+	case e2e.SchemeGRPS:
+		cfg.DelegateApplication = ApplicationLocatorTcpsocket
 		cfg.Iface = "REDACTED"
-	case e2e.ProtocolIntrinsic, e2e.ProtocolIntrinsicLinkAlign:
-		cfg.GatewayApplication = "REDACTED"
+	case e2e.SchemeIntrinsic, e2e.SchemeIntrinsicLinkChronize:
+		cfg.DelegateApplication = "REDACTED"
 		cfg.Iface = "REDACTED"
 	default:
-		return nil, fmt.Errorf("REDACTED", member.IfaceProtocol)
+		return nil, fmt.Errorf("REDACTED", peer.IfaceScheme)
 	}
 
 	//
 	//
 	//
 	//
-	cfg.PrivateRatifierAcceptAddress = "REDACTED"
-	cfg.PrivateRatifierKey = PrivatekeyMockKeyEntry
-	cfg.PrivateRatifierStatus = PrivatekeyMockStatusEntry
+	cfg.PrivateAssessorOverhearLocation = "REDACTED"
+	cfg.PrivateAssessorToken = PrivatevaluePlaceholderTokenRecord
+	cfg.PrivateAssessorStatus = PrivatevaluePlaceholderStatusRecord
 
-	switch member.Style {
-	case e2e.StyleRatifier:
-		switch member.PrivatekeyProtocol {
-		case e2e.ProtocolEntry:
-			cfg.PrivateRatifierKey = PrivatekeyKeyEntry
-			cfg.PrivateRatifierStatus = PrivatekeyStatusEntry
-		case e2e.ProtocolUNIX:
-			cfg.PrivateRatifierAcceptAddress = PrivatekeyLocationUNIX
-		case e2e.ProtocolTCP:
-			cfg.PrivateRatifierAcceptAddress = PrivatekeyLocationTCP
+	switch peer.Style {
+	case e2e.StyleAssessor:
+		switch peer.PrivatevalueScheme {
+		case e2e.SchemeRecord:
+			cfg.PrivateAssessorToken = PrivatevalueTokenRecord
+			cfg.PrivateAssessorStatus = PrivatevalueStatusRecord
+		case e2e.SchemePosix:
+			cfg.PrivateAssessorOverhearLocation = PrivatevalueLocatorPosix
+		case e2e.SchemeTcpsocket:
+			cfg.PrivateAssessorOverhearLocation = PrivatevalueLocatorTcpsocket
 		default:
-			return nil, fmt.Errorf("REDACTED", member.PrivatekeyProtocol)
+			return nil, fmt.Errorf("REDACTED", peer.PrivatevalueScheme)
 		}
-	case e2e.StyleOrigin:
+	case e2e.StyleGerm:
 		cfg.P2P.OriginStyle = true
-		cfg.P2P.PexHandler = true
-	case e2e.StyleComplete, e2e.StyleRapid:
+		cfg.P2P.PeerxHandler = true
+	case e2e.StyleComplete, e2e.StyleAgile:
 		//
 	default:
-		return nil, fmt.Errorf("REDACTED", member.Style)
+		return nil, fmt.Errorf("REDACTED", peer.Style)
 	}
 
-	if member.StatusAlign {
-		cfg.StatusAlign.Activate = true
-		cfg.StatusAlign.RPCHosts = []string{}
-		for _, node := range member.Verifychain.CatalogInstances() {
-			if node.Label == member.Label {
+	if peer.StatusChronize {
+		cfg.StatusChronize.Activate = true
+		cfg.StatusChronize.RemoteHosts = []string{}
+		for _, node := range peer.Simnet.RepositoryPeers() {
+			if node.Alias == peer.Alias {
 				continue
 			}
-			cfg.StatusAlign.RPCHosts = append(cfg.StatusAlign.RPCHosts, node.LocationRPC())
+			cfg.StatusChronize.RemoteHosts = append(cfg.StatusChronize.RemoteHosts, node.LocatorRemote())
 		}
-		if len(cfg.StatusAlign.RPCHosts) < 2 {
+		if len(cfg.StatusChronize.RemoteHosts) < 2 {
 			return nil, errors.New("REDACTED")
 		}
 	}
 
 	cfg.P2P.Origins = "REDACTED"
-	for _, origin := range member.Origins {
+	for _, germ := range peer.Origins {
 		if len(cfg.P2P.Origins) > 0 {
 			cfg.P2P.Origins += "REDACTED"
 		}
-		cfg.P2P.Origins += origin.LocationP2P(true)
+		cfg.P2P.Origins += germ.LocatorPeer2peer(true)
 	}
 
-	cfg.P2P.DurableNodes = "REDACTED"
-	for _, node := range member.DurableNodes {
-		if len(cfg.P2P.DurableNodes) > 0 {
-			cfg.P2P.DurableNodes += "REDACTED"
+	cfg.P2P.EnduringNodes = "REDACTED"
+	for _, node := range peer.EnduringNodes {
+		if len(cfg.P2P.EnduringNodes) > 0 {
+			cfg.P2P.EnduringNodes += "REDACTED"
 		}
-		cfg.P2P.DurableNodes += node.LocationP2P(true)
+		cfg.P2P.EnduringNodes += node.LocatorPeer2peer(true)
 	}
 
-	if member.EmployLibp2p {
-		tracer.Details("REDACTED", "REDACTED", member.Label)
+	if peer.UtilizeLibpeer2peer {
+		tracer.Details("REDACTED", "REDACTED", peer.Alias)
 
 		//
-		cfg.P2P.PexHandler = false
-		cfg.P2P.LibraryP2PSettings.Activated = true
+		cfg.P2P.PeerxHandler = false
+		cfg.P2P.LibraryPeer2peerSettings.Activated = true
 
-		onboardNodes, err := CreateLibp2pLocationLedger(member)
+		initiateNodes, err := CreateLibpeer2peerLocatorRegister(peer)
 		if err != nil {
 			return nil, fmt.Errorf("REDACTED", err)
 		}
 
-		cfg.P2P.LibraryP2PSettings.OnboardNodes = onboardNodes
+		cfg.P2P.LibraryPeer2peerSettings.InitiateNodes = initiateNodes
 	}
 
-	if member.Verifychain.TraceLayer != "REDACTED" {
-		cfg.TraceLayer = member.Verifychain.TraceLayer
+	if peer.Simnet.RecordStratum != "REDACTED" {
+		cfg.RecordStratum = peer.Simnet.RecordStratum
 	}
 
-	if member.Verifychain.TraceLayout != "REDACTED" {
-		cfg.TraceLayout = member.Verifychain.TraceLayout
+	if peer.Simnet.RecordLayout != "REDACTED" {
+		cfg.RecordLayout = peer.Simnet.RecordLayout
 	}
 
-	if member.Monitorstats {
-		cfg.Telemetry.Monitorstats = true
+	if peer.Titan {
+		cfg.Telemetry.Titan = true
 	}
 
 	return cfg, nil
 }
 
 //
-func CreateApplicationSettings(member *e2e.Member) ([]byte, error) {
+func CreateApplicationSettings(peer *e2e.Peer) ([]byte, error) {
 	cfg := map[string]any{
-		"REDACTED":                      member.Verifychain.Label,
+		"REDACTED":                      peer.Simnet.Alias,
 		"REDACTED":                           "REDACTED",
-		"REDACTED":                        ApplicationLocationUNIX,
-		"REDACTED":                          member.Style,
+		"REDACTED":                        ApplicationLocatorPosix,
+		"REDACTED":                          peer.Style,
 		"REDACTED":                      "REDACTED",
-		"REDACTED":              member.EndureCadence,
-		"REDACTED":             member.MirrorCadence,
-		"REDACTED":                 member.PreserveLedgers,
-		"REDACTED":                      member.PrivatekeyKey.Kind(),
-		"REDACTED":        member.Verifychain.ArrangeNominationDeferral,
-		"REDACTED":        member.Verifychain.HandleNominationDeferral,
-		"REDACTED":                member.Verifychain.InspectTransferDeferral,
-		"REDACTED":          member.Verifychain.BallotAdditionDeferral,
-		"REDACTED":          member.Verifychain.CompleteLedgerDeferral,
-		"REDACTED": member.Verifychain.BallotPluginsActivateLevel,
-		"REDACTED": member.Verifychain.BallotPluginsModifyLevel,
-		"REDACTED":           member.Verifychain.BallotAdditionVolume,
-		"REDACTED":              member.TxpoolKind == settings.TxpoolKindApplication,
+		"REDACTED":              peer.EndureDuration,
+		"REDACTED":             peer.ImageDuration,
+		"REDACTED":                 peer.PreserveLedgers,
+		"REDACTED":                      peer.PrivatevalueToken.Kind(),
+		"REDACTED":        peer.Simnet.ArrangeNominationDeferral,
+		"REDACTED":        peer.Simnet.HandleNominationDeferral,
+		"REDACTED":                peer.Simnet.InspectTransferDeferral,
+		"REDACTED":          peer.Simnet.BallotAdditionDeferral,
+		"REDACTED":          peer.Simnet.CulminateLedgerDeferral,
+		"REDACTED": peer.Simnet.BallotAdditionsActivateAltitude,
+		"REDACTED": peer.Simnet.BallotAdditionsReviseAltitude,
+		"REDACTED":           peer.Simnet.BallotAdditionExtent,
+		"REDACTED":              peer.TxpoolKind == settings.TxpoolKindApplication,
 	}
 
-	switch member.IfaceProtocol {
-	case e2e.ProtocolUNIX:
-		cfg["REDACTED"] = ApplicationLocationUNIX
-	case e2e.ProtocolTCP:
-		cfg["REDACTED"] = ApplicationLocationTCP
-	case e2e.ProtocolGRPC:
-		cfg["REDACTED"] = ApplicationLocationTCP
+	switch peer.IfaceScheme {
+	case e2e.SchemePosix:
+		cfg["REDACTED"] = ApplicationLocatorPosix
+	case e2e.SchemeTcpsocket:
+		cfg["REDACTED"] = ApplicationLocatorTcpsocket
+	case e2e.SchemeGRPS:
+		cfg["REDACTED"] = ApplicationLocatorTcpsocket
 		cfg["REDACTED"] = "REDACTED"
-	case e2e.ProtocolIntrinsic, e2e.ProtocolIntrinsicLinkAlign:
+	case e2e.SchemeIntrinsic, e2e.SchemeIntrinsicLinkChronize:
 		delete(cfg, "REDACTED")
-		cfg["REDACTED"] = string(member.IfaceProtocol)
+		cfg["REDACTED"] = string(peer.IfaceScheme)
 	default:
-		return nil, fmt.Errorf("REDACTED", member.IfaceProtocol)
+		return nil, fmt.Errorf("REDACTED", peer.IfaceScheme)
 	}
-	if member.Style == e2e.StyleRatifier {
-		switch member.PrivatekeyProtocol {
-		case e2e.ProtocolEntry:
-		case e2e.ProtocolTCP:
-			cfg["REDACTED"] = PrivatekeyLocationTCP
-			cfg["REDACTED"] = PrivatekeyKeyEntry
-			cfg["REDACTED"] = PrivatekeyStatusEntry
-		case e2e.ProtocolUNIX:
-			cfg["REDACTED"] = PrivatekeyLocationUNIX
-			cfg["REDACTED"] = PrivatekeyKeyEntry
-			cfg["REDACTED"] = PrivatekeyStatusEntry
+	if peer.Style == e2e.StyleAssessor {
+		switch peer.PrivatevalueScheme {
+		case e2e.SchemeRecord:
+		case e2e.SchemeTcpsocket:
+			cfg["REDACTED"] = PrivatevalueLocatorTcpsocket
+			cfg["REDACTED"] = PrivatevalueTokenRecord
+			cfg["REDACTED"] = PrivatevalueStatusRecord
+		case e2e.SchemePosix:
+			cfg["REDACTED"] = PrivatevalueLocatorPosix
+			cfg["REDACTED"] = PrivatevalueTokenRecord
+			cfg["REDACTED"] = PrivatevalueStatusRecord
 		default:
-			return nil, fmt.Errorf("REDACTED", member.PrivatekeyProtocol)
+			return nil, fmt.Errorf("REDACTED", peer.PrivatevalueScheme)
 		}
 	}
 
-	if len(member.Verifychain.RatifierRefreshes) > 0 {
-		ratifierRefreshes := map[string]map[string]int64{}
-		for level, ratifiers := range member.Verifychain.RatifierRefreshes {
-			modifyValues := map[string]int64{}
-			for member, energy := range ratifiers {
-				modifyValues[base64.StdEncoding.EncodeToString(member.PrivatekeyKey.PublicKey().Octets())] = energy
+	if len(peer.Simnet.AssessorRevisions) > 0 {
+		assessorRevisions := map[string]map[string]int64{}
+		for altitude, assessors := range peer.Simnet.AssessorRevisions {
+			reviseValues := map[string]int64{}
+			for peer, potency := range assessors {
+				reviseValues[base64.StdEncoding.EncodeToString(peer.PrivatevalueToken.PublicToken().Octets())] = potency
 			}
-			ratifierRefreshes[fmt.Sprintf("REDACTED", level)] = modifyValues
+			assessorRevisions[fmt.Sprintf("REDACTED", altitude)] = reviseValues
 		}
-		cfg["REDACTED"] = ratifierRefreshes
+		cfg["REDACTED"] = assessorRevisions
 	}
 
 	var buf bytes.Buffer
@@ -370,51 +371,51 @@ func CreateApplicationSettings(member *e2e.Member) ([]byte, error) {
 }
 
 //
-func CreateLibp2pLocationLedger(member *e2e.Member) ([]settings.LibraryP2POnboardNode, error) {
+func CreateLibpeer2peerLocatorRegister(peer *e2e.Peer) ([]settings.LibraryPeer2peerInitiateNode, error) {
 	var (
-		nodes = []settings.LibraryP2POnboardNode{}
-		repository = make(map[string]struct{})
+		nodes = []settings.LibraryPeer2peerInitiateNode{}
+		stash = make(map[string]struct{})
 	)
 
-	for _, node := range append(member.Origins, member.DurableNodes...) {
+	for _, node := range append(peer.Origins, peer.EnduringNodes...) {
 		//
-		if _, ok := repository[node.Label]; ok {
+		if _, ok := stash[node.Alias]; ok {
 			continue
 		}
 
-		nodeUID, err := netpeer.UIDFromPrivateKey(node.MemberKey)
+		nodeUUID, err := netp2p.UUIDOriginatingSecludedToken(node.PeerToken)
 		if err != nil {
-			return nil, fmt.Errorf("REDACTED", node.Label, err)
+			return nil, fmt.Errorf("REDACTED", node.Alias, err)
 		}
 
 		//
 		//
 		const (
-			localhost = "REDACTED"
-			cometPort = 26656
+			localmachine = "REDACTED"
+			strongChannel = 26656
 		)
 
 		//
-		ip := node.OutsideIP.String()
-		if ip == localhost && member.IntrinsicIP.String() != localhost {
-			ip = node.IntrinsicIP.String()
+		ip := node.OutsideINET.String()
+		if ip == localmachine && peer.IntrinsicINET.String() != localmachine {
+			ip = node.IntrinsicINET.String()
 		}
 
-		nodes = append(nodes, settings.LibraryP2POnboardNode{
-			Machine:       fmt.Sprintf("REDACTED", ip, cometPort),
-			ID:         nodeUID.String(),
-			Durable: isDurable(member, node),
+		nodes = append(nodes, settings.LibraryPeer2peerInitiateNode{
+			Machine:       fmt.Sprintf("REDACTED", ip, strongChannel),
+			ID:         nodeUUID.String(),
+			Enduring: equalsEnduring(peer, node),
 		})
 
-		repository[node.Label] = struct{}{}
+		stash[node.Alias] = struct{}{}
 	}
 
 	return nodes, nil
 }
 
 //
-func ModifySettingsStatusAlign(member *e2e.Member, level int64, digest []byte) error {
-	configRoute := filepath.Join(member.Verifychain.Dir, member.Label, "REDACTED", "REDACTED")
+func ReviseSettingsStatusChronize(peer *e2e.Peer, altitude int64, digest []byte) error {
+	configRoute := filepath.Join(peer.Simnet.Dir, peer.Alias, "REDACTED", "REDACTED")
 
 	//
 	//
@@ -422,14 +423,14 @@ func ModifySettingsStatusAlign(member *e2e.Member, level int64, digest []byte) e
 	if err != nil {
 		return err
 	}
-	bz = regexp.MustCompile("REDACTED").ReplaceAll(bz, []byte(fmt.Sprintf("REDACTED", level)))
+	bz = regexp.MustCompile("REDACTED").ReplaceAll(bz, []byte(fmt.Sprintf("REDACTED", altitude)))
 	bz = regexp.MustCompile("REDACTED").ReplaceAll(bz, []byte(fmt.Sprintf("REDACTED", digest)))
 	return os.WriteFile(configRoute, bz, 0o644) //
 }
 
-func isDurable(machine, node *e2e.Member) bool {
-	for _, pp := range machine.DurableNodes {
-		if pp.Label == node.Label {
+func equalsEnduring(machine, node *e2e.Peer) bool {
+	for _, pp := range machine.EnduringNodes {
+		if pp.Alias == node.Alias {
 			return true
 		}
 	}

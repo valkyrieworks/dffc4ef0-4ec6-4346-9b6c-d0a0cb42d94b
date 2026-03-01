@@ -6,8 +6,8 @@ import (
 	"fmt"
 	"time"
 
-	"github.com/valkyrieworks/rapid"
-	"github.com/valkyrieworks/kinds"
+	"github.com/valkyrieworks/dffc4ef0-4ec6-4346-9b6c-d0a0cb42d94b/agile"
+	"github.com/valkyrieworks/dffc4ef0-4ec6-4346-9b6c-d0a0cb42d94b/kinds"
 )
 
 //
@@ -16,78 +16,78 @@ import (
 //
 //
 //
-func (eventpool *Depository) validate(proof kinds.Proof) error {
+func (incidentpool *Hub) validate(proof kinds.Proof) error {
 	var (
-		status          = eventpool.Status()
-		level         = status.FinalLedgerLevel
-		proofOptions = status.AgreementOptions.Proof
+		status          = incidentpool.Status()
+		altitude         = status.FinalLedgerAltitude
+		proofParameters = status.AgreementSettings.Proof
 	)
 
 	//
-	ledgerMeta := eventpool.ledgerDepot.ImportLedgerMeta(proof.Level())
-	if ledgerMeta == nil {
-		return fmt.Errorf("REDACTED", proof.Level())
+	ledgerSummary := incidentpool.ledgerDepot.FetchLedgerSummary(proof.Altitude())
+	if ledgerSummary == nil {
+		return fmt.Errorf("REDACTED", proof.Altitude())
 	}
-	evtTime := ledgerMeta.Heading.Time
-	if proof.Time() != evtTime {
+	occurenceMoment := ledgerSummary.Heading.Moment
+	if proof.Moment() != occurenceMoment {
 		return fmt.Errorf("REDACTED",
-			proof.Time(), evtTime)
+			proof.Moment(), occurenceMoment)
 	}
 
 	//
-	if IsProofLapsed(level, status.FinalLedgerTime, proof.Level(), evtTime, proofOptions) {
+	if EqualsProofLapsed(altitude, status.FinalLedgerMoment, proof.Altitude(), occurenceMoment, proofParameters) {
 		return fmt.Errorf(
 			"REDACTED",
-			proof.Level(),
-			evtTime,
-			level-proofOptions.MaximumDurationCountLedgers,
-			status.FinalLedgerTime.Add(proofOptions.MaximumDurationPeriod),
+			proof.Altitude(),
+			occurenceMoment,
+			altitude-proofParameters.MaximumLifespanCountLedgers,
+			status.FinalLedgerMoment.Add(proofParameters.MaximumLifespanInterval),
 		)
 	}
 
 	//
 	switch ev := proof.(type) {
 	case *kinds.ReplicatedBallotProof:
-		valueCollection, err := eventpool.statusStore.ImportRatifiers(proof.Level())
+		itemAssign, err := incidentpool.statusDatastore.FetchAssessors(proof.Altitude())
 		if err != nil {
 			return err
 		}
-		return ValidateReplicatedBallot(ev, status.LedgerUID, valueCollection)
+		return ValidateReplicatedBallot(ev, status.SuccessionUUID, itemAssign)
 
-	case *kinds.RapidCustomerAssaultProof:
-		sharedHeading, err := fetchAttestedHeading(eventpool.ledgerDepot, proof.Level())
+	case *kinds.AgileCustomerOnslaughtProof:
+		sharedHeadline, err := obtainNotatedHeadline(incidentpool.ledgerDepot, proof.Altitude())
 		if err != nil {
 			return err
 		}
-		sharedValues, err := eventpool.statusStore.ImportRatifiers(proof.Level())
+		sharedValues, err := incidentpool.statusDatastore.FetchAssessors(proof.Altitude())
 		if err != nil {
 			return err
 		}
-		validatedHeading := sharedHeading
+		reliableHeading := sharedHeadline
 		//
-		if proof.Level() != ev.ClashingLedger.Level {
-			validatedHeading, err = fetchAttestedHeading(eventpool.ledgerDepot, ev.ClashingLedger.Level)
+		if proof.Altitude() != ev.DiscordantLedger.Altitude {
+			reliableHeading, err = obtainNotatedHeadline(incidentpool.ledgerDepot, ev.DiscordantLedger.Altitude)
 			if err != nil {
 				//
 				//
 
 				//
 				//
-				newestLevel := eventpool.ledgerDepot.Level()
-				validatedHeading, err = fetchAttestedHeading(eventpool.ledgerDepot, newestLevel)
+				newestAltitude := incidentpool.ledgerDepot.Altitude()
+				reliableHeading, err = obtainNotatedHeadline(incidentpool.ledgerDepot, newestAltitude)
 				if err != nil {
 					return err
 				}
-				if validatedHeading.Time.Before(ev.ClashingLedger.Time) {
+				if reliableHeading.Moment.Before(ev.DiscordantLedger.Moment) {
 					return fmt.Errorf("REDACTED",
-						validatedHeading.Time, ev.ClashingLedger.Time,
+						reliableHeading.Moment, ev.DiscordantLedger.Moment,
 					)
 				}
 			}
 		}
 
-		err = ValidateRapidCustomerAssault(ev, sharedHeading, validatedHeading, sharedValues, status.FinalLedgerTime,
-			status.AgreementOptions.Proof.MaximumDurationPeriod)
+		err = ValidateAgileCustomerOnslaught(ev, sharedHeadline, reliableHeading, sharedValues, status.FinalLedgerMoment,
+			status.AgreementSettings.Proof.MaximumLifespanInterval)
 		if err != nil {
 			return err
 		}
@@ -108,55 +108,55 @@ func (eventpool *Depository) validate(proof kinds.Proof) error {
 //
 //
 //
-func ValidateRapidCustomerAssault(
-	e *kinds.RapidCustomerAssaultProof,
-	sharedHeading, validatedHeading *kinds.AttestedHeading,
-	sharedValues *kinds.RatifierAssign,
+func ValidateAgileCustomerOnslaught(
+	e *kinds.AgileCustomerOnslaughtProof,
+	sharedHeadline, reliableHeading *kinds.NotatedHeading,
+	sharedValues *kinds.AssessorAssign,
 	now time.Time, //
-	relianceDuration time.Duration, //
+	relianceCycle time.Duration, //
 ) error {
 	//
 	//
 
 	//
 	//
-	if sharedHeading.Level != e.ClashingLedger.Level {
-		err := sharedValues.ValidateEndorseRapidValidatingAllEndorsements(validatedHeading.LedgerUID, e.ClashingLedger.Endorse, rapid.StandardRelianceLayer)
+	if sharedHeadline.Altitude != e.DiscordantLedger.Altitude {
+		err := sharedValues.ValidateEndorseAgileRelyingEveryNotations(reliableHeading.SuccessionUUID, e.DiscordantLedger.Endorse, agile.FallbackRelianceStratum)
 		if err != nil {
 			return fmt.Errorf("REDACTED", err)
 		}
 
 		//
-	} else if e.ClashingHeadingIsCorrupt(validatedHeading.Heading) {
+	} else if e.DiscordantHeadingEqualsUnfit(reliableHeading.Heading) {
 		return errors.New("REDACTED" +
 			"REDACTED")
 	}
 
 	//
-	if err := e.ClashingLedger.RatifierAssign.ValidateEndorseRapidAllEndorsements(validatedHeading.LedgerUID, e.ClashingLedger.Endorse.LedgerUID,
-		e.ClashingLedger.Level, e.ClashingLedger.Endorse); err != nil {
+	if err := e.DiscordantLedger.AssessorAssign.ValidateEndorseAgileEveryNotations(reliableHeading.SuccessionUUID, e.DiscordantLedger.Endorse.LedgerUUID,
+		e.DiscordantLedger.Altitude, e.DiscordantLedger.Endorse); err != nil {
 		return fmt.Errorf("REDACTED", err)
 	}
 
 	//
-	if evtSum, valuesSum := e.SumPollingEnergy, sharedValues.SumPollingEnergy(); evtSum != valuesSum {
+	if occurenceSum, valuesSum := e.SumBallotingPotency, sharedValues.SumBallotingPotency(); occurenceSum != valuesSum {
 		return fmt.Errorf("REDACTED",
-			evtSum, valuesSum)
+			occurenceSum, valuesSum)
 	}
 
 	//
-	if e.ClashingLedger.Level > validatedHeading.Level && e.ClashingLedger.Time.After(validatedHeading.Time) {
+	if e.DiscordantLedger.Altitude > reliableHeading.Altitude && e.DiscordantLedger.Moment.After(reliableHeading.Moment) {
 		return fmt.Errorf("REDACTED",
-			e.ClashingLedger.Time, validatedHeading.Time,
+			e.DiscordantLedger.Moment, reliableHeading.Moment,
 		)
 
 		//
-	} else if bytes.Equal(validatedHeading.Digest(), e.ClashingLedger.Digest()) {
+	} else if bytes.Equal(reliableHeading.Digest(), e.DiscordantLedger.Digest()) {
 		return fmt.Errorf("REDACTED",
-			validatedHeading.Digest())
+			reliableHeading.Digest())
 	}
 
-	return certifyIfaceProof(e, sharedValues, validatedHeading)
+	return certifyIfaceProof(e, sharedValues, reliableHeading)
 }
 
 //
@@ -165,63 +165,63 @@ func ValidateRapidCustomerAssault(
 //
 //
 //
-func ValidateReplicatedBallot(e *kinds.ReplicatedBallotProof, ledgerUID string, valueCollection *kinds.RatifierAssign) error {
-	_, val := valueCollection.FetchByLocation(e.BallotA.RatifierLocation)
+func ValidateReplicatedBallot(e *kinds.ReplicatedBallotProof, successionUUID string, itemAssign *kinds.AssessorAssign) error {
+	_, val := itemAssign.ObtainViaLocation(e.BallotAN.AssessorLocation)
 	if val == nil {
-		return fmt.Errorf("REDACTED", e.BallotA.RatifierLocation, e.Level())
+		return fmt.Errorf("REDACTED", e.BallotAN.AssessorLocation, e.Altitude())
 	}
-	publicKey := val.PublicKey
+	publicToken := val.PublicToken
 
 	//
-	if e.BallotA.Level != e.BallotBYTE.Level ||
-		e.BallotA.Cycle != e.BallotBYTE.Cycle ||
-		e.BallotA.Kind != e.BallotBYTE.Kind {
+	if e.BallotAN.Altitude != e.BallotBYTE.Altitude ||
+		e.BallotAN.Iteration != e.BallotBYTE.Iteration ||
+		e.BallotAN.Kind != e.BallotBYTE.Kind {
 		return fmt.Errorf("REDACTED",
-			e.BallotA.Level, e.BallotA.Cycle, e.BallotA.Kind,
-			e.BallotBYTE.Level, e.BallotBYTE.Cycle, e.BallotBYTE.Kind)
+			e.BallotAN.Altitude, e.BallotAN.Iteration, e.BallotAN.Kind,
+			e.BallotBYTE.Altitude, e.BallotBYTE.Iteration, e.BallotBYTE.Kind)
 	}
 
 	//
-	if !bytes.Equal(e.BallotA.RatifierLocation, e.BallotBYTE.RatifierLocation) {
+	if !bytes.Equal(e.BallotAN.AssessorLocation, e.BallotBYTE.AssessorLocation) {
 		return fmt.Errorf("REDACTED",
-			e.BallotA.RatifierLocation,
-			e.BallotBYTE.RatifierLocation,
+			e.BallotAN.AssessorLocation,
+			e.BallotBYTE.AssessorLocation,
 		)
 	}
 
 	//
-	if e.BallotA.LedgerUID.Matches(e.BallotBYTE.LedgerUID) {
+	if e.BallotAN.LedgerUUID.Matches(e.BallotBYTE.LedgerUUID) {
 		return fmt.Errorf(
 			"REDACTED",
-			e.BallotA.LedgerUID,
+			e.BallotAN.LedgerUUID,
 		)
 	}
 
 	//
-	address := e.BallotA.RatifierLocation
-	if !bytes.Equal(publicKey.Location(), address) {
+	location := e.BallotAN.AssessorLocation
+	if !bytes.Equal(publicToken.Location(), location) {
 		return fmt.Errorf("REDACTED",
-			address, publicKey, publicKey.Location())
+			location, publicToken, publicToken.Location())
 	}
 
 	//
-	if val.PollingEnergy != e.RatifierEnergy {
+	if val.BallotingPotency != e.AssessorPotency {
 		return fmt.Errorf("REDACTED",
-			e.RatifierEnergy, val.PollingEnergy)
+			e.AssessorPotency, val.BallotingPotency)
 	}
-	if valueCollection.SumPollingEnergy() != e.SumPollingEnergy {
+	if itemAssign.SumBallotingPotency() != e.SumBallotingPotency {
 		return fmt.Errorf("REDACTED",
-			e.SumPollingEnergy, valueCollection.SumPollingEnergy())
+			e.SumBallotingPotency, itemAssign.SumBallotingPotency())
 	}
 
-	va := e.BallotA.ToSchema()
-	vb := e.BallotBYTE.ToSchema()
+	va := e.BallotAN.TowardSchema()
+	vb := e.BallotBYTE.TowardSchema()
 	//
-	if !publicKey.ValidateAutograph(kinds.BallotAttestOctets(ledgerUID, va), e.BallotA.Autograph) {
-		return fmt.Errorf("REDACTED", kinds.ErrBallotCorruptAutograph)
+	if !publicToken.ValidateNotation(kinds.BallotAttestOctets(successionUUID, va), e.BallotAN.Notation) {
+		return fmt.Errorf("REDACTED", kinds.FaultBallotUnfitSigning)
 	}
-	if !publicKey.ValidateAutograph(kinds.BallotAttestOctets(ledgerUID, vb), e.BallotBYTE.Autograph) {
-		return fmt.Errorf("REDACTED", kinds.ErrBallotCorruptAutograph)
+	if !publicToken.ValidateNotation(kinds.BallotAttestOctets(successionUUID, vb), e.BallotBYTE.Notation) {
+		return fmt.Errorf("REDACTED", kinds.FaultBallotUnfitSigning)
 	}
 
 	return nil
@@ -230,45 +230,59 @@ func ValidateReplicatedBallot(e *kinds.ReplicatedBallotProof, ledgerUID string, 
 //
 //
 func certifyIfaceProof(
-	ev *kinds.RapidCustomerAssaultProof,
-	sharedValues *kinds.RatifierAssign,
-	validatedHeading *kinds.AttestedHeading,
+	ev *kinds.AgileCustomerOnslaughtProof,
+	sharedValues *kinds.AssessorAssign,
+	reliableHeading *kinds.NotatedHeading,
 ) error {
-	if evtSum, valuesSum := ev.SumPollingEnergy, sharedValues.SumPollingEnergy(); evtSum != valuesSum {
+	if occurenceSum, valuesSum := ev.SumBallotingPotency, sharedValues.SumBallotingPotency(); occurenceSum != valuesSum {
 		return fmt.Errorf("REDACTED",
-			evtSum, valuesSum)
+			occurenceSum, valuesSum)
 	}
 
 	//
 	//
 	//
-	ratifiers := ev.FetchFaultyRatifiers(sharedValues, validatedHeading)
+	assessors := ev.ObtainTreacherousAssessors(sharedValues, reliableHeading)
 
 	//
 	//
-	if ratifiers == nil && ev.FaultyRatifiers != nil {
+	if assessors == nil && ev.TreacherousAssessors != nil {
 		return fmt.Errorf(
 			"REDACTED",
-			len(ev.FaultyRatifiers),
+			len(ev.TreacherousAssessors),
 		)
 	}
 
-	if exp, got := len(ratifiers), len(ev.FaultyRatifiers); exp != got {
+	if exp, got := len(assessors), len(ev.TreacherousAssessors); exp != got {
 		return fmt.Errorf("REDACTED", exp, got)
 	}
 
-	for idx, val := range ratifiers {
-		if !bytes.Equal(ev.FaultyRatifiers[idx].Location, val.Location) {
+	for idx, val := range assessors {
+		occurenceByzantine := ev.TreacherousAssessors[idx]
+		if !bytes.Equal(occurenceByzantine.Location, val.Location) {
 			return fmt.Errorf(
 				"REDACTED",
-				val.Location, ev.FaultyRatifiers[idx].Location,
+				val.Location, occurenceByzantine.Location,
 			)
 		}
 
-		if ev.FaultyRatifiers[idx].PollingEnergy != val.PollingEnergy {
+		if occurenceByzantine.BallotingPotency != val.BallotingPotency {
 			return fmt.Errorf(
 				"REDACTED",
-				val.PollingEnergy, ev.FaultyRatifiers[idx].PollingEnergy,
+				val.BallotingPotency, occurenceByzantine.BallotingPotency,
+			)
+		}
+
+		//
+		//
+		//
+		if occurenceByzantine.PublicToken == nil {
+			return fmt.Errorf("REDACTED", idx)
+		}
+		if !bytes.Equal(occurenceByzantine.Location, occurenceByzantine.PublicToken.Location()) {
+			return fmt.Errorf(
+				"REDACTED",
+				idx, occurenceByzantine.Location, occurenceByzantine.PublicToken.Location(),
 			)
 		}
 	}
@@ -276,27 +290,27 @@ func certifyIfaceProof(
 	return nil
 }
 
-func fetchAttestedHeading(ledgerDepot LedgerDepot, level int64) (*kinds.AttestedHeading, error) {
-	ledgerMeta := ledgerDepot.ImportLedgerMeta(level)
-	if ledgerMeta == nil {
-		return nil, fmt.Errorf("REDACTED", level)
+func obtainNotatedHeadline(ledgerDepot LedgerDepot, altitude int64) (*kinds.NotatedHeading, error) {
+	ledgerSummary := ledgerDepot.FetchLedgerSummary(altitude)
+	if ledgerSummary == nil {
+		return nil, fmt.Errorf("REDACTED", altitude)
 	}
-	endorse := ledgerDepot.ImportLedgerEndorse(level)
+	endorse := ledgerDepot.FetchLedgerEndorse(altitude)
 	if endorse == nil {
-		return nil, fmt.Errorf("REDACTED", level)
+		return nil, fmt.Errorf("REDACTED", altitude)
 	}
-	return &kinds.AttestedHeading{
-		Heading: &ledgerMeta.Heading,
+	return &kinds.NotatedHeading{
+		Heading: &ledgerSummary.Heading,
 		Endorse: endorse,
 	}, nil
 }
 
 //
-func IsProofLapsed(levelPresent int64, timePresent time.Time, levelEvt int64, timeEvt time.Time, proofOptions kinds.ProofOptions) bool {
-	eraPeriod := timePresent.Sub(timeEvt)
-	eraCountLedgers := levelPresent - levelEvt
+func EqualsProofLapsed(altitudePresent int64, momentPresent time.Time, altitudeOccurence int64, momentOccurence time.Time, proofParameters kinds.ProofParameters) bool {
+	lifespanInterval := momentPresent.Sub(momentOccurence)
+	lifespanCountLedgers := altitudePresent - altitudeOccurence
 
-	if eraPeriod > proofOptions.MaximumDurationPeriod && eraCountLedgers > proofOptions.MaximumDurationCountLedgers {
+	if lifespanInterval > proofParameters.MaximumLifespanInterval && lifespanCountLedgers > proofParameters.MaximumLifespanCountLedgers {
 		return true
 	}
 	return false

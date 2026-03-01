@@ -6,93 +6,93 @@ import (
 )
 
 type (
-	ErrCorruptLedger error
-	ErrGatewayApplicationLink error
+	FaultUnfitLedger error
+	FaultDelegateApplicationLink error
 
-	ErrUnclearLedger struct {
-		Level int64
+	FaultUnfamiliarLedger struct {
+		Altitude int64
 	}
 
-	ErrLedgerDigestDiscrepancy struct {
-		CoreDigest []byte
-		ApplicationDigest  []byte
-		Level   int64
+	FaultLedgerDigestDiscrepancy struct {
+		BaseDigest []byte
+		PlatformDigest  []byte
+		Altitude   int64
 	}
 
-	ErrApplicationLedgerLevelTooSuperior struct {
-		CoreLevel int64
-		ApplicationLevel  int64
+	FaultApplicationLedgerAltitudeExcessivelySuperior struct {
+		BaseAltitude int64
+		ApplicationAltitude  int64
 	}
 
-	ErrApplicationLedgerLevelTooInferior struct {
-		ApplicationLevel int64
-		DepotRoot int64
+	FaultApplicationLedgerAltitudeExcessivelyInferior struct {
+		ApplicationAltitude int64
+		DepotFoundation int64
 	}
 
-	ErrFinalStatusDiscrepancy struct {
-		Level int64
-		Core   []byte
+	FaultFinalStatusDiscrepancy struct {
+		Altitude int64
+		Base   []byte
 		App    []byte
 	}
 
-	ErrStatusDiscrepancy struct {
+	FaultStatusDiscrepancy struct {
 		Got      *Status
 		Anticipated *Status
 	}
 
-	ErrNoValueCollectionForLevel struct {
-		Level int64
+	FaultNegativeItemAssignForeachAltitude struct {
+		Altitude int64
 	}
 
-	ErrNoAgreementOptionsForLevel struct {
-		Level int64
+	FaultNegativeAgreementParametersForeachAltitude struct {
+		Altitude int64
 	}
 
-	ErrNoIfaceRepliesForLevel struct {
-		Level int64
+	FaultNegativeIfaceRepliesForeachAltitude struct {
+		Altitude int64
 	}
 
-	ErrIfaceReplyReplyUnserializeForLevel struct {
-		Level int64
+	FaultIfaceReplyReplyDecodeForeachAltitude struct {
+		Altitude int64
 	}
 
-	ErrIfaceReplyTaintedOrBlueprintAlterForLevel struct {
+	FaultIfaceReplyTaintedEitherBlueprintAlterationForeachAltitude struct {
 		Err    error
-		Level int64
+		Altitude int64
 	}
 )
 
-func (e ErrUnclearLedger) Fault() string {
-	return fmt.Sprintf("REDACTED", e.Level)
+func (e FaultUnfamiliarLedger) Failure() string {
+	return fmt.Sprintf("REDACTED", e.Altitude)
 }
 
-func (e ErrLedgerDigestDiscrepancy) Fault() string {
+func (e FaultLedgerDigestDiscrepancy) Failure() string {
 	return fmt.Sprintf(
 		"REDACTED",
-		e.ApplicationDigest,
-		e.CoreDigest,
-		e.Level,
+		e.PlatformDigest,
+		e.BaseDigest,
+		e.Altitude,
 	)
 }
 
-func (e ErrApplicationLedgerLevelTooSuperior) Fault() string {
-	return fmt.Sprintf("REDACTED", e.ApplicationLevel, e.CoreLevel)
+func (e FaultApplicationLedgerAltitudeExcessivelySuperior) Failure() string {
+	return fmt.Sprintf("REDACTED", e.ApplicationAltitude, e.BaseAltitude)
 }
 
-func (e ErrApplicationLedgerLevelTooInferior) Fault() string {
-	return fmt.Sprintf("REDACTED", e.ApplicationLevel, e.DepotRoot)
+func (e FaultApplicationLedgerAltitudeExcessivelyInferior) Failure() string {
+	return fmt.Sprintf("REDACTED", e.ApplicationAltitude, e.DepotFoundation)
 }
 
-func (e ErrFinalStatusDiscrepancy) Fault() string {
+func (e FaultFinalStatusDiscrepancy) Failure() string {
 	return fmt.Sprintf(
 		"REDACTED",
-		e.Level,
-		e.Core,
+		e.Altitude,
+		e.Base,
 		e.App,
 	)
 }
 
-func (e ErrStatusDiscrepancy) Fault() string {
+func (e FaultStatusDiscrepancy) Failure() string {
 	return fmt.Sprintf(
 		"REDACTED",
 		e.Got,
@@ -100,28 +100,28 @@ func (e ErrStatusDiscrepancy) Fault() string {
 	)
 }
 
-func (e ErrNoValueCollectionForLevel) Fault() string {
-	return fmt.Sprintf("REDACTED", e.Level)
+func (e FaultNegativeItemAssignForeachAltitude) Failure() string {
+	return fmt.Sprintf("REDACTED", e.Altitude)
 }
 
-func (e ErrNoAgreementOptionsForLevel) Fault() string {
-	return fmt.Sprintf("REDACTED", e.Level)
+func (e FaultNegativeAgreementParametersForeachAltitude) Failure() string {
+	return fmt.Sprintf("REDACTED", e.Altitude)
 }
 
-func (e ErrNoIfaceRepliesForLevel) Fault() string {
-	return fmt.Sprintf("REDACTED", e.Level)
+func (e FaultNegativeIfaceRepliesForeachAltitude) Failure() string {
+	return fmt.Sprintf("REDACTED", e.Altitude)
 }
 
-func (e ErrIfaceReplyReplyUnserializeForLevel) Fault() string {
-	return fmt.Sprintf("REDACTED", e.Level)
+func (e FaultIfaceReplyReplyDecodeForeachAltitude) Failure() string {
+	return fmt.Sprintf("REDACTED", e.Altitude)
 }
 
-func (e ErrIfaceReplyTaintedOrBlueprintAlterForLevel) Fault() string {
-	return fmt.Sprintf("REDACTED", e.Level)
+func (e FaultIfaceReplyTaintedEitherBlueprintAlterationForeachAltitude) Failure() string {
+	return fmt.Sprintf("REDACTED", e.Altitude)
 }
 
-func (e ErrIfaceReplyTaintedOrBlueprintAlterForLevel) Disclose() error {
+func (e FaultIfaceReplyTaintedEitherBlueprintAlterationForeachAltitude) Disclose() error {
 	return e.Err
 }
 
-var ErrCompleteLedgerRepliesNotSustained = errors.New("REDACTED")
+var FaultCulminateLedgerRepliesNegationStored = errors.New("REDACTED")

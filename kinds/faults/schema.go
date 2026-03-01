@@ -4,28 +4,28 @@ import (
 	"fmt"
 )
 
-type ErrMessageToSchema struct {
-	SignalLabel string
+type FaultSignalTowardSchema struct {
+	SignalAlias string
 	Err         error
 }
 
-func (e ErrMessageToSchema) Fault() string {
-	return fmt.Sprintf("REDACTED", e.SignalLabel, e.Err.Error())
+func (e FaultSignalTowardSchema) Failure() string {
+	return fmt.Sprintf("REDACTED", e.SignalAlias, e.Err.Error())
 }
 
-func (e ErrMessageToSchema) Disclose() error {
+func (e FaultSignalTowardSchema) Disclose() error {
 	return e.Err
 }
 
-type ErrMessageFromSchema struct {
-	SignalLabel string
+type FaultSignalOriginatingSchema struct {
+	SignalAlias string
 	Err         error
 }
 
-func (e ErrMessageFromSchema) Fault() string {
-	return fmt.Sprintf("REDACTED", e.SignalLabel, e.Err.Error())
+func (e FaultSignalOriginatingSchema) Failure() string {
+	return fmt.Sprintf("REDACTED", e.SignalAlias, e.Err.Error())
 }
 
-func (e ErrMessageFromSchema) Disclose() error {
+func (e FaultSignalOriginatingSchema) Disclose() error {
 	return e.Err
 }

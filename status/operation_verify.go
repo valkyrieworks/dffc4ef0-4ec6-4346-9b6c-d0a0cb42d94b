@@ -10,50 +10,50 @@ import (
 	"github.com/stretchr/testify/mock"
 	"github.com/stretchr/testify/require"
 
-	dbm "github.com/valkyrieworks/-db"
+	dbm "github.com/valkyrieworks/dffc4ef0-4ec6-4346-9b6c-d0a0cb42d94b/-db"
 
-	ifaceclientmocks "github.com/valkyrieworks/iface/customer/simulations"
-	iface "github.com/valkyrieworks/iface/kinds"
-	abciemulators "github.com/valkyrieworks/iface/kinds/simulations"
-	"github.com/valkyrieworks/vault"
-	"github.com/valkyrieworks/vault/ed25519"
-	cryptocode "github.com/valkyrieworks/vault/codec"
-	"github.com/valkyrieworks/vault/comethash"
-	"github.com/valkyrieworks/intrinsic/verify"
-	"github.com/valkyrieworks/utils/log"
-	txpoolsims "github.com/valkyrieworks/txpool/simulations"
-	engineproto "github.com/valkyrieworks/schema/consensuscore/kinds"
-	cometrelease "github.com/valkyrieworks/schema/consensuscore/release"
-	"github.com/valkyrieworks/gateway"
-	omocks "github.com/valkyrieworks/gateway/simulations"
-	sm "github.com/valkyrieworks/status"
-	"github.com/valkyrieworks/status/simulations"
-	"github.com/valkyrieworks/depot"
-	"github.com/valkyrieworks/kinds"
-	engineclock "github.com/valkyrieworks/kinds/moment"
-	"github.com/valkyrieworks/release"
+	abcicustomerfakes "github.com/valkyrieworks/dffc4ef0-4ec6-4346-9b6c-d0a0cb42d94b/iface/customer/simulations"
+	iface "github.com/valkyrieworks/dffc4ef0-4ec6-4346-9b6c-d0a0cb42d94b/iface/kinds"
+	abcistubs "github.com/valkyrieworks/dffc4ef0-4ec6-4346-9b6c-d0a0cb42d94b/iface/kinds/simulations"
+	"github.com/valkyrieworks/dffc4ef0-4ec6-4346-9b6c-d0a0cb42d94b/security"
+	"github.com/valkyrieworks/dffc4ef0-4ec6-4346-9b6c-d0a0cb42d94b/security/edwards25519"
+	cryptocode "github.com/valkyrieworks/dffc4ef0-4ec6-4346-9b6c-d0a0cb42d94b/security/serialization"
+	"github.com/valkyrieworks/dffc4ef0-4ec6-4346-9b6c-d0a0cb42d94b/security/tenderminthash"
+	"github.com/valkyrieworks/dffc4ef0-4ec6-4346-9b6c-d0a0cb42d94b/intrinsic/verify"
+	"github.com/valkyrieworks/dffc4ef0-4ec6-4346-9b6c-d0a0cb42d94b/utils/log"
+	tpmocks "github.com/valkyrieworks/dffc4ef0-4ec6-4346-9b6c-d0a0cb42d94b/txpool/simulations"
+	commitchema "github.com/valkyrieworks/dffc4ef0-4ec6-4346-9b6c-d0a0cb42d94b/schema/strongmind/kinds"
+	strongmindedition "github.com/valkyrieworks/dffc4ef0-4ec6-4346-9b6c-d0a0cb42d94b/schema/strongmind/edition"
+	"github.com/valkyrieworks/dffc4ef0-4ec6-4346-9b6c-d0a0cb42d94b/delegate"
+	fakes "github.com/valkyrieworks/dffc4ef0-4ec6-4346-9b6c-d0a0cb42d94b/delegate/simulations"
+	sm "github.com/valkyrieworks/dffc4ef0-4ec6-4346-9b6c-d0a0cb42d94b/status"
+	"github.com/valkyrieworks/dffc4ef0-4ec6-4346-9b6c-d0a0cb42d94b/status/simulations"
+	"github.com/valkyrieworks/dffc4ef0-4ec6-4346-9b6c-d0a0cb42d94b/depot"
+	"github.com/valkyrieworks/dffc4ef0-4ec6-4346-9b6c-d0a0cb42d94b/kinds"
+	committime "github.com/valkyrieworks/dffc4ef0-4ec6-4346-9b6c-d0a0cb42d94b/kinds/moment"
+	"github.com/valkyrieworks/dffc4ef0-4ec6-4346-9b6c-d0a0cb42d94b/edition"
 )
 
 var (
-	ledgerUID             = "REDACTED"
-	verifySegmentVolume uint32 = kinds.LedgerSegmentVolumeOctets
+	successionUUID             = "REDACTED"
+	verifyFragmentExtent uint32 = kinds.LedgerFragmentExtentOctets
 )
 
 func VerifyExecuteLedger(t *testing.T) {
 	app := &verifyApplication{}
-	cc := gateway.NewNativeCustomerOriginator(app)
-	gatewayApplication := gateway.NewApplicationLinks(cc, gateway.NoopStats())
-	err := gatewayApplication.Begin()
+	cc := delegate.FreshRegionalCustomerOriginator(app)
+	delegatePlatform := delegate.FreshPlatformLinks(cc, delegate.NooperationTelemetry())
+	err := delegatePlatform.Initiate()
 	require.Nil(t, err)
-	defer gatewayApplication.Halt() //
+	defer delegatePlatform.Halt() //
 
-	status, statusStore, _ := createStatus(1, 1)
-	statusDepot := sm.NewDepot(statusStore, sm.DepotSettings{
-		DropIfaceReplies: false,
+	status, statusDatastore, _ := createStatus(1, 1)
+	statusDepot := sm.FreshDepot(statusDatastore, sm.DepotChoices{
+		EjectIfaceReplies: false,
 	})
-	ledgerDepot := depot.NewLedgerDepot(dbm.NewMemoryStore())
+	ledgerDepot := depot.FreshLedgerDepot(dbm.FreshMemoryDatastore())
 
-	mp := &txpoolsims.Txpool{}
+	mp := &tpmocks.Txpool{}
 	mp.On("REDACTED").Return()
 	mp.On("REDACTED").Return()
 	mp.On("REDACTED", mock.Anything).Return(nil)
@@ -64,44 +64,44 @@ func VerifyExecuteLedger(t *testing.T) {
 		mock.Anything,
 		mock.Anything,
 		mock.Anything).Return(nil)
-	ledgerExecute := sm.NewLedgerRunner(statusDepot, log.VerifyingTracer(), gatewayApplication.Agreement(),
-		mp, sm.EmptyProofDepository{}, ledgerDepot)
+	ledgerExecute := sm.FreshLedgerHandler(statusDepot, log.VerifyingTracer(), delegatePlatform.Agreement(),
+		mp, sm.VoidProofHub{}, ledgerDepot)
 
 	ledger, err := createLedger(status, 1, new(kinds.Endorse))
 	require.NoError(t, err)
-	bps, err := ledger.CreateSegmentAssign(verifySegmentVolume)
+	bps, err := ledger.CreateFragmentAssign(verifyFragmentExtent)
 	require.NoError(t, err)
-	ledgerUID := kinds.LedgerUID{Digest: ledger.Digest(), SegmentAssignHeading: bps.Heading()}
+	ledgerUUID := kinds.LedgerUUID{Digest: ledger.Digest(), FragmentAssignHeading: bps.Heading()}
 
-	status, err = ledgerExecute.ExecuteLedger(status, ledgerUID, ledger)
+	status, err = ledgerExecute.ExecuteLedger(status, ledgerUUID, ledger)
 	require.Nil(t, err)
 
 	//
-	assert.EqualValues(t, 1, status.Release.Agreement.App, "REDACTED")
+	assert.EqualValues(t, 1, status.Edition.Agreement.App, "REDACTED")
 }
 
 //
 //
 //
 //
-func VerifyCompleteLedgerResolvedFinalEndorse(t *testing.T) {
+func VerifyCulminateLedgerResolvedFinalEndorse(t *testing.T) {
 	app := &verifyApplication{}
-	rootTime := time.Now()
-	cc := gateway.NewNativeCustomerOriginator(app)
-	gatewayApplication := gateway.NewApplicationLinks(cc, gateway.NoopStats())
-	err := gatewayApplication.Begin()
+	foundationMoment := time.Now()
+	cc := delegate.FreshRegionalCustomerOriginator(app)
+	delegatePlatform := delegate.FreshPlatformLinks(cc, delegate.NooperationTelemetry())
+	err := delegatePlatform.Initiate()
 	require.NoError(t, err)
-	defer gatewayApplication.Halt() //
+	defer delegatePlatform.Halt() //
 
-	status, statusStore, privateValues := createStatus(7, 1)
-	statusDepot := sm.NewDepot(statusStore, sm.DepotSettings{
-		DropIfaceReplies: false,
+	status, statusDatastore, privateItems := createStatus(7, 1)
+	statusDepot := sm.FreshDepot(statusDatastore, sm.DepotChoices{
+		EjectIfaceReplies: false,
 	})
-	missingSignature := kinds.NewExpandedEndorseSignatureMissing()
+	missingSignature := kinds.FreshExpandedEndorseSignatureMissing()
 
 	verifyScenarios := []struct {
-		label             string
-		missingEndorseAutographs map[int]bool
+		alias             string
+		missingEndorseSignatures map[int]bool
 	}{
 		{"REDACTED", map[int]bool{}},
 		{"REDACTED", map[int]bool{1: true}},
@@ -109,13 +109,13 @@ func VerifyCompleteLedgerResolvedFinalEndorse(t *testing.T) {
 	}
 
 	for _, tc := range verifyScenarios {
-		t.Run(tc.label, func(t *testing.T) {
-			ledgerDepot := depot.NewLedgerDepot(dbm.NewMemoryStore())
-			eventpool := &simulations.ProofDepository{}
-			eventpool.On("REDACTED", mock.Anything).Return([]kinds.Proof{}, 0)
-			eventpool.On("REDACTED", mock.Anything, mock.Anything).Return()
-			eventpool.On("REDACTED", mock.Anything).Return(nil)
-			mp := &txpoolsims.Txpool{}
+		t.Run(tc.alias, func(t *testing.T) {
+			ledgerDepot := depot.FreshLedgerDepot(dbm.FreshMemoryDatastore())
+			incidentpool := &simulations.ProofHub{}
+			incidentpool.On("REDACTED", mock.Anything).Return([]kinds.Proof{}, 0)
+			incidentpool.On("REDACTED", mock.Anything, mock.Anything).Return()
+			incidentpool.On("REDACTED", mock.Anything).Return(nil)
+			mp := &tpmocks.Txpool{}
 			mp.On("REDACTED").Return()
 			mp.On("REDACTED").Return()
 			mp.On("REDACTED", mock.Anything).Return(nil)
@@ -128,87 +128,87 @@ func VerifyCompleteLedgerResolvedFinalEndorse(t *testing.T) {
 				mock.Anything,
 				mock.Anything).Return(nil)
 
-			eventBus := kinds.NewEventBus()
-			require.NoError(t, eventBus.Begin())
+			incidentPipeline := kinds.FreshIncidentPipeline()
+			require.NoError(t, incidentPipeline.Initiate())
 
-			ledgerExecute := sm.NewLedgerRunner(statusDepot, log.NewNoopTracer(), gatewayApplication.Agreement(), mp, eventpool, ledgerDepot)
-			status, _, finalEndorse, err := createAndEndorseValidLedger(status, 1, new(kinds.Endorse), status.FollowingRatifiers.Ratifiers[0].Location, ledgerExecute, privateValues, nil)
+			ledgerExecute := sm.FreshLedgerHandler(statusDepot, log.FreshNooperationTracer(), delegatePlatform.Agreement(), mp, incidentpool, ledgerDepot)
+			status, _, finalEndorse, err := createAlsoEndorseValidLedger(status, 1, new(kinds.Endorse), status.FollowingAssessors.Assessors[0].Location, ledgerExecute, privateItems, nil)
 			require.NoError(t, err)
 
-			for idx, isMissing := range tc.missingEndorseAutographs {
-				if isMissing {
-					finalEndorse.ExpandedEndorsements[idx] = missingSignature
+			for idx, equalsMissing := range tc.missingEndorseSignatures {
+				if equalsMissing {
+					finalEndorse.ExpandedNotations[idx] = missingSignature
 				}
 			}
 
 			//
-			ledger, err := createLedger(status, 2, finalEndorse.ToEndorse())
+			ledger, err := createLedger(status, 2, finalEndorse.TowardEndorse())
 			require.NoError(t, err)
-			bps, err := ledger.CreateSegmentAssign(verifySegmentVolume)
+			bps, err := ledger.CreateFragmentAssign(verifyFragmentExtent)
 			require.NoError(t, err)
-			ledgerUID := kinds.LedgerUID{Digest: ledger.Digest(), SegmentAssignHeading: bps.Heading()}
-			_, err = ledgerExecute.ExecuteLedger(status, ledgerUID, ledger)
+			ledgerUUID := kinds.LedgerUUID{Digest: ledger.Digest(), FragmentAssignHeading: bps.Heading()}
+			_, err = ledgerExecute.ExecuteLedger(status, ledgerUUID, ledger)
 			require.NoError(t, err)
-			require.True(t, app.FinalTime.After(rootTime))
+			require.True(t, app.FinalMoment.After(foundationMoment))
 
 			//
 			for i, v := range app.EndorseBallots {
-				_, missing := tc.missingEndorseAutographs[i]
-				assert.Equal(t, !missing, v.LedgerUidMark != engineproto.LedgerUIDMarkMissing)
+				_, missing := tc.missingEndorseSignatures[i]
+				assert.Equal(t, !missing, v.LedgerUuidMarker != commitchema.LedgerUUIDMarkerMissing)
 			}
 		})
 	}
 }
 
 //
-func VerifyCompleteLedgerRatifiers(t *testing.T) {
+func VerifyCulminateLedgerAssessors(t *testing.T) {
 	app := &verifyApplication{}
-	cc := gateway.NewNativeCustomerOriginator(app)
-	gatewayApplication := gateway.NewApplicationLinks(cc, gateway.NoopStats())
-	err := gatewayApplication.Begin()
+	cc := delegate.FreshRegionalCustomerOriginator(app)
+	delegatePlatform := delegate.FreshPlatformLinks(cc, delegate.NooperationTelemetry())
+	err := delegatePlatform.Initiate()
 	require.NoError(t, err)
-	defer gatewayApplication.Halt() //
+	defer delegatePlatform.Halt() //
 
-	status, statusStore, _ := createStatus(2, 2)
-	statusDepot := sm.NewDepot(statusStore, sm.DepotSettings{
-		DropIfaceReplies: false,
+	status, statusDatastore, _ := createStatus(2, 2)
+	statusDepot := sm.FreshDepot(statusDatastore, sm.DepotChoices{
+		EjectIfaceReplies: false,
 	})
 
-	previousDigest := status.FinalLedgerUID.Digest
-	previousSections := kinds.SegmentAssignHeading{}
-	previousLedgerUID := kinds.LedgerUID{Digest: previousDigest, SegmentAssignHeading: previousSections}
+	previousDigest := status.FinalLedgerUUID.Digest
+	previousFragments := kinds.FragmentAssignHeading{}
+	previousLedgerUUID := kinds.LedgerUUID{Digest: previousDigest, FragmentAssignHeading: previousFragments}
 
 	var (
-		now        = engineclock.Now()
+		now        = committime.Now()
 		endorseSignature0 = kinds.ExpandedEndorseSignature{
 			EndorseSignature: kinds.EndorseSignature{
-				LedgerUIDMark:      kinds.LedgerUIDMarkEndorse,
-				RatifierLocation: status.Ratifiers.Ratifiers[0].Location,
+				LedgerUUIDMarker:      kinds.LedgerUUIDMarkerEndorse,
+				AssessorLocation: status.Assessors.Assessors[0].Location,
 				Timestamp:        now,
-				Autograph:        []byte("REDACTED"),
+				Notation:        []byte("REDACTED"),
 			},
 			Addition:          []byte("REDACTED"),
-			AdditionAutograph: []byte("REDACTED"),
+			AdditionNotation: []byte("REDACTED"),
 		}
 
 		endorseSignature1 = kinds.ExpandedEndorseSignature{
 			EndorseSignature: kinds.EndorseSignature{
-				LedgerUIDMark:      kinds.LedgerUIDMarkEndorse,
-				RatifierLocation: status.Ratifiers.Ratifiers[1].Location,
+				LedgerUUIDMarker:      kinds.LedgerUUIDMarkerEndorse,
+				AssessorLocation: status.Assessors.Assessors[1].Location,
 				Timestamp:        now,
-				Autograph:        []byte("REDACTED"),
+				Notation:        []byte("REDACTED"),
 			},
 			Addition:          []byte("REDACTED"),
-			AdditionAutograph: []byte("REDACTED"),
+			AdditionNotation: []byte("REDACTED"),
 		}
-		missingSignature = kinds.NewExpandedEndorseSignatureMissing()
+		missingSignature = kinds.FreshExpandedEndorseSignatureMissing()
 	)
 
 	verifyScenarios := []struct {
-		note                     string
-		finalEndorseAutographs           []kinds.ExpandedEndorseSignature
-		anticipatedMissingRatifiers []int
-		mustPossessTime           bool
+		description                     string
+		finalEndorseSignatures           []kinds.ExpandedEndorseSignature
+		anticipatedMissingAssessors []int
+		mustPossessMoment           bool
 	}{
 		{"REDACTED", []kinds.ExpandedEndorseSignature{endorseSignature0, endorseSignature1}, []int{}, true},
 		{"REDACTED", []kinds.ExpandedEndorseSignature{endorseSignature0, missingSignature}, []int{1}, true},
@@ -217,123 +217,123 @@ func VerifyCompleteLedgerRatifiers(t *testing.T) {
 
 	for _, tc := range verifyScenarios {
 		finalEndorse := &kinds.ExpandedEndorse{
-			Level:             1,
-			LedgerUID:            previousLedgerUID,
-			ExpandedEndorsements: tc.finalEndorseAutographs,
+			Altitude:             1,
+			LedgerUUID:            previousLedgerUUID,
+			ExpandedNotations: tc.finalEndorseSignatures,
 		}
 
 		//
-		ledger, err := createLedger(status, 2, finalEndorse.ToEndorse())
+		ledger, err := createLedger(status, 2, finalEndorse.TowardEndorse())
 		require.NoError(t, err)
 
-		_, err = sm.InvokeEndorseLedger(gatewayApplication.Agreement(), ledger, log.VerifyingTracer(), statusDepot, 1)
-		require.NoError(t, err, tc.note)
+		_, err = sm.InvokeEndorseLedger(delegatePlatform.Agreement(), ledger, log.VerifyingTracer(), statusDepot, 1)
+		require.NoError(t, err, tc.description)
 		require.True(t,
-			!tc.mustPossessTime ||
-				app.FinalTime.Equal(now) || app.FinalTime.After(now),
-			"REDACTED", tc.note, app.FinalTime, now,
+			!tc.mustPossessMoment ||
+				app.FinalMoment.Equal(now) || app.FinalMoment.After(now),
+			"REDACTED", tc.description, app.FinalMoment, now,
 		)
 
 		//
 		ctr := 0
 		for i, v := range app.EndorseBallots {
-			if ctr < len(tc.anticipatedMissingRatifiers) &&
-				tc.anticipatedMissingRatifiers[ctr] == i {
+			if ctr < len(tc.anticipatedMissingAssessors) &&
+				tc.anticipatedMissingAssessors[ctr] == i {
 
-				assert.Equal(t, v.LedgerUidMark, engineproto.LedgerUIDMarkMissing)
+				assert.Equal(t, v.LedgerUuidMarker, commitchema.LedgerUUIDMarkerMissing)
 				ctr++
 			} else {
-				assert.NotEqual(t, v.LedgerUidMark, engineproto.LedgerUIDMarkMissing)
+				assert.NotEqual(t, v.LedgerUuidMarker, commitchema.LedgerUUIDMarkerMissing)
 			}
 		}
 	}
 }
 
 //
-func VerifyCompleteLedgerMalpractice(t *testing.T) {
+func VerifyCulminateLedgerMalpractice(t *testing.T) {
 	app := &verifyApplication{}
-	cc := gateway.NewNativeCustomerOriginator(app)
-	gatewayApplication := gateway.NewApplicationLinks(cc, gateway.NoopStats())
-	err := gatewayApplication.Begin()
+	cc := delegate.FreshRegionalCustomerOriginator(app)
+	delegatePlatform := delegate.FreshPlatformLinks(cc, delegate.NooperationTelemetry())
+	err := delegatePlatform.Initiate()
 	require.NoError(t, err)
-	defer gatewayApplication.Halt() //
+	defer delegatePlatform.Halt() //
 
-	status, statusStore, privateValues := createStatus(1, 1)
-	statusDepot := sm.NewDepot(statusStore, sm.DepotSettings{
-		DropIfaceReplies: false,
+	status, statusDatastore, privateItems := createStatus(1, 1)
+	statusDepot := sm.FreshDepot(statusDatastore, sm.DepotChoices{
+		EjectIfaceReplies: false,
 	})
 
-	standardProofTime := time.Date(2019, 1, 1, 0, 0, 0, 0, time.UTC)
-	privateValue := privateValues[status.Ratifiers.Ratifiers[0].Location.String()]
-	ledgerUID := createLedgerUID([]byte("REDACTED"), 1000, []byte("REDACTED"))
+	fallbackProofMoment := time.Date(2019, 1, 1, 0, 0, 0, 0, time.UTC)
+	privateItem := privateItems[status.Assessors.Assessors[0].Location.Text()]
+	ledgerUUID := createLedgerUUID([]byte("REDACTED"), 1000, []byte("REDACTED"))
 	heading := &kinds.Heading{
-		Release:            cometrelease.Agreement{Ledger: release.LedgerProtocol, App: 1},
-		LedgerUID:            status.LedgerUID,
-		Level:             10,
-		Time:               standardProofTime,
-		FinalLedgerUID:        ledgerUID,
-		FinalEndorseDigest:     vault.CRandomOctets(comethash.Volume),
-		DataDigest:           vault.CRandomOctets(comethash.Volume),
-		RatifiersDigest:     status.Ratifiers.Digest(),
-		FollowingRatifiersDigest: status.Ratifiers.Digest(),
-		AgreementDigest:      vault.CRandomOctets(comethash.Volume),
-		ApplicationDigest:            vault.CRandomOctets(comethash.Volume),
-		FinalOutcomesDigest:    vault.CRandomOctets(comethash.Volume),
-		ProofDigest:       vault.CRandomOctets(comethash.Volume),
-		RecommenderLocation:    vault.CRandomOctets(vault.LocationVolume),
+		Edition:            strongmindedition.Agreement{Ledger: edition.LedgerScheme, App: 1},
+		SuccessionUUID:            status.SuccessionUUID,
+		Altitude:             10,
+		Moment:               fallbackProofMoment,
+		FinalLedgerUUID:        ledgerUUID,
+		FinalEndorseDigest:     security.CHARArbitraryOctets(tenderminthash.Extent),
+		DataDigest:           security.CHARArbitraryOctets(tenderminthash.Extent),
+		AssessorsDigest:     status.Assessors.Digest(),
+		FollowingAssessorsDigest: status.Assessors.Digest(),
+		AgreementDigest:      security.CHARArbitraryOctets(tenderminthash.Extent),
+		PlatformDigest:            security.CHARArbitraryOctets(tenderminthash.Extent),
+		FinalOutcomesDigest:    security.CHARArbitraryOctets(tenderminthash.Extent),
+		ProofDigest:       security.CHARArbitraryOctets(tenderminthash.Extent),
+		NominatorLocation:    security.CHARArbitraryOctets(security.LocatorExtent),
 	}
 
 	//
-	dve, err := kinds.NewEmulateReplicatedBallotProofWithRatifier(3, standardProofTime, privateValue, status.LedgerUID)
+	dve, err := kinds.FreshSimulateReplicatedBallotProofUsingAssessor(3, fallbackProofMoment, privateItem, status.SuccessionUUID)
 	require.NoError(t, err)
-	dve.RatifierEnergy = 1000
-	rce := &kinds.RapidCustomerAssaultProof{
-		ClashingLedger: &kinds.RapidLedger{
-			AttestedHeading: &kinds.AttestedHeading{
+	dve.AssessorPotency = 1000
+	agilecustomerattackevidence := &kinds.AgileCustomerOnslaughtProof{
+		DiscordantLedger: &kinds.AgileLedger{
+			NotatedHeading: &kinds.NotatedHeading{
 				Heading: heading,
 				Endorse: &kinds.Endorse{
-					Level:  10,
-					LedgerUID: createLedgerUID(heading.Digest(), 100, []byte("REDACTED")),
-					Endorsements: []kinds.EndorseSignature{{
-						LedgerUIDMark:      kinds.LedgerUIDMarkNull,
-						RatifierLocation: vault.LocationDigest([]byte("REDACTED")),
-						Timestamp:        standardProofTime,
-						Autograph:        vault.CRandomOctets(kinds.MaximumAutographVolume),
+					Altitude:  10,
+					LedgerUUID: createLedgerUUID(heading.Digest(), 100, []byte("REDACTED")),
+					Notations: []kinds.EndorseSignature{{
+						LedgerUUIDMarker:      kinds.LedgerUUIDMarkerVoid,
+						AssessorLocation: security.LocatorDigest([]byte("REDACTED")),
+						Timestamp:        fallbackProofMoment,
+						Notation:        security.CHARArbitraryOctets(kinds.MaximumNotationExtent),
 					}},
 				},
 			},
-			RatifierAssign: status.Ratifiers,
+			AssessorAssign: status.Assessors,
 		},
-		SharedLevel:        8,
-		FaultyRatifiers: []*kinds.Ratifier{status.Ratifiers.Ratifiers[0]},
-		SumPollingEnergy:    12,
-		Timestamp:           standardProofTime,
+		SharedAltitude:        8,
+		TreacherousAssessors: []*kinds.Assessor{status.Assessors.Assessors[0]},
+		SumBallotingPotency:    12,
+		Timestamp:           fallbackProofMoment,
 	}
 
-	ev := []kinds.Proof{dve, rce}
+	ev := []kinds.Proof{dve, agilecustomerattackevidence}
 
 	ifaceMegabyte := []iface.Malpractice{
 		{
-			Kind:             iface.Misconductkind_REPLICATED_BALLOT,
-			Level:           3,
-			Time:             standardProofTime,
-			Ratifier:        kinds.Tm2schema.Ratifier(status.Ratifiers.Ratifiers[0]),
-			SumPollingEnergy: 10,
+			Kind:             iface.Malfunctionkind_REPLICATED_BALLOT,
+			Altitude:           3,
+			Moment:             fallbackProofMoment,
+			Assessor:        kinds.Temp2buffer.Assessor(status.Assessors.Assessors[0]),
+			SumBallotingPotency: 10,
 		},
 		{
-			Kind:             iface.Misconductkind_RAPID_CUSTOMER_ASSAULT,
-			Level:           8,
-			Time:             standardProofTime,
-			Ratifier:        kinds.Tm2schema.Ratifier(status.Ratifiers.Ratifiers[0]),
-			SumPollingEnergy: 12,
+			Kind:             iface.Malfunctionkind_AGILE_CUSTOMER_ONSLAUGHT,
+			Altitude:           8,
+			Moment:             fallbackProofMoment,
+			Assessor:        kinds.Temp2buffer.Assessor(status.Assessors.Assessors[0]),
+			SumBallotingPotency: 12,
 		},
 	}
 
-	eventpool := &simulations.ProofDepository{}
-	eventpool.On("REDACTED", mock.AnythingOfType("REDACTED")).Return(ev, int64(100))
-	eventpool.On("REDACTED", mock.AnythingOfType("REDACTED"), mock.AnythingOfType("REDACTED")).Return()
-	eventpool.On("REDACTED", mock.AnythingOfType("REDACTED")).Return(nil)
-	mp := &txpoolsims.Txpool{}
+	incidentpool := &simulations.ProofHub{}
+	incidentpool.On("REDACTED", mock.AnythingOfType("REDACTED")).Return(ev, int64(100))
+	incidentpool.On("REDACTED", mock.AnythingOfType("REDACTED"), mock.AnythingOfType("REDACTED")).Return()
+	incidentpool.On("REDACTED", mock.AnythingOfType("REDACTED")).Return(nil)
+	mp := &tpmocks.Txpool{}
 	mp.On("REDACTED").Return()
 	mp.On("REDACTED").Return()
 	mp.On("REDACTED", mock.Anything).Return(nil)
@@ -345,21 +345,21 @@ func VerifyCompleteLedgerMalpractice(t *testing.T) {
 		mock.Anything,
 		mock.Anything).Return(nil)
 
-	ledgerDepot := depot.NewLedgerDepot(dbm.NewMemoryStore())
+	ledgerDepot := depot.FreshLedgerDepot(dbm.FreshMemoryDatastore())
 
-	ledgerExecute := sm.NewLedgerRunner(statusDepot, log.VerifyingTracer(), gatewayApplication.Agreement(),
-		mp, eventpool, ledgerDepot)
+	ledgerExecute := sm.FreshLedgerHandler(statusDepot, log.VerifyingTracer(), delegatePlatform.Agreement(),
+		mp, incidentpool, ledgerDepot)
 
 	ledger, err := createLedger(status, 1, new(kinds.Endorse))
 	require.NoError(t, err)
 	ledger.Proof = kinds.ProofData{Proof: ev}
 	ledger.ProofDigest = ledger.Proof.Digest()
-	bps, err := ledger.CreateSegmentAssign(verifySegmentVolume)
+	bps, err := ledger.CreateFragmentAssign(verifyFragmentExtent)
 	require.NoError(t, err)
 
-	ledgerUID = kinds.LedgerUID{Digest: ledger.Digest(), SegmentAssignHeading: bps.Heading()}
+	ledgerUUID = kinds.LedgerUUID{Digest: ledger.Digest(), FragmentAssignHeading: bps.Heading()}
 
-	_, err = ledgerExecute.ExecuteLedger(status, ledgerUID, ledger)
+	_, err = ledgerExecute.ExecuteLedger(status, ledgerUUID, ledger)
 	require.NoError(t, err)
 
 	//
@@ -367,139 +367,139 @@ func VerifyCompleteLedgerMalpractice(t *testing.T) {
 }
 
 func VerifyHandleNomination(t *testing.T) {
-	const level = 2
-	txs := verify.CreateNTrans(level, 10)
+	const altitude = 2
+	txs := verify.CreateNTHTrans(altitude, 10)
 
-	tracer := log.NewNoopTracer()
-	app := &abciemulators.Software{}
-	app.On("REDACTED", mock.Anything, mock.Anything).Return(&iface.ReplyHandleNomination{Status: iface.Responseprocessnomination_ALLOW}, nil)
+	tracer := log.FreshNooperationTracer()
+	app := &abcistubs.Platform{}
+	app.On("REDACTED", mock.Anything, mock.Anything).Return(&iface.ReplyHandleNomination{Condition: iface.Responseexecuteitem_EMBRACE}, nil)
 
-	cc := gateway.NewNativeCustomerOriginator(app)
-	gatewayApplication := gateway.NewApplicationLinks(cc, gateway.NoopStats())
-	err := gatewayApplication.Begin()
+	cc := delegate.FreshRegionalCustomerOriginator(app)
+	delegatePlatform := delegate.FreshPlatformLinks(cc, delegate.NooperationTelemetry())
+	err := delegatePlatform.Initiate()
 	require.NoError(t, err)
-	defer gatewayApplication.Halt() //
+	defer delegatePlatform.Halt() //
 
-	status, statusStore, privateValues := createStatus(1, level)
-	statusDepot := sm.NewDepot(statusStore, sm.DepotSettings{
-		DropIfaceReplies: false,
+	status, statusDatastore, privateItems := createStatus(1, altitude)
+	statusDepot := sm.FreshDepot(statusDatastore, sm.DepotChoices{
+		EjectIfaceReplies: false,
 	})
-	ledgerDepot := depot.NewLedgerDepot(dbm.NewMemoryStore())
-	eventBus := kinds.NewEventBus()
-	err = eventBus.Begin()
+	ledgerDepot := depot.FreshLedgerDepot(dbm.FreshMemoryDatastore())
+	incidentPipeline := kinds.FreshIncidentPipeline()
+	err = incidentPipeline.Initiate()
 	require.NoError(t, err)
 
-	ledgerExecute := sm.NewLedgerRunner(
+	ledgerExecute := sm.FreshLedgerHandler(
 		statusDepot,
 		tracer,
-		gatewayApplication.Agreement(),
-		new(txpoolsims.Txpool),
-		sm.EmptyProofDepository{},
+		delegatePlatform.Agreement(),
+		new(tpmocks.Txpool),
+		sm.VoidProofHub{},
 		ledgerDepot,
 	)
 
-	ledger0, err := createLedger(status, level-1, new(kinds.Endorse))
+	ledger0, err := createLedger(status, altitude-1, new(kinds.Endorse))
 	require.NoError(t, err)
 	finalEndorseSignature := []kinds.EndorseSignature{}
-	sectionCollection, err := ledger0.CreateSegmentAssign(kinds.LedgerSegmentVolumeOctets)
+	fragmentAssign, err := ledger0.CreateFragmentAssign(kinds.LedgerFragmentExtentOctets)
 	require.NoError(t, err)
-	ledgerUID := kinds.LedgerUID{Digest: ledger0.Digest(), SegmentAssignHeading: sectionCollection.Heading()}
+	ledgerUUID := kinds.LedgerUUID{Digest: ledger0.Digest(), FragmentAssignHeading: fragmentAssign.Heading()}
 	ballotDetails := []iface.BallotDetails{}
-	for _, privateValue := range privateValues {
-		pk, err := privateValue.FetchPublicKey()
+	for _, privateItem := range privateItems {
+		pk, err := privateItem.ObtainPublicToken()
 		require.NoError(t, err)
-		idx, _ := status.Ratifiers.FetchByLocation(pk.Location())
-		ballot := kinds.CreateBallotNoFault(t, privateValue, ledger0.LedgerUID, idx, level-1, 0, 2, ledgerUID, time.Now())
-		address := pk.Location()
+		idx, _ := status.Assessors.ObtainViaLocation(pk.Location())
+		ballot := kinds.CreateBallotNegativeFailure(t, privateItem, ledger0.SuccessionUUID, idx, altitude-1, 0, 2, ledgerUUID, time.Now())
+		location := pk.Location()
 		ballotDetails = append(ballotDetails,
 			iface.BallotDetails{
-				LedgerUidMark: engineproto.LedgerUIDMarkEndorse,
-				Ratifier: iface.Ratifier{
-					Location: address,
-					Energy:   1000,
+				LedgerUuidMarker: commitchema.LedgerUUIDMarkerEndorse,
+				Assessor: iface.Assessor{
+					Location: location,
+					Potency:   1000,
 				},
 			})
 		finalEndorseSignature = append(finalEndorseSignature, ballot.EndorseSignature())
 	}
 
-	ledger1, err := createLedger(status, level, &kinds.Endorse{
-		Level:     level - 1,
-		Endorsements: finalEndorseSignature,
+	ledger1, err := createLedger(status, altitude, &kinds.Endorse{
+		Altitude:     altitude - 1,
+		Notations: finalEndorseSignature,
 	})
 	require.NoError(t, err)
 
 	ledger1.Txs = txs
 
-	anticipatedRec := &iface.QueryHandleNomination{
-		Txs:         ledger1.Txs.ToSegmentOfOctets(),
+	anticipatedRecperpage := &iface.SolicitHandleNomination{
+		Txs:         ledger1.Txs.TowardSegmentBelongingOctets(),
 		Digest:        ledger1.Digest(),
-		Level:      ledger1.Level,
-		Time:        ledger1.Time,
-		Malpractice: ledger1.Proof.Proof.ToIface(),
-		NominatedFinalEndorse: iface.EndorseDetails{
-			Cycle: 0,
+		Altitude:      ledger1.Altitude,
+		Moment:        ledger1.Moment,
+		Malpractice: ledger1.Proof.Proof.TowardIface(),
+		ItemizedFinalEndorse: iface.EndorseDetails{
+			Iteration: 0,
 			Ballots: ballotDetails,
 		},
-		FollowingRatifiersDigest: ledger1.FollowingRatifiersDigest,
-		RecommenderLocation:    ledger1.RecommenderLocation,
+		FollowingAssessorsDigest: ledger1.FollowingAssessorsDigest,
+		NominatorLocation:    ledger1.NominatorLocation,
 	}
 
-	allowLedger, err := ledgerExecute.HandleNomination(ledger1, status)
+	embraceLedger, err := ledgerExecute.HandleNomination(ledger1, status)
 	require.NoError(t, err)
-	require.True(t, allowLedger)
+	require.True(t, embraceLedger)
 	app.AssertExpectations(t)
-	app.AssertCalled(t, "REDACTED", context.TODO(), anticipatedRec)
+	app.AssertCalled(t, "REDACTED", context.TODO(), anticipatedRecperpage)
 }
 
-func VerifyCertifyRatifierRefreshes(t *testing.T) {
-	publickey1 := ed25519.GeneratePrivateKey().PublicKey()
-	publickey2 := ed25519.GeneratePrivateKey().PublicKey()
-	pk1, err := cryptocode.PublicKeyToSchema(publickey1)
+func VerifyCertifyAssessorRevisions(t *testing.T) {
+	publictoken1 := edwards25519.ProducePrivateToken().PublicToken()
+	publictoken2 := edwards25519.ProducePrivateToken().PublicToken()
+	pk1, err := cryptocode.PublicTokenTowardSchema(publictoken1)
 	assert.NoError(t, err)
-	pk2, err := cryptocode.PublicKeyToSchema(publickey2)
+	pk2, err := cryptocode.PublicTokenTowardSchema(publictoken2)
 	assert.NoError(t, err)
 
-	standardRatifierOptions := kinds.RatifierOptions{PublicKeyKinds: []string{kinds.IfacePublicKeyKindEd25519}}
+	fallbackAssessorParameters := kinds.AssessorParameters{PublicTokenKinds: []string{kinds.IfacePublicTokenKindEdwards25519}}
 
 	verifyScenarios := []struct {
-		label string
+		alias string
 
-		ifaceRefreshes     []iface.RatifierModify
-		ratifierOptions kinds.RatifierOptions
+		ifaceRevisions     []iface.AssessorRevise
+		assessorParameters kinds.AssessorParameters
 
-		mustErr bool
+		mustFault bool
 	}{
 		{
 			"REDACTED",
-			[]iface.RatifierModify{{PublicKey: pk2, Energy: 20}},
-			standardRatifierOptions,
+			[]iface.AssessorRevise{{PublicToken: pk2, Potency: 20}},
+			fallbackAssessorParameters,
 			false,
 		},
 		{
 			"REDACTED",
-			[]iface.RatifierModify{{PublicKey: pk1, Energy: 20}},
-			standardRatifierOptions,
+			[]iface.AssessorRevise{{PublicToken: pk1, Potency: 20}},
+			fallbackAssessorParameters,
 			false,
 		},
 		{
 			"REDACTED",
-			[]iface.RatifierModify{{PublicKey: pk2, Energy: 0}},
-			standardRatifierOptions,
+			[]iface.AssessorRevise{{PublicToken: pk2, Potency: 0}},
+			fallbackAssessorParameters,
 			false,
 		},
 		{
 			"REDACTED",
-			[]iface.RatifierModify{{PublicKey: pk2, Energy: -100}},
-			standardRatifierOptions,
+			[]iface.AssessorRevise{{PublicToken: pk2, Potency: -100}},
+			fallbackAssessorParameters,
 			true,
 		},
 	}
 
 	for _, tc := range verifyScenarios {
 
-		t.Run(tc.label, func(t *testing.T) {
-			err := sm.CertifyRatifierRefreshes(tc.ifaceRefreshes, tc.ratifierOptions)
-			if tc.mustErr {
+		t.Run(tc.alias, func(t *testing.T) {
+			err := sm.CertifyAssessorRevisions(tc.ifaceRevisions, tc.assessorParameters)
+			if tc.mustFault {
 				assert.Error(t, err)
 			} else {
 				assert.NoError(t, err)
@@ -508,73 +508,73 @@ func VerifyCertifyRatifierRefreshes(t *testing.T) {
 	}
 }
 
-func VerifyModifyRatifiers(t *testing.T) {
-	publickey1 := ed25519.GeneratePrivateKey().PublicKey()
-	value1 := kinds.NewRatifier(publickey1, 10)
-	publickey2 := ed25519.GeneratePrivateKey().PublicKey()
-	value2 := kinds.NewRatifier(publickey2, 20)
+func VerifyReviseAssessors(t *testing.T) {
+	publictoken1 := edwards25519.ProducePrivateToken().PublicToken()
+	valid1 := kinds.FreshAssessor(publictoken1, 10)
+	publictoken2 := edwards25519.ProducePrivateToken().PublicToken()
+	valid2 := kinds.FreshAssessor(publictoken2, 20)
 
-	pk, err := cryptocode.PublicKeyToSchema(publickey1)
+	pk, err := cryptocode.PublicTokenTowardSchema(publictoken1)
 	require.NoError(t, err)
-	pk2, err := cryptocode.PublicKeyToSchema(publickey2)
+	pk2, err := cryptocode.PublicTokenTowardSchema(publictoken2)
 	require.NoError(t, err)
 
 	verifyScenarios := []struct {
-		label string
+		alias string
 
-		ongoingCollection  *kinds.RatifierAssign
-		ifaceRefreshes []iface.RatifierModify
+		prevailingAssign  *kinds.AssessorAssign
+		ifaceRevisions []iface.AssessorRevise
 
-		ensuingCollection *kinds.RatifierAssign
-		mustErr    bool
+		ensuingAssign *kinds.AssessorAssign
+		mustFault    bool
 	}{
 		{
 			"REDACTED",
-			kinds.NewRatifierCollection([]*kinds.Ratifier{value1}),
-			[]iface.RatifierModify{{PublicKey: pk2, Energy: 20}},
-			kinds.NewRatifierCollection([]*kinds.Ratifier{value1, value2}),
+			kinds.FreshAssessorAssign([]*kinds.Assessor{valid1}),
+			[]iface.AssessorRevise{{PublicToken: pk2, Potency: 20}},
+			kinds.FreshAssessorAssign([]*kinds.Assessor{valid1, valid2}),
 			false,
 		},
 		{
 			"REDACTED",
-			kinds.NewRatifierCollection([]*kinds.Ratifier{value1}),
-			[]iface.RatifierModify{{PublicKey: pk, Energy: 20}},
-			kinds.NewRatifierCollection([]*kinds.Ratifier{kinds.NewRatifier(publickey1, 20)}),
+			kinds.FreshAssessorAssign([]*kinds.Assessor{valid1}),
+			[]iface.AssessorRevise{{PublicToken: pk, Potency: 20}},
+			kinds.FreshAssessorAssign([]*kinds.Assessor{kinds.FreshAssessor(publictoken1, 20)}),
 			false,
 		},
 		{
 			"REDACTED",
-			kinds.NewRatifierCollection([]*kinds.Ratifier{value1, value2}),
-			[]iface.RatifierModify{{PublicKey: pk2, Energy: 0}},
-			kinds.NewRatifierCollection([]*kinds.Ratifier{value1}),
+			kinds.FreshAssessorAssign([]*kinds.Assessor{valid1, valid2}),
+			[]iface.AssessorRevise{{PublicToken: pk2, Potency: 0}},
+			kinds.FreshAssessorAssign([]*kinds.Assessor{valid1}),
 			false,
 		},
 		{
 			"REDACTED",
-			kinds.NewRatifierCollection([]*kinds.Ratifier{value1}),
-			[]iface.RatifierModify{{PublicKey: pk2, Energy: 0}},
-			kinds.NewRatifierCollection([]*kinds.Ratifier{value1}),
+			kinds.FreshAssessorAssign([]*kinds.Assessor{valid1}),
+			[]iface.AssessorRevise{{PublicToken: pk2, Potency: 0}},
+			kinds.FreshAssessorAssign([]*kinds.Assessor{valid1}),
 			true,
 		},
 	}
 
 	for _, tc := range verifyScenarios {
 
-		t.Run(tc.label, func(t *testing.T) {
-			refreshes, err := kinds.Schema2tm.RatifierRefreshes(tc.ifaceRefreshes)
+		t.Run(tc.alias, func(t *testing.T) {
+			revisions, err := kinds.Buffer2temp.AssessorRevisions(tc.ifaceRevisions)
 			assert.NoError(t, err)
-			err = tc.ongoingCollection.ModifyWithAlterCollection(refreshes)
-			if tc.mustErr {
+			err = tc.prevailingAssign.ReviseUsingModifyAssign(revisions)
+			if tc.mustFault {
 				assert.Error(t, err)
 			} else {
 				assert.NoError(t, err)
-				require.Equal(t, tc.ensuingCollection.Volume(), tc.ongoingCollection.Volume())
+				require.Equal(t, tc.ensuingAssign.Extent(), tc.prevailingAssign.Extent())
 
-				assert.Equal(t, tc.ensuingCollection.SumPollingEnergy(), tc.ongoingCollection.SumPollingEnergy())
+				assert.Equal(t, tc.ensuingAssign.SumBallotingPotency(), tc.prevailingAssign.SumBallotingPotency())
 
-				assert.Equal(t, tc.ensuingCollection.Ratifiers[0].Location, tc.ongoingCollection.Ratifiers[0].Location)
-				if tc.ensuingCollection.Volume() > 1 {
-					assert.Equal(t, tc.ensuingCollection.Ratifiers[1].Location, tc.ongoingCollection.Ratifiers[1].Location)
+				assert.Equal(t, tc.ensuingAssign.Assessors[0].Location, tc.prevailingAssign.Assessors[0].Location)
+				if tc.ensuingAssign.Extent() > 1 {
+					assert.Equal(t, tc.ensuingAssign.Assessors[1].Location, tc.prevailingAssign.Assessors[1].Location)
 				}
 			}
 		})
@@ -582,19 +582,19 @@ func VerifyModifyRatifiers(t *testing.T) {
 }
 
 //
-func VerifyCompleteLedgerRatifierRefreshes(t *testing.T) {
+func VerifyCulminateLedgerAssessorRevisions(t *testing.T) {
 	app := &verifyApplication{}
-	cc := gateway.NewNativeCustomerOriginator(app)
-	gatewayApplication := gateway.NewApplicationLinks(cc, gateway.NoopStats())
-	err := gatewayApplication.Begin()
+	cc := delegate.FreshRegionalCustomerOriginator(app)
+	delegatePlatform := delegate.FreshPlatformLinks(cc, delegate.NooperationTelemetry())
+	err := delegatePlatform.Initiate()
 	require.NoError(t, err)
-	defer gatewayApplication.Halt() //
+	defer delegatePlatform.Halt() //
 
-	status, statusStore, _ := createStatus(1, 1)
-	statusDepot := sm.NewDepot(statusStore, sm.DepotSettings{
-		DropIfaceReplies: false,
+	status, statusDatastore, _ := createStatus(1, 1)
+	statusDepot := sm.FreshDepot(statusDatastore, sm.DepotChoices{
+		EjectIfaceReplies: false,
 	})
-	mp := &txpoolsims.Txpool{}
+	mp := &tpmocks.Txpool{}
 	mp.On("REDACTED").Return()
 	mp.On("REDACTED").Return()
 	mp.On("REDACTED", mock.Anything).Return(nil)
@@ -607,64 +607,64 @@ func VerifyCompleteLedgerRatifierRefreshes(t *testing.T) {
 		mock.Anything).Return(nil)
 	mp.On("REDACTED", mock.Anything, mock.Anything).Return(kinds.Txs{})
 
-	ledgerDepot := depot.NewLedgerDepot(dbm.NewMemoryStore())
-	ledgerExecute := sm.NewLedgerRunner(
+	ledgerDepot := depot.FreshLedgerDepot(dbm.FreshMemoryDatastore())
+	ledgerExecute := sm.FreshLedgerHandler(
 		statusDepot,
 		log.VerifyingTracer(),
-		gatewayApplication.Agreement(),
+		delegatePlatform.Agreement(),
 		mp,
-		sm.EmptyProofDepository{},
+		sm.VoidProofHub{},
 		ledgerDepot,
 	)
 
-	eventBus := kinds.NewEventBus()
-	err = eventBus.Begin()
+	incidentPipeline := kinds.FreshIncidentPipeline()
+	err = incidentPipeline.Initiate()
 	require.NoError(t, err)
-	defer eventBus.Halt() //
+	defer incidentPipeline.Halt() //
 
-	ledgerExecute.AssignEventBus(eventBus)
+	ledgerExecute.AssignIncidentChannel(incidentPipeline)
 
-	refreshesSubtract, err := eventBus.Enrol(
+	revisionsUnder, err := incidentPipeline.Listen(
 		context.Background(),
 		"REDACTED",
-		kinds.EventInquireRatifierCollectionRefreshes,
+		kinds.IncidentInquireAssessorAssignRevisions,
 	)
 	require.NoError(t, err)
 
 	ledger, err := createLedger(status, 1, new(kinds.Endorse))
 	require.NoError(t, err)
-	bps, err := ledger.CreateSegmentAssign(verifySegmentVolume)
+	bps, err := ledger.CreateFragmentAssign(verifyFragmentExtent)
 	require.NoError(t, err)
-	ledgerUID := kinds.LedgerUID{Digest: ledger.Digest(), SegmentAssignHeading: bps.Heading()}
+	ledgerUUID := kinds.LedgerUUID{Digest: ledger.Digest(), FragmentAssignHeading: bps.Heading()}
 
-	publickey := ed25519.GeneratePrivateKey().PublicKey()
-	pk, err := cryptocode.PublicKeyToSchema(publickey)
+	publickey := edwards25519.ProducePrivateToken().PublicToken()
+	pk, err := cryptocode.PublicTokenTowardSchema(publickey)
 	require.NoError(t, err)
-	app.RatifierRefreshes = []iface.RatifierModify{
-		{PublicKey: pk, Energy: 10},
+	app.AssessorRevisions = []iface.AssessorRevise{
+		{PublicToken: pk, Potency: 10},
 	}
 
-	status, err = ledgerExecute.ExecuteLedger(status, ledgerUID, ledger)
+	status, err = ledgerExecute.ExecuteLedger(status, ledgerUUID, ledger)
 	require.NoError(t, err)
 	//
-	if assert.Equal(t, status.Ratifiers.Volume()+1, status.FollowingRatifiers.Volume()) {
-		idx, _ := status.FollowingRatifiers.FetchByLocation(publickey.Location())
+	if assert.Equal(t, status.Assessors.Extent()+1, status.FollowingAssessors.Extent()) {
+		idx, _ := status.FollowingAssessors.ObtainViaLocation(publickey.Location())
 		if idx < 0 {
-			t.Fatalf("REDACTED", publickey.Location(), status.FollowingRatifiers)
+			t.Fatalf("REDACTED", publickey.Location(), status.FollowingAssessors)
 		}
 	}
 
 	//
 	select {
-	case msg := <-refreshesSubtract.Out():
-		event, ok := msg.Data().(kinds.EventDataRatifierCollectionRefreshes)
+	case msg := <-revisionsUnder.Out():
+		incident, ok := msg.Data().(kinds.IncidentDataAssessorAssignRevisions)
 		require.True(t, ok, "REDACTED", msg.Data())
-		if assert.NotEmpty(t, event.RatifierRefreshes) {
-			assert.Equal(t, publickey, event.RatifierRefreshes[0].PublicKey)
-			assert.EqualValues(t, 10, event.RatifierRefreshes[0].PollingEnergy)
+		if assert.NotEmpty(t, incident.AssessorRevisions) {
+			assert.Equal(t, publickey, incident.AssessorRevisions[0].PublicToken)
+			assert.EqualValues(t, 10, incident.AssessorRevisions[0].BallotingPotency)
 		}
-	case <-refreshesSubtract.Revoked():
-		t.Fatalf("REDACTED", refreshesSubtract.Err())
+	case <-revisionsUnder.Aborted():
+		t.Fatalf("REDACTED", revisionsUnder.Err())
 	case <-time.After(1 * time.Second):
 		t.Fatal("REDACTED")
 	}
@@ -672,62 +672,62 @@ func VerifyCompleteLedgerRatifierRefreshes(t *testing.T) {
 
 //
 //
-func VerifyCompleteLedgerRatifierRefreshesEnsuingInEmptyCollection(t *testing.T) {
+func VerifyCulminateLedgerAssessorRevisionsEnsuingInsideBlankAssign(t *testing.T) {
 	app := &verifyApplication{}
-	cc := gateway.NewNativeCustomerOriginator(app)
-	gatewayApplication := gateway.NewApplicationLinks(cc, gateway.NoopStats())
-	err := gatewayApplication.Begin()
+	cc := delegate.FreshRegionalCustomerOriginator(app)
+	delegatePlatform := delegate.FreshPlatformLinks(cc, delegate.NooperationTelemetry())
+	err := delegatePlatform.Initiate()
 	require.NoError(t, err)
-	defer gatewayApplication.Halt() //
+	defer delegatePlatform.Halt() //
 
-	status, statusStore, _ := createStatus(1, 1)
-	statusDepot := sm.NewDepot(statusStore, sm.DepotSettings{
-		DropIfaceReplies: false,
+	status, statusDatastore, _ := createStatus(1, 1)
+	statusDepot := sm.FreshDepot(statusDatastore, sm.DepotChoices{
+		EjectIfaceReplies: false,
 	})
-	ledgerDepot := depot.NewLedgerDepot(dbm.NewMemoryStore())
-	ledgerExecute := sm.NewLedgerRunner(
+	ledgerDepot := depot.FreshLedgerDepot(dbm.FreshMemoryDatastore())
+	ledgerExecute := sm.FreshLedgerHandler(
 		statusDepot,
 		log.VerifyingTracer(),
-		gatewayApplication.Agreement(),
-		new(txpoolsims.Txpool),
-		sm.EmptyProofDepository{},
+		delegatePlatform.Agreement(),
+		new(tpmocks.Txpool),
+		sm.VoidProofHub{},
 		ledgerDepot,
 	)
 
 	ledger, err := createLedger(status, 1, new(kinds.Endorse))
 	require.NoError(t, err)
-	bps, err := ledger.CreateSegmentAssign(verifySegmentVolume)
+	bps, err := ledger.CreateFragmentAssign(verifyFragmentExtent)
 	require.NoError(t, err)
-	ledgerUID := kinds.LedgerUID{Digest: ledger.Digest(), SegmentAssignHeading: bps.Heading()}
+	ledgerUUID := kinds.LedgerUUID{Digest: ledger.Digest(), FragmentAssignHeading: bps.Heading()}
 
-	vp, err := cryptocode.PublicKeyToSchema(status.Ratifiers.Ratifiers[0].PublicKey)
+	vp, err := cryptocode.PublicTokenTowardSchema(status.Assessors.Assessors[0].PublicToken)
 	require.NoError(t, err)
 	//
-	app.RatifierRefreshes = []iface.RatifierModify{
-		{PublicKey: vp, Energy: 0},
+	app.AssessorRevisions = []iface.AssessorRevise{
+		{PublicToken: vp, Potency: 0},
 	}
 
-	assert.NotPanics(t, func() { status, err = ledgerExecute.ExecuteLedger(status, ledgerUID, ledger) })
+	assert.NotPanics(t, func() { status, err = ledgerExecute.ExecuteLedger(status, ledgerUUID, ledger) })
 	assert.Error(t, err)
-	assert.NotEmpty(t, status.FollowingRatifiers.Ratifiers)
+	assert.NotEmpty(t, status.FollowingAssessors.Assessors)
 }
 
-func VerifyEmptyArrangeNomination(t *testing.T) {
-	const level = 2
+func VerifyBlankArrangeNomination(t *testing.T) {
+	const altitude = 2
 	ctx := t.Context()
 
-	app := &iface.RootSoftware{}
-	cc := gateway.NewNativeCustomerOriginator(app)
-	gatewayApplication := gateway.NewApplicationLinks(cc, gateway.NoopStats())
-	err := gatewayApplication.Begin()
+	app := &iface.FoundationPlatform{}
+	cc := delegate.FreshRegionalCustomerOriginator(app)
+	delegatePlatform := delegate.FreshPlatformLinks(cc, delegate.NooperationTelemetry())
+	err := delegatePlatform.Initiate()
 	require.NoError(t, err)
-	defer gatewayApplication.Halt() //
+	defer delegatePlatform.Halt() //
 
-	status, statusStore, privateValues := createStatus(1, level)
-	statusDepot := sm.NewDepot(statusStore, sm.DepotSettings{
-		DropIfaceReplies: false,
+	status, statusDatastore, privateItems := createStatus(1, altitude)
+	statusDepot := sm.FreshDepot(statusDatastore, sm.DepotChoices{
+		EjectIfaceReplies: false,
 	})
-	mp := &txpoolsims.Txpool{}
+	mp := &tpmocks.Txpool{}
 	mp.On("REDACTED").Return()
 	mp.On("REDACTED").Return()
 	mp.On("REDACTED", mock.Anything).Return(nil)
@@ -740,63 +740,63 @@ func VerifyEmptyArrangeNomination(t *testing.T) {
 		mock.Anything).Return(nil)
 	mp.On("REDACTED", mock.Anything, mock.Anything).Return(kinds.Txs{})
 
-	ledgerDepot := depot.NewLedgerDepot(dbm.NewMemoryStore())
-	ledgerExecute := sm.NewLedgerRunner(
+	ledgerDepot := depot.FreshLedgerDepot(dbm.FreshMemoryDatastore())
+	ledgerExecute := sm.FreshLedgerHandler(
 		statusDepot,
 		log.VerifyingTracer(),
-		gatewayApplication.Agreement(),
+		delegatePlatform.Agreement(),
 		mp,
-		sm.EmptyProofDepository{},
+		sm.VoidProofHub{},
 		ledgerDepot,
 	)
-	pa, _ := status.Ratifiers.FetchByOrdinal(0)
-	endorse, _, err := createSoundEndorse(level, kinds.LedgerUID{}, status.Ratifiers, privateValues)
+	pa, _ := status.Assessors.ObtainViaOrdinal(0)
+	endorse, _, err := createSoundEndorse(altitude, kinds.LedgerUUID{}, status.Assessors, privateItems)
 	require.NoError(t, err)
-	_, err = ledgerExecute.InstantiateNominationLedger(ctx, level, status, endorse, pa)
+	_, err = ledgerExecute.GenerateNominationLedger(ctx, altitude, status, endorse, pa)
 	require.NoError(t, err)
 }
 
 //
 //
-func VerifyArrangeNominationTransAllEnclosed(t *testing.T) {
-	const level = 2
+func VerifyArrangeNominationTransEveryComprised(t *testing.T) {
+	const altitude = 2
 	ctx := t.Context()
 
-	status, statusStore, privateValues := createStatus(1, level)
-	statusDepot := sm.NewDepot(statusStore, sm.DepotSettings{
-		DropIfaceReplies: false,
+	status, statusDatastore, privateItems := createStatus(1, altitude)
+	statusDepot := sm.FreshDepot(statusDatastore, sm.DepotChoices{
+		EjectIfaceReplies: false,
 	})
 
-	eventpool := &simulations.ProofDepository{}
-	eventpool.On("REDACTED", mock.Anything).Return([]kinds.Proof{}, int64(0))
+	incidentpool := &simulations.ProofHub{}
+	incidentpool.On("REDACTED", mock.Anything).Return([]kinds.Proof{}, int64(0))
 
-	txs := verify.CreateNTrans(level, 10)
-	mp := &txpoolsims.Txpool{}
+	txs := verify.CreateNTHTrans(altitude, 10)
+	mp := &tpmocks.Txpool{}
 	mp.On("REDACTED", mock.Anything, mock.Anything).Return(txs[2:])
 
-	app := &abciemulators.Software{}
+	app := &abcistubs.Platform{}
 	app.On("REDACTED", mock.Anything, mock.Anything).Return(&iface.ReplyArrangeNomination{
-		Txs: txs.ToSegmentOfOctets(),
+		Txs: txs.TowardSegmentBelongingOctets(),
 	}, nil)
-	cc := gateway.NewNativeCustomerOriginator(app)
-	gatewayApplication := gateway.NewApplicationLinks(cc, gateway.NoopStats())
-	err := gatewayApplication.Begin()
+	cc := delegate.FreshRegionalCustomerOriginator(app)
+	delegatePlatform := delegate.FreshPlatformLinks(cc, delegate.NooperationTelemetry())
+	err := delegatePlatform.Initiate()
 	require.NoError(t, err)
-	defer gatewayApplication.Halt() //
+	defer delegatePlatform.Halt() //
 
-	ledgerDepot := depot.NewLedgerDepot(dbm.NewMemoryStore())
-	ledgerExecute := sm.NewLedgerRunner(
+	ledgerDepot := depot.FreshLedgerDepot(dbm.FreshMemoryDatastore())
+	ledgerExecute := sm.FreshLedgerHandler(
 		statusDepot,
 		log.VerifyingTracer(),
-		gatewayApplication.Agreement(),
+		delegatePlatform.Agreement(),
 		mp,
-		eventpool,
+		incidentpool,
 		ledgerDepot,
 	)
-	pa, _ := status.Ratifiers.FetchByOrdinal(0)
-	endorse, _, err := createSoundEndorse(level, kinds.LedgerUID{}, status.Ratifiers, privateValues)
+	pa, _ := status.Assessors.ObtainViaOrdinal(0)
+	endorse, _, err := createSoundEndorse(altitude, kinds.LedgerUUID{}, status.Assessors, privateItems)
 	require.NoError(t, err)
-	ledger, err := ledgerExecute.InstantiateNominationLedger(ctx, level, status, endorse, pa)
+	ledger, err := ledgerExecute.GenerateNominationLedger(ctx, altitude, status, endorse, pa)
 	require.NoError(t, err)
 
 	for i, tx := range ledger.Txs {
@@ -809,48 +809,48 @@ func VerifyArrangeNominationTransAllEnclosed(t *testing.T) {
 //
 //
 func VerifyArrangeNominationRearrangeTrans(t *testing.T) {
-	const level = 2
+	const altitude = 2
 	ctx := t.Context()
 
-	status, statusStore, privateValues := createStatus(1, level)
-	statusDepot := sm.NewDepot(statusStore, sm.DepotSettings{
-		DropIfaceReplies: false,
+	status, statusDatastore, privateItems := createStatus(1, altitude)
+	statusDepot := sm.FreshDepot(statusDatastore, sm.DepotChoices{
+		EjectIfaceReplies: false,
 	})
 
-	eventpool := &simulations.ProofDepository{}
-	eventpool.On("REDACTED", mock.Anything).Return([]kinds.Proof{}, int64(0))
+	incidentpool := &simulations.ProofHub{}
+	incidentpool.On("REDACTED", mock.Anything).Return([]kinds.Proof{}, int64(0))
 
-	txs := verify.CreateNTrans(level, 10)
-	mp := &txpoolsims.Txpool{}
+	txs := verify.CreateNTHTrans(altitude, 10)
+	mp := &tpmocks.Txpool{}
 	mp.On("REDACTED", mock.Anything, mock.Anything).Return(txs)
 
 	txs = txs[2:]
 	txs = append(txs[len(txs)/2:], txs[:len(txs)/2]...)
 
-	app := &abciemulators.Software{}
+	app := &abcistubs.Platform{}
 	app.On("REDACTED", mock.Anything, mock.Anything).Return(&iface.ReplyArrangeNomination{
-		Txs: txs.ToSegmentOfOctets(),
+		Txs: txs.TowardSegmentBelongingOctets(),
 	}, nil)
 
-	cc := gateway.NewNativeCustomerOriginator(app)
-	gatewayApplication := gateway.NewApplicationLinks(cc, gateway.NoopStats())
-	err := gatewayApplication.Begin()
+	cc := delegate.FreshRegionalCustomerOriginator(app)
+	delegatePlatform := delegate.FreshPlatformLinks(cc, delegate.NooperationTelemetry())
+	err := delegatePlatform.Initiate()
 	require.NoError(t, err)
-	defer gatewayApplication.Halt() //
+	defer delegatePlatform.Halt() //
 
-	ledgerDepot := depot.NewLedgerDepot(dbm.NewMemoryStore())
-	ledgerExecute := sm.NewLedgerRunner(
+	ledgerDepot := depot.FreshLedgerDepot(dbm.FreshMemoryDatastore())
+	ledgerExecute := sm.FreshLedgerHandler(
 		statusDepot,
 		log.VerifyingTracer(),
-		gatewayApplication.Agreement(),
+		delegatePlatform.Agreement(),
 		mp,
-		eventpool,
+		incidentpool,
 		ledgerDepot,
 	)
-	pa, _ := status.Ratifiers.FetchByOrdinal(0)
-	endorse, _, err := createSoundEndorse(level, kinds.LedgerUID{}, status.Ratifiers, privateValues)
+	pa, _ := status.Assessors.ObtainViaOrdinal(0)
+	endorse, _, err := createSoundEndorse(altitude, kinds.LedgerUUID{}, status.Assessors, privateItems)
 	require.NoError(t, err)
-	ledger, err := ledgerExecute.InstantiateNominationLedger(ctx, level, status, endorse, pa)
+	ledger, err := ledgerExecute.GenerateNominationLedger(ctx, altitude, status, endorse, pa)
 	require.NoError(t, err)
 	for i, tx := range ledger.Txs {
 		require.Equal(t, txs[i], tx)
@@ -861,51 +861,51 @@ func VerifyArrangeNominationRearrangeTrans(t *testing.T) {
 
 //
 //
-func VerifyArrangeNominationFaultOnTooNumerousTrans(t *testing.T) {
-	const level = 2
+func VerifyArrangeNominationFailureUponExcessivelyMultipleTrans(t *testing.T) {
+	const altitude = 2
 	ctx := t.Context()
 
-	status, statusStore, privateValues := createStatus(1, level)
+	status, statusDatastore, privateItems := createStatus(1, altitude)
 	//
-	status.AgreementOptions.Ledger.MaximumOctets = 60 * 1024
-	statusDepot := sm.NewDepot(statusStore, sm.DepotSettings{
-		DropIfaceReplies: false,
+	status.AgreementSettings.Ledger.MaximumOctets = 60 * 1024
+	statusDepot := sm.FreshDepot(statusDatastore, sm.DepotChoices{
+		EjectIfaceReplies: false,
 	})
 
-	eventpool := &simulations.ProofDepository{}
-	eventpool.On("REDACTED", mock.Anything).Return([]kinds.Proof{}, int64(0))
+	incidentpool := &simulations.ProofHub{}
+	incidentpool.On("REDACTED", mock.Anything).Return([]kinds.Proof{}, int64(0))
 
-	const nRatifiers = 1
-	var octetsEachTransfer int64 = 3
-	maximumDataOctets := kinds.MaximumDataOctets(status.AgreementOptions.Ledger.MaximumOctets, 0, nRatifiers)
-	txs := verify.CreateNTrans(level, maximumDataOctets/octetsEachTransfer+2) //
-	mp := &txpoolsims.Txpool{}
+	const nthAssessors = 1
+	var octetsEveryTransfer int64 = 3
+	maximumDataOctets := kinds.MaximumDataOctets(status.AgreementSettings.Ledger.MaximumOctets, 0, nthAssessors)
+	txs := verify.CreateNTHTrans(altitude, maximumDataOctets/octetsEveryTransfer+2) //
+	mp := &tpmocks.Txpool{}
 	mp.On("REDACTED", mock.Anything, mock.Anything).Return(txs)
 
-	app := &abciemulators.Software{}
+	app := &abcistubs.Platform{}
 	app.On("REDACTED", mock.Anything, mock.Anything).Return(&iface.ReplyArrangeNomination{
-		Txs: txs.ToSegmentOfOctets(),
+		Txs: txs.TowardSegmentBelongingOctets(),
 	}, nil)
 
-	cc := gateway.NewNativeCustomerOriginator(app)
-	gatewayApplication := gateway.NewApplicationLinks(cc, gateway.NoopStats())
-	err := gatewayApplication.Begin()
+	cc := delegate.FreshRegionalCustomerOriginator(app)
+	delegatePlatform := delegate.FreshPlatformLinks(cc, delegate.NooperationTelemetry())
+	err := delegatePlatform.Initiate()
 	require.NoError(t, err)
-	defer gatewayApplication.Halt() //
+	defer delegatePlatform.Halt() //
 
-	ledgerDepot := depot.NewLedgerDepot(dbm.NewMemoryStore())
-	ledgerExecute := sm.NewLedgerRunner(
+	ledgerDepot := depot.FreshLedgerDepot(dbm.FreshMemoryDatastore())
+	ledgerExecute := sm.FreshLedgerHandler(
 		statusDepot,
-		log.NewNoopTracer(),
-		gatewayApplication.Agreement(),
+		log.FreshNooperationTracer(),
+		delegatePlatform.Agreement(),
 		mp,
-		eventpool,
+		incidentpool,
 		ledgerDepot,
 	)
-	pa, _ := status.Ratifiers.FetchByOrdinal(0)
-	endorse, _, err := createSoundEndorse(level, kinds.LedgerUID{}, status.Ratifiers, privateValues)
+	pa, _ := status.Assessors.ObtainViaOrdinal(0)
+	endorse, _, err := createSoundEndorse(altitude, kinds.LedgerUUID{}, status.Assessors, privateItems)
 	require.NoError(t, err)
-	ledger, err := ledgerExecute.InstantiateNominationLedger(ctx, level, status, endorse, pa)
+	ledger, err := ledgerExecute.GenerateNominationLedger(ctx, altitude, status, endorse, pa)
 	require.Nil(t, ledger)
 	require.ErrorContains(t, err, "REDACTED")
 
@@ -915,53 +915,53 @@ func VerifyArrangeNominationFaultOnTooNumerousTrans(t *testing.T) {
 //
 //
 //
-func VerifyArrangeNominationNumberEncodingBurden(t *testing.T) {
-	const level = 2
+func VerifyArrangeNominationTallyEncodingMargin(t *testing.T) {
+	const altitude = 2
 	ctx := t.Context()
 
-	status, statusStore, privateValues := createStatus(1, level)
+	status, statusDatastore, privateItems := createStatus(1, altitude)
 	//
-	var octetsEachTransfer int64 = 4
-	const nRatifiers = 1
-	notDataVolume := 5000 - kinds.MaximumDataOctets(5000, 0, nRatifiers)
-	status.AgreementOptions.Ledger.MaximumOctets = octetsEachTransfer*1024 + notDataVolume
-	maximumDataOctets := kinds.MaximumDataOctets(status.AgreementOptions.Ledger.MaximumOctets, 0, nRatifiers)
+	var octetsEveryTransfer int64 = 4
+	const nthAssessors = 1
+	unDataExtent := 5000 - kinds.MaximumDataOctets(5000, 0, nthAssessors)
+	status.AgreementSettings.Ledger.MaximumOctets = octetsEveryTransfer*1024 + unDataExtent
+	maximumDataOctets := kinds.MaximumDataOctets(status.AgreementSettings.Ledger.MaximumOctets, 0, nthAssessors)
 
-	statusDepot := sm.NewDepot(statusStore, sm.DepotSettings{
-		DropIfaceReplies: false,
+	statusDepot := sm.FreshDepot(statusDatastore, sm.DepotChoices{
+		EjectIfaceReplies: false,
 	})
 
-	eventpool := &simulations.ProofDepository{}
-	eventpool.On("REDACTED", mock.Anything).Return([]kinds.Proof{}, int64(0))
+	incidentpool := &simulations.ProofHub{}
+	incidentpool.On("REDACTED", mock.Anything).Return([]kinds.Proof{}, int64(0))
 
-	txs := verify.CreateNTrans(level, maximumDataOctets/octetsEachTransfer)
-	mp := &txpoolsims.Txpool{}
+	txs := verify.CreateNTHTrans(altitude, maximumDataOctets/octetsEveryTransfer)
+	mp := &tpmocks.Txpool{}
 	mp.On("REDACTED", mock.Anything, mock.Anything).Return(txs)
 
-	app := &abciemulators.Software{}
+	app := &abcistubs.Platform{}
 	app.On("REDACTED", mock.Anything, mock.Anything).Return(&iface.ReplyArrangeNomination{
-		Txs: txs.ToSegmentOfOctets(),
+		Txs: txs.TowardSegmentBelongingOctets(),
 	}, nil)
 
-	cc := gateway.NewNativeCustomerOriginator(app)
-	gatewayApplication := gateway.NewApplicationLinks(cc, gateway.NoopStats())
-	err := gatewayApplication.Begin()
+	cc := delegate.FreshRegionalCustomerOriginator(app)
+	delegatePlatform := delegate.FreshPlatformLinks(cc, delegate.NooperationTelemetry())
+	err := delegatePlatform.Initiate()
 	require.NoError(t, err)
-	defer gatewayApplication.Halt() //
+	defer delegatePlatform.Halt() //
 
-	ledgerDepot := depot.NewLedgerDepot(dbm.NewMemoryStore())
-	ledgerExecute := sm.NewLedgerRunner(
+	ledgerDepot := depot.FreshLedgerDepot(dbm.FreshMemoryDatastore())
+	ledgerExecute := sm.FreshLedgerHandler(
 		statusDepot,
-		log.NewNoopTracer(),
-		gatewayApplication.Agreement(),
+		log.FreshNooperationTracer(),
+		delegatePlatform.Agreement(),
 		mp,
-		eventpool,
+		incidentpool,
 		ledgerDepot,
 	)
-	pa, _ := status.Ratifiers.FetchByOrdinal(0)
-	endorse, _, err := createSoundEndorse(level, kinds.LedgerUID{}, status.Ratifiers, privateValues)
+	pa, _ := status.Assessors.ObtainViaOrdinal(0)
+	endorse, _, err := createSoundEndorse(altitude, kinds.LedgerUUID{}, status.Assessors, privateItems)
 	require.NoError(t, err)
-	ledger, err := ledgerExecute.InstantiateNominationLedger(ctx, level, status, endorse, pa)
+	ledger, err := ledgerExecute.GenerateNominationLedger(ctx, altitude, status, endorse, pa)
 	require.Nil(t, ledger)
 	require.ErrorContains(t, err, "REDACTED")
 
@@ -970,48 +970,48 @@ func VerifyArrangeNominationNumberEncodingBurden(t *testing.T) {
 
 //
 //
-func VerifyArrangeNominationFaultOnArrangeNominationFault(t *testing.T) {
-	const level = 2
+func VerifyArrangeNominationFailureUponArrangeNominationFailure(t *testing.T) {
+	const altitude = 2
 	ctx := t.Context()
 
-	status, statusStore, privateValues := createStatus(1, level)
-	statusDepot := sm.NewDepot(statusStore, sm.DepotSettings{
-		DropIfaceReplies: false,
+	status, statusDatastore, privateItems := createStatus(1, altitude)
+	statusDepot := sm.FreshDepot(statusDatastore, sm.DepotChoices{
+		EjectIfaceReplies: false,
 	})
 
-	eventpool := &simulations.ProofDepository{}
-	eventpool.On("REDACTED", mock.Anything).Return([]kinds.Proof{}, int64(0))
+	incidentpool := &simulations.ProofHub{}
+	incidentpool.On("REDACTED", mock.Anything).Return([]kinds.Proof{}, int64(0))
 
-	txs := verify.CreateNTrans(level, 10)
-	mp := &txpoolsims.Txpool{}
+	txs := verify.CreateNTHTrans(altitude, 10)
+	mp := &tpmocks.Txpool{}
 	mp.On("REDACTED", mock.Anything, mock.Anything).Return(txs)
 
-	cm := &ifaceclientmocks.Customer{}
+	cm := &abcicustomerfakes.Customer{}
 	cm.On("REDACTED", mock.Anything).Return()
 	cm.On("REDACTED").Return(nil)
 	cm.On("REDACTED").Return(nil)
 	cm.On("REDACTED", mock.Anything, mock.Anything).Return(nil, errors.New("REDACTED")).Once()
 	cm.On("REDACTED").Return(nil)
-	cc := &omocks.CustomerOriginator{}
+	cc := &fakes.CustomerOriginator{}
 	cc.On("REDACTED").Return(cm, nil)
-	gatewayApplication := gateway.NewApplicationLinks(cc, gateway.NoopStats())
-	err := gatewayApplication.Begin()
+	delegatePlatform := delegate.FreshPlatformLinks(cc, delegate.NooperationTelemetry())
+	err := delegatePlatform.Initiate()
 	require.NoError(t, err)
-	defer gatewayApplication.Halt() //
+	defer delegatePlatform.Halt() //
 
-	ledgerDepot := depot.NewLedgerDepot(dbm.NewMemoryStore())
-	ledgerExecute := sm.NewLedgerRunner(
+	ledgerDepot := depot.FreshLedgerDepot(dbm.FreshMemoryDatastore())
+	ledgerExecute := sm.FreshLedgerHandler(
 		statusDepot,
-		log.NewNoopTracer(),
-		gatewayApplication.Agreement(),
+		log.FreshNooperationTracer(),
+		delegatePlatform.Agreement(),
 		mp,
-		eventpool,
+		incidentpool,
 		ledgerDepot,
 	)
-	pa, _ := status.Ratifiers.FetchByOrdinal(0)
-	endorse, _, err := createSoundEndorse(level, kinds.LedgerUID{}, status.Ratifiers, privateValues)
+	pa, _ := status.Assessors.ObtainViaOrdinal(0)
+	endorse, _, err := createSoundEndorse(altitude, kinds.LedgerUUID{}, status.Assessors, privateItems)
 	require.NoError(t, err)
-	ledger, err := ledgerExecute.InstantiateNominationLedger(ctx, level, status, endorse, pa)
+	ledger, err := ledgerExecute.GenerateNominationLedger(ctx, altitude, status, endorse, pa)
 	require.Nil(t, ledger)
 	require.ErrorContains(t, err, "REDACTED")
 
@@ -1021,60 +1021,60 @@ func VerifyArrangeNominationFaultOnArrangeNominationFault(t *testing.T) {
 //
 //
 //
-func VerifyInstantiateNominationMissingBallotPlugins(t *testing.T) {
+func VerifyGenerateNominationMissingBallotAdditions(t *testing.T) {
 	for _, verifyInstance := range []struct {
-		label string
+		alias string
 
 		//
-		level int64
+		altitude int64
 
 		//
-		additionActivateLevel int64
+		additionActivateAltitude int64
 		anticipateAlarm           bool
 	}{
 		{
-			label:                  "REDACTED",
-			level:                3,
-			additionActivateLevel: 2,
+			alias:                  "REDACTED",
+			altitude:                3,
+			additionActivateAltitude: 2,
 			anticipateAlarm:           true,
 		},
 		{
-			label:                  "REDACTED",
-			level:                3,
-			additionActivateLevel: 3,
+			alias:                  "REDACTED",
+			altitude:                3,
+			additionActivateAltitude: 3,
 			anticipateAlarm:           false,
 		},
 		{
-			label:                  "REDACTED",
-			level:                3,
-			additionActivateLevel: 0,
+			alias:                  "REDACTED",
+			altitude:                3,
+			additionActivateAltitude: 0,
 			anticipateAlarm:           false,
 		},
 		{
-			label:                  "REDACTED",
-			level:                3,
-			additionActivateLevel: 4,
+			alias:                  "REDACTED",
+			altitude:                3,
+			additionActivateAltitude: 4,
 			anticipateAlarm:           false,
 		},
 	} {
-		t.Run(verifyInstance.label, func(t *testing.T) {
+		t.Run(verifyInstance.alias, func(t *testing.T) {
 			ctx := t.Context()
 
-			app := abciemulators.NewSoftware(t)
+			app := abcistubs.FreshPlatform(t)
 			if !verifyInstance.anticipateAlarm {
 				app.On("REDACTED", mock.Anything, mock.Anything).Return(&iface.ReplyArrangeNomination{}, nil)
 			}
-			cc := gateway.NewNativeCustomerOriginator(app)
-			gatewayApplication := gateway.NewApplicationLinks(cc, gateway.NoopStats())
-			err := gatewayApplication.Begin()
+			cc := delegate.FreshRegionalCustomerOriginator(app)
+			delegatePlatform := delegate.FreshPlatformLinks(cc, delegate.NooperationTelemetry())
+			err := delegatePlatform.Initiate()
 			require.NoError(t, err)
 
-			status, statusStore, privateValues := createStatus(1, int(verifyInstance.level-1))
-			statusDepot := sm.NewDepot(statusStore, sm.DepotSettings{
-				DropIfaceReplies: false,
+			status, statusDatastore, privateItems := createStatus(1, int(verifyInstance.altitude-1))
+			statusDepot := sm.FreshDepot(statusDatastore, sm.DepotChoices{
+				EjectIfaceReplies: false,
 			})
-			status.AgreementOptions.Iface.BallotPluginsActivateLevel = verifyInstance.additionActivateLevel
-			mp := &txpoolsims.Txpool{}
+			status.AgreementSettings.Iface.BallotAdditionsActivateAltitude = verifyInstance.additionActivateAltitude
+			mp := &tpmocks.Txpool{}
 			mp.On("REDACTED").Return()
 			mp.On("REDACTED").Return()
 			mp.On("REDACTED", mock.Anything).Return(nil)
@@ -1087,56 +1087,56 @@ func VerifyInstantiateNominationMissingBallotPlugins(t *testing.T) {
 				mock.Anything).Return(nil)
 			mp.On("REDACTED", mock.Anything, mock.Anything).Return(kinds.Txs{})
 
-			ledgerDepot := depot.NewLedgerDepot(dbm.NewMemoryStore())
-			ledgerExecute := sm.NewLedgerRunner(
+			ledgerDepot := depot.FreshLedgerDepot(dbm.FreshMemoryDatastore())
+			ledgerExecute := sm.FreshLedgerHandler(
 				statusDepot,
-				log.NewNoopTracer(),
-				gatewayApplication.Agreement(),
+				log.FreshNooperationTracer(),
+				delegatePlatform.Agreement(),
 				mp,
-				sm.EmptyProofDepository{},
+				sm.VoidProofHub{},
 				ledgerDepot,
 			)
-			ledger, err := createLedger(status, verifyInstance.level, new(kinds.Endorse))
+			ledger, err := createLedger(status, verifyInstance.altitude, new(kinds.Endorse))
 			require.NoError(t, err)
 
-			bps, err := ledger.CreateSegmentAssign(verifySegmentVolume)
+			bps, err := ledger.CreateFragmentAssign(verifyFragmentExtent)
 			require.NoError(t, err)
-			ledgerUID := kinds.LedgerUID{Digest: ledger.Digest(), SegmentAssignHeading: bps.Heading()}
-			pa, _ := status.Ratifiers.FetchByOrdinal(0)
-			finalEndorse, _, _ := createSoundEndorse(verifyInstance.level-1, ledgerUID, status.Ratifiers, privateValues)
-			removeEndorsements(finalEndorse)
+			ledgerUUID := kinds.LedgerUUID{Digest: ledger.Digest(), FragmentAssignHeading: bps.Heading()}
+			pa, _ := status.Assessors.ObtainViaOrdinal(0)
+			finalEndorse, _, _ := createSoundEndorse(verifyInstance.altitude-1, ledgerUUID, status.Assessors, privateItems)
+			removeNotations(finalEndorse)
 			if verifyInstance.anticipateAlarm {
 				require.Panics(t, func() {
-					_, err := ledgerExecute.InstantiateNominationLedger(ctx, verifyInstance.level, status, finalEndorse, pa)
+					_, err := ledgerExecute.GenerateNominationLedger(ctx, verifyInstance.altitude, status, finalEndorse, pa)
 					require.NoError(t, err)
 				})
 			} else {
-				_, err = ledgerExecute.InstantiateNominationLedger(ctx, verifyInstance.level, status, finalEndorse, pa)
+				_, err = ledgerExecute.GenerateNominationLedger(ctx, verifyInstance.altitude, status, finalEndorse, pa)
 				require.NoError(t, err)
 			}
 		})
 	}
 }
 
-func removeEndorsements(ec *kinds.ExpandedEndorse) {
-	for i, endorseSignature := range ec.ExpandedEndorsements {
+func removeNotations(ec *kinds.ExpandedEndorse) {
+	for i, endorseSignature := range ec.ExpandedNotations {
 		endorseSignature.Addition = nil
-		endorseSignature.AdditionAutograph = nil
-		ec.ExpandedEndorsements[i] = endorseSignature
+		endorseSignature.AdditionNotation = nil
+		ec.ExpandedNotations[i] = endorseSignature
 	}
 }
 
-func createLedgerUID(digest []byte, sectionCollectionVolume uint32, sectionCollectionDigest []byte) kinds.LedgerUID {
+func createLedgerUUID(digest []byte, fragmentAssignExtent uint32, fragmentAssignDigest []byte) kinds.LedgerUUID {
 	var (
-		h   = make([]byte, comethash.Volume)
-		psH = make([]byte, comethash.Volume)
+		h   = make([]byte, tenderminthash.Extent)
+		psH = make([]byte, tenderminthash.Extent)
 	)
 	copy(h, digest)
-	copy(psH, sectionCollectionDigest)
-	return kinds.LedgerUID{
+	copy(psH, fragmentAssignDigest)
+	return kinds.LedgerUUID{
 		Digest: h,
-		SegmentAssignHeading: kinds.SegmentAssignHeading{
-			Sum: sectionCollectionVolume,
+		FragmentAssignHeading: kinds.FragmentAssignHeading{
+			Sum: fragmentAssignExtent,
 			Digest:  psH,
 		},
 	}

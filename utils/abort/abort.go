@@ -6,40 +6,40 @@ import (
 	"strconv"
 )
 
-func contextCollection() int {
-	invokeOrdinalToAbortS := os.Getenv("REDACTED")
+func environmentAssign() int {
+	invocationPositionTowardMishapSTR := os.Getenv("REDACTED")
 
-	if invokeOrdinalToAbortS == "REDACTED" {
+	if invocationPositionTowardMishapSTR == "REDACTED" {
 		return -1
 	}
 
 	var err error
-	invokeOrdinalToAbort, err := strconv.Atoi(invokeOrdinalToAbortS)
+	invocationPositionTowardMishap, err := strconv.Atoi(invocationPositionTowardMishapSTR)
 	if err != nil {
 		return -1
 	}
 
-	return invokeOrdinalToAbort
+	return invocationPositionTowardMishap
 }
 
 //
-var invokeOrdinal int //
+var invocationPosition int //
 
-func Abort() {
-	invokeOrdinalToAbort := contextCollection()
-	if invokeOrdinalToAbort < 0 {
+func Mishap() {
+	invocationPositionTowardMishap := environmentAssign()
+	if invocationPositionTowardMishap < 0 {
 		return
 	}
 
-	if invokeOrdinal == invokeOrdinalToAbort {
+	if invocationPosition == invocationPositionTowardMishap {
 		Quit()
 	}
 
-	invokeOrdinal++
+	invocationPosition++
 }
 
 func Quit() {
-	fmt.Printf("REDACTED", invokeOrdinal)
+	fmt.Printf("REDACTED", invocationPosition)
 	os.Exit(1)
 	//
 	//

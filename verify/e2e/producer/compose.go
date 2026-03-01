@@ -1,4 +1,4 @@
-package main
+package primary
 
 import (
 	"errors"
@@ -13,17 +13,17 @@ import (
 	"github.com/go-git/go-git/v5"
 	"github.com/go-git/go-git/v5/plumbing/object"
 
-	"github.com/valkyrieworks/vault/bls12381"
-	"github.com/valkyrieworks/vault/ed25519"
-	"github.com/valkyrieworks/vault/secp256k1"
-	e2e "github.com/valkyrieworks/verify/e2e/pkg"
-	"github.com/valkyrieworks/release"
+	"github.com/valkyrieworks/dffc4ef0-4ec6-4346-9b6c-d0a0cb42d94b/security/signature381"
+	"github.com/valkyrieworks/dffc4ef0-4ec6-4346-9b6c-d0a0cb42d94b/security/edwards25519"
+	"github.com/valkyrieworks/dffc4ef0-4ec6-4346-9b6c-d0a0cb42d94b/security/ellipticp256"
+	e2e "github.com/valkyrieworks/dffc4ef0-4ec6-4346-9b6c-d0a0cb42d94b/verify/e2e/pkg"
+	"github.com/valkyrieworks/dffc4ef0-4ec6-4346-9b6c-d0a0cb42d94b/edition"
 )
 
 var (
 	//
 	//
-	verifychainGroupings = map[string][]any{
+	simnetGroupings = map[string][]any{
 		"REDACTED":      {"REDACTED", "REDACTED", "REDACTED"},
 		"REDACTED": {0, 1000},
 		"REDACTED": {
@@ -32,82 +32,83 @@ var (
 		},
 		"REDACTED": {"REDACTED", "REDACTED"},
 	}
-	memberReleases = scaledOption{
+	peerReleases = burdenedSelection{
 		"REDACTED": 2,
 	}
 
 	//
-	memberDatastores = consistentOption{"REDACTED", "REDACTED", "REDACTED", "REDACTED"}
-	ipv6          = consistentOption{false, true}
+	peerRepositories = consistentSelection{"REDACTED", "REDACTED", "REDACTED", "REDACTED"}
+	inetv6          = consistentSelection{false, true}
 	//
-	memberIfaceProtocols     = consistentOption{"REDACTED", "REDACTED", "REDACTED", "REDACTED"} //
-	memberPrivatekeyProtocols  = consistentOption{"REDACTED", "REDACTED", "REDACTED"}
-	memberLedgerAlignments        = consistentOption{"REDACTED"} //
-	memberStatusAlignments        = consistentOption{false, true}
-	memberEndurePeriods  = consistentOption{0, 1, 5}
-	memberMirrorPeriods = consistentOption{0, 3}
-	memberPreserveLedgers      = consistentOption{
+	peerIfaceSchemes         = consistentSelection{"REDACTED", "REDACTED", "REDACTED", "REDACTED"} //
+	peerPrivatevalueSchemes      = consistentSelection{"REDACTED", "REDACTED", "REDACTED"}
+	peerLedgerAlignments            = consistentSelection{"REDACTED"} //
+	peerLedgerChronizeAggregateStyle = consistentSelection{false, true}
+	peerStatusAlignments            = consistentSelection{false, true}
+	peerEndurePeriods      = consistentSelection{0, 1, 5}
+	peerImagePeriods     = consistentSelection{0, 3}
+	peerPreserveLedgers          = consistentSelection{
 		0,
-		2 * int(e2e.ProofEraLevel),
-		4 * int(e2e.ProofEraLevel),
+		2 * int(e2e.ProofLifespanAltitude),
+		4 * int(e2e.ProofLifespanAltitude),
 	}
-	proof          = consistentOption{0, 1, 10, 20, 200}
-	ifaceLags        = consistentOption{"REDACTED", "REDACTED", "REDACTED"}
-	memberVariations = likelihoodCollectionOption{
+	proof          = consistentSelection{0, 1, 10, 20, 200}
+	ifaceLags        = consistentSelection{"REDACTED", "REDACTED", "REDACTED"}
+	peerDisruptions = likelihoodGroupSelection{
 		"REDACTED": 0.1,
 		"REDACTED":      0.1,
 		"REDACTED":       0.1,
 		"REDACTED":    0.1,
 		"REDACTED":    0.3,
 	}
-	rapidMemberVariations = likelihoodCollectionOption{
+	agilePeerDisruptions = likelihoodGroupSelection{
 		"REDACTED": 0.3,
 	}
-	ballotAdditionModifyLevel = consistentOption{int64(-1), int64(0), int64(1)} //
-	ballotAdditionActivated      = scaledOption{true: 3, false: 1}
-	ballotAdditionLevelDisplacement = consistentOption{int64(0), int64(10), int64(100)}
-	ballotAdditionVolume         = consistentOption{uint(128), uint(512), uint(2048), uint(8192)} //
-	keyKind                   = consistentOption{ed25519.KeyKind, secp256k1.KeyKind, bls12381.KeyKind}
+	ballotAdditionReviseAltitude = consistentSelection{int64(-1), int64(0), int64(1)} //
+	ballotAdditionActivated      = burdenedSelection{true: 3, false: 1}
+	ballotAdditionAltitudeDisplacement = consistentSelection{int64(0), int64(10), int64(100)}
+	ballotAdditionExtent         = consistentSelection{uint(128), uint(512), uint(2048), uint(8192)} //
+	tokenKind                   = consistentSelection{edwards25519.TokenKind, ellipticp256.TokenKind, signature381.TokenKind}
 )
 
 type composeSettings struct {
-	randomOrigin   *rand.Rand
-	resultFolder    string
-	multipleRelease string
-	monitorstats   bool
+	arbitraryOrigin   *rand.Rand
+	emissionPath    string
+	variedEdition string
+	titan   bool
 }
 
 //
 func Compose(cfg *composeSettings) ([]e2e.Declaration, error) {
-	enhanceRelease := "REDACTED"
+	modernizeEdition := "REDACTED"
 
-	if cfg.multipleRelease != "REDACTED" {
+	if cfg.variedEdition != "REDACTED" {
 		var err error
-		memberReleases, enhanceRelease, err = analyzeScaledReleases(cfg.multipleRelease)
+		peerReleases, modernizeEdition, err = analyzeBurdenedReleases(cfg.variedEdition)
 		if err != nil {
 			return nil, err
 		}
-		if _, ok := memberReleases["REDACTED"]; ok {
-			memberReleases["REDACTED"] = memberReleases["REDACTED"]
-			delete(memberReleases, "REDACTED")
-			if enhanceRelease == "REDACTED" {
-				enhanceRelease = "REDACTED"
+		if _, ok := peerReleases["REDACTED"]; ok {
+			peerReleases["REDACTED"] = peerReleases["REDACTED"]
+			delete(peerReleases, "REDACTED")
+			if modernizeEdition == "REDACTED" {
+				modernizeEdition = "REDACTED"
 			}
 		}
-		if _, ok := memberReleases["REDACTED"]; ok {
-			newestRelease, err := gitArchiveNewestDeliveryRelease(cfg.resultFolder)
+		if _, ok := peerReleases["REDACTED"]; ok {
+			newestEdition, err := sourceDepotNewestDeliveryEdition(cfg.emissionPath)
 			if err != nil {
 				return nil, err
 			}
-			memberReleases[newestRelease] = memberReleases["REDACTED"]
-			delete(memberReleases, "REDACTED")
-			if enhanceRelease == "REDACTED" {
-				enhanceRelease = newestRelease
+			peerReleases[newestEdition] = peerReleases["REDACTED"]
+			delete(peerReleases, "REDACTED")
+			if modernizeEdition == "REDACTED" {
+				modernizeEdition = newestEdition
 			}
 		}
 	}
 	fmt.Println("REDACTED")
-	for ver, wt := range memberReleases {
+	for ver, wt := range peerReleases {
 		if ver == "REDACTED" {
 			fmt.Printf("REDACTED", wt)
 		} else {
@@ -115,9 +116,9 @@ func Compose(cfg *composeSettings) ([]e2e.Declaration, error) {
 		}
 	}
 
-	declarations := make([]e2e.Declaration, 0, len(verifychainGroupings))
-	for _, opt := range groupings(verifychainGroupings) {
-		declaration, err := composeVerifychain(cfg.randomOrigin, opt, enhanceRelease, cfg.monitorstats)
+	declarations := make([]e2e.Declaration, 0, len(simnetGroupings))
+	for _, opt := range groupings(simnetGroupings) {
+		declaration, err := composeSimnet(cfg.arbitraryOrigin, opt, modernizeEdition, cfg.titan)
 		if err != nil {
 			return nil, err
 		}
@@ -127,19 +128,19 @@ func Compose(cfg *composeSettings) ([]e2e.Declaration, error) {
 }
 
 //
-func composeVerifychain(r *rand.Rand, opt map[string]any, enhanceRelease string, monitorstats bool) (e2e.Declaration, error) {
+func composeSimnet(r *rand.Rand, opt map[string]any, modernizeEdition string, titan bool) (e2e.Declaration, error) {
 	declaration := e2e.Declaration{
-		IDXIpv6:             ipv6.Select(r).(bool),
-		IfaceProtocol:     memberIfaceProtocols.Select(r).(string),
-		PrimaryLevel:    int64(opt["REDACTED"].(int)),
+		IDXPrv6:             inetv6.Select(r).(bool),
+		IfaceScheme:     peerIfaceSchemes.Select(r).(string),
+		PrimaryAltitude:    int64(opt["REDACTED"].(int)),
 		PrimaryStatus:     opt["REDACTED"].(map[string]string),
-		Ratifiers:       &map[string]int64{},
-		RatifierRefreshes: map[string]map[string]int64{},
-		KeyKind:          keyKind.Select(r).(string),
+		Assessors:       &map[string]int64{},
+		AssessorRevisions: map[string]map[string]int64{},
+		TokenKind:          tokenKind.Select(r).(string),
 		Proof:         proof.Select(r).(int),
-		Instances:            map[string]*e2e.DeclarationMember{},
-		EnhanceRelease:   enhanceRelease,
-		Monitorstats:       monitorstats,
+		Peers:            map[string]*e2e.DeclarationPeer{},
+		ModernizeEdition:   modernizeEdition,
+		Titan:       titan,
 	}
 
 	switch ifaceLags.Select(r).(string) {
@@ -148,67 +149,67 @@ func composeVerifychain(r *rand.Rand, opt map[string]any, enhanceRelease string,
 		declaration.ArrangeNominationDeferral = 100 * time.Millisecond
 		declaration.HandleNominationDeferral = 100 * time.Millisecond
 		declaration.BallotAdditionDeferral = 20 * time.Millisecond
-		declaration.CompleteLedgerDeferral = 200 * time.Millisecond
+		declaration.CulminateLedgerDeferral = 200 * time.Millisecond
 	case "REDACTED":
 		declaration.ArrangeNominationDeferral = 200 * time.Millisecond
 		declaration.HandleNominationDeferral = 200 * time.Millisecond
 		declaration.InspectTransferDeferral = 20 * time.Millisecond
 		declaration.BallotAdditionDeferral = 100 * time.Millisecond
-		declaration.CompleteLedgerDeferral = 500 * time.Millisecond
+		declaration.CulminateLedgerDeferral = 500 * time.Millisecond
 	}
-	declaration.BallotPluginsModifyLevel = ballotAdditionModifyLevel.Select(r).(int64)
-	if declaration.BallotPluginsModifyLevel == 1 {
-		declaration.BallotPluginsModifyLevel = declaration.PrimaryLevel + ballotAdditionLevelDisplacement.Select(r).(int64)
+	declaration.BallotAdditionsReviseAltitude = ballotAdditionReviseAltitude.Select(r).(int64)
+	if declaration.BallotAdditionsReviseAltitude == 1 {
+		declaration.BallotAdditionsReviseAltitude = declaration.PrimaryAltitude + ballotAdditionAltitudeDisplacement.Select(r).(int64)
 	}
 	if ballotAdditionActivated.Select(r).(bool) {
-		rootLevel := max(declaration.BallotPluginsModifyLevel+1, declaration.PrimaryLevel)
-		declaration.BallotPluginsActivateLevel = rootLevel + ballotAdditionLevelDisplacement.Select(r).(int64)
+		foundationAltitude := max(declaration.BallotAdditionsReviseAltitude+1, declaration.PrimaryAltitude)
+		declaration.BallotAdditionsActivateAltitude = foundationAltitude + ballotAdditionAltitudeDisplacement.Select(r).(int64)
 	}
 
-	declaration.BallotAdditionVolume = ballotAdditionVolume.Select(r).(uint)
+	declaration.BallotAdditionExtent = ballotAdditionExtent.Select(r).(uint)
 
-	var countOrigins, countRatifiers, countEntireties, countRapidAgents int
+	var countOrigins, countAssessors, countComplete, countAgileCustomers int
 	switch opt["REDACTED"].(string) {
 	case "REDACTED":
-		countRatifiers = 1
+		countAssessors = 1
 	case "REDACTED":
-		countRatifiers = 4
+		countAssessors = 4
 	case "REDACTED":
 		//
 		countOrigins = r.Intn(2)
-		countRapidAgents = r.Intn(3)
-		countRatifiers = 4 + r.Intn(4)
-		countEntireties = r.Intn(4)
+		countAgileCustomers = r.Intn(3)
+		countAssessors = 4 + r.Intn(4)
+		countComplete = r.Intn(4)
 	default:
 		return declaration, fmt.Errorf("REDACTED", opt["REDACTED"])
 	}
 
 	//
 	for i := 1; i <= countOrigins; i++ {
-		declaration.Instances[fmt.Sprintf("REDACTED", i)] = composeMember(
-			r, e2e.StyleOrigin, 0, false)
+		declaration.Peers[fmt.Sprintf("REDACTED", i)] = composePeer(
+			r, e2e.StyleGerm, 0, false)
 	}
 
 	//
 	//
 	//
-	followingBeginAt := declaration.PrimaryLevel + 5
-	assembly := countRatifiers*2/3 + 1
-	for i := 1; i <= countRatifiers; i++ {
-		beginAt := int64(0)
+	followingInitiateLocated := declaration.PrimaryAltitude + 5
+	assembly := countAssessors*2/3 + 1
+	for i := 1; i <= countAssessors; i++ {
+		initiateLocated := int64(0)
 		if i > assembly {
-			beginAt = followingBeginAt
-			followingBeginAt += 5
+			initiateLocated = followingInitiateLocated
+			followingInitiateLocated += 5
 		}
-		label := fmt.Sprintf("REDACTED", i)
-		declaration.Instances[label] = composeMember(
-			r, e2e.StyleRatifier, beginAt, i <= 2)
+		alias := fmt.Sprintf("REDACTED", i)
+		declaration.Peers[alias] = composePeer(
+			r, e2e.StyleAssessor, initiateLocated, i <= 2)
 
-		if beginAt == 0 {
-			(*declaration.Ratifiers)[label] = int64(30 + r.Intn(71))
+		if initiateLocated == 0 {
+			(*declaration.Assessors)[alias] = int64(30 + r.Intn(71))
 		} else {
-			declaration.RatifierRefreshes[fmt.Sprint(beginAt+5)] = map[string]int64{
-				label: int64(30 + r.Intn(71)),
+			declaration.AssessorRevisions[fmt.Sprint(initiateLocated+5)] = map[string]int64{
+				alias: int64(30 + r.Intn(71)),
 			}
 		}
 	}
@@ -217,72 +218,72 @@ func composeVerifychain(r *rand.Rand, opt map[string]any, enhanceRelease string,
 	switch opt["REDACTED"].(string) {
 	case "REDACTED":
 	case "REDACTED":
-		declaration.RatifierRefreshes["REDACTED"] = *declaration.Ratifiers
-		declaration.Ratifiers = &map[string]int64{}
+		declaration.AssessorRevisions["REDACTED"] = *declaration.Assessors
+		declaration.Assessors = &map[string]int64{}
 	default:
 		return declaration, fmt.Errorf("REDACTED", opt["REDACTED"])
 	}
 
 	//
-	for i := 1; i <= countEntireties; i++ {
-		beginAt := int64(0)
+	for i := 1; i <= countComplete; i++ {
+		initiateLocated := int64(0)
 		if r.Float64() >= 0.5 {
-			beginAt = followingBeginAt
-			followingBeginAt += 5
+			initiateLocated = followingInitiateLocated
+			followingInitiateLocated += 5
 		}
-		declaration.Instances[fmt.Sprintf("REDACTED", i)] = composeMember(
-			r, e2e.StyleComplete, beginAt, false)
+		declaration.Peers[fmt.Sprintf("REDACTED", i)] = composePeer(
+			r, e2e.StyleComplete, initiateLocated, false)
 	}
 
 	//
 	//
 	//
-	var originLabels, nodeLabels, rapidSources []string
-	for label, member := range declaration.Instances {
-		if member.Style == string(e2e.StyleOrigin) {
-			originLabels = append(originLabels, label)
+	var germIdentifiers, nodeIdentifiers, agileSuppliers []string
+	for alias, peer := range declaration.Peers {
+		if peer.Style == string(e2e.StyleGerm) {
+			germIdentifiers = append(germIdentifiers, alias)
 		} else {
 			//
 			//
-			if (member.BeginAt == 0 || member.BeginAt == declaration.PrimaryLevel) && member.PreserveLedgers == 0 {
-				rapidSources = append(rapidSources, label)
+			if (peer.InitiateLocated == 0 || peer.InitiateLocated == declaration.PrimaryAltitude) && peer.PreserveLedgers == 0 {
+				agileSuppliers = append(agileSuppliers, alias)
 			}
-			nodeLabels = append(nodeLabels, label)
+			nodeIdentifiers = append(nodeIdentifiers, alias)
 		}
 	}
 
-	for _, label := range originLabels {
-		for _, anotherLabel := range originLabels {
-			if label != anotherLabel {
-				declaration.Instances[label].Origins = append(declaration.Instances[label].Origins, anotherLabel)
+	for _, alias := range germIdentifiers {
+		for _, anotherAlias := range germIdentifiers {
+			if alias != anotherAlias {
+				declaration.Peers[alias].Origins = append(declaration.Peers[alias].Origins, anotherAlias)
 			}
 		}
 	}
 
-	sort.Slice(nodeLabels, func(i, j int) bool {
-		idxLabel, idx2Label := nodeLabels[i], nodeLabels[j]
+	sort.Slice(nodeIdentifiers, func(i, j int) bool {
+		idxAlias, jthAlias := nodeIdentifiers[i], nodeIdentifiers[j]
 		switch {
-		case declaration.Instances[idxLabel].BeginAt < declaration.Instances[idx2Label].BeginAt:
+		case declaration.Peers[idxAlias].InitiateLocated < declaration.Peers[jthAlias].InitiateLocated:
 			return true
-		case declaration.Instances[idxLabel].BeginAt > declaration.Instances[idx2Label].BeginAt:
+		case declaration.Peers[idxAlias].InitiateLocated > declaration.Peers[jthAlias].InitiateLocated:
 			return false
 		default:
-			return strings.Compare(idxLabel, idx2Label) == -1
+			return strings.Compare(idxAlias, jthAlias) == -1
 		}
 	})
-	for i, label := range nodeLabels {
-		if len(originLabels) > 0 && (i == 0 || r.Float64() >= 0.5) {
-			declaration.Instances[label].Origins = consistentCollectionOption(originLabels).Select(r)
+	for i, alias := range nodeIdentifiers {
+		if len(germIdentifiers) > 0 && (i == 0 || r.Float64() >= 0.5) {
+			declaration.Peers[alias].Origins = consistentGroupSelection(germIdentifiers).Select(r)
 		} else if i > 0 {
-			declaration.Instances[label].DurableNodes = consistentCollectionOption(nodeLabels[:i]).Select(r)
+			declaration.Peers[alias].EnduringNodes = consistentGroupSelection(nodeIdentifiers[:i]).Select(r)
 		}
 	}
 
 	//
-	for i := 1; i <= countRapidAgents; i++ {
-		beginAt := declaration.PrimaryLevel + 5
-		declaration.Instances[fmt.Sprintf("REDACTED", i)] = composeRapidMember(
-			r, beginAt+(5*int64(i)), rapidSources,
+	for i := 1; i <= countAgileCustomers; i++ {
+		initiateLocated := declaration.PrimaryAltitude + 5
+		declaration.Peers[fmt.Sprintf("REDACTED", i)] = composeAgilePeer(
+			r, initiateLocated+(5*int64(i)), agileSuppliers,
 		)
 	}
 
@@ -293,67 +294,68 @@ func composeVerifychain(r *rand.Rand, opt map[string]any, enhanceRelease string,
 //
 //
 //
-func composeMember(
-	r *rand.Rand, style e2e.Style, beginAt int64, compelRepository bool,
-) *e2e.DeclarationMember {
-	member := e2e.DeclarationMember{
-		Release:          memberReleases.Select(r).(string),
-		Style:             string(style),
-		BeginAt:          beginAt,
-		Datastore:         memberDatastores.Select(r).(string),
-		PrivatekeyProtocol:  memberPrivatekeyProtocols.Select(r).(string),
-		LedgerAlignRelease: memberLedgerAlignments.Select(r).(string),
-		StatusAlign:        memberStatusAlignments.Select(r).(bool) && beginAt > 0,
-		EndureCadence:  pointerUint64(uint64(memberEndurePeriods.Select(r).(int))),
-		MirrorCadence: uint64(memberMirrorPeriods.Select(r).(int)),
-		PreserveLedgers:     uint64(memberPreserveLedgers.Select(r).(int)),
-		Vary:          memberVariations.Select(r),
+func composePeer(
+	r *rand.Rand, style e2e.Style, initiateLocated int64, compelRepository bool,
+) *e2e.DeclarationPeer {
+	peer := e2e.DeclarationPeer{
+		Edition:               peerReleases.Select(r).(string),
+		Style:                  string(style),
+		InitiateLocated:               initiateLocated,
+		Repository:              peerRepositories.Select(r).(string),
+		PrivatevalueScheme:       peerPrivatevalueSchemes.Select(r).(string),
+		LedgerChronizeEdition:      peerLedgerAlignments.Select(r).(string),
+		LedgerChronizeAggregateStyle: peerLedgerChronizeAggregateStyle.Select(r).(bool),
+		StatusChronize:             peerStatusAlignments.Select(r).(bool) && initiateLocated > 0,
+		EndureDuration:       referenceUint64n(uint64(peerEndurePeriods.Select(r).(int))),
+		ImageDuration:      uint64(peerImagePeriods.Select(r).(int)),
+		PreserveLedgers:          uint64(peerPreserveLedgers.Select(r).(int)),
+		Disrupt:               peerDisruptions.Select(r),
 	}
 
 	//
 	//
 	if compelRepository {
-		member.PreserveLedgers = 0
-		member.MirrorCadence = 3
+		peer.PreserveLedgers = 0
+		peer.ImageDuration = 3
 	}
 
 	//
 	//
-	if member.EndureCadence != nil && *member.EndureCadence == 0 && member.PreserveLedgers > 0 {
+	if peer.EndureDuration != nil && *peer.EndureDuration == 0 && peer.PreserveLedgers > 0 {
 		if r.Float64() > 0.5 {
-			member.PreserveLedgers = 0
+			peer.PreserveLedgers = 0
 		} else {
-			member.EndureCadence = pointerUint64(member.PreserveLedgers)
+			peer.EndureDuration = referenceUint64n(peer.PreserveLedgers)
 		}
 	}
 
 	//
 	//
-	if member.PreserveLedgers > 0 {
-		if member.EndureCadence != nil && member.PreserveLedgers < *member.EndureCadence {
-			member.PreserveLedgers = *member.EndureCadence
+	if peer.PreserveLedgers > 0 {
+		if peer.EndureDuration != nil && peer.PreserveLedgers < *peer.EndureDuration {
+			peer.PreserveLedgers = *peer.EndureDuration
 		}
-		if member.PreserveLedgers < member.MirrorCadence {
-			member.PreserveLedgers = member.MirrorCadence
+		if peer.PreserveLedgers < peer.ImageDuration {
+			peer.PreserveLedgers = peer.ImageDuration
 		}
 	}
 
-	return &member
+	return &peer
 }
 
-func composeRapidMember(r *rand.Rand, beginAt int64, sources []string) *e2e.DeclarationMember {
-	return &e2e.DeclarationMember{
-		Style:            string(e2e.StyleRapid),
-		Release:         memberReleases.Select(r).(string),
-		BeginAt:         beginAt,
-		Datastore:        memberDatastores.Select(r).(string),
-		EndureCadence: pointerUint64(0),
-		DurableNodes: sources,
-		Vary:         rapidMemberVariations.Select(r),
+func composeAgilePeer(r *rand.Rand, initiateLocated int64, suppliers []string) *e2e.DeclarationPeer {
+	return &e2e.DeclarationPeer{
+		Style:            string(e2e.StyleAgile),
+		Edition:         peerReleases.Select(r).(string),
+		InitiateLocated:         initiateLocated,
+		Repository:        peerRepositories.Select(r).(string),
+		EndureDuration: referenceUint64n(0),
+		EnduringNodes: suppliers,
+		Disrupt:         agilePeerDisruptions.Select(r),
 	}
 }
 
-func pointerUint64(i uint64) *uint64 {
+func referenceUint64n(i uint64) *uint64 {
 	return &i
 }
 
@@ -363,120 +365,120 @@ func pointerUint64(i uint64) *uint64 {
 //
 //
 //
-func analyzeScaledReleases(s string) (scaledOption, string, error) {
-	wc := make(scaledOption)
-	var finalRelease string
+func analyzeBurdenedReleases(s string) (burdenedSelection, string, error) {
+	wc := make(burdenedSelection)
+	var finalEdition string
 
-	records := strings.Split(strings.TrimSpace(s), "REDACTED")
+	listings := strings.Split(strings.TrimSpace(s), "REDACTED")
 
-	for _, entry := range records {
-		segments := strings.Split(strings.TrimSpace(entry), "REDACTED")
+	for _, record := range listings {
+		fragments := strings.Split(strings.TrimSpace(record), "REDACTED")
 
 		var ver string
-		switch len(segments) {
+		switch len(fragments) {
 		case 2:
 			//
 			ver = strings.TrimSpace(
-				strings.Join([]string{"REDACTED", segments[0]}, "REDACTED"),
+				strings.Join([]string{"REDACTED", fragments[0]}, "REDACTED"),
 			)
 		case 3:
 			//
 			ver = strings.TrimSpace(
-				strings.Join([]string{segments[0], segments[1]}, "REDACTED"),
+				strings.Join([]string{fragments[0], fragments[1]}, "REDACTED"),
 			)
 		default:
 			return nil, "REDACTED", fmt.Errorf(
 				"REDACTED",
-				entry,
+				record,
 			)
 		}
 
-		magnitudeStr := strings.TrimSpace(segments[len(segments)-1])
-		magnitude, err := strconv.Atoi(magnitudeStr)
+		loadTxt := strings.TrimSpace(fragments[len(fragments)-1])
+		load, err := strconv.Atoi(loadTxt)
 		if err != nil {
-			return nil, "REDACTED", fmt.Errorf("REDACTED", magnitudeStr, err)
+			return nil, "REDACTED", fmt.Errorf("REDACTED", loadTxt, err)
 		}
 
-		if magnitude < 1 {
+		if load < 1 {
 			return nil, "REDACTED", errors.New("REDACTED")
 		}
 
-		wc[ver] = uint(magnitude)
-		finalRelease = ver
+		wc[ver] = uint(load)
+		finalEdition = ver
 	}
 
-	return wc, finalRelease, nil
+	return wc, finalEdition, nil
 }
 
 //
 //
 //
-func gitArchiveNewestDeliveryRelease(gitArchiveFolder string) (string, error) {
-	opts := &git.PlainOpenOptions{
+func sourceDepotNewestDeliveryEdition(sourceDepotPath string) (string, error) {
+	choices := &git.PlainOpenOptions{
 		DetectDotGit: true,
 	}
-	r, err := git.PlainOpenWithOptions(gitArchiveFolder, opts)
+	r, err := git.PlainOpenWithOptions(sourceDepotPath, choices)
 	if err != nil {
 		return "REDACTED", err
 	}
 	labels := make([]string, 0)
-	labelItems, err := r.TagObjects()
+	labelEntities, err := r.TagObjects()
 	if err != nil {
 		return "REDACTED", err
 	}
-	err = labelItems.ForEach(func(labelItem *object.Tag) error {
-		labels = append(labels, labelItem.Name)
+	err = labelEntities.ForEach(func(labelEntity *object.Tag) error {
+		labels = append(labels, labelEntity.Name)
 		return nil
 	})
 	if err != nil {
 		return "REDACTED", err
 	}
-	return locateNewestDeliveryLabel(release.TMCoreSemaphoreRev, labels)
+	return locateNewestDeliveryLabel(edition.TEMPBaseSemaphoreEdtn, labels)
 }
 
-func locateNewestDeliveryLabel(rootRev string, labels []string) (string, error) {
-	rootSemaphoreRev, err := semver.NewVersion(strings.Split(rootRev, "REDACTED")[0])
+func locateNewestDeliveryLabel(foundationEdtn string, labels []string) (string, error) {
+	foundationSemaphoreEdtn, err := semver.NewVersion(strings.Split(foundationEdtn, "REDACTED")[0])
 	if err != nil {
-		return "REDACTED", fmt.Errorf("REDACTED", rootRev, err)
+		return "REDACTED", fmt.Errorf("REDACTED", foundationEdtn, err)
 	}
-	componentRev := fmt.Sprintf("REDACTED", rootSemaphoreRev.Major(), rootSemaphoreRev.Minor())
+	componentEdtn := fmt.Sprintf("REDACTED", foundationSemaphoreEdtn.Major(), foundationSemaphoreEdtn.Minor())
 	//
 	//
-	componentStr := "REDACTED" + componentRev
-	revConnect, err := semver.NewConstraint(componentStr)
+	componentTxt := "REDACTED" + componentEdtn
+	edtnConnection, err := semver.NewConstraint(componentTxt)
 	if err != nil {
 		return "REDACTED", err
 	}
-	var newestRev *semver.Version
+	var newestEdtn *semver.Version
 	for _, tag := range labels {
 		if !strings.HasPrefix(tag, "REDACTED") {
 			continue
 		}
-		currentRev, err := semver.NewVersion(tag)
+		currentEdtn, err := semver.NewVersion(tag)
 		//
 		if err != nil {
 			continue
 		}
 		//
-		if len(currentRev.Prerelease()) != 0 {
+		if len(currentEdtn.Prerelease()) != 0 {
 			continue
 		}
 		//
-		if !revConnect.Check(currentRev) {
+		if !edtnConnection.Check(currentEdtn) {
 			continue
 		}
-		if newestRev == nil || currentRev.GreaterThan(newestRev) {
-			newestRev = currentRev
+		if newestEdtn == nil || currentEdtn.GreaterThan(newestEdtn) {
+			newestEdtn = currentEdtn
 		}
 	}
 	//
 	//
-	if newestRev == nil {
+	if newestEdtn == nil {
 		return "REDACTED", nil
 	}
 	//
 	//
-	vs := newestRev.String()
+	vs := newestEdtn.String()
 	if !strings.HasPrefix(vs, "REDACTED") {
 		return "REDACTED" + vs, nil
 	}

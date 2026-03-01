@@ -9,23 +9,23 @@ import (
 	"github.com/cosmos/gogoproto/proto"
 	"github.com/stretchr/testify/assert"
 
-	engineproto "github.com/valkyrieworks/schema/consensuscore/kinds"
+	commitchema "github.com/valkyrieworks/dffc4ef0-4ec6-4346-9b6c-d0a0cb42d94b/schema/strongmind/kinds"
 )
 
-func VerifySerializeJSON(t *testing.T) {
-	b, err := json.Marshal(&InvokeTransferOutcome{Code: 1})
+func VerifySerializeJSN(t *testing.T) {
+	b, err := json.Marshal(&InvokeTransferOutcome{Cipher: 1})
 	assert.NoError(t, err)
 	//
 	assert.True(t, strings.Contains(string(b), "REDACTED"))
 	r1 := ReplyInspectTransfer{
-		Code:      1,
+		Cipher:      1,
 		Data:      []byte("REDACTED"),
 		FuelDesired: 43,
-		Events: []Event{
+		Incidents: []Incident{
 			{
 				Kind: "REDACTED",
-				Properties: []EventProperty{
-					{Key: "REDACTED", Item: "REDACTED"},
+				Properties: []IncidentProperty{
+					{Key: "REDACTED", Datum: "REDACTED"},
 				},
 			},
 		},
@@ -39,60 +39,60 @@ func VerifySerializeJSON(t *testing.T) {
 	assert.Equal(t, r1, r2)
 }
 
-func VerifyRecordFetchSignalBasic(t *testing.T) {
+func VerifyPersistFetchArtifactPlain(t *testing.T) {
 	scenarios := []proto.Message{
-		&QueryReverberate{
+		&SolicitReverberate{
 			Signal: "REDACTED",
 		},
 	}
 
 	for _, c := range scenarios {
 		buf := new(bytes.Buffer)
-		err := RecordSignal(c, buf)
+		err := PersistArtifact(c, buf)
 		assert.Nil(t, err)
 
-		msg := new(QueryReverberate)
-		err = FetchSignal(buf, msg)
+		msg := new(SolicitReverberate)
+		err = FetchArtifact(buf, msg)
 		assert.Nil(t, err)
 
 		assert.True(t, proto.Equal(c, msg))
 	}
 }
 
-func VerifyRecordFetchSignal(t *testing.T) {
+func VerifyPersistFetchArtifact(t *testing.T) {
 	scenarios := []proto.Message{
-		&engineproto.Heading{
-			Level:  4,
-			LedgerUID: "REDACTED",
+		&commitchema.Heading{
+			Altitude:  4,
+			SuccessionUUID: "REDACTED",
 		},
 		//
 	}
 
 	for _, c := range scenarios {
 		buf := new(bytes.Buffer)
-		err := RecordSignal(c, buf)
+		err := PersistArtifact(c, buf)
 		assert.Nil(t, err)
 
-		msg := new(engineproto.Heading)
-		err = FetchSignal(buf, msg)
+		msg := new(commitchema.Heading)
+		err = FetchArtifact(buf, msg)
 		assert.Nil(t, err)
 
 		assert.True(t, proto.Equal(c, msg))
 	}
 }
 
-func VerifyRecordFetchSignal2(t *testing.T) {
+func VerifyPersistFetchSignal2(t *testing.T) {
 	expression := "REDACTED"
 	scenarios := []proto.Message{
 		&ReplyInspectTransfer{
 			Data:      []byte(expression),
 			Log:       expression,
 			FuelDesired: 10,
-			Events: []Event{
+			Incidents: []Incident{
 				{
 					Kind: "REDACTED",
-					Properties: []EventProperty{
-						{Key: "REDACTED", Item: "REDACTED"},
+					Properties: []IncidentProperty{
+						{Key: "REDACTED", Datum: "REDACTED"},
 					},
 				},
 			},
@@ -102,11 +102,11 @@ func VerifyRecordFetchSignal2(t *testing.T) {
 
 	for _, c := range scenarios {
 		buf := new(bytes.Buffer)
-		err := RecordSignal(c, buf)
+		err := PersistArtifact(c, buf)
 		assert.Nil(t, err)
 
 		msg := new(ReplyInspectTransfer)
-		err = FetchSignal(buf, msg)
+		err = FetchArtifact(buf, msg)
 		assert.Nil(t, err)
 
 		assert.True(t, proto.Equal(c, msg))

@@ -6,13 +6,13 @@ import (
 	"testing"
 	"time"
 
-	abciemulate "github.com/valkyrieworks/iface/customer/simulations"
-	iface "github.com/valkyrieworks/iface/kinds"
-	"github.com/valkyrieworks/settings"
-	"github.com/valkyrieworks/utils/log"
-	"github.com/valkyrieworks/utils/random"
-	"github.com/valkyrieworks/p2p"
-	"github.com/valkyrieworks/kinds"
+	ifacemimic "github.com/valkyrieworks/dffc4ef0-4ec6-4346-9b6c-d0a0cb42d94b/iface/customer/simulations"
+	iface "github.com/valkyrieworks/dffc4ef0-4ec6-4346-9b6c-d0a0cb42d94b/iface/kinds"
+	"github.com/valkyrieworks/dffc4ef0-4ec6-4346-9b6c-d0a0cb42d94b/settings"
+	"github.com/valkyrieworks/dffc4ef0-4ec6-4346-9b6c-d0a0cb42d94b/utils/log"
+	"github.com/valkyrieworks/dffc4ef0-4ec6-4346-9b6c-d0a0cb42d94b/utils/arbitrary"
+	"github.com/valkyrieworks/dffc4ef0-4ec6-4346-9b6c-d0a0cb42d94b/p2p"
+	"github.com/valkyrieworks/dffc4ef0-4ec6-4346-9b6c-d0a0cb42d94b/kinds"
 	"github.com/stretchr/testify/mock"
 	"github.com/stretchr/testify/require"
 )
@@ -20,38 +20,38 @@ import (
 func VerifyApplicationHandler(t *testing.T) {
 	const (
 		deadline  = 5 * time.Second
-		cadence = 200 * time.Millisecond
+		duration = 200 * time.Millisecond
 	)
 
 	sooner := func(fn func() bool) {
-		require.Eventually(t, fn, deadline, cadence)
+		require.Eventually(t, fn, deadline, duration)
 	}
 
 	//
 	//
 	var (
-		memberA = newApplicationHandlerMember(t, "REDACTED")
-		memberBYTE = newApplicationHandlerMember(t, "REDACTED")
-		memberC = newApplicationHandlerMember(t, "REDACTED")
-		instances = []*applicationHandlerMember{memberA, memberBYTE, memberC}
+		peerAN = freshApplicationHandlerPeer(t, "REDACTED")
+		peerBYTE = freshApplicationHandlerPeer(t, "REDACTED")
+		peerCN = freshApplicationHandlerPeer(t, "REDACTED")
+		peers = []*applicationHandlerPeer{peerAN, peerBYTE, peerCN}
 	)
 
 	//
-	onBegin := func(i int, s *p2p.Router) *p2p.Router {
-		s.AppendHandler("REDACTED", instances[i].handler)
+	uponInitiate := func(i int, s *p2p.Router) *p2p.Router {
+		s.AppendHandler("REDACTED", peers[i].handler)
 		return s
 	}
 
-	routers := p2p.CreateLinkedRouters(settings.VerifySettings().P2P, len(instances), onBegin, p2p.Connect2routers)
+	routers := p2p.CreateAssociatedRouters(settings.VerifySettings().P2P, len(peers), uponInitiate, p2p.Connect2routers)
 
-	for i, member := range instances {
-		member.sw = routers[i]
-		member.handler.ActivateInOutTrans()
+	for i, peer := range peers {
+		peer.sw = routers[i]
+		peer.handler.ActivateInsideOutputTrans()
 	}
 
 	defer func() {
-		for _, member := range instances {
-			if err := member.sw.Halt(); err != nil {
+		for _, peer := range peers {
+			if err := peer.sw.Halt(); err != nil {
 				require.NoError(t, err)
 			}
 		}
@@ -67,15 +67,15 @@ func VerifyApplicationHandler(t *testing.T) {
 		kinds.Tx("REDACTED"),
 	}
 	for _, tx := range trans1 {
-		err := memberA.txpool.EmbedTransfer(tx)
+		err := peerAN.txpool.AppendTransfer(tx)
 		require.NoError(t, err, "REDACTED", tx)
 	}
 
 	//
 	//
 	sooner(func() bool {
-		accepted := memberBYTE.fetchAcceptedTrans()
-		return transInclude(accepted, trans1)
+		accepted := peerBYTE.fetchAcceptedTrans()
+		return transHold(accepted, trans1)
 	})
 
 	//
@@ -88,113 +88,113 @@ func VerifyApplicationHandler(t *testing.T) {
 		kinds.Tx("REDACTED"),
 	}
 	for _, tx := range trans2 {
-		err := memberBYTE.txpool.EmbedTransfer(tx)
+		err := peerBYTE.txpool.AppendTransfer(tx)
 		require.NoError(t, err, "REDACTED", tx)
 	}
 
 	//
 	//
 	sooner(func() bool {
-		accepted := memberA.fetchAcceptedTrans()
-		return transInclude(accepted, trans2)
+		accepted := peerAN.fetchAcceptedTrans()
+		return transHold(accepted, trans2)
 	})
 
 	//
 	//
 	//
-	allTrans := append(trans1, trans2...)
+	everyTrans := append(trans1, trans2...)
 	sooner(func() bool {
-		acceptedA := memberA.fetchAcceptedTrans()
-		acceptedBYTE := memberBYTE.fetchAcceptedTrans()
-		acceptedC := memberC.fetchAcceptedTrans()
-		return transInclude(acceptedA, allTrans) &&
-			transInclude(acceptedBYTE, allTrans) &&
-			transInclude(acceptedC, allTrans)
+		acceptedAN := peerAN.fetchAcceptedTrans()
+		acceptedBYTE := peerBYTE.fetchAcceptedTrans()
+		acceptedCN := peerCN.fetchAcceptedTrans()
+		return transHold(acceptedAN, everyTrans) &&
+			transHold(acceptedBYTE, everyTrans) &&
+			transHold(acceptedCN, everyTrans)
 	})
 
 	//
-	require.False(t, hasReplicates(memberA.fetchAcceptedTrans()))
-	require.False(t, hasReplicates(memberBYTE.fetchAcceptedTrans()))
-	require.False(t, hasReplicates(memberC.fetchAcceptedTrans()))
+	require.False(t, ownsReplicas(peerAN.fetchAcceptedTrans()))
+	require.False(t, ownsReplicas(peerBYTE.fetchAcceptedTrans()))
+	require.False(t, ownsReplicas(peerCN.fetchAcceptedTrans()))
 }
 
 func VerifySegmentTrans(t *testing.T) {
-	createTransfer := func(volume int) kinds.Tx {
-		return kinds.Tx(random.Octets(volume))
+	createTransfer := func(extent int) kinds.Tx {
+		return kinds.Tx(arbitrary.Octets(extent))
 	}
 
-	toTrans := func(extents []int) kinds.Txs {
+	towardTrans := func(extents []int) kinds.Txs {
 		txs := make([]kinds.Tx, 0, len(extents))
-		for _, volume := range extents {
-			txs = append(txs, createTransfer(volume))
+		for _, extent := range extents {
+			txs = append(txs, createTransfer(extent))
 		}
 		return txs
 	}
 
 	for _, tt := range []struct {
-		label   string
+		alias   string
 		influx  []int
-		volume   int
-		result [][]int
+		extent   int
+		emission [][]int
 	}{
 		{
-			label:   "REDACTED",
+			alias:   "REDACTED",
 			influx:  []int{100},
-			volume:   200,
-			result: [][]int{{100}},
+			extent:   200,
+			emission: [][]int{{100}},
 		},
 		{
-			label:   "REDACTED",
+			alias:   "REDACTED",
 			influx:  []int{100},
-			volume:   50,
-			result: [][]int{{100}},
+			extent:   50,
+			emission: [][]int{{100}},
 		},
 		{
-			label:   "REDACTED",
+			alias:   "REDACTED",
 			influx:  []int{100, 100, 100},
-			volume:   200,
-			result: [][]int{{100, 100}, {100}},
+			extent:   200,
+			emission: [][]int{{100, 100}, {100}},
 		},
 		{
-			label:   "REDACTED",
+			alias:   "REDACTED",
 			influx:  []int{100, 100, 100},
-			volume:   100,
-			result: [][]int{{100}, {100}, {100}},
+			extent:   100,
+			emission: [][]int{{100}, {100}, {100}},
 		},
 		{
-			label:   "REDACTED",
+			alias:   "REDACTED",
 			influx:  []int{101, 20, 30, 50, 2, 102, 3},
-			volume:   100,
-			result: [][]int{{101}, {20, 30, 50}, {2}, {102}, {3}},
+			extent:   100,
+			emission: [][]int{{101}, {20, 30, 50}, {2}, {102}, {3}},
 		},
 	} {
-		t.Run(tt.label, func(t *testing.T) {
+		t.Run(tt.alias, func(t *testing.T) {
 			//
-			influx := toTrans(tt.influx)
+			influx := towardTrans(tt.influx)
 
-			anticipated := make([]kinds.Txs, 0, len(tt.result))
-			for _, segment := range tt.result {
-				anticipated = append(anticipated, toTrans(segment))
+			anticipated := make([]kinds.Txs, 0, len(tt.emission))
+			for _, segment := range tt.emission {
+				anticipated = append(anticipated, towardTrans(segment))
 			}
 
 			//
-			factual := segmentTrans(influx, tt.volume)
+			existing := segmentTrans(influx, tt.extent)
 
 			//
-			require.Equal(t, len(anticipated), len(factual), "REDACTED")
+			require.Equal(t, len(anticipated), len(existing), "REDACTED")
 
-			for i, segment := range factual {
+			for i, segment := range existing {
 				require.Equal(t, len(anticipated[i]), len(segment), "REDACTED", i)
 			}
 		})
 	}
 }
 
-type applicationHandlerMember struct {
+type applicationHandlerPeer struct {
 	t    *testing.T
-	label string
+	alias string
 
-	app     *abciemulate.Customer
+	app     *ifacemimic.Customer
 	txpool *ApplicationTxpool
 	handler *ApplicationHandler
 	sw      *p2p.Router
@@ -206,35 +206,35 @@ type applicationHandlerMember struct {
 	tracer log.Tracer
 }
 
-func newApplicationHandlerMember(t *testing.T, label string) *applicationHandlerMember {
+func freshApplicationHandlerPeer(t *testing.T, alias string) *applicationHandlerPeer {
 	settings := settings.VerifySettings()
-	tracer := log.VerifyingTracer().With("REDACTED", label)
-	app := abciemulate.NewCustomer(t)
+	tracer := log.VerifyingTracer().Using("REDACTED", alias)
+	app := ifacemimic.FreshCustomer(t)
 
-	txpool := NewApplicationTxpool(
+	txpool := FreshApplicationTxpool(
 		settings.Txpool,
 		app,
-		WithMorningTracer(tracer.With("REDACTED", "REDACTED")),
+		UsingMorningTracer(tracer.Using("REDACTED", "REDACTED")),
 	)
 
-	handler := NewApplicationHandler(settings.Txpool, txpool, true)
-	handler.AssignTracer(tracer.With("REDACTED", "REDACTED"))
+	handler := FreshApplicationHandler(settings.Txpool, txpool, true)
+	handler.AssignTracer(tracer.Using("REDACTED", "REDACTED"))
 
-	ts := &applicationHandlerMember{
+	ts := &applicationHandlerPeer{
 		t:       t,
-		label:    label,
+		alias:    alias,
 		app:     app,
 		txpool: txpool,
 		handler: handler,
 		tracer:  tracer,
 	}
 
-	ts.configureApplicationEmulate()
+	ts.configureApplicationSimulate()
 
 	return ts
 }
 
-func (ts *applicationHandlerMember) embedTransfer(tx kinds.Tx) {
+func (ts *applicationHandlerPeer) appendTransfer(tx kinds.Tx) {
 	ts.mu.Lock()
 	defer ts.mu.Unlock()
 
@@ -244,7 +244,7 @@ func (ts *applicationHandlerMember) embedTransfer(tx kinds.Tx) {
 	ts.acceptedTrans = append(ts.acceptedTrans, tx)
 }
 
-func (ts *applicationHandlerMember) harvestTrans() kinds.Txs {
+func (ts *applicationHandlerPeer) harvestTrans() kinds.Txs {
 	ts.mu.Lock()
 	defer ts.mu.Unlock()
 
@@ -258,7 +258,7 @@ func (ts *applicationHandlerMember) harvestTrans() kinds.Txs {
 	return out
 }
 
-func (ts *applicationHandlerMember) fetchAcceptedTrans() kinds.Txs {
+func (ts *applicationHandlerPeer) fetchAcceptedTrans() kinds.Txs {
 	ts.mu.Lock()
 	defer ts.mu.Unlock()
 
@@ -268,34 +268,34 @@ func (ts *applicationHandlerMember) fetchAcceptedTrans() kinds.Txs {
 	return out
 }
 
-func (ts *applicationHandlerMember) configureApplicationEmulate() {
-	emulateGrpc := func(procedure string, fn any) *mock.Call {
+func (ts *applicationHandlerPeer) configureApplicationSimulate() {
+	simulateGrps := func(procedure string, fn any) *mock.Call {
 		return ts.app.On(procedure, mock.Anything, mock.Anything).Return(fn).Maybe()
 	}
 
-	emulateGrpc("REDACTED", func(_ context.Context, req *iface.QueryEmbedTransfer) (*iface.ReplyEmbedTransfer, error) {
-		ts.embedTransfer(req.Tx)
-		return &iface.ReplyEmbedTransfer{
-			Code: iface.CodeKindSuccess,
+	simulateGrps("REDACTED", func(_ context.Context, req *iface.SolicitAppendTransfer) (*iface.ReplyAppendTransfer, error) {
+		ts.appendTransfer(req.Tx)
+		return &iface.ReplyAppendTransfer{
+			Cipher: iface.CipherKindOKAY,
 		}, nil
 	})
 
-	emulateGrpc("REDACTED", func(_ context.Context, req *iface.QueryHarvestTrans) (*iface.ReplyHarvestTrans, error) {
+	simulateGrps("REDACTED", func(_ context.Context, req *iface.SolicitHarvestTrans) (*iface.ReplyHarvestTrans, error) {
 		out := ts.harvestTrans()
 
-		return &iface.ReplyHarvestTrans{Txs: out.ToSegmentOfOctets()}, nil
+		return &iface.ReplyHarvestTrans{Txs: out.TowardSegmentBelongingOctets()}, nil
 	})
 }
 
-func transInclude(set, segment kinds.Txs) bool {
-	repository := make(map[string]struct{})
+func transHold(set, segment kinds.Txs) bool {
+	stash := make(map[string]struct{})
 
 	for _, tx := range set {
-		repository[tx.String()] = struct{}{}
+		stash[tx.Text()] = struct{}{}
 	}
 
 	for _, tx := range segment {
-		if _, ok := repository[tx.String()]; !ok {
+		if _, ok := stash[tx.Text()]; !ok {
 			return false
 		}
 	}
@@ -303,15 +303,15 @@ func transInclude(set, segment kinds.Txs) bool {
 	return true
 }
 
-func hasReplicates(txs kinds.Txs) bool {
-	repository := make(map[string]struct{})
+func ownsReplicas(txs kinds.Txs) bool {
+	stash := make(map[string]struct{})
 
 	for _, tx := range txs {
-		if _, ok := repository[tx.String()]; ok {
+		if _, ok := stash[tx.Text()]; ok {
 			return true
 		}
 
-		repository[tx.String()] = struct{}{}
+		stash[tx.Text()] = struct{}{}
 	}
 
 	return false

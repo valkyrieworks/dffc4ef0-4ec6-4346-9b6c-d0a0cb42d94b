@@ -1,4 +1,4 @@
-package agent_test
+package cust_test
 
 import (
 	"bytes"
@@ -9,158 +9,158 @@ import (
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/require"
 
-	iface "github.com/valkyrieworks/iface/kinds"
-	"github.com/valkyrieworks/vault/ed25519"
-	cryptocode "github.com/valkyrieworks/vault/codec"
-	"github.com/valkyrieworks/vault/comethash"
-	"github.com/valkyrieworks/intrinsic/verify"
-	engineseed "github.com/valkyrieworks/utils/random"
-	"github.com/valkyrieworks/privatekey"
-	engineproto "github.com/valkyrieworks/schema/consensuscore/kinds"
-	"github.com/valkyrieworks/rpc/customer"
-	rpctest "github.com/valkyrieworks/rpc/verify"
-	"github.com/valkyrieworks/kinds"
+	iface "github.com/valkyrieworks/dffc4ef0-4ec6-4346-9b6c-d0a0cb42d94b/iface/kinds"
+	"github.com/valkyrieworks/dffc4ef0-4ec6-4346-9b6c-d0a0cb42d94b/security/edwards25519"
+	cryptocode "github.com/valkyrieworks/dffc4ef0-4ec6-4346-9b6c-d0a0cb42d94b/security/serialization"
+	"github.com/valkyrieworks/dffc4ef0-4ec6-4346-9b6c-d0a0cb42d94b/security/tenderminthash"
+	"github.com/valkyrieworks/dffc4ef0-4ec6-4346-9b6c-d0a0cb42d94b/intrinsic/verify"
+	commitrand "github.com/valkyrieworks/dffc4ef0-4ec6-4346-9b6c-d0a0cb42d94b/utils/arbitrary"
+	"github.com/valkyrieworks/dffc4ef0-4ec6-4346-9b6c-d0a0cb42d94b/privatevalue"
+	commitchema "github.com/valkyrieworks/dffc4ef0-4ec6-4346-9b6c-d0a0cb42d94b/schema/strongmind/kinds"
+	"github.com/valkyrieworks/dffc4ef0-4ec6-4346-9b6c-d0a0cb42d94b/rpc/customer"
+	rpcoverify "github.com/valkyrieworks/dffc4ef0-4ec6-4346-9b6c-d0a0cb42d94b/rpc/verify"
+	"github.com/valkyrieworks/dffc4ef0-4ec6-4346-9b6c-d0a0cb42d94b/kinds"
 )
 
 //
 //
 //
 //
-var standardVerifyTime = time.Date(2018, 10, 10, 8, 20, 13, 695936996, time.UTC)
+var fallbackVerifyMoment = time.Date(2018, 10, 10, 8, 20, 13, 695936996, time.UTC)
 
-func newProof(t *testing.T, val *privatekey.EntryPV,
+func freshProof(t *testing.T, val *privatevalue.RecordPRV,
 	ballot *kinds.Ballot, ballot2 *kinds.Ballot,
-	ledgerUID string,
+	successionUUID string,
 ) *kinds.ReplicatedBallotProof {
 	var err error
 
-	v := ballot.ToSchema()
-	v2 := ballot2.ToSchema()
+	v := ballot.TowardSchema()
+	v2 := ballot2.TowardSchema()
 
-	ballot.Autograph, err = val.Key.PrivateKey.Attest(kinds.BallotAttestOctets(ledgerUID, v))
+	ballot.Notation, err = val.Key.PrivateToken.Attest(kinds.BallotAttestOctets(successionUUID, v))
 	require.NoError(t, err)
 
-	ballot2.Autograph, err = val.Key.PrivateKey.Attest(kinds.BallotAttestOctets(ledgerUID, v2))
+	ballot2.Notation, err = val.Key.PrivateToken.Attest(kinds.BallotAttestOctets(successionUUID, v2))
 	require.NoError(t, err)
 
-	ratifier := kinds.NewRatifier(val.Key.PublicKey, 10)
-	valueCollection := kinds.NewRatifierCollection([]*kinds.Ratifier{ratifier})
+	assessor := kinds.FreshAssessor(val.Key.PublicToken, 10)
+	itemAssign := kinds.FreshAssessorAssign([]*kinds.Assessor{assessor})
 
-	ev, err := kinds.NewReplicatedBallotProof(ballot, ballot2, standardVerifyTime, valueCollection)
+	ev, err := kinds.FreshReplicatedBallotProof(ballot, ballot2, fallbackVerifyMoment, itemAssign)
 	require.NoError(t, err)
 	return ev
 }
 
 func createProofs(
 	t *testing.T,
-	val *privatekey.EntryPV,
-	ledgerUID string,
-) (accurate *kinds.ReplicatedBallotProof, mocks []*kinds.ReplicatedBallotProof) {
+	val *privatevalue.RecordPRV,
+	successionUUID string,
+) (precise *kinds.ReplicatedBallotProof, simulations []*kinds.ReplicatedBallotProof) {
 	ballot := kinds.Ballot{
-		RatifierLocation: val.Key.Location,
-		RatifierOrdinal:   0,
-		Level:           1,
-		Cycle:            0,
-		Kind:             engineproto.PreballotKind,
-		Timestamp:        standardVerifyTime,
-		LedgerUID: kinds.LedgerUID{
-			Digest: comethash.Sum(engineseed.Octets(comethash.Volume)),
-			SegmentAssignHeading: kinds.SegmentAssignHeading{
+		AssessorLocation: val.Key.Location,
+		AssessorOrdinal:   0,
+		Altitude:           1,
+		Iteration:            0,
+		Kind:             commitchema.PreballotKind,
+		Timestamp:        fallbackVerifyMoment,
+		LedgerUUID: kinds.LedgerUUID{
+			Digest: tenderminthash.Sum(commitrand.Octets(tenderminthash.Extent)),
+			FragmentAssignHeading: kinds.FragmentAssignHeading{
 				Sum: 1000,
-				Digest:  comethash.Sum([]byte("REDACTED")),
+				Digest:  tenderminthash.Sum([]byte("REDACTED")),
 			},
 		},
 	}
 
 	ballot2 := ballot
-	ballot2.LedgerUID.Digest = comethash.Sum([]byte("REDACTED"))
-	accurate = newProof(t, val, &ballot, &ballot2, ledgerUID)
+	ballot2.LedgerUUID.Digest = tenderminthash.Sum([]byte("REDACTED"))
+	precise = freshProof(t, val, &ballot, &ballot2, successionUUID)
 
-	mocks = make([]*kinds.ReplicatedBallotProof, 0)
+	simulations = make([]*kinds.ReplicatedBallotProof, 0)
 
 	//
 	{
 		v := ballot2
-		v.RatifierLocation = []byte("REDACTED")
-		mocks = append(mocks, newProof(t, val, &ballot, &v, ledgerUID))
+		v.AssessorLocation = []byte("REDACTED")
+		simulations = append(simulations, freshProof(t, val, &ballot, &v, successionUUID))
 	}
 
 	//
 	{
 		v := ballot2
-		v.Level = ballot.Level + 1
-		mocks = append(mocks, newProof(t, val, &ballot, &v, ledgerUID))
+		v.Altitude = ballot.Altitude + 1
+		simulations = append(simulations, freshProof(t, val, &ballot, &v, successionUUID))
 	}
 
 	//
 	{
 		v := ballot2
-		v.Cycle = ballot.Cycle + 1
-		mocks = append(mocks, newProof(t, val, &ballot, &v, ledgerUID))
+		v.Iteration = ballot.Iteration + 1
+		simulations = append(simulations, freshProof(t, val, &ballot, &v, successionUUID))
 	}
 
 	//
 	{
 		v := ballot2
-		v.Kind = engineproto.PreendorseKind
-		mocks = append(mocks, newProof(t, val, &ballot, &v, ledgerUID))
+		v.Kind = commitchema.PreendorseKind
+		simulations = append(simulations, freshProof(t, val, &ballot, &v, successionUUID))
 	}
 
 	//
 	{
 		v := ballot
-		mocks = append(mocks, newProof(t, val, &ballot, &v, ledgerUID))
+		simulations = append(simulations, freshProof(t, val, &ballot, &v, successionUUID))
 	}
 
-	return accurate, mocks
+	return precise, simulations
 }
 
-func Verifybroadcastevidence_Duplicateballotevidence(t *testing.T) {
+func Verifyballotevidence_Replicatedballotevidence(t *testing.T) {
 	var (
-		settings  = rpctest.FetchSettings()
-		ledgerUID = verify.StandardVerifyLedgerUID
-		pv      = privatekey.ImportOrGenerateEntryPV(settings.PrivateRatifierKeyEntry(), settings.PrivateRatifierStatusEntry())
+		settings  = rpcoverify.FetchSettings()
+		successionUUID = verify.FallbackVerifySuccessionUUID
+		pv      = privatevalue.FetchEitherProduceRecordPRV(settings.PrivateAssessorTokenRecord(), settings.PrivateAssessorStatusRecord())
 	)
 
-	for i, c := range FetchAgents() {
-		accurate, mocks := createProofs(t, pv, ledgerUID)
+	for i, c := range FetchCustomers() {
+		precise, simulations := createProofs(t, pv, successionUUID)
 		t.Logf("REDACTED", i)
 
-		outcome, err := c.MulticastProof(context.Background(), accurate)
-		require.NoError(t, err, "REDACTED", accurate)
-		assert.Equal(t, accurate.Digest(), outcome.Digest, "REDACTED")
+		outcome, err := c.MulticastProof(context.Background(), precise)
+		require.NoError(t, err, "REDACTED", precise)
+		assert.Equal(t, precise.Digest(), outcome.Digest, "REDACTED")
 
-		state, err := c.Status(context.Background())
+		condition, err := c.Condition(context.Background())
 		require.NoError(t, err)
-		err = customer.WaitForLevel(c, state.AlignDetails.NewestLedgerLevel+2, nil)
-		require.NoError(t, err)
-
-		ed25519key := pv.Key.PublicKey.(ed25519.PublicKey)
-		rawkey := ed25519key.Octets()
-		outcome2, err := c.IfaceInquire(context.Background(), "REDACTED", rawkey)
-		require.NoError(t, err)
-		inquiryout := outcome2.Reply
-		require.True(t, inquiryout.IsOK())
-
-		var v iface.RatifierModify
-		err = iface.ScanSignal(bytes.NewReader(inquiryout.Item), &v)
-		require.NoError(t, err, "REDACTED", inquiryout.Item)
-
-		pk, err := cryptocode.PublicKeyFromSchema(v.PublicKey)
+		err = customer.PauseForeachAltitude(c, condition.ChronizeDetails.NewestLedgerAltitude+2, nil)
 		require.NoError(t, err)
 
-		require.EqualValues(t, rawkey, pk, "REDACTED", string(inquiryout.Item))
-		require.Equal(t, int64(9), v.Energy, "REDACTED", string(inquiryout.Item))
+		curve25519key := pv.Key.PublicToken.(edwards25519.PublicToken)
+		plainkey := curve25519key.Octets()
+		outcome2, err := c.IfaceInquire(context.Background(), "REDACTED", plainkey)
+		require.NoError(t, err)
+		queryresp := outcome2.Reply
+		require.True(t, queryresp.EqualsOKAY())
 
-		for _, mock := range mocks {
-			_, err := c.MulticastProof(context.Background(), mock)
-			require.Error(t, err, "REDACTED", mock)
+		var v iface.AssessorRevise
+		err = iface.FetchArtifact(bytes.NewReader(queryresp.Datum), &v)
+		require.NoError(t, err, "REDACTED", queryresp.Datum)
+
+		pk, err := cryptocode.PublicTokenOriginatingSchema(v.PublicToken)
+		require.NoError(t, err)
+
+		require.EqualValues(t, plainkey, pk, "REDACTED", string(queryresp.Datum))
+		require.Equal(t, int64(9), v.Potency, "REDACTED", string(queryresp.Datum))
+
+		for _, mocked := range simulations {
+			_, err := c.MulticastProof(context.Background(), mocked)
+			require.Error(t, err, "REDACTED", mocked)
 		}
 	}
 }
 
-func VerifyMulticastEmptyProof(t *testing.T) {
-	for _, c := range FetchAgents() {
+func VerifyMulticastBlankProof(t *testing.T) {
+	for _, c := range FetchCustomers() {
 		_, err := c.MulticastProof(context.Background(), nil)
 		assert.Error(t, err)
 	}

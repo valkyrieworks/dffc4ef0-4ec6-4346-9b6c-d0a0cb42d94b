@@ -8,32 +8,32 @@ import (
 )
 
 //
-func Directive(ctx context.Context, args ...string) error {
-	_, err := DirectiveResult(ctx, args...)
+func Directive(ctx context.Context, arguments ...string) error {
+	_, err := DirectiveEmission(ctx, arguments...)
 	return err
 }
 
 //
-func DirectiveResult(ctx context.Context, args ...string) ([]byte, error) {
+func DirectiveEmission(ctx context.Context, arguments ...string) ([]byte, error) {
 	//
 	//
-	cmd := osexec.CommandContext(ctx, args[0], args[1:]...)
+	cmd := osexec.CommandContext(ctx, arguments[0], arguments[1:]...)
 	out, err := cmd.CombinedOutput()
 	switch err := err.(type) {
 	case nil:
 		return out, nil
 	case *osexec.ExitError:
-		return nil, fmt.Errorf("REDACTED", args, string(out))
+		return nil, fmt.Errorf("REDACTED", arguments, string(out))
 	default:
 		return nil, err
 	}
 }
 
 //
-func DirectiveDetailed(ctx context.Context, args ...string) error {
+func DirectiveDetailed(ctx context.Context, arguments ...string) error {
 	//
 	//
-	cmd := osexec.CommandContext(ctx, args[0], args[1:]...)
+	cmd := osexec.CommandContext(ctx, arguments[0], arguments[1:]...)
 	cmd.Stdout = os.Stdout
 	cmd.Stderr = os.Stderr
 	return cmd.Run()

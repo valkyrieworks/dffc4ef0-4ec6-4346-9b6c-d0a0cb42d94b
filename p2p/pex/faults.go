@@ -4,86 +4,86 @@ import (
 	"errors"
 	"fmt"
 
-	"github.com/valkyrieworks/p2p"
+	"github.com/valkyrieworks/dffc4ef0-4ec6-4346-9b6c-d0a0cb42d94b/p2p"
 )
 
-type ErrAddressRegistryNotForwardable struct {
-	Address *p2p.NetLocation
+type FaultLocationRegisterUnDirectable struct {
+	Location *p2p.NetworkLocator
 }
 
-func (err ErrAddressRegistryNotForwardable) Fault() string {
-	return fmt.Sprintf("REDACTED", err.Address)
+func (err FaultLocationRegisterUnDirectable) Failure() string {
+	return fmt.Sprintf("REDACTED", err.Location)
 }
 
-type errAddressRegistryAgedLocationNewSegment struct {
-	Address     *p2p.NetLocation
-	ContainerUID int
+type faultLocationRegisterAgedLocatorFreshSegment struct {
+	Location     *p2p.NetworkLocator
+	SegmentUUID int
 }
 
-func (err errAddressRegistryAgedLocationNewSegment) Fault() string {
+func (err faultLocationRegisterAgedLocatorFreshSegment) Failure() string {
 	return fmt.Sprintf("REDACTED"+
 		"REDACTED",
-		err.Address, err.ContainerUID)
+		err.Location, err.SegmentUUID)
 }
 
-type ErrAddressRegistryEgo struct {
-	Address *p2p.NetLocation
+type FaultLocationRegisterEgo struct {
+	Location *p2p.NetworkLocator
 }
 
-func (err ErrAddressRegistryEgo) Fault() string {
-	return fmt.Sprintf("REDACTED", err.Address)
+func (err FaultLocationRegisterEgo) Failure() string {
+	return fmt.Sprintf("REDACTED", err.Location)
 }
 
-type ErrAddressRegistryInternal struct {
-	Address *p2p.NetLocation
+type FaultLocationRegisterSecluded struct {
+	Location *p2p.NetworkLocator
 }
 
-func (err ErrAddressRegistryInternal) Fault() string {
-	return fmt.Sprintf("REDACTED", err.Address)
+func (err FaultLocationRegisterSecluded) Failure() string {
+	return fmt.Sprintf("REDACTED", err.Location)
 }
 
-func (err ErrAddressRegistryInternal) InternalAddress() bool {
+func (err FaultLocationRegisterSecluded) SecludedLocation() bool {
 	return true
 }
 
-type ErrAddressRegistryInternalOrigin struct {
-	Src *p2p.NetLocation
+type FaultLocationRegisterSecludedOrigin struct {
+	Src *p2p.NetworkLocator
 }
 
-func (err ErrAddressRegistryInternalOrigin) Fault() string {
+func (err FaultLocationRegisterSecludedOrigin) Failure() string {
 	return fmt.Sprintf("REDACTED", err.Src)
 }
 
-func (err ErrAddressRegistryInternalOrigin) InternalAddress() bool {
+func (err FaultLocationRegisterSecludedOrigin) SecludedLocation() bool {
 	return true
 }
 
-type ErrAddressRegistryNullAddress struct {
-	Address *p2p.NetLocation
-	Src  *p2p.NetLocation
+type FaultLocationRegisterVoidLocation struct {
+	Location *p2p.NetworkLocator
+	Src  *p2p.NetworkLocator
 }
 
-func (err ErrAddressRegistryNullAddress) Fault() string {
-	return fmt.Sprintf("REDACTED", err.Address, err.Src)
+func (err FaultLocationRegisterVoidLocation) Failure() string {
+	return fmt.Sprintf("REDACTED", err.Location, err.Src)
 }
 
-type ErrAddressRegistryCorruptAddress struct {
-	Address    *p2p.NetLocation
-	AddressErr error
+type FaultLocationRegisterUnfitLocation struct {
+	Location    *p2p.NetworkLocator
+	LocationFault error
 }
 
-func (err ErrAddressRegistryCorruptAddress) Fault() string {
-	return fmt.Sprintf("REDACTED", err.Address, err.AddressErr)
-}
-
-//
-type ErrLocationProhibited struct {
-	Address *p2p.NetLocation
-}
-
-func (err ErrLocationProhibited) Fault() string {
-	return fmt.Sprintf("REDACTED", err.Address)
+func (err FaultLocationRegisterUnfitLocation) Failure() string {
+	return fmt.Sprintf("REDACTED", err.Location, err.LocationFault)
 }
 
 //
-var ErrUninvitedCatalog = errors.New("REDACTED")
+type FaultLocatorProhibited struct {
+	Location *p2p.NetworkLocator
+}
+
+func (err FaultLocatorProhibited) Failure() string {
+	return fmt.Sprintf("REDACTED", err.Location)
+}
+
+//
+var FaultUnpromptedCatalog = errors.New("REDACTED")

@@ -5,42 +5,42 @@ package simulations
 import (
 	context "context"
 
-	abciend "github.com/valkyrieworks/iface/customer"
+	abcicustomer "github.com/valkyrieworks/dffc4ef0-4ec6-4346-9b6c-d0a0cb42d94b/iface/customer"
 
-	log "github.com/valkyrieworks/utils/log"
+	log "github.com/valkyrieworks/dffc4ef0-4ec6-4346-9b6c-d0a0cb42d94b/utils/log"
 
 	mock "github.com/stretchr/testify/mock"
 
-	kinds "github.com/valkyrieworks/iface/kinds"
+	kinds "github.com/valkyrieworks/dffc4ef0-4ec6-4346-9b6c-d0a0cb42d94b/iface/kinds"
 )
 
 //
 type Customer struct {
-	mock.Emulate
+	mock.Simulate
 }
 
 //
-func (_m *Customer) ExecuteMirrorSegment(_a0 context.Context, _a1 *kinds.QueryExecuteMirrorSegment) (*kinds.ReplyExecuteMirrorSegment, error) {
+func (_m *Customer) ExecuteImageSegment(_a0 context.Context, _a1 *kinds.SolicitExecuteImageSegment) (*kinds.ReplyExecuteImageSegment, error) {
 	ret := _m.Called(_a0, _a1)
 
 	if len(ret) == 0 {
 		panic("REDACTED")
 	}
 
-	var r0 *kinds.ReplyExecuteMirrorSegment
+	var r0 *kinds.ReplyExecuteImageSegment
 	var r1 error
-	if rf, ok := ret.Get(0).(func(context.Context, *kinds.QueryExecuteMirrorSegment) (*kinds.ReplyExecuteMirrorSegment, error)); ok {
+	if rf, ok := ret.Get(0).(func(context.Context, *kinds.SolicitExecuteImageSegment) (*kinds.ReplyExecuteImageSegment, error)); ok {
 		return rf(_a0, _a1)
 	}
-	if rf, ok := ret.Get(0).(func(context.Context, *kinds.QueryExecuteMirrorSegment) *kinds.ReplyExecuteMirrorSegment); ok {
+	if rf, ok := ret.Get(0).(func(context.Context, *kinds.SolicitExecuteImageSegment) *kinds.ReplyExecuteImageSegment); ok {
 		r0 = rf(_a0, _a1)
 	} else {
 		if ret.Get(0) != nil {
-			r0 = ret.Get(0).(*kinds.ReplyExecuteMirrorSegment)
+			r0 = ret.Get(0).(*kinds.ReplyExecuteImageSegment)
 		}
 	}
 
-	if rf, ok := ret.Get(1).(func(context.Context, *kinds.QueryExecuteMirrorSegment) error); ok {
+	if rf, ok := ret.Get(1).(func(context.Context, *kinds.SolicitExecuteImageSegment) error); ok {
 		r1 = rf(_a0, _a1)
 	} else {
 		r1 = ret.Error(1)
@@ -50,7 +50,7 @@ func (_m *Customer) ExecuteMirrorSegment(_a0 context.Context, _a1 *kinds.QueryEx
 }
 
 //
-func (_m *Customer) InspectTransfer(_a0 context.Context, _a1 *kinds.QueryInspectTransfer) (*kinds.ReplyInspectTransfer, error) {
+func (_m *Customer) InspectTransfer(_a0 context.Context, _a1 *kinds.SolicitInspectTransfer) (*kinds.ReplyInspectTransfer, error) {
 	ret := _m.Called(_a0, _a1)
 
 	if len(ret) == 0 {
@@ -59,10 +59,10 @@ func (_m *Customer) InspectTransfer(_a0 context.Context, _a1 *kinds.QueryInspect
 
 	var r0 *kinds.ReplyInspectTransfer
 	var r1 error
-	if rf, ok := ret.Get(0).(func(context.Context, *kinds.QueryInspectTransfer) (*kinds.ReplyInspectTransfer, error)); ok {
+	if rf, ok := ret.Get(0).(func(context.Context, *kinds.SolicitInspectTransfer) (*kinds.ReplyInspectTransfer, error)); ok {
 		return rf(_a0, _a1)
 	}
-	if rf, ok := ret.Get(0).(func(context.Context, *kinds.QueryInspectTransfer) *kinds.ReplyInspectTransfer); ok {
+	if rf, ok := ret.Get(0).(func(context.Context, *kinds.SolicitInspectTransfer) *kinds.ReplyInspectTransfer); ok {
 		r0 = rf(_a0, _a1)
 	} else {
 		if ret.Get(0) != nil {
@@ -70,7 +70,7 @@ func (_m *Customer) InspectTransfer(_a0 context.Context, _a1 *kinds.QueryInspect
 		}
 	}
 
-	if rf, ok := ret.Get(1).(func(context.Context, *kinds.QueryInspectTransfer) error); ok {
+	if rf, ok := ret.Get(1).(func(context.Context, *kinds.SolicitInspectTransfer) error); ok {
 		r1 = rf(_a0, _a1)
 	} else {
 		r1 = ret.Error(1)
@@ -80,27 +80,27 @@ func (_m *Customer) InspectTransfer(_a0 context.Context, _a1 *kinds.QueryInspect
 }
 
 //
-func (_m *Customer) InspectTransferAsync(_a0 context.Context, _a1 *kinds.QueryInspectTransfer) (*abciend.RequestOutput, error) {
+func (_m *Customer) InspectTransferAsyncronous(_a0 context.Context, _a1 *kinds.SolicitInspectTransfer) (*abcicustomer.RequestResult, error) {
 	ret := _m.Called(_a0, _a1)
 
 	if len(ret) == 0 {
 		panic("REDACTED")
 	}
 
-	var r0 *abciend.RequestOutput
+	var r0 *abcicustomer.RequestResult
 	var r1 error
-	if rf, ok := ret.Get(0).(func(context.Context, *kinds.QueryInspectTransfer) (*abciend.RequestOutput, error)); ok {
+	if rf, ok := ret.Get(0).(func(context.Context, *kinds.SolicitInspectTransfer) (*abcicustomer.RequestResult, error)); ok {
 		return rf(_a0, _a1)
 	}
-	if rf, ok := ret.Get(0).(func(context.Context, *kinds.QueryInspectTransfer) *abciend.RequestOutput); ok {
+	if rf, ok := ret.Get(0).(func(context.Context, *kinds.SolicitInspectTransfer) *abcicustomer.RequestResult); ok {
 		r0 = rf(_a0, _a1)
 	} else {
 		if ret.Get(0) != nil {
-			r0 = ret.Get(0).(*abciend.RequestOutput)
+			r0 = ret.Get(0).(*abcicustomer.RequestResult)
 		}
 	}
 
-	if rf, ok := ret.Get(1).(func(context.Context, *kinds.QueryInspectTransfer) error); ok {
+	if rf, ok := ret.Get(1).(func(context.Context, *kinds.SolicitInspectTransfer) error); ok {
 		r1 = rf(_a0, _a1)
 	} else {
 		r1 = ret.Error(1)
@@ -110,7 +110,7 @@ func (_m *Customer) InspectTransferAsync(_a0 context.Context, _a1 *kinds.QueryIn
 }
 
 //
-func (_m *Customer) Endorse(_a0 context.Context, _a1 *kinds.QueryEndorse) (*kinds.ReplyEndorse, error) {
+func (_m *Customer) Endorse(_a0 context.Context, _a1 *kinds.SolicitEndorse) (*kinds.ReplyEndorse, error) {
 	ret := _m.Called(_a0, _a1)
 
 	if len(ret) == 0 {
@@ -119,10 +119,10 @@ func (_m *Customer) Endorse(_a0 context.Context, _a1 *kinds.QueryEndorse) (*kind
 
 	var r0 *kinds.ReplyEndorse
 	var r1 error
-	if rf, ok := ret.Get(0).(func(context.Context, *kinds.QueryEndorse) (*kinds.ReplyEndorse, error)); ok {
+	if rf, ok := ret.Get(0).(func(context.Context, *kinds.SolicitEndorse) (*kinds.ReplyEndorse, error)); ok {
 		return rf(_a0, _a1)
 	}
-	if rf, ok := ret.Get(0).(func(context.Context, *kinds.QueryEndorse) *kinds.ReplyEndorse); ok {
+	if rf, ok := ret.Get(0).(func(context.Context, *kinds.SolicitEndorse) *kinds.ReplyEndorse); ok {
 		r0 = rf(_a0, _a1)
 	} else {
 		if ret.Get(0) != nil {
@@ -130,7 +130,7 @@ func (_m *Customer) Endorse(_a0 context.Context, _a1 *kinds.QueryEndorse) (*kind
 		}
 	}
 
-	if rf, ok := ret.Get(1).(func(context.Context, *kinds.QueryEndorse) error); ok {
+	if rf, ok := ret.Get(1).(func(context.Context, *kinds.SolicitEndorse) error); ok {
 		r1 = rf(_a0, _a1)
 	} else {
 		r1 = ret.Error(1)
@@ -140,7 +140,7 @@ func (_m *Customer) Endorse(_a0 context.Context, _a1 *kinds.QueryEndorse) (*kind
 }
 
 //
-func (_m *Customer) Replicate(_a0 context.Context, _a1 string) (*kinds.ReplyReverberate, error) {
+func (_m *Customer) Reverberate(_a0 context.Context, _a1 string) (*kinds.ReplyReverberate, error) {
 	ret := _m.Called(_a0, _a1)
 
 	if len(ret) == 0 {
@@ -170,7 +170,7 @@ func (_m *Customer) Replicate(_a0 context.Context, _a1 string) (*kinds.ReplyReve
 }
 
 //
-func (_m *Customer) Fault() error {
+func (_m *Customer) Failure() error {
 	ret := _m.Called()
 
 	if len(ret) == 0 {
@@ -188,27 +188,27 @@ func (_m *Customer) Fault() error {
 }
 
 //
-func (_m *Customer) ExpandBallot(_a0 context.Context, _a1 *kinds.QueryExpandBallot) (*kinds.ReplyExpandBallot, error) {
+func (_m *Customer) BroadenBallot(_a0 context.Context, _a1 *kinds.SolicitBroadenBallot) (*kinds.ReplyBroadenBallot, error) {
 	ret := _m.Called(_a0, _a1)
 
 	if len(ret) == 0 {
 		panic("REDACTED")
 	}
 
-	var r0 *kinds.ReplyExpandBallot
+	var r0 *kinds.ReplyBroadenBallot
 	var r1 error
-	if rf, ok := ret.Get(0).(func(context.Context, *kinds.QueryExpandBallot) (*kinds.ReplyExpandBallot, error)); ok {
+	if rf, ok := ret.Get(0).(func(context.Context, *kinds.SolicitBroadenBallot) (*kinds.ReplyBroadenBallot, error)); ok {
 		return rf(_a0, _a1)
 	}
-	if rf, ok := ret.Get(0).(func(context.Context, *kinds.QueryExpandBallot) *kinds.ReplyExpandBallot); ok {
+	if rf, ok := ret.Get(0).(func(context.Context, *kinds.SolicitBroadenBallot) *kinds.ReplyBroadenBallot); ok {
 		r0 = rf(_a0, _a1)
 	} else {
 		if ret.Get(0) != nil {
-			r0 = ret.Get(0).(*kinds.ReplyExpandBallot)
+			r0 = ret.Get(0).(*kinds.ReplyBroadenBallot)
 		}
 	}
 
-	if rf, ok := ret.Get(1).(func(context.Context, *kinds.QueryExpandBallot) error); ok {
+	if rf, ok := ret.Get(1).(func(context.Context, *kinds.SolicitBroadenBallot) error); ok {
 		r1 = rf(_a0, _a1)
 	} else {
 		r1 = ret.Error(1)
@@ -218,27 +218,27 @@ func (_m *Customer) ExpandBallot(_a0 context.Context, _a1 *kinds.QueryExpandBall
 }
 
 //
-func (_m *Customer) CompleteLedger(_a0 context.Context, _a1 *kinds.QueryCompleteLedger) (*kinds.ReplyCompleteLedger, error) {
+func (_m *Customer) CulminateLedger(_a0 context.Context, _a1 *kinds.SolicitCulminateLedger) (*kinds.ReplyCulminateLedger, error) {
 	ret := _m.Called(_a0, _a1)
 
 	if len(ret) == 0 {
 		panic("REDACTED")
 	}
 
-	var r0 *kinds.ReplyCompleteLedger
+	var r0 *kinds.ReplyCulminateLedger
 	var r1 error
-	if rf, ok := ret.Get(0).(func(context.Context, *kinds.QueryCompleteLedger) (*kinds.ReplyCompleteLedger, error)); ok {
+	if rf, ok := ret.Get(0).(func(context.Context, *kinds.SolicitCulminateLedger) (*kinds.ReplyCulminateLedger, error)); ok {
 		return rf(_a0, _a1)
 	}
-	if rf, ok := ret.Get(0).(func(context.Context, *kinds.QueryCompleteLedger) *kinds.ReplyCompleteLedger); ok {
+	if rf, ok := ret.Get(0).(func(context.Context, *kinds.SolicitCulminateLedger) *kinds.ReplyCulminateLedger); ok {
 		r0 = rf(_a0, _a1)
 	} else {
 		if ret.Get(0) != nil {
-			r0 = ret.Get(0).(*kinds.ReplyCompleteLedger)
+			r0 = ret.Get(0).(*kinds.ReplyCulminateLedger)
 		}
 	}
 
-	if rf, ok := ret.Get(1).(func(context.Context, *kinds.QueryCompleteLedger) error); ok {
+	if rf, ok := ret.Get(1).(func(context.Context, *kinds.SolicitCulminateLedger) error); ok {
 		r1 = rf(_a0, _a1)
 	} else {
 		r1 = ret.Error(1)
@@ -266,7 +266,7 @@ func (_m *Customer) Purge(_a0 context.Context) error {
 }
 
 //
-func (_m *Customer) Details(_a0 context.Context, _a1 *kinds.QueryDetails) (*kinds.ReplyDetails, error) {
+func (_m *Customer) Details(_a0 context.Context, _a1 *kinds.SolicitDetails) (*kinds.ReplyDetails, error) {
 	ret := _m.Called(_a0, _a1)
 
 	if len(ret) == 0 {
@@ -275,10 +275,10 @@ func (_m *Customer) Details(_a0 context.Context, _a1 *kinds.QueryDetails) (*kind
 
 	var r0 *kinds.ReplyDetails
 	var r1 error
-	if rf, ok := ret.Get(0).(func(context.Context, *kinds.QueryDetails) (*kinds.ReplyDetails, error)); ok {
+	if rf, ok := ret.Get(0).(func(context.Context, *kinds.SolicitDetails) (*kinds.ReplyDetails, error)); ok {
 		return rf(_a0, _a1)
 	}
-	if rf, ok := ret.Get(0).(func(context.Context, *kinds.QueryDetails) *kinds.ReplyDetails); ok {
+	if rf, ok := ret.Get(0).(func(context.Context, *kinds.SolicitDetails) *kinds.ReplyDetails); ok {
 		r0 = rf(_a0, _a1)
 	} else {
 		if ret.Get(0) != nil {
@@ -286,7 +286,7 @@ func (_m *Customer) Details(_a0 context.Context, _a1 *kinds.QueryDetails) (*kind
 		}
 	}
 
-	if rf, ok := ret.Get(1).(func(context.Context, *kinds.QueryDetails) error); ok {
+	if rf, ok := ret.Get(1).(func(context.Context, *kinds.SolicitDetails) error); ok {
 		r1 = rf(_a0, _a1)
 	} else {
 		r1 = ret.Error(1)
@@ -296,27 +296,27 @@ func (_m *Customer) Details(_a0 context.Context, _a1 *kinds.QueryDetails) (*kind
 }
 
 //
-func (_m *Customer) InitSeries(_a0 context.Context, _a1 *kinds.QueryInitSeries) (*kinds.ReplyInitSeries, error) {
+func (_m *Customer) InitializeSuccession(_a0 context.Context, _a1 *kinds.SolicitInitializeSuccession) (*kinds.ReplyInitializeSuccession, error) {
 	ret := _m.Called(_a0, _a1)
 
 	if len(ret) == 0 {
 		panic("REDACTED")
 	}
 
-	var r0 *kinds.ReplyInitSeries
+	var r0 *kinds.ReplyInitializeSuccession
 	var r1 error
-	if rf, ok := ret.Get(0).(func(context.Context, *kinds.QueryInitSeries) (*kinds.ReplyInitSeries, error)); ok {
+	if rf, ok := ret.Get(0).(func(context.Context, *kinds.SolicitInitializeSuccession) (*kinds.ReplyInitializeSuccession, error)); ok {
 		return rf(_a0, _a1)
 	}
-	if rf, ok := ret.Get(0).(func(context.Context, *kinds.QueryInitSeries) *kinds.ReplyInitSeries); ok {
+	if rf, ok := ret.Get(0).(func(context.Context, *kinds.SolicitInitializeSuccession) *kinds.ReplyInitializeSuccession); ok {
 		r0 = rf(_a0, _a1)
 	} else {
 		if ret.Get(0) != nil {
-			r0 = ret.Get(0).(*kinds.ReplyInitSeries)
+			r0 = ret.Get(0).(*kinds.ReplyInitializeSuccession)
 		}
 	}
 
-	if rf, ok := ret.Get(1).(func(context.Context, *kinds.QueryInitSeries) error); ok {
+	if rf, ok := ret.Get(1).(func(context.Context, *kinds.SolicitInitializeSuccession) error); ok {
 		r1 = rf(_a0, _a1)
 	} else {
 		r1 = ret.Error(1)
@@ -326,27 +326,27 @@ func (_m *Customer) InitSeries(_a0 context.Context, _a1 *kinds.QueryInitSeries) 
 }
 
 //
-func (_m *Customer) EmbedTransfer(_a0 context.Context, _a1 *kinds.QueryEmbedTransfer) (*kinds.ReplyEmbedTransfer, error) {
+func (_m *Customer) AppendTransfer(_a0 context.Context, _a1 *kinds.SolicitAppendTransfer) (*kinds.ReplyAppendTransfer, error) {
 	ret := _m.Called(_a0, _a1)
 
 	if len(ret) == 0 {
 		panic("REDACTED")
 	}
 
-	var r0 *kinds.ReplyEmbedTransfer
+	var r0 *kinds.ReplyAppendTransfer
 	var r1 error
-	if rf, ok := ret.Get(0).(func(context.Context, *kinds.QueryEmbedTransfer) (*kinds.ReplyEmbedTransfer, error)); ok {
+	if rf, ok := ret.Get(0).(func(context.Context, *kinds.SolicitAppendTransfer) (*kinds.ReplyAppendTransfer, error)); ok {
 		return rf(_a0, _a1)
 	}
-	if rf, ok := ret.Get(0).(func(context.Context, *kinds.QueryEmbedTransfer) *kinds.ReplyEmbedTransfer); ok {
+	if rf, ok := ret.Get(0).(func(context.Context, *kinds.SolicitAppendTransfer) *kinds.ReplyAppendTransfer); ok {
 		r0 = rf(_a0, _a1)
 	} else {
 		if ret.Get(0) != nil {
-			r0 = ret.Get(0).(*kinds.ReplyEmbedTransfer)
+			r0 = ret.Get(0).(*kinds.ReplyAppendTransfer)
 		}
 	}
 
-	if rf, ok := ret.Get(1).(func(context.Context, *kinds.QueryEmbedTransfer) error); ok {
+	if rf, ok := ret.Get(1).(func(context.Context, *kinds.SolicitAppendTransfer) error); ok {
 		r1 = rf(_a0, _a1)
 	} else {
 		r1 = ret.Error(1)
@@ -356,7 +356,7 @@ func (_m *Customer) EmbedTransfer(_a0 context.Context, _a1 *kinds.QueryEmbedTran
 }
 
 //
-func (_m *Customer) IsActive() bool {
+func (_m *Customer) EqualsActive() bool {
 	ret := _m.Called()
 
 	if len(ret) == 0 {
@@ -374,27 +374,27 @@ func (_m *Customer) IsActive() bool {
 }
 
 //
-func (_m *Customer) CatalogMirrors(_a0 context.Context, _a1 *kinds.QueryCatalogMirrors) (*kinds.ReplyCatalogMirrors, error) {
+func (_m *Customer) CollectionImages(_a0 context.Context, _a1 *kinds.SolicitCollectionImages) (*kinds.ReplyCatalogImages, error) {
 	ret := _m.Called(_a0, _a1)
 
 	if len(ret) == 0 {
 		panic("REDACTED")
 	}
 
-	var r0 *kinds.ReplyCatalogMirrors
+	var r0 *kinds.ReplyCatalogImages
 	var r1 error
-	if rf, ok := ret.Get(0).(func(context.Context, *kinds.QueryCatalogMirrors) (*kinds.ReplyCatalogMirrors, error)); ok {
+	if rf, ok := ret.Get(0).(func(context.Context, *kinds.SolicitCollectionImages) (*kinds.ReplyCatalogImages, error)); ok {
 		return rf(_a0, _a1)
 	}
-	if rf, ok := ret.Get(0).(func(context.Context, *kinds.QueryCatalogMirrors) *kinds.ReplyCatalogMirrors); ok {
+	if rf, ok := ret.Get(0).(func(context.Context, *kinds.SolicitCollectionImages) *kinds.ReplyCatalogImages); ok {
 		r0 = rf(_a0, _a1)
 	} else {
 		if ret.Get(0) != nil {
-			r0 = ret.Get(0).(*kinds.ReplyCatalogMirrors)
+			r0 = ret.Get(0).(*kinds.ReplyCatalogImages)
 		}
 	}
 
-	if rf, ok := ret.Get(1).(func(context.Context, *kinds.QueryCatalogMirrors) error); ok {
+	if rf, ok := ret.Get(1).(func(context.Context, *kinds.SolicitCollectionImages) error); ok {
 		r1 = rf(_a0, _a1)
 	} else {
 		r1 = ret.Error(1)
@@ -404,27 +404,27 @@ func (_m *Customer) CatalogMirrors(_a0 context.Context, _a1 *kinds.QueryCatalogM
 }
 
 //
-func (_m *Customer) ImportMirrorSegment(_a0 context.Context, _a1 *kinds.QueryImportMirrorSegment) (*kinds.ReplyImportMirrorSegment, error) {
+func (_m *Customer) FetchImageSegment(_a0 context.Context, _a1 *kinds.SolicitFetchImageSegment) (*kinds.ReplyFetchImageSegment, error) {
 	ret := _m.Called(_a0, _a1)
 
 	if len(ret) == 0 {
 		panic("REDACTED")
 	}
 
-	var r0 *kinds.ReplyImportMirrorSegment
+	var r0 *kinds.ReplyFetchImageSegment
 	var r1 error
-	if rf, ok := ret.Get(0).(func(context.Context, *kinds.QueryImportMirrorSegment) (*kinds.ReplyImportMirrorSegment, error)); ok {
+	if rf, ok := ret.Get(0).(func(context.Context, *kinds.SolicitFetchImageSegment) (*kinds.ReplyFetchImageSegment, error)); ok {
 		return rf(_a0, _a1)
 	}
-	if rf, ok := ret.Get(0).(func(context.Context, *kinds.QueryImportMirrorSegment) *kinds.ReplyImportMirrorSegment); ok {
+	if rf, ok := ret.Get(0).(func(context.Context, *kinds.SolicitFetchImageSegment) *kinds.ReplyFetchImageSegment); ok {
 		r0 = rf(_a0, _a1)
 	} else {
 		if ret.Get(0) != nil {
-			r0 = ret.Get(0).(*kinds.ReplyImportMirrorSegment)
+			r0 = ret.Get(0).(*kinds.ReplyFetchImageSegment)
 		}
 	}
 
-	if rf, ok := ret.Get(1).(func(context.Context, *kinds.QueryImportMirrorSegment) error); ok {
+	if rf, ok := ret.Get(1).(func(context.Context, *kinds.SolicitFetchImageSegment) error); ok {
 		r1 = rf(_a0, _a1)
 	} else {
 		r1 = ret.Error(1)
@@ -434,27 +434,27 @@ func (_m *Customer) ImportMirrorSegment(_a0 context.Context, _a1 *kinds.QueryImp
 }
 
 //
-func (_m *Customer) ProposalMirror(_a0 context.Context, _a1 *kinds.QueryProposalMirror) (*kinds.ReplyProposalMirror, error) {
+func (_m *Customer) ExtendImage(_a0 context.Context, _a1 *kinds.SolicitExtendImage) (*kinds.ReplyExtendImage, error) {
 	ret := _m.Called(_a0, _a1)
 
 	if len(ret) == 0 {
 		panic("REDACTED")
 	}
 
-	var r0 *kinds.ReplyProposalMirror
+	var r0 *kinds.ReplyExtendImage
 	var r1 error
-	if rf, ok := ret.Get(0).(func(context.Context, *kinds.QueryProposalMirror) (*kinds.ReplyProposalMirror, error)); ok {
+	if rf, ok := ret.Get(0).(func(context.Context, *kinds.SolicitExtendImage) (*kinds.ReplyExtendImage, error)); ok {
 		return rf(_a0, _a1)
 	}
-	if rf, ok := ret.Get(0).(func(context.Context, *kinds.QueryProposalMirror) *kinds.ReplyProposalMirror); ok {
+	if rf, ok := ret.Get(0).(func(context.Context, *kinds.SolicitExtendImage) *kinds.ReplyExtendImage); ok {
 		r0 = rf(_a0, _a1)
 	} else {
 		if ret.Get(0) != nil {
-			r0 = ret.Get(0).(*kinds.ReplyProposalMirror)
+			r0 = ret.Get(0).(*kinds.ReplyExtendImage)
 		}
 	}
 
-	if rf, ok := ret.Get(1).(func(context.Context, *kinds.QueryProposalMirror) error); ok {
+	if rf, ok := ret.Get(1).(func(context.Context, *kinds.SolicitExtendImage) error); ok {
 		r1 = rf(_a0, _a1)
 	} else {
 		r1 = ret.Error(1)
@@ -464,7 +464,7 @@ func (_m *Customer) ProposalMirror(_a0 context.Context, _a1 *kinds.QueryProposal
 }
 
 //
-func (_m *Customer) OnRestore() error {
+func (_m *Customer) UponRestore() error {
 	ret := _m.Called()
 
 	if len(ret) == 0 {
@@ -482,7 +482,7 @@ func (_m *Customer) OnRestore() error {
 }
 
 //
-func (_m *Customer) OnBegin() error {
+func (_m *Customer) UponInitiate() error {
 	ret := _m.Called()
 
 	if len(ret) == 0 {
@@ -500,12 +500,12 @@ func (_m *Customer) OnBegin() error {
 }
 
 //
-func (_m *Customer) OnHalt() {
+func (_m *Customer) UponHalt() {
 	_m.Called()
 }
 
 //
-func (_m *Customer) ArrangeNomination(_a0 context.Context, _a1 *kinds.QueryArrangeNomination) (*kinds.ReplyArrangeNomination, error) {
+func (_m *Customer) ArrangeNomination(_a0 context.Context, _a1 *kinds.SolicitArrangeNomination) (*kinds.ReplyArrangeNomination, error) {
 	ret := _m.Called(_a0, _a1)
 
 	if len(ret) == 0 {
@@ -514,10 +514,10 @@ func (_m *Customer) ArrangeNomination(_a0 context.Context, _a1 *kinds.QueryArran
 
 	var r0 *kinds.ReplyArrangeNomination
 	var r1 error
-	if rf, ok := ret.Get(0).(func(context.Context, *kinds.QueryArrangeNomination) (*kinds.ReplyArrangeNomination, error)); ok {
+	if rf, ok := ret.Get(0).(func(context.Context, *kinds.SolicitArrangeNomination) (*kinds.ReplyArrangeNomination, error)); ok {
 		return rf(_a0, _a1)
 	}
-	if rf, ok := ret.Get(0).(func(context.Context, *kinds.QueryArrangeNomination) *kinds.ReplyArrangeNomination); ok {
+	if rf, ok := ret.Get(0).(func(context.Context, *kinds.SolicitArrangeNomination) *kinds.ReplyArrangeNomination); ok {
 		r0 = rf(_a0, _a1)
 	} else {
 		if ret.Get(0) != nil {
@@ -525,7 +525,7 @@ func (_m *Customer) ArrangeNomination(_a0 context.Context, _a1 *kinds.QueryArran
 		}
 	}
 
-	if rf, ok := ret.Get(1).(func(context.Context, *kinds.QueryArrangeNomination) error); ok {
+	if rf, ok := ret.Get(1).(func(context.Context, *kinds.SolicitArrangeNomination) error); ok {
 		r1 = rf(_a0, _a1)
 	} else {
 		r1 = ret.Error(1)
@@ -535,7 +535,7 @@ func (_m *Customer) ArrangeNomination(_a0 context.Context, _a1 *kinds.QueryArran
 }
 
 //
-func (_m *Customer) HandleNomination(_a0 context.Context, _a1 *kinds.QueryHandleNomination) (*kinds.ReplyHandleNomination, error) {
+func (_m *Customer) HandleNomination(_a0 context.Context, _a1 *kinds.SolicitHandleNomination) (*kinds.ReplyHandleNomination, error) {
 	ret := _m.Called(_a0, _a1)
 
 	if len(ret) == 0 {
@@ -544,10 +544,10 @@ func (_m *Customer) HandleNomination(_a0 context.Context, _a1 *kinds.QueryHandle
 
 	var r0 *kinds.ReplyHandleNomination
 	var r1 error
-	if rf, ok := ret.Get(0).(func(context.Context, *kinds.QueryHandleNomination) (*kinds.ReplyHandleNomination, error)); ok {
+	if rf, ok := ret.Get(0).(func(context.Context, *kinds.SolicitHandleNomination) (*kinds.ReplyHandleNomination, error)); ok {
 		return rf(_a0, _a1)
 	}
-	if rf, ok := ret.Get(0).(func(context.Context, *kinds.QueryHandleNomination) *kinds.ReplyHandleNomination); ok {
+	if rf, ok := ret.Get(0).(func(context.Context, *kinds.SolicitHandleNomination) *kinds.ReplyHandleNomination); ok {
 		r0 = rf(_a0, _a1)
 	} else {
 		if ret.Get(0) != nil {
@@ -555,7 +555,7 @@ func (_m *Customer) HandleNomination(_a0 context.Context, _a1 *kinds.QueryHandle
 		}
 	}
 
-	if rf, ok := ret.Get(1).(func(context.Context, *kinds.QueryHandleNomination) error); ok {
+	if rf, ok := ret.Get(1).(func(context.Context, *kinds.SolicitHandleNomination) error); ok {
 		r1 = rf(_a0, _a1)
 	} else {
 		r1 = ret.Error(1)
@@ -565,7 +565,7 @@ func (_m *Customer) HandleNomination(_a0 context.Context, _a1 *kinds.QueryHandle
 }
 
 //
-func (_m *Customer) Inquire(_a0 context.Context, _a1 *kinds.QueryInquire) (*kinds.ReplyInquire, error) {
+func (_m *Customer) Inquire(_a0 context.Context, _a1 *kinds.SolicitInquire) (*kinds.ReplyInquire, error) {
 	ret := _m.Called(_a0, _a1)
 
 	if len(ret) == 0 {
@@ -574,10 +574,10 @@ func (_m *Customer) Inquire(_a0 context.Context, _a1 *kinds.QueryInquire) (*kind
 
 	var r0 *kinds.ReplyInquire
 	var r1 error
-	if rf, ok := ret.Get(0).(func(context.Context, *kinds.QueryInquire) (*kinds.ReplyInquire, error)); ok {
+	if rf, ok := ret.Get(0).(func(context.Context, *kinds.SolicitInquire) (*kinds.ReplyInquire, error)); ok {
 		return rf(_a0, _a1)
 	}
-	if rf, ok := ret.Get(0).(func(context.Context, *kinds.QueryInquire) *kinds.ReplyInquire); ok {
+	if rf, ok := ret.Get(0).(func(context.Context, *kinds.SolicitInquire) *kinds.ReplyInquire); ok {
 		r0 = rf(_a0, _a1)
 	} else {
 		if ret.Get(0) != nil {
@@ -585,7 +585,7 @@ func (_m *Customer) Inquire(_a0 context.Context, _a1 *kinds.QueryInquire) (*kind
 		}
 	}
 
-	if rf, ok := ret.Get(1).(func(context.Context, *kinds.QueryInquire) error); ok {
+	if rf, ok := ret.Get(1).(func(context.Context, *kinds.SolicitInquire) error); ok {
 		r1 = rf(_a0, _a1)
 	} else {
 		r1 = ret.Error(1)
@@ -615,7 +615,7 @@ func (_m *Customer) Exit() <-chan struct{} {
 }
 
 //
-func (_m *Customer) HarvestTrans(_a0 context.Context, _a1 *kinds.QueryHarvestTrans) (*kinds.ReplyHarvestTrans, error) {
+func (_m *Customer) HarvestTrans(_a0 context.Context, _a1 *kinds.SolicitHarvestTrans) (*kinds.ReplyHarvestTrans, error) {
 	ret := _m.Called(_a0, _a1)
 
 	if len(ret) == 0 {
@@ -624,10 +624,10 @@ func (_m *Customer) HarvestTrans(_a0 context.Context, _a1 *kinds.QueryHarvestTra
 
 	var r0 *kinds.ReplyHarvestTrans
 	var r1 error
-	if rf, ok := ret.Get(0).(func(context.Context, *kinds.QueryHarvestTrans) (*kinds.ReplyHarvestTrans, error)); ok {
+	if rf, ok := ret.Get(0).(func(context.Context, *kinds.SolicitHarvestTrans) (*kinds.ReplyHarvestTrans, error)); ok {
 		return rf(_a0, _a1)
 	}
-	if rf, ok := ret.Get(0).(func(context.Context, *kinds.QueryHarvestTrans) *kinds.ReplyHarvestTrans); ok {
+	if rf, ok := ret.Get(0).(func(context.Context, *kinds.SolicitHarvestTrans) *kinds.ReplyHarvestTrans); ok {
 		r0 = rf(_a0, _a1)
 	} else {
 		if ret.Get(0) != nil {
@@ -635,7 +635,7 @@ func (_m *Customer) HarvestTrans(_a0 context.Context, _a1 *kinds.QueryHarvestTra
 		}
 	}
 
-	if rf, ok := ret.Get(1).(func(context.Context, *kinds.QueryHarvestTrans) error); ok {
+	if rf, ok := ret.Get(1).(func(context.Context, *kinds.SolicitHarvestTrans) error); ok {
 		r1 = rf(_a0, _a1)
 	} else {
 		r1 = ret.Error(1)
@@ -668,12 +668,12 @@ func (_m *Customer) AssignTracer(_a0 log.Tracer) {
 }
 
 //
-func (_m *Customer) CollectionReplyCallback(_a0 abciend.Callback) {
+func (_m *Customer) AssignReplyClbk(_a0 abcicustomer.Clbk) {
 	_m.Called(_a0)
 }
 
 //
-func (_m *Customer) Begin() error {
+func (_m *Customer) Initiate() error {
 	ret := _m.Called()
 
 	if len(ret) == 0 {
@@ -709,7 +709,7 @@ func (_m *Customer) Halt() error {
 }
 
 //
-func (_m *Customer) String() string {
+func (_m *Customer) Text() string {
 	ret := _m.Called()
 
 	if len(ret) == 0 {
@@ -727,7 +727,7 @@ func (_m *Customer) String() string {
 }
 
 //
-func (_m *Customer) ValidateBallotAddition(_a0 context.Context, _a1 *kinds.QueryValidateBallotAddition) (*kinds.ReplyValidateBallotAddition, error) {
+func (_m *Customer) ValidateBallotAddition(_a0 context.Context, _a1 *kinds.SolicitValidateBallotAddition) (*kinds.ReplyValidateBallotAddition, error) {
 	ret := _m.Called(_a0, _a1)
 
 	if len(ret) == 0 {
@@ -736,10 +736,10 @@ func (_m *Customer) ValidateBallotAddition(_a0 context.Context, _a1 *kinds.Query
 
 	var r0 *kinds.ReplyValidateBallotAddition
 	var r1 error
-	if rf, ok := ret.Get(0).(func(context.Context, *kinds.QueryValidateBallotAddition) (*kinds.ReplyValidateBallotAddition, error)); ok {
+	if rf, ok := ret.Get(0).(func(context.Context, *kinds.SolicitValidateBallotAddition) (*kinds.ReplyValidateBallotAddition, error)); ok {
 		return rf(_a0, _a1)
 	}
-	if rf, ok := ret.Get(0).(func(context.Context, *kinds.QueryValidateBallotAddition) *kinds.ReplyValidateBallotAddition); ok {
+	if rf, ok := ret.Get(0).(func(context.Context, *kinds.SolicitValidateBallotAddition) *kinds.ReplyValidateBallotAddition); ok {
 		r0 = rf(_a0, _a1)
 	} else {
 		if ret.Get(0) != nil {
@@ -747,7 +747,7 @@ func (_m *Customer) ValidateBallotAddition(_a0 context.Context, _a1 *kinds.Query
 		}
 	}
 
-	if rf, ok := ret.Get(1).(func(context.Context, *kinds.QueryValidateBallotAddition) error); ok {
+	if rf, ok := ret.Get(1).(func(context.Context, *kinds.SolicitValidateBallotAddition) error); ok {
 		r1 = rf(_a0, _a1)
 	} else {
 		r1 = ret.Error(1)
@@ -758,14 +758,14 @@ func (_m *Customer) ValidateBallotAddition(_a0 context.Context, _a1 *kinds.Query
 
 //
 //
-func NewCustomer(t interface {
+func FreshCustomer(t interface {
 	mock.TestingT
 	Sanitize(func())
 }) *Customer {
-	emulate := &Customer{}
-	mock.Emulate.Test(t)
+	simulate := &Customer{}
+	mock.Simulate.Test(t)
 
 	t.Sanitize(func() { mock.AssertExpectations(t) })
 
-	return emulate
+	return simulate
 }

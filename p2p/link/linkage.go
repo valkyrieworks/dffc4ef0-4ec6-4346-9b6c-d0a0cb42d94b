@@ -14,42 +14,42 @@ import (
 
 	"github.com/cosmos/gogoproto/proto"
 
-	"github.com/valkyrieworks/settings"
-	stream "github.com/valkyrieworks/utils/pace"
-	"github.com/valkyrieworks/utils/log"
-	"github.com/valkyrieworks/utils/protoio"
-	"github.com/valkyrieworks/utils/daemon"
-	engineconnect "github.com/valkyrieworks/utils/align"
-	"github.com/valkyrieworks/utils/clock"
-	tmp2p "github.com/valkyrieworks/schema/consensuscore/p2p"
+	"github.com/valkyrieworks/dffc4ef0-4ec6-4346-9b6c-d0a0cb42d94b/settings"
+	stream "github.com/valkyrieworks/dffc4ef0-4ec6-4346-9b6c-d0a0cb42d94b/utils/throughput"
+	"github.com/valkyrieworks/dffc4ef0-4ec6-4346-9b6c-d0a0cb42d94b/utils/log"
+	"github.com/valkyrieworks/dffc4ef0-4ec6-4346-9b6c-d0a0cb42d94b/utils/protocolio"
+	"github.com/valkyrieworks/dffc4ef0-4ec6-4346-9b6c-d0a0cb42d94b/utils/facility"
+	commitchronize "github.com/valkyrieworks/dffc4ef0-4ec6-4346-9b6c-d0a0cb42d94b/utils/chronize"
+	"github.com/valkyrieworks/dffc4ef0-4ec6-4346-9b6c-d0a0cb42d94b/utils/clock"
+	tmpfabric "github.com/valkyrieworks/dffc4ef0-4ec6-4346-9b6c-d0a0cb42d94b/schema/strongmind/p2p"
 )
 
 const (
-	standardMaximumPackageMessageShipmentVolume = 1024
+	fallbackMaximumPacketSignalWorkloadExtent = 1024
 
-	countClusterPackageNotices = 10
-	minimumReadFrameVolume  = 1024
-	minimumRecordFrameVolume = 65536
-	modifyMetrics        = 2 * time.Second
+	countClusterPacketArtifacts = 10
+	minimumFetchReserveExtent  = 1024
+	minimumPersistReserveExtent = 65536
+	reviseMetrics        = 2 * time.Second
 
 	//
 	//
 	//
-	standardPurgeRegulate = 10 * time.Millisecond
+	fallbackPurgeRegulate = 10 * time.Millisecond
 
-	standardTransmitBufferAbility   = 1
-	standardReceiveFrameAbility  = 4096
-	standardReceiveSignalAbility = 22020096      //
-	standardTransmitRatio            = int64(512000) //
-	standardReceiveRatio            = int64(512000) //
-	standardTransmitDeadline         = 10 * time.Second
-	standardPingCadence        = 60 * time.Second
-	standardPongDeadline         = 45 * time.Second
+	fallbackTransmitStagingVolume   = 1
+	fallbackObtainReserveVolume  = 4096
+	fallbackObtainArtifactVolume = 22020096      //
+	fallbackTransmitFrequency            = int64(512000) //
+	fallbackObtainFrequency            = int64(512000) //
+	fallbackTransmitDeadline         = 10 * time.Second
+	fallbackPingDuration        = 60 * time.Second
+	fallbackPongDeadline         = 45 * time.Second
 )
 
 type (
-	acceptCallbackfnFunction func(chanUID byte, messageOctets []byte)
-	faultCallbackfnFunction   func(any)
+	acceptClbkMethod func(chnlUUID byte, signalOctets []byte)
+	failureClbkMethod   func(any)
 )
 
 /**
@@ -77,62 +77,62 @@ e
 
 .
 */
-type MLinkage struct {
-	daemon.RootDaemon
+type ModuleLinkage struct {
+	facility.FoundationFacility
 
 	link          net.Conn
-	imageLinkScanner *bufio.Reader
-	imageLinkRecorder *bufio.Writer
-	transmitAuditor   *stream.Auditor
-	acceptAuditor   *stream.Auditor
+	areaLinkFetcher *bufio.Reader
+	areaLinkPersistor *bufio.Writer
+	transmitOverseer   *stream.Overseer
+	obtainOverseer   *stream.Overseer
 	transmit          chan struct{}
 	pong          chan struct{}
-	streams      []*Conduit
-	streamsIdx   map[byte]*Conduit
-	onAccept     acceptCallbackfnFunction
-	onFault       faultCallbackfnFunction
-	failed       uint32
-	settings        MLinkSettings
+	conduits      []*Conduit
+	conduitsOffset   map[byte]*Conduit
+	uponAccept     acceptClbkMethod
+	uponFailure       failureClbkMethod
+	faulted       uint32
+	settings        ModuleLinkSettings
 
 	//
 	//
 	exitTransmitProcedure chan struct{}
-	doneTransmitProcedure chan struct{}
+	completeTransmitProcedure chan struct{}
 
 	//
-	exitReceiveProcedure chan struct{}
+	exitObtainProcedure chan struct{}
 
 	//
 	//
-	haltMutex engineconnect.Lock
+	haltMutex commitchronize.Exclusion
 
 	purgeClock *clock.RegulateClock //
 	pingClock  *time.Ticker         //
 
 	//
 	pongClock     *time.Timer
-	pongDeadlineChan chan bool //
+	pongDeadlineChnl chan bool //
 
-	chanMetricsClock *time.Ticker //
+	chnlMetricsClock *time.Ticker //
 
 	spawned time.Time //
 
-	_maxpacketmsgsize int
+	_maxartifactsize int
 }
 
 //
-type MLinkSettings struct {
-	TransmitRatio int64 `mapstructure:"transmit_ratio"`
-	ReceiveRatio int64 `mapstructure:"receive_ratio"`
+type ModuleLinkSettings struct {
+	TransmitFrequency int64 `mapstructure:"transmit_frequency"`
+	ObtainFrequency int64 `mapstructure:"obtain_frequency"`
 
 	//
-	MaximumPackageMessageShipmentVolume int `mapstructure:"maximum_package_message_shipment_volume"`
+	MaximumPacketSignalWorkloadExtent int `mapstructure:"maximum_packet_signal_workload_extent"`
 
 	//
 	PurgeRegulate time.Duration `mapstructure:"purge_regulate"`
 
 	//
-	PingCadence time.Duration `mapstructure:"ping_cadence"`
+	PingDuration time.Duration `mapstructure:"ping_duration"`
 
 	//
 	PongDeadline time.Duration `mapstructure:"pong_deadline"`
@@ -143,106 +143,106 @@ type MLinkSettings struct {
 }
 
 //
-func StandardMLinkSettings() MLinkSettings {
-	return MLinkSettings{
-		TransmitRatio:                standardTransmitRatio,
-		ReceiveRatio:                standardReceiveRatio,
-		MaximumPackageMessageShipmentVolume: standardMaximumPackageMessageShipmentVolume,
-		PurgeRegulate:           standardPurgeRegulate,
-		PingCadence:            standardPingCadence,
-		PongDeadline:             standardPongDeadline,
+func FallbackModuleLinkSettings() ModuleLinkSettings {
+	return ModuleLinkSettings{
+		TransmitFrequency:                fallbackTransmitFrequency,
+		ObtainFrequency:                fallbackObtainFrequency,
+		MaximumPacketSignalWorkloadExtent: fallbackMaximumPacketSignalWorkloadExtent,
+		PurgeRegulate:           fallbackPurgeRegulate,
+		PingDuration:            fallbackPingDuration,
+		PongDeadline:             fallbackPongDeadline,
 	}
 }
 
 //
-func NewMLinkage(
+func FreshModuleLinkage(
 	link net.Conn,
-	chanTraits []*StreamDefinition,
-	onAccept acceptCallbackfnFunction,
-	onFault faultCallbackfnFunction,
-) *MLinkage {
-	return NewMLinkageWithSettings(
+	chnlDescriptions []*ConduitDefinition,
+	uponAccept acceptClbkMethod,
+	uponFailure failureClbkMethod,
+) *ModuleLinkage {
+	return FreshModuleLinkageUsingSettings(
 		link,
-		chanTraits,
-		onAccept,
-		onFault,
-		StandardMLinkSettings())
+		chnlDescriptions,
+		uponAccept,
+		uponFailure,
+		FallbackModuleLinkSettings())
 }
 
 //
-func NewMLinkageWithSettings(
+func FreshModuleLinkageUsingSettings(
 	link net.Conn,
-	chanTraits []*StreamDefinition,
-	onAccept acceptCallbackfnFunction,
-	onFault faultCallbackfnFunction,
-	settings MLinkSettings,
-) *MLinkage {
-	if settings.PongDeadline >= settings.PingCadence {
+	chnlDescriptions []*ConduitDefinition,
+	uponAccept acceptClbkMethod,
+	uponFailure failureClbkMethod,
+	settings ModuleLinkSettings,
+) *ModuleLinkage {
+	if settings.PongDeadline >= settings.PingDuration {
 		panic("REDACTED")
 	}
 
-	mconn := &MLinkage{
+	multilink := &ModuleLinkage{
 		link:          link,
-		imageLinkScanner: bufio.NewReaderSize(link, minimumReadFrameVolume),
-		imageLinkRecorder: bufio.NewWriterSize(link, minimumRecordFrameVolume),
-		transmitAuditor:   stream.New(0, 0),
-		acceptAuditor:   stream.New(0, 0),
+		areaLinkFetcher: bufio.NewReaderSize(link, minimumFetchReserveExtent),
+		areaLinkPersistor: bufio.NewWriterSize(link, minimumPersistReserveExtent),
+		transmitOverseer:   stream.New(0, 0),
+		obtainOverseer:   stream.New(0, 0),
 		transmit:          make(chan struct{}, 1),
 		pong:          make(chan struct{}, 1),
-		onAccept:     onAccept,
-		onFault:       onFault,
+		uponAccept:     uponAccept,
+		uponFailure:       uponFailure,
 		settings:        settings,
 		spawned:       time.Now(),
 	}
 
 	//
-	streamsIdx := map[byte]*Conduit{}
-	streams := []*Conduit{}
+	conduitsOffset := map[byte]*Conduit{}
+	conduits := []*Conduit{}
 
-	for _, note := range chanTraits {
-		conduit := newConduit(mconn, *note)
-		streamsIdx[conduit.note.ID] = conduit
-		streams = append(streams, conduit)
+	for _, description := range chnlDescriptions {
+		conduit := freshConduit(multilink, *description)
+		conduitsOffset[conduit.description.ID] = conduit
+		conduits = append(conduits, conduit)
 	}
-	mconn.streams = streams
-	mconn.streamsIdx = streamsIdx
+	multilink.conduits = conduits
+	multilink.conduitsOffset = conduitsOffset
 
-	mconn.RootDaemon = *daemon.NewRootDaemon(nil, "REDACTED", mconn)
+	multilink.FoundationFacility = *facility.FreshFoundationFacility(nil, "REDACTED", multilink)
 
 	//
-	mconn._maxpacketmsgsize = mconn.maximumPackageMessageVolume()
+	multilink._maxartifactsize = multilink.maximumPacketSignalExtent()
 
-	return mconn
+	return multilink
 }
 
-func (c *MLinkage) AssignTracer(l log.Tracer) {
-	c.RootDaemon.AssignTracer(l)
-	for _, ch := range c.streams {
+func (c *ModuleLinkage) AssignTracer(l log.Tracer) {
+	c.FoundationFacility.AssignTracer(l)
+	for _, ch := range c.conduits {
 		ch.AssignTracer(l)
 	}
 }
 
 //
-func (c *MLinkage) OnBegin() error {
-	if err := c.RootDaemon.OnBegin(); err != nil {
+func (c *ModuleLinkage) UponInitiate() error {
+	if err := c.FoundationFacility.UponInitiate(); err != nil {
 		return err
 	}
-	c.purgeClock = clock.NewRegulateClock("REDACTED", c.settings.PurgeRegulate)
-	c.pingClock = time.NewTicker(c.settings.PingCadence)
-	c.pongDeadlineChan = make(chan bool, 1)
-	c.chanMetricsClock = time.NewTicker(modifyMetrics)
+	c.purgeClock = clock.FreshRegulateClock("REDACTED", c.settings.PurgeRegulate)
+	c.pingClock = time.NewTicker(c.settings.PingDuration)
+	c.pongDeadlineChnl = make(chan bool, 1)
+	c.chnlMetricsClock = time.NewTicker(reviseMetrics)
 	c.exitTransmitProcedure = make(chan struct{})
-	c.doneTransmitProcedure = make(chan struct{})
-	c.exitReceiveProcedure = make(chan struct{})
+	c.completeTransmitProcedure = make(chan struct{})
+	c.exitObtainProcedure = make(chan struct{})
 	go c.transmitProcedure()
-	go c.receiveProcedure()
+	go c.obtainProcedure()
 	return nil
 }
 
 //
 //
 //
-func (c *MLinkage) haltIfaces() (yetCeased bool) {
+func (c *ModuleLinkage) haltUtilities() (earlierHalted bool) {
 	c.haltMutex.Lock()
 	defer c.haltMutex.Unlock()
 
@@ -254,19 +254,19 @@ func (c *MLinkage) haltIfaces() (yetCeased bool) {
 	}
 
 	select {
-	case <-c.exitReceiveProcedure:
+	case <-c.exitObtainProcedure:
 		//
 		return true
 	default:
 	}
 
-	c.RootDaemon.OnHalt()
+	c.FoundationFacility.UponHalt()
 	c.purgeClock.Halt()
 	c.pingClock.Stop()
-	c.chanMetricsClock.Stop()
+	c.chnlMetricsClock.Stop()
 
 	//
-	close(c.exitReceiveProcedure)
+	close(c.exitObtainProcedure)
 	close(c.exitTransmitProcedure)
 	return false
 }
@@ -275,8 +275,8 @@ func (c *MLinkage) haltIfaces() (yetCeased bool) {
 //
 //
 //
-func (c *MLinkage) PurgeHalt() {
-	if c.haltIfaces() {
+func (c *ModuleLinkage) PurgeHalt() {
+	if c.haltUtilities() {
 		return
 	}
 
@@ -284,15 +284,15 @@ func (c *MLinkage) PurgeHalt() {
 	{
 		//
 		//
-		<-c.doneTransmitProcedure
+		<-c.completeTransmitProcedure
 
 		//
 		//
 		//
-		w := protoio.NewSeparatedRecorder(c.imageLinkRecorder)
-		eof := c.transmitSomePackageNotices(w)
+		w := protocolio.FreshSeparatedPersistor(c.areaLinkPersistor)
+		eof := c.transmitFewPacketArtifacts(w)
 		for !eof {
-			eof = c.transmitSomePackageNotices(w)
+			eof = c.transmitFewPacketArtifacts(w)
 		}
 		c.purge()
 
@@ -310,8 +310,8 @@ func (c *MLinkage) PurgeHalt() {
 }
 
 //
-func (c *MLinkage) OnHalt() {
-	if c.haltIfaces() {
+func (c *ModuleLinkage) UponHalt() {
+	if c.haltUtilities() {
 		return
 	}
 
@@ -323,82 +323,82 @@ func (c *MLinkage) OnHalt() {
 	//
 }
 
-func (c *MLinkage) String() string {
+func (c *ModuleLinkage) Text() string {
 	return fmt.Sprintf("REDACTED", c.link.RemoteAddr())
 }
 
-func (c *MLinkage) purge() {
+func (c *ModuleLinkage) purge() {
 	c.Tracer.Diagnose("REDACTED", "REDACTED", c)
-	err := c.imageLinkRecorder.Flush()
+	err := c.areaLinkPersistor.Flush()
 	if err != nil {
 		c.Tracer.Diagnose("REDACTED", "REDACTED", err)
 	}
 }
 
 //
-func (c *MLinkage) _recoup() {
+func (c *ModuleLinkage) _restore() {
 	if r := recover(); r != nil {
-		c.Tracer.Fault("REDACTED", "REDACTED", r, "REDACTED", string(debug.Stack()))
-		c.haltForFault(fmt.Errorf("REDACTED", r))
+		c.Tracer.Failure("REDACTED", "REDACTED", r, "REDACTED", string(debug.Stack()))
+		c.haltForeachFailure(fmt.Errorf("REDACTED", r))
 	}
 }
 
-func (c *MLinkage) haltForFault(r any) {
+func (c *ModuleLinkage) haltForeachFailure(r any) {
 	if err := c.Halt(); err != nil {
-		c.Tracer.Fault("REDACTED", "REDACTED", err)
+		c.Tracer.Failure("REDACTED", "REDACTED", err)
 	}
-	if atomic.CompareAndSwapUint32(&c.failed, 0, 1) {
-		if c.onFault != nil {
-			c.onFault(r)
+	if atomic.CompareAndSwapUint32(&c.faulted, 0, 1) {
+		if c.uponFailure != nil {
+			c.uponFailure(r)
 		}
 	}
 }
 
 //
-func (c *MLinkage) Transmit(chanUID byte, messageOctets []byte) bool {
-	if !c.IsActive() {
+func (c *ModuleLinkage) Transmit(chnlUUID byte, signalOctets []byte) bool {
+	if !c.EqualsActive() {
 		return false
 	}
 
-	c.Tracer.Diagnose("REDACTED", "REDACTED", chanUID, "REDACTED", c, "REDACTED", log.NewIdleFormat("REDACTED", messageOctets))
+	c.Tracer.Diagnose("REDACTED", "REDACTED", chnlUUID, "REDACTED", c, "REDACTED", log.FreshIdleFormat("REDACTED", signalOctets))
 
 	//
-	conduit, ok := c.streamsIdx[chanUID]
+	conduit, ok := c.conduitsOffset[chnlUUID]
 	if !ok {
-		c.Tracer.Fault(fmt.Sprintf("REDACTED", chanUID))
+		c.Tracer.Failure(fmt.Sprintf("REDACTED", chnlUUID))
 		return false
 	}
 
-	success := conduit.transmitOctets(messageOctets)
-	if success {
+	triumph := conduit.transmitOctets(signalOctets)
+	if triumph {
 		//
 		select {
 		case c.transmit <- struct{}{}:
 		default:
 		}
 	} else {
-		c.Tracer.Diagnose("REDACTED", "REDACTED", chanUID, "REDACTED", c, "REDACTED", log.NewIdleFormat("REDACTED", messageOctets))
+		c.Tracer.Diagnose("REDACTED", "REDACTED", chnlUUID, "REDACTED", c, "REDACTED", log.FreshIdleFormat("REDACTED", signalOctets))
 	}
-	return success
+	return triumph
 }
 
 //
 //
-func (c *MLinkage) AttemptTransmit(chanUID byte, messageOctets []byte) bool {
-	if !c.IsActive() {
+func (c *ModuleLinkage) AttemptTransmit(chnlUUID byte, signalOctets []byte) bool {
+	if !c.EqualsActive() {
 		return false
 	}
 
-	c.Tracer.Diagnose("REDACTED", "REDACTED", chanUID, "REDACTED", c, "REDACTED", log.NewIdleFormat("REDACTED", messageOctets))
+	c.Tracer.Diagnose("REDACTED", "REDACTED", chnlUUID, "REDACTED", c, "REDACTED", log.FreshIdleFormat("REDACTED", signalOctets))
 
 	//
-	conduit, ok := c.streamsIdx[chanUID]
+	conduit, ok := c.conduitsOffset[chnlUUID]
 	if !ok {
-		c.Tracer.Fault(fmt.Sprintf("REDACTED", chanUID))
+		c.Tracer.Failure(fmt.Sprintf("REDACTED", chnlUUID))
 		return false
 	}
 
-	ok = conduit.attemptTransmitOctets(messageOctets)
+	ok = conduit.attemptTransmitOctets(signalOctets)
 	if ok {
 		//
 		select {
@@ -412,26 +412,26 @@ func (c *MLinkage) AttemptTransmit(chanUID byte, messageOctets []byte) bool {
 
 //
 //
-func (c *MLinkage) MayTransmit(chanUID byte) bool {
-	if !c.IsActive() {
+func (c *ModuleLinkage) AbleTransmit(chnlUUID byte) bool {
+	if !c.EqualsActive() {
 		return false
 	}
 
-	conduit, ok := c.streamsIdx[chanUID]
+	conduit, ok := c.conduitsOffset[chnlUUID]
 	if !ok {
-		c.Tracer.Fault(fmt.Sprintf("REDACTED", chanUID))
+		c.Tracer.Failure(fmt.Sprintf("REDACTED", chnlUUID))
 		return false
 	}
-	return conduit.mayTransmit()
+	return conduit.ableTransmit()
 }
 
 //
-func (c *MLinkage) transmitProcedure() {
-	defer c._recoup()
+func (c *ModuleLinkage) transmitProcedure() {
+	defer c._restore()
 
-	schemaRecorder := protoio.NewSeparatedRecorder(c.imageLinkRecorder)
+	schemaPersistor := protocolio.FreshSeparatedPersistor(c.areaLinkPersistor)
 
-FOR_CYCLE:
+FOREACH_CYCLE:
 	for {
 		var _n int
 		var err error
@@ -441,27 +441,27 @@ FOR_CYCLE:
 			//
 			//
 			c.purge()
-		case <-c.chanMetricsClock.C:
-			for _, conduit := range c.streams {
-				conduit.modifyMetrics()
+		case <-c.chnlMetricsClock.C:
+			for _, conduit := range c.conduits {
+				conduit.reviseMetrics()
 			}
 		case <-c.pingClock.C:
 			c.Tracer.Diagnose("REDACTED")
-			_n, err = schemaRecorder.RecordMessage(shouldEnclosePackage(&tmp2p.PackagePing{}))
+			_n, err = schemaPersistor.PersistSignal(shouldEnclosePacket(&tmpfabric.PacketPing{}))
 			if err != nil {
-				c.Tracer.Fault("REDACTED", "REDACTED", err)
+				c.Tracer.Failure("REDACTED", "REDACTED", err)
 				break Preference
 			}
-			c.transmitAuditor.Modify(_n)
+			c.transmitOverseer.Revise(_n)
 			c.Tracer.Diagnose("REDACTED", "REDACTED", c.settings.PongDeadline)
 			c.pongClock = time.AfterFunc(c.settings.PongDeadline, func() {
 				select {
-				case c.pongDeadlineChan <- true:
+				case c.pongDeadlineChnl <- true:
 				default:
 				}
 			})
 			c.purge()
-		case deadline := <-c.pongDeadlineChan:
+		case deadline := <-c.pongDeadlineChnl:
 			if deadline {
 				c.Tracer.Diagnose("REDACTED")
 				err = errors.New("REDACTED")
@@ -470,18 +470,18 @@ FOR_CYCLE:
 			}
 		case <-c.pong:
 			c.Tracer.Diagnose("REDACTED")
-			_n, err = schemaRecorder.RecordMessage(shouldEnclosePackage(&tmp2p.PackagePong{}))
+			_n, err = schemaPersistor.PersistSignal(shouldEnclosePacket(&tmpfabric.PacketPong{}))
 			if err != nil {
-				c.Tracer.Fault("REDACTED", "REDACTED", err)
+				c.Tracer.Failure("REDACTED", "REDACTED", err)
 				break Preference
 			}
-			c.transmitAuditor.Modify(_n)
+			c.transmitOverseer.Revise(_n)
 			c.purge()
 		case <-c.exitTransmitProcedure:
-			break FOR_CYCLE
+			break FOREACH_CYCLE
 		case <-c.transmit:
 			//
-			eof := c.transmitSomePackageNotices(schemaRecorder)
+			eof := c.transmitFewPacketArtifacts(schemaPersistor)
 			if !eof {
 				//
 				select {
@@ -491,53 +491,53 @@ FOR_CYCLE:
 			}
 		}
 
-		if !c.IsActive() {
-			break FOR_CYCLE
+		if !c.EqualsActive() {
+			break FOREACH_CYCLE
 		}
 		if err != nil {
-			c.Tracer.Fault("REDACTED", "REDACTED", c, "REDACTED", err)
-			c.haltForFault(err)
-			break FOR_CYCLE
+			c.Tracer.Failure("REDACTED", "REDACTED", c, "REDACTED", err)
+			c.haltForeachFailure(err)
+			break FOREACH_CYCLE
 		}
 	}
 
 	//
 	c.haltPongClock()
-	close(c.doneTransmitProcedure)
+	close(c.completeTransmitProcedure)
 }
 
 //
 //
-func (c *MLinkage) transmitSomePackageNotices(w protoio.Recorder) bool {
+func (c *ModuleLinkage) transmitFewPacketArtifacts(w protocolio.Persistor) bool {
 	//
 	//
 	//
-	c.transmitAuditor.Ceiling(c._maxpacketmsgsize, c.settings.TransmitRatio, true)
+	c.transmitOverseer.Threshold(c._maxartifactsize, c.settings.TransmitFrequency, true)
 
 	//
-	return c.transmitClusterPackageNotices(w, countClusterPackageNotices)
+	return c.transmitClusterPacketArtifacts(w, countClusterPacketArtifacts)
 }
 
 //
-func (c *MLinkage) transmitClusterPackageNotices(w protoio.Recorder, clusterVolume int) bool {
+func (c *ModuleLinkage) transmitClusterPacketArtifacts(w protocolio.Persistor, clusterExtent int) bool {
 	//
-	sumOctetsInscribed := 0
+	sumOctetsRecorded := 0
 	defer func() {
-		if sumOctetsInscribed > 0 {
-			c.transmitAuditor.Modify(sumOctetsInscribed)
+		if sumOctetsRecorded > 0 {
+			c.transmitOverseer.Revise(sumOctetsRecorded)
 		}
 	}()
-	for i := 0; i < clusterVolume; i++ {
-		conduit := chooseConduitToGossipOn(c.streams)
+	for i := 0; i < clusterExtent; i++ {
+		conduit := preferConduitTowardBroadcastUpon(c.conduits)
 		//
 		if conduit == nil {
 			return true
 		}
-		octetsInscribed, err := c.transmitPackageMessageOnConduit(w, conduit)
+		octetsRecorded, err := c.transmitPacketSignalUponConduit(w, conduit)
 		if err {
 			return true
 		}
-		sumOctetsInscribed += octetsInscribed
+		sumOctetsRecorded += octetsRecorded
 	}
 	return false
 }
@@ -546,36 +546,36 @@ func (c *MLinkage) transmitClusterPackageNotices(w protoio.Recorder, clusterVolu
 //
 //
 //
-func chooseConduitToGossipOn(streams []*Conduit) *Conduit {
+func preferConduitTowardBroadcastUpon(conduits []*Conduit) *Conduit {
 	//
 	//
-	var minimumProportion float32 = math.MaxFloat32
-	var minimumConduit *Conduit
-	for _, conduit := range streams {
+	var minimalProportion float32 = math.MaxFloat32
+	var minimalConduit *Conduit
+	for _, conduit := range conduits {
 		//
 		//
-		if !conduit.isTransmitAwaiting() {
+		if !conduit.equalsTransmitAwaiting() {
 			continue
 		}
 		//
 		//
 		//
-		proportion := float32(conduit.latelyRelayed) / float32(conduit.note.Urgency)
-		if proportion < minimumProportion {
-			minimumProportion = proportion
-			minimumConduit = conduit
+		proportion := float32(conduit.latelyRelayed) / float32(conduit.description.Urgency)
+		if proportion < minimalProportion {
+			minimalProportion = proportion
+			minimalConduit = conduit
 		}
 	}
-	return minimumConduit
+	return minimalConduit
 }
 
 //
-func (c *MLinkage) transmitPackageMessageOnConduit(w protoio.Recorder, transmitConduit *Conduit) (int, bool) {
+func (c *ModuleLinkage) transmitPacketSignalUponConduit(w protocolio.Persistor, transmitConduit *Conduit) (int, bool) {
 	//
-	n, err := transmitConduit.recordPackageMessageTo(w)
+	n, err := transmitConduit.persistPacketSignalToward(w)
 	if err != nil {
-		c.Tracer.Fault("REDACTED", "REDACTED", err)
-		c.haltForFault(err)
+		c.Tracer.Failure("REDACTED", "REDACTED", err)
+		c.haltForeachFailure(err)
 		return n, true
 	}
 	//
@@ -587,15 +587,15 @@ func (c *MLinkage) transmitPackageMessageOnConduit(w protoio.Recorder, transmitC
 //
 //
 //
-func (c *MLinkage) receiveProcedure() {
-	defer c._recoup()
+func (c *ModuleLinkage) obtainProcedure() {
+	defer c._restore()
 
-	schemaScanner := protoio.NewSeparatedScanner(c.imageLinkScanner, c._maxpacketmsgsize)
+	schemaFetcher := protocolio.FreshSeparatedFetcher(c.areaLinkFetcher, c._maxartifactsize)
 
-FOR_CYCLE:
+FOREACH_CYCLE:
 	for {
 		//
-		c.acceptAuditor.Ceiling(c._maxpacketmsgsize, atomic.LoadInt64(&c.settings.ReceiveRatio), true)
+		c.obtainOverseer.Threshold(c._maxartifactsize, atomic.LoadInt64(&c.settings.ObtainFrequency), true)
 
 		//
 		/**
@@ -612,33 +612,33 @@ l
 */
 
 		//
-		var package tmp2p.Package
+		var packet tmpfabric.Packet
 
-		_n, err := schemaScanner.ScanMessage(&package)
-		c.acceptAuditor.Modify(_n)
+		_n, err := schemaFetcher.FetchSignal(&packet)
+		c.obtainOverseer.Revise(_n)
 		if err != nil {
 			//
 			//
 			select {
-			case <-c.exitReceiveProcedure:
-				break FOR_CYCLE
+			case <-c.exitObtainProcedure:
+				break FOREACH_CYCLE
 			default:
 			}
 
-			if c.IsActive() {
+			if c.EqualsActive() {
 				if err == io.EOF {
 					c.Tracer.Details("REDACTED", "REDACTED", c)
 				} else {
 					c.Tracer.Diagnose("REDACTED", "REDACTED", c, "REDACTED", err)
 				}
-				c.haltForFault(err)
+				c.haltForeachFailure(err)
 			}
-			break FOR_CYCLE
+			break FOREACH_CYCLE
 		}
 
 		//
-		switch pkt := package.Sum.(type) {
-		case *tmp2p.Package_Packageping:
+		switch pkt := packet.Sum.(type) {
+		case *tmpfabric.Packet_Pingpacket:
 			//
 			//
 			c.Tracer.Diagnose("REDACTED")
@@ -647,41 +647,41 @@ l
 			default:
 				//
 			}
-		case *tmp2p.Package_Packagepong:
+		case *tmpfabric.Packet_Pongpacket:
 			c.Tracer.Diagnose("REDACTED")
 			select {
-			case c.pongDeadlineChan <- false:
+			case c.pongDeadlineChnl <- false:
 			default:
 				//
 			}
-		case *tmp2p.Package_Messagedata:
-			conduitUID := byte(pkt.PackageMessage.StreamUID)
-			conduit, ok := c.streamsIdx[conduitUID]
-			if pkt.PackageMessage.StreamUID < 0 || pkt.PackageMessage.StreamUID > math.MaxUint8 || !ok || conduit == nil {
-				err := fmt.Errorf("REDACTED", pkt.PackageMessage.StreamUID)
+		case *tmpfabric.Packet_Packetsignal:
+			conduitUUID := byte(pkt.PacketSignal.ConduitUUID)
+			conduit, ok := c.conduitsOffset[conduitUUID]
+			if pkt.PacketSignal.ConduitUUID < 0 || pkt.PacketSignal.ConduitUUID > math.MaxUint8 || !ok || conduit == nil {
+				err := fmt.Errorf("REDACTED", pkt.PacketSignal.ConduitUUID)
 				c.Tracer.Diagnose("REDACTED", "REDACTED", c, "REDACTED", err)
-				c.haltForFault(err)
-				break FOR_CYCLE
+				c.haltForeachFailure(err)
+				break FOREACH_CYCLE
 			}
 
-			messageOctets, err := conduit.receivePackageMessage(*pkt.PackageMessage)
+			signalOctets, err := conduit.obtainPacketSignal(*pkt.PacketSignal)
 			if err != nil {
-				if c.IsActive() {
+				if c.EqualsActive() {
 					c.Tracer.Diagnose("REDACTED", "REDACTED", c, "REDACTED", err)
-					c.haltForFault(err)
+					c.haltForeachFailure(err)
 				}
-				break FOR_CYCLE
+				break FOREACH_CYCLE
 			}
-			if messageOctets != nil {
-				c.Tracer.Diagnose("REDACTED", "REDACTED", conduitUID, "REDACTED", messageOctets)
+			if signalOctets != nil {
+				c.Tracer.Diagnose("REDACTED", "REDACTED", conduitUUID, "REDACTED", signalOctets)
 				//
-				c.onAccept(conduitUID, messageOctets)
+				c.uponAccept(conduitUUID, signalOctets)
 			}
 		default:
-			err := fmt.Errorf("REDACTED", reflect.TypeOf(package))
-			c.Tracer.Fault("REDACTED", "REDACTED", c, "REDACTED", err)
-			c.haltForFault(err)
-			break FOR_CYCLE
+			err := fmt.Errorf("REDACTED", reflect.TypeOf(packet))
+			c.Tracer.Failure("REDACTED", "REDACTED", c, "REDACTED", err)
+			c.haltForeachFailure(err)
+			break FOREACH_CYCLE
 		}
 	}
 
@@ -694,7 +694,7 @@ l
 }
 
 //
-func (c *MLinkage) haltPongClock() {
+func (c *ModuleLinkage) haltPongClock() {
 	if c.pongClock != nil {
 		_ = c.pongClock.Stop()
 		c.pongClock = nil
@@ -702,11 +702,11 @@ func (c *MLinkage) haltPongClock() {
 }
 
 //
-func (c *MLinkage) maximumPackageMessageVolume() int {
-	bz, err := proto.Marshal(shouldEnclosePackage(&tmp2p.PackageMessage{
-		StreamUID: 0x01,
+func (c *ModuleLinkage) maximumPacketSignalExtent() int {
+	bz, err := proto.Marshal(shouldEnclosePacket(&tmpfabric.PacketSignal{
+		ConduitUUID: 0x01,
 		EOF:       true,
-		Data:      make([]byte, c.settings.MaximumPackageMessageShipmentVolume),
+		Data:      make([]byte, c.settings.MaximumPacketSignalWorkloadExtent),
 	}))
 	if err != nil {
 		panic(err)
@@ -714,98 +714,98 @@ func (c *MLinkage) maximumPackageMessageVolume() int {
 	return len(bz)
 }
 
-type LinkageState struct {
-	Period    time.Duration
-	TransmitAuditor stream.Status
-	ReceiveAuditor stream.Status
-	Streams    []ConduitState
+type LinkageCondition struct {
+	Interval    time.Duration
+	TransmitOverseer stream.Condition
+	ObtainOverseer stream.Condition
+	Conduits    []ConduitCondition
 }
 
-type ConduitState struct {
+type ConduitCondition struct {
 	ID                byte
-	TransmitBufferVolume int
-	TransmitBufferVolume     int
+	TransmitStagingVolume int
+	TransmitStagingExtent     int
 	Urgency          int
 	LatelyRelayed      int64
 }
 
-func (c *MLinkage) Status() LinkageState {
-	var state LinkageState
-	state.Period = time.Since(c.spawned)
-	state.TransmitAuditor = c.transmitAuditor.Status()
-	state.ReceiveAuditor = c.acceptAuditor.Status()
-	state.Streams = make([]ConduitState, len(c.streams))
-	for i, conduit := range c.streams {
-		state.Streams[i] = ConduitState{
-			ID:                conduit.note.ID,
-			TransmitBufferVolume: cap(conduit.transmitBuffer),
-			TransmitBufferVolume:     int(atomic.LoadInt32(&conduit.transmitBufferVolume)),
-			Urgency:          conduit.note.Urgency,
+func (c *ModuleLinkage) Condition() LinkageCondition {
+	var condition LinkageCondition
+	condition.Interval = time.Since(c.spawned)
+	condition.TransmitOverseer = c.transmitOverseer.Condition()
+	condition.ObtainOverseer = c.obtainOverseer.Condition()
+	condition.Conduits = make([]ConduitCondition, len(c.conduits))
+	for i, conduit := range c.conduits {
+		condition.Conduits[i] = ConduitCondition{
+			ID:                conduit.description.ID,
+			TransmitStagingVolume: cap(conduit.transmitStaging),
+			TransmitStagingExtent:     int(atomic.LoadInt32(&conduit.transmitStagingExtent)),
+			Urgency:          conduit.description.Urgency,
 			LatelyRelayed:      atomic.LoadInt64(&conduit.latelyRelayed),
 		}
 	}
-	return state
+	return condition
 }
 
 //
 
-type StreamDefinition struct {
+type ConduitDefinition struct {
 	ID                  byte
 	Urgency            int
-	TransmitBufferVolume   int
-	AcceptBufferVolume  int
-	AcceptSignalVolume int
+	TransmitStagingVolume   int
+	ObtainReserveVolume  int
+	ObtainSignalVolume int
 	SignalKind         proto.Message
 }
 
-func (chanNote StreamDefinition) PopulateStandards() (populated StreamDefinition) {
-	if chanNote.TransmitBufferVolume == 0 {
-		chanNote.TransmitBufferVolume = standardTransmitBufferAbility
+func (chnlDescription ConduitDefinition) PopulatePreset() (populated ConduitDefinition) {
+	if chnlDescription.TransmitStagingVolume == 0 {
+		chnlDescription.TransmitStagingVolume = fallbackTransmitStagingVolume
 	}
-	if chanNote.AcceptBufferVolume == 0 {
-		chanNote.AcceptBufferVolume = standardReceiveFrameAbility
+	if chnlDescription.ObtainReserveVolume == 0 {
+		chnlDescription.ObtainReserveVolume = fallbackObtainReserveVolume
 	}
-	if chanNote.AcceptSignalVolume == 0 {
-		chanNote.AcceptSignalVolume = standardReceiveSignalAbility
+	if chnlDescription.ObtainSignalVolume == 0 {
+		chnlDescription.ObtainSignalVolume = fallbackObtainArtifactVolume
 	}
-	populated = chanNote
+	populated = chnlDescription
 	return
 }
 
 //
 //
 type Conduit struct {
-	link          *MLinkage
-	note          StreamDefinition
-	transmitBuffer     chan []byte
-	transmitBufferVolume int32 //
+	link          *ModuleLinkage
+	description          ConduitDefinition
+	transmitStaging     chan []byte
+	transmitStagingExtent int32 //
 	accepting       []byte
-	dispatching       []byte
+	relaying       []byte
 	latelyRelayed  int64 //
 
-	followingPackageMessage           *tmp2p.PackageMessage
-	followingP2pAdapterPackageMessage *tmp2p.Package_Messagedata
-	followingPackage              *tmp2p.Package
+	followingPacketSignal           *tmpfabric.PacketSignal
+	followingPeer2peerEncapsulatorPacketSignal *tmpfabric.Packet_Packetsignal
+	followingPacket              *tmpfabric.Packet
 
-	maximumPackageMessageShipmentVolume int
+	maximumPacketSignalWorkloadExtent int
 
 	Tracer log.Tracer
 }
 
-func newConduit(link *MLinkage, note StreamDefinition) *Conduit {
-	note = note.PopulateStandards()
-	if note.Urgency <= 0 {
+func freshConduit(link *ModuleLinkage, description ConduitDefinition) *Conduit {
+	description = description.PopulatePreset()
+	if description.Urgency <= 0 {
 		panic("REDACTED")
 	}
 	return &Conduit{
 		link:                    link,
-		note:                    note,
-		transmitBuffer:               make(chan []byte, note.TransmitBufferVolume),
-		accepting:                 make([]byte, 0, note.AcceptBufferVolume),
-		followingPackageMessage:           &tmp2p.PackageMessage{StreamUID: int32(note.ID)},
-		followingP2pAdapterPackageMessage: &tmp2p.Package_Messagedata{},
-		followingPackage:              &tmp2p.Package{},
-		maximumPackageMessageShipmentVolume: link.settings.MaximumPackageMessageShipmentVolume,
+		description:                    description,
+		transmitStaging:               make(chan []byte, description.TransmitStagingVolume),
+		accepting:                 make([]byte, 0, description.ObtainReserveVolume),
+		followingPacketSignal:           &tmpfabric.PacketSignal{ConduitUUID: int32(description.ID)},
+		followingPeer2peerEncapsulatorPacketSignal: &tmpfabric.Packet_Packetsignal{},
+		followingPacket:              &tmpfabric.Packet{},
+		maximumPacketSignalWorkloadExtent: link.settings.MaximumPacketSignalWorkloadExtent,
 	}
 }
 
@@ -818,10 +818,10 @@ func (ch *Conduit) AssignTracer(l log.Tracer) {
 //
 func (ch *Conduit) transmitOctets(octets []byte) bool {
 	select {
-	case ch.transmitBuffer <- octets:
-		atomic.AddInt32(&ch.transmitBufferVolume, 1)
+	case ch.transmitStaging <- octets:
+		atomic.AddInt32(&ch.transmitStagingExtent, 1)
 		return true
-	case <-time.After(standardTransmitDeadline):
+	case <-time.After(fallbackTransmitDeadline):
 		return false
 	}
 }
@@ -831,8 +831,8 @@ func (ch *Conduit) transmitOctets(octets []byte) bool {
 //
 func (ch *Conduit) attemptTransmitOctets(octets []byte) bool {
 	select {
-	case ch.transmitBuffer <- octets:
-		atomic.AddInt32(&ch.transmitBufferVolume, 1)
+	case ch.transmitStaging <- octets:
+		atomic.AddInt32(&ch.transmitStagingExtent, 1)
 		return true
 	default:
 		return false
@@ -840,53 +840,53 @@ func (ch *Conduit) attemptTransmitOctets(octets []byte) bool {
 }
 
 //
-func (ch *Conduit) importTransmitBufferVolume() (volume int) {
-	return int(atomic.LoadInt32(&ch.transmitBufferVolume))
+func (ch *Conduit) fetchTransmitStagingExtent() (extent int) {
+	return int(atomic.LoadInt32(&ch.transmitStagingExtent))
 }
 
 //
 //
-func (ch *Conduit) mayTransmit() bool {
-	return ch.importTransmitBufferVolume() < standardTransmitBufferAbility
+func (ch *Conduit) ableTransmit() bool {
+	return ch.fetchTransmitStagingExtent() < fallbackTransmitStagingVolume
 }
 
 //
 //
 //
-func (ch *Conduit) isTransmitAwaiting() bool {
-	if len(ch.dispatching) == 0 {
-		if len(ch.transmitBuffer) == 0 {
+func (ch *Conduit) equalsTransmitAwaiting() bool {
+	if len(ch.relaying) == 0 {
+		if len(ch.transmitStaging) == 0 {
 			return false
 		}
-		ch.dispatching = <-ch.transmitBuffer
+		ch.relaying = <-ch.transmitStaging
 	}
 	return true
 }
 
 //
 //
-func (ch *Conduit) modifyFollowingPackage() {
-	maximumVolume := ch.maximumPackageMessageShipmentVolume
-	if len(ch.dispatching) <= maximumVolume {
-		ch.followingPackageMessage.Data = ch.dispatching
-		ch.followingPackageMessage.EOF = true
-		ch.dispatching = nil
-		atomic.AddInt32(&ch.transmitBufferVolume, -1) //
+func (ch *Conduit) reviseFollowingPacket() {
+	maximumExtent := ch.maximumPacketSignalWorkloadExtent
+	if len(ch.relaying) <= maximumExtent {
+		ch.followingPacketSignal.Data = ch.relaying
+		ch.followingPacketSignal.EOF = true
+		ch.relaying = nil
+		atomic.AddInt32(&ch.transmitStagingExtent, -1) //
 	} else {
-		ch.followingPackageMessage.Data = ch.dispatching[:maximumVolume]
-		ch.followingPackageMessage.EOF = false
-		ch.dispatching = ch.dispatching[maximumVolume:]
+		ch.followingPacketSignal.Data = ch.relaying[:maximumExtent]
+		ch.followingPacketSignal.EOF = false
+		ch.relaying = ch.relaying[maximumExtent:]
 	}
 
-	ch.followingP2pAdapterPackageMessage.PackageMessage = ch.followingPackageMessage
-	ch.followingPackage.Sum = ch.followingP2pAdapterPackageMessage
+	ch.followingPeer2peerEncapsulatorPacketSignal.PacketSignal = ch.followingPacketSignal
+	ch.followingPacket.Sum = ch.followingPeer2peerEncapsulatorPacketSignal
 }
 
 //
 //
-func (ch *Conduit) recordPackageMessageTo(w protoio.Recorder) (n int, err error) {
-	ch.modifyFollowingPackage()
-	n, err = w.RecordMessage(ch.followingPackage)
+func (ch *Conduit) persistPacketSignalToward(w protocolio.Persistor) (n int, err error) {
+	ch.reviseFollowingPacket()
+	n, err = w.PersistSignal(ch.followingPacket)
 	if err != nil {
 		return 0, err
 	}
@@ -897,29 +897,29 @@ func (ch *Conduit) recordPackageMessageTo(w protoio.Recorder) (n int, err error)
 //
 //
 //
-func (ch *Conduit) receivePackageMessage(package tmp2p.PackageMessage) ([]byte, error) {
-	ch.Tracer.Diagnose("REDACTED", "REDACTED", ch.link, "REDACTED", package)
-	receiveLimit, receiveAccepted := ch.note.AcceptSignalVolume, len(ch.accepting)+len(package.Data)
-	if receiveLimit < receiveAccepted {
-		return nil, fmt.Errorf("REDACTED", receiveLimit, receiveAccepted)
+func (ch *Conduit) obtainPacketSignal(packet tmpfabric.PacketSignal) ([]byte, error) {
+	ch.Tracer.Diagnose("REDACTED", "REDACTED", ch.link, "REDACTED", packet)
+	obtainCeiling, obtainAccepted := ch.description.ObtainSignalVolume, len(ch.accepting)+len(packet.Data)
+	if obtainCeiling < obtainAccepted {
+		return nil, fmt.Errorf("REDACTED", obtainCeiling, obtainAccepted)
 	}
-	ch.accepting = append(ch.accepting, package.Data...)
-	if package.EOF {
-		messageOctets := ch.accepting
+	ch.accepting = append(ch.accepting, packet.Data...)
+	if packet.EOF {
+		signalOctets := ch.accepting
 
 		//
 		//
 		//
 		//
 		ch.accepting = ch.accepting[:0] //
-		return messageOctets, nil
+		return signalOctets, nil
 	}
 	return nil, nil
 }
 
 //
 //
-func (ch *Conduit) modifyMetrics() {
+func (ch *Conduit) reviseMetrics() {
 	//
 	//
 	atomic.StoreInt64(&ch.latelyRelayed, int64(float64(atomic.LoadInt64(&ch.latelyRelayed))*0.8))
@@ -929,25 +929,25 @@ func (ch *Conduit) modifyMetrics() {
 //
 
 //
-func shouldEnclosePackage(pb proto.Message) *tmp2p.Package {
-	msg := &tmp2p.Package{}
-	shouldEnclosePackageToward(pb, msg)
+func shouldEnclosePacket(pb proto.Message) *tmpfabric.Packet {
+	msg := &tmpfabric.Packet{}
+	shouldEnclosePacketWithin(pb, msg)
 	return msg
 }
 
-func shouldEnclosePackageToward(pb proto.Message, dst *tmp2p.Package) {
+func shouldEnclosePacketWithin(pb proto.Message, dst *tmpfabric.Packet) {
 	switch pb := pb.(type) {
-	case *tmp2p.PackagePing:
-		dst.Sum = &tmp2p.Package_Packageping{
-			PackagePing: pb,
+	case *tmpfabric.PacketPing:
+		dst.Sum = &tmpfabric.Packet_Pingpacket{
+			PacketPing: pb,
 		}
-	case *tmp2p.PackagePong:
-		dst.Sum = &tmp2p.Package_Packagepong{
-			PackagePong: pb,
+	case *tmpfabric.PacketPong:
+		dst.Sum = &tmpfabric.Packet_Pongpacket{
+			PacketPong: pb,
 		}
-	case *tmp2p.PackageMessage:
-		dst.Sum = &tmp2p.Package_Messagedata{
-			PackageMessage: pb,
+	case *tmpfabric.PacketSignal:
+		dst.Sum = &tmpfabric.Packet_Packetsignal{
+			PacketSignal: pb,
 		}
 	default:
 		panic(fmt.Errorf("REDACTED", pb))

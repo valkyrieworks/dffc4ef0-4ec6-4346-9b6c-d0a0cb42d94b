@@ -4,40 +4,40 @@ import "fmt"
 
 type (
 	//
-	ErrAdverseField struct {
-		Field string
+	FaultAdverseAttribute struct {
+		Attribute string
 	}
 
 	//
-	ErrMandatoryField struct {
-		Field string
+	FaultMandatoryAttribute struct {
+		Attribute string
 	}
 
 	//
-	ErrCorruptField struct {
-		Field  string
-		Cause string
+	FaultUnfitAttribute struct {
+		Attribute  string
+		Rationale string
 	}
 
 	//
-	ErrIncorrectField struct {
-		Field string
+	FaultIncorrectAttribute struct {
+		Attribute string
 		Err   error
 	}
 )
 
-func (e ErrAdverseField) Fault() string {
-	return fmt.Sprintf("REDACTED", e.Field)
+func (e FaultAdverseAttribute) Failure() string {
+	return fmt.Sprintf("REDACTED", e.Attribute)
 }
 
-func (e ErrMandatoryField) Fault() string {
-	return fmt.Sprintf("REDACTED", e.Field)
+func (e FaultMandatoryAttribute) Failure() string {
+	return fmt.Sprintf("REDACTED", e.Attribute)
 }
 
-func (e ErrCorruptField) Fault() string {
-	return fmt.Sprintf("REDACTED", e.Field, e.Cause)
+func (e FaultUnfitAttribute) Failure() string {
+	return fmt.Sprintf("REDACTED", e.Attribute, e.Rationale)
 }
 
-func (e ErrIncorrectField) Fault() string {
-	return fmt.Sprintf("REDACTED", e.Field, e.Err)
+func (e FaultIncorrectAttribute) Failure() string {
+	return fmt.Sprintf("REDACTED", e.Attribute, e.Err)
 }

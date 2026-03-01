@@ -16,39 +16,39 @@ import (
 	"strings"
 	"time"
 
-	"github.com/valkyrieworks/iface/instance/objectdepot"
-	iface "github.com/valkyrieworks/iface/kinds"
-	"github.com/valkyrieworks/vault"
-	cryptocode "github.com/valkyrieworks/vault/codec"
-	"github.com/valkyrieworks/utils/log"
-	"github.com/valkyrieworks/utils/protoio"
-	cryptography "github.com/valkyrieworks/schema/consensuscore/vault"
-	engineproto "github.com/valkyrieworks/schema/consensuscore/kinds"
-	cometkinds "github.com/valkyrieworks/kinds"
-	"github.com/valkyrieworks/release"
+	"github.com/valkyrieworks/dffc4ef0-4ec6-4346-9b6c-d0a0cb42d94b/iface/instance/statedepot"
+	iface "github.com/valkyrieworks/dffc4ef0-4ec6-4346-9b6c-d0a0cb42d94b/iface/kinds"
+	"github.com/valkyrieworks/dffc4ef0-4ec6-4346-9b6c-d0a0cb42d94b/security"
+	cryptocode "github.com/valkyrieworks/dffc4ef0-4ec6-4346-9b6c-d0a0cb42d94b/security/serialization"
+	"github.com/valkyrieworks/dffc4ef0-4ec6-4346-9b6c-d0a0cb42d94b/utils/log"
+	"github.com/valkyrieworks/dffc4ef0-4ec6-4346-9b6c-d0a0cb42d94b/utils/protocolio"
+	cryptographyproto "github.com/valkyrieworks/dffc4ef0-4ec6-4346-9b6c-d0a0cb42d94b/schema/strongmind/security"
+	commitchema "github.com/valkyrieworks/dffc4ef0-4ec6-4346-9b6c-d0a0cb42d94b/schema/strongmind/kinds"
+	strongmindkinds "github.com/valkyrieworks/dffc4ef0-4ec6-4346-9b6c-d0a0cb42d94b/kinds"
+	"github.com/valkyrieworks/dffc4ef0-4ec6-4346-9b6c-d0a0cb42d94b/edition"
 )
 
 const (
-	applicationRelease                 = 1
-	ballotAdditionKey    string = "REDACTED"
-	ballotAdditionMaximumSize int64  = 1024 * 1024 * 128 //
-	ballotAdditionMaximumValue int64  = 128
-	prefixPreservedKey   string = "REDACTED"
-	postfixSeriesUID       string = "REDACTED"
-	postfixBallotExtensionLevel string = "REDACTED"
-	postfixPrimaryLevel string = "REDACTED"
+	platformEdition                 = 1
+	ballotAdditionToken    string = "REDACTED"
+	ballotAdditionMaximumLength int64  = 1024 * 1024 * 128 //
+	ballotAdditionMaximumItem int64  = 128
+	headingPreservedToken   string = "REDACTED"
+	endingSuccessionUUID       string = "REDACTED"
+	endingBallotAddnAltitude string = "REDACTED"
+	endingPrimaryAltitude string = "REDACTED"
 )
 
 //
 //
 //
-type Software struct {
-	iface.RootSoftware
+type Platform struct {
+	iface.FoundationPlatform
 	tracer          log.Tracer
 	status           *Status
-	mirrors       *MirrorDepot
+	images       *ImageDepot
 	cfg             *Settings
-	recoverMirror *iface.Mirror
+	recoverImage *iface.Image
 	recoverSegments   [][]byte
 	applicationTxpool      *ApplicationTxpool
 }
@@ -61,7 +61,7 @@ type Settings struct {
 
 	//
 	//
-	MirrorCadence uint64 `toml:"mirror_cadence"`
+	ImageDuration uint64 `toml:"image_duration"`
 
 	//
 	//
@@ -70,12 +70,12 @@ type Settings struct {
 
 	//
 	//
-	KeyKind string `toml:"key_kind"`
+	TokenKind string `toml:"token_kind"`
 
 	//
 	//
 	//
-	EndureCadence uint64 `toml:"endure_cadence"`
+	EndureDuration uint64 `toml:"endure_duration"`
 
 	//
 	ApplicationFlankTxpool bool `toml:"application_flank_txpool"`
@@ -94,133 +94,133 @@ type Settings struct {
 	//
 	//
 	//
-	RatifierRefreshes map[string]map[string]uint8 `toml:"ratifier_modify"`
+	AssessorRevisions map[string]map[string]uint8 `toml:"assessor_revise"`
 
 	//
 	//
 	ArrangeNominationDeferral time.Duration `toml:"arrange_nomination_deferral"`
 	HandleNominationDeferral time.Duration `toml:"handle_nomination_deferral"`
 	InspectTransferDeferral         time.Duration `toml:"inspect_transfer_deferral"`
-	CompleteLedgerDeferral   time.Duration `toml:"complete_ledger_deferral"`
+	CulminateLedgerDeferral   time.Duration `toml:"culminate_ledger_deferral"`
 	BallotAdditionDeferral   time.Duration `toml:"ballot_addition_deferral"`
 
 	//
 	//
 	//
-	BallotPluginsActivateLevel int64 `toml:"ballot_plugins_activate_level"`
+	BallotAdditionsActivateAltitude int64 `toml:"ballot_additions_activate_altitude"`
 
 	//
 	//
 	//
 	//
-	BallotPluginsModifyLevel int64 `toml:"ballot_plugins_modify_level"`
+	BallotAdditionsReviseAltitude int64 `toml:"ballot_additions_revise_altitude"`
 
 	//
-	BallotAdditionVolume uint `toml:"ballot_addition_volume"`
+	BallotAdditionExtent uint `toml:"ballot_addition_extent"`
 }
 
-func StandardSettings(dir string) *Settings {
+func FallbackSettings(dir string) *Settings {
 	return &Settings{
-		EndureCadence:  1,
-		MirrorCadence: 100,
+		EndureDuration:  1,
+		ImageDuration: 100,
 		Dir:              dir,
 	}
 }
 
 //
-func NewSoftware(cfg *Settings) (*Software, error) {
-	status, err := NewStatus(cfg.Dir, cfg.EndureCadence)
+func FreshPlatform(cfg *Settings) (*Platform, error) {
+	status, err := FreshStatus(cfg.Dir, cfg.EndureDuration)
 	if err != nil {
 		return nil, err
 	}
-	mirrors, err := NewMirrorDepot(filepath.Join(cfg.Dir, "REDACTED"))
+	images, err := FreshImageDepot(filepath.Join(cfg.Dir, "REDACTED"))
 	if err != nil {
 		return nil, err
 	}
 
-	tracer := log.NewTMTracer(log.NewAlignRecorder(os.Stdout))
+	tracer := log.FreshTEMPTracer(log.FreshChronizePersistor(os.Stdout))
 
-	return &Software{
+	return &Platform{
 		tracer:     tracer,
 		status:      status,
-		mirrors:  mirrors,
+		images:  images,
 		cfg:        cfg,
-		applicationTxpool: NewApplicationTxpool(tracer),
+		applicationTxpool: FreshApplicationTxpool(tracer),
 	}, nil
 }
 
 //
-func (app *Software) Details(context.Context, *iface.QueryDetails) (*iface.ReplyDetails, error) {
-	level, digest := app.status.Details()
+func (app *Platform) Details(context.Context, *iface.SolicitDetails) (*iface.ReplyDetails, error) {
+	altitude, digest := app.status.Details()
 	return &iface.ReplyDetails{
-		Release:          release.IfaceRelease,
-		ApplicationRelease:       applicationRelease,
-		FinalLedgerLevel:  int64(level),
-		FinalLedgerApplicationDigest: digest,
+		Edition:          edition.IfaceEdition,
+		PlatformEdition:       platformEdition,
+		FinalLedgerAltitude:  int64(altitude),
+		FinalLedgerPlatformDigest: digest,
 	}, nil
 }
 
-func (app *Software) modifyBallotAdditionActivateLevel(ongoingLevel int64) *engineproto.AgreementOptions {
-	var options *engineproto.AgreementOptions
-	if app.cfg.BallotPluginsModifyLevel == ongoingLevel {
+func (app *Platform) reviseBallotAdditionActivateAltitude(prevailingAltitude int64) *commitchema.AgreementSettings {
+	var parameters *commitchema.AgreementSettings
+	if app.cfg.BallotAdditionsReviseAltitude == prevailingAltitude {
 		app.tracer.Details("REDACTED",
-			"REDACTED", ongoingLevel,
-			"REDACTED", app.cfg.BallotPluginsActivateLevel)
-		options = &engineproto.AgreementOptions{
-			Iface: &engineproto.IfaceOptions{
-				BallotPluginsActivateLevel: app.cfg.BallotPluginsActivateLevel,
+			"REDACTED", prevailingAltitude,
+			"REDACTED", app.cfg.BallotAdditionsActivateAltitude)
+		parameters = &commitchema.AgreementSettings{
+			Iface: &commitchema.IfaceParameters{
+				BallotAdditionsActivateAltitude: app.cfg.BallotAdditionsActivateAltitude,
 			},
 		}
-		app.tracer.Details("REDACTED", "REDACTED", app.cfg.BallotPluginsActivateLevel)
-		app.status.Set(prefixPreservedKey+postfixBallotExtensionLevel, strconv.FormatInt(app.cfg.BallotPluginsActivateLevel, 10))
+		app.tracer.Details("REDACTED", "REDACTED", app.cfg.BallotAdditionsActivateAltitude)
+		app.status.Set(headingPreservedToken+endingBallotAddnAltitude, strconv.FormatInt(app.cfg.BallotAdditionsActivateAltitude, 10))
 	}
-	return options
+	return parameters
 }
 
 //
-func (app *Software) InitSeries(_ context.Context, req *iface.QueryInitSeries) (*iface.ReplyInitSeries, error) {
+func (app *Platform) InitializeSuccession(_ context.Context, req *iface.SolicitInitializeSuccession) (*iface.ReplyInitializeSuccession, error) {
 	var err error
-	app.status.primaryLevel = uint64(req.PrimaryLevel)
+	app.status.primaryAltitude = uint64(req.PrimaryAltitude)
 	if len(req.ApplicationStatusOctets) > 0 {
-		err = app.status.Include(0, req.ApplicationStatusOctets)
+		err = app.status.Ingest(0, req.ApplicationStatusOctets)
 		if err != nil {
 			return nil, err
 		}
 	}
-	app.tracer.Details("REDACTED", "REDACTED", req.SeriesUid)
-	app.status.Set(prefixPreservedKey+postfixSeriesUID, req.SeriesUid)
-	app.tracer.Details("REDACTED", "REDACTED", req.AgreementOptions.Iface.BallotPluginsActivateLevel)
-	app.status.Set(prefixPreservedKey+postfixBallotExtensionLevel, strconv.FormatInt(req.AgreementOptions.Iface.BallotPluginsActivateLevel, 10))
-	app.tracer.Details("REDACTED", "REDACTED", req.PrimaryLevel)
-	app.status.Set(prefixPreservedKey+postfixPrimaryLevel, strconv.FormatInt(req.PrimaryLevel, 10))
+	app.tracer.Details("REDACTED", "REDACTED", req.SuccessionUuid)
+	app.status.Set(headingPreservedToken+endingSuccessionUUID, req.SuccessionUuid)
+	app.tracer.Details("REDACTED", "REDACTED", req.AgreementSettings.Iface.BallotAdditionsActivateAltitude)
+	app.status.Set(headingPreservedToken+endingBallotAddnAltitude, strconv.FormatInt(req.AgreementSettings.Iface.BallotAdditionsActivateAltitude, 10))
+	app.tracer.Details("REDACTED", "REDACTED", req.PrimaryAltitude)
+	app.status.Set(headingPreservedToken+endingPrimaryAltitude, strconv.FormatInt(req.PrimaryAltitude, 10))
 	//
-	if req.Ratifiers != nil {
-		for _, val := range req.Ratifiers {
+	if req.Assessors != nil {
+		for _, val := range req.Assessors {
 
-			if err := app.depotRatifier(&val); err != nil {
+			if err := app.depotAssessor(&val); err != nil {
 				return nil, err
 			}
 		}
 	}
 
-	options := app.modifyBallotAdditionActivateLevel(0)
+	parameters := app.reviseBallotAdditionActivateAltitude(0)
 
-	reply := &iface.ReplyInitSeries{
-		AgreementOptions: options,
-		ApplicationDigest:         app.status.FetchDigest(),
+	reply := &iface.ReplyInitializeSuccession{
+		AgreementSettings: parameters,
+		PlatformDigest:         app.status.ObtainDigest(),
 	}
-	if reply.Ratifiers, err = app.ratifierRefreshes(0); err != nil {
+	if reply.Assessors, err = app.assessorRevisions(0); err != nil {
 		return nil, err
 	}
 	return reply, nil
 }
 
 //
-func (app *Software) InspectTransfer(_ context.Context, req *iface.QueryInspectTransfer) (*iface.ReplyInspectTransfer, error) {
+func (app *Platform) InspectTransfer(_ context.Context, req *iface.SolicitInspectTransfer) (*iface.ReplyInspectTransfer, error) {
 	key, _, err := analyzeTransfer(req.Tx)
-	if err != nil || key == prefixPreservedKey {
+	if err != nil || key == headingPreservedToken {
 		return &iface.ReplyInspectTransfer{
-			Code: objectdepot.CodeKindCodecFault,
+			Cipher: statedepot.CipherKindSerializationFailure,
 			Log:  err.Error(),
 		}, nil
 	}
@@ -229,91 +229,91 @@ func (app *Software) InspectTransfer(_ context.Context, req *iface.QueryInspectT
 		time.Sleep(app.cfg.InspectTransferDeferral)
 	}
 
-	return &iface.ReplyInspectTransfer{Code: objectdepot.CodeKindSuccess, FuelDesired: 1}, nil
+	return &iface.ReplyInspectTransfer{Cipher: statedepot.CipherKindOKAY, FuelDesired: 1}, nil
 }
 
-func (app *Software) EmbedTransfer(ctx context.Context, req *iface.QueryEmbedTransfer) (*iface.ReplyEmbedTransfer, error) {
+func (app *Platform) AppendTransfer(ctx context.Context, req *iface.SolicitAppendTransfer) (*iface.ReplyAppendTransfer, error) {
 	if !app.cfg.ApplicationFlankTxpool {
 		return nil, errors.New("REDACTED")
 	}
 
 	//
 	key, _, err := analyzeTransfer(req.Tx)
-	if err != nil || key == prefixPreservedKey {
-		return &iface.ReplyEmbedTransfer{
-			Code: objectdepot.CodeKindCodecFault,
+	if err != nil || key == headingPreservedToken {
+		return &iface.ReplyAppendTransfer{
+			Cipher: statedepot.CipherKindSerializationFailure,
 		}, nil
 	}
 
-	app.applicationTxpool.EmbedTransfer(req.Tx)
+	app.applicationTxpool.AppendTransfer(req.Tx)
 
-	return &iface.ReplyEmbedTransfer{Code: objectdepot.CodeKindSuccess}, nil
+	return &iface.ReplyAppendTransfer{Cipher: statedepot.CipherKindOKAY}, nil
 }
 
-func (app *Software) HarvestTrans(ctx context.Context, req *iface.QueryHarvestTrans) (*iface.ReplyHarvestTrans, error) {
+func (app *Platform) HarvestTrans(ctx context.Context, req *iface.SolicitHarvestTrans) (*iface.ReplyHarvestTrans, error) {
 	if !app.cfg.ApplicationFlankTxpool {
 		return nil, errors.New("REDACTED")
 	}
 
 	txs := app.applicationTxpool.HarvestTrans(false)
 
-	return &iface.ReplyHarvestTrans{Txs: txs.ToSegmentOfOctets()}, nil
+	return &iface.ReplyHarvestTrans{Txs: txs.TowardSegmentBelongingOctets()}, nil
 }
 
 //
-func (app *Software) CompleteLedger(_ context.Context, req *iface.QueryCompleteLedger) (*iface.ReplyCompleteLedger, error) {
+func (app *Platform) CulminateLedger(_ context.Context, req *iface.SolicitCulminateLedger) (*iface.ReplyCulminateLedger, error) {
 	txs := make([]*iface.InvokeTransferOutcome, len(req.Txs))
 
 	for i, tx := range req.Txs {
-		key, item, err := analyzeTransfer(tx)
+		key, datum, err := analyzeTransfer(tx)
 		if err != nil {
 			panic(err) //
 		}
-		if key == prefixPreservedKey {
-			panic(fmt.Errorf("REDACTED", prefixPreservedKey))
+		if key == headingPreservedToken {
+			panic(fmt.Errorf("REDACTED", headingPreservedToken))
 		}
-		app.status.Set(key, item)
+		app.status.Set(key, datum)
 
-		txs[i] = &iface.InvokeTransferOutcome{Code: objectdepot.CodeKindSuccess}
+		txs[i] = &iface.InvokeTransferOutcome{Cipher: statedepot.CipherKindOKAY}
 	}
 
 	for _, ev := range req.Malpractice {
 		app.tracer.Details("REDACTED",
-			"REDACTED", ev.FetchRatifier().Location,
-			"REDACTED", ev.FetchKind(),
-			"REDACTED", ev.FetchLevel(),
-			"REDACTED", ev.FetchTime(),
-			"REDACTED", ev.FetchSumPollingEnergy(),
+			"REDACTED", ev.ObtainAssessor().Location,
+			"REDACTED", ev.ObtainKind(),
+			"REDACTED", ev.ObtainAltitude(),
+			"REDACTED", ev.ObtainMoment(),
+			"REDACTED", ev.ObtainSumBallotingPotency(),
 		)
 	}
 
-	valueRefreshes, err := app.ratifierRefreshes(uint64(req.Level))
+	itemRevisions, err := app.assessorRevisions(uint64(req.Altitude))
 	if err != nil {
 		panic(err)
 	}
 
-	options := app.modifyBallotAdditionActivateLevel(req.Level)
+	parameters := app.reviseBallotAdditionActivateAltitude(req.Altitude)
 
-	if app.cfg.CompleteLedgerDeferral != 0 {
-		time.Sleep(app.cfg.CompleteLedgerDeferral)
+	if app.cfg.CulminateLedgerDeferral != 0 {
+		time.Sleep(app.cfg.CulminateLedgerDeferral)
 	}
 
-	return &iface.ReplyCompleteLedger{
-		TransOutcomes:             txs,
-		RatifierRefreshes:      valueRefreshes,
-		ApplicationDigest:               app.status.Complete(),
-		AgreementArgumentRefreshes: options,
-		Events: []iface.Event{
+	return &iface.ReplyCulminateLedger{
+		TransferOutcomes:             txs,
+		AssessorRevisions:      itemRevisions,
+		PlatformDigest:               app.status.Culminate(),
+		AgreementArgumentRevisions: parameters,
+		Incidents: []iface.Incident{
 			{
 				Kind: "REDACTED",
-				Properties: []iface.EventProperty{
+				Properties: []iface.IncidentProperty{
 					{
 						Key:   "REDACTED",
-						Item: strconv.Itoa(valueRefreshes.Len()),
+						Datum: strconv.Itoa(itemRevisions.Len()),
 					},
 					{
 						Key:   "REDACTED",
-						Item: strconv.Itoa(int(req.Level)),
+						Datum: strconv.Itoa(int(req.Altitude)),
 					},
 				},
 			},
@@ -322,88 +322,88 @@ func (app *Software) CompleteLedger(_ context.Context, req *iface.QueryCompleteL
 }
 
 //
-func (app *Software) Endorse(_ context.Context, _ *iface.QueryEndorse) (*iface.ReplyEndorse, error) {
-	level, err := app.status.Endorse()
+func (app *Platform) Endorse(_ context.Context, _ *iface.SolicitEndorse) (*iface.ReplyEndorse, error) {
+	altitude, err := app.status.Endorse()
 	if err != nil {
 		panic(err)
 	}
-	if app.cfg.MirrorCadence > 0 && level%app.cfg.MirrorCadence == 0 {
-		mirror, err := app.mirrors.Instantiate(app.status)
+	if app.cfg.ImageDuration > 0 && altitude%app.cfg.ImageDuration == 0 {
+		image, err := app.images.Generate(app.status)
 		if err != nil {
 			panic(err)
 		}
-		app.tracer.Details("REDACTED", "REDACTED", mirror.Level)
-		err = app.mirrors.Trim(maximumMirrorNumber)
+		app.tracer.Details("REDACTED", "REDACTED", image.Altitude)
+		err = app.images.Trim(maximumImageTally)
 		if err != nil {
-			app.tracer.Fault("REDACTED", "REDACTED", err)
+			app.tracer.Failure("REDACTED", "REDACTED", err)
 		}
 	}
-	preserveLevel := int64(0)
+	preserveAltitude := int64(0)
 	if app.cfg.PreserveLedgers > 0 {
-		preserveLevel = int64(level - app.cfg.PreserveLedgers + 1)
+		preserveAltitude = int64(altitude - app.cfg.PreserveLedgers + 1)
 	}
 	return &iface.ReplyEndorse{
-		PreserveLevel: preserveLevel,
+		PreserveAltitude: preserveAltitude,
 	}, nil
 }
 
 //
-func (app *Software) Inquire(_ context.Context, req *iface.QueryInquire) (*iface.ReplyInquire, error) {
-	item, level := app.status.Inquire(string(req.Data))
+func (app *Platform) Inquire(_ context.Context, req *iface.SolicitInquire) (*iface.ReplyInquire, error) {
+	datum, altitude := app.status.Inquire(string(req.Data))
 	return &iface.ReplyInquire{
-		Level: int64(level),
+		Altitude: int64(altitude),
 		Key:    req.Data,
-		Item:  []byte(item),
+		Datum:  []byte(datum),
 	}, nil
 }
 
 //
-func (app *Software) CatalogMirrors(context.Context, *iface.QueryCatalogMirrors) (*iface.ReplyCatalogMirrors, error) {
-	mirrors, err := app.mirrors.Catalog()
+func (app *Platform) CollectionImages(context.Context, *iface.SolicitCollectionImages) (*iface.ReplyCatalogImages, error) {
+	images, err := app.images.Catalog()
 	if err != nil {
 		panic(err)
 	}
-	return &iface.ReplyCatalogMirrors{Mirrors: mirrors}, nil
+	return &iface.ReplyCatalogImages{Images: images}, nil
 }
 
 //
-func (app *Software) ImportMirrorSegment(_ context.Context, req *iface.QueryImportMirrorSegment) (*iface.ReplyImportMirrorSegment, error) {
-	segment, err := app.mirrors.ImportSegment(req.Level, req.Layout, req.Segment)
+func (app *Platform) FetchImageSegment(_ context.Context, req *iface.SolicitFetchImageSegment) (*iface.ReplyFetchImageSegment, error) {
+	segment, err := app.images.FetchSegment(req.Altitude, req.Layout, req.Segment)
 	if err != nil {
 		panic(err)
 	}
-	return &iface.ReplyImportMirrorSegment{Segment: segment}, nil
+	return &iface.ReplyFetchImageSegment{Segment: segment}, nil
 }
 
 //
-func (app *Software) ProposalMirror(_ context.Context, req *iface.QueryProposalMirror) (*iface.ReplyProposalMirror, error) {
-	if app.recoverMirror != nil {
+func (app *Platform) ExtendImage(_ context.Context, req *iface.SolicitExtendImage) (*iface.ReplyExtendImage, error) {
+	if app.recoverImage != nil {
 		panic("REDACTED")
 	}
-	app.recoverMirror = req.Mirror
+	app.recoverImage = req.Image
 	app.recoverSegments = [][]byte{}
-	return &iface.ReplyProposalMirror{Outcome: iface.Replymirrorsnapshot_ALLOW}, nil
+	return &iface.ReplyExtendImage{Outcome: iface.Replyextendimage_EMBRACE}, nil
 }
 
 //
-func (app *Software) ExecuteMirrorSegment(_ context.Context, req *iface.QueryExecuteMirrorSegment) (*iface.ReplyExecuteMirrorSegment, error) {
-	if app.recoverMirror == nil {
+func (app *Platform) ExecuteImageSegment(_ context.Context, req *iface.SolicitExecuteImageSegment) (*iface.ReplyExecuteImageSegment, error) {
+	if app.recoverImage == nil {
 		panic("REDACTED")
 	}
 	app.recoverSegments = append(app.recoverSegments, req.Segment)
-	if len(app.recoverSegments) == int(app.recoverMirror.Segments) {
+	if len(app.recoverSegments) == int(app.recoverImage.Segments) {
 		bz := []byte{}
 		for _, segment := range app.recoverSegments {
 			bz = append(bz, segment...)
 		}
-		err := app.status.Include(app.recoverMirror.Level, bz)
+		err := app.status.Ingest(app.recoverImage.Altitude, bz)
 		if err != nil {
 			panic(err)
 		}
-		app.recoverMirror = nil
+		app.recoverImage = nil
 		app.recoverSegments = nil
 	}
-	return &iface.ReplyExecuteMirrorSegment{Outcome: iface.Replyexecutemirrorsegment_ALLOW}, nil
+	return &iface.ReplyExecuteImageSegment{Outcome: iface.Replyapplyimagefragment_EMBRACE}, nil
 }
 
 //
@@ -428,57 +428,57 @@ func (app *Software) ExecuteMirrorSegment(_ context.Context, req *iface.QueryExe
 //
 //
 //
-func (app *Software) ArrangeNomination(
-	_ context.Context, req *iface.QueryArrangeNomination,
+func (app *Platform) ArrangeNomination(
+	_ context.Context, req *iface.SolicitArrangeNomination,
 ) (*iface.ReplyArrangeNomination, error) {
 	//
 	if app.cfg.ApplicationFlankTxpool {
-		req.Txs = app.applicationTxpool.HarvestTrans(true).ToSegmentOfOctets()
+		req.Txs = app.applicationTxpool.HarvestTrans(true).TowardSegmentBelongingOctets()
 	}
 
-	_, arePluginsActivated := app.inspectLevelAndPlugins(true, req.Level, "REDACTED")
+	_, existAdditionsActivated := app.inspectAltitudeAlsoAdditions(true, req.Altitude, "REDACTED")
 
 	txs := make([][]byte, 0, len(req.Txs)+1)
 	var sumOctets int64
-	extensionTransferPrefix := fmt.Sprintf("REDACTED", ballotAdditionKey)
-	sum, err := app.validateAndTotal(arePluginsActivated, req.Level, &req.NativeFinalEndorse, "REDACTED")
+	addnTransferHeading := fmt.Sprintf("REDACTED", ballotAdditionToken)
+	sum, err := app.validateAlsoTotal(existAdditionsActivated, req.Altitude, &req.RegionalFinalEndorse, "REDACTED")
 	if err != nil {
 		panic(fmt.Errorf("REDACTED", err))
 	}
-	if arePluginsActivated {
-		extensionEndorseOctets, err := req.NativeFinalEndorse.Serialize()
+	if existAdditionsActivated {
+		addnEndorseOctets, err := req.RegionalFinalEndorse.Serialize()
 		if err != nil {
 			panic("REDACTED")
 		}
-		extensionEndorseHex := hex.EncodeToString(extensionEndorseOctets)
-		extensionTransfer := []byte(fmt.Sprintf("REDACTED", extensionTransferPrefix, sum, extensionEndorseHex))
-		extensionTransferSize := cometkinds.CalculateSchemaVolumeForTrans([]cometkinds.Tx{extensionTransfer})
-		app.tracer.Details("REDACTED", "REDACTED", extensionTransferSize)
-		if extensionTransferSize > req.MaximumTransferOctets {
+		addnEndorseHexadecimal := hex.EncodeToString(addnEndorseOctets)
+		addnTransfer := []byte(fmt.Sprintf("REDACTED", addnTransferHeading, sum, addnEndorseHexadecimal))
+		addnTransferLength := strongmindkinds.CalculateSchemaExtentForeachTrans([]strongmindkinds.Tx{addnTransfer})
+		app.tracer.Details("REDACTED", "REDACTED", addnTransferLength)
+		if addnTransferLength > req.MaximumTransferOctets {
 			panic(fmt.Errorf("REDACTED"+
 				"REDACTED"+
 				"REDACTED",
-				extensionTransferSize, req.MaximumTransferOctets))
+				addnTransferLength, req.MaximumTransferOctets))
 		}
-		txs = append(txs, extensionTransfer)
+		txs = append(txs, addnTransfer)
 		//
-		sumOctets = extensionTransferSize
+		sumOctets = addnTransferLength
 	}
 	for _, tx := range req.Txs {
-		if arePluginsActivated && strings.HasPrefix(string(tx), extensionTransferPrefix) {
+		if existAdditionsActivated && strings.HasPrefix(string(tx), addnTransferHeading) {
 			//
 			//
 			continue
 		}
-		if strings.HasPrefix(string(tx), prefixPreservedKey) {
-			app.tracer.Fault("REDACTED", "REDACTED", tx)
+		if strings.HasPrefix(string(tx), headingPreservedToken) {
+			app.tracer.Failure("REDACTED", "REDACTED", tx)
 			continue
 		}
-		transferSize := cometkinds.CalculateSchemaVolumeForTrans([]cometkinds.Tx{tx})
-		if sumOctets+transferSize > req.MaximumTransferOctets {
+		transferLength := strongmindkinds.CalculateSchemaExtentForeachTrans([]strongmindkinds.Tx{tx})
+		if sumOctets+transferLength > req.MaximumTransferOctets {
 			break
 		}
-		sumOctets += transferSize
+		sumOctets += transferLength
 		//
 		txs = append(txs, tx)
 	}
@@ -494,25 +494,25 @@ func (app *Software) ArrangeNomination(
 //
 //
 //
-func (app *Software) HandleNomination(_ context.Context, req *iface.QueryHandleNomination) (*iface.ReplyHandleNomination, error) {
-	_, arePluginsActivated := app.inspectLevelAndPlugins(true, req.Level, "REDACTED")
+func (app *Platform) HandleNomination(_ context.Context, req *iface.SolicitHandleNomination) (*iface.ReplyHandleNomination, error) {
+	_, existAdditionsActivated := app.inspectAltitudeAlsoAdditions(true, req.Altitude, "REDACTED")
 
 	for _, tx := range req.Txs {
 		k, v, err := analyzeTransfer(tx)
 		if err != nil {
-			app.tracer.Fault("REDACTED", "REDACTED", tx, "REDACTED", err)
-			return &iface.ReplyHandleNomination{Status: iface.Responseprocessnomination_DECLINE}, nil
+			app.tracer.Failure("REDACTED", "REDACTED", tx, "REDACTED", err)
+			return &iface.ReplyHandleNomination{Condition: iface.Responseexecuteitem_DECLINE}, nil
 		}
 		switch {
-		case arePluginsActivated && k == ballotAdditionKey:
+		case existAdditionsActivated && k == ballotAdditionToken:
 			//
-			if err := app.validateAdditionTransfer(req.Level, v); err != nil {
-				app.tracer.Fault("REDACTED", k, v, "REDACTED", err)
-				return &iface.ReplyHandleNomination{Status: iface.Responseprocessnomination_DECLINE}, nil
+			if err := app.validateAdditionTransfer(req.Altitude, v); err != nil {
+				app.tracer.Failure("REDACTED", k, v, "REDACTED", err)
+				return &iface.ReplyHandleNomination{Condition: iface.Responseexecuteitem_DECLINE}, nil
 			}
-		case strings.HasPrefix(k, prefixPreservedKey):
-			app.tracer.Fault("REDACTED", k)
-			return &iface.ReplyHandleNomination{Status: iface.Responseprocessnomination_DECLINE}, nil
+		case strings.HasPrefix(k, headingPreservedToken):
+			app.tracer.Failure("REDACTED", k)
+			return &iface.ReplyHandleNomination{Condition: iface.Responseexecuteitem_DECLINE}, nil
 		}
 	}
 
@@ -520,7 +520,7 @@ func (app *Software) HandleNomination(_ context.Context, req *iface.QueryHandleN
 		time.Sleep(app.cfg.HandleNominationDeferral)
 	}
 
-	return &iface.ReplyHandleNomination{Status: iface.Responseprocessnomination_ALLOW}, nil
+	return &iface.ReplyHandleNomination{Condition: iface.Responseexecuteitem_EMBRACE}, nil
 }
 
 //
@@ -530,10 +530,10 @@ func (app *Software) HandleNomination(_ context.Context, req *iface.QueryHandleN
 //
 //
 //
-func (app *Software) ExpandBallot(_ context.Context, req *iface.QueryExpandBallot) (*iface.ReplyExpandBallot, error) {
-	applicationLevel, arePluginsActivated := app.inspectLevelAndPlugins(false, req.Level, "REDACTED")
-	if !arePluginsActivated {
-		panic(fmt.Errorf("REDACTED", applicationLevel))
+func (app *Platform) BroadenBallot(_ context.Context, req *iface.SolicitBroadenBallot) (*iface.ReplyBroadenBallot, error) {
+	applicationAltitude, existAdditionsActivated := app.inspectAltitudeAlsoAdditions(false, req.Altitude, "REDACTED")
+	if !existAdditionsActivated {
+		panic(fmt.Errorf("REDACTED", applicationAltitude))
 	}
 
 	if app.cfg.BallotAdditionDeferral != 0 {
@@ -541,49 +541,49 @@ func (app *Software) ExpandBallot(_ context.Context, req *iface.QueryExpandBallo
 	}
 
 	var ext []byte
-	var extensionSize int
-	if app.cfg.BallotAdditionVolume != 0 {
-		ext = make([]byte, app.cfg.BallotAdditionVolume)
+	var addnLength int
+	if app.cfg.BallotAdditionExtent != 0 {
+		ext = make([]byte, app.cfg.BallotAdditionExtent)
 		if _, err := rand.Read(ext); err != nil {
 			panic(fmt.Errorf("REDACTED", len(ext)))
 		}
-		extensionSize = len(ext)
+		addnLength = len(ext)
 	} else {
 		ext = make([]byte, 8)
-		if num, err := rand.Int(rand.Reader, big.NewInt(ballotAdditionMaximumValue)); err != nil {
+		if num, err := rand.Int(rand.Reader, big.NewInt(ballotAdditionMaximumItem)); err != nil {
 			panic(fmt.Errorf("REDACTED", len(ext)))
 		} else {
-			extensionSize = binary.PutVarint(ext, num.Int64())
+			addnLength = binary.PutVarint(ext, num.Int64())
 		}
 	}
 
-	app.tracer.Details("REDACTED", "REDACTED", applicationLevel, "REDACTED", fmt.Sprintf("REDACTED", ext[:4]), "REDACTED", extensionSize)
-	return &iface.ReplyExpandBallot{
-		BallotAddition: ext[:extensionSize],
+	app.tracer.Details("REDACTED", "REDACTED", applicationAltitude, "REDACTED", fmt.Sprintf("REDACTED", ext[:4]), "REDACTED", addnLength)
+	return &iface.ReplyBroadenBallot{
+		BallotAddition: ext[:addnLength],
 	}, nil
 }
 
 //
 //
 //
-func (app *Software) ValidateBallotAddition(_ context.Context, req *iface.QueryValidateBallotAddition) (*iface.ReplyValidateBallotAddition, error) {
-	applicationLevel, arePluginsActivated := app.inspectLevelAndPlugins(false, req.Level, "REDACTED")
-	if !arePluginsActivated {
-		panic(fmt.Errorf("REDACTED", applicationLevel))
+func (app *Platform) ValidateBallotAddition(_ context.Context, req *iface.SolicitValidateBallotAddition) (*iface.ReplyValidateBallotAddition, error) {
+	applicationAltitude, existAdditionsActivated := app.inspectAltitudeAlsoAdditions(false, req.Altitude, "REDACTED")
+	if !existAdditionsActivated {
+		panic(fmt.Errorf("REDACTED", applicationAltitude))
 	}
 	//
 	if len(req.BallotAddition) == 0 {
-		app.tracer.Fault("REDACTED")
+		app.tracer.Failure("REDACTED")
 		return &iface.ReplyValidateBallotAddition{
-			Status: iface.Responseverifyballotextension_DECLINE,
+			Condition: iface.Responsecertifyballotaddition_DECLINE,
 		}, nil
 	}
 
 	num, err := analyzeBallotAddition(app.cfg, req.BallotAddition)
 	if err != nil {
-		app.tracer.Fault("REDACTED", "REDACTED", fmt.Sprintf("REDACTED", req.BallotAddition[:4]), "REDACTED", err)
+		app.tracer.Failure("REDACTED", "REDACTED", fmt.Sprintf("REDACTED", req.BallotAddition[:4]), "REDACTED", err)
 		return &iface.ReplyValidateBallotAddition{
-			Status: iface.Responseverifyballotextension_DECLINE,
+			Condition: iface.Responsecertifyballotaddition_DECLINE,
 		}, nil
 	}
 
@@ -591,248 +591,248 @@ func (app *Software) ValidateBallotAddition(_ context.Context, req *iface.QueryV
 		time.Sleep(app.cfg.BallotAdditionDeferral)
 	}
 
-	app.tracer.Details("REDACTED", "REDACTED", req.Level, "REDACTED", fmt.Sprintf("REDACTED", req.BallotAddition[:4]), "REDACTED", num)
+	app.tracer.Details("REDACTED", "REDACTED", req.Altitude, "REDACTED", fmt.Sprintf("REDACTED", req.BallotAddition[:4]), "REDACTED", num)
 	return &iface.ReplyValidateBallotAddition{
-		Status: iface.Responseverifyballotextension_ALLOW,
+		Condition: iface.Responsecertifyballotaddition_EMBRACE,
 	}, nil
 }
 
-func (app *Software) Revert() error {
+func (app *Platform) Revert() error {
 	return app.status.Revert()
 }
 
-func (app *Software) fetchApplicationLevel() int64 {
-	primaryLevelStr, level := app.status.Inquire(prefixPreservedKey + postfixPrimaryLevel)
-	if len(primaryLevelStr) == 0 {
+func (app *Platform) obtainApplicationAltitude() int64 {
+	primaryAltitudeTxt, altitude := app.status.Inquire(headingPreservedToken + endingPrimaryAltitude)
+	if len(primaryAltitudeTxt) == 0 {
 		panic("REDACTED")
 	}
-	primaryLevel, err := strconv.ParseInt(primaryLevelStr, 10, 64)
+	primaryAltitude, err := strconv.ParseInt(primaryAltitudeTxt, 10, 64)
 	if err != nil {
-		panic(fmt.Errorf("REDACTED", primaryLevelStr))
+		panic(fmt.Errorf("REDACTED", primaryAltitudeTxt))
 	}
 
-	applicationLevel := int64(level)
-	if applicationLevel == 0 {
-		applicationLevel = primaryLevel - 1
+	applicationAltitude := int64(altitude)
+	if applicationAltitude == 0 {
+		applicationAltitude = primaryAltitude - 1
 	}
-	return applicationLevel + 1
+	return applicationAltitude + 1
 }
 
-func (app *Software) inspectLevelAndPlugins(isArrangeHandleNomination bool, level int64, invocation string) (int64, bool) {
-	applicationLevel := app.fetchApplicationLevel()
-	if level != applicationLevel {
+func (app *Platform) inspectAltitudeAlsoAdditions(equalsArrangeHandleNomination bool, altitude int64, invocation string) (int64, bool) {
+	applicationAltitude := app.obtainApplicationAltitude()
+	if altitude != applicationAltitude {
 		panic(fmt.Errorf(
 			"REDACTED",
-			invocation, applicationLevel, level,
+			invocation, applicationAltitude, altitude,
 		))
 	}
 
-	ballotExtensionLevelStr := app.status.Get(prefixPreservedKey + postfixBallotExtensionLevel)
-	if len(ballotExtensionLevelStr) == 0 {
+	ballotAddnAltitudeTxt := app.status.Get(headingPreservedToken + endingBallotAddnAltitude)
+	if len(ballotAddnAltitudeTxt) == 0 {
 		panic("REDACTED")
 	}
-	ballotExtensionLevel, err := strconv.ParseInt(ballotExtensionLevelStr, 10, 64)
+	ballotAddnAltitude, err := strconv.ParseInt(ballotAddnAltitudeTxt, 10, 64)
 	if err != nil {
-		panic(fmt.Errorf("REDACTED", ballotExtensionLevelStr))
+		panic(fmt.Errorf("REDACTED", ballotAddnAltitudeTxt))
 	}
-	ongoingLevel := applicationLevel
-	if isArrangeHandleNomination {
-		ongoingLevel-- //
+	prevailingAltitude := applicationAltitude
+	if equalsArrangeHandleNomination {
+		prevailingAltitude-- //
 	}
 
-	return applicationLevel, ballotExtensionLevel != 0 && ongoingLevel >= ballotExtensionLevel
+	return applicationAltitude, ballotAddnAltitude != 0 && prevailingAltitude >= ballotAddnAltitude
 }
 
-func (app *Software) depotRatifier(valueModify *iface.RatifierModify) error {
+func (app *Platform) depotAssessor(itemRevise *iface.AssessorRevise) error {
 	//
-	publicKey, err := cryptocode.PublicKeyFromSchema(valueModify.PublicKey)
+	publicToken, err := cryptocode.PublicTokenOriginatingSchema(itemRevise.PublicToken)
 	if err != nil {
 		return err
 	}
-	address := publicKey.Location().String()
-	if valueModify.Energy > 0 {
-		publicKeyOctets, err := valueModify.PublicKey.Serialize()
+	location := publicToken.Location().Text()
+	if itemRevise.Potency > 0 {
+		publicTokenOctets, err := itemRevise.PublicToken.Serialize()
 		if err != nil {
 			return err
 		}
-		app.tracer.Details("REDACTED", "REDACTED", address)
-		app.status.Set(prefixPreservedKey+address, hex.EncodeToString(publicKeyOctets))
+		app.tracer.Details("REDACTED", "REDACTED", location)
+		app.status.Set(headingPreservedToken+location, hex.EncodeToString(publicTokenOctets))
 	}
 	return nil
 }
 
 //
-func (app *Software) ratifierRefreshes(level uint64) (iface.RatifierRefreshes, error) {
-	refreshes := app.cfg.RatifierRefreshes[fmt.Sprintf("REDACTED", level)]
-	if len(refreshes) == 0 {
+func (app *Platform) assessorRevisions(altitude uint64) (iface.AssessorRevisions, error) {
+	revisions := app.cfg.AssessorRevisions[fmt.Sprintf("REDACTED", altitude)]
+	if len(revisions) == 0 {
 		return nil, nil
 	}
 
-	valueRefreshes := iface.RatifierRefreshes{}
-	for keyString, energy := range refreshes {
+	itemRevisions := iface.AssessorRevisions{}
+	for tokenText, potency := range revisions {
 
-		keyOctets, err := base64.StdEncoding.DecodeString(keyString)
+		tokenOctets, err := base64.StdEncoding.DecodeString(tokenText)
 		if err != nil {
-			return nil, fmt.Errorf("REDACTED", keyString, err)
+			return nil, fmt.Errorf("REDACTED", tokenText, err)
 		}
-		valueModify := iface.ModifyRatifier(keyOctets, int64(energy), app.cfg.KeyKind)
-		valueRefreshes = append(valueRefreshes, valueModify)
-		if err := app.depotRatifier(&valueModify); err != nil {
+		itemRevise := iface.ReviseAssessor(tokenOctets, int64(potency), app.cfg.TokenKind)
+		itemRevisions = append(itemRevisions, itemRevise)
+		if err := app.depotAssessor(&itemRevise); err != nil {
 			return nil, err
 		}
 	}
-	return valueRefreshes, nil
+	return itemRevisions, nil
 }
 
 //
 func analyzeTransfer(tx []byte) (string, string, error) {
-	segments := bytes.Split(tx, []byte("REDACTED"))
-	if len(segments) != 2 {
+	fragments := bytes.Split(tx, []byte("REDACTED"))
+	if len(fragments) != 2 {
 		return "REDACTED", "REDACTED", fmt.Errorf("REDACTED", string(tx))
 	}
-	if len(segments[0]) == 0 {
+	if len(fragments[0]) == 0 {
 		return "REDACTED", "REDACTED", errors.New("REDACTED")
 	}
-	return string(segments[0]), string(segments[1]), nil
+	return string(fragments[0]), string(fragments[1]), nil
 }
 
-func (app *Software) validateAndTotal(
-	arePluginsActivated bool,
-	ongoingLevel int64,
-	extensionEndorse *iface.ExpandedEndorseDetails,
+func (app *Platform) validateAlsoTotal(
+	existAdditionsActivated bool,
+	prevailingAltitude int64,
+	addnEndorse *iface.ExpandedEndorseDetails,
 	invocation string,
 ) (int64, error) {
 	var sum int64
-	var extensionNumber int
-	for _, ballot := range extensionEndorse.Ballots {
-		if ballot.LedgerUidMark == engineproto.LedgerUIDMarkUnclear || ballot.LedgerUidMark > engineproto.LedgerUIDMarkNull {
-			return 0, fmt.Errorf("REDACTED", ongoingLevel, ballot.LedgerUidMark)
+	var addnTally int
+	for _, ballot := range addnEndorse.Ballots {
+		if ballot.LedgerUuidMarker == commitchema.LedgerUUIDMarkerUnfamiliar || ballot.LedgerUuidMarker > commitchema.LedgerUUIDMarkerVoid {
+			return 0, fmt.Errorf("REDACTED", prevailingAltitude, ballot.LedgerUuidMarker)
 		}
-		if ballot.LedgerUidMark == engineproto.LedgerUIDMarkMissing || ballot.LedgerUidMark == engineproto.LedgerUIDMarkNull {
+		if ballot.LedgerUuidMarker == commitchema.LedgerUUIDMarkerMissing || ballot.LedgerUuidMarker == commitchema.LedgerUUIDMarkerVoid {
 			if len(ballot.BallotAddition) != 0 {
 				return 0, fmt.Errorf("REDACTED",
-					ongoingLevel, ballot.LedgerUidMark)
+					prevailingAltitude, ballot.LedgerUuidMarker)
 			}
-			if len(ballot.AdditionAutograph) != 0 {
+			if len(ballot.AdditionNotation) != 0 {
 				return 0, fmt.Errorf("REDACTED",
-					ongoingLevel, ballot.LedgerUidMark)
+					prevailingAltitude, ballot.LedgerUuidMarker)
 			}
 			//
 			continue
 		}
-		if !arePluginsActivated {
+		if !existAdditionsActivated {
 			if len(ballot.BallotAddition) != 0 {
 				return 0, fmt.Errorf("REDACTED",
-					ongoingLevel)
+					prevailingAltitude)
 			}
-			if len(ballot.AdditionAutograph) != 0 {
+			if len(ballot.AdditionNotation) != 0 {
 				return 0, fmt.Errorf("REDACTED",
-					ongoingLevel)
+					prevailingAltitude)
 			}
 			continue
 		}
 		if len(ballot.BallotAddition) == 0 {
 			return 0, fmt.Errorf("REDACTED"+
-				"REDACTED", ballot.Ratifier, ongoingLevel)
+				"REDACTED", ballot.Assessor, prevailingAltitude)
 		}
 		//
-		if len(ballot.AdditionAutograph) == 0 {
-			return 0, fmt.Errorf("REDACTED", ongoingLevel)
+		if len(ballot.AdditionNotation) == 0 {
+			return 0, fmt.Errorf("REDACTED", prevailingAltitude)
 		}
 
 		//
-		ledgerUID := app.status.Get(prefixPreservedKey + postfixSeriesUID)
-		if len(ledgerUID) == 0 {
+		successionUUID := app.status.Get(headingPreservedToken + endingSuccessionUUID)
+		if len(successionUUID) == 0 {
 			panic("REDACTED")
 		}
-		cve := engineproto.StandardBallotAddition{
+		cve := commitchema.StandardBallotAddition{
 			Addition: ballot.BallotAddition,
-			Level:    ongoingLevel - 1, //
-			Cycle:     int64(extensionEndorse.Cycle),
-			SeriesUid:   ledgerUID,
+			Altitude:    prevailingAltitude - 1, //
+			Iteration:     int64(addnEndorse.Iteration),
+			SuccessionUuid:   successionUUID,
 		}
-		extensionAttestOctets, err := protoio.SerializeSeparated(&cve)
+		addnAttestOctets, err := protocolio.SerializeSeparated(&cve)
 		if err != nil {
 			return 0, fmt.Errorf("REDACTED", err)
 		}
 
 		//
-		valueAddress := vault.Location(ballot.Ratifier.Location).String()
-		publicKeyHex := app.status.Get(prefixPreservedKey + valueAddress)
-		if len(publicKeyHex) == 0 {
-			return 0, fmt.Errorf("REDACTED", valueAddress)
+		itemLocation := security.Location(ballot.Assessor.Location).Text()
+		publicTokenHexadecimal := app.status.Get(headingPreservedToken + itemLocation)
+		if len(publicTokenHexadecimal) == 0 {
+			return 0, fmt.Errorf("REDACTED", itemLocation)
 		}
-		publicKeyOctets, err := hex.DecodeString(publicKeyHex)
+		publicTokenOctets, err := hex.DecodeString(publicTokenHexadecimal)
 		if err != nil {
-			return 0, fmt.Errorf("REDACTED", valueAddress, err)
+			return 0, fmt.Errorf("REDACTED", itemLocation, err)
 		}
-		var publicKeySchema cryptography.PublicKey
-		err = publicKeySchema.Unserialize(publicKeyOctets)
+		var publicTokenSchema cryptographyproto.CommonToken
+		err = publicTokenSchema.Decode(publicTokenOctets)
 		if err != nil {
-			return 0, fmt.Errorf("REDACTED", valueAddress, err)
+			return 0, fmt.Errorf("REDACTED", itemLocation, err)
 		}
-		publicKey, err := cryptocode.PublicKeyFromSchema(publicKeySchema)
+		publicToken, err := cryptocode.PublicTokenOriginatingSchema(publicTokenSchema)
 		if err != nil {
-			return 0, fmt.Errorf("REDACTED", valueAddress, err)
+			return 0, fmt.Errorf("REDACTED", itemLocation, err)
 		}
-		if !publicKey.ValidateAutograph(extensionAttestOctets, ballot.AdditionAutograph) {
+		if !publicToken.ValidateNotation(addnAttestOctets, ballot.AdditionNotation) {
 			return 0, errors.New("REDACTED")
 		}
 
-		extensionItem, err := analyzeBallotAddition(app.cfg, ballot.BallotAddition)
+		addnDatum, err := analyzeBallotAddition(app.cfg, ballot.BallotAddition)
 		//
 		if err != nil {
 			return 0, fmt.Errorf("REDACTED", err)
 		}
 		app.tracer.Details(
 			"REDACTED",
-			"REDACTED", ongoingLevel,
-			"REDACTED", valueAddress,
-			"REDACTED", extensionItem,
+			"REDACTED", prevailingAltitude,
+			"REDACTED", itemLocation,
+			"REDACTED", addnDatum,
 			"REDACTED", invocation,
 		)
-		sum += extensionItem
-		extensionNumber++
+		sum += addnDatum
+		addnTally++
 	}
 
-	if arePluginsActivated && (extensionNumber == 0) {
+	if existAdditionsActivated && (addnTally == 0) {
 		return 0, errors.New("REDACTED")
 	}
 	return sum, nil
 }
 
 //
-func (app *Software) validateAdditionTransfer(level int64, shipment string) error {
-	segments := strings.Split(shipment, "REDACTED")
-	if len(segments) != 2 {
+func (app *Platform) validateAdditionTransfer(altitude int64, content string) error {
+	fragments := strings.Split(content, "REDACTED")
+	if len(fragments) != 2 {
 		return fmt.Errorf("REDACTED")
 	}
-	expirationTotalStr := segments[0]
-	if len(expirationTotalStr) == 0 {
+	expirationTotalTxt := fragments[0]
+	if len(expirationTotalTxt) == 0 {
 		return fmt.Errorf("REDACTED")
 	}
 
-	expirationTotal, err := strconv.Atoi(expirationTotalStr)
+	expirationTotal, err := strconv.Atoi(expirationTotalTxt)
 	if err != nil {
-		return fmt.Errorf("REDACTED", expirationTotalStr)
+		return fmt.Errorf("REDACTED", expirationTotalTxt)
 	}
 
-	extensionEndorseHex := segments[1]
-	if len(extensionEndorseHex) == 0 {
+	addnEndorseHexadecimal := fragments[1]
+	if len(addnEndorseHexadecimal) == 0 {
 		return fmt.Errorf("REDACTED")
 	}
 
-	extensionEndorseOctets, err := hex.DecodeString(extensionEndorseHex)
+	addnEndorseOctets, err := hex.DecodeString(addnEndorseHexadecimal)
 	if err != nil {
 		return fmt.Errorf("REDACTED")
 	}
 
-	var extensionEndorse iface.ExpandedEndorseDetails
-	if extensionEndorse.Unserialize(extensionEndorseOctets) != nil {
+	var addnEndorse iface.ExpandedEndorseDetails
+	if addnEndorse.Decode(addnEndorseOctets) != nil {
 		return fmt.Errorf("REDACTED")
 	}
 
-	sum, err := app.validateAndTotal(true, level, &extensionEndorse, "REDACTED")
+	sum, err := app.validateAlsoTotal(true, altitude, &addnEndorse, "REDACTED")
 	if err != nil {
 		return fmt.Errorf("REDACTED", err)
 	}
@@ -848,16 +848,16 @@ func (app *Software) validateAdditionTransfer(level int64, shipment string) erro
 //
 //
 func analyzeBallotAddition(cfg *Settings, ext []byte) (int64, error) {
-	if cfg.BallotAdditionVolume == 0 {
-		num, errValue := binary.Varint(ext)
-		if errValue == 0 {
+	if cfg.BallotAdditionExtent == 0 {
+		num, faultItem := binary.Varint(ext)
+		if faultItem == 0 {
 			return 0, errors.New("REDACTED")
 		}
-		if errValue < 0 {
+		if faultItem < 0 {
 			return 0, errors.New("REDACTED")
 		}
-		if num >= ballotAdditionMaximumValue {
-			return 0, fmt.Errorf("REDACTED", ballotAdditionMaximumValue, num)
+		if num >= ballotAdditionMaximumItem {
+			return 0, fmt.Errorf("REDACTED", ballotAdditionMaximumItem, num)
 		}
 		return num, nil
 	}

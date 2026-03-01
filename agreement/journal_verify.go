@@ -13,36 +13,36 @@ import (
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/require"
 
-	"github.com/valkyrieworks/agreement/kinds"
-	"github.com/valkyrieworks/vault/merkle"
-	"github.com/valkyrieworks/utils/autofile"
-	"github.com/valkyrieworks/utils/log"
-	cometkinds "github.com/valkyrieworks/kinds"
-	engineclock "github.com/valkyrieworks/kinds/moment"
+	"github.com/valkyrieworks/dffc4ef0-4ec6-4346-9b6c-d0a0cb42d94b/agreement/kinds"
+	"github.com/valkyrieworks/dffc4ef0-4ec6-4346-9b6c-d0a0cb42d94b/security/hashmap"
+	"github.com/valkyrieworks/dffc4ef0-4ec6-4346-9b6c-d0a0cb42d94b/utils/autosave"
+	"github.com/valkyrieworks/dffc4ef0-4ec6-4346-9b6c-d0a0cb42d94b/utils/log"
+	strongmindkinds "github.com/valkyrieworks/dffc4ef0-4ec6-4346-9b6c-d0a0cb42d94b/kinds"
+	committime "github.com/valkyrieworks/dffc4ef0-4ec6-4346-9b6c-d0a0cb42d94b/kinds/moment"
 )
 
 const (
-	journalVerifyPurgeCadence = time.Duration(100) * time.Millisecond
+	journalVerifyPurgeDuration = time.Duration(100) * time.Millisecond
 )
 
-func VerifyJournalClip(t *testing.T) {
-	journalFolder, err := os.MkdirTemp("REDACTED", "REDACTED")
+func VerifyJournalShorten(t *testing.T) {
+	journalPath, err := os.MkdirTemp("REDACTED", "REDACTED")
 	require.NoError(t, err)
-	defer os.RemoveAll(journalFolder)
+	defer os.RemoveAll(journalPath)
 
-	journalEntry := filepath.Join(journalFolder, "REDACTED")
+	journalRecord := filepath.Join(journalPath, "REDACTED")
 
 	//
 	//
 	//
 	//
-	wal, err := NewJournal(journalEntry,
-		autofile.ClusterFrontVolumeCeiling(4096),
-		autofile.ClusterInspectPeriod(1*time.Millisecond),
+	wal, err := FreshJournal(journalRecord,
+		autosave.ClusterLeadingExtentThreshold(4096),
+		autosave.ClusterInspectInterval(1*time.Millisecond),
 	)
 	require.NoError(t, err)
 	wal.AssignTracer(log.VerifyingTracer())
-	err = wal.Begin()
+	err = wal.Initiate()
 	require.NoError(t, err)
 	defer func() {
 		if err := wal.Halt(); err != nil {
@@ -50,71 +50,71 @@ func VerifyJournalClip(t *testing.T) {
 		}
 		//
 		//
-		wal.Wait()
+		wal.Await()
 	}()
 
 	//
 	//
 	//
-	err = JournalComposeNLedgers(t, wal.Cluster(), 60, fetchSettings(t))
+	err = JournalComposeNTHLedgers(t, wal.Cluster(), 60, obtainSettings(t))
 	require.NoError(t, err)
 
 	time.Sleep(1 * time.Millisecond) //
 
-	if err := wal.PurgeAndAlign(); err != nil {
+	if err := wal.PurgeAlsoChronize(); err != nil {
 		t.Error(err)
 	}
 
 	h := int64(50)
-	gr, located, err := wal.ScanForTerminateLevel(h, &JournalScanSettings{})
+	gr, detected, err := wal.LookupForeachTerminateAltitude(h, &JournalLookupChoices{})
 	assert.NoError(t, err, "REDACTED", h)
-	assert.True(t, located, "REDACTED", h)
+	assert.True(t, detected, "REDACTED", h)
 	assert.NotNil(t, gr)
 	defer gr.Close()
 
-	dec := NewJournalParser(gr)
-	msg, err := dec.Parse()
+	dec := FreshJournalDeserializer(gr)
+	msg, err := dec.Deserialize()
 	assert.NoError(t, err, "REDACTED")
-	rs, ok := msg.Msg.(cometkinds.EventDataDurationStatus)
+	rs, ok := msg.Msg.(strongmindkinds.IncidentDataIterationStatus)
 	assert.True(t, ok, "REDACTED")
-	assert.Equal(t, rs.Level, h+1, "REDACTED")
+	assert.Equal(t, rs.Altitude, h+1, "REDACTED")
 }
 
-func VerifyJournalSerializerParser(t *testing.T) {
-	now := engineclock.Now()
-	notices := []ScheduledJournalSignal{
-		{Time: now, Msg: TerminateLevelSignal{0}},
-		{Time: now, Msg: deadlineDetails{Period: time.Second, Level: 1, Cycle: 1, Phase: kinds.DurationPhaseNominate}},
-		{Time: now, Msg: cometkinds.EventDataDurationStatus{Level: 1, Cycle: 1, Phase: "REDACTED"}},
+func VerifyJournalSerializerDeserializer(t *testing.T) {
+	now := committime.Now()
+	signals := []ScheduledJournalSignal{
+		{Moment: now, Msg: TerminateAltitudeSignal{0}},
+		{Moment: now, Msg: deadlineDetails{Interval: time.Second, Altitude: 1, Iteration: 1, Phase: kinds.IterationPhaseNominate}},
+		{Moment: now, Msg: strongmindkinds.IncidentDataIterationStatus{Altitude: 1, Iteration: 1, Phase: "REDACTED"}},
 	}
 
 	b := new(bytes.Buffer)
 
-	for _, msg := range notices {
+	for _, msg := range signals {
 
 		b.Reset()
 
-		enc := NewJournalSerializer(b)
+		enc := FreshJournalSerializer(b)
 		err := enc.Serialize(&msg)
 		require.NoError(t, err)
 
-		dec := NewJournalParser(b)
-		parsed, err := dec.Parse()
+		dec := FreshJournalDeserializer(b)
+		deserialized, err := dec.Deserialize()
 		require.NoError(t, err)
-		assert.Equal(t, msg.Time.UTC(), parsed.Time)
-		assert.Equal(t, msg.Msg, parsed.Msg)
+		assert.Equal(t, msg.Moment.UTC(), deserialized.Moment)
+		assert.Equal(t, msg.Msg, deserialized.Msg)
 	}
 }
 
-func VerifyJournalRecord(t *testing.T) {
-	journalFolder, err := os.MkdirTemp("REDACTED", "REDACTED")
+func VerifyJournalPersist(t *testing.T) {
+	journalPath, err := os.MkdirTemp("REDACTED", "REDACTED")
 	require.NoError(t, err)
-	defer os.RemoveAll(journalFolder)
-	journalEntry := filepath.Join(journalFolder, "REDACTED")
+	defer os.RemoveAll(journalPath)
+	journalRecord := filepath.Join(journalPath, "REDACTED")
 
-	wal, err := NewJournal(journalEntry)
+	wal, err := FreshJournal(journalRecord)
 	require.NoError(t, err)
-	err = wal.Begin()
+	err = wal.Initiate()
 	require.NoError(t, err)
 	defer func() {
 		if err := wal.Halt(); err != nil {
@@ -122,25 +122,25 @@ func VerifyJournalRecord(t *testing.T) {
 		}
 		//
 		//
-		wal.Wait()
+		wal.Await()
 	}()
 
 	//
-	msg := &LedgerSegmentSignal{
-		Level: 1,
-		Cycle:  1,
-		Segment: &cometkinds.Segment{
+	msg := &LedgerFragmentSignal{
+		Altitude: 1,
+		Iteration:  1,
+		Fragment: &strongmindkinds.Fragment{
 			Ordinal: 1,
 			Octets: make([]byte, 1),
-			Attestation: merkle.Attestation{
+			Attestation: hashmap.Attestation{
 				Sum:    1,
 				Ordinal:    1,
-				NodeDigest: make([]byte, maximumMessageVolumeOctets-30),
+				NodeDigest: make([]byte, maximumSignalExtentOctets-30),
 			},
 		},
 	}
 
-	err = wal.Record(messageDetails{
+	err = wal.Persist(signalDetails{
 		Msg: msg,
 	})
 	if assert.Error(t, err) {
@@ -148,68 +148,68 @@ func VerifyJournalRecord(t *testing.T) {
 	}
 }
 
-func VerifyJournalScanForTerminateLevel(t *testing.T) {
-	journalContent, err := JournalWithNLedgers(t, 6, fetchSettings(t))
+func VerifyJournalLookupForeachTerminateAltitude(t *testing.T) {
+	journalContent, err := JournalUsingNTHLedgers(t, 6, obtainSettings(t))
 	if err != nil {
 		t.Fatal(err)
 	}
-	journalEntry := tempJournalWithData(journalContent)
+	journalRecord := transientJournalUsingData(journalContent)
 
-	wal, err := NewJournal(journalEntry)
+	wal, err := FreshJournal(journalRecord)
 	require.NoError(t, err)
 	wal.AssignTracer(log.VerifyingTracer())
 
 	h := int64(3)
-	gr, located, err := wal.ScanForTerminateLevel(h, &JournalScanSettings{})
+	gr, detected, err := wal.LookupForeachTerminateAltitude(h, &JournalLookupChoices{})
 	assert.NoError(t, err, "REDACTED", h)
-	assert.True(t, located, "REDACTED", h)
+	assert.True(t, detected, "REDACTED", h)
 	assert.NotNil(t, gr)
 	defer gr.Close()
 
-	dec := NewJournalParser(gr)
-	msg, err := dec.Parse()
+	dec := FreshJournalDeserializer(gr)
+	msg, err := dec.Deserialize()
 	assert.NoError(t, err, "REDACTED")
-	rs, ok := msg.Msg.(cometkinds.EventDataDurationStatus)
+	rs, ok := msg.Msg.(strongmindkinds.IncidentDataIterationStatus)
 	assert.True(t, ok, "REDACTED")
-	assert.Equal(t, rs.Level, h+1, "REDACTED")
+	assert.Equal(t, rs.Altitude, h+1, "REDACTED")
 }
 
-func VerifyJournalIntermittentAlign(t *testing.T) {
-	journalFolder, err := os.MkdirTemp("REDACTED", "REDACTED")
+func VerifyJournalRecurrentChronize(t *testing.T) {
+	journalPath, err := os.MkdirTemp("REDACTED", "REDACTED")
 	require.NoError(t, err)
-	defer os.RemoveAll(journalFolder)
+	defer os.RemoveAll(journalPath)
 
-	journalEntry := filepath.Join(journalFolder, "REDACTED")
-	wal, err := NewJournal(journalEntry, autofile.ClusterInspectPeriod(1*time.Millisecond))
+	journalRecord := filepath.Join(journalPath, "REDACTED")
+	wal, err := FreshJournal(journalRecord, autosave.ClusterInspectInterval(1*time.Millisecond))
 	require.NoError(t, err)
 
-	wal.AssignPurgeCadence(journalVerifyPurgeCadence)
+	wal.AssignPurgeDuration(journalVerifyPurgeDuration)
 	wal.AssignTracer(log.VerifyingTracer())
 
 	//
-	err = JournalComposeNLedgers(t, wal.Cluster(), 5, fetchSettings(t))
+	err = JournalComposeNTHLedgers(t, wal.Cluster(), 5, obtainSettings(t))
 	require.NoError(t, err)
 
 	//
 	assert.NotZero(t, wal.Cluster().Cached())
 
-	require.NoError(t, wal.Begin())
+	require.NoError(t, wal.Initiate())
 	defer func() {
 		if err := wal.Halt(); err != nil {
 			t.Error(err)
 		}
-		wal.Wait()
+		wal.Await()
 	}()
 
-	time.Sleep(journalVerifyPurgeCadence + (10 * time.Millisecond))
+	time.Sleep(journalVerifyPurgeDuration + (10 * time.Millisecond))
 
 	//
 	assert.Zero(t, wal.Cluster().Cached())
 
 	h := int64(4)
-	gr, located, err := wal.ScanForTerminateLevel(h, &JournalScanSettings{})
+	gr, detected, err := wal.LookupForeachTerminateAltitude(h, &JournalLookupChoices{})
 	assert.NoError(t, err, "REDACTED", h)
-	assert.True(t, located, "REDACTED", h)
+	assert.True(t, detected, "REDACTED", h)
 	assert.NotNil(t, gr)
 	if gr != nil {
 		gr.Close()
@@ -229,20 +229,20 @@ e
 }
 */
 
-func nOctets(n int) []byte {
+func nthOctets(n int) []byte {
 	buf := make([]byte, n)
 	n, _ = rand.Read(buf)
 	return buf[:n]
 }
 
-func criterionJournalParse(b *testing.B, n int) {
+func assessmentJournalDeserialize(b *testing.B, n int) {
 	//
 
 	buf := new(bytes.Buffer)
-	enc := NewJournalSerializer(buf)
+	enc := FreshJournalSerializer(buf)
 
-	data := nOctets(n)
-	if err := enc.Serialize(&ScheduledJournalSignal{Msg: data, Time: time.Now().Round(time.Second).UTC()}); err != nil {
+	data := nthOctets(n)
+	if err := enc.Serialize(&ScheduledJournalSignal{Msg: data, Moment: time.Now().Round(time.Second).UTC()}); err != nil {
 		b.Error(err)
 	}
 
@@ -252,38 +252,38 @@ func criterionJournalParse(b *testing.B, n int) {
 	for i := 0; i < b.N; i++ {
 		buf.Reset()
 		buf.Write(serialized)
-		dec := NewJournalParser(buf)
-		if _, err := dec.Parse(); err != nil {
+		dec := FreshJournalDeserializer(buf)
+		if _, err := dec.Deserialize(); err != nil {
 			b.Fatal(err)
 		}
 	}
 	b.ReportAllocs()
 }
 
-func CriterionJournalParse512b(b *testing.B) {
-	criterionJournalParse(b, 512)
+func AssessmentJournalDeserialize512b(b *testing.B) {
+	assessmentJournalDeserialize(b, 512)
 }
 
-func CriterionJournalParse10kb(b *testing.B) {
-	criterionJournalParse(b, 10*1024)
+func AssessmentJournalDeserialize10kb(b *testing.B) {
+	assessmentJournalDeserialize(b, 10*1024)
 }
 
-func CriterionJournalParse100kb(b *testing.B) {
-	criterionJournalParse(b, 100*1024)
+func AssessmentJournalDeserialize100kb(b *testing.B) {
+	assessmentJournalDeserialize(b, 100*1024)
 }
 
-func CriterionJournalParse1mb(b *testing.B) {
-	criterionJournalParse(b, 1024*1024)
+func AssessmentJournalDeserialize1mb(b *testing.B) {
+	assessmentJournalDeserialize(b, 1024*1024)
 }
 
-func CriterionJournalParse10mb(b *testing.B) {
-	criterionJournalParse(b, 10*1024*1024)
+func AssessmentJournalDeserialize10mb(b *testing.B) {
+	assessmentJournalDeserialize(b, 10*1024*1024)
 }
 
-func CriterionJournalParse100mb(b *testing.B) {
-	criterionJournalParse(b, 100*1024*1024)
+func AssessmentJournalDeserialize100mb(b *testing.B) {
+	assessmentJournalDeserialize(b, 100*1024*1024)
 }
 
-func CriterionJournalParse1gb(b *testing.B) {
-	criterionJournalParse(b, 1024*1024*1024)
+func AssessmentJournalDeserialize1gb(b *testing.B) {
+	assessmentJournalDeserialize(b, 1024*1024*1024)
 }

@@ -7,205 +7,205 @@ import (
 
 	"github.com/stretchr/testify/require"
 
-	dbm "github.com/valkyrieworks/-db"
+	dbm "github.com/valkyrieworks/dffc4ef0-4ec6-4346-9b6c-d0a0cb42d94b/-db"
 
-	"github.com/valkyrieworks/vault"
-	"github.com/valkyrieworks/vault/comethash"
-	cometstatus "github.com/valkyrieworks/schema/consensuscore/status"
-	cometrelease "github.com/valkyrieworks/schema/consensuscore/release"
-	"github.com/valkyrieworks/status"
-	"github.com/valkyrieworks/status/simulations"
-	"github.com/valkyrieworks/depot"
-	"github.com/valkyrieworks/kinds"
-	"github.com/valkyrieworks/release"
+	"github.com/valkyrieworks/dffc4ef0-4ec6-4346-9b6c-d0a0cb42d94b/security"
+	"github.com/valkyrieworks/dffc4ef0-4ec6-4346-9b6c-d0a0cb42d94b/security/tenderminthash"
+	strongstatus "github.com/valkyrieworks/dffc4ef0-4ec6-4346-9b6c-d0a0cb42d94b/schema/strongmind/status"
+	strongmindedition "github.com/valkyrieworks/dffc4ef0-4ec6-4346-9b6c-d0a0cb42d94b/schema/strongmind/edition"
+	"github.com/valkyrieworks/dffc4ef0-4ec6-4346-9b6c-d0a0cb42d94b/status"
+	"github.com/valkyrieworks/dffc4ef0-4ec6-4346-9b6c-d0a0cb42d94b/status/simulations"
+	"github.com/valkyrieworks/dffc4ef0-4ec6-4346-9b6c-d0a0cb42d94b/depot"
+	"github.com/valkyrieworks/dffc4ef0-4ec6-4346-9b6c-d0a0cb42d94b/kinds"
+	"github.com/valkyrieworks/dffc4ef0-4ec6-4346-9b6c-d0a0cb42d94b/edition"
 )
 
 func VerifyRevert(t *testing.T) {
 	var (
-		level     int64 = 100
-		followingLevel int64 = 101
+		altitude     int64 = 100
+		followingAltitude int64 = 101
 	)
 	ledgerDepot := &simulations.LedgerDepot{}
-	statusDepot := configureStatusDepot(t, level)
-	primaryStatus, err := statusDepot.Import()
+	statusDepot := configureStatusDepot(t, altitude)
+	primaryStatus, err := statusDepot.Fetch()
 	require.NoError(t, err)
 
 	//
-	newOptions := kinds.StandardAgreementOptions()
-	newOptions.Release.App = 11
-	newOptions.Ledger.MaximumOctets = 1000
-	followingStatus := primaryStatus.Clone()
-	followingStatus.FinalLedgerLevel = followingLevel
-	followingStatus.Release.Agreement.App = 11
-	followingStatus.FinalLedgerUID = createLedgerUIDArbitrary()
-	followingStatus.ApplicationDigest = comethash.Sum([]byte("REDACTED"))
-	followingStatus.FinalRatifiers = primaryStatus.Ratifiers
-	followingStatus.Ratifiers = primaryStatus.FollowingRatifiers
-	followingStatus.FollowingRatifiers = primaryStatus.FollowingRatifiers.CloneAugmentRecommenderUrgency(1)
-	followingStatus.AgreementOptions = *newOptions
-	followingStatus.FinalLevelAgreementOptionsModified = followingLevel + 1
-	followingStatus.FinalLevelRatifiersModified = followingLevel + 1
+	freshParameters := kinds.FallbackAgreementSettings()
+	freshParameters.Edition.App = 11
+	freshParameters.Ledger.MaximumOctets = 1000
+	followingStatus := primaryStatus.Duplicate()
+	followingStatus.FinalLedgerAltitude = followingAltitude
+	followingStatus.Edition.Agreement.App = 11
+	followingStatus.FinalLedgerUUID = createLedgerUUIDUnpredictable()
+	followingStatus.PlatformDigest = tenderminthash.Sum([]byte("REDACTED"))
+	followingStatus.FinalAssessors = primaryStatus.Assessors
+	followingStatus.Assessors = primaryStatus.FollowingAssessors
+	followingStatus.FollowingAssessors = primaryStatus.FollowingAssessors.DuplicateAdvanceNominatorUrgency(1)
+	followingStatus.AgreementSettings = *freshParameters
+	followingStatus.FinalAltitudeAgreementParametersAltered = followingAltitude + 1
+	followingStatus.FinalAltitudeAssessorsAltered = followingAltitude + 1
 
 	//
 	require.NoError(t, statusDepot.Persist(followingStatus))
 
-	ledger := &kinds.LedgerMeta{
-		LedgerUID: primaryStatus.FinalLedgerUID,
+	ledger := &kinds.LedgerSummary{
+		LedgerUUID: primaryStatus.FinalLedgerUUID,
 		Heading: kinds.Heading{
-			Level:          primaryStatus.FinalLedgerLevel,
-			Time:            primaryStatus.FinalLedgerTime,
-			ApplicationDigest:         vault.CRandomOctets(comethash.Volume),
-			FinalLedgerUID:     createLedgerUIDArbitrary(),
+			Altitude:          primaryStatus.FinalLedgerAltitude,
+			Moment:            primaryStatus.FinalLedgerMoment,
+			PlatformDigest:         security.CHARArbitraryOctets(tenderminthash.Extent),
+			FinalLedgerUUID:     createLedgerUUIDUnpredictable(),
 			FinalOutcomesDigest: primaryStatus.FinalOutcomesDigest,
 		},
 	}
-	followingLedger := &kinds.LedgerMeta{
-		LedgerUID: primaryStatus.FinalLedgerUID,
+	followingLedger := &kinds.LedgerSummary{
+		LedgerUUID: primaryStatus.FinalLedgerUUID,
 		Heading: kinds.Heading{
-			Level:          followingStatus.FinalLedgerLevel,
-			ApplicationDigest:         primaryStatus.ApplicationDigest,
-			FinalLedgerUID:     ledger.LedgerUID,
-			Time:            followingStatus.FinalLedgerTime,
+			Altitude:          followingStatus.FinalLedgerAltitude,
+			PlatformDigest:         primaryStatus.PlatformDigest,
+			FinalLedgerUUID:     ledger.LedgerUUID,
+			Moment:            followingStatus.FinalLedgerMoment,
 			FinalOutcomesDigest: followingStatus.FinalOutcomesDigest,
 		},
 	}
-	ledgerDepot.On("REDACTED", level).Return(ledger)
-	ledgerDepot.On("REDACTED", followingLevel).Return(followingLedger)
-	ledgerDepot.On("REDACTED").Return(followingLevel)
+	ledgerDepot.On("REDACTED", altitude).Return(ledger)
+	ledgerDepot.On("REDACTED", followingAltitude).Return(followingLedger)
+	ledgerDepot.On("REDACTED").Return(followingAltitude)
 
 	//
-	revertLevel, revertDigest, err := status.Revert(ledgerDepot, statusDepot, false)
+	revertAltitude, revertDigest, err := status.Revert(ledgerDepot, statusDepot, false)
 	require.NoError(t, err)
-	require.EqualValues(t, level, revertLevel)
-	require.EqualValues(t, primaryStatus.ApplicationDigest, revertDigest)
+	require.EqualValues(t, altitude, revertAltitude)
+	require.EqualValues(t, primaryStatus.PlatformDigest, revertDigest)
 	ledgerDepot.AssertExpectations(t)
 
 	//
-	retrievedStatus, err := statusDepot.Import()
+	retrievedStatus, err := statusDepot.Fetch()
 	require.NoError(t, err)
 	require.EqualValues(t, primaryStatus, retrievedStatus)
 }
 
 func VerifyRevertRigid(t *testing.T) {
-	const level int64 = 100
-	ledgerDepot := depot.NewLedgerDepot(dbm.NewMemoryStore())
-	statusDepot := status.NewDepot(dbm.NewMemoryStore(), status.DepotSettings{DropIfaceReplies: false})
+	const altitude int64 = 100
+	ledgerDepot := depot.FreshLedgerDepot(dbm.FreshMemoryDatastore())
+	statusDepot := status.FreshDepot(dbm.FreshMemoryDatastore(), status.DepotChoices{EjectIfaceReplies: false})
 
-	valueCollection, _ := kinds.RandomRatifierCollection(5, 10)
+	itemAssign, _ := kinds.ArbitraryAssessorAssign(5, 10)
 
-	options := kinds.StandardAgreementOptions()
-	options.Release.App = 10
+	parameters := kinds.FallbackAgreementSettings()
+	parameters.Edition.App = 10
 	now := time.Date(2020, 1, 1, 0, 0, 0, 0, time.UTC)
 
 	ledger := &kinds.Ledger{
 		Heading: kinds.Heading{
-			Release:            cometrelease.Agreement{Ledger: release.LedgerProtocol, App: 1},
-			LedgerUID:            "REDACTED",
-			Time:               now,
-			Level:             level,
-			ApplicationDigest:            vault.CRandomOctets(comethash.Volume),
-			FinalLedgerUID:        createLedgerUIDArbitrary(),
-			FinalEndorseDigest:     vault.CRandomOctets(comethash.Volume),
-			DataDigest:           vault.CRandomOctets(comethash.Volume),
-			RatifiersDigest:     valueCollection.Digest(),
-			FollowingRatifiersDigest: valueCollection.CloneAugmentRecommenderUrgency(1).Digest(),
-			AgreementDigest:      options.Digest(),
-			FinalOutcomesDigest:    vault.CRandomOctets(comethash.Volume),
-			ProofDigest:       vault.CRandomOctets(comethash.Volume),
-			RecommenderLocation:    vault.CRandomOctets(vault.LocationVolume),
+			Edition:            strongmindedition.Agreement{Ledger: edition.LedgerScheme, App: 1},
+			SuccessionUUID:            "REDACTED",
+			Moment:               now,
+			Altitude:             altitude,
+			PlatformDigest:            security.CHARArbitraryOctets(tenderminthash.Extent),
+			FinalLedgerUUID:        createLedgerUUIDUnpredictable(),
+			FinalEndorseDigest:     security.CHARArbitraryOctets(tenderminthash.Extent),
+			DataDigest:           security.CHARArbitraryOctets(tenderminthash.Extent),
+			AssessorsDigest:     itemAssign.Digest(),
+			FollowingAssessorsDigest: itemAssign.DuplicateAdvanceNominatorUrgency(1).Digest(),
+			AgreementDigest:      parameters.Digest(),
+			FinalOutcomesDigest:    security.CHARArbitraryOctets(tenderminthash.Extent),
+			ProofDigest:       security.CHARArbitraryOctets(tenderminthash.Extent),
+			NominatorLocation:    security.CHARArbitraryOctets(security.LocatorExtent),
 		},
-		FinalEndorse: &kinds.Endorse{Level: level - 1},
+		FinalEndorse: &kinds.Endorse{Altitude: altitude - 1},
 	}
 
-	sectionCollection, err := ledger.CreateSegmentAssign(kinds.LedgerSegmentVolumeOctets)
+	fragmentAssign, err := ledger.CreateFragmentAssign(kinds.LedgerFragmentExtentOctets)
 	require.NoError(t, err)
-	ledgerDepot.PersistLedger(ledger, sectionCollection, &kinds.Endorse{Level: ledger.Level})
+	ledgerDepot.PersistLedger(ledger, fragmentAssign, &kinds.Endorse{Altitude: ledger.Altitude})
 
-	currentStatus := status.Status{
-		Release: cometstatus.Release{
-			Agreement: ledger.Release,
-			Software:  release.TMCoreSemaphoreRev,
+	presentStatus := status.Status{
+		Edition: strongstatus.Edition{
+			Agreement: ledger.Edition,
+			Package:  edition.TEMPBaseSemaphoreEdtn,
 		},
-		FinalLedgerLevel:                  ledger.Level,
-		FinalLedgerTime:                    ledger.Time,
-		ApplicationDigest:                          vault.CRandomOctets(comethash.Volume),
-		FinalRatifiers:                   valueCollection,
-		Ratifiers:                       valueCollection.CloneAugmentRecommenderUrgency(1),
-		FollowingRatifiers:                   valueCollection.CloneAugmentRecommenderUrgency(2),
-		AgreementOptions:                  *options,
-		FinalLevelAgreementOptionsModified: level + 1,
-		FinalLevelRatifiersModified:      level + 1,
-		FinalOutcomesDigest:                  vault.CRandomOctets(comethash.Volume),
+		FinalLedgerAltitude:                  ledger.Altitude,
+		FinalLedgerMoment:                    ledger.Moment,
+		PlatformDigest:                          security.CHARArbitraryOctets(tenderminthash.Extent),
+		FinalAssessors:                   itemAssign,
+		Assessors:                       itemAssign.DuplicateAdvanceNominatorUrgency(1),
+		FollowingAssessors:                   itemAssign.DuplicateAdvanceNominatorUrgency(2),
+		AgreementSettings:                  *parameters,
+		FinalAltitudeAgreementParametersAltered: altitude + 1,
+		FinalAltitudeAssessorsAltered:      altitude + 1,
+		FinalOutcomesDigest:                  security.CHARArbitraryOctets(tenderminthash.Extent),
 	}
-	require.NoError(t, statusDepot.Onboard(currentStatus))
+	require.NoError(t, statusDepot.Onboard(presentStatus))
 
 	followingLedger := &kinds.Ledger{
 		Heading: kinds.Heading{
-			Release:            cometrelease.Agreement{Ledger: release.LedgerProtocol, App: 1},
-			LedgerUID:            ledger.LedgerUID,
-			Time:               ledger.Time,
-			Level:             currentStatus.FinalLedgerLevel + 1,
-			ApplicationDigest:            currentStatus.ApplicationDigest,
-			FinalLedgerUID:        kinds.LedgerUID{Digest: ledger.Digest(), SegmentAssignHeading: sectionCollection.Heading()},
-			FinalEndorseDigest:     vault.CRandomOctets(comethash.Volume),
-			DataDigest:           vault.CRandomOctets(comethash.Volume),
-			RatifiersDigest:     valueCollection.CloneAugmentRecommenderUrgency(1).Digest(),
-			FollowingRatifiersDigest: valueCollection.CloneAugmentRecommenderUrgency(2).Digest(),
-			AgreementDigest:      options.Digest(),
-			FinalOutcomesDigest:    currentStatus.FinalOutcomesDigest,
-			ProofDigest:       vault.CRandomOctets(comethash.Volume),
-			RecommenderLocation:    vault.CRandomOctets(vault.LocationVolume),
+			Edition:            strongmindedition.Agreement{Ledger: edition.LedgerScheme, App: 1},
+			SuccessionUUID:            ledger.SuccessionUUID,
+			Moment:               ledger.Moment,
+			Altitude:             presentStatus.FinalLedgerAltitude + 1,
+			PlatformDigest:            presentStatus.PlatformDigest,
+			FinalLedgerUUID:        kinds.LedgerUUID{Digest: ledger.Digest(), FragmentAssignHeading: fragmentAssign.Heading()},
+			FinalEndorseDigest:     security.CHARArbitraryOctets(tenderminthash.Extent),
+			DataDigest:           security.CHARArbitraryOctets(tenderminthash.Extent),
+			AssessorsDigest:     itemAssign.DuplicateAdvanceNominatorUrgency(1).Digest(),
+			FollowingAssessorsDigest: itemAssign.DuplicateAdvanceNominatorUrgency(2).Digest(),
+			AgreementDigest:      parameters.Digest(),
+			FinalOutcomesDigest:    presentStatus.FinalOutcomesDigest,
+			ProofDigest:       security.CHARArbitraryOctets(tenderminthash.Extent),
+			NominatorLocation:    security.CHARArbitraryOctets(security.LocatorExtent),
 		},
-		FinalEndorse: &kinds.Endorse{Level: currentStatus.FinalLedgerLevel},
+		FinalEndorse: &kinds.Endorse{Altitude: presentStatus.FinalLedgerAltitude},
 	}
 
-	followingSectionCollection, err := followingLedger.CreateSegmentAssign(kinds.LedgerSegmentVolumeOctets)
+	followingFragmentAssign, err := followingLedger.CreateFragmentAssign(kinds.LedgerFragmentExtentOctets)
 	require.NoError(t, err)
-	ledgerDepot.PersistLedger(followingLedger, followingSectionCollection, &kinds.Endorse{Level: followingLedger.Level})
+	ledgerDepot.PersistLedger(followingLedger, followingFragmentAssign, &kinds.Endorse{Altitude: followingLedger.Altitude})
 
-	revertLevel, revertDigest, err := status.Revert(ledgerDepot, statusDepot, true)
+	revertAltitude, revertDigest, err := status.Revert(ledgerDepot, statusDepot, true)
 	require.NoError(t, err)
-	require.Equal(t, revertLevel, currentStatus.FinalLedgerLevel)
-	require.Equal(t, revertDigest, currentStatus.ApplicationDigest)
+	require.Equal(t, revertAltitude, presentStatus.FinalLedgerAltitude)
+	require.Equal(t, revertDigest, presentStatus.PlatformDigest)
 
 	//
-	retrievedStatus, err := statusDepot.Import()
+	retrievedStatus, err := statusDepot.Fetch()
 	require.NoError(t, err)
-	require.Equal(t, currentStatus, retrievedStatus)
+	require.Equal(t, presentStatus, retrievedStatus)
 
 	//
-	ledgerDepot.PersistLedger(followingLedger, followingSectionCollection, &kinds.Endorse{Level: followingLedger.Level})
+	ledgerDepot.PersistLedger(followingLedger, followingFragmentAssign, &kinds.Endorse{Altitude: followingLedger.Altitude})
 
-	options.Release.App = 11
+	parameters.Edition.App = 11
 
 	followingStatus := status.Status{
-		Release: cometstatus.Release{
-			Agreement: ledger.Release,
-			Software:  release.TMCoreSemaphoreRev,
+		Edition: strongstatus.Edition{
+			Agreement: ledger.Edition,
+			Package:  edition.TEMPBaseSemaphoreEdtn,
 		},
-		FinalLedgerLevel:                  followingLedger.Level,
-		FinalLedgerTime:                    followingLedger.Time,
-		ApplicationDigest:                          vault.CRandomOctets(comethash.Volume),
-		FinalRatifiers:                   valueCollection.CloneAugmentRecommenderUrgency(1),
-		Ratifiers:                       valueCollection.CloneAugmentRecommenderUrgency(2),
-		FollowingRatifiers:                   valueCollection.CloneAugmentRecommenderUrgency(3),
-		AgreementOptions:                  *options,
-		FinalLevelAgreementOptionsModified: followingLedger.Level + 1,
-		FinalLevelRatifiersModified:      followingLedger.Level + 1,
-		FinalOutcomesDigest:                  vault.CRandomOctets(comethash.Volume),
+		FinalLedgerAltitude:                  followingLedger.Altitude,
+		FinalLedgerMoment:                    followingLedger.Moment,
+		PlatformDigest:                          security.CHARArbitraryOctets(tenderminthash.Extent),
+		FinalAssessors:                   itemAssign.DuplicateAdvanceNominatorUrgency(1),
+		Assessors:                       itemAssign.DuplicateAdvanceNominatorUrgency(2),
+		FollowingAssessors:                   itemAssign.DuplicateAdvanceNominatorUrgency(3),
+		AgreementSettings:                  *parameters,
+		FinalAltitudeAgreementParametersAltered: followingLedger.Altitude + 1,
+		FinalAltitudeAssessorsAltered:      followingLedger.Altitude + 1,
+		FinalOutcomesDigest:                  security.CHARArbitraryOctets(tenderminthash.Extent),
 	}
 	require.NoError(t, statusDepot.Persist(followingStatus))
 
-	revertLevel, revertDigest, err = status.Revert(ledgerDepot, statusDepot, true)
+	revertAltitude, revertDigest, err = status.Revert(ledgerDepot, statusDepot, true)
 	require.NoError(t, err)
-	require.Equal(t, revertLevel, currentStatus.FinalLedgerLevel)
-	require.Equal(t, revertDigest, currentStatus.ApplicationDigest)
+	require.Equal(t, revertAltitude, presentStatus.FinalLedgerAltitude)
+	require.Equal(t, revertDigest, presentStatus.PlatformDigest)
 }
 
-func VerifyRevertNoStatus(t *testing.T) {
-	statusDepot := status.NewDepot(dbm.NewMemoryStore(),
-		status.DepotSettings{
-			DropIfaceReplies: false,
+func VerifyRevertNegativeStatus(t *testing.T) {
+	statusDepot := status.FreshDepot(dbm.FreshMemoryDatastore(),
+		status.DepotChoices{
+			EjectIfaceReplies: false,
 		})
 	ledgerDepot := &simulations.LedgerDepot{}
 
@@ -214,75 +214,75 @@ func VerifyRevertNoStatus(t *testing.T) {
 	require.Contains(t, err.Error(), "REDACTED")
 }
 
-func VerifyRevertNoLedgers(t *testing.T) {
-	const level = int64(100)
-	statusDepot := configureStatusDepot(t, level)
+func VerifyRevertNegativeLedgers(t *testing.T) {
+	const altitude = int64(100)
+	statusDepot := configureStatusDepot(t, altitude)
 	ledgerDepot := &simulations.LedgerDepot{}
-	ledgerDepot.On("REDACTED").Return(level)
-	ledgerDepot.On("REDACTED", level).Return(nil)
-	ledgerDepot.On("REDACTED", level-1).Return(nil)
+	ledgerDepot.On("REDACTED").Return(altitude)
+	ledgerDepot.On("REDACTED", altitude).Return(nil)
+	ledgerDepot.On("REDACTED", altitude-1).Return(nil)
 
 	_, _, err := status.Revert(ledgerDepot, statusDepot, false)
 	require.Error(t, err)
 	require.Contains(t, err.Error(), "REDACTED")
 }
 
-func VerifyRevertDistinctStatusLevel(t *testing.T) {
-	const level = int64(100)
-	statusDepot := configureStatusDepot(t, level)
+func VerifyRevertDistinctStatusAltitude(t *testing.T) {
+	const altitude = int64(100)
+	statusDepot := configureStatusDepot(t, altitude)
 	ledgerDepot := &simulations.LedgerDepot{}
-	ledgerDepot.On("REDACTED").Return(level + 2)
+	ledgerDepot.On("REDACTED").Return(altitude + 2)
 
 	_, _, err := status.Revert(ledgerDepot, statusDepot, false)
 	require.Error(t, err)
 	require.Equal(t, err.Error(), "REDACTED")
 }
 
-func configureStatusDepot(t *testing.T, level int64) status.Depot {
-	statusDepot := status.NewDepot(dbm.NewMemoryStore(), status.DepotSettings{DropIfaceReplies: false})
-	valueCollection, _ := kinds.RandomRatifierCollection(5, 10)
+func configureStatusDepot(t *testing.T, altitude int64) status.Depot {
+	statusDepot := status.FreshDepot(dbm.FreshMemoryDatastore(), status.DepotChoices{EjectIfaceReplies: false})
+	itemAssign, _ := kinds.ArbitraryAssessorAssign(5, 10)
 
-	options := kinds.StandardAgreementOptions()
-	options.Release.App = 10
+	parameters := kinds.FallbackAgreementSettings()
+	parameters.Edition.App = 10
 
 	primaryStatus := status.Status{
-		Release: cometstatus.Release{
-			Agreement: cometrelease.Agreement{
-				Ledger: release.LedgerProtocol,
+		Edition: strongstatus.Edition{
+			Agreement: strongmindedition.Agreement{
+				Ledger: edition.LedgerScheme,
 				App:   10,
 			},
-			Software: release.TMCoreSemaphoreRev,
+			Package: edition.TEMPBaseSemaphoreEdtn,
 		},
-		LedgerUID:                          "REDACTED",
-		PrimaryLevel:                    10,
-		FinalLedgerUID:                      createLedgerUIDArbitrary(),
-		ApplicationDigest:                          comethash.Sum([]byte("REDACTED")),
-		FinalOutcomesDigest:                  comethash.Sum([]byte("REDACTED")),
-		FinalLedgerLevel:                  level,
-		FinalLedgerTime:                    time.Now(),
-		FinalRatifiers:                   valueCollection,
-		Ratifiers:                       valueCollection.CloneAugmentRecommenderUrgency(1),
-		FollowingRatifiers:                   valueCollection.CloneAugmentRecommenderUrgency(2),
-		FinalLevelRatifiersModified:      level + 1 + 1,
-		AgreementOptions:                  *options,
-		FinalLevelAgreementOptionsModified: level + 1,
+		SuccessionUUID:                          "REDACTED",
+		PrimaryAltitude:                    10,
+		FinalLedgerUUID:                      createLedgerUUIDUnpredictable(),
+		PlatformDigest:                          tenderminthash.Sum([]byte("REDACTED")),
+		FinalOutcomesDigest:                  tenderminthash.Sum([]byte("REDACTED")),
+		FinalLedgerAltitude:                  altitude,
+		FinalLedgerMoment:                    time.Now(),
+		FinalAssessors:                   itemAssign,
+		Assessors:                       itemAssign.DuplicateAdvanceNominatorUrgency(1),
+		FollowingAssessors:                   itemAssign.DuplicateAdvanceNominatorUrgency(2),
+		FinalAltitudeAssessorsAltered:      altitude + 1 + 1,
+		AgreementSettings:                  *parameters,
+		FinalAltitudeAgreementParametersAltered: altitude + 1,
 	}
 	require.NoError(t, statusDepot.Onboard(primaryStatus))
 	return statusDepot
 }
 
-func createLedgerUIDArbitrary() kinds.LedgerUID {
+func createLedgerUUIDUnpredictable() kinds.LedgerUUID {
 	var (
-		ledgerDigest   = make([]byte, comethash.Volume)
-		sectionCollectionDigest = make([]byte, comethash.Volume)
+		ledgerDigest   = make([]byte, tenderminthash.Extent)
+		fragmentAssignDigest = make([]byte, tenderminthash.Extent)
 	)
 	rand.Read(ledgerDigest)   //
-	rand.Read(sectionCollectionDigest) //
-	return kinds.LedgerUID{
+	rand.Read(fragmentAssignDigest) //
+	return kinds.LedgerUUID{
 		Digest: ledgerDigest,
-		SegmentAssignHeading: kinds.SegmentAssignHeading{
+		FragmentAssignHeading: kinds.FragmentAssignHeading{
 			Sum: 123,
-			Digest:  sectionCollectionDigest,
+			Digest:  fragmentAssignDigest,
 		},
 	}
 }

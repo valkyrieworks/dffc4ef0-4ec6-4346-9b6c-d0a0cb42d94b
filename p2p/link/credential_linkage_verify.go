@@ -17,54 +17,54 @@ import (
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/require"
 
-	"github.com/valkyrieworks/vault"
-	"github.com/valkyrieworks/vault/ed25519"
-	"github.com/valkyrieworks/utils/async"
-	cometos "github.com/valkyrieworks/utils/os"
-	engineseed "github.com/valkyrieworks/utils/random"
+	"github.com/valkyrieworks/dffc4ef0-4ec6-4346-9b6c-d0a0cb42d94b/security"
+	"github.com/valkyrieworks/dffc4ef0-4ec6-4346-9b6c-d0a0cb42d94b/security/edwards25519"
+	"github.com/valkyrieworks/dffc4ef0-4ec6-4346-9b6c-d0a0cb42d94b/utils/asyncronous"
+	strongos "github.com/valkyrieworks/dffc4ef0-4ec6-4346-9b6c-d0a0cb42d94b/utils/os"
+	commitrand "github.com/valkyrieworks/dffc4ef0-4ec6-4346-9b6c-d0a0cb42d94b/utils/arbitrary"
 )
 
 //
 //
-var modify = flag.Bool("REDACTED", false, "REDACTED")
+var revise = flag.Bool("REDACTED", false, "REDACTED")
 
-type objectdepotLink struct {
-	*io.PipeScanner
-	*io.PipeRecorder
+type statedepotLink struct {
+	*io.ConduitFetcher
+	*io.ConduitPersistor
 }
 
-func (drw objectdepotLink) End() (err error) {
-	err2 := drw.PipeRecorder.CloseWithError(io.EOF)
-	fault1 := drw.PipeScanner.Close()
-	if err2 != nil {
+func (drw statedepotLink) Shutdown() (err error) {
+	fault2 := drw.ConduitPersistor.CloseWithError(io.EOF)
+	faultone := drw.ConduitFetcher.Close()
+	if fault2 != nil {
 		return err
 	}
-	return fault1
+	return faultone
 }
 
-type privateKeyWithNullPublicKey struct {
-	orig vault.PrivateKey
+type privateTokenUsingVoidPublicToken struct {
+	initial security.PrivateToken
 }
 
-func (pk privateKeyWithNullPublicKey) Octets() []byte                   { return pk.orig.Octets() }
-func (pk privateKeyWithNullPublicKey) Attest(msg []byte) ([]byte, error) { return pk.orig.Attest(msg) }
-func (pk privateKeyWithNullPublicKey) PublicKey() vault.PublicKey           { return nil }
-func (pk privateKeyWithNullPublicKey) Matches(pk2 vault.PrivateKey) bool  { return pk.orig.Matches(pk2) }
-func (pk privateKeyWithNullPublicKey) Kind() string                    { return "REDACTED" }
+func (pk privateTokenUsingVoidPublicToken) Octets() []byte                   { return pk.initial.Octets() }
+func (pk privateTokenUsingVoidPublicToken) Attest(msg []byte) ([]byte, error) { return pk.initial.Attest(msg) }
+func (pk privateTokenUsingVoidPublicToken) PublicToken() security.PublicToken           { return nil }
+func (pk privateTokenUsingVoidPublicToken) Matches(pk2 security.PrivateToken) bool  { return pk.initial.Matches(pk2) }
+func (pk privateTokenUsingVoidPublicToken) Kind() string                    { return "REDACTED" }
 
-func VerifyCredentialLinkageGreeting(t *testing.T) {
-	fooSecurityLink, barSecurityLink := createTokenLinkCouple(t)
-	if err := fooSecurityLink.End(); err != nil {
+func VerifyCredentialLinkageNegotiation(t *testing.T) {
+	sampleSecondLink, graphSecondLink := createCredentialLinkDuo(t)
+	if err := sampleSecondLink.Shutdown(); err != nil {
 		t.Error(err)
 	}
-	if err := barSecurityLink.End(); err != nil {
+	if err := graphSecondLink.Shutdown(); err != nil {
 		t.Error(err)
 	}
 }
 
-func VerifyParallelRecord(t *testing.T) {
-	fooSecurityLink, barSecurityLink := createTokenLinkCouple(t)
-	fooRecordContent := engineseed.Str(dataMaximumVolume)
+func VerifyParallelPersist(t *testing.T) {
+	sampleSecondLink, graphSecondLink := createCredentialLinkDuo(t)
+	samplePersistString := commitrand.Str(dataMaximumExtent)
 
 	//
 	//
@@ -72,21 +72,21 @@ func VerifyParallelRecord(t *testing.T) {
 	n := 100
 	wg := new(sync.WaitGroup)
 	wg.Add(3)
-	go recordMany(t, wg, fooSecurityLink, fooRecordContent, n)
-	go recordMany(t, wg, fooSecurityLink, fooRecordContent, n)
+	go persistAbundant(t, wg, sampleSecondLink, samplePersistString, n)
+	go persistAbundant(t, wg, sampleSecondLink, samplePersistString, n)
 
 	//
-	readMany(t, wg, barSecurityLink, n*2)
+	fetchAbundant(t, wg, graphSecondLink, n*2)
 	wg.Wait()
 
-	if err := fooSecurityLink.End(); err != nil {
+	if err := sampleSecondLink.Shutdown(); err != nil {
 		t.Error(err)
 	}
 }
 
-func VerifyParallelRead(t *testing.T) {
-	fooSecurityLink, barSecurityLink := createTokenLinkCouple(t)
-	fooRecordContent := engineseed.Str(dataMaximumVolume)
+func VerifyParallelFetch(t *testing.T) {
+	sampleSecondLink, graphSecondLink := createCredentialLinkDuo(t)
+	samplePersistString := commitrand.Str(dataMaximumExtent)
 	n := 100
 
 	//
@@ -94,56 +94,56 @@ func VerifyParallelRead(t *testing.T) {
 	//
 	wg := new(sync.WaitGroup)
 	wg.Add(3)
-	go readMany(t, wg, fooSecurityLink, n/2)
-	go readMany(t, wg, fooSecurityLink, n/2)
+	go fetchAbundant(t, wg, sampleSecondLink, n/2)
+	go fetchAbundant(t, wg, sampleSecondLink, n/2)
 
 	//
-	recordMany(t, wg, barSecurityLink, fooRecordContent, n)
+	persistAbundant(t, wg, graphSecondLink, samplePersistString, n)
 	wg.Wait()
 
-	if err := fooSecurityLink.End(); err != nil {
+	if err := sampleSecondLink.Shutdown(); err != nil {
 		t.Error(err)
 	}
 }
 
-func VerifyCredentialLinkageReadRecord(t *testing.T) {
-	fooLink, barLink := createObjectDepotLinkCouple()
-	fooPersists, barPersists := []string{}, []string{}
-	fooFetches, barFetches := []string{}, []string{}
+func VerifyCredentialLinkageFetchPersist(t *testing.T) {
+	sampleLink, graphLink := createTokvalDepotLinkDuo()
+	samplePersists, dividerPersists := []string{}, []string{}
+	sampleFetches, dividerFetches := []string{}, []string{}
 
 	//
 	for i := 0; i < 100; i++ {
-		fooPersists = append(fooPersists, engineseed.Str((engineseed.Int()%(dataMaximumVolume*5))+1))
-		barPersists = append(barPersists, engineseed.Str((engineseed.Int()%(dataMaximumVolume*5))+1))
+		samplePersists = append(samplePersists, commitrand.Str((commitrand.Int()%(dataMaximumExtent*5))+1))
+		dividerPersists = append(dividerPersists, commitrand.Str((commitrand.Int()%(dataMaximumExtent*5))+1))
 	}
 
 	//
-	generateMemberExecutor := func(id string, memberLink objectdepotLink, memberPersists []string, memberFetches *[]string) async.Task {
+	producePeerExecutor := func(id string, peerLink statedepotLink, peerPersists []string, peerFetches *[]string) asyncronous.Activity {
 		return func(_ int) (any, bool, error) {
 			//
-			memberInternalKey := ed25519.GeneratePrivateKey()
-			memberCredentialLink, err := CreateTokenLinkage(memberLink, memberInternalKey)
+			peerPrivateToken := edwards25519.ProducePrivateToken()
+			peerCredentialLink, err := CreateCredentialLinkage(peerLink, peerPrivateToken)
 			if err != nil {
 				t.Errorf("REDACTED", err)
 				return nil, true, err
 			}
 			//
-			trs, ok := async.Concurrent(
+			trs, ok := asyncronous.Concurrent(
 				func(_ int) (any, bool, error) {
 					//
-					for _, memberRecord := range memberPersists {
-						n, err := memberCredentialLink.Record([]byte(memberRecord))
+					for _, peerPersist := range peerPersists {
+						n, err := peerCredentialLink.Record([]byte(peerPersist))
 						if err != nil {
 							t.Errorf("REDACTED", err)
 							return nil, true, err
 						}
-						if n != len(memberRecord) {
-							err = fmt.Errorf("REDACTED", len(memberRecord), n)
+						if n != len(peerPersist) {
+							err = fmt.Errorf("REDACTED", len(peerPersist), n)
 							t.Error(err)
 							return nil, true, err
 						}
 					}
-					if err := memberLink.PipeRecorder.Close(); err != nil {
+					if err := peerLink.ConduitPersistor.Close(); err != nil {
 						t.Error(err)
 						return nil, true, err
 					}
@@ -151,11 +151,11 @@ func VerifyCredentialLinkageReadRecord(t *testing.T) {
 				},
 				func(_ int) (any, bool, error) {
 					//
-					readFrame := make([]byte, dataMaximumVolume)
+					fetchReserve := make([]byte, dataMaximumExtent)
 					for {
-						n, err := memberCredentialLink.Scan(readFrame)
+						n, err := peerCredentialLink.Obtain(fetchReserve)
 						if err == io.EOF {
-							if err := memberLink.PipeScanner.Close(); err != nil {
+							if err := peerLink.ConduitFetcher.Close(); err != nil {
 								t.Error(err)
 								return nil, true, err
 							}
@@ -164,15 +164,15 @@ func VerifyCredentialLinkageReadRecord(t *testing.T) {
 							t.Errorf("REDACTED", err)
 							return nil, true, err
 						}
-						*memberFetches = append(*memberFetches, string(readFrame[:n]))
+						*peerFetches = append(*peerFetches, string(fetchReserve[:n]))
 					}
 				},
 			)
 			assert.True(t, ok, "REDACTED")
 
 			//
-			if trs.InitialFault() != nil {
-				return nil, true, trs.InitialFault()
+			if trs.InitialFailure() != nil {
+				return nil, true, trs.InitialFailure()
 			}
 
 			//
@@ -181,11 +181,11 @@ func VerifyCredentialLinkageReadRecord(t *testing.T) {
 	}
 
 	//
-	trs, ok := async.Concurrent(
-		generateMemberExecutor("REDACTED", fooLink, fooPersists, &fooFetches),
-		generateMemberExecutor("REDACTED", barLink, barPersists, &barFetches),
+	trs, ok := asyncronous.Concurrent(
+		producePeerExecutor("REDACTED", sampleLink, samplePersists, &sampleFetches),
+		producePeerExecutor("REDACTED", graphLink, dividerPersists, &dividerFetches),
 	)
-	require.Nil(t, trs.InitialFault())
+	require.Nil(t, trs.InitialFailure())
 	require.True(t, ok, "REDACTED")
 
 	//
@@ -193,45 +193,45 @@ func VerifyCredentialLinkageReadRecord(t *testing.T) {
 	contrastPersistsFetches := func(persists []string, fetches []string) {
 		for {
 			//
-			reader := "REDACTED"
-			record := persists[0]
-			readNumber := 0
-			for _, readSegment := range fetches {
-				reader += readSegment
-				readNumber++
-				if len(record) <= len(reader) {
+			fetch := "REDACTED"
+			persist := persists[0]
+			fetchTotal := 0
+			for _, fetchSegment := range fetches {
+				fetch += fetchSegment
+				fetchTotal++
+				if len(persist) <= len(fetch) {
 					break
 				}
-				if len(record) <= dataMaximumVolume {
+				if len(persist) <= dataMaximumExtent {
 					break //
 				}
 			}
 			//
-			if record != reader {
-				t.Errorf("REDACTED", record, reader)
+			if persist != fetch {
+				t.Errorf("REDACTED", persist, fetch)
 			}
 			//
 			persists = persists[1:]
-			fetches = fetches[readNumber:]
+			fetches = fetches[fetchTotal:]
 			if len(persists) == 0 {
 				break
 			}
 		}
 	}
 
-	contrastPersistsFetches(fooPersists, barFetches)
-	contrastPersistsFetches(barPersists, fooFetches)
+	contrastPersistsFetches(samplePersists, dividerFetches)
+	contrastPersistsFetches(dividerPersists, sampleFetches)
 }
 
-func VerifyDeduceCredentialsAndDisputeValidated(t *testing.T) {
-	validatedRoutepath := filepath.Join("REDACTED", t.Name()+"REDACTED")
-	if *modify {
-		t.Logf("REDACTED", validatedRoutepath)
-		data := instantiateValidatedVerifyArrays(t)
-		err := cometos.RecordEntry(validatedRoutepath, []byte(data), 0o644)
+func VerifyDeduceCredentialsAlsoQueryPrime(t *testing.T) {
+	primePath := filepath.Join("REDACTED", t.Name()+"REDACTED")
+	if *revise {
+		t.Logf("REDACTED", primePath)
+		data := generatePrimeVerifyArrays(t)
+		err := strongos.RecordRecord(primePath, []byte(data), 0o644)
 		require.NoError(t, err)
 	}
-	f, err := os.Open(validatedRoutepath)
+	f, err := os.Open(primePath)
 	if err != nil {
 		log.Fatal(err)
 	}
@@ -239,39 +239,39 @@ func VerifyDeduceCredentialsAndDisputeValidated(t *testing.T) {
 	analyzer := bufio.NewScanner(f)
 	for analyzer.Scan() {
 		row := analyzer.Text()
-		options := strings.Split(row, "REDACTED")
-		randomCredentialArray, err := hex.DecodeString(options[0])
+		parameters := strings.Split(row, "REDACTED")
+		arbitraryCredentialArray, err := hex.DecodeString(parameters[0])
 		require.Nil(t, err)
-		randomCredential := new([32]byte)
-		copy((*randomCredential)[:], randomCredentialArray)
-		locationIsMinimum, err := strconv.ParseBool(options[1])
+		arbitraryCredential := new([32]byte)
+		copy((*arbitraryCredential)[:], arbitraryCredentialArray)
+		positionEqualsMinimal, err := strconv.ParseBool(parameters[1])
 		require.Nil(t, err)
-		anticipatedReceiveCredential, err := hex.DecodeString(options[2])
+		anticipatedObtainCredential, err := hex.DecodeString(parameters[2])
 		require.Nil(t, err)
-		anticipatedTransmitCredential, err := hex.DecodeString(options[3])
+		anticipatedTransmitCredential, err := hex.DecodeString(parameters[3])
 		require.Nil(t, err)
 
-		receiveCredential, transmitCredential := deduceCredentials(randomCredential, locationIsMinimum)
-		require.Equal(t, anticipatedReceiveCredential, (*receiveCredential)[:], "REDACTED")
+		obtainCredential, transmitCredential := deduceCredentials(arbitraryCredential, positionEqualsMinimal)
+		require.Equal(t, anticipatedObtainCredential, (*obtainCredential)[:], "REDACTED")
 		require.Equal(t, anticipatedTransmitCredential, (*transmitCredential)[:], "REDACTED")
 	}
 }
 
-func VerifyNullPublickey(t *testing.T) {
-	fooLink, barLink := createObjectDepotLinkCouple()
-	defer fooLink.End()
-	defer barLink.End()
-	fooPrivateKey := ed25519.GeneratePrivateKey()
-	barPrivateKey := privateKeyWithNullPublicKey{ed25519.GeneratePrivateKey()}
+func VerifyVoidPublickey(t *testing.T) {
+	sampleLink, graphLink := createTokvalDepotLinkDuo()
+	defer sampleLink.Shutdown()
+	defer graphLink.Shutdown()
+	samplePrivateToken := edwards25519.ProducePrivateToken()
+	graphPrivateToken := privateTokenUsingVoidPublicToken{edwards25519.ProducePrivateToken()}
 
-	go CreateTokenLinkage(fooLink, fooPrivateKey) //
+	go CreateCredentialLinkage(sampleLink, samplePrivateToken) //
 
-	_, err := CreateTokenLinkage(barLink, barPrivateKey)
+	_, err := CreateCredentialLinkage(graphLink, graphPrivateToken)
 	require.Error(t, err)
 	assert.Equal(t, "REDACTED", err.Error())
 }
 
-func recordMany(t *testing.T, wg *sync.WaitGroup, link io.Writer, txt string, n int) {
+func persistAbundant(t *testing.T, wg *sync.WaitGroup, link io.Writer, txt string, n int) {
 	defer wg.Done()
 	for i := 0; i < n; i++ {
 		_, err := link.Write([]byte(txt))
@@ -282,10 +282,10 @@ func recordMany(t *testing.T, wg *sync.WaitGroup, link io.Writer, txt string, n 
 	}
 }
 
-func readMany(t *testing.T, wg *sync.WaitGroup, link io.Reader, n int) {
-	readFrame := make([]byte, dataMaximumVolume)
+func fetchAbundant(t *testing.T, wg *sync.WaitGroup, link io.Reader, n int) {
+	fetchReserve := make([]byte, dataMaximumExtent)
 	for i := 0; i < n; i++ {
-		_, err := link.Read(readFrame)
+		_, err := link.Read(fetchReserve)
 		assert.NoError(t, err)
 	}
 	wg.Done()
@@ -294,67 +294,67 @@ func readMany(t *testing.T, wg *sync.WaitGroup, link io.Reader, n int) {
 //
 //
 //
-func instantiateValidatedVerifyArrays(t *testing.T) string {
+func generatePrimeVerifyArrays(t *testing.T) string {
 	t.Helper()
 
 	data := "REDACTED"
 	for i := 0; i < 32; i++ {
-		randomCredentialArray := engineseed.Octets(32)
-		randomCredential := new([32]byte)
-		copy((*randomCredential)[:], randomCredentialArray)
-		data += hex.EncodeToString((*randomCredential)[:]) + "REDACTED"
-		locationIsMinimum := engineseed.Bool()
-		data += strconv.FormatBool(locationIsMinimum) + "REDACTED"
-		receiveCredential, transmitCredential := deduceCredentials(randomCredential, locationIsMinimum)
-		data += hex.EncodeToString((*receiveCredential)[:]) + "REDACTED"
+		arbitraryCredentialArray := commitrand.Octets(32)
+		arbitraryCredential := new([32]byte)
+		copy((*arbitraryCredential)[:], arbitraryCredentialArray)
+		data += hex.EncodeToString((*arbitraryCredential)[:]) + "REDACTED"
+		positionEqualsMinimal := commitrand.Flag()
+		data += strconv.FormatBool(positionEqualsMinimal) + "REDACTED"
+		obtainCredential, transmitCredential := deduceCredentials(arbitraryCredential, positionEqualsMinimal)
+		data += hex.EncodeToString((*obtainCredential)[:]) + "REDACTED"
 		data += hex.EncodeToString((*transmitCredential)[:]) + "REDACTED"
 	}
 	return data
 }
 
 //
-func createObjectDepotLinkCouple() (fooLink, barLink objectdepotLink) {
-	barScanner, fooRecorder := io.Pipe()
-	fooScanner, barRecorder := io.Pipe()
-	return objectdepotLink{fooScanner, fooRecorder}, objectdepotLink{barScanner, barRecorder}
+func createTokvalDepotLinkDuo() (sampleLink, graphLink statedepotLink) {
+	graphFetcher, samplePersistor := io.Pipe()
+	sampleFetcher, graphPersistor := io.Pipe()
+	return statedepotLink{sampleFetcher, samplePersistor}, statedepotLink{graphFetcher, graphPersistor}
 }
 
-func createTokenLinkCouple(tb testing.TB) (fooSecurityLink, barSecurityLink *TokenLinkage) {
+func createCredentialLinkDuo(tb testing.TB) (sampleSecondLink, graphSecondLink *CredentialLinkage) {
 	var (
-		fooLink, barLink = createObjectDepotLinkCouple()
-		fooPrivateKey        = ed25519.GeneratePrivateKey()
-		fooPublicKey        = fooPrivateKey.PublicKey()
-		barPrivateKey        = ed25519.GeneratePrivateKey()
-		barPublicKey        = barPrivateKey.PublicKey()
+		sampleLink, graphLink = createTokvalDepotLinkDuo()
+		samplePrivateToken        = edwards25519.ProducePrivateToken()
+		samplePublicToken        = samplePrivateToken.PublicToken()
+		graphPrivateToken        = edwards25519.ProducePrivateToken()
+		graphPublicToken        = graphPrivateToken.PublicToken()
 	)
 
 	//
-	trs, ok := async.Concurrent(
+	trs, ok := asyncronous.Concurrent(
 		func(_ int) (val any, cancel bool, err error) {
-			fooSecurityLink, err = CreateTokenLinkage(fooLink, fooPrivateKey)
+			sampleSecondLink, err = CreateCredentialLinkage(sampleLink, samplePrivateToken)
 			if err != nil {
 				tb.Errorf("REDACTED", err)
 				return nil, true, err
 			}
-			distantPublicOctets := fooSecurityLink.DistantPublicKey()
-			if !distantPublicOctets.Matches(barPublicKey) {
+			distantPublicOctets := sampleSecondLink.DistantPublicToken()
+			if !distantPublicOctets.Matches(graphPublicToken) {
 				err = fmt.Errorf("REDACTED",
-					barPublicKey, fooSecurityLink.DistantPublicKey())
+					graphPublicToken, sampleSecondLink.DistantPublicToken())
 				tb.Error(err)
 				return nil, true, err
 			}
 			return nil, false, nil
 		},
 		func(_ int) (val any, cancel bool, err error) {
-			barSecurityLink, err = CreateTokenLinkage(barLink, barPrivateKey)
-			if barSecurityLink == nil {
+			graphSecondLink, err = CreateCredentialLinkage(graphLink, graphPrivateToken)
+			if graphSecondLink == nil {
 				tb.Errorf("REDACTED", err)
 				return nil, true, err
 			}
-			distantPublicOctets := barSecurityLink.DistantPublicKey()
-			if !distantPublicOctets.Matches(fooPublicKey) {
+			distantPublicOctets := graphSecondLink.DistantPublicToken()
+			if !distantPublicOctets.Matches(samplePublicToken) {
 				err = fmt.Errorf("REDACTED",
-					fooPublicKey, barSecurityLink.DistantPublicKey())
+					samplePublicToken, graphSecondLink.DistantPublicToken())
 				tb.Error(err)
 				return nil, true, err
 			}
@@ -362,36 +362,36 @@ func createTokenLinkCouple(tb testing.TB) (fooSecurityLink, barSecurityLink *Tok
 		},
 	)
 
-	require.Nil(tb, trs.InitialFault())
+	require.Nil(tb, trs.InitialFailure())
 	require.True(tb, ok, "REDACTED")
 
-	return fooSecurityLink, barSecurityLink
+	return sampleSecondLink, graphSecondLink
 }
 
 //
 
-func CriterionRecordCredentialLinkage(b *testing.B) {
+func AssessmentPersistCredentialLinkage(b *testing.B) {
 	b.StopTimer()
 	b.ReportAllocs()
-	fooSecurityLink, barSecurityLink := createTokenLinkCouple(b)
-	arbitraryMessageExtents := []int{
-		dataMaximumVolume / 10,
-		dataMaximumVolume / 3,
-		dataMaximumVolume / 2,
-		dataMaximumVolume,
-		dataMaximumVolume * 3 / 2,
-		dataMaximumVolume * 2,
-		dataMaximumVolume * 7 / 2,
+	sampleSecondLink, graphSecondLink := createCredentialLinkDuo(b)
+	unpredictableSignalExtents := []int{
+		dataMaximumExtent / 10,
+		dataMaximumExtent / 3,
+		dataMaximumExtent / 2,
+		dataMaximumExtent,
+		dataMaximumExtent * 3 / 2,
+		dataMaximumExtent * 2,
+		dataMaximumExtent * 7 / 2,
 	}
-	fooRecordOctets := make([][]byte, 0, len(arbitraryMessageExtents))
-	for _, volume := range arbitraryMessageExtents {
-		fooRecordOctets = append(fooRecordOctets, engineseed.Octets(volume))
+	samplePersistOctets := make([][]byte, 0, len(unpredictableSignalExtents))
+	for _, extent := range unpredictableSignalExtents {
+		samplePersistOctets = append(samplePersistOctets, commitrand.Octets(extent))
 	}
 	//
 	go func() {
-		readFrame := make([]byte, dataMaximumVolume)
+		fetchReserve := make([]byte, dataMaximumExtent)
 		for {
-			_, err := barSecurityLink.Scan(readFrame)
+			_, err := graphSecondLink.Obtain(fetchReserve)
 			if err == io.EOF {
 				return
 			} else if err != nil {
@@ -403,8 +403,8 @@ func CriterionRecordCredentialLinkage(b *testing.B) {
 
 	b.StartTimer()
 	for i := 0; i < b.N; i++ {
-		idx := engineseed.Intn(len(fooRecordOctets))
-		_, err := fooSecurityLink.Record(fooRecordOctets[idx])
+		idx := commitrand.Integern(len(samplePersistOctets))
+		_, err := sampleSecondLink.Record(samplePersistOctets[idx])
 		if err != nil {
 			b.Errorf("REDACTED", err)
 			return
@@ -412,33 +412,33 @@ func CriterionRecordCredentialLinkage(b *testing.B) {
 	}
 	b.StopTimer()
 
-	if err := fooSecurityLink.End(); err != nil {
+	if err := sampleSecondLink.Shutdown(); err != nil {
 		b.Error(err)
 	}
 	//
 }
 
-func CriterionReadCredentialLinkage(b *testing.B) {
+func AssessmentFetchCredentialLinkage(b *testing.B) {
 	b.StopTimer()
 	b.ReportAllocs()
-	fooSecurityLink, barSecurityLink := createTokenLinkCouple(b)
-	arbitraryMessageExtents := []int{
-		dataMaximumVolume / 10,
-		dataMaximumVolume / 3,
-		dataMaximumVolume / 2,
-		dataMaximumVolume,
-		dataMaximumVolume * 3 / 2,
-		dataMaximumVolume * 2,
-		dataMaximumVolume * 7 / 2,
+	sampleSecondLink, graphSecondLink := createCredentialLinkDuo(b)
+	unpredictableSignalExtents := []int{
+		dataMaximumExtent / 10,
+		dataMaximumExtent / 3,
+		dataMaximumExtent / 2,
+		dataMaximumExtent,
+		dataMaximumExtent * 3 / 2,
+		dataMaximumExtent * 2,
+		dataMaximumExtent * 7 / 2,
 	}
-	fooRecordOctets := make([][]byte, 0, len(arbitraryMessageExtents))
-	for _, volume := range arbitraryMessageExtents {
-		fooRecordOctets = append(fooRecordOctets, engineseed.Octets(volume))
+	samplePersistOctets := make([][]byte, 0, len(unpredictableSignalExtents))
+	for _, extent := range unpredictableSignalExtents {
+		samplePersistOctets = append(samplePersistOctets, commitrand.Octets(extent))
 	}
 	go func() {
 		for i := 0; i < b.N; i++ {
-			idx := engineseed.Intn(len(fooRecordOctets))
-			_, err := fooSecurityLink.Record(fooRecordOctets[idx])
+			idx := commitrand.Integern(len(samplePersistOctets))
+			_, err := sampleSecondLink.Record(samplePersistOctets[idx])
 			if err != nil {
 				b.Errorf("REDACTED", err, i, b.N)
 				return
@@ -448,8 +448,8 @@ func CriterionReadCredentialLinkage(b *testing.B) {
 
 	b.StartTimer()
 	for i := 0; i < b.N; i++ {
-		readFrame := make([]byte, dataMaximumVolume)
-		_, err := barSecurityLink.Scan(readFrame)
+		fetchReserve := make([]byte, dataMaximumExtent)
+		_, err := graphSecondLink.Obtain(fetchReserve)
 
 		if err == io.EOF {
 			return

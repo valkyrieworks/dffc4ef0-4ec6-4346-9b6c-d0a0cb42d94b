@@ -4,82 +4,82 @@ import (
 	"fmt"
 	"time"
 
-	engineproto "github.com/valkyrieworks/schema/consensuscore/kinds"
-	"github.com/valkyrieworks/kinds"
+	commitchema "github.com/valkyrieworks/dffc4ef0-4ec6-4346-9b6c-d0a0cb42d94b/schema/strongmind/kinds"
+	"github.com/valkyrieworks/dffc4ef0-4ec6-4346-9b6c-d0a0cb42d94b/kinds"
 )
 
-func CreateEndorseFromBallotCollection(ledgerUID kinds.LedgerUID, ballotCollection *kinds.BallotCollection, ratifiers []kinds.PrivateRatifier, now time.Time) (*kinds.Endorse, error) {
+func CreateEndorseOriginatingBallotAssign(ledgerUUID kinds.LedgerUUID, ballotAssign *kinds.BallotAssign, assessors []kinds.PrivateAssessor, now time.Time) (*kinds.Endorse, error) {
 	//
-	for i := 0; i < len(ratifiers); i++ {
-		publicKey, err := ratifiers[i].FetchPublicKey()
+	for i := 0; i < len(assessors); i++ {
+		publicToken, err := assessors[i].ObtainPublicToken()
 		if err != nil {
 			return nil, err
 		}
 		ballot := &kinds.Ballot{
-			RatifierLocation: publicKey.Location(),
-			RatifierOrdinal:   int32(i),
-			Level:           ballotCollection.FetchLevel(),
-			Cycle:            ballotCollection.FetchDuration(),
-			Kind:             engineproto.PreendorseKind,
-			LedgerUID:          ledgerUID,
+			AssessorLocation: publicToken.Location(),
+			AssessorOrdinal:   int32(i),
+			Altitude:           ballotAssign.ObtainAltitude(),
+			Iteration:            ballotAssign.ObtainIteration(),
+			Kind:             commitchema.PreendorseKind,
+			LedgerUUID:          ledgerUUID,
 			Timestamp:        now,
 		}
 
-		v := ballot.ToSchema()
+		v := ballot.TowardSchema()
 
-		if err := ratifiers[i].AttestBallot(ballotCollection.LedgerUID(), v); err != nil {
+		if err := assessors[i].AttestBallot(ballotAssign.SuccessionUUID(), v); err != nil {
 			return nil, err
 		}
-		ballot.Autograph = v.Autograph
-		if _, err := ballotCollection.AppendBallot(ballot); err != nil {
+		ballot.Notation = v.Notation
+		if _, err := ballotAssign.AppendBallot(ballot); err != nil {
 			return nil, err
 		}
 	}
 
-	return ballotCollection.CreateExpandedEndorse(kinds.IfaceOptions{BallotPluginsActivateLevel: 0}).ToEndorse(), nil
+	return ballotAssign.CreateExpandedEndorse(kinds.IfaceParameters{BallotAdditionsActivateAltitude: 0}).TowardEndorse(), nil
 }
 
-func CreateEndorse(ledgerUID kinds.LedgerUID, level int64, epoch int32, valueCollection *kinds.RatifierAssign, privateValues []kinds.PrivateRatifier, ledgerUID string, now time.Time) (*kinds.Endorse, error) {
-	autographs := make([]kinds.EndorseSignature, len(valueCollection.Ratifiers))
-	for i := 0; i < len(valueCollection.Ratifiers); i++ {
-		autographs[i] = kinds.NewEndorseSignatureMissing()
+func CreateEndorse(ledgerUUID kinds.LedgerUUID, altitude int64, iteration int32, itemAssign *kinds.AssessorAssign, privateItems []kinds.PrivateAssessor, successionUUID string, now time.Time) (*kinds.Endorse, error) {
+	signatures := make([]kinds.EndorseSignature, len(itemAssign.Assessors))
+	for i := 0; i < len(itemAssign.Assessors); i++ {
+		signatures[i] = kinds.FreshEndorseSignatureMissing()
 	}
 
-	for _, privateValue := range privateValues {
-		pk, err := privateValue.FetchPublicKey()
+	for _, privateItem := range privateItems {
+		pk, err := privateItem.ObtainPublicToken()
 		if err != nil {
 			return nil, err
 		}
-		address := pk.Location()
+		location := pk.Location()
 
-		idx, _ := valueCollection.FetchByLocationMut(address)
+		idx, _ := itemAssign.ObtainViaLocationAlterable(location)
 		if idx < 0 {
-			return nil, fmt.Errorf("REDACTED", address)
+			return nil, fmt.Errorf("REDACTED", location)
 		}
 
 		ballot := &kinds.Ballot{
-			RatifierLocation: address,
-			RatifierOrdinal:   idx,
-			Level:           level,
-			Cycle:            epoch,
-			Kind:             engineproto.PreendorseKind,
-			LedgerUID:          ledgerUID,
+			AssessorLocation: location,
+			AssessorOrdinal:   idx,
+			Altitude:           altitude,
+			Iteration:            iteration,
+			Kind:             commitchema.PreendorseKind,
+			LedgerUUID:          ledgerUUID,
 			Timestamp:        now,
 		}
 
-		v := ballot.ToSchema()
+		v := ballot.TowardSchema()
 
-		if err := privateValue.AttestBallot(ledgerUID, v); err != nil {
+		if err := privateItem.AttestBallot(successionUUID, v); err != nil {
 			return nil, err
 		}
 
-		autographs[idx] = kinds.EndorseSignature{
-			LedgerUIDMark:      kinds.LedgerUIDMarkEndorse,
-			RatifierLocation: address,
+		signatures[idx] = kinds.EndorseSignature{
+			LedgerUUIDMarker:      kinds.LedgerUUIDMarkerEndorse,
+			AssessorLocation: location,
 			Timestamp:        now,
-			Autograph:        v.Autograph,
+			Notation:        v.Notation,
 		}
 	}
 
-	return &kinds.Endorse{Level: level, Cycle: epoch, LedgerUID: ledgerUID, Endorsements: autographs}, nil
+	return &kinds.Endorse{Altitude: altitude, Iteration: iteration, LedgerUUID: ledgerUUID, Notations: signatures}, nil
 }

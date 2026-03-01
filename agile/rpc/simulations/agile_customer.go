@@ -1,0 +1,140 @@
+//
+
+package simulations
+
+import (
+	context "context"
+
+	mock "github.com/stretchr/testify/mock"
+
+	time "time"
+
+	kinds "github.com/valkyrieworks/dffc4ef0-4ec6-4346-9b6c-d0a0cb42d94b/kinds"
+)
+
+//
+type AgileCustomer struct {
+	mock.Simulate
+}
+
+//
+func (_m *AgileCustomer) SuccessionUUID() string {
+	ret := _m.Called()
+
+	if len(ret) == 0 {
+		panic("REDACTED")
+	}
+
+	var r0 string
+	if rf, ok := ret.Get(0).(func() string); ok {
+		r0 = rf()
+	} else {
+		r0 = ret.Get(0).(string)
+	}
+
+	return r0
+}
+
+//
+func (_m *AgileCustomer) ReliableAgileLedger(altitude int64) (*kinds.AgileLedger, error) {
+	ret := _m.Called(altitude)
+
+	if len(ret) == 0 {
+		panic("REDACTED")
+	}
+
+	var r0 *kinds.AgileLedger
+	var r1 error
+	if rf, ok := ret.Get(0).(func(int64) (*kinds.AgileLedger, error)); ok {
+		return rf(altitude)
+	}
+	if rf, ok := ret.Get(0).(func(int64) *kinds.AgileLedger); ok {
+		r0 = rf(altitude)
+	} else {
+		if ret.Get(0) != nil {
+			r0 = ret.Get(0).(*kinds.AgileLedger)
+		}
+	}
+
+	if rf, ok := ret.Get(1).(func(int64) error); ok {
+		r1 = rf(altitude)
+	} else {
+		r1 = ret.Error(1)
+	}
+
+	return r0, r1
+}
+
+//
+func (_m *AgileCustomer) Revise(ctx context.Context, now time.Time) (*kinds.AgileLedger, error) {
+	ret := _m.Called(ctx, now)
+
+	if len(ret) == 0 {
+		panic("REDACTED")
+	}
+
+	var r0 *kinds.AgileLedger
+	var r1 error
+	if rf, ok := ret.Get(0).(func(context.Context, time.Time) (*kinds.AgileLedger, error)); ok {
+		return rf(ctx, now)
+	}
+	if rf, ok := ret.Get(0).(func(context.Context, time.Time) *kinds.AgileLedger); ok {
+		r0 = rf(ctx, now)
+	} else {
+		if ret.Get(0) != nil {
+			r0 = ret.Get(0).(*kinds.AgileLedger)
+		}
+	}
+
+	if rf, ok := ret.Get(1).(func(context.Context, time.Time) error); ok {
+		r1 = rf(ctx, now)
+	} else {
+		r1 = ret.Error(1)
+	}
+
+	return r0, r1
+}
+
+//
+func (_m *AgileCustomer) ValidateAgileLedgerLocatedAltitude(ctx context.Context, altitude int64, now time.Time) (*kinds.AgileLedger, error) {
+	ret := _m.Called(ctx, altitude, now)
+
+	if len(ret) == 0 {
+		panic("REDACTED")
+	}
+
+	var r0 *kinds.AgileLedger
+	var r1 error
+	if rf, ok := ret.Get(0).(func(context.Context, int64, time.Time) (*kinds.AgileLedger, error)); ok {
+		return rf(ctx, altitude, now)
+	}
+	if rf, ok := ret.Get(0).(func(context.Context, int64, time.Time) *kinds.AgileLedger); ok {
+		r0 = rf(ctx, altitude, now)
+	} else {
+		if ret.Get(0) != nil {
+			r0 = ret.Get(0).(*kinds.AgileLedger)
+		}
+	}
+
+	if rf, ok := ret.Get(1).(func(context.Context, int64, time.Time) error); ok {
+		r1 = rf(ctx, altitude, now)
+	} else {
+		r1 = ret.Error(1)
+	}
+
+	return r0, r1
+}
+
+//
+//
+func FreshAgileCustomer(t interface {
+	mock.TestingT
+	Sanitize(func())
+}) *AgileCustomer {
+	simulate := &AgileCustomer{}
+	mock.Simulate.Test(t)
+
+	t.Sanitize(func() { mock.AssertExpectations(t) })
+
+	return simulate
+}

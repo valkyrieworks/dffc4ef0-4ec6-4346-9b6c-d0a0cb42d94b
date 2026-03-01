@@ -11,10 +11,10 @@ import (
 //
 type Declaration struct {
 	//
-	IDXIpv6 bool `toml:"ipv6"`
+	IDXPrv6 bool `toml:"inetv6"`
 
 	//
-	PrimaryLevel int64 `toml:"primary_level"`
+	PrimaryAltitude int64 `toml:"primary_altitude"`
 
 	//
 	//
@@ -29,7 +29,7 @@ type Declaration struct {
 	//
 	//
 	//
-	Ratifiers *map[string]int64 `toml:"ratifiers"`
+	Assessors *map[string]int64 `toml:"assessors"`
 
 	//
 	//
@@ -43,14 +43,14 @@ type Declaration struct {
 	//
 	//
 	//
-	RatifierRefreshes map[string]map[string]int64 `toml:"ratifier_modify"`
+	AssessorRevisions map[string]map[string]int64 `toml:"assessor_revise"`
 
 	//
-	Instances map[string]*DeclarationMember `toml:"member"`
+	Peers map[string]*DeclarationPeer `toml:"peer"`
 
 	//
 	//
-	KeyKind string `toml:"key_kind"`
+	TokenKind string `toml:"token_kind"`
 
 	//
 	//
@@ -66,7 +66,7 @@ type Declaration struct {
 	//
 	//
 	//
-	IfaceProtocol string `toml:"iface_protocol"`
+	IfaceScheme string `toml:"iface_scheme"`
 
 	//
 	//
@@ -74,26 +74,26 @@ type Declaration struct {
 	HandleNominationDeferral time.Duration `toml:"handle_nomination_deferral"`
 	InspectTransferDeferral         time.Duration `toml:"inspect_transfer_deferral"`
 	BallotAdditionDeferral   time.Duration `toml:"ballot_addition_deferral"`
-	CompleteLedgerDeferral   time.Duration `toml:"complete_ledger_deferral"`
+	CulminateLedgerDeferral   time.Duration `toml:"culminate_ledger_deferral"`
 
 	//
 	//
-	EnhanceRelease string `toml:"enhance_release"`
+	ModernizeEdition string `toml:"modernize_edition"`
 
-	ImportTransferVolumeOctets   int `toml:"import_transfer_volume_octets"`
-	ImportTransferClusterVolume   int `toml:"import_transfer_cluster_volume"`
-	ImportTransferLinkages int `toml:"import_transfer_linkages"`
-	ImportMaximumTrans        int `toml:"import_maximum_trans"`
-
-	//
-	TraceLayer string `toml:"trace_layer"`
+	FetchTransferExtentOctets   int `toml:"fetch_transfer_extent_octets"`
+	FetchTransferClusterExtent   int `toml:"fetch_transfer_cluster_extent"`
+	FetchTransferLinkages int `toml:"fetch_transfer_linkages"`
+	FetchMaximumTrans        int `toml:"fetch_maximum_trans"`
 
 	//
-	TraceLayout string `toml:"trace_layout"`
+	RecordStratum string `toml:"record_stratum"`
+
+	//
+	RecordLayout string `toml:"record_layout"`
 
 	//
 	//
-	Monitorstats bool `toml:"monitorstats"`
+	Titan bool `toml:"titan"`
 
 	//
 	//
@@ -102,24 +102,24 @@ type Declaration struct {
 	//
 	//
 	//
-	BallotPluginsActivateLevel int64 `toml:"ballot_plugins_activate_level"`
+	BallotAdditionsActivateAltitude int64 `toml:"ballot_additions_activate_altitude"`
 
 	//
 	//
 	//
 	//
-	BallotPluginsModifyLevel int64 `toml:"ballot_plugins_modify_level"`
+	BallotAdditionsReviseAltitude int64 `toml:"ballot_additions_revise_altitude"`
 
 	//
-	BallotAdditionVolume uint `toml:"ballot_addition_volume"`
+	BallotAdditionExtent uint `toml:"ballot_addition_extent"`
 
 	//
-	ExploratoryMaximumGossipLinkagesToDurableNodes    uint `toml:"exploratory_maximum_gossip_linkages_to_durable_nodes"`
-	ExploratoryMaximumGossipLinkagesToNotDurableNodes uint `toml:"exploratory_maximum_gossip_linkages_to_not_durable_nodes"`
+	ExploratoryMaximumBroadcastLinkagesTowardEnduringNodes    uint `toml:"exploratory_maximum_broadcast_linkages_toward_enduring_nodes"`
+	ExploratoryMaximumBroadcastLinkagesTowardUnEnduringNodes uint `toml:"exploratory_maximum_broadcast_linkages_toward_un_enduring_nodes"`
 }
 
 //
-type DeclarationMember struct {
+type DeclarationPeer struct {
 	//
 	//
 	//
@@ -130,7 +130,7 @@ type DeclarationMember struct {
 	//
 	//
 	//
-	Release string `toml:"release"`
+	Edition string `toml:"edition"`
 
 	//
 	Origins []string `toml:"origins"`
@@ -139,40 +139,43 @@ type DeclarationMember struct {
 	//
 	//
 	//
-	DurableNodes []string `toml:"durable_nodes"`
+	EnduringNodes []string `toml:"enduring_nodes"`
 
 	//
 	//
-	Datastore string `toml:"datastore"`
-
-	//
-	//
-	//
-	//
-	PrivatekeyProtocol string `toml:"privatekey_protocol"`
-
-	//
-	//
-	BeginAt int64 `toml:"begin_at"`
-
-	//
-	//
-	LedgerAlignRelease string `toml:"ledger_align_release"`
+	Repository string `toml:"repository"`
 
 	//
 	//
 	//
 	//
-	StatusAlign bool `toml:"status_align"`
+	PrivatevalueScheme string `toml:"privatevalue_scheme"`
+
+	//
+	//
+	InitiateLocated int64 `toml:"initiate_located"`
+
+	//
+	//
+	LedgerChronizeEdition string `toml:"ledger_chronize_edition"`
+
+	//
+	LedgerChronizeAggregateStyle bool `toml:"ledger_chronize_aggregate_style"`
 
 	//
 	//
 	//
-	EndureCadence *uint64 `toml:"endure_cadence"`
+	//
+	StatusChronize bool `toml:"status_chronize"`
 
 	//
 	//
-	MirrorCadence uint64 `toml:"mirror_cadence"`
+	//
+	EndureDuration *uint64 `toml:"endure_duration"`
+
+	//
+	//
+	ImageDuration uint64 `toml:"image_duration"`
 
 	//
 	//
@@ -186,17 +189,17 @@ type DeclarationMember struct {
 	//
 	//
 	//
-	Vary []string `toml:"vary"`
+	Disrupt []string `toml:"disrupt"`
 
 	//
 	//
 	//
-	TransmitNoImport bool `toml:"transmit_no_import"`
+	TransmitNegativeFetch bool `toml:"transmit_negative_fetch"`
 
 	//
 	//
 	//
-	EmployLibp2p bool `toml:"employ_libp2p"`
+	UtilizeLibpeer2peer bool `toml:"utilize_libpeer2peer"`
 
 	//
 	//
@@ -204,20 +207,20 @@ type DeclarationMember struct {
 }
 
 //
-func (m Declaration) Persist(entry string) error {
-	f, err := os.Create(entry)
+func (m Declaration) Persist(record string) error {
+	f, err := os.Create(record)
 	if err != nil {
-		return fmt.Errorf("REDACTED", entry, err)
+		return fmt.Errorf("REDACTED", record, err)
 	}
 	return toml.NewEncoder(f).Encode(m)
 }
 
 //
-func ImportDeclaration(entry string) (Declaration, error) {
+func FetchDeclaration(record string) (Declaration, error) {
 	declaration := Declaration{}
-	_, err := toml.DecodeFile(entry, &declaration)
+	_, err := toml.DecodeFile(record, &declaration)
 	if err != nil {
-		return declaration, fmt.Errorf("REDACTED", entry, err)
+		return declaration, fmt.Errorf("REDACTED", record, err)
 	}
 	return declaration, nil
 }

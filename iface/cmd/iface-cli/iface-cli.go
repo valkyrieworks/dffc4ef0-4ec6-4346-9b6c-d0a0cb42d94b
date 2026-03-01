@@ -1,4 +1,4 @@
-package main
+package primary
 
 import (
 	"bufio"
@@ -11,66 +11,66 @@ import (
 
 	"github.com/spf13/cobra"
 
-	"github.com/valkyrieworks/utils/log"
-	cometos "github.com/valkyrieworks/utils/os"
+	"github.com/valkyrieworks/dffc4ef0-4ec6-4346-9b6c-d0a0cb42d94b/utils/log"
+	strongos "github.com/valkyrieworks/dffc4ef0-4ec6-4346-9b6c-d0a0cb42d94b/utils/os"
 
-	abciend "github.com/valkyrieworks/iface/customer"
-	"github.com/valkyrieworks/iface/instance/objectdepot"
-	"github.com/valkyrieworks/iface/host"
-	hostverify "github.com/valkyrieworks/iface/verifies/host"
-	"github.com/valkyrieworks/iface/kinds"
-	"github.com/valkyrieworks/iface/release"
-	"github.com/valkyrieworks/schema/consensuscore/vault"
+	abcicustomer "github.com/valkyrieworks/dffc4ef0-4ec6-4346-9b6c-d0a0cb42d94b/iface/customer"
+	"github.com/valkyrieworks/dffc4ef0-4ec6-4346-9b6c-d0a0cb42d94b/iface/instance/statedepot"
+	"github.com/valkyrieworks/dffc4ef0-4ec6-4346-9b6c-d0a0cb42d94b/iface/node"
+	daemontest "github.com/valkyrieworks/dffc4ef0-4ec6-4346-9b6c-d0a0cb42d94b/iface/verifies/node"
+	"github.com/valkyrieworks/dffc4ef0-4ec6-4346-9b6c-d0a0cb42d94b/iface/kinds"
+	"github.com/valkyrieworks/dffc4ef0-4ec6-4346-9b6c-d0a0cb42d94b/iface/edition"
+	"github.com/valkyrieworks/dffc4ef0-4ec6-4346-9b6c-d0a0cb42d94b/schema/strongmind/security"
 )
 
 //
 var (
-	customer abciend.Customer
+	customer abcicustomer.Customer
 	tracer log.Tracer
 )
 
 //
 var (
 	//
-	markLocation  string
-	markIface     string
-	markDetailed  bool   //
-	markTraceLayer string //
+	markerLocator  string
+	markerIface     string
+	markerDetailed  bool   //
+	markerRecordStratum string //
 
 	//
-	markRoute   string
-	markLevel int
-	markDemonstrate  bool
+	markerRoute   string
+	markerAltitude int
+	markerValidate  bool
 
 	//
-	markEndure string
+	markerEndure string
 )
 
-var OriginCommand = &cobra.Command{
+var OriginDirective = &cobra.Command{
 	Use:   "REDACTED",
 	Short: "REDACTED",
 	Long:  "REDACTED",
-	PersistentPreRunE: func(cmd *cobra.Command, args []string) error {
+	PersistentPreRunE: func(cmd *cobra.Command, arguments []string) error {
 		switch cmd.Use {
 		case "REDACTED", "REDACTED", "REDACTED":
 			return nil
 		}
 
 		if tracer == nil {
-			permitLayer, err := log.PermitLayer(markTraceLayer)
+			permitStratum, err := log.PermitStratum(markerRecordStratum)
 			if err != nil {
 				return err
 			}
-			tracer = log.NewRefine(log.NewTMTracer(log.NewAlignRecorder(os.Stdout)), permitLayer)
+			tracer = log.FreshRefine(log.FreshTEMPTracer(log.FreshChronizePersistor(os.Stdout)), permitStratum)
 		}
 		if customer == nil {
 			var err error
-			customer, err = abciend.NewCustomer(markLocation, markIface, false)
+			customer, err = abcicustomer.FreshCustomer(markerLocator, markerIface, false)
 			if err != nil {
 				return err
 			}
-			customer.AssignTracer(tracer.With("REDACTED", "REDACTED"))
-			if err := customer.Begin(); err != nil {
+			customer.AssignTracer(tracer.Using("REDACTED", "REDACTED"))
+			if err := customer.Initiate(); err != nil {
 				return err
 			}
 		}
@@ -82,77 +82,77 @@ var OriginCommand = &cobra.Command{
 type reply struct {
 	//
 	Data   []byte
-	Code   uint32
+	Cipher   uint32
 	Details   string
 	Log    string
-	Status int32
+	Condition int32
 
 	Inquire *inquireReply
 }
 
 type inquireReply struct {
 	Key      []byte
-	Item    []byte
-	Level   int64
-	EvidenceActions *vault.EvidenceActions
+	Datum    []byte
+	Altitude   int64
+	AttestationActions *security.AttestationActions
 }
 
 func Perform() error {
-	appendUniversalMarks()
+	appendUniversalSwitches()
 	appendDirectives()
-	return OriginCommand.Execute()
+	return OriginDirective.Execute()
 }
 
-func appendUniversalMarks() {
-	OriginCommand.PersistentFlags().StringVarP(&markLocation,
+func appendUniversalSwitches() {
+	OriginDirective.PersistentFlags().StringVarP(&markerLocator,
 		"REDACTED",
 		"REDACTED",
 		"REDACTED",
 		"REDACTED")
-	OriginCommand.PersistentFlags().StringVarP(&markIface, "REDACTED", "REDACTED", "REDACTED", "REDACTED")
-	OriginCommand.PersistentFlags().BoolVarP(&markDetailed,
+	OriginDirective.PersistentFlags().StringVarP(&markerIface, "REDACTED", "REDACTED", "REDACTED", "REDACTED")
+	OriginDirective.PersistentFlags().BoolVarP(&markerDetailed,
 		"REDACTED",
 		"REDACTED",
 		false,
 		"REDACTED")
-	OriginCommand.PersistentFlags().StringVarP(&markTraceLayer, "REDACTED", "REDACTED", "REDACTED", "REDACTED")
+	OriginDirective.PersistentFlags().StringVarP(&markerRecordStratum, "REDACTED", "REDACTED", "REDACTED", "REDACTED")
 }
 
-func appendInquireMarks() {
-	inquireCommand.PersistentFlags().StringVarP(&markRoute, "REDACTED", "REDACTED", "REDACTED", "REDACTED")
-	inquireCommand.PersistentFlags().IntVarP(&markLevel, "REDACTED", "REDACTED", 0, "REDACTED")
-	inquireCommand.PersistentFlags().BoolVarP(&markDemonstrate,
+func appendInquireSwitches() {
+	inquireDirective.PersistentFlags().StringVarP(&markerRoute, "REDACTED", "REDACTED", "REDACTED", "REDACTED")
+	inquireDirective.PersistentFlags().IntVarP(&markerAltitude, "REDACTED", "REDACTED", 0, "REDACTED")
+	inquireDirective.PersistentFlags().BoolVarP(&markerValidate,
 		"REDACTED",
 		"REDACTED",
 		false,
 		"REDACTED")
 }
 
-func appendObjectDepotMarks() {
-	objectdepotCommand.PersistentFlags().StringVarP(&markEndure, "REDACTED", "REDACTED", "REDACTED", "REDACTED")
+func appendTokvalDepotSwitches() {
+	statedepotDirective.PersistentFlags().StringVarP(&markerEndure, "REDACTED", "REDACTED", "REDACTED", "REDACTED")
 }
 
 func appendDirectives() {
-	OriginCommand.AddCommand(groupCommand)
-	OriginCommand.AddCommand(terminalCommand)
-	OriginCommand.AddCommand(replicateCommand)
-	OriginCommand.AddCommand(detailsCommand)
-	OriginCommand.AddCommand(inspectTransferCommand)
-	OriginCommand.AddCommand(endorseCommand)
-	OriginCommand.AddCommand(releaseCommand)
-	OriginCommand.AddCommand(verifyCommand)
-	OriginCommand.AddCommand(arrangeNominationCommand)
-	OriginCommand.AddCommand(handleNominationCommand)
-	appendInquireMarks()
-	OriginCommand.AddCommand(inquireCommand)
-	OriginCommand.AddCommand(completeLedgerCommand)
+	OriginDirective.AddCommand(clusterDirective)
+	OriginDirective.AddCommand(terminalDirective)
+	OriginDirective.AddCommand(reverberateDirective)
+	OriginDirective.AddCommand(detailsDirective)
+	OriginDirective.AddCommand(inspectTransferDirective)
+	OriginDirective.AddCommand(endorseDirective)
+	OriginDirective.AddCommand(editionDirective)
+	OriginDirective.AddCommand(verifyDirective)
+	OriginDirective.AddCommand(arrangeNominationDirective)
+	OriginDirective.AddCommand(handleNominationDirective)
+	appendInquireSwitches()
+	OriginDirective.AddCommand(inquireDirective)
+	OriginDirective.AddCommand(culminateLedgerDirective)
 
 	//
-	appendObjectDepotMarks()
-	OriginCommand.AddCommand(objectdepotCommand)
+	appendTokvalDepotSwitches()
+	OriginDirective.AddCommand(statedepotDirective)
 }
 
-var groupCommand = &cobra.Command{
+var clusterDirective = &cobra.Command{
 	Use:   "REDACTED",
 	Short: "REDACTED",
 	Long: `REDACTEDn
@@ -172,10 +172,10 @@ REDACTEDf
 REDACTEDo
 REDACTED`,
 	Args: cobra.ExactArgs(0),
-	RunE: commandGroup,
+	RunE: directiveCluster,
 }
 
-var terminalCommand = &cobra.Command{
+var terminalDirective = &cobra.Command{
 	Use:   "REDACTED",
 	Short: "REDACTED",
 	Long: `REDACTEDs
@@ -185,152 +185,152 @@ REDACTEDe
 REDACTED`,
 	Args:      cobra.ExactArgs(0),
 	ValidArgs: []string{"REDACTED", "REDACTED", "REDACTED", "REDACTED", "REDACTED", "REDACTED", "REDACTED", "REDACTED"},
-	RunE:      commandTerminal,
+	RunE:      directiveTerminal,
 }
 
-var replicateCommand = &cobra.Command{
+var reverberateDirective = &cobra.Command{
 	Use:   "REDACTED",
 	Short: "REDACTED",
 	Long:  "REDACTED",
 	Args:  cobra.ExactArgs(1),
-	RunE:  commandReplicate,
+	RunE:  directiveReverberate,
 }
 
-var detailsCommand = &cobra.Command{
+var detailsDirective = &cobra.Command{
 	Use:   "REDACTED",
 	Short: "REDACTED",
 	Long:  "REDACTED",
 	Args:  cobra.ExactArgs(0),
-	RunE:  commandDetails,
+	RunE:  directiveDetails,
 }
 
-var completeLedgerCommand = &cobra.Command{
+var culminateLedgerDirective = &cobra.Command{
 	Use:   "REDACTED",
 	Short: "REDACTED",
 	Long:  "REDACTED",
 	Args:  cobra.MinimumNArgs(1),
-	RunE:  commandCompleteLedger,
+	RunE:  directiveCulminateLedger,
 }
 
-var inspectTransferCommand = &cobra.Command{
+var inspectTransferDirective = &cobra.Command{
 	Use:   "REDACTED",
 	Short: "REDACTED",
 	Long:  "REDACTED",
 	Args:  cobra.ExactArgs(1),
-	RunE:  commandInspectTransfer,
+	RunE:  directiveInspectTransfer,
 }
 
-var endorseCommand = &cobra.Command{
+var endorseDirective = &cobra.Command{
 	Use:   "REDACTED",
 	Short: "REDACTED",
 	Long:  "REDACTED",
 	Args:  cobra.ExactArgs(0),
-	RunE:  commandEndorse,
+	RunE:  directiveEndorse,
 }
 
-var releaseCommand = &cobra.Command{
+var editionDirective = &cobra.Command{
 	Use:   "REDACTED",
 	Short: "REDACTED",
 	Long:  "REDACTED",
 	Args:  cobra.ExactArgs(0),
-	RunE: func(cmd *cobra.Command, args []string) error {
-		fmt.Println(release.Release)
+	RunE: func(cmd *cobra.Command, arguments []string) error {
+		fmt.Println(edition.Edition)
 		return nil
 	},
 }
 
-var arrangeNominationCommand = &cobra.Command{
+var arrangeNominationDirective = &cobra.Command{
 	Use:   "REDACTED",
 	Short: "REDACTED",
 	Long:  "REDACTED",
 	Args:  cobra.MinimumNArgs(0),
-	RunE:  commandArrangeNomination,
+	RunE:  directiveArrangeNomination,
 }
 
-var handleNominationCommand = &cobra.Command{
+var handleNominationDirective = &cobra.Command{
 	Use:   "REDACTED",
 	Short: "REDACTED",
 	Long:  "REDACTED",
 	Args:  cobra.MinimumNArgs(0),
-	RunE:  commandHandleNomination,
+	RunE:  directiveHandleNomination,
 }
 
-var inquireCommand = &cobra.Command{
+var inquireDirective = &cobra.Command{
 	Use:   "REDACTED",
 	Short: "REDACTED",
 	Long:  "REDACTED",
 	Args:  cobra.ExactArgs(1),
-	RunE:  commandInquire,
+	RunE:  directiveInquire,
 }
 
-var objectdepotCommand = &cobra.Command{
+var statedepotDirective = &cobra.Command{
 	Use:   "REDACTED",
 	Short: "REDACTED",
 	Long:  "REDACTED",
 	Args:  cobra.ExactArgs(0),
-	RunE:  commandObjectDepot,
+	RunE:  directiveTokvalDepot,
 }
 
-var verifyCommand = &cobra.Command{
+var verifyDirective = &cobra.Command{
 	Use:   "REDACTED",
 	Short: "REDACTED",
 	Long:  "REDACTED",
 	Args:  cobra.ExactArgs(0),
-	RunE:  commandVerify,
+	RunE:  directiveVerify,
 }
 
 //
-func durableArgs(row []byte) []string {
+func enduringArguments(row []byte) []string {
 	//
 	//
-	args := os.Args
-	args = args[:len(args)-1] //
+	arguments := os.Args
+	arguments = arguments[:len(arguments)-1] //
 
 	if len(row) > 0 { //
-		args = append(args, strings.Split(string(row), "REDACTED")...)
+		arguments = append(arguments, strings.Split(string(row), "REDACTED")...)
 	}
-	return args
+	return arguments
 }
 
 //
 
-func arrange(fs []func() error) error {
+func construct(fs []func() error) error {
 	if len(fs) == 0 {
 		return nil
 	}
 
 	err := fs[0]()
 	if err == nil {
-		return arrange(fs[1:])
+		return construct(fs[1:])
 	}
 
 	return err
 }
 
-func commandVerify(cmd *cobra.Command, _ []string) error {
+func directiveVerify(cmd *cobra.Command, _ []string) error {
 	ctx := cmd.Context()
-	return arrange(
+	return construct(
 		[]func() error{
-			func() error { return hostverify.InitSeries(ctx, customer) },
-			func() error { return hostverify.Endorse(ctx, customer) },
+			func() error { return daemontest.InitializeSuccession(ctx, customer) },
+			func() error { return daemontest.Endorse(ctx, customer) },
 			func() error {
-				return hostverify.CompleteLedger(ctx, customer, [][]byte{
+				return daemontest.CulminateLedger(ctx, customer, [][]byte{
 					[]byte("REDACTED"),
 				}, []uint32{
-					objectdepot.CodeKindCorruptTransferLayout,
+					statedepot.CipherKindUnfitTransferLayout,
 				}, nil, nil)
 			},
-			func() error { return hostverify.Endorse(ctx, customer) },
+			func() error { return daemontest.Endorse(ctx, customer) },
 			func() error {
-				return hostverify.CompleteLedger(ctx, customer, [][]byte{
+				return daemontest.CulminateLedger(ctx, customer, [][]byte{
 					{0x00},
 				}, []uint32{
-					objectdepot.CodeKindSuccess,
+					statedepot.CipherKindOKAY,
 				}, nil, []byte{0, 0, 0, 0, 0, 0, 0, 1})
 			},
-			func() error { return hostverify.Endorse(ctx, customer) },
+			func() error { return daemontest.Endorse(ctx, customer) },
 			func() error {
-				return hostverify.CompleteLedger(ctx, customer, [][]byte{
+				return daemontest.CulminateLedger(ctx, customer, [][]byte{
 					{0x00},
 					{0x01},
 					{0x00, 0x02},
@@ -338,36 +338,36 @@ func commandVerify(cmd *cobra.Command, _ []string) error {
 					{0x00, 0x00, 0x04},
 					{0x00, 0x00, 0x06},
 				}, []uint32{
-					objectdepot.CodeKindCorruptTransferLayout,
-					objectdepot.CodeKindSuccess,
-					objectdepot.CodeKindSuccess,
-					objectdepot.CodeKindSuccess,
-					objectdepot.CodeKindSuccess,
-					objectdepot.CodeKindCorruptTransferLayout,
+					statedepot.CipherKindUnfitTransferLayout,
+					statedepot.CipherKindOKAY,
+					statedepot.CipherKindOKAY,
+					statedepot.CipherKindOKAY,
+					statedepot.CipherKindOKAY,
+					statedepot.CipherKindUnfitTransferLayout,
 				}, nil, []byte{0, 0, 0, 0, 0, 0, 0, 5})
 			},
-			func() error { return hostverify.Endorse(ctx, customer) },
+			func() error { return daemontest.Endorse(ctx, customer) },
 			func() error {
-				return hostverify.ArrangeNomination(ctx, customer, [][]byte{
+				return daemontest.ArrangeNomination(ctx, customer, [][]byte{
 					{0x01},
 				}, [][]byte{{0x01}}, nil)
 			},
 			func() error {
-				return hostverify.HandleNomination(ctx, customer, [][]byte{
+				return daemontest.HandleNomination(ctx, customer, [][]byte{
 					{0x01},
-				}, kinds.Responseprocessnomination_ALLOW)
+				}, kinds.Responseexecuteitem_EMBRACE)
 			},
 		})
 }
 
-func commandGroup(cmd *cobra.Command, _ []string) error {
-	bufferScanner := bufio.NewReader(os.Stdin)
+func directiveCluster(cmd *cobra.Command, _ []string) error {
+	bufferFetcher := bufio.NewReader(os.Stdin)
 Cycle:
 	for {
 
-		row, additional, err := bufferScanner.ReadLine()
+		row, extra, err := bufferFetcher.ReadLine()
 		switch {
-		case additional:
+		case extra:
 			return errors.New("REDACTED")
 		case err == io.EOF:
 			break Cycle
@@ -377,8 +377,8 @@ Cycle:
 			return err
 		}
 
-		commandArgs := durableArgs(row)
-		if err := multiplexerOnDirectives(cmd, commandArgs); err != nil {
+		directiveArguments := enduringArguments(row)
+		if err := multiplexerUponDirectives(cmd, directiveArguments); err != nil {
 			return err
 		}
 		fmt.Println()
@@ -386,33 +386,33 @@ Cycle:
 	return nil
 }
 
-func commandTerminal(cmd *cobra.Command, _ []string) error {
+func directiveTerminal(cmd *cobra.Command, _ []string) error {
 	for {
 		fmt.Printf("REDACTED")
-		bufferScanner := bufio.NewReader(os.Stdin)
-		row, additional, err := bufferScanner.ReadLine()
-		if additional {
+		bufferFetcher := bufio.NewReader(os.Stdin)
+		row, extra, err := bufferFetcher.ReadLine()
+		if extra {
 			return errors.New("REDACTED")
 		} else if err != nil {
 			return err
 		}
 
-		pArgs := durableArgs(row)
-		if err := multiplexerOnDirectives(cmd, pArgs); err != nil {
+		paramArguments := enduringArguments(row)
+		if err := multiplexerUponDirectives(cmd, paramArguments); err != nil {
 			return err
 		}
 	}
 }
 
-func multiplexerOnDirectives(cmd *cobra.Command, pArgs []string) error {
-	if len(pArgs) < 2 {
+func multiplexerUponDirectives(cmd *cobra.Command, paramArguments []string) error {
+	if len(paramArguments) < 2 {
 		return errors.New("REDACTED")
 	}
 
 	//
-	args := []string{}
-	for i := 0; i < len(pArgs); i++ {
-		arg := pArgs[i]
+	arguments := []string{}
+	for i := 0; i < len(paramArguments); i++ {
+		arg := paramArguments[i]
 
 		//
 		if strings.HasPrefix(arg, "REDACTED") {
@@ -432,60 +432,60 @@ func multiplexerOnDirectives(cmd *cobra.Command, pArgs []string) error {
 		}
 
 		//
-		args = append(args, arg)
+		arguments = append(arguments, arg)
 	}
-	var subtractDirective string
-	var factualArgs []string
-	if len(args) > 1 {
-		subtractDirective = args[1]
+	var underDirective string
+	var preciseArguments []string
+	if len(arguments) > 1 {
+		underDirective = arguments[1]
 	}
-	if len(args) > 2 {
-		factualArgs = args[2:]
+	if len(arguments) > 2 {
+		preciseArguments = arguments[2:]
 	}
-	cmd.Use = subtractDirective //
+	cmd.Use = underDirective //
 
-	switch strings.ToLower(subtractDirective) {
+	switch strings.ToLower(underDirective) {
 	case "REDACTED":
-		return commandInspectTransfer(cmd, factualArgs)
+		return directiveInspectTransfer(cmd, preciseArguments)
 	case "REDACTED":
-		return commandEndorse(cmd, factualArgs)
+		return directiveEndorse(cmd, preciseArguments)
 	case "REDACTED":
-		return commandCompleteLedger(cmd, factualArgs)
+		return directiveCulminateLedger(cmd, preciseArguments)
 	case "REDACTED":
-		return commandReplicate(cmd, factualArgs)
+		return directiveReverberate(cmd, preciseArguments)
 	case "REDACTED":
-		return commandDetails(cmd, factualArgs)
+		return directiveDetails(cmd, preciseArguments)
 	case "REDACTED":
-		return commandInquire(cmd, factualArgs)
+		return directiveInquire(cmd, preciseArguments)
 	case "REDACTED":
-		return commandArrangeNomination(cmd, factualArgs)
+		return directiveArrangeNomination(cmd, preciseArguments)
 	case "REDACTED":
-		return commandHandleNomination(cmd, factualArgs)
+		return directiveHandleNomination(cmd, preciseArguments)
 	default:
-		return commandUnexecuted(cmd, pArgs)
+		return directiveUndeveloped(cmd, paramArguments)
 	}
 }
 
-func commandUnexecuted(cmd *cobra.Command, args []string) error {
+func directiveUndeveloped(cmd *cobra.Command, arguments []string) error {
 	msg := "REDACTED"
 
-	if len(args) > 0 {
-		msg += fmt.Sprintf("REDACTED", strings.Join(args, "REDACTED"))
+	if len(arguments) > 0 {
+		msg += fmt.Sprintf("REDACTED", strings.Join(arguments, "REDACTED"))
 	}
-	renderReply(cmd, args, reply{
-		Code: codeFlawed,
+	renderReply(cmd, arguments, reply{
+		Cipher: cipherFlawed,
 		Log:  msg,
 	})
 
 	fmt.Println("REDACTED")
-	fmt.Printf("REDACTED", replicateCommand.Use, replicateCommand.Short)
-	fmt.Printf("REDACTED", inspectTransferCommand.Use, inspectTransferCommand.Short)
-	fmt.Printf("REDACTED", endorseCommand.Use, endorseCommand.Short)
-	fmt.Printf("REDACTED", completeLedgerCommand.Use, completeLedgerCommand.Short)
-	fmt.Printf("REDACTED", detailsCommand.Use, detailsCommand.Short)
-	fmt.Printf("REDACTED", inquireCommand.Use, inquireCommand.Short)
-	fmt.Printf("REDACTED", arrangeNominationCommand.Use, arrangeNominationCommand.Short)
-	fmt.Printf("REDACTED", handleNominationCommand.Use, handleNominationCommand.Short)
+	fmt.Printf("REDACTED", reverberateDirective.Use, reverberateDirective.Short)
+	fmt.Printf("REDACTED", inspectTransferDirective.Use, inspectTransferDirective.Short)
+	fmt.Printf("REDACTED", endorseDirective.Use, endorseDirective.Short)
+	fmt.Printf("REDACTED", culminateLedgerDirective.Use, culminateLedgerDirective.Short)
+	fmt.Printf("REDACTED", detailsDirective.Use, detailsDirective.Short)
+	fmt.Printf("REDACTED", inquireDirective.Use, inquireDirective.Short)
+	fmt.Printf("REDACTED", arrangeNominationDirective.Use, arrangeNominationDirective.Short)
+	fmt.Printf("REDACTED", handleNominationDirective.Use, handleNominationDirective.Short)
 
 	fmt.Println("REDACTED")
 
@@ -493,17 +493,17 @@ func commandUnexecuted(cmd *cobra.Command, args []string) error {
 }
 
 //
-func commandReplicate(cmd *cobra.Command, args []string) error {
+func directiveReverberate(cmd *cobra.Command, arguments []string) error {
 	msg := "REDACTED"
-	if len(args) > 0 {
-		msg = args[0]
+	if len(arguments) > 0 {
+		msg = arguments[0]
 	}
-	res, err := customer.Replicate(cmd.Context(), msg)
+	res, err := customer.Reverberate(cmd.Context(), msg)
 	if err != nil {
 		return err
 	}
 
-	renderReply(cmd, args, reply{
+	renderReply(cmd, arguments, reply{
 		Data: []byte(res.Signal),
 	})
 
@@ -511,79 +511,79 @@ func commandReplicate(cmd *cobra.Command, args []string) error {
 }
 
 //
-func commandDetails(cmd *cobra.Command, args []string) error {
-	var release string
-	if len(args) == 1 {
-		release = args[0]
+func directiveDetails(cmd *cobra.Command, arguments []string) error {
+	var edition string
+	if len(arguments) == 1 {
+		edition = arguments[0]
 	}
-	res, err := customer.Details(cmd.Context(), &kinds.QueryDetails{Release: release})
+	res, err := customer.Details(cmd.Context(), &kinds.SolicitDetails{Edition: edition})
 	if err != nil {
 		return err
 	}
-	renderReply(cmd, args, reply{
+	renderReply(cmd, arguments, reply{
 		Data: []byte(res.Data),
 	})
 	return nil
 }
 
-const codeFlawed uint32 = 10
+const cipherFlawed uint32 = 10
 
 //
-func commandCompleteLedger(cmd *cobra.Command, args []string) error {
-	if len(args) == 0 {
-		renderReply(cmd, args, reply{
-			Code: codeFlawed,
+func directiveCulminateLedger(cmd *cobra.Command, arguments []string) error {
+	if len(arguments) == 0 {
+		renderReply(cmd, arguments, reply{
+			Cipher: cipherFlawed,
 			Log:  "REDACTED",
 		})
 		return nil
 	}
-	txs := make([][]byte, len(args))
-	for i, arg := range args {
-		transferOctets, err := stringOrHexToOctets(arg)
+	txs := make([][]byte, len(arguments))
+	for i, arg := range arguments {
+		transferOctets, err := textEitherHexadecimalTowardOctets(arg)
 		if err != nil {
 			return err
 		}
 		txs[i] = transferOctets
 	}
-	res, err := customer.CompleteLedger(cmd.Context(), &kinds.QueryCompleteLedger{Txs: txs})
+	res, err := customer.CulminateLedger(cmd.Context(), &kinds.SolicitCulminateLedger{Txs: txs})
 	if err != nil {
 		return err
 	}
-	replies := make([]reply, 0, len(res.TransOutcomes)+1)
-	for _, tx := range res.TransOutcomes {
+	replies := make([]reply, 0, len(res.TransferOutcomes)+1)
+	for _, tx := range res.TransferOutcomes {
 		replies = append(replies, reply{
-			Code: tx.Code,
+			Cipher: tx.Cipher,
 			Data: tx.Data,
 			Details: tx.Details,
 			Log:  tx.Log,
 		})
 	}
 	replies = append(replies, reply{
-		Data: res.ApplicationDigest,
+		Data: res.PlatformDigest,
 	})
-	renderReply(cmd, args, replies...)
+	renderReply(cmd, arguments, replies...)
 	return nil
 }
 
 //
-func commandInspectTransfer(cmd *cobra.Command, args []string) error {
-	if len(args) == 0 {
-		renderReply(cmd, args, reply{
-			Code: codeFlawed,
+func directiveInspectTransfer(cmd *cobra.Command, arguments []string) error {
+	if len(arguments) == 0 {
+		renderReply(cmd, arguments, reply{
+			Cipher: cipherFlawed,
 			Details: "REDACTED",
 		})
 		return nil
 	}
-	transferOctets, err := stringOrHexToOctets(args[0])
+	transferOctets, err := textEitherHexadecimalTowardOctets(arguments[0])
 	if err != nil {
 		return err
 	}
-	res, err := customer.InspectTransfer(cmd.Context(), &kinds.QueryInspectTransfer{Tx: transferOctets})
+	res, err := customer.InspectTransfer(cmd.Context(), &kinds.SolicitInspectTransfer{Tx: transferOctets})
 	if err != nil {
 		return err
 	}
-	renderReply(cmd, args, reply{
-		Code: res.Code,
+	renderReply(cmd, arguments, reply{
+		Cipher: res.Cipher,
 		Data: res.Data,
 		Details: res.Details,
 		Log:  res.Log,
@@ -592,66 +592,66 @@ func commandInspectTransfer(cmd *cobra.Command, args []string) error {
 }
 
 //
-func commandEndorse(cmd *cobra.Command, args []string) error {
-	_, err := customer.Endorse(cmd.Context(), &kinds.QueryEndorse{})
+func directiveEndorse(cmd *cobra.Command, arguments []string) error {
+	_, err := customer.Endorse(cmd.Context(), &kinds.SolicitEndorse{})
 	if err != nil {
 		return err
 	}
-	renderReply(cmd, args, reply{})
+	renderReply(cmd, arguments, reply{})
 	return nil
 }
 
 //
-func commandInquire(cmd *cobra.Command, args []string) error {
-	if len(args) == 0 {
-		renderReply(cmd, args, reply{
-			Code: codeFlawed,
+func directiveInquire(cmd *cobra.Command, arguments []string) error {
+	if len(arguments) == 0 {
+		renderReply(cmd, arguments, reply{
+			Cipher: cipherFlawed,
 			Details: "REDACTED",
 			Log:  "REDACTED",
 		})
 		return nil
 	}
-	inquireOctets, err := stringOrHexToOctets(args[0])
+	inquireOctets, err := textEitherHexadecimalTowardOctets(arguments[0])
 	if err != nil {
 		return err
 	}
 
-	outcomeInquire, err := customer.Inquire(cmd.Context(), &kinds.QueryInquire{
+	outcomeInquire, err := customer.Inquire(cmd.Context(), &kinds.SolicitInquire{
 		Data:   inquireOctets,
-		Route:   markRoute,
-		Level: int64(markLevel),
-		Demonstrate:  markDemonstrate,
+		Route:   markerRoute,
+		Altitude: int64(markerAltitude),
+		Validate:  markerValidate,
 	})
 	if err != nil {
 		return err
 	}
-	renderReply(cmd, args, reply{
-		Code: outcomeInquire.Code,
+	renderReply(cmd, arguments, reply{
+		Cipher: outcomeInquire.Cipher,
 		Details: outcomeInquire.Details,
 		Log:  outcomeInquire.Log,
 		Inquire: &inquireReply{
 			Key:      outcomeInquire.Key,
-			Item:    outcomeInquire.Item,
-			Level:   outcomeInquire.Level,
-			EvidenceActions: outcomeInquire.EvidenceActions,
+			Datum:    outcomeInquire.Datum,
+			Altitude:   outcomeInquire.Altitude,
+			AttestationActions: outcomeInquire.AttestationActions,
 		},
 	})
 	return nil
 }
 
-func commandArrangeNomination(cmd *cobra.Command, args []string) error {
-	transOctetsList := make([][]byte, len(args))
+func directiveArrangeNomination(cmd *cobra.Command, arguments []string) error {
+	transOctetsSeries := make([][]byte, len(arguments))
 
-	for i, arg := range args {
-		transferOctets, err := stringOrHexToOctets(arg)
+	for i, arg := range arguments {
+		transferOctets, err := textEitherHexadecimalTowardOctets(arg)
 		if err != nil {
 			return err
 		}
-		transOctetsList[i] = transferOctets
+		transOctetsSeries[i] = transferOctets
 	}
 
-	res, err := customer.ArrangeNomination(cmd.Context(), &kinds.QueryArrangeNomination{
-		Txs: transOctetsList,
+	res, err := customer.ArrangeNomination(cmd.Context(), &kinds.SolicitArrangeNomination{
+		Txs: transOctetsSeries,
 		//
 		MaximumTransferOctets: 65536,
 	})
@@ -661,68 +661,68 @@ func commandArrangeNomination(cmd *cobra.Command, args []string) error {
 	replies := make([]reply, 0, len(res.Txs))
 	for _, tx := range res.Txs {
 		replies = append(replies, reply{
-			Code: 0, //
+			Cipher: 0, //
 			Log:  "REDACTED" + string(tx),
 		})
 	}
 
-	renderReply(cmd, args, replies...)
+	renderReply(cmd, arguments, replies...)
 	return nil
 }
 
-func commandHandleNomination(cmd *cobra.Command, args []string) error {
-	transOctetsList := make([][]byte, len(args))
+func directiveHandleNomination(cmd *cobra.Command, arguments []string) error {
+	transOctetsSeries := make([][]byte, len(arguments))
 
-	for i, arg := range args {
-		transferOctets, err := stringOrHexToOctets(arg)
+	for i, arg := range arguments {
+		transferOctets, err := textEitherHexadecimalTowardOctets(arg)
 		if err != nil {
 			return err
 		}
-		transOctetsList[i] = transferOctets
+		transOctetsSeries[i] = transferOctets
 	}
 
-	res, err := customer.HandleNomination(cmd.Context(), &kinds.QueryHandleNomination{
-		Txs: transOctetsList,
+	res, err := customer.HandleNomination(cmd.Context(), &kinds.SolicitHandleNomination{
+		Txs: transOctetsSeries,
 	})
 	if err != nil {
 		return err
 	}
 
-	renderReply(cmd, args, reply{
-		Status: int32(res.Status),
+	renderReply(cmd, arguments, reply{
+		Condition: int32(res.Condition),
 	})
 	return nil
 }
 
-func commandObjectDepot(*cobra.Command, []string) error {
-	tracer := log.NewTMTracer(log.NewAlignRecorder(os.Stdout))
+func directiveTokvalDepot(*cobra.Command, []string) error {
+	tracer := log.FreshTEMPTracer(log.FreshChronizePersistor(os.Stdout))
 
 	//
-	var app kinds.Software
-	if markEndure == "REDACTED" {
+	var app kinds.Platform
+	if markerEndure == "REDACTED" {
 		var err error
-		markEndure, err = os.MkdirTemp("REDACTED", "REDACTED")
+		markerEndure, err = os.MkdirTemp("REDACTED", "REDACTED")
 		if err != nil {
 			return err
 		}
 	}
-	app = objectdepot.NewDurableSoftware(markEndure)
+	app = statedepot.FreshEnduringPlatform(markerEndure)
 
 	//
-	srv, err := host.NewHost(markLocation, markIface, app)
+	srv, err := node.FreshDaemon(markerLocator, markerIface, app)
 	if err != nil {
 		return err
 	}
-	srv.AssignTracer(tracer.With("REDACTED", "REDACTED"))
-	if err := srv.Begin(); err != nil {
+	srv.AssignTracer(tracer.Using("REDACTED", "REDACTED"))
+	if err := srv.Initiate(); err != nil {
 		return err
 	}
 
 	//
-	cometos.InterceptAlert(tracer, func() {
+	strongos.EnsnareGesture(tracer, func() {
 		//
 		if err := srv.Halt(); err != nil {
-			tracer.Fault("REDACTED", "REDACTED", err)
+			tracer.Failure("REDACTED", "REDACTED", err)
 		}
 	})
 
@@ -732,17 +732,17 @@ func commandObjectDepot(*cobra.Command, []string) error {
 
 //
 
-func renderReply(cmd *cobra.Command, args []string, rsps ...reply) {
-	if markDetailed {
-		fmt.Println("REDACTED", cmd.Use, strings.Join(args, "REDACTED"))
+func renderReply(cmd *cobra.Command, arguments []string, replays ...reply) {
+	if markerDetailed {
+		fmt.Println("REDACTED", cmd.Use, strings.Join(arguments, "REDACTED"))
 	}
 
-	for _, rsp := range rsps {
+	for _, rsp := range replays {
 		//
-		if rsp.Code == kinds.CodeKindSuccess {
+		if rsp.Cipher == kinds.CipherKindOKAY {
 			fmt.Printf("REDACTED")
 		} else {
-			fmt.Printf("REDACTED", rsp.Code)
+			fmt.Printf("REDACTED", rsp.Cipher)
 		}
 
 		if len(rsp.Data) != 0 {
@@ -757,28 +757,28 @@ func renderReply(cmd *cobra.Command, args []string, rsps ...reply) {
 			fmt.Printf("REDACTED", rsp.Log)
 		}
 		if cmd.Use == "REDACTED" {
-			fmt.Printf("REDACTED", kinds.Responseprocessnomination_Nominationstate_label[rsp.Status])
+			fmt.Printf("REDACTED", kinds.Responseexecuteitem_Itemstatus_alias[rsp.Condition])
 		}
 
 		if rsp.Inquire != nil {
-			fmt.Printf("REDACTED", rsp.Inquire.Level)
+			fmt.Printf("REDACTED", rsp.Inquire.Altitude)
 			if rsp.Inquire.Key != nil {
 				fmt.Printf("REDACTED", rsp.Inquire.Key)
 				fmt.Printf("REDACTED", rsp.Inquire.Key)
 			}
-			if rsp.Inquire.Item != nil {
-				fmt.Printf("REDACTED", rsp.Inquire.Item)
-				fmt.Printf("REDACTED", rsp.Inquire.Item)
+			if rsp.Inquire.Datum != nil {
+				fmt.Printf("REDACTED", rsp.Inquire.Datum)
+				fmt.Printf("REDACTED", rsp.Inquire.Datum)
 			}
-			if rsp.Inquire.EvidenceActions != nil {
-				fmt.Printf("REDACTED", rsp.Inquire.EvidenceActions)
+			if rsp.Inquire.AttestationActions != nil {
+				fmt.Printf("REDACTED", rsp.Inquire.AttestationActions)
 			}
 		}
 	}
 }
 
 //
-func stringOrHexToOctets(s string) ([]byte, error) {
+func textEitherHexadecimalTowardOctets(s string) ([]byte, error) {
 	if len(s) > 2 && strings.ToLower(s[:2]) == "REDACTED" {
 		b, err := hex.DecodeString(s[2:])
 		if err != nil {

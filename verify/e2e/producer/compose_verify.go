@@ -10,7 +10,7 @@ import (
 
 	"github.com/stretchr/testify/require"
 
-	e2e "github.com/valkyrieworks/verify/e2e/pkg"
+	e2e "github.com/valkyrieworks/dffc4ef0-4ec6-4346-9b6c-d0a0cb42d94b/verify/e2e/pkg"
 )
 
 //

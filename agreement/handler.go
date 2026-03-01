@@ -7,95 +7,95 @@ import (
 	"sync/atomic"
 	"time"
 
-	cometfaults "github.com/valkyrieworks/kinds/faults"
+	strongminderrors "github.com/valkyrieworks/dffc4ef0-4ec6-4346-9b6c-d0a0cb42d94b/kinds/faults"
 
-	cskinds "github.com/valkyrieworks/agreement/kinds"
-	"github.com/valkyrieworks/utils/bits"
-	cometsignals "github.com/valkyrieworks/utils/events"
-	cometjson "github.com/valkyrieworks/utils/json"
-	"github.com/valkyrieworks/utils/log"
-	engineconnect "github.com/valkyrieworks/utils/align"
-	"github.com/valkyrieworks/p2p"
-	cometconnect "github.com/valkyrieworks/schema/consensuscore/agreement"
-	engineproto "github.com/valkyrieworks/schema/consensuscore/kinds"
-	sm "github.com/valkyrieworks/status"
-	"github.com/valkyrieworks/kinds"
-	engineclock "github.com/valkyrieworks/kinds/moment"
+	controlkinds "github.com/valkyrieworks/dffc4ef0-4ec6-4346-9b6c-d0a0cb42d94b/agreement/kinds"
+	"github.com/valkyrieworks/dffc4ef0-4ec6-4346-9b6c-d0a0cb42d94b/utils/digits"
+	strongmindincidents "github.com/valkyrieworks/dffc4ef0-4ec6-4346-9b6c-d0a0cb42d94b/utils/incidents"
+	strongmindjson "github.com/valkyrieworks/dffc4ef0-4ec6-4346-9b6c-d0a0cb42d94b/utils/jsn"
+	"github.com/valkyrieworks/dffc4ef0-4ec6-4346-9b6c-d0a0cb42d94b/utils/log"
+	commitchronize "github.com/valkyrieworks/dffc4ef0-4ec6-4346-9b6c-d0a0cb42d94b/utils/chronize"
+	"github.com/valkyrieworks/dffc4ef0-4ec6-4346-9b6c-d0a0cb42d94b/p2p"
+	strongmindcons "github.com/valkyrieworks/dffc4ef0-4ec6-4346-9b6c-d0a0cb42d94b/schema/strongmind/agreement"
+	commitchema "github.com/valkyrieworks/dffc4ef0-4ec6-4346-9b6c-d0a0cb42d94b/schema/strongmind/kinds"
+	sm "github.com/valkyrieworks/dffc4ef0-4ec6-4346-9b6c-d0a0cb42d94b/status"
+	"github.com/valkyrieworks/dffc4ef0-4ec6-4346-9b6c-d0a0cb42d94b/kinds"
+	committime "github.com/valkyrieworks/dffc4ef0-4ec6-4346-9b6c-d0a0cb42d94b/kinds/moment"
 )
 
 const (
-	StatusStream       = byte(0x20)
-	DataStream        = byte(0x21)
-	BallotStream        = byte(0x22)
-	BallotAssignBitsStream = byte(0x23)
+	StatusConduit       = byte(0x20)
+	DataConduit        = byte(0x21)
+	BallotConduit        = byte(0x22)
+	BallotAssignDigitsConduit = byte(0x23)
 
-	maximumMessageVolume = 1048576 //
+	maximumSignalExtent = 1048576 //
 
-	ledgersToInputToTransformSoundNode = 10000
-	ballotsToInputToTransformSoundNode  = 10000
+	ledgersTowardInputTowardTransformValidNode = 10000
+	ballotsTowardInputTowardTransformValidNode  = 10000
 )
 
 //
 
 //
 type Handler struct {
-	p2p.RootHandler //
+	p2p.FoundationHandler //
 
-	connectS *Status
+	connectionSTR *Status
 
-	waitAlign atomic.Bool
-	eventBus *kinds.EventBus
+	awaitChronize atomic.Bool
+	incidentChannel *kinds.IncidentChannel
 
-	rsMutex         engineconnect.ReadwriteLock
-	rs            cskinds.DurationStatus //
-	primaryLevel atomic.Int64
+	resultsMutex         commitchronize.ReadwriteExclusion
+	rs            controlkinds.IterationStatus //
+	primaryAltitude atomic.Int64
 
-	agreementOptions atomic.Pointer[kinds.AgreementOptions] //
+	agreementParameters atomic.Pointer[kinds.AgreementSettings] //
 
-	Stats *Stats
+	Telemetry *Telemetry
 }
 
-type HandlerSetting func(*Handler)
+type HandlerSelection func(*Handler)
 
 //
-func NewHandler(agreementStatus *Status, waitAlign bool, options ...HandlerSetting) *Handler {
-	connectReader := &Handler{
-		connectS:          agreementStatus,
-		waitAlign:      atomic.Bool{},
-		rs:            agreementStatus.fetchDurationStatus(),
-		primaryLevel: atomic.Int64{},
-		Stats:       NoopStats(),
+func FreshHandler(agreementStatus *Status, awaitChronize bool, choices ...HandlerSelection) *Handler {
+	connectionReader := &Handler{
+		connectionSTR:          agreementStatus,
+		awaitChronize:      atomic.Bool{},
+		rs:            agreementStatus.obtainIterationStatus(),
+		primaryAltitude: atomic.Int64{},
+		Telemetry:       NooperationTelemetry(),
 	}
 	//
-	options := agreementStatus.status.AgreementOptions
-	connectReader.agreementOptions.Store(&options)
-	connectReader.primaryLevel.Store(agreementStatus.status.PrimaryLevel)
-	connectReader.RootHandler = *p2p.NewRootHandler("REDACTED", connectReader)
-	if waitAlign {
-		connectReader.waitAlign.Store(true)
+	parameters := agreementStatus.status.AgreementSettings
+	connectionReader.agreementParameters.Store(&parameters)
+	connectionReader.primaryAltitude.Store(agreementStatus.status.PrimaryAltitude)
+	connectionReader.FoundationHandler = *p2p.FreshFoundationHandler("REDACTED", connectionReader)
+	if awaitChronize {
+		connectionReader.awaitChronize.Store(true)
 	}
 
-	for _, setting := range options {
-		setting(connectReader)
+	for _, selection := range choices {
+		selection(connectionReader)
 	}
 
-	return connectReader
+	return connectionReader
 }
 
 //
 //
-func (connectReader *Handler) OnBegin() error {
-	if connectReader.WaitAlign() {
-		connectReader.Tracer.Details("REDACTED")
+func (connectionReader *Handler) UponInitiate() error {
+	if connectionReader.AwaitChronize() {
+		connectionReader.Tracer.Details("REDACTED")
 	}
 
 	//
-	go connectReader.nodeMetricsProcess()
+	go connectionReader.nodeMetricsProcedure()
 
-	connectReader.enrollToMulticastEvents()
+	connectionReader.listenTowardMulticastIncidents()
 
-	if !connectReader.WaitAlign() {
-		err := connectReader.connectS.Begin()
+	if !connectionReader.AwaitChronize() {
+		err := connectionReader.connectionSTR.Initiate()
 		if err != nil {
 			return err
 		}
@@ -106,128 +106,128 @@ func (connectReader *Handler) OnBegin() error {
 
 //
 //
-func (connectReader *Handler) OnHalt() {
-	connectReader.cancelFromMulticastEvents()
-	if err := connectReader.connectS.Halt(); err != nil {
-		connectReader.Tracer.Fault("REDACTED", "REDACTED", err)
+func (connectionReader *Handler) UponHalt() {
+	connectionReader.cancelOriginatingMulticastIncidents()
+	if err := connectionReader.connectionSTR.Halt(); err != nil {
+		connectionReader.Tracer.Failure("REDACTED", "REDACTED", err)
 	}
-	if !connectReader.WaitAlign() {
-		connectReader.connectS.Wait()
+	if !connectionReader.AwaitChronize() {
+		connectionReader.connectionSTR.Await()
 	}
 }
 
 //
 //
-func (connectReader *Handler) RouterToAgreement(status sm.Status, omitJournal bool) {
-	connectReader.Tracer.Details("REDACTED")
+func (connectionReader *Handler) RouterTowardAgreement(status sm.Status, omitJournal bool) {
+	connectionReader.Tracer.Details("REDACTED")
 
 	//
 	func() {
 		//
-		connectReader.connectS.mtx.Lock()
-		defer connectReader.connectS.mtx.Unlock()
+		connectionReader.connectionSTR.mtx.Lock()
+		defer connectionReader.connectionSTR.mtx.Unlock()
 		//
-		if status.FinalLedgerLevel > 0 {
-			connectReader.connectS.reassembleFinalEndorse(status)
+		if status.FinalLedgerAltitude > 0 {
+			connectionReader.connectionSTR.rebuildFinalEndorse(status)
 		}
 
 		//
 		//
-		connectReader.connectS.modifyToStatus(status)
+		connectionReader.connectionSTR.reviseTowardStatus(status)
 	}()
 
 	//
-	connectReader.waitAlign.Store(false)
+	connectionReader.awaitChronize.Store(false)
 
 	if omitJournal {
-		connectReader.connectS.executeJournalOvertake = false
+		connectionReader.connectionSTR.performJournalOvertake = false
 	}
 
 	//
-	err := connectReader.connectS.Begin()
+	err := connectionReader.connectionSTR.Initiate()
 	if err != nil {
 		panic(fmt.Sprintf(`REDACTEDv
 
 REDACTED:
-REDACTED
+REDACTEDv
 
 REDACTED:
-REDACTED`, err, connectReader.connectS, connectReader))
+REDACTED`, err, connectionReader.connectionSTR, connectionReader))
 	}
 }
 
 //
-func (connectReader *Handler) FetchStreams() []*p2p.StreamDefinition {
+func (connectionReader *Handler) ObtainConduits() []*p2p.ConduitDefinition {
 	//
-	return []*p2p.StreamDefinition{
+	return []*p2p.ConduitDefinition{
 		{
-			ID:                  StatusStream,
+			ID:                  StatusConduit,
 			Urgency:            6,
-			TransmitBufferVolume:   100,
-			AcceptSignalVolume: maximumMessageVolume,
-			SignalKind:         &cometconnect.Signal{},
+			TransmitStagingVolume:   100,
+			ObtainSignalVolume: maximumSignalExtent,
+			SignalKind:         &strongmindcons.Signal{},
 		},
 		{
-			ID: DataStream, //
+			ID: DataConduit, //
 			//
 			Urgency:            10,
-			TransmitBufferVolume:   100,
-			AcceptBufferVolume:  50 * 4096,
-			AcceptSignalVolume: maximumMessageVolume,
-			SignalKind:         &cometconnect.Signal{},
+			TransmitStagingVolume:   100,
+			ObtainReserveVolume:  50 * 4096,
+			ObtainSignalVolume: maximumSignalExtent,
+			SignalKind:         &strongmindcons.Signal{},
 		},
 		{
-			ID:                  BallotStream,
+			ID:                  BallotConduit,
 			Urgency:            7,
-			TransmitBufferVolume:   100,
-			AcceptBufferVolume:  100 * 100,
-			AcceptSignalVolume: maximumMessageVolume,
-			SignalKind:         &cometconnect.Signal{},
+			TransmitStagingVolume:   100,
+			ObtainReserveVolume:  100 * 100,
+			ObtainSignalVolume: maximumSignalExtent,
+			SignalKind:         &strongmindcons.Signal{},
 		},
 		{
-			ID:                  BallotAssignBitsStream,
+			ID:                  BallotAssignDigitsConduit,
 			Urgency:            1,
-			TransmitBufferVolume:   2,
-			AcceptBufferVolume:  1024,
-			AcceptSignalVolume: maximumMessageVolume,
-			SignalKind:         &cometconnect.Signal{},
+			TransmitStagingVolume:   2,
+			ObtainReserveVolume:  1024,
+			ObtainSignalVolume: maximumSignalExtent,
+			SignalKind:         &strongmindcons.Signal{},
 		},
 	}
 }
 
 //
-func (connectReader *Handler) InitNode(node p2p.Node) p2p.Node {
-	nodeStatus := NewNodeStatus(node).AssignTracer(connectReader.Tracer)
-	node.Set(kinds.NodeStatusKey, nodeStatus)
+func (connectionReader *Handler) InitializeNode(node p2p.Node) p2p.Node {
+	nodeStatus := FreshNodeStatus(node).AssignTracer(connectionReader.Tracer)
+	node.Set(kinds.NodeStatusToken, nodeStatus)
 	return node
 }
 
 //
 //
-func (connectReader *Handler) AppendNode(node p2p.Node) {
-	if !connectReader.IsActive() {
+func (connectionReader *Handler) AppendNode(node p2p.Node) {
+	if !connectionReader.EqualsActive() {
 		return
 	}
 
-	nodeStatus, ok := node.Get(kinds.NodeStatusKey).(*NodeStatus)
+	nodeStatus, ok := node.Get(kinds.NodeStatusToken).(*NodeStatus)
 	if !ok {
 		panic(fmt.Sprintf("REDACTED", node))
 	}
 	//
-	go connectReader.gossipDataProcess(node, nodeStatus)
-	go connectReader.gossipBallotsProcess(node, nodeStatus)
-	go connectReader.inquireMaj23process(node, nodeStatus)
+	go connectionReader.multicastDataProcedure(node, nodeStatus)
+	go connectionReader.multicastBallotsProcedure(node, nodeStatus)
+	go connectionReader.inquireMajor23task(node, nodeStatus)
 
 	//
 	//
-	if !connectReader.WaitAlign() {
-		connectReader.transmitNewDurationPhaseSignal(node)
+	if !connectionReader.AwaitChronize() {
+		connectionReader.transmitFreshIterationPhaseSignal(node)
 	}
 }
 
 //
-func (connectReader *Handler) DeleteNode(p2p.Node, any) {
-	if !connectReader.IsActive() {
+func (connectionReader *Handler) DiscardNode(p2p.Node, any) {
+	if !connectionReader.EqualsActive() {
 		return
 	}
 	//
@@ -244,178 +244,183 @@ func (connectReader *Handler) DeleteNode(p2p.Node, any) {
 //
 //
 //
-func (connectReader *Handler) Accept(e p2p.Packet) {
-	if !connectReader.IsActive() {
-		connectReader.Tracer.Diagnose("REDACTED", "REDACTED", e.Src, "REDACTED", e.StreamUID)
+func (connectionReader *Handler) Accept(e p2p.Wrapper) {
+	if !connectionReader.EqualsActive() {
+		connectionReader.Tracer.Diagnose("REDACTED", "REDACTED", e.Src, "REDACTED", e.ConduitUUID)
 		return
 	}
-	msg, err := MessageFromSchema(e.Signal)
+	msg, err := SignalOriginatingSchema(e.Signal)
 	if err != nil {
-		connectReader.Tracer.Fault("REDACTED", "REDACTED", e.Src, "REDACTED", e.StreamUID, "REDACTED", err)
-		connectReader.Router.HaltNodeForFault(e.Src, err)
+		connectionReader.Tracer.Failure("REDACTED", "REDACTED", e.Src, "REDACTED", e.ConduitUUID, "REDACTED", err)
+		connectionReader.Router.HaltNodeForeachFailure(e.Src, err)
 		return
 	}
 
-	if err = msg.CertifySimple(); err != nil {
-		connectReader.Tracer.Fault("REDACTED", "REDACTED", e.Src, "REDACTED", e.Signal, "REDACTED", err)
-		connectReader.Router.HaltNodeForFault(e.Src, err)
+	if err = msg.CertifyFundamental(); err != nil {
+		connectionReader.Tracer.Failure("REDACTED", "REDACTED", e.Src, "REDACTED", e.Signal, "REDACTED", err)
+		connectionReader.Router.HaltNodeForeachFailure(e.Src, err)
 		return
 	}
 
-	connectReader.Tracer.Diagnose("REDACTED", "REDACTED", e.Src, "REDACTED", e.StreamUID, "REDACTED", msg)
+	connectionReader.Tracer.Diagnose("REDACTED", "REDACTED", e.Src, "REDACTED", e.ConduitUUID, "REDACTED", msg)
 
 	//
-	ps, ok := e.Src.Get(kinds.NodeStatusKey).(*NodeStatus)
+	ps, ok := e.Src.Get(kinds.NodeStatusToken).(*NodeStatus)
 	if !ok {
 		panic(fmt.Sprintf("REDACTED", e.Src))
 	}
 
-	switch e.StreamUID {
-	case StatusStream:
+	switch e.ConduitUUID {
+	case StatusConduit:
 		switch msg := msg.(type) {
-		case *NewDurationPhaseSignal:
-			primaryLevel := connectReader.primaryLevel.Load()
-			if err = msg.CertifyLevel(primaryLevel); err != nil {
-				connectReader.Tracer.Fault("REDACTED", "REDACTED", e.Src, "REDACTED", msg, "REDACTED", err)
-				connectReader.Router.HaltNodeForFault(e.Src, err)
+		case *FreshIterationPhaseSignal:
+			primaryAltitude := connectionReader.primaryAltitude.Load()
+			if err = msg.CertifyAltitude(primaryAltitude); err != nil {
+				connectionReader.Tracer.Failure("REDACTED", "REDACTED", e.Src, "REDACTED", msg, "REDACTED", err)
+				connectionReader.Router.HaltNodeForeachFailure(e.Src, err)
 				return
 			}
-			ps.ExecuteNewDurationPhaseSignal(msg)
-			connectReader.connectS.metricsMessageBuffer <- messageDetails{msg, e.Src.ID()}
-		case *NewSoundLedgerSignal:
-			ps.ExecuteNewSoundLedgerSignal(msg)
-		case *HasBallotSignal:
-			ps.ExecuteHasBallotSignal(msg)
-		case *BallotAssignMaj23signal:
-			rs := connectReader.fetchDurationStatus()
-			level, ballots := rs.Level, rs.Ballots
-			if level != msg.Level {
+			ps.ExecuteFreshIterationPhaseSignal(msg)
+			connectionReader.connectionSTR.metricsSignalStaging <- signalDetails{msg, e.Src.ID()}
+		case *FreshSoundLedgerSignal:
+			ps.ExecuteFreshSoundLedgerSignal(msg)
+		case *OwnsBallotSignal:
+			ps.ExecuteOwnsBallotSignal(msg)
+		case *BallotAssignMajor23signal:
+			rs := connectionReader.obtainIterationStatus()
+			altitude, ballots := rs.Altitude, rs.Ballots
+			if altitude != msg.Altitude {
 				return
 			}
 			//
-			err := ballots.AssignNodeMaj23(msg.Cycle, msg.Kind, ps.node.ID(), msg.LedgerUID)
+			err := ballots.AssignNodeMajor23(msg.Iteration, msg.Kind, ps.node.ID(), msg.LedgerUUID)
 			if err != nil {
-				connectReader.Router.HaltNodeForFault(e.Src, err)
+				connectionReader.Router.HaltNodeForeachFailure(e.Src, err)
 				return
 			}
 			//
 			//
-			var ourBallots *bits.BitList
+			var mineBallots *digits.DigitCollection
 			switch msg.Kind {
-			case engineproto.PreballotKind:
-				ourBallots = ballots.Preballots(msg.Cycle).BitListByLedgerUID(msg.LedgerUID)
-			case engineproto.PreendorseKind:
-				ourBallots = ballots.Preendorsements(msg.Cycle).BitListByLedgerUID(msg.LedgerUID)
+			case commitchema.PreballotKind:
+				mineBallots = ballots.Preballots(msg.Iteration).DigitCollectionViaLedgerUUID(msg.LedgerUUID)
+			case commitchema.PreendorseKind:
+				mineBallots = ballots.Preendorsements(msg.Iteration).DigitCollectionViaLedgerUUID(msg.LedgerUUID)
 			default:
 				panic("REDACTED")
 			}
-			eMessage := &cometconnect.BallotAssignBits{
-				Level:  msg.Level,
-				Cycle:   msg.Cycle,
+			exSignal := &strongmindcons.BallotAssignDigits{
+				Altitude:  msg.Altitude,
+				Iteration:   msg.Iteration,
 				Kind:    msg.Kind,
-				LedgerUID: msg.LedgerUID.ToSchema(),
+				LedgerUUID: msg.LedgerUUID.TowardSchema(),
 			}
-			if ballots := ourBallots.ToSchema(); ballots != nil {
-				eMessage.Ballots = *ballots
+			if ballots := mineBallots.TowardSchema(); ballots != nil {
+				exSignal.Ballots = *ballots
 			}
-			e.Src.AttemptTransmit(p2p.Packet{
-				StreamUID: BallotAssignBitsStream,
-				Signal:   eMessage,
+			e.Src.AttemptTransmit(p2p.Wrapper{
+				ConduitUUID: BallotAssignDigitsConduit,
+				Signal:   exSignal,
 			})
 		default:
-			connectReader.Tracer.Fault(fmt.Sprintf("REDACTED", reflect.TypeOf(msg)))
+			connectionReader.Tracer.Failure(fmt.Sprintf("REDACTED", reflect.TypeOf(msg)))
 		}
 
-	case DataStream:
-		if connectReader.WaitAlign() {
-			connectReader.Tracer.Details("REDACTED", "REDACTED", msg)
+	case DataConduit:
+		if connectionReader.AwaitChronize() {
+			connectionReader.Tracer.Details("REDACTED", "REDACTED", msg)
 			return
 		}
 		switch msg := msg.(type) {
 		case *NominationSignal:
-			options := connectReader.agreementOptions.Load()
-			maximumOctets := options.Ledger.MaximumOctets
-			if err := msg.Nomination.CertifyLedgerVolume(maximumOctets); err != nil {
-				connectReader.Tracer.Fault("REDACTED", "REDACTED", e.Src, "REDACTED", msg.Nomination.Level)
-				connectReader.Router.HaltNodeForFault(e.Src, ErrNominationTooNumerousSegments)
+			parameters := connectionReader.agreementParameters.Load()
+			maximumOctets := parameters.Ledger.MaximumOctets
+			if err := msg.Nomination.CertifyLedgerExtent(maximumOctets); err != nil {
+				connectionReader.Tracer.Failure("REDACTED", "REDACTED", e.Src, "REDACTED", msg.Nomination.Altitude)
+				connectionReader.Router.HaltNodeForeachFailure(e.Src, FaultNominationExcessivelyMultipleFragments)
 				return
 			}
 
-			ps.AssignHasNomination(msg.Nomination)
-			connectReader.connectS.nodeMessageBuffer <- messageDetails{msg, e.Src.ID()}
-		case *NominationPOLSignal:
-			ps.ExecuteNominationPOLSignal(msg)
-		case *LedgerSegmentSignal:
-			ps.AssignHasNominationLedgerSegment(msg.Level, msg.Cycle, int(msg.Segment.Ordinal))
-			connectReader.Stats.LedgerSegments.With("REDACTED", string(e.Src.ID())).Add(1)
-			connectReader.connectS.nodeMessageBuffer <- messageDetails{msg, e.Src.ID()}
+			ps.AssignOwnsNomination(msg.Nomination)
+			connectionReader.connectionSTR.nodeSignalStaging <- signalDetails{msg, e.Src.ID()}
+		case *NominationPolicySignal:
+			ps.ExecuteNominationPolicySignal(msg)
+		case *LedgerFragmentSignal:
+			ps.AssignOwnsNominationLedgerFragment(msg.Altitude, msg.Iteration, int(msg.Fragment.Ordinal))
+			connectionReader.Telemetry.LedgerFragments.With("REDACTED", string(e.Src.ID())).Add(1)
+			connectionReader.connectionSTR.nodeSignalStaging <- signalDetails{msg, e.Src.ID()}
 		default:
-			connectReader.Tracer.Fault(fmt.Sprintf("REDACTED", reflect.TypeOf(msg)))
+			connectionReader.Tracer.Failure(fmt.Sprintf("REDACTED", reflect.TypeOf(msg)))
 		}
 
-	case BallotStream:
-		if connectReader.WaitAlign() {
-			connectReader.Tracer.Details("REDACTED", "REDACTED", msg)
+	case BallotConduit:
+		if connectionReader.AwaitChronize() {
+			connectionReader.Tracer.Details("REDACTED", "REDACTED", msg)
 			return
 		}
 		switch msg := msg.(type) {
 		case *BallotSignal:
-			rs := connectReader.fetchDurationStatus()
+			rs := connectionReader.obtainIterationStatus()
 
-			level, valueVolume, finalEndorseVolume := rs.Level, rs.Ratifiers.Volume(), rs.FinalEndorse.Volume()
-			ps.AssignHasBallotFromNode(msg.Ballot, level, valueVolume, finalEndorseVolume)
+			altitude, itemExtent, finalEndorseExtent := rs.Altitude, rs.Assessors.Extent(), rs.FinalEndorse.Extent()
+			ps.AssignOwnsBallotOriginatingNode(msg.Ballot, altitude, itemExtent, finalEndorseExtent)
 
-			connectReader.connectS.nodeMessageBuffer <- messageDetails{msg, e.Src.ID()}
+			connectionReader.connectionSTR.nodeSignalStaging <- signalDetails{msg, e.Src.ID()}
 
 		default:
 			//
-			connectReader.Tracer.Fault(fmt.Sprintf("REDACTED", reflect.TypeOf(msg)))
+			connectionReader.Tracer.Failure(fmt.Sprintf("REDACTED", reflect.TypeOf(msg)))
 		}
 
-	case BallotAssignBitsStream:
-		if connectReader.WaitAlign() {
-			connectReader.Tracer.Details("REDACTED", "REDACTED", msg)
+	case BallotAssignDigitsConduit:
+		if connectionReader.AwaitChronize() {
+			connectionReader.Tracer.Details("REDACTED", "REDACTED", msg)
 			return
 		}
 		switch msg := msg.(type) {
-		case *BallotAssignBitsSignal:
-			rs := connectReader.fetchDurationStatus()
+		case *BallotAssignDigitsSignal:
+			rs := connectionReader.obtainIterationStatus()
 
-			level, ballots := rs.Level, rs.Ballots
+			altitude, ballots := rs.Altitude, rs.Ballots
 
-			if level == msg.Level {
-				var ourBallots *bits.BitList
+			if altitude == msg.Altitude {
+				var mineBallots *digits.DigitCollection
 				switch msg.Kind {
-				case engineproto.PreballotKind:
-					ourBallots = ballots.Preballots(msg.Cycle).BitListByLedgerUID(msg.LedgerUID)
-				case engineproto.PreendorseKind:
-					ourBallots = ballots.Preendorsements(msg.Cycle).BitListByLedgerUID(msg.LedgerUID)
+				case commitchema.PreballotKind:
+					mineBallots = ballots.Preballots(msg.Iteration).DigitCollectionViaLedgerUUID(msg.LedgerUUID)
+				case commitchema.PreendorseKind:
+					mineBallots = ballots.Preendorsements(msg.Iteration).DigitCollectionViaLedgerUUID(msg.LedgerUUID)
 				default:
 					panic("REDACTED")
 				}
-				ps.ExecuteBallotAssignBitsSignal(msg, ourBallots)
+				ps.ExecuteBallotAssignDigitsSignal(msg, mineBallots)
 			} else {
-				ps.ExecuteBallotAssignBitsSignal(msg, nil)
+				ps.ExecuteBallotAssignDigitsSignal(msg, nil)
 			}
 		default:
 			//
-			connectReader.Tracer.Fault(fmt.Sprintf("REDACTED", reflect.TypeOf(msg)))
+			connectionReader.Tracer.Failure(fmt.Sprintf("REDACTED", reflect.TypeOf(msg)))
 		}
 
 	default:
-		connectReader.Tracer.Fault(fmt.Sprintf("REDACTED", e.StreamUID))
+		connectionReader.Tracer.Failure(fmt.Sprintf("REDACTED", e.ConduitUUID))
 	}
 }
 
 //
-func (connectReader *Handler) AssignEventBus(b *kinds.EventBus) {
-	connectReader.eventBus = b
-	connectReader.connectS.AssignEventBus(b)
+func (connectionReader *Handler) AssignIncidentChannel(b *kinds.IncidentChannel) {
+	connectionReader.incidentChannel = b
+	connectionReader.connectionSTR.AssignIncidentChannel(b)
 }
 
 //
-func (connectReader *Handler) WaitAlign() bool {
-	return connectReader.waitAlign.Load()
+func (connectionReader *Handler) AwaitChronize() bool {
+	return connectionReader.awaitChronize.Load()
+}
+
+//
+func (connectionReader *Handler) AbsorbAttestedLedger(ledger AbsorbNominee) error {
+	return connectionReader.connectionSTR.AbsorbAttestedLedger(ledger)
 }
 
 //
@@ -423,130 +428,130 @@ func (connectReader *Handler) WaitAlign() bool {
 //
 //
 //
-func (connectReader *Handler) enrollToMulticastEvents() {
-	const enrollee = "REDACTED"
-	err := connectReader.connectS.evsw.AppendObserverForEvent(
-		enrollee,
-		kinds.EventNewDurationPhase,
-		func(data cometsignals.EventData) {
-			rs := data.(cskinds.DurationStatus)
+func (connectionReader *Handler) listenTowardMulticastIncidents() {
+	const listener = "REDACTED"
+	err := connectionReader.connectionSTR.incidentctl.AppendObserverForeachIncident(
+		listener,
+		kinds.IncidentFreshIterationPhase,
+		func(data strongmindincidents.IncidentData) {
+			rs := data.(controlkinds.IterationStatus)
 
 			//
-			connectReader.modifyDurationStatus(&rs)
+			connectionReader.reviseIterationStatus(&rs)
 
-			connectReader.multicastNewDurationPhaseSignal(&rs)
+			connectionReader.multicastFreshIterationPhaseSignal(&rs)
 		},
 	)
 	if err != nil {
-		connectReader.Tracer.Fault("REDACTED", "REDACTED", err)
+		connectionReader.Tracer.Failure("REDACTED", "REDACTED", err)
 	}
 
-	err = connectReader.connectS.evsw.AppendObserverForEvent(
-		enrollee,
-		kinds.EventSoundLedger,
-		func(data cometsignals.EventData) {
-			rs := data.(cskinds.DurationStatus)
+	err = connectionReader.connectionSTR.incidentctl.AppendObserverForeachIncident(
+		listener,
+		kinds.IncidentSoundLedger,
+		func(data strongmindincidents.IncidentData) {
+			rs := data.(controlkinds.IterationStatus)
 
 			//
-			connectReader.modifyDurationStatus(&rs)
+			connectionReader.reviseIterationStatus(&rs)
 
-			connectReader.multicastNewSoundLedgerSignal(&rs)
+			connectionReader.multicastFreshSoundLedgerSignal(&rs)
 		},
 	)
 	if err != nil {
-		connectReader.Tracer.Fault("REDACTED", "REDACTED", err)
+		connectionReader.Tracer.Failure("REDACTED", "REDACTED", err)
 	}
 
-	err = connectReader.connectS.evsw.AppendObserverForEvent(
-		enrollee,
-		kinds.EventBallot,
-		func(data cometsignals.EventData) {
-			connectReader.multicastHasBallotSignal(data.(*kinds.Ballot))
+	err = connectionReader.connectionSTR.incidentctl.AppendObserverForeachIncident(
+		listener,
+		kinds.IncidentBallot,
+		func(data strongmindincidents.IncidentData) {
+			connectionReader.multicastOwnsBallotSignal(data.(*kinds.Ballot))
 
 			//
 			//
 			//
 			//
-			rs := connectReader.connectS.fetchDurationStatus()
-			connectReader.modifyDurationStatus(&rs)
+			rs := connectionReader.connectionSTR.obtainIterationStatus()
+			connectionReader.reviseIterationStatus(&rs)
 		},
 	)
 	if err != nil {
-		connectReader.Tracer.Fault("REDACTED", "REDACTED", err)
+		connectionReader.Tracer.Failure("REDACTED", "REDACTED", err)
 	}
 
-	err = connectReader.connectS.evsw.AppendObserverForEvent(
-		enrollee,
-		kinds.EventNewAgreementOptions,
-		func(data cometsignals.EventData) {
-			agreementOptions := data.(kinds.AgreementOptions)
+	err = connectionReader.connectionSTR.incidentctl.AppendObserverForeachIncident(
+		listener,
+		kinds.IncidentFreshAgreementParameters,
+		func(data strongmindincidents.IncidentData) {
+			agreementParameters := data.(kinds.AgreementSettings)
 
 			//
-			connectReader.modifyAgreementOptions(agreementOptions)
+			connectionReader.reviseAgreementParameters(agreementParameters)
 		},
 	)
 	if err != nil {
-		connectReader.Tracer.Fault("REDACTED", "REDACTED", err)
+		connectionReader.Tracer.Failure("REDACTED", "REDACTED", err)
 	}
 }
 
 //
-func (connectReader *Handler) modifyAgreementOptions(agreementOptions kinds.AgreementOptions) {
-	options := agreementOptions //
-	connectReader.agreementOptions.Store(&options)
+func (connectionReader *Handler) reviseAgreementParameters(agreementParameters kinds.AgreementSettings) {
+	parameters := agreementParameters //
+	connectionReader.agreementParameters.Store(&parameters)
 }
 
 //
-func (connectReader *Handler) modifyDurationStatus(rs *cskinds.DurationStatus) {
-	connectReader.rsMutex.Lock()
-	connectReader.rs = *rs //
-	connectReader.rsMutex.Unlock()
+func (connectionReader *Handler) reviseIterationStatus(rs *controlkinds.IterationStatus) {
+	connectionReader.resultsMutex.Lock()
+	connectionReader.rs = *rs //
+	connectionReader.resultsMutex.Unlock()
 }
 
-func (connectReader *Handler) cancelFromMulticastEvents() {
-	const enrollee = "REDACTED"
-	connectReader.connectS.evsw.DeleteObserver(enrollee)
+func (connectionReader *Handler) cancelOriginatingMulticastIncidents() {
+	const listener = "REDACTED"
+	connectionReader.connectionSTR.incidentctl.DiscardObserver(listener)
 }
 
-func (connectReader *Handler) multicastNewDurationPhaseSignal(rs *cskinds.DurationStatus) {
-	nrsMessage := createDurationPhaseSignal(rs)
+func (connectionReader *Handler) multicastFreshIterationPhaseSignal(rs *controlkinds.IterationStatus) {
+	numbersSignal := createIterationPhaseSignal(rs)
 	go func() {
-		connectReader.Router.MulticastAsync(p2p.Packet{
-			StreamUID: StatusStream,
-			Signal:   nrsMessage,
+		connectionReader.Router.MulticastAsyncronous(p2p.Wrapper{
+			ConduitUUID: StatusConduit,
+			Signal:   numbersSignal,
 		})
 	}()
 }
 
-func (connectReader *Handler) multicastNewSoundLedgerSignal(rs *cskinds.DurationStatus) {
-	psh := rs.NominationLedgerSegments.Heading()
-	csMessage := &cometconnect.NewSoundLedger{
-		Level:             rs.Level,
-		Cycle:              rs.Cycle,
-		LedgerSegmentAssignHeading: psh.ToSchema(),
-		LedgerSegments:         rs.NominationLedgerSegments.BitList().ToSchema(),
-		IsEndorse:           rs.Phase == cskinds.DurationPhaseEndorse,
+func (connectionReader *Handler) multicastFreshSoundLedgerSignal(rs *controlkinds.IterationStatus) {
+	psh := rs.NominationLedgerFragments.Heading()
+	controlSignal := &strongmindcons.FreshSoundLedger{
+		Altitude:             rs.Altitude,
+		Iteration:              rs.Iteration,
+		LedgerFragmentAssignHeading: psh.TowardSchema(),
+		LedgerFragments:         rs.NominationLedgerFragments.DigitCollection().TowardSchema(),
+		EqualsEndorse:           rs.Phase == controlkinds.IterationPhaseEndorse,
 	}
 	go func() {
-		connectReader.Router.MulticastAsync(p2p.Packet{
-			StreamUID: StatusStream,
-			Signal:   csMessage,
+		connectionReader.Router.MulticastAsyncronous(p2p.Wrapper{
+			ConduitUUID: StatusConduit,
+			Signal:   controlSignal,
 		})
 	}()
 }
 
 //
-func (connectReader *Handler) multicastHasBallotSignal(ballot *kinds.Ballot) {
-	msg := &cometconnect.HasBallot{
-		Level: ballot.Level,
-		Cycle:  ballot.Cycle,
+func (connectionReader *Handler) multicastOwnsBallotSignal(ballot *kinds.Ballot) {
+	msg := &strongmindcons.OwnsBallot{
+		Altitude: ballot.Altitude,
+		Iteration:  ballot.Iteration,
 		Kind:   ballot.Kind,
-		Ordinal:  ballot.RatifierOrdinal,
+		Ordinal:  ballot.AssessorOrdinal,
 	}
 
 	go func() {
-		connectReader.Router.AttemptMulticast(p2p.Packet{
-			StreamUID: StatusStream,
+		connectionReader.Router.AttemptMulticast(p2p.Wrapper{
+			ConduitUUID: StatusConduit,
 			Signal:   msg,
 		})
 	}()
@@ -574,59 +579,59 @@ h
 */
 }
 
-func createDurationPhaseSignal(rs *cskinds.DurationStatus) (nrsMessage *cometconnect.NewDurationPhase) {
-	nrsMessage = &cometconnect.NewDurationPhase{
-		Level:                rs.Level,
-		Cycle:                 rs.Cycle,
+func createIterationPhaseSignal(rs *controlkinds.IterationStatus) (numbersSignal *strongmindcons.FreshIterationPhase) {
+	numbersSignal = &strongmindcons.FreshIterationPhase{
+		Altitude:                rs.Altitude,
+		Iteration:                 rs.Iteration,
 		Phase:                  uint32(rs.Phase),
-		MomentsSinceBeginTime: int64(time.Since(rs.BeginTime).Seconds()),
-		FinalEndorseDuration:       rs.FinalEndorse.FetchDuration(),
+		MomentsBecauseInitiateMoment: int64(time.Since(rs.InitiateMoment).Seconds()),
+		FinalEndorseIteration:       rs.FinalEndorse.ObtainIteration(),
 	}
 	return
 }
 
-func (connectReader *Handler) transmitNewDurationPhaseSignal(node p2p.Node) {
-	rs := connectReader.fetchDurationStatus()
-	nrsMessage := createDurationPhaseSignal(&rs)
-	node.Transmit(p2p.Packet{
-		StreamUID: StatusStream,
-		Signal:   nrsMessage,
+func (connectionReader *Handler) transmitFreshIterationPhaseSignal(node p2p.Node) {
+	rs := connectionReader.obtainIterationStatus()
+	numbersSignal := createIterationPhaseSignal(&rs)
+	node.Transmit(p2p.Wrapper{
+		ConduitUUID: StatusConduit,
+		Signal:   numbersSignal,
 	})
 }
 
-func (connectReader *Handler) fetchDurationStatus() cskinds.DurationStatus {
-	connectReader.rsMutex.RLock()
-	defer connectReader.rsMutex.RUnlock()
-	return connectReader.rs
+func (connectionReader *Handler) obtainIterationStatus() controlkinds.IterationStatus {
+	connectionReader.resultsMutex.RLock()
+	defer connectionReader.resultsMutex.RUnlock()
+	return connectionReader.rs
 }
 
 //
 //
 
-func (connectReader *Handler) gossipDataProcess(node p2p.Node, ps *NodeStatus) {
-	tracer := connectReader.Tracer.With("REDACTED", node)
+func (connectionReader *Handler) multicastDataProcedure(node p2p.Node, ps *NodeStatus) {
+	tracer := connectionReader.Tracer.Using("REDACTED", node)
 
 EXTERNAL_CYCLE:
 	for {
 		//
-		if !node.IsActive() || !connectReader.IsActive() {
+		if !node.EqualsActive() || !connectionReader.EqualsActive() {
 			return
 		}
-		rs := connectReader.fetchDurationStatus()
-		prs := ps.FetchDurationStatus()
+		rs := connectionReader.obtainIterationStatus()
+		prs := ps.ObtainIterationStatus()
 
 		//
 		//
 		//
 		//
 
-		if segment, resumeCycle := selectSegmentToTransmit(tracer, connectReader.connectS.ledgerDepot, &rs, ps, prs); segment != nil {
+		if fragment, proceedCycle := selectFragmentTowardTransmit(tracer, connectionReader.connectionSTR.ledgerDepot, &rs, ps, prs); fragment != nil {
 			//
 			//
-			if ps.TransmitSegmentAssignHasSegment(segment, prs) || resumeCycle {
+			if ps.TransmitFragmentAssignOwnsFragment(fragment, prs) || proceedCycle {
 				continue EXTERNAL_CYCLE
 			}
-		} else if resumeCycle {
+		} else if proceedCycle {
 			//
 			continue EXTERNAL_CYCLE
 		}
@@ -636,21 +641,21 @@ EXTERNAL_CYCLE:
 		//
 		//
 
-		levelDurationAlign := (rs.Level == prs.Level) && (rs.Cycle == prs.Cycle)
-		nominationToTransmit := rs.Nomination != nil && !prs.Nomination
+		altitudeIterationAlign := (rs.Altitude == prs.Altitude) && (rs.Iteration == prs.Iteration)
+		nominationTowardTransmit := rs.Nomination != nil && !prs.Nomination
 
-		if levelDurationAlign && nominationToTransmit {
-			ps.TransmitNominationAssignHasNomination(tracer, &rs, prs)
+		if altitudeIterationAlign && nominationTowardTransmit {
+			ps.TransmitNominationAssignOwnsNomination(tracer, &rs, prs)
 			continue EXTERNAL_CYCLE
 		}
 
 		//
-		time.Sleep(connectReader.connectS.settings.NodeGossipPausePeriod)
+		time.Sleep(connectionReader.connectionSTR.settings.NodeMulticastSnoozeInterval)
 	}
 }
 
-func (connectReader *Handler) gossipBallotsProcess(node p2p.Node, ps *NodeStatus) {
-	tracer := connectReader.Tracer.With("REDACTED", node)
+func (connectionReader *Handler) multicastBallotsProcedure(node p2p.Node, ps *NodeStatus) {
+	tracer := connectionReader.Tracer.Using("REDACTED", node)
 
 	//
 	dormant := 0
@@ -658,11 +663,11 @@ func (connectReader *Handler) gossipBallotsProcess(node p2p.Node, ps *NodeStatus
 EXTERNAL_CYCLE:
 	for {
 		//
-		if !node.IsActive() || !connectReader.IsActive() {
+		if !node.EqualsActive() || !connectionReader.EqualsActive() {
 			return
 		}
-		rs := connectReader.fetchDurationStatus()
-		prs := ps.FetchDurationStatus()
+		rs := connectionReader.obtainIterationStatus()
+		prs := ps.ObtainIterationStatus()
 
 		switch dormant {
 		case 1: //
@@ -671,12 +676,12 @@ EXTERNAL_CYCLE:
 			dormant = 0
 		}
 
-		if ballot := selectBallotToTransmit(tracer, connectReader.connectS, &rs, ps, prs); ballot != nil {
-			if ps.transmitBallotAssignHasBallot(ballot) {
+		if ballot := selectBallotTowardTransmit(tracer, connectionReader.connectionSTR, &rs, ps, prs); ballot != nil {
+			if ps.transmitBallotAssignOwnsBallot(ballot) {
 				continue EXTERNAL_CYCLE
 			}
 			tracer.Diagnose("REDACTED",
-				"REDACTED", prs.Level,
+				"REDACTED", prs.Altitude,
 				"REDACTED", ballot,
 			)
 		}
@@ -685,86 +690,86 @@ EXTERNAL_CYCLE:
 		case 0:
 			//
 			dormant = 1
-			tracer.Diagnose("REDACTED", "REDACTED", rs.Level, "REDACTED", prs.Level,
-				"REDACTED", rs.Ballots.Preballots(rs.Cycle).BitList(), "REDACTED", prs.Preballots,
-				"REDACTED", rs.Ballots.Preendorsements(rs.Cycle).BitList(), "REDACTED", prs.Preendorsements)
+			tracer.Diagnose("REDACTED", "REDACTED", rs.Altitude, "REDACTED", prs.Altitude,
+				"REDACTED", rs.Ballots.Preballots(rs.Iteration).DigitCollection(), "REDACTED", prs.Preballots,
+				"REDACTED", rs.Ballots.Preendorsements(rs.Iteration).DigitCollection(), "REDACTED", prs.Preendorsements)
 		case 2:
 			//
 			dormant = 1
 		}
 
-		time.Sleep(connectReader.connectS.settings.NodeGossipPausePeriod)
+		time.Sleep(connectionReader.connectionSTR.settings.NodeMulticastSnoozeInterval)
 	}
 }
 
 //
 //
-func (connectReader *Handler) inquireMaj23process(node p2p.Node, ps *NodeStatus) {
+func (connectionReader *Handler) inquireMajor23task(node p2p.Node, ps *NodeStatus) {
 EXTERNAL_CYCLE:
 	for {
 		//
-		if !node.IsActive() || !connectReader.IsActive() {
+		if !node.EqualsActive() || !connectionReader.EqualsActive() {
 			return
 		}
 
 		//
 		{
-			rs := connectReader.fetchDurationStatus()
-			prs := ps.FetchDurationStatus()
-			if rs.Level == prs.Level {
-				if maj23, ok := rs.Ballots.Preballots(prs.Cycle).DualThirdsBulk(); ok {
+			rs := connectionReader.obtainIterationStatus()
+			prs := ps.ObtainIterationStatus()
+			if rs.Altitude == prs.Altitude {
+				if major23, ok := rs.Ballots.Preballots(prs.Iteration).CoupleTrinityPreponderance(); ok {
 
-					node.AttemptTransmit(p2p.Packet{
-						StreamUID: StatusStream,
-						Signal: &cometconnect.BallotAssignMaj23{
-							Level:  prs.Level,
-							Cycle:   prs.Cycle,
-							Kind:    engineproto.PreballotKind,
-							LedgerUID: maj23.ToSchema(),
+					node.AttemptTransmit(p2p.Wrapper{
+						ConduitUUID: StatusConduit,
+						Signal: &strongmindcons.BallotAssignMajor23{
+							Altitude:  prs.Altitude,
+							Iteration:   prs.Iteration,
+							Kind:    commitchema.PreballotKind,
+							LedgerUUID: major23.TowardSchema(),
 						},
 					})
-					time.Sleep(connectReader.connectS.settings.NodeInquireMaj23pausePeriod)
+					time.Sleep(connectionReader.connectionSTR.settings.NodeInquireMajor23dormantInterval)
 				}
 			}
 		}
 
 		//
 		{
-			rs := connectReader.fetchDurationStatus()
-			prs := ps.FetchDurationStatus()
-			if rs.Level == prs.Level {
-				if maj23, ok := rs.Ballots.Preendorsements(prs.Cycle).DualThirdsBulk(); ok {
-					node.AttemptTransmit(p2p.Packet{
-						StreamUID: StatusStream,
-						Signal: &cometconnect.BallotAssignMaj23{
-							Level:  prs.Level,
-							Cycle:   prs.Cycle,
-							Kind:    engineproto.PreendorseKind,
-							LedgerUID: maj23.ToSchema(),
+			rs := connectionReader.obtainIterationStatus()
+			prs := ps.ObtainIterationStatus()
+			if rs.Altitude == prs.Altitude {
+				if major23, ok := rs.Ballots.Preendorsements(prs.Iteration).CoupleTrinityPreponderance(); ok {
+					node.AttemptTransmit(p2p.Wrapper{
+						ConduitUUID: StatusConduit,
+						Signal: &strongmindcons.BallotAssignMajor23{
+							Altitude:  prs.Altitude,
+							Iteration:   prs.Iteration,
+							Kind:    commitchema.PreendorseKind,
+							LedgerUUID: major23.TowardSchema(),
 						},
 					})
-					time.Sleep(connectReader.connectS.settings.NodeInquireMaj23pausePeriod)
+					time.Sleep(connectionReader.connectionSTR.settings.NodeInquireMajor23dormantInterval)
 				}
 			}
 		}
 
 		//
 		{
-			rs := connectReader.fetchDurationStatus()
-			prs := ps.FetchDurationStatus()
-			if rs.Level == prs.Level && prs.NominationPOLDuration >= 0 {
-				if maj23, ok := rs.Ballots.Preballots(prs.NominationPOLDuration).DualThirdsBulk(); ok {
+			rs := connectionReader.obtainIterationStatus()
+			prs := ps.ObtainIterationStatus()
+			if rs.Altitude == prs.Altitude && prs.NominationPolicyIteration >= 0 {
+				if major23, ok := rs.Ballots.Preballots(prs.NominationPolicyIteration).CoupleTrinityPreponderance(); ok {
 
-					node.AttemptTransmit(p2p.Packet{
-						StreamUID: StatusStream,
-						Signal: &cometconnect.BallotAssignMaj23{
-							Level:  prs.Level,
-							Cycle:   prs.NominationPOLDuration,
-							Kind:    engineproto.PreballotKind,
-							LedgerUID: maj23.ToSchema(),
+					node.AttemptTransmit(p2p.Wrapper{
+						ConduitUUID: StatusConduit,
+						Signal: &strongmindcons.BallotAssignMajor23{
+							Altitude:  prs.Altitude,
+							Iteration:   prs.NominationPolicyIteration,
+							Kind:    commitchema.PreballotKind,
+							LedgerUUID: major23.TowardSchema(),
 						},
 					})
-					time.Sleep(connectReader.connectS.settings.NodeInquireMaj23pausePeriod)
+					time.Sleep(connectionReader.connectionSTR.settings.NodeInquireMajor23dormantInterval)
 				}
 			}
 		}
@@ -774,25 +779,25 @@ EXTERNAL_CYCLE:
 
 		//
 		{
-			prs := ps.FetchDurationStatus()
-			if prs.OvertakeEndorseDuration != -1 && prs.Level > 0 && prs.Level <= connectReader.connectS.ledgerDepot.Level() &&
-				prs.Level >= connectReader.connectS.ledgerDepot.Root() {
-				if endorse := connectReader.connectS.ImportEndorse(prs.Level); endorse != nil {
-					node.AttemptTransmit(p2p.Packet{
-						StreamUID: StatusStream,
-						Signal: &cometconnect.BallotAssignMaj23{
-							Level:  prs.Level,
-							Cycle:   endorse.Cycle,
-							Kind:    engineproto.PreendorseKind,
-							LedgerUID: endorse.LedgerUID.ToSchema(),
+			prs := ps.ObtainIterationStatus()
+			if prs.OvertakeEndorseIteration != -1 && prs.Altitude > 0 && prs.Altitude <= connectionReader.connectionSTR.ledgerDepot.Altitude() &&
+				prs.Altitude >= connectionReader.connectionSTR.ledgerDepot.Foundation() {
+				if endorse := connectionReader.connectionSTR.FetchEndorse(prs.Altitude); endorse != nil {
+					node.AttemptTransmit(p2p.Wrapper{
+						ConduitUUID: StatusConduit,
+						Signal: &strongmindcons.BallotAssignMajor23{
+							Altitude:  prs.Altitude,
+							Iteration:   endorse.Iteration,
+							Kind:    commitchema.PreendorseKind,
+							LedgerUUID: endorse.LedgerUUID.TowardSchema(),
 						},
 					})
-					time.Sleep(connectReader.connectS.settings.NodeInquireMaj23pausePeriod)
+					time.Sleep(connectionReader.connectionSTR.settings.NodeInquireMajor23dormantInterval)
 				}
 			}
 		}
 
-		time.Sleep(connectReader.connectS.settings.NodeInquireMaj23pausePeriod)
+		time.Sleep(connectionReader.connectionSTR.settings.NodeInquireMajor23dormantInterval)
 
 		continue EXTERNAL_CYCLE
 	}
@@ -801,121 +806,121 @@ EXTERNAL_CYCLE:
 //
 //
 //
-func selectSegmentToTransmit(
+func selectFragmentTowardTransmit(
 	tracer log.Tracer,
 	ledgerDepot sm.LedgerDepot,
-	rs *cskinds.DurationStatus,
+	rs *controlkinds.IterationStatus,
 	ps *NodeStatus,
-	prs *cskinds.NodeDurationStatus,
-) (*kinds.Segment, bool) {
+	prs *controlkinds.NodeIterationStatus,
+) (*kinds.Fragment, bool) {
 	//
-	if rs.NominationLedgerSegments.HasHeading(prs.NominationLedgerSegmentAssignHeading) {
-		if ordinal, ok := rs.NominationLedgerSegments.BitList().Sub(prs.NominationLedgerSegments.Clone()).SelectArbitrary(); ok {
-			segment := rs.NominationLedgerSegments.FetchSegment(ordinal)
+	if rs.NominationLedgerFragments.OwnsHeading(prs.NominationLedgerFragmentAssignHeading) {
+		if ordinal, ok := rs.NominationLedgerFragments.DigitCollection().Sub(prs.NominationLedgerFragments.Duplicate()).SelectArbitrary(); ok {
+			fragment := rs.NominationLedgerFragments.ObtainFragment(ordinal)
 			//
-			return segment, true
+			return fragment, true
 		}
 	}
 
 	//
-	ledgerDepotRoot := ledgerDepot.Root()
-	if ledgerDepotRoot > 0 &&
-		0 < prs.Level && prs.Level < rs.Level &&
-		prs.Level >= ledgerDepotRoot {
-		levelTracer := tracer.With("REDACTED", prs.Level)
+	ledgerDepotFoundation := ledgerDepot.Foundation()
+	if ledgerDepotFoundation > 0 &&
+		0 < prs.Altitude && prs.Altitude < rs.Altitude &&
+		prs.Altitude >= ledgerDepotFoundation {
+		altitudeTracer := tracer.Using("REDACTED", prs.Altitude)
 
 		//
-		if prs.NominationLedgerSegments == nil {
-			ledgerMeta := ledgerDepot.ImportLedgerMeta(prs.Level)
-			if ledgerMeta == nil {
-				levelTracer.Fault("REDACTED",
-					"REDACTED", ledgerDepotRoot, "REDACTED", ledgerDepot.Level())
+		if prs.NominationLedgerFragments == nil {
+			ledgerSummary := ledgerDepot.FetchLedgerSummary(prs.Altitude)
+			if ledgerSummary == nil {
+				altitudeTracer.Failure("REDACTED",
+					"REDACTED", ledgerDepotFoundation, "REDACTED", ledgerDepot.Altitude())
 				return nil, false
 			}
-			ps.InitNominationLedgerSegments(ledgerMeta.LedgerUID.SegmentAssignHeading)
+			ps.InitializeNominationLedgerFragments(ledgerSummary.LedgerUUID.FragmentAssignHeading)
 			//
 			return nil, true //
 		}
-		segment := selectSegmentForOvertake(levelTracer, rs, prs, ledgerDepot)
-		if segment != nil {
+		fragment := selectFragmentForeachOvertake(altitudeTracer, rs, prs, ledgerDepot)
+		if fragment != nil {
 			//
-			return segment, false
+			return fragment, false
 		}
 	}
 
 	return nil, false
 }
 
-func selectSegmentForOvertake(
+func selectFragmentForeachOvertake(
 	tracer log.Tracer,
-	rs *cskinds.DurationStatus,
-	prs *cskinds.NodeDurationStatus,
+	rs *controlkinds.IterationStatus,
+	prs *controlkinds.NodeIterationStatus,
 	ledgerDepot sm.LedgerDepot,
-) *kinds.Segment {
-	ordinal, ok := prs.NominationLedgerSegments.Not().SelectArbitrary()
+) *kinds.Fragment {
+	ordinal, ok := prs.NominationLedgerFragments.Not().SelectArbitrary()
 	if !ok {
 		return nil
 	}
 	//
-	ledgerMeta := ledgerDepot.ImportLedgerMeta(prs.Level)
-	if ledgerMeta == nil {
-		tracer.Fault("REDACTED", "REDACTED", rs.Level,
-			"REDACTED", ledgerDepot.Root(), "REDACTED", ledgerDepot.Level())
+	ledgerSummary := ledgerDepot.FetchLedgerSummary(prs.Altitude)
+	if ledgerSummary == nil {
+		tracer.Failure("REDACTED", "REDACTED", rs.Altitude,
+			"REDACTED", ledgerDepot.Foundation(), "REDACTED", ledgerDepot.Altitude())
 		return nil
-	} else if !ledgerMeta.LedgerUID.SegmentAssignHeading.Matches(prs.NominationLedgerSegmentAssignHeading) {
+	} else if !ledgerSummary.LedgerUUID.FragmentAssignHeading.Matches(prs.NominationLedgerFragmentAssignHeading) {
 		tracer.Details("REDACTED",
-			"REDACTED", ledgerMeta.LedgerUID.SegmentAssignHeading, "REDACTED", prs.NominationLedgerSegmentAssignHeading)
+			"REDACTED", ledgerSummary.LedgerUUID.FragmentAssignHeading, "REDACTED", prs.NominationLedgerFragmentAssignHeading)
 		return nil
 	}
 	//
-	segment := ledgerDepot.ImportLedgerSegment(prs.Level, ordinal)
-	if segment == nil {
-		tracer.Fault("REDACTED", "REDACTED", ordinal,
-			"REDACTED", ledgerMeta.LedgerUID.SegmentAssignHeading, "REDACTED", prs.NominationLedgerSegmentAssignHeading)
+	fragment := ledgerDepot.FetchLedgerFragment(prs.Altitude, ordinal)
+	if fragment == nil {
+		tracer.Failure("REDACTED", "REDACTED", ordinal,
+			"REDACTED", ledgerSummary.LedgerUUID.FragmentAssignHeading, "REDACTED", prs.NominationLedgerFragmentAssignHeading)
 		return nil
 	}
-	return segment
+	return fragment
 }
 
-func selectBallotToTransmit(
+func selectBallotTowardTransmit(
 	tracer log.Tracer,
-	connectS *Status,
-	rs *cskinds.DurationStatus,
+	connectionSTR *Status,
+	rs *controlkinds.IterationStatus,
 	ps *NodeStatus,
-	prs *cskinds.NodeDurationStatus,
+	prs *controlkinds.NodeIterationStatus,
 ) *kinds.Ballot {
 	//
-	if rs.Level == prs.Level {
-		levelTracer := tracer.With("REDACTED", prs.Level)
-		return selectBallotOngoingLevel(levelTracer, rs, prs, ps)
+	if rs.Altitude == prs.Altitude {
+		altitudeTracer := tracer.Using("REDACTED", prs.Altitude)
+		return selectBallotPrevailingAltitude(altitudeTracer, rs, prs, ps)
 	}
 
 	//
 	//
-	if prs.Level != 0 && rs.Level == prs.Level+1 {
-		if ballot := ps.SelectBallotToTransmit(rs.FinalEndorse); ballot != nil {
-			tracer.Diagnose("REDACTED", "REDACTED", prs.Level)
+	if prs.Altitude != 0 && rs.Altitude == prs.Altitude+1 {
+		if ballot := ps.SelectBallotTowardTransmit(rs.FinalEndorse); ballot != nil {
+			tracer.Diagnose("REDACTED", "REDACTED", prs.Altitude)
 			return ballot
 		}
 	}
 
 	//
 	//
-	ledgerDepotRoot := connectS.ledgerDepot.Root()
-	if ledgerDepotRoot > 0 && prs.Level != 0 && rs.Level >= prs.Level+2 && prs.Level >= ledgerDepotRoot {
+	ledgerDepotFoundation := connectionSTR.ledgerDepot.Foundation()
+	if ledgerDepotFoundation > 0 && prs.Altitude != 0 && rs.Altitude >= prs.Altitude+2 && prs.Altitude >= ledgerDepotFoundation {
 		//
 		//
 		var ec *kinds.ExpandedEndorse
-		var veActivated bool
+		var verActivated bool
 		func() {
-			connectS.mtx.RLock()
-			defer connectS.mtx.RUnlock()
-			veActivated = connectS.status.AgreementOptions.Iface.BallotPluginsActivated(prs.Level)
+			connectionSTR.mtx.RLock()
+			defer connectionSTR.mtx.RUnlock()
+			verActivated = connectionSTR.status.AgreementSettings.Iface.BallotAdditionsActivated(prs.Altitude)
 		}()
-		if veActivated {
-			ec = connectS.ledgerDepot.ImportLedgerExpandedEndorse(prs.Level)
+		if verActivated {
+			ec = connectionSTR.ledgerDepot.FetchLedgerExpandedEndorse(prs.Altitude)
 		} else {
-			c := connectS.ledgerDepot.ImportLedgerEndorse(prs.Level)
+			c := connectionSTR.ledgerDepot.FetchLedgerEndorse(prs.Altitude)
 			if c == nil {
 				return nil
 			}
@@ -924,64 +929,64 @@ func selectBallotToTransmit(
 		if ec == nil {
 			return nil
 		}
-		if ballot := ps.SelectBallotToTransmit(ec); ballot != nil {
-			tracer.Diagnose("REDACTED", "REDACTED", prs.Level)
+		if ballot := ps.SelectBallotTowardTransmit(ec); ballot != nil {
+			tracer.Diagnose("REDACTED", "REDACTED", prs.Altitude)
 			return ballot
 		}
 	}
 	return nil
 }
 
-func selectBallotOngoingLevel(
+func selectBallotPrevailingAltitude(
 	tracer log.Tracer,
-	rs *cskinds.DurationStatus,
-	prs *cskinds.NodeDurationStatus,
+	rs *controlkinds.IterationStatus,
+	prs *controlkinds.NodeIterationStatus,
 	ps *NodeStatus,
 ) *kinds.Ballot {
 	//
-	if prs.Phase == cskinds.DurationPhaseNewLevel {
-		if ballot := ps.SelectBallotToTransmit(rs.FinalEndorse); ballot != nil {
+	if prs.Phase == controlkinds.IterationPhaseFreshAltitude {
+		if ballot := ps.SelectBallotTowardTransmit(rs.FinalEndorse); ballot != nil {
 			tracer.Diagnose("REDACTED")
 			return ballot
 		}
 	}
 	//
-	if prs.Phase <= cskinds.DurationPhaseNominate && prs.Cycle != -1 && prs.Cycle <= rs.Cycle && prs.NominationPOLDuration != -1 {
-		if polPreballots := rs.Ballots.Preballots(prs.NominationPOLDuration); polPreballots != nil {
-			if ballot := ps.SelectBallotToTransmit(polPreballots); ballot != nil {
+	if prs.Phase <= controlkinds.IterationPhaseNominate && prs.Iteration != -1 && prs.Iteration <= rs.Iteration && prs.NominationPolicyIteration != -1 {
+		if policyPreballots := rs.Ballots.Preballots(prs.NominationPolicyIteration); policyPreballots != nil {
+			if ballot := ps.SelectBallotTowardTransmit(policyPreballots); ballot != nil {
 				tracer.Diagnose("REDACTED",
-					"REDACTED", prs.NominationPOLDuration)
+					"REDACTED", prs.NominationPolicyIteration)
 				return ballot
 			}
 		}
 	}
 	//
-	if prs.Phase <= cskinds.DurationPhasePreballotWait && prs.Cycle != -1 && prs.Cycle <= rs.Cycle {
-		if ballot := ps.SelectBallotToTransmit(rs.Ballots.Preballots(prs.Cycle)); ballot != nil {
-			tracer.Diagnose("REDACTED", "REDACTED", prs.Cycle)
+	if prs.Phase <= controlkinds.IterationPhasePreballotAwait && prs.Iteration != -1 && prs.Iteration <= rs.Iteration {
+		if ballot := ps.SelectBallotTowardTransmit(rs.Ballots.Preballots(prs.Iteration)); ballot != nil {
+			tracer.Diagnose("REDACTED", "REDACTED", prs.Iteration)
 			return ballot
 		}
 	}
 	//
-	if prs.Phase <= cskinds.DurationPhasePreendorseWait && prs.Cycle != -1 && prs.Cycle <= rs.Cycle {
-		if ballot := ps.SelectBallotToTransmit(rs.Ballots.Preendorsements(prs.Cycle)); ballot != nil {
-			tracer.Diagnose("REDACTED", "REDACTED", prs.Cycle)
+	if prs.Phase <= controlkinds.IterationPhasePreendorseAwait && prs.Iteration != -1 && prs.Iteration <= rs.Iteration {
+		if ballot := ps.SelectBallotTowardTransmit(rs.Ballots.Preendorsements(prs.Iteration)); ballot != nil {
+			tracer.Diagnose("REDACTED", "REDACTED", prs.Iteration)
 			return ballot
 		}
 	}
 	//
-	if prs.Cycle != -1 && prs.Cycle <= rs.Cycle {
-		if ballot := ps.SelectBallotToTransmit(rs.Ballots.Preballots(prs.Cycle)); ballot != nil {
-			tracer.Diagnose("REDACTED", "REDACTED", prs.Cycle)
+	if prs.Iteration != -1 && prs.Iteration <= rs.Iteration {
+		if ballot := ps.SelectBallotTowardTransmit(rs.Ballots.Preballots(prs.Iteration)); ballot != nil {
+			tracer.Diagnose("REDACTED", "REDACTED", prs.Iteration)
 			return ballot
 		}
 	}
 	//
-	if prs.NominationPOLDuration != -1 {
-		if polPreballots := rs.Ballots.Preballots(prs.NominationPOLDuration); polPreballots != nil {
-			if ballot := ps.SelectBallotToTransmit(polPreballots); ballot != nil {
+	if prs.NominationPolicyIteration != -1 {
+		if policyPreballots := rs.Ballots.Preballots(prs.NominationPolicyIteration); policyPreballots != nil {
+			if ballot := ps.SelectBallotTowardTransmit(policyPreballots); ballot != nil {
 				tracer.Diagnose("REDACTED",
-					"REDACTED", prs.NominationPOLDuration)
+					"REDACTED", prs.NominationPolicyIteration)
 				return ballot
 			}
 		}
@@ -992,49 +997,49 @@ func selectBallotOngoingLevel(
 
 //
 
-func (connectReader *Handler) nodeMetricsProcess() {
+func (connectionReader *Handler) nodeMetricsProcedure() {
 	for {
-		if !connectReader.IsActive() {
-			connectReader.Tracer.Details("REDACTED")
+		if !connectionReader.EqualsActive() {
+			connectionReader.Tracer.Details("REDACTED")
 			return
 		}
 
 		select {
-		case msg := <-connectReader.connectS.metricsMessageBuffer:
-			connectReader.Tracer.Diagnose("REDACTED", "REDACTED", msg.NodeUID)
+		case msg := <-connectionReader.connectionSTR.metricsSignalStaging:
+			connectionReader.Tracer.Diagnose("REDACTED", "REDACTED", msg.NodeUUID)
 
 			//
-			if msg.NodeUID == "REDACTED" {
+			if msg.NodeUUID == "REDACTED" {
 				continue
 			}
 
 			//
-			node := connectReader.Router.Nodes().Get(msg.NodeUID)
+			node := connectionReader.Router.Nodes().Get(msg.NodeUUID)
 			if node == nil {
-				connectReader.Tracer.Diagnose("REDACTED", "REDACTED", msg.NodeUID)
+				connectionReader.Tracer.Diagnose("REDACTED", "REDACTED", msg.NodeUUID)
 				continue
 			}
 			//
-			ps, ok := node.Get(kinds.NodeStatusKey).(*NodeStatus)
+			ps, ok := node.Get(kinds.NodeStatusToken).(*NodeStatus)
 			if !ok {
 				panic(fmt.Sprintf("REDACTED", node))
 			}
-			switch tangibleMessage := msg.Msg.(type) {
+			switch tangibleSignal := msg.Msg.(type) {
 			case *BallotSignal:
-				if countBallots := ps.LogBallot(); countBallots%ballotsToInputToTransformSoundNode == 0 {
-					connectReader.Router.StampNodeAsSound(node)
+				if countBallots := ps.LogBallot(); countBallots%ballotsTowardInputTowardTransformValidNode == 0 {
+					connectionReader.Router.LabelNodeLikeValid(node)
 				}
-			case *LedgerSegmentSignal:
-				if countSegments := ps.LogLedgerSegment(); countSegments%ledgersToInputToTransformSoundNode == 0 {
-					connectReader.Router.StampNodeAsSound(node)
+			case *LedgerFragmentSignal:
+				if countFragments := ps.LogLedgerFragment(); countFragments%ledgersTowardInputTowardTransformValidNode == 0 {
+					connectionReader.Router.LabelNodeLikeValid(node)
 				}
-			case *NewDurationPhaseSignal:
-				connectReader.Stats.NodeLevel.With("REDACTED", string(msg.NodeUID)).Set(float64(tangibleMessage.Level))
+			case *FreshIterationPhaseSignal:
+				connectionReader.Telemetry.NodeAltitude.With("REDACTED", string(msg.NodeUUID)).Set(float64(tangibleSignal.Altitude))
 			}
-		case <-connectReader.connectS.Exit():
+		case <-connectionReader.connectionSTR.Exit():
 			return
 
-		case <-connectReader.Exit():
+		case <-connectionReader.Exit():
 			return
 		}
 	}
@@ -1043,29 +1048,29 @@ func (connectReader *Handler) nodeMetricsProcess() {
 //
 //
 //
-func (connectReader *Handler) String() string {
+func (connectionReader *Handler) Text() string {
 	//
 	return "REDACTED" //
 }
 
 //
-func (connectReader *Handler) StringIndented(indent string) string {
+func (connectionReader *Handler) TextFormatted(format string) string {
 	s := "REDACTED"
-	s += indent + "REDACTED" + connectReader.connectS.StringIndented(indent+"REDACTED") + "REDACTED"
-	connectReader.Router.Nodes().ForEach(func(node p2p.Node) {
-		ps, ok := node.Get(kinds.NodeStatusKey).(*NodeStatus)
+	s += format + "REDACTED" + connectionReader.connectionSTR.TextFormatted(format+"REDACTED") + "REDACTED"
+	connectionReader.Router.Nodes().ForeachEvery(func(node p2p.Node) {
+		ps, ok := node.Get(kinds.NodeStatusToken).(*NodeStatus)
 		if !ok {
 			panic(fmt.Sprintf("REDACTED", node))
 		}
-		s += indent + "REDACTED" + ps.StringIndented(indent+"REDACTED") + "REDACTED"
+		s += format + "REDACTED" + ps.TextFormatted(format+"REDACTED") + "REDACTED"
 	})
-	s += indent + "REDACTED"
+	s += format + "REDACTED"
 	return s
 }
 
 //
-func HandlerStats(stats *Stats) HandlerSetting {
-	return func(connectReader *Handler) { connectReader.Stats = stats }
+func HandlerTelemetry(telemetry *Telemetry) HandlerSelection {
+	return func(connectionReader *Handler) { connectionReader.Telemetry = telemetry }
 }
 
 //
@@ -1079,31 +1084,31 @@ type NodeStatus struct {
 	tracer log.Tracer
 
 	mtx   sync.Mutex             //
-	PRS   cskinds.NodeDurationStatus `json:"duration_status"` //
+	PRS   controlkinds.NodeIterationStatus `json:"iteration_status"` //
 	Metrics *nodeStatusMetrics        `json:"metrics"`       //
 }
 
 //
 type nodeStatusMetrics struct {
 	Ballots      int `json:"ballots"`
-	LedgerSegments int `json:"ledger_segments"`
+	LedgerFragments int `json:"ledger_fragments"`
 }
 
-func (pss nodeStatusMetrics) String() string {
+func (pss nodeStatusMetrics) Text() string {
 	return fmt.Sprintf("REDACTED",
-		pss.Ballots, pss.LedgerSegments)
+		pss.Ballots, pss.LedgerFragments)
 }
 
 //
-func NewNodeStatus(node p2p.Node) *NodeStatus {
+func FreshNodeStatus(node p2p.Node) *NodeStatus {
 	return &NodeStatus{
 		node:   node,
-		tracer: log.NewNoopTracer(),
-		PRS: cskinds.NodeDurationStatus{
-			Cycle:              -1,
-			NominationPOLDuration:   -1,
-			FinalEndorseDuration:    -1,
-			OvertakeEndorseDuration: -1,
+		tracer: log.FreshNooperationTracer(),
+		PRS: controlkinds.NodeIterationStatus{
+			Iteration:              -1,
+			NominationPolicyIteration:   -1,
+			FinalEndorseIteration:    -1,
+			OvertakeEndorseIteration: -1,
 		},
 		Metrics: &nodeStatusMetrics{},
 	}
@@ -1118,7 +1123,7 @@ func (ps *NodeStatus) AssignTracer(tracer log.Tracer) *NodeStatus {
 
 //
 //
-func (ps *NodeStatus) FetchDurationStatus() *cskinds.NodeDurationStatus {
+func (ps *NodeStatus) ObtainIterationStatus() *controlkinds.NodeIterationStatus {
 	ps.mtx.Lock()
 	defer ps.mtx.Unlock()
 
@@ -1127,28 +1132,28 @@ func (ps *NodeStatus) FetchDurationStatus() *cskinds.NodeDurationStatus {
 }
 
 //
-func (ps *NodeStatus) SerializeJSON() ([]byte, error) {
+func (ps *NodeStatus) SerializeJSN() ([]byte, error) {
 	ps.mtx.Lock()
 	defer ps.mtx.Unlock()
 
-	type jsonNodeStatus NodeStatus
-	return cometjson.Serialize((*jsonNodeStatus)(ps))
+	type jsnNodeStatus NodeStatus
+	return strongmindjson.Serialize((*jsnNodeStatus)(ps))
 }
 
 //
 //
-func (ps *NodeStatus) FetchLevel() int64 {
+func (ps *NodeStatus) ObtainAltitude() int64 {
 	ps.mtx.Lock()
 	defer ps.mtx.Unlock()
-	return ps.PRS.Level
+	return ps.PRS.Altitude
 }
 
 //
-func (ps *NodeStatus) AssignHasNomination(nomination *kinds.Nomination) {
+func (ps *NodeStatus) AssignOwnsNomination(nomination *kinds.Nomination) {
 	ps.mtx.Lock()
 	defer ps.mtx.Unlock()
 
-	if ps.PRS.Level != nomination.Level || ps.PRS.Cycle != nomination.Cycle {
+	if ps.PRS.Altitude != nomination.Altitude || ps.PRS.Iteration != nomination.Iteration {
 		return
 	}
 
@@ -1159,39 +1164,39 @@ func (ps *NodeStatus) AssignHasNomination(nomination *kinds.Nomination) {
 	ps.PRS.Nomination = true
 
 	//
-	if ps.PRS.NominationLedgerSegments != nil {
+	if ps.PRS.NominationLedgerFragments != nil {
 		return
 	}
 
-	ps.PRS.NominationLedgerSegmentAssignHeading = nomination.LedgerUID.SegmentAssignHeading
-	ps.PRS.NominationLedgerSegments = bits.NewBitList(int(nomination.LedgerUID.SegmentAssignHeading.Sum))
-	ps.PRS.NominationPOLDuration = nomination.POLDuration
-	ps.PRS.NominationPOL = nil //
+	ps.PRS.NominationLedgerFragmentAssignHeading = nomination.LedgerUUID.FragmentAssignHeading
+	ps.PRS.NominationLedgerFragments = digits.FreshDigitCollection(int(nomination.LedgerUUID.FragmentAssignHeading.Sum))
+	ps.PRS.NominationPolicyIteration = nomination.PolicyIteration
+	ps.PRS.NominationPolicy = nil //
 }
 
 //
-func (ps *NodeStatus) InitNominationLedgerSegments(segmentAssignHeading kinds.SegmentAssignHeading) {
+func (ps *NodeStatus) InitializeNominationLedgerFragments(fragmentAssignHeading kinds.FragmentAssignHeading) {
 	ps.mtx.Lock()
 	defer ps.mtx.Unlock()
 
-	if ps.PRS.NominationLedgerSegments != nil {
+	if ps.PRS.NominationLedgerFragments != nil {
 		return
 	}
 
-	ps.PRS.NominationLedgerSegmentAssignHeading = segmentAssignHeading
-	ps.PRS.NominationLedgerSegments = bits.NewBitList(int(segmentAssignHeading.Sum))
+	ps.PRS.NominationLedgerFragmentAssignHeading = fragmentAssignHeading
+	ps.PRS.NominationLedgerFragments = digits.FreshDigitCollection(int(fragmentAssignHeading.Sum))
 }
 
 //
-func (ps *NodeStatus) AssignHasNominationLedgerSegment(level int64, duration int32, ordinal int) {
+func (ps *NodeStatus) AssignOwnsNominationLedgerFragment(altitude int64, iteration int32, ordinal int) {
 	ps.mtx.Lock()
 	defer ps.mtx.Unlock()
 
-	if ps.PRS.Level != level || ps.PRS.Cycle != duration {
+	if ps.PRS.Altitude != altitude || ps.PRS.Iteration != iteration {
 		return
 	}
 
-	ps.PRS.NominationLedgerSegments.AssignOrdinal(ordinal, true)
+	ps.PRS.NominationLedgerFragments.AssignOrdinal(ordinal, true)
 }
 
 //
@@ -1199,16 +1204,16 @@ func (ps *NodeStatus) AssignHasNominationLedgerSegment(level int64, duration int
 //
 //
 //
-func (ps *NodeStatus) SelectTransmitBallot(ballots kinds.BallotAssignScanner) bool {
-	if ballot := ps.SelectBallotToTransmit(ballots); ballot != nil {
+func (ps *NodeStatus) SelectTransmitBallot(ballots kinds.BallotAssignFetcher) bool {
+	if ballot := ps.SelectBallotTowardTransmit(ballots); ballot != nil {
 		ps.tracer.Diagnose("REDACTED", "REDACTED", ps, "REDACTED", ballot)
-		if ps.node.Transmit(p2p.Packet{
-			StreamUID: BallotStream,
-			Signal: &cometconnect.Ballot{
-				Ballot: ballot.ToSchema(),
+		if ps.node.Transmit(p2p.Wrapper{
+			ConduitUUID: BallotConduit,
+			Signal: &strongmindcons.Ballot{
+				Ballot: ballot.TowardSchema(),
 			},
 		}) {
-			ps.AssignHasBallot(ballot)
+			ps.AssignOwnsBallot(ballot)
 			return true
 		}
 		return false
@@ -1218,24 +1223,24 @@ func (ps *NodeStatus) SelectTransmitBallot(ballots kinds.BallotAssignScanner) bo
 
 //
 //
-func (ps *NodeStatus) TransmitSegmentAssignHasSegment(segment *kinds.Segment, prs *cskinds.NodeDurationStatus) bool {
+func (ps *NodeStatus) TransmitFragmentAssignOwnsFragment(fragment *kinds.Fragment, prs *controlkinds.NodeIterationStatus) bool {
 	//
-	ps.tracer.Diagnose("REDACTED", "REDACTED", prs.Level, "REDACTED", prs.Cycle, "REDACTED", segment.Ordinal)
-	pp, err := segment.ToSchema()
+	ps.tracer.Diagnose("REDACTED", "REDACTED", prs.Altitude, "REDACTED", prs.Iteration, "REDACTED", fragment.Ordinal)
+	pp, err := fragment.TowardSchema()
 	if err != nil {
 		//
-		ps.tracer.Fault("REDACTED", "REDACTED", segment.Ordinal, "REDACTED", err)
+		ps.tracer.Failure("REDACTED", "REDACTED", fragment.Ordinal, "REDACTED", err)
 		return false
 	}
-	if ps.node.Transmit(p2p.Packet{
-		StreamUID: DataStream,
-		Signal: &cometconnect.LedgerSegment{
-			Level: prs.Level, //
-			Cycle:  prs.Cycle,  //
-			Segment:   *pp,
+	if ps.node.Transmit(p2p.Wrapper{
+		ConduitUUID: DataConduit,
+		Signal: &strongmindcons.LedgerFragment{
+			Altitude: prs.Altitude, //
+			Iteration:  prs.Iteration,  //
+			Fragment:   *pp,
 		},
 	}) {
-		ps.AssignHasNominationLedgerSegment(prs.Level, prs.Cycle, int(segment.Ordinal))
+		ps.AssignOwnsNominationLedgerFragment(prs.Altitude, prs.Iteration, int(fragment.Ordinal))
 		return true
 	}
 	ps.tracer.Diagnose("REDACTED")
@@ -1244,33 +1249,33 @@ func (ps *NodeStatus) TransmitSegmentAssignHasSegment(segment *kinds.Segment, pr
 
 //
 //
-func (ps *NodeStatus) TransmitNominationAssignHasNomination(
+func (ps *NodeStatus) TransmitNominationAssignOwnsNomination(
 	tracer log.Tracer,
-	rs *cskinds.DurationStatus,
-	prs *cskinds.NodeDurationStatus,
+	rs *controlkinds.IterationStatus,
+	prs *controlkinds.NodeIterationStatus,
 ) {
 	//
-	tracer.Diagnose("REDACTED", "REDACTED", prs.Level, "REDACTED", prs.Cycle)
-	if ps.node.Transmit(p2p.Packet{
-		StreamUID: DataStream,
-		Signal:   &cometconnect.Nomination{Nomination: *rs.Nomination.ToSchema()},
+	tracer.Diagnose("REDACTED", "REDACTED", prs.Altitude, "REDACTED", prs.Iteration)
+	if ps.node.Transmit(p2p.Wrapper{
+		ConduitUUID: DataConduit,
+		Signal:   &strongmindcons.Nomination{Nomination: *rs.Nomination.TowardSchema()},
 	}) {
 		//
-		ps.AssignHasNomination(rs.Nomination)
+		ps.AssignOwnsNomination(rs.Nomination)
 	}
 
 	//
 	//
 	//
 	//
-	if 0 <= rs.Nomination.POLDuration {
-		tracer.Diagnose("REDACTED", "REDACTED", prs.Level, "REDACTED", prs.Cycle)
-		ps.node.Transmit(p2p.Packet{
-			StreamUID: DataStream,
-			Signal: &cometconnect.NominationPOL{
-				Level:           rs.Level,
-				NominationPolDuration: rs.Nomination.POLDuration,
-				NominationPol:      *rs.Ballots.Preballots(rs.Nomination.POLDuration).BitList().ToSchema(),
+	if 0 <= rs.Nomination.PolicyIteration {
+		tracer.Diagnose("REDACTED", "REDACTED", prs.Altitude, "REDACTED", prs.Iteration)
+		ps.node.Transmit(p2p.Wrapper{
+			ConduitUUID: DataConduit,
+			Signal: &strongmindcons.NominationPolicy{
+				Altitude:           rs.Altitude,
+				NominationPolicyIteration: rs.Nomination.PolicyIteration,
+				NominationPolicy:      *rs.Ballots.Preballots(rs.Nomination.PolicyIteration).DigitCollection().TowardSchema(),
 			},
 		})
 	}
@@ -1278,15 +1283,15 @@ func (ps *NodeStatus) TransmitNominationAssignHasNomination(
 
 //
 //
-func (ps *NodeStatus) transmitBallotAssignHasBallot(ballot *kinds.Ballot) bool {
+func (ps *NodeStatus) transmitBallotAssignOwnsBallot(ballot *kinds.Ballot) bool {
 	ps.tracer.Diagnose("REDACTED", "REDACTED", ps, "REDACTED", ballot)
-	if ps.node.Transmit(p2p.Packet{
-		StreamUID: BallotStream,
-		Signal: &cometconnect.Ballot{
-			Ballot: ballot.ToSchema(),
+	if ps.node.Transmit(p2p.Wrapper{
+		ConduitUUID: BallotConduit,
+		Signal: &strongmindcons.Ballot{
+			Ballot: ballot.TowardSchema(),
 		},
 	}) {
-		ps.AssignHasBallot(ballot)
+		ps.AssignOwnsBallot(ballot)
 		return true
 	}
 	return false
@@ -1295,74 +1300,74 @@ func (ps *NodeStatus) transmitBallotAssignHasBallot(ballot *kinds.Ballot) bool {
 //
 //
 //
-func (ps *NodeStatus) SelectBallotToTransmit(ballots kinds.BallotAssignScanner) *kinds.Ballot {
+func (ps *NodeStatus) SelectBallotTowardTransmit(ballots kinds.BallotAssignFetcher) *kinds.Ballot {
 	ps.mtx.Lock()
 	defer ps.mtx.Unlock()
 
-	if ballots.Volume() == 0 {
+	if ballots.Extent() == 0 {
 		return nil
 	}
 
-	level, duration, ballotsKind, volume := ballots.FetchLevel(), ballots.FetchDuration(), engineproto.AttestedMessageKind(ballots.Kind()), ballots.Volume()
+	altitude, iteration, ballotsKind, extent := ballots.ObtainAltitude(), ballots.ObtainIteration(), commitchema.AttestedSignalKind(ballots.Kind()), ballots.Extent()
 
 	//
-	if ballots.IsEndorse() {
-		ps.assureOvertakeEndorseDuration(level, duration, volume)
+	if ballots.EqualsEndorse() {
+		ps.assureOvertakeEndorseIteration(altitude, iteration, extent)
 	}
-	ps.assureBallotBitLists(level, volume)
+	ps.assureBallotDigitCollections(altitude, extent)
 
-	psBallots := ps.fetchBallotBitList(level, duration, ballotsKind)
-	if psBallots == nil {
+	processesBallots := ps.obtainBallotDigitCollection(altitude, iteration, ballotsKind)
+	if processesBallots == nil {
 		return nil //
 	}
-	if ordinal, ok := ballots.BitList().Sub(psBallots).SelectArbitrary(); ok {
-		ballot := ballots.FetchByOrdinal(int32(ordinal))
+	if ordinal, ok := ballots.DigitCollection().Sub(processesBallots).SelectArbitrary(); ok {
+		ballot := ballots.ObtainViaOrdinal(int32(ordinal))
 		if ballot == nil {
-			ps.tracer.Fault("REDACTED", "REDACTED", ballots, "REDACTED", ordinal)
+			ps.tracer.Failure("REDACTED", "REDACTED", ballots, "REDACTED", ordinal)
 		}
 		return ballot
 	}
 	return nil
 }
 
-func (ps *NodeStatus) fetchBallotBitList(level int64, duration int32, ballotsKind engineproto.AttestedMessageKind) *bits.BitList {
-	if !kinds.IsBallotKindSound(ballotsKind) {
+func (ps *NodeStatus) obtainBallotDigitCollection(altitude int64, iteration int32, ballotsKind commitchema.AttestedSignalKind) *digits.DigitCollection {
+	if !kinds.EqualsBallotKindSound(ballotsKind) {
 		return nil
 	}
 
-	if ps.PRS.Level == level {
-		if ps.PRS.Cycle == duration {
+	if ps.PRS.Altitude == altitude {
+		if ps.PRS.Iteration == iteration {
 			switch ballotsKind {
-			case engineproto.PreballotKind:
+			case commitchema.PreballotKind:
 				return ps.PRS.Preballots
-			case engineproto.PreendorseKind:
+			case commitchema.PreendorseKind:
 				return ps.PRS.Preendorsements
 			}
 		}
-		if ps.PRS.OvertakeEndorseDuration == duration {
+		if ps.PRS.OvertakeEndorseIteration == iteration {
 			switch ballotsKind {
-			case engineproto.PreballotKind:
+			case commitchema.PreballotKind:
 				return nil
-			case engineproto.PreendorseKind:
+			case commitchema.PreendorseKind:
 				return ps.PRS.OvertakeEndorse
 			}
 		}
-		if ps.PRS.NominationPOLDuration == duration {
+		if ps.PRS.NominationPolicyIteration == iteration {
 			switch ballotsKind {
-			case engineproto.PreballotKind:
-				return ps.PRS.NominationPOL
-			case engineproto.PreendorseKind:
+			case commitchema.PreballotKind:
+				return ps.PRS.NominationPolicy
+			case commitchema.PreendorseKind:
 				return nil
 			}
 		}
 		return nil
 	}
-	if ps.PRS.Level == level+1 {
-		if ps.PRS.FinalEndorseDuration == duration {
+	if ps.PRS.Altitude == altitude+1 {
+		if ps.PRS.FinalEndorseIteration == iteration {
 			switch ballotsKind {
-			case engineproto.PreballotKind:
+			case commitchema.PreballotKind:
 				return nil
-			case engineproto.PreendorseKind:
+			case commitchema.PreendorseKind:
 				return ps.PRS.FinalEndorse
 			}
 		}
@@ -1372,8 +1377,8 @@ func (ps *NodeStatus) fetchBallotBitList(level int64, duration int32, ballotsKin
 }
 
 //
-func (ps *NodeStatus) assureOvertakeEndorseDuration(level int64, duration int32, countRatifiers int) {
-	if ps.PRS.Level != level {
+func (ps *NodeStatus) assureOvertakeEndorseIteration(altitude int64, iteration int32, countAssessors int) {
+	if ps.PRS.Altitude != altitude {
 		return
 	}
 	/**
@@ -1389,14 +1394,14 @@ func (ps *NodeStatus) assureOvertakeEndorseDuration(level int64, duration int32,
 )
 }
 */
-	if ps.PRS.OvertakeEndorseDuration == duration {
+	if ps.PRS.OvertakeEndorseIteration == iteration {
 		return //
 	}
-	ps.PRS.OvertakeEndorseDuration = duration
-	if duration == ps.PRS.Cycle {
+	ps.PRS.OvertakeEndorseIteration = iteration
+	if iteration == ps.PRS.Iteration {
 		ps.PRS.OvertakeEndorse = ps.PRS.Preendorsements
 	} else {
-		ps.PRS.OvertakeEndorse = bits.NewBitList(countRatifiers)
+		ps.PRS.OvertakeEndorse = digits.FreshDigitCollection(countAssessors)
 	}
 }
 
@@ -1404,30 +1409,30 @@ func (ps *NodeStatus) assureOvertakeEndorseDuration(level int64, duration int32,
 //
 //
 //
-func (ps *NodeStatus) AssureBallotBitLists(level int64, countRatifiers int) {
+func (ps *NodeStatus) AssureBallotDigitCollections(altitude int64, countAssessors int) {
 	ps.mtx.Lock()
 	defer ps.mtx.Unlock()
-	ps.assureBallotBitLists(level, countRatifiers)
+	ps.assureBallotDigitCollections(altitude, countAssessors)
 }
 
-func (ps *NodeStatus) assureBallotBitLists(level int64, countRatifiers int) {
-	switch ps.PRS.Level {
-	case level:
+func (ps *NodeStatus) assureBallotDigitCollections(altitude int64, countAssessors int) {
+	switch ps.PRS.Altitude {
+	case altitude:
 		if ps.PRS.Preballots == nil {
-			ps.PRS.Preballots = bits.NewBitList(countRatifiers)
+			ps.PRS.Preballots = digits.FreshDigitCollection(countAssessors)
 		}
 		if ps.PRS.Preendorsements == nil {
-			ps.PRS.Preendorsements = bits.NewBitList(countRatifiers)
+			ps.PRS.Preendorsements = digits.FreshDigitCollection(countAssessors)
 		}
 		if ps.PRS.OvertakeEndorse == nil {
-			ps.PRS.OvertakeEndorse = bits.NewBitList(countRatifiers)
+			ps.PRS.OvertakeEndorse = digits.FreshDigitCollection(countAssessors)
 		}
-		if ps.PRS.NominationPOL == nil {
-			ps.PRS.NominationPOL = bits.NewBitList(countRatifiers)
+		if ps.PRS.NominationPolicy == nil {
+			ps.PRS.NominationPolicy = digits.FreshDigitCollection(countAssessors)
 		}
-	case level + 1:
+	case altitude + 1:
 		if ps.PRS.FinalEndorse == nil {
-			ps.PRS.FinalEndorse = bits.NewBitList(countRatifiers)
+			ps.PRS.FinalEndorse = digits.FreshDigitCollection(countAssessors)
 		}
 	}
 }
@@ -1454,153 +1459,153 @@ func (ps *NodeStatus) BallotsRelayed() int {
 
 //
 //
-func (ps *NodeStatus) LogLedgerSegment() int {
+func (ps *NodeStatus) LogLedgerFragment() int {
 	ps.mtx.Lock()
 	defer ps.mtx.Unlock()
 
-	ps.Metrics.LedgerSegments++
-	return ps.Metrics.LedgerSegments
+	ps.Metrics.LedgerFragments++
+	return ps.Metrics.LedgerFragments
 }
 
 //
-func (ps *NodeStatus) LedgerSegmentsRelayed() int {
+func (ps *NodeStatus) LedgerFragmentsRelayed() int {
 	ps.mtx.Lock()
 	defer ps.mtx.Unlock()
 
-	return ps.Metrics.LedgerSegments
+	return ps.Metrics.LedgerFragments
 }
 
 //
-func (ps *NodeStatus) AssignHasBallot(ballot *kinds.Ballot) {
+func (ps *NodeStatus) AssignOwnsBallot(ballot *kinds.Ballot) {
 	ps.mtx.Lock()
 	defer ps.mtx.Unlock()
 
-	ps.assignHasBallot(ballot.Level, ballot.Cycle, ballot.Kind, ballot.RatifierOrdinal)
+	ps.assignOwnsBallot(ballot.Altitude, ballot.Iteration, ballot.Kind, ballot.AssessorOrdinal)
 }
 
-func (ps *NodeStatus) assignHasBallot(level int64, duration int32, ballotKind engineproto.AttestedMessageKind, ordinal int32) {
+func (ps *NodeStatus) assignOwnsBallot(altitude int64, iteration int32, ballotKind commitchema.AttestedSignalKind, ordinal int32) {
 	ps.tracer.Diagnose("REDACTED",
 		"REDACTED",
-		log.NewIdleFormat("REDACTED", ps.PRS.Level, ps.PRS.Cycle),
+		log.FreshIdleFormat("REDACTED", ps.PRS.Altitude, ps.PRS.Iteration),
 		"REDACTED",
-		log.NewIdleFormat("REDACTED", level, duration),
+		log.FreshIdleFormat("REDACTED", altitude, iteration),
 		"REDACTED", ballotKind, "REDACTED", ordinal)
 
 	//
-	psBallots := ps.fetchBallotBitList(level, duration, ballotKind)
-	if psBallots != nil {
-		psBallots.AssignOrdinal(int(ordinal), true)
+	processesBallots := ps.obtainBallotDigitCollection(altitude, iteration, ballotKind)
+	if processesBallots != nil {
+		processesBallots.AssignOrdinal(int(ordinal), true)
 	}
 }
 
 //
-func (ps *NodeStatus) AssignHasBallotFromNode(ballot *kinds.Ballot, csLevel int64, valueVolume, finalEndorseVolume int) {
+func (ps *NodeStatus) AssignOwnsBallotOriginatingNode(ballot *kinds.Ballot, controlAltitude int64, itemExtent, finalEndorseExtent int) {
 	ps.mtx.Lock()
 	defer ps.mtx.Unlock()
 
-	ps.assureBallotBitLists(csLevel, valueVolume)
-	ps.assureBallotBitLists(csLevel-1, finalEndorseVolume)
-	ps.assignHasBallot(ballot.Level, ballot.Cycle, ballot.Kind, ballot.RatifierOrdinal)
+	ps.assureBallotDigitCollections(controlAltitude, itemExtent)
+	ps.assureBallotDigitCollections(controlAltitude-1, finalEndorseExtent)
+	ps.assignOwnsBallot(ballot.Altitude, ballot.Iteration, ballot.Kind, ballot.AssessorOrdinal)
 }
 
 //
-func (ps *NodeStatus) ExecuteNewDurationPhaseSignal(msg *NewDurationPhaseSignal) {
+func (ps *NodeStatus) ExecuteFreshIterationPhaseSignal(msg *FreshIterationPhaseSignal) {
 	ps.mtx.Lock()
 	defer ps.mtx.Unlock()
 
 	//
-	if ContrastHRS(msg.Level, msg.Cycle, msg.Phase, ps.PRS.Level, ps.PRS.Cycle, ps.PRS.Phase) <= 0 {
+	if ContrastHours(msg.Altitude, msg.Iteration, msg.Phase, ps.PRS.Altitude, ps.PRS.Iteration, ps.PRS.Phase) <= 0 {
 		return
 	}
 
 	//
-	psLevel := ps.PRS.Level
-	psDuration := ps.PRS.Cycle
-	psOvertakeEndorseDuration := ps.PRS.OvertakeEndorseDuration
-	psOvertakeEndorse := ps.PRS.OvertakeEndorse
+	processesAltitude := ps.PRS.Altitude
+	processesIteration := ps.PRS.Iteration
+	processesOvertakeEndorseIteration := ps.PRS.OvertakeEndorseIteration
+	processesOvertakeEndorse := ps.PRS.OvertakeEndorse
 	finalPreendorsements := ps.PRS.Preendorsements
 
-	beginMoment := engineclock.Now().Add(-1 * time.Duration(msg.MomentsSinceBeginTime) * time.Second)
-	ps.PRS.Level = msg.Level
-	ps.PRS.Cycle = msg.Cycle
+	initiateMoment := committime.Now().Add(-1 * time.Duration(msg.MomentsBecauseInitiateMoment) * time.Second)
+	ps.PRS.Altitude = msg.Altitude
+	ps.PRS.Iteration = msg.Iteration
 	ps.PRS.Phase = msg.Phase
-	ps.PRS.BeginTime = beginMoment
-	if psLevel != msg.Level || psDuration != msg.Cycle {
+	ps.PRS.InitiateMoment = initiateMoment
+	if processesAltitude != msg.Altitude || processesIteration != msg.Iteration {
 		ps.PRS.Nomination = false
-		ps.PRS.NominationLedgerSegmentAssignHeading = kinds.SegmentAssignHeading{}
-		ps.PRS.NominationLedgerSegments = nil
-		ps.PRS.NominationPOLDuration = -1
-		ps.PRS.NominationPOL = nil
+		ps.PRS.NominationLedgerFragmentAssignHeading = kinds.FragmentAssignHeading{}
+		ps.PRS.NominationLedgerFragments = nil
+		ps.PRS.NominationPolicyIteration = -1
+		ps.PRS.NominationPolicy = nil
 		//
 		ps.PRS.Preballots = nil
 		ps.PRS.Preendorsements = nil
 	}
-	if psLevel == msg.Level && psDuration != msg.Cycle && msg.Cycle == psOvertakeEndorseDuration {
+	if processesAltitude == msg.Altitude && processesIteration != msg.Iteration && msg.Iteration == processesOvertakeEndorseIteration {
 		//
 		//
 		//
 		//
-		ps.PRS.Preendorsements = psOvertakeEndorse
+		ps.PRS.Preendorsements = processesOvertakeEndorse
 	}
-	if psLevel != msg.Level {
+	if processesAltitude != msg.Altitude {
 		//
-		if psLevel+1 == msg.Level && psDuration == msg.FinalEndorseDuration {
-			ps.PRS.FinalEndorseDuration = msg.FinalEndorseDuration
+		if processesAltitude+1 == msg.Altitude && processesIteration == msg.FinalEndorseIteration {
+			ps.PRS.FinalEndorseIteration = msg.FinalEndorseIteration
 			ps.PRS.FinalEndorse = finalPreendorsements
 		} else {
-			ps.PRS.FinalEndorseDuration = msg.FinalEndorseDuration
+			ps.PRS.FinalEndorseIteration = msg.FinalEndorseIteration
 			ps.PRS.FinalEndorse = nil
 		}
 		//
-		ps.PRS.OvertakeEndorseDuration = -1
+		ps.PRS.OvertakeEndorseIteration = -1
 		ps.PRS.OvertakeEndorse = nil
 	}
 }
 
 //
-func (ps *NodeStatus) ExecuteNewSoundLedgerSignal(msg *NewSoundLedgerSignal) {
+func (ps *NodeStatus) ExecuteFreshSoundLedgerSignal(msg *FreshSoundLedgerSignal) {
 	ps.mtx.Lock()
 	defer ps.mtx.Unlock()
 
-	if ps.PRS.Level != msg.Level {
+	if ps.PRS.Altitude != msg.Altitude {
 		return
 	}
 
-	if ps.PRS.Cycle != msg.Cycle && !msg.IsEndorse {
+	if ps.PRS.Iteration != msg.Iteration && !msg.EqualsEndorse {
 		return
 	}
 
-	ps.PRS.NominationLedgerSegmentAssignHeading = msg.LedgerSegmentAssignHeading
-	ps.PRS.NominationLedgerSegments = msg.LedgerSegments
+	ps.PRS.NominationLedgerFragmentAssignHeading = msg.LedgerFragmentAssignHeading
+	ps.PRS.NominationLedgerFragments = msg.LedgerFragments
 }
 
 //
-func (ps *NodeStatus) ExecuteNominationPOLSignal(msg *NominationPOLSignal) {
+func (ps *NodeStatus) ExecuteNominationPolicySignal(msg *NominationPolicySignal) {
 	ps.mtx.Lock()
 	defer ps.mtx.Unlock()
 
-	if ps.PRS.Level != msg.Level {
+	if ps.PRS.Altitude != msg.Altitude {
 		return
 	}
-	if ps.PRS.NominationPOLDuration != msg.NominationPOLDuration {
+	if ps.PRS.NominationPolicyIteration != msg.NominationPolicyIteration {
 		return
 	}
 
 	//
 	//
-	ps.PRS.NominationPOL = msg.NominationPOL
+	ps.PRS.NominationPolicy = msg.NominationPolicy
 }
 
 //
-func (ps *NodeStatus) ExecuteHasBallotSignal(msg *HasBallotSignal) {
+func (ps *NodeStatus) ExecuteOwnsBallotSignal(msg *OwnsBallotSignal) {
 	ps.mtx.Lock()
 	defer ps.mtx.Unlock()
 
-	if ps.PRS.Level != msg.Level {
+	if ps.PRS.Altitude != msg.Altitude {
 		return
 	}
 
-	ps.assignHasBallot(msg.Level, msg.Cycle, msg.Kind, msg.Ordinal)
+	ps.assignOwnsBallot(msg.Altitude, msg.Iteration, msg.Kind, msg.Ordinal)
 }
 
 //
@@ -1608,29 +1613,29 @@ func (ps *NodeStatus) ExecuteHasBallotSignal(msg *HasBallotSignal) {
 //
 //
 //
-func (ps *NodeStatus) ExecuteBallotAssignBitsSignal(msg *BallotAssignBitsSignal, ourBallots *bits.BitList) {
+func (ps *NodeStatus) ExecuteBallotAssignDigitsSignal(msg *BallotAssignDigitsSignal, mineBallots *digits.DigitCollection) {
 	ps.mtx.Lock()
 	defer ps.mtx.Unlock()
 
-	ballots := ps.fetchBallotBitList(msg.Level, msg.Cycle, msg.Kind)
+	ballots := ps.obtainBallotDigitCollection(msg.Altitude, msg.Iteration, msg.Kind)
 	if ballots != nil {
-		if ourBallots == nil {
-			ballots.Modify(msg.Ballots)
+		if mineBallots == nil {
+			ballots.Revise(msg.Ballots)
 		} else {
-			anotherBallots := ballots.Sub(ourBallots)
-			hasBallots := anotherBallots.Or(msg.Ballots)
-			ballots.Modify(hasBallots)
+			anotherBallots := ballots.Sub(mineBallots)
+			ownsBallots := anotherBallots.Or(msg.Ballots)
+			ballots.Revise(ownsBallots)
 		}
 	}
 }
 
 //
-func (ps *NodeStatus) String() string {
-	return ps.StringIndented("REDACTED")
+func (ps *NodeStatus) Text() string {
+	return ps.TextFormatted("REDACTED")
 }
 
 //
-func (ps *NodeStatus) StringIndented(indent string) string {
+func (ps *NodeStatus) TextFormatted(format string) string {
 	ps.mtx.Lock()
 	defer ps.mtx.Unlock()
 	return fmt.Sprintf(`REDACTED{
@@ -1638,10 +1643,10 @@ REDACTEDv
 REDACTEDv
 REDACTEDv
 REDACTED`,
-		indent, ps.node.ID(),
-		indent, ps.PRS.StringIndented(indent+"REDACTED"),
-		indent, ps.Metrics,
-		indent)
+		format, ps.node.ID(),
+		format, ps.PRS.TextFormatted(format+"REDACTED"),
+		format, ps.Metrics,
+		format)
 }
 
 //
@@ -1649,43 +1654,43 @@ REDACTED`,
 
 //
 type Signal interface {
-	CertifySimple() error
+	CertifyFundamental() error
 }
 
-func init() {
-	cometjson.EnrollKind(&NewDurationPhaseSignal{}, "REDACTED")
-	cometjson.EnrollKind(&NewSoundLedgerSignal{}, "REDACTED")
-	cometjson.EnrollKind(&NominationSignal{}, "REDACTED")
-	cometjson.EnrollKind(&NominationPOLSignal{}, "REDACTED")
-	cometjson.EnrollKind(&LedgerSegmentSignal{}, "REDACTED")
-	cometjson.EnrollKind(&BallotSignal{}, "REDACTED")
-	cometjson.EnrollKind(&HasBallotSignal{}, "REDACTED")
-	cometjson.EnrollKind(&BallotAssignMaj23signal{}, "REDACTED")
-	cometjson.EnrollKind(&BallotAssignBitsSignal{}, "REDACTED")
-}
-
-//
-
-//
-//
-type NewDurationPhaseSignal struct {
-	Level                int64
-	Cycle                 int32
-	Phase                  cskinds.DurationPhaseKind
-	MomentsSinceBeginTime int64
-	FinalEndorseDuration       int32
+func initialize() {
+	strongmindjson.EnrollKind(&FreshIterationPhaseSignal{}, "REDACTED")
+	strongmindjson.EnrollKind(&FreshSoundLedgerSignal{}, "REDACTED")
+	strongmindjson.EnrollKind(&NominationSignal{}, "REDACTED")
+	strongmindjson.EnrollKind(&NominationPolicySignal{}, "REDACTED")
+	strongmindjson.EnrollKind(&LedgerFragmentSignal{}, "REDACTED")
+	strongmindjson.EnrollKind(&BallotSignal{}, "REDACTED")
+	strongmindjson.EnrollKind(&OwnsBallotSignal{}, "REDACTED")
+	strongmindjson.EnrollKind(&BallotAssignMajor23signal{}, "REDACTED")
+	strongmindjson.EnrollKind(&BallotAssignDigitsSignal{}, "REDACTED")
 }
 
 //
-func (m *NewDurationPhaseSignal) CertifySimple() error {
-	if m.Level < 0 {
-		return cometfaults.ErrAdverseField{Field: "REDACTED"}
+
+//
+//
+type FreshIterationPhaseSignal struct {
+	Altitude                int64
+	Iteration                 int32
+	Phase                  controlkinds.IterationPhaseKind
+	MomentsBecauseInitiateMoment int64
+	FinalEndorseIteration       int32
+}
+
+//
+func (m *FreshIterationPhaseSignal) CertifyFundamental() error {
+	if m.Altitude < 0 {
+		return strongminderrors.FaultAdverseAttribute{Attribute: "REDACTED"}
 	}
-	if m.Cycle < 0 {
-		return cometfaults.ErrAdverseField{Field: "REDACTED"}
+	if m.Iteration < 0 {
+		return strongminderrors.FaultAdverseAttribute{Attribute: "REDACTED"}
 	}
-	if !m.Phase.IsSound() {
-		return cometfaults.ErrCorruptField{Field: "REDACTED"}
+	if !m.Phase.EqualsSound() {
+		return strongminderrors.FaultUnfitAttribute{Attribute: "REDACTED"}
 	}
 
 	//
@@ -1693,42 +1698,42 @@ func (m *NewDurationPhaseSignal) CertifySimple() error {
 	//
 	//
 	//
-	if m.FinalEndorseDuration < -1 {
-		return cometfaults.ErrCorruptField{Field: "REDACTED", Cause: "REDACTED"}
+	if m.FinalEndorseIteration < -1 {
+		return strongminderrors.FaultUnfitAttribute{Attribute: "REDACTED", Rationale: "REDACTED"}
 	}
 
 	return nil
 }
 
 //
-func (m *NewDurationPhaseSignal) CertifyLevel(primaryLevel int64) error {
-	if m.Level < primaryLevel {
-		return cometfaults.ErrCorruptField{
-			Field:  "REDACTED",
-			Cause: fmt.Sprintf("REDACTED", m.Level, primaryLevel),
+func (m *FreshIterationPhaseSignal) CertifyAltitude(primaryAltitude int64) error {
+	if m.Altitude < primaryAltitude {
+		return strongminderrors.FaultUnfitAttribute{
+			Attribute:  "REDACTED",
+			Rationale: fmt.Sprintf("REDACTED", m.Altitude, primaryAltitude),
 		}
 	}
 
-	if m.Level == primaryLevel && m.FinalEndorseDuration != -1 {
-		return cometfaults.ErrCorruptField{
-			Field:  "REDACTED",
-			Cause: fmt.Sprintf("REDACTED", m.FinalEndorseDuration, primaryLevel),
+	if m.Altitude == primaryAltitude && m.FinalEndorseIteration != -1 {
+		return strongminderrors.FaultUnfitAttribute{
+			Attribute:  "REDACTED",
+			Rationale: fmt.Sprintf("REDACTED", m.FinalEndorseIteration, primaryAltitude),
 		}
 	}
 
-	if m.Level > primaryLevel && m.FinalEndorseDuration < 0 {
-		return cometfaults.ErrCorruptField{
-			Field:  "REDACTED",
-			Cause: fmt.Sprintf("REDACTED", primaryLevel),
+	if m.Altitude > primaryAltitude && m.FinalEndorseIteration < 0 {
+		return strongminderrors.FaultUnfitAttribute{
+			Attribute:  "REDACTED",
+			Rationale: fmt.Sprintf("REDACTED", primaryAltitude),
 		}
 	}
 	return nil
 }
 
 //
-func (m *NewDurationPhaseSignal) String() string {
+func (m *FreshIterationPhaseSignal) Text() string {
 	return fmt.Sprintf("REDACTED",
-		m.Level, m.Cycle, m.Phase, m.FinalEndorseDuration)
+		m.Altitude, m.Iteration, m.Phase, m.FinalEndorseIteration)
 }
 
 //
@@ -1736,46 +1741,46 @@ func (m *NewDurationPhaseSignal) String() string {
 //
 //
 //
-type NewSoundLedgerSignal struct {
-	Level             int64
-	Cycle              int32
-	LedgerSegmentAssignHeading kinds.SegmentAssignHeading
-	LedgerSegments         *bits.BitList
-	IsEndorse           bool
+type FreshSoundLedgerSignal struct {
+	Altitude             int64
+	Iteration              int32
+	LedgerFragmentAssignHeading kinds.FragmentAssignHeading
+	LedgerFragments         *digits.DigitCollection
+	EqualsEndorse           bool
 }
 
 //
-func (m *NewSoundLedgerSignal) CertifySimple() error {
-	if m.Level < 0 {
-		return cometfaults.ErrAdverseField{Field: "REDACTED"}
+func (m *FreshSoundLedgerSignal) CertifyFundamental() error {
+	if m.Altitude < 0 {
+		return strongminderrors.FaultAdverseAttribute{Attribute: "REDACTED"}
 	}
-	if m.Cycle < 0 {
-		return cometfaults.ErrAdverseField{Field: "REDACTED"}
+	if m.Iteration < 0 {
+		return strongminderrors.FaultAdverseAttribute{Attribute: "REDACTED"}
 	}
-	if err := m.LedgerSegmentAssignHeading.CertifySimple(); err != nil {
-		return cometfaults.ErrIncorrectField{Field: "REDACTED", Err: err}
+	if err := m.LedgerFragmentAssignHeading.CertifyFundamental(); err != nil {
+		return strongminderrors.FaultIncorrectAttribute{Attribute: "REDACTED", Err: err}
 	}
-	if err := m.LedgerSegments.CertifySimple(); err != nil {
-		return cometfaults.ErrIncorrectField{Field: "REDACTED", Err: err}
+	if err := m.LedgerFragments.CertifyFundamental(); err != nil {
+		return strongminderrors.FaultIncorrectAttribute{Attribute: "REDACTED", Err: err}
 	}
-	if m.LedgerSegments.Volume() == 0 {
-		return cometfaults.ErrMandatoryField{Field: "REDACTED"}
+	if m.LedgerFragments.Extent() == 0 {
+		return strongminderrors.FaultMandatoryAttribute{Attribute: "REDACTED"}
 	}
-	if m.LedgerSegments.Volume() != int(m.LedgerSegmentAssignHeading.Sum) {
+	if m.LedgerFragments.Extent() != int(m.LedgerFragmentAssignHeading.Sum) {
 		return fmt.Errorf("REDACTED",
-			m.LedgerSegments.Volume(),
-			m.LedgerSegmentAssignHeading.Sum)
+			m.LedgerFragments.Extent(),
+			m.LedgerFragmentAssignHeading.Sum)
 	}
-	if m.LedgerSegments.Volume() > int(kinds.MaximumLedgerSegmentsTally) {
-		return fmt.Errorf("REDACTED", m.LedgerSegments.Volume(), kinds.MaximumLedgerSegmentsTally)
+	if m.LedgerFragments.Extent() > int(kinds.MaximumLedgerFragmentsTally) {
+		return fmt.Errorf("REDACTED", m.LedgerFragments.Extent(), kinds.MaximumLedgerFragmentsTally)
 	}
 	return nil
 }
 
 //
-func (m *NewSoundLedgerSignal) String() string {
+func (m *FreshSoundLedgerSignal) Text() string {
 	return fmt.Sprintf("REDACTED",
-		m.Level, m.Cycle, m.LedgerSegmentAssignHeading, m.LedgerSegments, m.IsEndorse)
+		m.Altitude, m.Iteration, m.LedgerFragmentAssignHeading, m.LedgerFragments, m.EqualsEndorse)
 }
 
 //
@@ -1786,81 +1791,81 @@ type NominationSignal struct {
 }
 
 //
-func (m *NominationSignal) CertifySimple() error {
-	return m.Nomination.CertifySimple()
+func (m *NominationSignal) CertifyFundamental() error {
+	return m.Nomination.CertifyFundamental()
 }
 
 //
 //
-func (m *NominationSignal) CertifyLedgerVolume(maximumLedgerVolumeOctets int64) error {
-	return m.Nomination.CertifyLedgerVolume(maximumLedgerVolumeOctets)
+func (m *NominationSignal) CertifyLedgerExtent(maximumLedgerExtentOctets int64) error {
+	return m.Nomination.CertifyLedgerExtent(maximumLedgerExtentOctets)
 }
 
 //
-func (m *NominationSignal) String() string {
+func (m *NominationSignal) Text() string {
 	return fmt.Sprintf("REDACTED", m.Nomination)
 }
 
 //
 
 //
-type NominationPOLSignal struct {
-	Level           int64
-	NominationPOLDuration int32
-	NominationPOL      *bits.BitList
+type NominationPolicySignal struct {
+	Altitude           int64
+	NominationPolicyIteration int32
+	NominationPolicy      *digits.DigitCollection
 }
 
 //
-func (m *NominationPOLSignal) CertifySimple() error {
-	if m.Level < 0 {
-		return cometfaults.ErrAdverseField{Field: "REDACTED"}
+func (m *NominationPolicySignal) CertifyFundamental() error {
+	if m.Altitude < 0 {
+		return strongminderrors.FaultAdverseAttribute{Attribute: "REDACTED"}
 	}
-	if m.NominationPOLDuration < 0 {
-		return cometfaults.ErrAdverseField{Field: "REDACTED"}
+	if m.NominationPolicyIteration < 0 {
+		return strongminderrors.FaultAdverseAttribute{Attribute: "REDACTED"}
 	}
-	if err := m.NominationPOL.CertifySimple(); err != nil {
-		return cometfaults.ErrIncorrectField{Field: "REDACTED", Err: err}
+	if err := m.NominationPolicy.CertifyFundamental(); err != nil {
+		return strongminderrors.FaultIncorrectAttribute{Attribute: "REDACTED", Err: err}
 	}
-	if m.NominationPOL.Volume() == 0 {
-		return cometfaults.ErrMandatoryField{Field: "REDACTED"}
+	if m.NominationPolicy.Extent() == 0 {
+		return strongminderrors.FaultMandatoryAttribute{Attribute: "REDACTED"}
 	}
-	if m.NominationPOL.Volume() > kinds.MaximumBallotsTally {
-		return fmt.Errorf("REDACTED", m.NominationPOL.Volume(), kinds.MaximumBallotsTally)
+	if m.NominationPolicy.Extent() > kinds.MaximumBallotsTally {
+		return fmt.Errorf("REDACTED", m.NominationPolicy.Extent(), kinds.MaximumBallotsTally)
 	}
 	return nil
 }
 
 //
-func (m *NominationPOLSignal) String() string {
-	return fmt.Sprintf("REDACTED", m.Level, m.NominationPOLDuration, m.NominationPOL)
+func (m *NominationPolicySignal) Text() string {
+	return fmt.Sprintf("REDACTED", m.Altitude, m.NominationPolicyIteration, m.NominationPolicy)
 }
 
 //
 
 //
-type LedgerSegmentSignal struct {
-	Level int64
-	Cycle  int32
-	Segment   *kinds.Segment
+type LedgerFragmentSignal struct {
+	Altitude int64
+	Iteration  int32
+	Fragment   *kinds.Fragment
 }
 
 //
-func (m *LedgerSegmentSignal) CertifySimple() error {
-	if m.Level < 0 {
-		return cometfaults.ErrAdverseField{Field: "REDACTED"}
+func (m *LedgerFragmentSignal) CertifyFundamental() error {
+	if m.Altitude < 0 {
+		return strongminderrors.FaultAdverseAttribute{Attribute: "REDACTED"}
 	}
-	if m.Cycle < 0 {
-		return cometfaults.ErrAdverseField{Field: "REDACTED"}
+	if m.Iteration < 0 {
+		return strongminderrors.FaultAdverseAttribute{Attribute: "REDACTED"}
 	}
-	if err := m.Segment.CertifySimple(); err != nil {
-		return cometfaults.ErrIncorrectField{Field: "REDACTED", Err: err}
+	if err := m.Fragment.CertifyFundamental(); err != nil {
+		return strongminderrors.FaultIncorrectAttribute{Attribute: "REDACTED", Err: err}
 	}
 	return nil
 }
 
 //
-func (m *LedgerSegmentSignal) String() string {
-	return fmt.Sprintf("REDACTED", m.Level, m.Cycle, m.Segment)
+func (m *LedgerFragmentSignal) Text() string {
+	return fmt.Sprintf("REDACTED", m.Altitude, m.Iteration, m.Fragment)
 }
 
 //
@@ -1871,140 +1876,140 @@ type BallotSignal struct {
 }
 
 //
-func (m *BallotSignal) CertifySimple() error {
-	return m.Ballot.CertifySimple()
+func (m *BallotSignal) CertifyFundamental() error {
+	return m.Ballot.CertifyFundamental()
 }
 
 //
-func (m *BallotSignal) String() string {
+func (m *BallotSignal) Text() string {
 	return fmt.Sprintf("REDACTED", m.Ballot)
 }
 
 //
 
 //
-type HasBallotSignal struct {
-	Level int64
-	Cycle  int32
-	Kind   engineproto.AttestedMessageKind
+type OwnsBallotSignal struct {
+	Altitude int64
+	Iteration  int32
+	Kind   commitchema.AttestedSignalKind
 	Ordinal  int32
 }
 
 //
-func (m *HasBallotSignal) CertifySimple() error {
-	if m.Level < 0 {
-		return cometfaults.ErrAdverseField{Field: "REDACTED"}
+func (m *OwnsBallotSignal) CertifyFundamental() error {
+	if m.Altitude < 0 {
+		return strongminderrors.FaultAdverseAttribute{Attribute: "REDACTED"}
 	}
-	if m.Cycle < 0 {
-		return cometfaults.ErrAdverseField{Field: "REDACTED"}
+	if m.Iteration < 0 {
+		return strongminderrors.FaultAdverseAttribute{Attribute: "REDACTED"}
 	}
-	if !kinds.IsBallotKindSound(m.Kind) {
-		return cometfaults.ErrCorruptField{Field: "REDACTED"}
+	if !kinds.EqualsBallotKindSound(m.Kind) {
+		return strongminderrors.FaultUnfitAttribute{Attribute: "REDACTED"}
 	}
 	if m.Ordinal < 0 {
-		return cometfaults.ErrAdverseField{Field: "REDACTED"}
+		return strongminderrors.FaultAdverseAttribute{Attribute: "REDACTED"}
 	}
 	return nil
 }
 
 //
-func (m *HasBallotSignal) String() string {
-	return fmt.Sprintf("REDACTED", m.Ordinal, m.Level, m.Cycle, m.Kind)
+func (m *OwnsBallotSignal) Text() string {
+	return fmt.Sprintf("REDACTED", m.Ordinal, m.Altitude, m.Iteration, m.Kind)
 }
 
 //
 
 //
-type BallotAssignMaj23signal struct {
-	Level  int64
-	Cycle   int32
-	Kind    engineproto.AttestedMessageKind
-	LedgerUID kinds.LedgerUID
+type BallotAssignMajor23signal struct {
+	Altitude  int64
+	Iteration   int32
+	Kind    commitchema.AttestedSignalKind
+	LedgerUUID kinds.LedgerUUID
 }
 
 //
-func (m *BallotAssignMaj23signal) CertifySimple() error {
-	if m.Level < 0 {
-		return cometfaults.ErrAdverseField{Field: "REDACTED"}
+func (m *BallotAssignMajor23signal) CertifyFundamental() error {
+	if m.Altitude < 0 {
+		return strongminderrors.FaultAdverseAttribute{Attribute: "REDACTED"}
 	}
-	if m.Cycle < 0 {
-		return cometfaults.ErrAdverseField{Field: "REDACTED"}
+	if m.Iteration < 0 {
+		return strongminderrors.FaultAdverseAttribute{Attribute: "REDACTED"}
 	}
-	if !kinds.IsBallotKindSound(m.Kind) {
-		return cometfaults.ErrCorruptField{Field: "REDACTED"}
+	if !kinds.EqualsBallotKindSound(m.Kind) {
+		return strongminderrors.FaultUnfitAttribute{Attribute: "REDACTED"}
 	}
-	if err := m.LedgerUID.CertifySimple(); err != nil {
-		return cometfaults.ErrIncorrectField{Field: "REDACTED", Err: err}
+	if err := m.LedgerUUID.CertifyFundamental(); err != nil {
+		return strongminderrors.FaultIncorrectAttribute{Attribute: "REDACTED", Err: err}
 	}
 	return nil
 }
 
 //
-func (m *BallotAssignMaj23signal) String() string {
-	return fmt.Sprintf("REDACTED", m.Level, m.Cycle, m.Kind, m.LedgerUID)
+func (m *BallotAssignMajor23signal) Text() string {
+	return fmt.Sprintf("REDACTED", m.Altitude, m.Iteration, m.Kind, m.LedgerUUID)
 }
 
 //
 
 //
-type BallotAssignBitsSignal struct {
-	Level  int64
-	Cycle   int32
-	Kind    engineproto.AttestedMessageKind
-	LedgerUID kinds.LedgerUID
-	Ballots   *bits.BitList
+type BallotAssignDigitsSignal struct {
+	Altitude  int64
+	Iteration   int32
+	Kind    commitchema.AttestedSignalKind
+	LedgerUUID kinds.LedgerUUID
+	Ballots   *digits.DigitCollection
 }
 
 //
-func (m *BallotAssignBitsSignal) CertifySimple() error {
-	if m.Level < 0 {
-		return cometfaults.ErrAdverseField{Field: "REDACTED"}
+func (m *BallotAssignDigitsSignal) CertifyFundamental() error {
+	if m.Altitude < 0 {
+		return strongminderrors.FaultAdverseAttribute{Attribute: "REDACTED"}
 	}
-	if !kinds.IsBallotKindSound(m.Kind) {
-		return cometfaults.ErrCorruptField{Field: "REDACTED"}
+	if !kinds.EqualsBallotKindSound(m.Kind) {
+		return strongminderrors.FaultUnfitAttribute{Attribute: "REDACTED"}
 	}
-	if err := m.LedgerUID.CertifySimple(); err != nil {
-		return cometfaults.ErrIncorrectField{Field: "REDACTED", Err: err}
+	if err := m.LedgerUUID.CertifyFundamental(); err != nil {
+		return strongminderrors.FaultIncorrectAttribute{Attribute: "REDACTED", Err: err}
 	}
-	if err := m.Ballots.CertifySimple(); err != nil {
-		return cometfaults.ErrIncorrectField{Field: "REDACTED", Err: err}
+	if err := m.Ballots.CertifyFundamental(); err != nil {
+		return strongminderrors.FaultIncorrectAttribute{Attribute: "REDACTED", Err: err}
 	}
 	//
-	if m.Ballots.Volume() > kinds.MaximumBallotsTally {
-		return fmt.Errorf("REDACTED", m.Ballots.Volume(), kinds.MaximumBallotsTally)
+	if m.Ballots.Extent() > kinds.MaximumBallotsTally {
+		return fmt.Errorf("REDACTED", m.Ballots.Extent(), kinds.MaximumBallotsTally)
 	}
 	return nil
 }
 
 //
-func (m *BallotAssignBitsSignal) String() string {
-	return fmt.Sprintf("REDACTED", m.Level, m.Cycle, m.Kind, m.LedgerUID, m.Ballots)
+func (m *BallotAssignDigitsSignal) Text() string {
+	return fmt.Sprintf("REDACTED", m.Altitude, m.Iteration, m.Kind, m.LedgerUUID, m.Ballots)
 }
 
 //
 
 //
-type HasNominationLedgerSegmentSignal struct {
-	Level int64
-	Cycle  int32
+type OwnsNominationLedgerFragmentSignal struct {
+	Altitude int64
+	Iteration  int32
 	Ordinal  int32
 }
 
 //
-func (m *HasNominationLedgerSegmentSignal) CertifySimple() error {
-	if m.Level < 1 {
-		return cometfaults.ErrCorruptField{Field: "REDACTED", Cause: "REDACTED"}
+func (m *OwnsNominationLedgerFragmentSignal) CertifyFundamental() error {
+	if m.Altitude < 1 {
+		return strongminderrors.FaultUnfitAttribute{Attribute: "REDACTED", Rationale: "REDACTED"}
 	}
-	if m.Cycle < 0 {
-		return cometfaults.ErrAdverseField{Field: "REDACTED"}
+	if m.Iteration < 0 {
+		return strongminderrors.FaultAdverseAttribute{Attribute: "REDACTED"}
 	}
 	if m.Ordinal < 0 {
-		return cometfaults.ErrAdverseField{Field: "REDACTED"}
+		return strongminderrors.FaultAdverseAttribute{Attribute: "REDACTED"}
 	}
 	return nil
 }
 
 //
-func (m *HasNominationLedgerSegmentSignal) String() string {
-	return fmt.Sprintf("REDACTED", m.Ordinal, m.Level, m.Cycle)
+func (m *OwnsNominationLedgerFragmentSignal) Text() string {
+	return fmt.Sprintf("REDACTED", m.Ordinal, m.Altitude, m.Iteration)
 }

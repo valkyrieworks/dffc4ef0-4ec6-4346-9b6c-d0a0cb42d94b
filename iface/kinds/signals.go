@@ -6,236 +6,236 @@ import (
 
 	"github.com/cosmos/gogoproto/proto"
 
-	"github.com/valkyrieworks/utils/protoio"
+	"github.com/valkyrieworks/dffc4ef0-4ec6-4346-9b6c-d0a0cb42d94b/utils/protocolio"
 )
 
 const (
-	maximumMessageVolume = math.MaxInt32 //
+	maximumSignalExtent = math.MaxInt32 //
 )
 
 //
-func RecordSignal(msg proto.Message, w io.Writer) error {
-	schemaRecorder := protoio.NewSeparatedRecorder(w)
-	_, err := schemaRecorder.RecordMessage(msg)
+func PersistArtifact(msg proto.Message, w io.Writer) error {
+	schemaPersistor := protocolio.FreshSeparatedPersistor(w)
+	_, err := schemaPersistor.PersistSignal(msg)
 	return err
 }
 
 //
-func ScanSignal(r io.Reader, msg proto.Message) error {
-	_, err := protoio.NewSeparatedScanner(r, maximumMessageVolume).ScanMessage(msg)
+func FetchArtifact(r io.Reader, msg proto.Message) error {
+	_, err := protocolio.FreshSeparatedFetcher(r, maximumSignalExtent).FetchSignal(msg)
 	return err
 }
 
 //
 
-func ToQueryReverberate(signal string) *Query {
-	return &Query{
-		Item: &Query_Reverberate{&QueryReverberate{Signal: signal}},
+func TowardSolicitReverberate(signal string) *Solicit {
+	return &Solicit{
+		Datum: &Solicit_Reverberate{&SolicitReverberate{Signal: signal}},
 	}
 }
 
-func ToQueryPurge() *Query {
-	return &Query{
-		Item: &Query_Purge{&QueryPurge{}},
+func TowardSolicitPurge() *Solicit {
+	return &Solicit{
+		Datum: &Solicit_Purge{&SolicitPurge{}},
 	}
 }
 
-func ToQueryDetails(req *QueryDetails) *Query {
-	return &Query{
-		Item: &Query_Details{req},
+func TowardSolicitDetails(req *SolicitDetails) *Solicit {
+	return &Solicit{
+		Datum: &Solicit_Details{req},
 	}
 }
 
-func ToQueryInspectTransfer(req *QueryInspectTransfer) *Query {
-	return &Query{
-		Item: &Query_Transfercheck{req},
+func TowardSolicitInspectTransfer(req *SolicitInspectTransfer) *Solicit {
+	return &Solicit{
+		Datum: &Solicit_Inspecttrans{req},
 	}
 }
 
-func ToQueryEmbedTransfer(req *QueryEmbedTransfer) *Query {
-	return &Query{
-		Item: &Query_Transferinsert{req},
+func TowardSolicitAppendTransfer(req *SolicitAppendTransfer) *Solicit {
+	return &Solicit{
+		Datum: &Solicit_Appendtrans{req},
 	}
 }
 
-func ToQueryHarvestTrans(req *QueryHarvestTrans) *Query {
-	return &Query{
-		Item: &Query_Reaptransfers{req},
+func TowardSolicitHarvestTrans(req *SolicitHarvestTrans) *Solicit {
+	return &Solicit{
+		Datum: &Solicit_Harvesttrans{req},
 	}
 }
 
-func ToQueryEndorse() *Query {
-	return &Query{
-		Item: &Query_Endorse{&QueryEndorse{}},
+func TowardSolicitEndorse() *Solicit {
+	return &Solicit{
+		Datum: &Solicit_Endorse{&SolicitEndorse{}},
 	}
 }
 
-func ToQueryInquire(req *QueryInquire) *Query {
-	return &Query{
-		Item: &Query_Inquire{req},
+func TowardSolicitInquire(req *SolicitInquire) *Solicit {
+	return &Solicit{
+		Datum: &Solicit_Inquire{req},
 	}
 }
 
-func ToQueryInitSeries(req *QueryInitSeries) *Query {
-	return &Query{
-		Item: &Query_Initiatechain{req},
+func TowardSolicitInitializeSuccession(req *SolicitInitializeSuccession) *Solicit {
+	return &Solicit{
+		Datum: &Solicit_Initiatechain{req},
 	}
 }
 
-func ToQueryCatalogMirrors(req *QueryCatalogMirrors) *Query {
-	return &Query{
-		Item: &Query_Catalogmirrors{req},
+func TowardSolicitCatalogImages(req *SolicitCollectionImages) *Solicit {
+	return &Solicit{
+		Datum: &Solicit_Catalogimages{req},
 	}
 }
 
-func ToQueryProposalMirror(req *QueryProposalMirror) *Query {
-	return &Query{
-		Item: &Query_Mirrorsnapshot{req},
+func TowardSolicitExtendImage(req *SolicitExtendImage) *Solicit {
+	return &Solicit{
+		Datum: &Solicit_Extendimage{req},
 	}
 }
 
-func ToQueryImportMirrorSegment(req *QueryImportMirrorSegment) *Query {
-	return &Query{
-		Item: &Query_Loadmirrorsegment{req},
+func TowardSolicitFetchImageSegment(req *SolicitFetchImageSegment) *Solicit {
+	return &Solicit{
+		Datum: &Solicit_Loadimagefragment{req},
 	}
 }
 
-func ToQueryExecuteMirrorSegment(req *QueryExecuteMirrorSegment) *Query {
-	return &Query{
-		Item: &Query_Executemirrorsegment{req},
+func TowardSolicitExecuteImageSegment(req *SolicitExecuteImageSegment) *Solicit {
+	return &Solicit{
+		Datum: &Solicit_Executeimagefragment{req},
 	}
 }
 
-func ToQueryArrangeNomination(req *QueryArrangeNomination) *Query {
-	return &Query{
-		Item: &Query_Arrangenomination{req},
+func TowardSolicitArrangeNomination(req *SolicitArrangeNomination) *Solicit {
+	return &Solicit{
+		Datum: &Solicit_Prepareitem{req},
 	}
 }
 
-func ToQueryHandleNomination(req *QueryHandleNomination) *Query {
-	return &Query{
-		Item: &Query_Processnomination{req},
+func TowardSolicitHandleNomination(req *SolicitHandleNomination) *Solicit {
+	return &Solicit{
+		Datum: &Solicit_Executeitem{req},
 	}
 }
 
-func ToQueryExpandBallot(req *QueryExpandBallot) *Query {
-	return &Query{
-		Item: &Query_Ballotextend{req},
+func TowardSolicitBroadenBallot(req *SolicitBroadenBallot) *Solicit {
+	return &Solicit{
+		Datum: &Solicit_Extendballot{req},
 	}
 }
 
-func ToQueryValidateBallotAddition(req *QueryValidateBallotAddition) *Query {
-	return &Query{
-		Item: &Query_Validateballotextension{req},
+func TowardSolicitValidateBallotAddition(req *SolicitValidateBallotAddition) *Solicit {
+	return &Solicit{
+		Datum: &Solicit_Verifyballotaddition{req},
 	}
 }
 
-func ToQueryCompleteLedger(req *QueryCompleteLedger) *Query {
-	return &Query{
-		Item: &Query_Terminateblock{req},
+func TowardSolicitCulminateLedger(req *SolicitCulminateLedger) *Solicit {
+	return &Solicit{
+		Datum: &Solicit_Finalizeledger{req},
 	}
 }
 
 //
 
-func ToReplyExemption(errStr string) *Reply {
+func TowardReplyExemption(faultTxt string) *Reply {
 	return &Reply{
-		Item: &Reply_Exemption{&ReplyExemption{Fault: errStr}},
+		Datum: &Reply_Exemption{&ReplyExemption{Failure: faultTxt}},
 	}
 }
 
-func ToReplyReverberate(signal string) *Reply {
+func TowardReplyReverberate(signal string) *Reply {
 	return &Reply{
-		Item: &Reply_Reverberate{&ReplyReverberate{Signal: signal}},
+		Datum: &Reply_Reverberate{&ReplyReverberate{Signal: signal}},
 	}
 }
 
-func ToReplyPurge() *Reply {
+func TowardReplyPurge() *Reply {
 	return &Reply{
-		Item: &Reply_Purge{&ReplyPurge{}},
+		Datum: &Reply_Purge{&ReplyPurge{}},
 	}
 }
 
-func ToReplyDetails(res *ReplyDetails) *Reply {
+func TowardReplyDetails(res *ReplyDetails) *Reply {
 	return &Reply{
-		Item: &Reply_Details{res},
+		Datum: &Reply_Details{res},
 	}
 }
 
-func ToReplyInspectTransfer(res *ReplyInspectTransfer) *Reply {
+func TowardReplyInspectTransfer(res *ReplyInspectTransfer) *Reply {
 	return &Reply{
-		Item: &Reply_Transfercheck{res},
+		Datum: &Reply_Inspecttrans{res},
 	}
 }
 
-func ToReplyEndorse(res *ReplyEndorse) *Reply {
+func TowardReplyEndorse(res *ReplyEndorse) *Reply {
 	return &Reply{
-		Item: &Reply_Endorse{res},
+		Datum: &Reply_Endorse{res},
 	}
 }
 
-func ToReplyInquire(res *ReplyInquire) *Reply {
+func TowardReplyInquire(res *ReplyInquire) *Reply {
 	return &Reply{
-		Item: &Reply_Inquire{res},
+		Datum: &Reply_Inquire{res},
 	}
 }
 
-func ToReplyInitSeries(res *ReplyInitSeries) *Reply {
+func TowardReplyInitializeSuccession(res *ReplyInitializeSuccession) *Reply {
 	return &Reply{
-		Item: &Reply_Initiatechain{res},
+		Datum: &Reply_Initiatechain{res},
 	}
 }
 
-func ToReplyCatalogMirrors(res *ReplyCatalogMirrors) *Reply {
+func TowardReplyCatalogImages(res *ReplyCatalogImages) *Reply {
 	return &Reply{
-		Item: &Reply_Catalogmirrors{res},
+		Datum: &Reply_Catalogimages{res},
 	}
 }
 
-func ToReplyProposalMirror(res *ReplyProposalMirror) *Reply {
+func TowardReplyExtendImage(res *ReplyExtendImage) *Reply {
 	return &Reply{
-		Item: &Reply_Mirrorsnapshot{res},
+		Datum: &Reply_Extendimage{res},
 	}
 }
 
-func ToReplyImportMirrorSegment(res *ReplyImportMirrorSegment) *Reply {
+func TowardReplyFetchImageSegment(res *ReplyFetchImageSegment) *Reply {
 	return &Reply{
-		Item: &Reply_Loadmirrorsegment{res},
+		Datum: &Reply_Loadimagefragment{res},
 	}
 }
 
-func ToReplyExecuteMirrorSegment(res *ReplyExecuteMirrorSegment) *Reply {
+func TowardReplyExecuteImageSegment(res *ReplyExecuteImageSegment) *Reply {
 	return &Reply{
-		Item: &Reply_Executemirrorsegment{res},
+		Datum: &Reply_Executeimagefragment{res},
 	}
 }
 
-func ToReplyArrangeNomination(res *ReplyArrangeNomination) *Reply {
+func TowardReplyArrangeNomination(res *ReplyArrangeNomination) *Reply {
 	return &Reply{
-		Item: &Reply_Arrangenomination{res},
+		Datum: &Reply_Prepareitem{res},
 	}
 }
 
-func ToReplyHandleNomination(res *ReplyHandleNomination) *Reply {
+func TowardReplyHandleNomination(res *ReplyHandleNomination) *Reply {
 	return &Reply{
-		Item: &Reply_Processnomination{res},
+		Datum: &Reply_Executeitem{res},
 	}
 }
 
-func ToReplyExpandBallot(res *ReplyExpandBallot) *Reply {
+func TowardReplyBroadenBallot(res *ReplyBroadenBallot) *Reply {
 	return &Reply{
-		Item: &Reply_Ballotextend{res},
+		Datum: &Reply_Extendballot{res},
 	}
 }
 
-func ToReplyValidateBallotAddition(res *ReplyValidateBallotAddition) *Reply {
+func TowardReplyValidateBallotAddition(res *ReplyValidateBallotAddition) *Reply {
 	return &Reply{
-		Item: &Reply_Validateballotextension{res},
+		Datum: &Reply_Verifyballotaddition{res},
 	}
 }
 
-func ToReplyCompleteLedger(res *ReplyCompleteLedger) *Reply {
+func TowardReplyCulminateLedger(res *ReplyCulminateLedger) *Reply {
 	return &Reply{
-		Item: &Reply_Terminateblock{res},
+		Datum: &Reply_Finalizeledger{res},
 	}
 }

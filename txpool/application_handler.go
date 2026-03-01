@@ -5,57 +5,57 @@ import (
 	"fmt"
 	"sync/atomic"
 
-	"github.com/valkyrieworks/settings"
-	"github.com/valkyrieworks/p2p"
-	protomemory "github.com/valkyrieworks/schema/consensuscore/txpool"
-	"github.com/valkyrieworks/kinds"
+	"github.com/valkyrieworks/dffc4ef0-4ec6-4346-9b6c-d0a0cb42d94b/settings"
+	"github.com/valkyrieworks/dffc4ef0-4ec6-4346-9b6c-d0a0cb42d94b/p2p"
+	schemaspace "github.com/valkyrieworks/dffc4ef0-4ec6-4346-9b6c-d0a0cb42d94b/schema/strongmind/txpool"
+	"github.com/valkyrieworks/dffc4ef0-4ec6-4346-9b6c-d0a0cb42d94b/kinds"
 	"github.com/pkg/errors"
 )
 
 //
 type ApplicationHandler struct {
-	p2p.RootHandler
+	p2p.FoundationHandler
 	settings  *settings.TxpoolSettings
 	txpool *ApplicationTxpool
 
 	ctx       context.Context
-	revokeCtx context.CancelFunc
+	abortContext context.CancelFunc
 
-	divertedOn           atomic.Bool
-	waitForDivertingOnChan chan struct{}
+	routedUpon           atomic.Bool
+	pauseForeachRoutingUponChnl chan struct{}
 }
 
-func NewApplicationHandler(
+func FreshApplicationHandler(
 	settings *settings.TxpoolSettings,
 	txpool *ApplicationTxpool,
-	waitAlign bool,
+	pauseForeachChronize bool,
 ) *ApplicationHandler {
-	ctx, revokeCtx := context.WithCancel(context.Background())
+	ctx, abortContext := context.WithCancel(context.Background())
 
 	r := &ApplicationHandler{
 		settings:               settings,
 		txpool:              txpool,
 		ctx:                  ctx,
-		revokeCtx:            revokeCtx,
-		divertedOn:           atomic.Bool{},
-		waitForDivertingOnChan: nil,
+		abortContext:            abortContext,
+		routedUpon:           atomic.Bool{},
+		pauseForeachRoutingUponChnl: nil,
 	}
 
-	r.RootHandler = *p2p.NewRootHandler("REDACTED", r)
+	r.FoundationHandler = *p2p.FreshFoundationHandler("REDACTED", r)
 
-	if waitAlign {
-		r.divertedOn.Store(false)
-		r.waitForDivertingOnChan = make(chan struct{})
+	if pauseForeachChronize {
+		r.routedUpon.Store(false)
+		r.pauseForeachRoutingUponChnl = make(chan struct{})
 	} else {
-		r.divertedOn.Store(true)
+		r.routedUpon.Store(true)
 	}
 
 	return r
 }
 
 //
-func (r *ApplicationHandler) OnBegin() error {
-	if !r.divertedOn.Load() {
+func (r *ApplicationHandler) UponInitiate() error {
+	if !r.routedUpon.Load() {
 		r.Tracer.Details("REDACTED")
 	}
 
@@ -67,18 +67,18 @@ func (r *ApplicationHandler) OnBegin() error {
 	go func() {
 		defer func() {
 			if p := recover(); p != nil {
-				r.Tracer.Fault("REDACTED", "REDACTED", p)
+				r.Tracer.Failure("REDACTED", "REDACTED", p)
 			}
 		}()
 
 		//
 		//
-		maximumGroupVolumeOctets := r.settings.MaximumTransferOctets
+		maximumClusterExtentOctets := r.settings.MaximumTransferOctets
 		if r.settings.MaximumClusterOctets > 0 {
-			maximumGroupVolumeOctets = r.settings.MaximumClusterOctets
+			maximumClusterExtentOctets = r.settings.MaximumClusterOctets
 		}
 
-		r.multicastTransfersGroup(r.ctx, maximumGroupVolumeOctets)
+		r.multicastTransfersCluster(r.ctx, maximumClusterExtentOctets)
 
 		r.Tracer.Details("REDACTED")
 	}()
@@ -86,74 +86,74 @@ func (r *ApplicationHandler) OnBegin() error {
 	return nil
 }
 
-func (r *ApplicationHandler) OnHalt() {
+func (r *ApplicationHandler) UponHalt() {
 	if !r.activated() {
 		return
 	}
 
 	//
-	r.revokeCtx()
+	r.abortContext()
 }
 
 //
-func (r *ApplicationHandler) FetchStreams() []*p2p.StreamDefinition {
+func (r *ApplicationHandler) ObtainConduits() []*p2p.ConduitDefinition {
 	greatestTransfer := make([]byte, r.settings.MaximumTransferOctets)
-	groupMessage := protomemory.Signal{
-		Sum: &protomemory.Signal_Trans{
-			Txs: &protomemory.Txs{Txs: [][]byte{greatestTransfer}},
+	clusterSignal := schemaspace.Signal{
+		Sum: &schemaspace.Artifact_Trans{
+			Txs: &schemaspace.Txs{Txs: [][]byte{greatestTransfer}},
 		},
 	}
 
-	return []*p2p.StreamDefinition{
+	return []*p2p.ConduitDefinition{
 		{
 			ID:                  TxpoolConduit,
 			Urgency:            5,
-			AcceptSignalVolume: groupMessage.Volume(),
-			SignalKind:         &protomemory.Signal{},
+			ObtainSignalVolume: clusterSignal.Extent(),
+			SignalKind:         &schemaspace.Signal{},
 		},
 	}
 }
 
 //
-func (r *ApplicationHandler) WaitAlign() bool {
+func (r *ApplicationHandler) AwaitChronize() bool {
 	return !r.activated()
 }
 
 //
-func (r *ApplicationHandler) ActivateInOutTrans() {
-	if !r.divertedOn.CompareAndSwap(false, true) {
+func (r *ApplicationHandler) ActivateInsideOutputTrans() {
+	if !r.routedUpon.CompareAndSwap(false, true) {
 		//
 		return
 	}
 
 	r.Tracer.Details("REDACTED")
-	close(r.waitForDivertingOnChan)
+	close(r.pauseForeachRoutingUponChnl)
 }
 
-func (r *ApplicationHandler) Accept(e p2p.Packet) {
+func (r *ApplicationHandler) Accept(e p2p.Wrapper) {
 	if !r.activated() {
 		r.Tracer.Diagnose("REDACTED")
 		return
 	}
 
-	nodeUID := e.Src.ID()
+	nodeUUID := e.Src.ID()
 
-	txs, err := transFromPacket(e)
+	txs, err := transOriginatingWrapper(e)
 	if err != nil {
-		r.Tracer.Fault("REDACTED", "REDACTED", err, "REDACTED", nodeUID)
+		r.Tracer.Failure("REDACTED", "REDACTED", err, "REDACTED", nodeUUID)
 		//
 		return
 	}
 
-	r.txpool.stats.GroupVolume.With("REDACTED", "REDACTED").Observe(float64(len(txs)))
+	r.txpool.telemetry.ClusterExtent.With("REDACTED", "REDACTED").Observe(float64(len(txs)))
 
 	for _, tx := range txs {
-		r.embedTransfer(nodeUID, tx)
+		r.appendTransfer(nodeUUID, tx)
 	}
 }
 
-func (r *ApplicationHandler) embedTransfer(nodeUID p2p.ID, tx kinds.Tx) {
-	err := r.txpool.EmbedTransfer(tx)
+func (r *ApplicationHandler) appendTransfer(nodeUUID p2p.ID, tx kinds.Tx) {
+	err := r.txpool.AppendTransfer(tx)
 	if err == nil {
 		//
 		return
@@ -161,12 +161,12 @@ func (r *ApplicationHandler) embedTransfer(nodeUID p2p.ID, tx kinds.Tx) {
 
 	transferDigest := transferDigest(tx)
 	switch {
-	case errors.Is(err, ErrViewedTransfer):
-		r.Tracer.Diagnose("REDACTED", "REDACTED", transferDigest, "REDACTED", nodeUID)
-	case errors.As(err, &ErrTransferTooBulky{}):
-		r.Tracer.Diagnose("REDACTED", "REDACTED", err, "REDACTED", transferDigest, "REDACTED", nodeUID)
+	case errors.Is(err, FaultObservedTransfer):
+		r.Tracer.Diagnose("REDACTED", "REDACTED", transferDigest, "REDACTED", nodeUUID)
+	case errors.As(err, &FaultTransferExcessivelyAmple{}):
+		r.Tracer.Diagnose("REDACTED", "REDACTED", err, "REDACTED", transferDigest, "REDACTED", nodeUUID)
 	default:
-		r.Tracer.Details("REDACTED", "REDACTED", err, "REDACTED", transferDigest, "REDACTED", nodeUID)
+		r.Tracer.Details("REDACTED", "REDACTED", err, "REDACTED", transferDigest, "REDACTED", nodeUUID)
 	}
 }
 
@@ -174,39 +174,39 @@ func (r *ApplicationHandler) embedTransfer(nodeUID p2p.ID, tx kinds.Tx) {
 //
 //
 //
-func (r *ApplicationHandler) multicastTransfersGroup(ctx context.Context, maximumGroupVolumeOctets int) {
+func (r *ApplicationHandler) multicastTransfersCluster(ctx context.Context, maximumClusterExtentOctets int) {
 	//
 	//
-	influx := r.txpool.TransferFlow(ctx)
+	influx := r.txpool.TransferInflux(ctx)
 
 	for txs := range influx {
-		groupings := segmentTrans(txs, maximumGroupVolumeOctets)
-		for _, txs := range groupings {
+		clusters := segmentTrans(txs, maximumClusterExtentOctets)
+		for _, txs := range clusters {
 			r.multicast(txs)
 		}
 	}
 }
 
 func (r *ApplicationHandler) multicast(txs kinds.Txs) {
-	r.txpool.stats.GroupVolume.With("REDACTED", "REDACTED").Observe(float64(len(txs)))
+	r.txpool.telemetry.ClusterExtent.With("REDACTED", "REDACTED").Observe(float64(len(txs)))
 
-	r.Router.MulticastAsync(p2p.Packet{
-		Signal:   &protomemory.Txs{Txs: txs.ToSegmentOfOctets()},
-		StreamUID: TxpoolConduit,
+	r.Router.MulticastAsyncronous(p2p.Wrapper{
+		Signal:   &schemaspace.Txs{Txs: txs.TowardSegmentBelongingOctets()},
+		ConduitUUID: TxpoolConduit,
 	})
 }
 
 func (r *ApplicationHandler) activated() bool {
-	return r.divertedOn.Load()
+	return r.routedUpon.Load()
 }
 
-func transFromPacket(e p2p.Packet) ([]kinds.Tx, error) {
-	msg, ok := e.Signal.(*protomemory.Txs)
+func transOriginatingWrapper(e p2p.Wrapper) ([]kinds.Tx, error) {
+	msg, ok := e.Signal.(*schemaspace.Txs)
 	if !ok {
 		return nil, fmt.Errorf("REDACTED", e.Signal)
 	}
 
-	transCrude := msg.FetchTrans()
+	transCrude := msg.ObtainTrans()
 	switch len(transCrude) {
 	case 0:
 		return nil, fmt.Errorf("REDACTED")
@@ -227,7 +227,7 @@ func transFromPacket(e p2p.Packet) ([]kinds.Tx, error) {
 //
 //
 //
-func segmentTrans(txs kinds.Txs, maximumGroupVolumeOctets int) []kinds.Txs {
+func segmentTrans(txs kinds.Txs, maximumClusterExtentOctets int) []kinds.Txs {
 	//
 	if len(txs) == 0 {
 		return nil
@@ -235,14 +235,14 @@ func segmentTrans(txs kinds.Txs, maximumGroupVolumeOctets int) []kinds.Txs {
 
 	segments := []kinds.Txs{}
 
-	finalSegmentVolumeOctets := 0
+	finalSegmentExtentOctets := 0
 	finalSegment := kinds.Txs{}
 
 	for _, tx := range txs {
-		transferVolumeOctets := len(tx)
+		transferExtentOctets := len(tx)
 
 		//
-		if (finalSegmentVolumeOctets + transferVolumeOctets) > maximumGroupVolumeOctets {
+		if (finalSegmentExtentOctets + transferExtentOctets) > maximumClusterExtentOctets {
 			//
 			//
 			if len(finalSegment) > 0 {
@@ -251,11 +251,11 @@ func segmentTrans(txs kinds.Txs, maximumGroupVolumeOctets int) []kinds.Txs {
 
 			//
 			finalSegment = kinds.Txs{}
-			finalSegmentVolumeOctets = 0
+			finalSegmentExtentOctets = 0
 		}
 
 		finalSegment = append(finalSegment, tx)
-		finalSegmentVolumeOctets += transferVolumeOctets
+		finalSegmentExtentOctets += transferExtentOctets
 	}
 
 	//

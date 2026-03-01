@@ -5,37 +5,37 @@ import "fmt"
 type (
 	//
 	//
-	ErrCorruptEndorseLevel struct {
+	FaultUnfitEndorseAltitude struct {
 		Anticipated int64
-		Factual   int64
+		Existing   int64
 	}
 
 	//
 	//
-	ErrCorruptEndorseEndorsements struct {
+	FaultUnfitEndorseNotations struct {
 		Anticipated int
-		Factual   int
+		Existing   int
 	}
 )
 
-func NewErrCorruptEndorseLevel(anticipated, factual int64) ErrCorruptEndorseLevel {
-	return ErrCorruptEndorseLevel{
+func FreshFaultUnfitEndorseAltitude(anticipated, existing int64) FaultUnfitEndorseAltitude {
+	return FaultUnfitEndorseAltitude{
 		Anticipated: anticipated,
-		Factual:   factual,
+		Existing:   existing,
 	}
 }
 
-func (e ErrCorruptEndorseLevel) Fault() string {
-	return fmt.Sprintf("REDACTED", e.Anticipated, e.Factual)
+func (e FaultUnfitEndorseAltitude) Failure() string {
+	return fmt.Sprintf("REDACTED", e.Anticipated, e.Existing)
 }
 
-func NewErrCorruptEndorseEndorsements(anticipated, factual int) ErrCorruptEndorseEndorsements {
-	return ErrCorruptEndorseEndorsements{
+func FreshFaultUnfitEndorseNotations(anticipated, existing int) FaultUnfitEndorseNotations {
+	return FaultUnfitEndorseNotations{
 		Anticipated: anticipated,
-		Factual:   factual,
+		Existing:   existing,
 	}
 }
 
-func (e ErrCorruptEndorseEndorsements) Fault() string {
-	return fmt.Sprintf("REDACTED", e.Anticipated, e.Factual)
+func (e FaultUnfitEndorseNotations) Failure() string {
+	return fmt.Sprintf("REDACTED", e.Anticipated, e.Existing)
 }

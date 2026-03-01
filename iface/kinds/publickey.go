@@ -3,42 +3,42 @@ package kinds
 import (
 	fmt "fmt"
 
-	"github.com/valkyrieworks/vault/ed25519"
-	cryptocode "github.com/valkyrieworks/vault/codec"
-	"github.com/valkyrieworks/vault/secp256k1"
+	"github.com/valkyrieworks/dffc4ef0-4ec6-4346-9b6c-d0a0cb42d94b/security/edwards25519"
+	cryptocode "github.com/valkyrieworks/dffc4ef0-4ec6-4346-9b6c-d0a0cb42d94b/security/serialization"
+	"github.com/valkyrieworks/dffc4ef0-4ec6-4346-9b6c-d0a0cb42d94b/security/ellipticp256"
 )
 
-func Ed25519ratifierModify(pk []byte, energy int64) RatifierModify {
-	pke := ed25519.PublicKey(pk)
+func Ed25519assessorRevise(pk []byte, potency int64) AssessorRevise {
+	pke := edwards25519.PublicToken(pk)
 
-	pkp, err := cryptocode.PublicKeyToSchema(pke)
+	pkp, err := cryptocode.PublicTokenTowardSchema(pke)
 	if err != nil {
 		panic(err)
 	}
 
-	return RatifierModify{
+	return AssessorRevise{
 		//
-		PublicKey: pkp,
-		Energy:  energy,
+		PublicToken: pkp,
+		Potency:  potency,
 	}
 }
 
-func ModifyRatifier(pk []byte, energy int64, keyKind string) RatifierModify {
-	switch keyKind {
-	case "REDACTED", ed25519.KeyKind:
-		return Ed25519ratifierModify(pk, energy)
-	case secp256k1.KeyKind:
-		pke := secp256k1.PublicKey(pk)
-		pkp, err := cryptocode.PublicKeyToSchema(pke)
+func ReviseAssessor(pk []byte, potency int64, tokenKind string) AssessorRevise {
+	switch tokenKind {
+	case "REDACTED", edwards25519.TokenKind:
+		return Ed25519assessorRevise(pk, potency)
+	case ellipticp256.TokenKind:
+		pke := ellipticp256.PublicToken(pk)
+		pkp, err := cryptocode.PublicTokenTowardSchema(pke)
 		if err != nil {
 			panic(err)
 		}
-		return RatifierModify{
+		return AssessorRevise{
 			//
-			PublicKey: pkp,
-			Energy:  energy,
+			PublicToken: pkp,
+			Potency:  potency,
 		}
 	default:
-		panic(fmt.Sprintf("REDACTED", keyKind))
+		panic(fmt.Sprintf("REDACTED", tokenKind))
 	}
 }

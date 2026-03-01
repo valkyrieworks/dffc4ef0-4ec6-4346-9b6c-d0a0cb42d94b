@@ -1,28 +1,28 @@
 package verify
 
 import (
-	engineseed "github.com/valkyrieworks/utils/random"
+	commitrand "github.com/valkyrieworks/dffc4ef0-4ec6-4346-9b6c-d0a0cb42d94b/utils/arbitrary"
 )
 
 //
-func TransformOctetSegment(bytearray []byte) []byte {
+func TransformOctetSegment(octetz []byte) []byte {
 	//
-	if len(bytearray) == 0 {
+	if len(octetz) == 0 {
 		panic("REDACTED")
 	}
 
 	//
-	mBytearray := make([]byte, len(bytearray))
-	copy(mBytearray, bytearray)
-	bytearray = mBytearray
+	moduleOctetz := make([]byte, len(octetz))
+	copy(moduleOctetz, octetz)
+	octetz = moduleOctetz
 
 	//
-	switch engineseed.Int() % 2 {
+	switch commitrand.Int() % 2 {
 	case 0: //
-		bytearray[engineseed.Int()%len(bytearray)] += byte(engineseed.Int()%255 + 1)
+		octetz[commitrand.Int()%len(octetz)] += byte(commitrand.Int()%255 + 1)
 	case 1: //
-		pos := engineseed.Int() % len(bytearray)
-		bytearray = append(bytearray[:pos], bytearray[pos+1:]...)
+		pos := commitrand.Int() % len(octetz)
+		octetz = append(octetz[:pos], octetz[pos+1:]...)
 	}
-	return bytearray
+	return octetz
 }

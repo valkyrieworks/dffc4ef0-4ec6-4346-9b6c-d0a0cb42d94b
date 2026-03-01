@@ -6,58 +6,58 @@ import (
 
 	"github.com/cosmos/gogoproto/proto"
 
-	ringlist "github.com/valkyrieworks/utils/ringlist"
-	"github.com/valkyrieworks/utils/log"
-	"github.com/valkyrieworks/p2p"
-	engineproto "github.com/valkyrieworks/schema/consensuscore/kinds"
-	"github.com/valkyrieworks/kinds"
+	linkedlist "github.com/valkyrieworks/dffc4ef0-4ec6-4346-9b6c-d0a0cb42d94b/utils/linkedlist"
+	"github.com/valkyrieworks/dffc4ef0-4ec6-4346-9b6c-d0a0cb42d94b/utils/log"
+	"github.com/valkyrieworks/dffc4ef0-4ec6-4346-9b6c-d0a0cb42d94b/p2p"
+	commitchema "github.com/valkyrieworks/dffc4ef0-4ec6-4346-9b6c-d0a0cb42d94b/schema/strongmind/kinds"
+	"github.com/valkyrieworks/dffc4ef0-4ec6-4346-9b6c-d0a0cb42d94b/kinds"
 )
 
 const (
 	ProofConduit = byte(0x38)
 
-	maximumMessageVolume = 1048576 //
+	maximumSignalExtent = 1048576 //
 
 	//
 	//
 	//
 	//
-	multicastProofCadenceS = 10
+	multicastProofDurationSTR = 10
 	//
-	nodeReprocessSignalCadenceMillis = 100
+	nodeReissueArtifactDurationMSEC = 100
 )
 
 //
 type Handler struct {
-	p2p.RootHandler
-	eventpool   *Depository
-	eventBus *kinds.EventBus
+	p2p.FoundationHandler
+	incidentpool   *Hub
+	incidentPipeline *kinds.IncidentChannel
 }
 
 //
-func NewHandler(eventpool *Depository) *Handler {
+func FreshHandler(incidentpool *Hub) *Handler {
 	evR := &Handler{
-		eventpool: eventpool,
+		incidentpool: incidentpool,
 	}
-	evR.RootHandler = *p2p.NewRootHandler("REDACTED", evR)
+	evR.FoundationHandler = *p2p.FreshFoundationHandler("REDACTED", evR)
 	return evR
 }
 
 //
 func (evR *Handler) AssignTracer(l log.Tracer) {
 	evR.Tracer = l
-	evR.eventpool.AssignTracer(l)
+	evR.incidentpool.AssignTracer(l)
 }
 
 //
 //
-func (evR *Handler) FetchStreams() []*p2p.StreamDefinition {
-	return []*p2p.StreamDefinition{
+func (evR *Handler) ObtainConduits() []*p2p.ConduitDefinition {
+	return []*p2p.ConduitDefinition{
 		{
 			ID:                  ProofConduit,
 			Urgency:            6,
-			AcceptSignalVolume: maximumMessageVolume,
-			SignalKind:         &engineproto.ProofCatalog{},
+			ObtainSignalVolume: maximumSignalExtent,
+			SignalKind:         &commitchema.ProofCatalog{},
 		},
 	}
 }
@@ -69,33 +69,33 @@ func (evR *Handler) AppendNode(node p2p.Node) {
 
 //
 //
-func (evR *Handler) Accept(e p2p.Packet) {
-	proofs, err := proofCatalogFromSchema(e.Signal)
+func (evR *Handler) Accept(e p2p.Wrapper) {
+	proofs, err := proofCatalogOriginatingSchema(e.Signal)
 	if err != nil {
-		evR.Tracer.Fault("REDACTED", "REDACTED", e.Src, "REDACTED", e.StreamUID, "REDACTED", err)
-		evR.Router.HaltNodeForFault(e.Src, err)
+		evR.Tracer.Failure("REDACTED", "REDACTED", e.Src, "REDACTED", e.ConduitUUID, "REDACTED", err)
+		evR.Router.HaltNodeForeachFailure(e.Src, err)
 		return
 	}
 
 	for _, ev := range proofs {
-		err := evR.eventpool.AppendProof(ev)
+		err := evR.incidentpool.AppendProof(ev)
 		switch err.(type) {
-		case *kinds.ErrCorruptProof:
-			evR.Tracer.Fault(err.Error())
+		case *kinds.FaultUnfitProof:
+			evR.Tracer.Failure(err.Error())
 			//
-			evR.Router.HaltNodeForFault(e.Src, err)
+			evR.Router.HaltNodeForeachFailure(e.Src, err)
 			return
 		case nil:
 		default:
 			//
-			evR.Tracer.Fault("REDACTED", "REDACTED", proofs, "REDACTED", err)
+			evR.Tracer.Failure("REDACTED", "REDACTED", proofs, "REDACTED", err)
 		}
 	}
 }
 
 //
-func (evR *Handler) AssignEventBus(b *kinds.EventBus) {
-	evR.eventBus = b
+func (evR *Handler) AssignIncidentChannel(b *kinds.IncidentChannel) {
+	evR.incidentPipeline = b
 }
 
 //
@@ -105,15 +105,15 @@ func (evR *Handler) AssignEventBus(b *kinds.EventBus) {
 //
 //
 func (evR *Handler) multicastProofProcedure(node p2p.Node) {
-	var following *ringlist.CComponent
+	var following *linkedlist.CNComponent
 	for {
 		//
 		//
 		//
 		if following == nil {
 			select {
-			case <-evR.eventpool.ProofWaitChan(): //
-				if following = evR.eventpool.ProofHead(); following == nil {
+			case <-evR.incidentpool.ProofPauseChnl(): //
+				if following = evR.incidentpool.ProofLeading(); following == nil {
 					continue
 				}
 			case <-node.Exit():
@@ -121,36 +121,36 @@ func (evR *Handler) multicastProofProcedure(node p2p.Node) {
 			case <-evR.Exit():
 				return
 			}
-		} else if !node.IsActive() || !evR.IsActive() {
+		} else if !node.EqualsActive() || !evR.EqualsActive() {
 			return
 		}
 
-		ev := following.Item.(kinds.Proof)
-		proofs := evR.arrangeProofSignal(node, ev)
+		ev := following.Datum.(kinds.Proof)
+		proofs := evR.arrangeProofArtifact(node, ev)
 		if len(proofs) > 0 {
 			evR.Tracer.Diagnose("REDACTED", "REDACTED", ev, "REDACTED", node)
-			evp, err := proofCatalogToSchema(proofs)
+			evp, err := proofCatalogTowardSchema(proofs)
 			if err != nil {
 				panic(err)
 			}
 
-			success := node.Transmit(p2p.Packet{
-				StreamUID: ProofConduit,
+			triumph := node.Transmit(p2p.Wrapper{
+				ConduitUUID: ProofConduit,
 				Signal:   evp,
 			})
-			if !success {
-				time.Sleep(nodeReprocessSignalCadenceMillis * time.Millisecond)
+			if !triumph {
+				time.Sleep(nodeReissueArtifactDurationMSEC * time.Millisecond)
 				continue
 			}
 		}
 
-		afterChan := time.After(time.Second * multicastProofCadenceS)
+		subsequentChnl := time.After(time.Second * multicastProofDurationSTR)
 		select {
-		case <-afterChan:
+		case <-subsequentChnl:
 			//
 			//
 			following = nil
-		case <-following.FollowingWaitChan():
+		case <-following.FollowingPauseChnl():
 			//
 			following = following.Following()
 		case <-node.Exit():
@@ -163,13 +163,13 @@ func (evR *Handler) multicastProofProcedure(node p2p.Node) {
 
 //
 //
-func (evR Handler) arrangeProofSignal(
+func (evR Handler) arrangeProofArtifact(
 	node p2p.Node,
 	ev kinds.Proof,
 ) (proofs []kinds.Proof) {
 	//
-	evtLevel := ev.Level()
-	nodeStatus, ok := node.Get(kinds.NodeStatusKey).(NodeStatus)
+	occurenceAltitude := ev.Altitude()
+	nodeStatus, ok := node.Get(kinds.NodeStatusToken).(NodeStatus)
 	if !ok {
 		//
 		//
@@ -182,23 +182,23 @@ func (evR Handler) arrangeProofSignal(
 	//
 	//
 	var (
-		nodeLevel   = nodeStatus.FetchLevel()
-		options       = evR.eventpool.Status().AgreementOptions.Proof
-		eraCountLedgers = nodeLevel - evtLevel
+		nodeAltitude   = nodeStatus.ObtainAltitude()
+		parameters       = evR.incidentpool.Status().AgreementSettings.Proof
+		lifespanCountLedgers = nodeAltitude - occurenceAltitude
 	)
 
-	if nodeLevel <= evtLevel { //
+	if nodeAltitude <= occurenceAltitude { //
 		return nil
-	} else if eraCountLedgers > options.MaximumDurationCountLedgers { //
+	} else if lifespanCountLedgers > parameters.MaximumLifespanCountLedgers { //
 
 		//
 		//
 		evR.Tracer.Details("REDACTED",
-			"REDACTED", nodeLevel,
-			"REDACTED", evtLevel,
-			"REDACTED", options.MaximumDurationCountLedgers,
-			"REDACTED", evR.eventpool.Status().FinalLedgerTime,
-			"REDACTED", options.MaximumDurationPeriod,
+			"REDACTED", nodeAltitude,
+			"REDACTED", occurenceAltitude,
+			"REDACTED", parameters.MaximumLifespanCountLedgers,
+			"REDACTED", evR.incidentpool.Status().FinalLedgerMoment,
+			"REDACTED", parameters.MaximumLifespanInterval,
 			"REDACTED", node,
 		)
 
@@ -211,32 +211,32 @@ func (evR Handler) arrangeProofSignal(
 
 //
 type NodeStatus interface {
-	FetchLevel() int64
+	ObtainAltitude() int64
 }
 
 //
 //
-func proofCatalogToSchema(proofs []kinds.Proof) (*engineproto.ProofCatalog, error) {
-	evi := make([]engineproto.Proof, len(proofs))
+func proofCatalogTowardSchema(proofs []kinds.Proof) (*commitchema.ProofCatalog, error) {
+	evi := make([]commitchema.Proof, len(proofs))
 	for i := 0; i < len(proofs); i++ {
-		ev, err := kinds.ProofToSchema(proofs[i])
+		ev, err := kinds.ProofTowardSchema(proofs[i])
 		if err != nil {
 			return nil, err
 		}
 		evi[i] = *ev
 	}
-	epl := engineproto.ProofCatalog{
+	epl := commitchema.ProofCatalog{
 		Proof: evi,
 	}
 	return &epl, nil
 }
 
-func proofCatalogFromSchema(m proto.Message) ([]kinds.Proof, error) {
-	lm := m.(*engineproto.ProofCatalog)
+func proofCatalogOriginatingSchema(m proto.Message) ([]kinds.Proof, error) {
+	lm := m.(*commitchema.ProofCatalog)
 
 	proofs := make([]kinds.Proof, len(lm.Proof))
 	for i := 0; i < len(lm.Proof); i++ {
-		ev, err := kinds.ProofFromSchema(&lm.Proof[i])
+		ev, err := kinds.ProofOriginatingSchema(&lm.Proof[i])
 		if err != nil {
 			return nil, err
 		}
@@ -244,7 +244,7 @@ func proofCatalogFromSchema(m proto.Message) ([]kinds.Proof, error) {
 	}
 
 	for i, ev := range proofs {
-		if err := ev.CertifySimple(); err != nil {
+		if err := ev.CertifyFundamental(); err != nil {
 			return nil, fmt.Errorf("REDACTED", i, err)
 		}
 	}

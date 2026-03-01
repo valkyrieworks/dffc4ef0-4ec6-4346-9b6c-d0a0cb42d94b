@@ -21,39 +21,39 @@ import (
 	"golang.org/x/crypto/hkdf"
 	"golang.org/x/crypto/nacl/box"
 
-	"github.com/valkyrieworks/vault"
-	"github.com/valkyrieworks/vault/ed25519"
-	cryptocode "github.com/valkyrieworks/vault/codec"
-	"github.com/valkyrieworks/utils/async"
-	"github.com/valkyrieworks/utils/protoio"
-	engineconnect "github.com/valkyrieworks/utils/align"
-	tmp2p "github.com/valkyrieworks/schema/consensuscore/p2p"
+	"github.com/valkyrieworks/dffc4ef0-4ec6-4346-9b6c-d0a0cb42d94b/security"
+	"github.com/valkyrieworks/dffc4ef0-4ec6-4346-9b6c-d0a0cb42d94b/security/edwards25519"
+	cryptocode "github.com/valkyrieworks/dffc4ef0-4ec6-4346-9b6c-d0a0cb42d94b/security/serialization"
+	"github.com/valkyrieworks/dffc4ef0-4ec6-4346-9b6c-d0a0cb42d94b/utils/asyncronous"
+	"github.com/valkyrieworks/dffc4ef0-4ec6-4346-9b6c-d0a0cb42d94b/utils/protocolio"
+	commitchronize "github.com/valkyrieworks/dffc4ef0-4ec6-4346-9b6c-d0a0cb42d94b/utils/chronize"
+	tmpfabric "github.com/valkyrieworks/dffc4ef0-4ec6-4346-9b6c-d0a0cb42d94b/schema/strongmind/p2p"
 )
 
 //
 const (
-	dataSizeVolume      = 4
-	dataMaximumVolume      = 1024
-	sumBorderVolume   = dataMaximumVolume + dataSizeVolume
-	aeadVolumeBurden = 16 //
-	aeadKeyVolume      = chacha20poly1305.KeySize
-	aeadNonceVolume    = chacha20poly1305.NonceSize
+	dataLengthExtent      = 4
+	dataMaximumExtent      = 1024
+	sumStructureExtent   = dataMaximumExtent + dataLengthExtent
+	aeadExtentMargin = 16 //
+	aeadTokenExtent      = chacha20poly1305.KeySize
+	aeadNumberExtent    = chacha20poly1305.NonceSize
 
-	tagTemporaryLesserExternalKey = "REDACTED"
-	tagTemporaryUpperExternalKey = "REDACTED"
+	tagTemporaryLesserCommonToken = "REDACTED"
+	tagTemporaryHigherCommonToken = "REDACTED"
 	tagDHCredential                = "REDACTED"
 	tagCredentialLinkageMac     = "REDACTED"
 
-	standardRecordFrameVolume = 128 * 1024
+	fallbackPersistReserveExtent = 128 * 1024
 	//
 	//
-	standardReadFrameVolume = 65 * 1024
+	fallbackFetchReserveExtent = 65 * 1024
 )
 
 var (
-	ErrMinorSequenceDistantPublicKey = errors.New("REDACTED")
+	FaultMinorSequenceDistantPublicToken = errors.New("REDACTED")
 
-	credentialLinkKeyAndDisputeGenerate = []byte("REDACTED")
+	credentialLinkTokenAlsoQueryProduce = []byte("REDACTED")
 )
 
 //
@@ -65,16 +65,16 @@ var (
 //
 //
 //
-type TokenLinkage struct {
+type CredentialLinkage struct {
 	//
-	receiveAead cipher.AEAD
+	obtainAead cipher.AEAD
 	transmitAead cipher.AEAD
 
-	modPublicKey vault.PublicKey
+	modPublicToken security.PublicToken
 
 	link       io.ReadWriteCloser
-	linkRecorder *bufio.Writer
-	linkScanner io.Reader
+	linkPersistor *bufio.Writer
+	linkFetcher io.Reader
 
 	//
 	//
@@ -83,16 +83,16 @@ type TokenLinkage struct {
 	//
 	//
 	//
-	receiveMutex         engineconnect.Lock
-	receiveFrame      []byte
-	receiveNonce       *[aeadNonceVolume]byte
-	receiveBorder       []byte
-	receiveSecuredBorder []byte
+	obtainMutex         commitchronize.Exclusion
+	obtainReserve      []byte
+	obtainNumber       *[aeadNumberExtent]byte
+	obtainStructure       []byte
+	obtainSecuredStructure []byte
 
-	transmitMutex         engineconnect.Lock
-	transmitNonce       *[aeadNonceVolume]byte
-	transmitBorder       []byte
-	transmitSecuredBorder []byte
+	transmitMutex         commitchronize.Exclusion
+	transmitNumber       *[aeadNumberExtent]byte
+	transmitStructure       []byte
+	transmitSecuredStructure []byte
 }
 
 //
@@ -100,130 +100,130 @@ type TokenLinkage struct {
 //
 //
 //
-func CreateTokenLinkage(link io.ReadWriteCloser, locationPrivateKey vault.PrivateKey) (*TokenLinkage, error) {
-	locationPublicKey := locationPrivateKey.PublicKey()
+func CreateCredentialLinkage(link io.ReadWriteCloser, positionPrivateToken security.PrivateToken) (*CredentialLinkage, error) {
+	positionPublicToken := positionPrivateToken.PublicToken()
 
 	//
-	locationEphPublic, locationEphPrivate := generateEphKeys()
+	positionTempPublic, positionTempPrivate := produceTempTokens()
 
 	//
 	//
 	//
-	modEphPublic, err := allocateEphPublicKey(link, locationEphPublic)
+	modTempPublic, err := allocateTempPublicToken(link, positionTempPublic)
 	if err != nil {
 		return nil, err
 	}
 
 	//
-	loEphPublic, greetingEphPublic := sort32(locationEphPublic, modEphPublic)
+	minimumTempPublic, highTempPublic := sort32(positionTempPublic, modTempPublic)
 
-	log := merlin.NewTranscript("REDACTED")
+	record := merlin.NewTranscript("REDACTED")
 
-	log.AppendMessage(tagTemporaryLesserExternalKey, loEphPublic[:])
-	log.AppendMessage(tagTemporaryUpperExternalKey, greetingEphPublic[:])
-
-	//
-	//
-	locationIsMinimum := bytes.Equal(locationEphPublic[:], loEphPublic[:])
+	record.AppendMessage(tagTemporaryLesserCommonToken, minimumTempPublic[:])
+	record.AppendMessage(tagTemporaryHigherCommonToken, highTempPublic[:])
 
 	//
-	dhCredential, err := calculateDHCredential(modEphPublic, locationEphPrivate)
+	//
+	positionEqualsMinimal := bytes.Equal(positionTempPublic[:], minimumTempPublic[:])
+
+	//
+	dhCredential, err := calculateDHCredential(modTempPublic, positionTempPrivate)
 	if err != nil {
 		return nil, err
 	}
 
-	log.AppendMessage(tagDHCredential, dhCredential[:])
+	record.AppendMessage(tagDHCredential, dhCredential[:])
 
 	//
 	//
 	//
-	receiveCredential, transmitCredential := deduceCredentials(dhCredential, locationIsMinimum)
+	obtainCredential, transmitCredential := deduceCredentials(dhCredential, positionEqualsMinimal)
 
-	const disputeVolume = 32
-	var dispute [disputeVolume]byte
-	log.ExtractBytes(dispute[:], tagCredentialLinkageMac)
+	const queryExtent = 32
+	var query [queryExtent]byte
+	record.ExtractBytes(query[:], tagCredentialLinkageMac)
 
 	transmitAead, err := chacha20poly1305.New(transmitCredential[:])
 	if err != nil {
 		return nil, errors.New("REDACTED")
 	}
-	receiveAead, err := chacha20poly1305.New(receiveCredential[:])
+	obtainAead, err := chacha20poly1305.New(obtainCredential[:])
 	if err != nil {
 		return nil, errors.New("REDACTED")
 	}
 
-	sc := &TokenLinkage{
+	sc := &CredentialLinkage{
 		link:            link,
-		linkRecorder:      bufio.NewWriterSize(link, standardRecordFrameVolume),
-		linkScanner:      bufio.NewReaderSize(link, standardReadFrameVolume),
-		receiveFrame:      nil,
-		receiveNonce:       new([aeadNonceVolume]byte),
-		transmitNonce:       new([aeadNonceVolume]byte),
-		receiveAead:        receiveAead,
+		linkPersistor:      bufio.NewWriterSize(link, fallbackPersistReserveExtent),
+		linkFetcher:      bufio.NewReaderSize(link, fallbackFetchReserveExtent),
+		obtainReserve:      nil,
+		obtainNumber:       new([aeadNumberExtent]byte),
+		transmitNumber:       new([aeadNumberExtent]byte),
+		obtainAead:        obtainAead,
 		transmitAead:        transmitAead,
-		receiveBorder:       make([]byte, sumBorderVolume),
-		receiveSecuredBorder: make([]byte, aeadVolumeBurden+sumBorderVolume),
-		transmitBorder:       make([]byte, sumBorderVolume),
-		transmitSecuredBorder: make([]byte, aeadVolumeBurden+sumBorderVolume),
+		obtainStructure:       make([]byte, sumStructureExtent),
+		obtainSecuredStructure: make([]byte, aeadExtentMargin+sumStructureExtent),
+		transmitStructure:       make([]byte, sumStructureExtent),
+		transmitSecuredStructure: make([]byte, aeadExtentMargin+sumStructureExtent),
 	}
 
 	//
-	locationAutograph, err := attestDispute(&dispute, locationPrivateKey)
+	positionNotation, err := attestQuery(&query, positionPrivateToken)
 	if err != nil {
 		return nil, err
 	}
 
 	//
-	authSignatureMessage, err := allocateAuthAutograph(sc, locationPublicKey, locationAutograph)
+	authSignatureSignal, err := allocateAuthNotation(sc, positionPublicToken, positionNotation)
 	if err != nil {
 		return nil, err
 	}
 
-	modPublicKey, modAutograph := authSignatureMessage.Key, authSignatureMessage.Sig
-	if _, ok := modPublicKey.(ed25519.PublicKey); !ok {
-		return nil, fmt.Errorf("REDACTED", modPublicKey)
+	modPublicToken, modNotation := authSignatureSignal.Key, authSignatureSignal.Sig
+	if _, ok := modPublicToken.(edwards25519.PublicToken); !ok {
+		return nil, fmt.Errorf("REDACTED", modPublicToken)
 	}
-	if !modPublicKey.ValidateAutograph(dispute[:], modAutograph) {
+	if !modPublicToken.ValidateNotation(query[:], modNotation) {
 		return nil, errors.New("REDACTED")
 	}
 
 	//
-	sc.modPublicKey = modPublicKey
+	sc.modPublicToken = modPublicToken
 	return sc, nil
 }
 
 //
-func (sc *TokenLinkage) DistantPublicKey() vault.PublicKey {
-	return sc.modPublicKey
+func (sc *CredentialLinkage) DistantPublicToken() security.PublicToken {
+	return sc.modPublicToken
 }
 
 //
 //
-func (sc *TokenLinkage) Record(data []byte) (n int, err error) {
+func (sc *CredentialLinkage) Record(data []byte) (n int, err error) {
 	sc.transmitMutex.Lock()
 	defer sc.transmitMutex.Unlock()
-	securedBorder, border := sc.transmitSecuredBorder, sc.transmitBorder
+	securedStructure, structure := sc.transmitSecuredStructure, sc.transmitStructure
 
 	for 0 < len(data) {
 		if err := func() error {
 			var segment []byte
-			if dataMaximumVolume < len(data) {
-				segment = data[:dataMaximumVolume]
-				data = data[dataMaximumVolume:]
+			if dataMaximumExtent < len(data) {
+				segment = data[:dataMaximumExtent]
+				data = data[dataMaximumExtent:]
 			} else {
 				segment = data
 				data = nil
 			}
-			segmentExtent := len(segment)
-			binary.LittleEndian.PutUint32(border, uint32(segmentExtent))
-			copy(border[dataSizeVolume:], segment)
+			segmentMagnitude := len(segment)
+			binary.LittleEndian.PutUint32(structure, uint32(segmentMagnitude))
+			copy(structure[dataLengthExtent:], segment)
 
 			//
-			sc.transmitAead.Seal(securedBorder[:0], sc.transmitNonce[:], border, nil)
-			increaseNonce(sc.transmitNonce)
+			sc.transmitAead.Seal(securedStructure[:0], sc.transmitNumber[:], structure, nil)
+			increaseNumber(sc.transmitNumber)
 			//
 
-			_, err = sc.linkRecorder.Write(securedBorder)
+			_, err = sc.linkPersistor.Write(securedStructure)
 			if err != nil {
 				return err
 			}
@@ -233,85 +233,85 @@ func (sc *TokenLinkage) Record(data []byte) (n int, err error) {
 			return n, err
 		}
 	}
-	sc.linkRecorder.Flush()
+	sc.linkPersistor.Flush()
 	return n, err
 }
 
 //
-func (sc *TokenLinkage) Scan(data []byte) (n int, err error) {
-	sc.receiveMutex.Lock()
-	defer sc.receiveMutex.Unlock()
+func (sc *CredentialLinkage) Obtain(data []byte) (n int, err error) {
+	sc.obtainMutex.Lock()
+	defer sc.obtainMutex.Unlock()
 
 	//
-	if 0 < len(sc.receiveFrame) {
-		n = copy(data, sc.receiveFrame)
-		sc.receiveFrame = sc.receiveFrame[n:]
+	if 0 < len(sc.obtainReserve) {
+		n = copy(data, sc.obtainReserve)
+		sc.obtainReserve = sc.obtainReserve[n:]
 		return n, err
 	}
 
 	//
-	securedBorder := sc.receiveSecuredBorder
-	_, err = io.ReadFull(sc.linkScanner, securedBorder)
+	securedStructure := sc.obtainSecuredStructure
+	_, err = io.ReadFull(sc.linkFetcher, securedStructure)
 	if err != nil {
 		return n, err
 	}
 
 	//
 	//
-	border := sc.receiveBorder
-	_, err = sc.receiveAead.Open(border[:0], sc.receiveNonce[:], securedBorder, nil)
+	structure := sc.obtainStructure
+	_, err = sc.obtainAead.Open(structure[:0], sc.obtainNumber[:], securedStructure, nil)
 	if err != nil {
 		return n, fmt.Errorf("REDACTED", err)
 	}
-	increaseNonce(sc.receiveNonce)
+	increaseNumber(sc.obtainNumber)
 	//
 
 	//
 	//
-	segmentExtent := binary.LittleEndian.Uint32(border) //
-	if segmentExtent > dataMaximumVolume {
+	segmentMagnitude := binary.LittleEndian.Uint32(structure) //
+	if segmentMagnitude > dataMaximumExtent {
 		return 0, errors.New("REDACTED")
 	}
-	segment := border[dataSizeVolume : dataSizeVolume+segmentExtent]
+	segment := structure[dataLengthExtent : dataLengthExtent+segmentMagnitude]
 	n = copy(data, segment)
 	if n < len(segment) {
-		sc.receiveFrame = make([]byte, len(segment)-n)
-		copy(sc.receiveFrame, segment[n:])
+		sc.obtainReserve = make([]byte, len(segment)-n)
+		copy(sc.obtainReserve, segment[n:])
 	}
 	return n, err
 }
 
 //
-func (sc *TokenLinkage) End() error                  { return sc.link.Close() }
-func (sc *TokenLinkage) NativeAddress() net.Addr           { return sc.link.(net.Conn).LocalAddr() }
-func (sc *TokenLinkage) DistantAddress() net.Addr          { return sc.link.(net.Conn).RemoteAddr() }
-func (sc *TokenLinkage) CollectionLimit(t time.Time) error { return sc.link.(net.Conn).SetDeadline(t) }
-func (sc *TokenLinkage) CollectionReadLimit(t time.Time) error {
+func (sc *CredentialLinkage) Shutdown() error                  { return sc.link.Close() }
+func (sc *CredentialLinkage) RegionalLocation() net.Addr           { return sc.link.(net.Conn).LocalAddr() }
+func (sc *CredentialLinkage) DistantLocation() net.Addr          { return sc.link.(net.Conn).RemoteAddr() }
+func (sc *CredentialLinkage) AssignExpiration(t time.Time) error { return sc.link.(net.Conn).SetDeadline(t) }
+func (sc *CredentialLinkage) AssignFetchLimit(t time.Time) error {
 	return sc.link.(net.Conn).SetReadDeadline(t)
 }
 
-func (sc *TokenLinkage) CollectionRecordLimit(t time.Time) error {
+func (sc *CredentialLinkage) AssignPersistLimit(t time.Time) error {
 	return sc.link.(net.Conn).SetWriteDeadline(t)
 }
 
-func generateEphKeys() (ephPublic, ephPrivate *[32]byte) {
+func produceTempTokens() (tempPublic, tempPrivate *[32]byte) {
 	var err error
 	//
 	//
 	//
-	ephPublic, ephPrivate, err = box.GenerateKey(crand.Reader)
+	tempPublic, tempPrivate, err = box.GenerateKey(crand.Reader)
 	if err != nil {
 		panic("REDACTED")
 	}
 	return
 }
 
-func allocateEphPublicKey(link io.ReadWriter, locationEphPublic *[32]byte) (modEphPublic *[32]byte, err error) {
+func allocateTempPublicToken(link io.ReadWriter, positionTempPublic *[32]byte) (modTempPublic *[32]byte, err error) {
 	//
-	trs, _ := async.Concurrent(
+	trs, _ := asyncronous.Concurrent(
 		func(_ int) (val any, cancel bool, err error) {
-			lc := *locationEphPublic
-			_, err = protoio.NewSeparatedRecorder(link).RecordMessage(&gogotypes.BytesValue{Value: lc[:]})
+			lc := *positionTempPublic
+			_, err = protocolio.FreshSeparatedPersistor(link).PersistSignal(&gogotypes.BytesValue{Value: lc[:]})
 			if err != nil {
 				return nil, true, err //
 			}
@@ -319,54 +319,54 @@ func allocateEphPublicKey(link io.ReadWriter, locationEphPublic *[32]byte) (modE
 		},
 		func(_ int) (val any, cancel bool, err error) {
 			var octets gogotypes.BytesValue
-			_, err = protoio.NewSeparatedScanner(link, 1024*1024).ScanMessage(&octets)
+			_, err = protocolio.FreshSeparatedFetcher(link, 1024*1024).FetchSignal(&octets)
 			if err != nil {
 				return nil, true, err //
 			}
 
-			var _republish [32]byte
-			copy(_republish[:], bytes.Value)
-			return _republish, false, nil
+			var _remephpub [32]byte
+			copy(_remephpub[:], bytes.Value)
+			return _remephpub, false, nil
 		},
 	)
 
 	//
-	if trs.InitialFault() != nil {
-		err = trs.InitialFault()
-		return modEphPublic, err
+	if trs.InitialFailure() != nil {
+		err = trs.InitialFailure()
+		return modTempPublic, err
 	}
 
 	//
-	_republish := trs.InitialItem().([32]byte)
-	return &_republish, nil
+	_remephpub := trs.InitialDatum().([32]byte)
+	return &_remephpub, nil
 }
 
 func deduceCredentials(
 	dhCredential *[32]byte,
-	locationIsMinimum bool,
-) (receiveCredential, transmitCredential *[aeadKeyVolume]byte) {
+	positionEqualsMinimal bool,
+) (obtainCredential, transmitCredential *[aeadTokenExtent]byte) {
 	digest := sha256.New
-	hkdf := hkdf.New(digest, dhCredential[:], nil, credentialLinkKeyAndDisputeGenerate)
+	hkdf := hkdf.New(digest, dhCredential[:], nil, credentialLinkTokenAlsoQueryProduce)
 	//
-	res := new([2*aeadKeyVolume + 32]byte)
+	res := new([2*aeadTokenExtent + 32]byte)
 	_, err := io.ReadFull(hkdf, res[:])
 	if err != nil {
 		panic(err)
 	}
 
-	receiveCredential = new([aeadKeyVolume]byte)
-	transmitCredential = new([aeadKeyVolume]byte)
+	obtainCredential = new([aeadTokenExtent]byte)
+	transmitCredential = new([aeadTokenExtent]byte)
 
 	//
 	//
 	//
 	//
-	if locationIsMinimum {
-		copy(receiveCredential[:], res[0:aeadKeyVolume])
-		copy(transmitCredential[:], res[aeadKeyVolume:aeadKeyVolume*2])
+	if positionEqualsMinimal {
+		copy(obtainCredential[:], res[0:aeadTokenExtent])
+		copy(transmitCredential[:], res[aeadTokenExtent:aeadTokenExtent*2])
 	} else {
-		copy(transmitCredential[:], res[0:aeadKeyVolume])
-		copy(receiveCredential[:], res[aeadKeyVolume:aeadKeyVolume*2])
+		copy(transmitCredential[:], res[0:aeadTokenExtent])
+		copy(obtainCredential[:], res[aeadTokenExtent:aeadTokenExtent*2])
 	}
 
 	return
@@ -374,14 +374,14 @@ func deduceCredentials(
 
 //
 //
-func calculateDHCredential(modPublicKey, locationPrivateKey *[32]byte) (*[32]byte, error) {
-	shrKey, err := curve25519.X25519(locationPrivateKey[:], modPublicKey[:])
+func calculateDHCredential(modPublicToken, positionPrivateToken *[32]byte) (*[32]byte, error) {
+	rightshiftToken, err := curve25519.X25519(positionPrivateToken[:], modPublicToken[:])
 	if err != nil {
 		return nil, err
 	}
-	var shrKeyList [32]byte
-	copy(shrKeyList[:], shrKey)
-	return &shrKeyList, nil
+	var rightshiftTokenSeries [32]byte
+	copy(rightshiftTokenSeries[:], rightshiftToken)
+	return &rightshiftTokenSeries, nil
 }
 
 func sort32(foo, bar *[32]byte) (lo, hi *[32]byte) {
@@ -395,61 +395,61 @@ func sort32(foo, bar *[32]byte) (lo, hi *[32]byte) {
 	return
 }
 
-func attestDispute(dispute *[32]byte, locationPrivateKey vault.PrivateKey) ([]byte, error) {
-	autograph, err := locationPrivateKey.Attest(dispute[:])
+func attestQuery(query *[32]byte, positionPrivateToken security.PrivateToken) ([]byte, error) {
+	signing, err := positionPrivateToken.Attest(query[:])
 	if err != nil {
 		return nil, err
 	}
-	return autograph, nil
+	return signing, nil
 }
 
-type authSignatureSignal struct {
-	Key vault.PublicKey
+type authSignatureArtifact struct {
+	Key security.PublicToken
 	Sig []byte
 }
 
-func allocateAuthAutograph(sc io.ReadWriter, publicKey vault.PublicKey, autograph []byte) (receiveMessage authSignatureSignal, err error) {
+func allocateAuthNotation(sc io.ReadWriter, publicToken security.PublicToken, signing []byte) (obtainSignal authSignatureArtifact, err error) {
 	//
-	trs, _ := async.Concurrent(
+	trs, _ := asyncronous.Concurrent(
 		func(_ int) (val any, cancel bool, err error) {
-			pbpk, err := cryptocode.PublicKeyToSchema(publicKey)
+			pbpk, err := cryptocode.PublicTokenTowardSchema(publicToken)
 			if err != nil {
 				return nil, true, err
 			}
-			_, err = protoio.NewSeparatedRecorder(sc).RecordMessage(&tmp2p.AuthSignatureSignal{PublicKey: pbpk, Sig: autograph})
+			_, err = protocolio.FreshSeparatedPersistor(sc).PersistSignal(&tmpfabric.AuthSignatureArtifact{PublicToken: pbpk, Sig: signing})
 			if err != nil {
 				return nil, true, err //
 			}
 			return nil, false, nil
 		},
 		func(_ int) (val any, cancel bool, err error) {
-			var pba tmp2p.AuthSignatureSignal
-			_, err = protoio.NewSeparatedScanner(sc, 1024*1024).ScanMessage(&pba)
+			var pba tmpfabric.AuthSignatureArtifact
+			_, err = protocolio.FreshSeparatedFetcher(sc, 1024*1024).FetchSignal(&pba)
 			if err != nil {
 				return nil, true, err //
 			}
 
-			pk, err := cryptocode.PublicKeyFromSchema(pba.PublicKey)
+			pk, err := cryptocode.PublicTokenOriginatingSchema(pba.PublicToken)
 			if err != nil {
 				return nil, true, err //
 			}
 
-			_acceptmsg := authSignatureSignal{
+			_acceptartifact := authSignatureArtifact{
 				Key: pk,
 				Sig: pba.Sig,
 			}
-			return _acceptmsg, false, nil
+			return _acceptartifact, false, nil
 		},
 	)
 
 	//
-	if trs.InitialFault() != nil {
-		err = trs.InitialFault()
-		return receiveMessage, err
+	if trs.InitialFailure() != nil {
+		err = trs.InitialFailure()
+		return obtainSignal, err
 	}
 
-	_acceptmsg := trs.InitialItem().(authSignatureSignal)
-	return _acceptmsg, nil
+	_acceptartifact := trs.InitialDatum().(authSignatureArtifact)
+	return _acceptartifact, nil
 }
 
 //
@@ -458,13 +458,13 @@ func allocateAuthAutograph(sc io.ReadWriter, publicKey vault.PublicKey, autograp
 //
 //
 //
-func increaseNonce(nonce *[aeadNonceVolume]byte) {
-	tally := binary.LittleEndian.Uint64(nonce[4:])
+func increaseNumber(number *[aeadNumberExtent]byte) {
+	tally := binary.LittleEndian.Uint64(number[4:])
 	if tally == math.MaxUint64 {
 		//
 		//
 		panic("REDACTED")
 	}
 	tally++
-	binary.LittleEndian.PutUint64(nonce[4:], tally)
+	binary.LittleEndian.PutUint64(number[4:], tally)
 }

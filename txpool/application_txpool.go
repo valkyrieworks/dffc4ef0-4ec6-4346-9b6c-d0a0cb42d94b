@@ -5,10 +5,10 @@ import (
 	"fmt"
 	"time"
 
-	iface "github.com/valkyrieworks/iface/kinds"
-	"github.com/valkyrieworks/settings"
-	"github.com/valkyrieworks/utils/log"
-	"github.com/valkyrieworks/kinds"
+	iface "github.com/valkyrieworks/dffc4ef0-4ec6-4346-9b6c-d0a0cb42d94b/iface/kinds"
+	"github.com/valkyrieworks/dffc4ef0-4ec6-4346-9b6c-d0a0cb42d94b/settings"
+	"github.com/valkyrieworks/dffc4ef0-4ec6-4346-9b6c-d0a0cb42d94b/utils/log"
+	"github.com/valkyrieworks/dffc4ef0-4ec6-4346-9b6c-d0a0cb42d94b/kinds"
 	"github.com/pkg/errors"
 )
 
@@ -21,70 +21,70 @@ import (
 type ApplicationTxpool struct {
 	ctx     context.Context
 	settings  *settings.TxpoolSettings
-	stats *Stats
+	telemetry *Telemetry
 	app     ApplicationTxpoolCustomer
-	viewed    TransferRepository
+	observed    TransferStash
 	tracer  log.Tracer
 }
 
 //
 type ApplicationTxpoolCustomer interface {
 	//
-	EmbedTransfer(ctx context.Context, req *iface.QueryEmbedTransfer) (*iface.ReplyEmbedTransfer, error)
+	AppendTransfer(ctx context.Context, req *iface.SolicitAppendTransfer) (*iface.ReplyAppendTransfer, error)
 
 	//
-	HarvestTrans(ctx context.Context, req *iface.QueryHarvestTrans) (*iface.ReplyHarvestTrans, error)
+	HarvestTrans(ctx context.Context, req *iface.SolicitHarvestTrans) (*iface.ReplyHarvestTrans, error)
 
 	//
 	Purge(context.Context) error
 }
 
 //
-type ApplicationTxpoolOption func(*ApplicationTxpool)
+type ApplicationTxpoolChoice func(*ApplicationTxpool)
 
 //
 const (
-	viewedRepositoryVolume = 100_000
+	observedStashExtent = 100_000
 	harvestMaximumOctets  = 0
 	harvestMaximumFuel    = 0
-	harvestCadence  = 500 * time.Millisecond
+	harvestDuration  = 500 * time.Millisecond
 )
 
 var _ Txpool = &ApplicationTxpool{}
 
 var (
-	ErrNegateExecuted = errors.New("REDACTED")
-	ErrEmptyTransfer        = errors.New("REDACTED")
-	ErrViewedTransfer         = errors.New("REDACTED")
+	FaultNegationExecuted = errors.New("REDACTED")
+	FaultBlankTransfer        = errors.New("REDACTED")
+	FaultObservedTransfer         = errors.New("REDACTED")
 )
 
-func WithMorningStats(stats *Stats) ApplicationTxpoolOption {
-	return func(m *ApplicationTxpool) { m.stats = stats }
+func UsingMorningTelemetry(telemetry *Telemetry) ApplicationTxpoolChoice {
+	return func(m *ApplicationTxpool) { m.telemetry = telemetry }
 }
 
-func WithMorningTracer(tracer log.Tracer) ApplicationTxpoolOption {
+func UsingMorningTracer(tracer log.Tracer) ApplicationTxpoolChoice {
 	return func(m *ApplicationTxpool) { m.tracer = tracer }
 }
 
-func NewApplicationTxpool(
+func FreshApplicationTxpool(
 	settings *settings.TxpoolSettings,
 	app ApplicationTxpoolCustomer,
-	opts ...ApplicationTxpoolOption,
+	choices ...ApplicationTxpoolChoice,
 ) *ApplicationTxpool {
 	//
 	//
-	viewed := NewLRUTransferRepository(viewedRepositoryVolume)
+	observed := FreshLeastusedTransferStash(observedStashExtent)
 
 	m := &ApplicationTxpool{
 		ctx:     context.Background(),
 		settings:  settings,
 		app:     app,
-		viewed:    viewed,
-		stats: NoopStats(),
-		tracer:  log.NewNoopTracer(),
+		observed:    observed,
+		telemetry: NooperationTelemetry(),
+		tracer:  log.FreshNooperationTracer(),
 	}
 
-	for _, opt := range opts {
+	for _, opt := range choices {
 		opt(m)
 	}
 
@@ -93,72 +93,72 @@ func NewApplicationTxpool(
 
 //
 //
-func (m *ApplicationTxpool) EmbedTransfer(tx kinds.Tx) error {
+func (m *ApplicationTxpool) AppendTransfer(tx kinds.Tx) error {
 	if err := m.shieldTransfer(tx); err != nil {
 		return err
 	}
 
-	code, err := m.embedTransfer(tx)
+	cipher, err := m.appendTransfer(tx)
 
 	//
 	switch {
 	case err != nil:
-		m.stats.ErroredTrans.Add(1)
-		return encloseErrCode("REDACTED", code, err)
-	case codeReprocess(code):
+		m.telemetry.UnsuccessfulTrans.Add(1)
+		return encloseFaultCipher("REDACTED", cipher, err)
+	case cipherReissue(cipher):
 		//
-		m.viewed.Delete(tx)
+		m.observed.Discard(tx)
 		fallthrough
-	case code != iface.CodeKindSuccess:
-		m.stats.DeclinedTrans.Add(1)
-		return encloseErrCode("REDACTED", code, err)
+	case cipher != iface.CipherKindOKAY:
+		m.telemetry.DeclinedTrans.Add(1)
+		return encloseFaultCipher("REDACTED", cipher, err)
 	default:
-		m.stats.TransferVolumeOctets.Observe(float64(len(tx)))
+		m.telemetry.TransferExtentOctets.Observe(float64(len(tx)))
 		return nil
 	}
 }
 
 //
 func (m *ApplicationTxpool) shieldTransfer(tx kinds.Tx) error {
-	transferVolume := len(tx)
+	transferExtent := len(tx)
 
-	if transferVolume == 0 {
-		return ErrEmptyTransfer
+	if transferExtent == 0 {
+		return FaultBlankTransfer
 	}
 
-	if m.settings.MaximumTransferOctets > 0 && transferVolume > m.settings.MaximumTransferOctets {
-		return &ErrTransferTooBulky{
+	if m.settings.MaximumTransferOctets > 0 && transferExtent > m.settings.MaximumTransferOctets {
+		return &FaultTransferExcessivelyAmple{
 			Max:    m.settings.MaximumTransferOctets,
-			Factual: transferVolume,
+			Existing: transferExtent,
 		}
 	}
 
-	impelled := m.viewed.Propel(tx)
-	if !impelled {
-		m.stats.YetAcceptedTrans.Add(1)
-		return ErrViewedTransfer
+	propelled := m.observed.Propel(tx)
+	if !propelled {
+		m.telemetry.EarlierAcceptedTrans.Add(1)
+		return FaultObservedTransfer
 	}
 
 	return nil
 }
 
-func (m *ApplicationTxpool) embedTransfer(tx kinds.Tx) (uint32, error) {
+func (m *ApplicationTxpool) appendTransfer(tx kinds.Tx) (uint32, error) {
 	//
-	reply, err := m.app.EmbedTransfer(m.ctx, &iface.QueryEmbedTransfer{Tx: tx})
+	reply, err := m.app.AppendTransfer(m.ctx, &iface.SolicitAppendTransfer{Tx: tx})
 	if err != nil {
 		if reply != nil {
-			return reply.Code, err
+			return reply.Cipher, err
 		}
 		return 0, err
 	}
 
-	return reply.Code, nil
+	return reply.Cipher, nil
 }
 
 //
 //
 //
-func (m *ApplicationTxpool) TransferFlow(ctx context.Context) <-chan kinds.Txs {
+func (m *ApplicationTxpool) TransferInflux(ctx context.Context) <-chan kinds.Txs {
 	ch := make(chan kinds.Txs, 1)
 
 	go func() {
@@ -166,7 +166,7 @@ func (m *ApplicationTxpool) TransferFlow(ctx context.Context) <-chan kinds.Txs {
 			close(ch)
 
 			if p := recover(); p != nil {
-				m.tracer.Fault("REDACTED", "REDACTED", p)
+				m.tracer.Failure("REDACTED", "REDACTED", p)
 			}
 		}()
 
@@ -177,7 +177,7 @@ func (m *ApplicationTxpool) TransferFlow(ctx context.Context) <-chan kinds.Txs {
 }
 
 func (m *ApplicationTxpool) harvestTrans(ctx context.Context, conduit chan<- kinds.Txs) {
-	req := &iface.QueryHarvestTrans{
+	req := &iface.SolicitHarvestTrans{
 		MaximumOctets: harvestMaximumOctets,
 		MaximumFuel:   harvestMaximumFuel,
 	}
@@ -187,23 +187,23 @@ func (m *ApplicationTxpool) harvestTrans(ctx context.Context, conduit chan<- kin
 		case <-ctx.Done():
 			m.tracer.Diagnose("REDACTED")
 			return
-		case <-time.After(harvestCadence):
+		case <-time.After(harvestDuration):
 			//
 			res, err := m.app.HarvestTrans(ctx, req)
 			switch {
-			case isErrCtx(err):
+			case equalsFaultContext(err):
 				m.tracer.Diagnose("REDACTED")
 				return
 			case err != nil:
-				m.tracer.Fault("REDACTED", "REDACTED", err)
+				m.tracer.Failure("REDACTED", "REDACTED", err)
 				continue
 			case len(res.Txs) == 0:
 				//
 				continue
 			}
 
-			txs := kinds.ToTrans(res.Txs)
-			m.stats.HarvestedTrans.Add(float64(len(txs)))
+			txs := kinds.TowardTrans(res.Txs)
+			m.telemetry.HarvestedTrans.Add(float64(len(txs)))
 
 			select {
 			case <-ctx.Done():
@@ -215,11 +215,11 @@ func (m *ApplicationTxpool) harvestTrans(ctx context.Context, conduit chan<- kin
 
 			//
 			for _, tx := range txs {
-				if m.viewed.Has(tx) {
+				if m.observed.Has(tx) {
 					continue
 				}
 
-				m.viewed.Propel(tx)
+				m.observed.Propel(tx)
 			}
 		}
 	}
@@ -229,7 +229,7 @@ func (m *ApplicationTxpool) harvestTrans(ctx context.Context, conduit chan<- kin
 func (m *ApplicationTxpool) PurgeApplicationLink() error {
 	err := m.app.Purge(m.ctx)
 	if err != nil {
-		return ErrPurgeApplicationLink{Err: err}
+		return FaultPurgeApplicationLink{Err: err}
 	}
 
 	return nil
@@ -238,7 +238,7 @@ func (m *ApplicationTxpool) PurgeApplicationLink() error {
 //
 //
 //
-func (m *ApplicationTxpool) InspectTransfer(tx kinds.Tx, callback func(res *iface.ReplyInspectTransfer), _ TransferDetails) error {
+func (m *ApplicationTxpool) InspectTransfer(tx kinds.Tx, clbk func(res *iface.ReplyInspectTransfer), _ TransferDetails) error {
 	if err := m.shieldTransfer(tx); err != nil {
 		return err
 	}
@@ -246,30 +246,30 @@ func (m *ApplicationTxpool) InspectTransfer(tx kinds.Tx, callback func(res *ifac
 	go func() {
 		defer func() {
 			if p := recover(); p != nil {
-				m.tracer.Fault("REDACTED", "REDACTED", p, "REDACTED", transferDigest(tx))
+				m.tracer.Failure("REDACTED", "REDACTED", p, "REDACTED", transferDigest(tx))
 			}
 		}()
 
-		code, err := m.embedTransfer(tx)
+		cipher, err := m.appendTransfer(tx)
 		if err != nil {
 			//
-			m.tracer.Fault("REDACTED", "REDACTED", err, "REDACTED", transferDigest(tx))
+			m.tracer.Failure("REDACTED", "REDACTED", err, "REDACTED", transferDigest(tx))
 			return
 		}
 
 		//
 		//
 		//
-		if callback != nil {
-			callback(&iface.ReplyInspectTransfer{
-				Code:      code,
+		if clbk != nil {
+			clbk(&iface.ReplyInspectTransfer{
+				Cipher:      cipher,
 				Data:      []byte{},
 				Log:       "REDACTED",
 				Details:      "REDACTED",
 				FuelDesired: 0,
-				FuelApplied:   0,
-				Events:    []iface.Event{},
-				Codex: "REDACTED",
+				FuelUtilized:   0,
+				Incidents:    []iface.Incident{},
+				Codeset: "REDACTED",
 			})
 		}
 	}()
@@ -278,7 +278,7 @@ func (m *ApplicationTxpool) InspectTransfer(tx kinds.Tx, callback func(res *ifac
 }
 
 //
-func (m *ApplicationTxpool) Modify(_ int64, _ kinds.Txs, _ []*iface.InvokeTransferOutcome, _ PreInspectFunction, _ SubmitInspectFunction) error {
+func (m *ApplicationTxpool) Revise(_ int64, _ kinds.Txs, _ []*iface.InvokeTransferOutcome, _ PriorInspectMethod, _ RelayInspectMethod) error {
 	return nil
 }
 
@@ -286,18 +286,18 @@ func (m *ApplicationTxpool) Modify(_ int64, _ kinds.Txs, _ []*iface.InvokeTransf
 func (m *ApplicationTxpool) TransAccessible() <-chan struct{} { return nil }
 func (m *ApplicationTxpool) ActivateTransAccessible()           {}
 
-func (m *ApplicationTxpool) Volume() int        { return 0 }
-func (m *ApplicationTxpool) VolumeOctets() int64 { return 0 }
+func (m *ApplicationTxpool) Extent() int        { return 0 }
+func (m *ApplicationTxpool) ExtentOctets() int64 { return 0 }
 
 func (m *ApplicationTxpool) HarvestMaximumOctetsMaximumFuel(_, _ int64) kinds.Txs { return nil }
 func (m *ApplicationTxpool) HarvestMaximumTrans(_ int) kinds.Txs              { return nil }
-func (m *ApplicationTxpool) DeleteTransferByKey(_ kinds.TransferKey) error       { return nil }
+func (m *ApplicationTxpool) DiscardTransferViaToken(_ kinds.TransferToken) error       { return nil }
 func (m *ApplicationTxpool) Purge()                                  {}
 
 func (m *ApplicationTxpool) Secure()   {}
 func (m *ApplicationTxpool) Release() {}
 
-func isErrCtx(err error) bool {
+func equalsFaultContext(err error) bool {
 	if err == nil {
 		return false
 	}
@@ -305,14 +305,14 @@ func isErrCtx(err error) bool {
 	return errors.Is(err, context.Canceled) || errors.Is(err, context.DeadlineExceeded)
 }
 
-func codeReprocess(code uint32) bool {
-	return code >= iface.CodeKindReprocess
+func cipherReissue(cipher uint32) bool {
+	return cipher >= iface.CipherKindReissue
 }
 
-func encloseErrCode(msg string, code uint32, err error) error {
+func encloseFaultCipher(msg string, cipher uint32, err error) error {
 	if err == nil {
-		return fmt.Errorf("REDACTED", msg, code)
+		return fmt.Errorf("REDACTED", msg, cipher)
 	}
 
-	return errors.Wrapf(err, "REDACTED", msg, code)
+	return errors.Wrapf(err, "REDACTED", msg, cipher)
 }

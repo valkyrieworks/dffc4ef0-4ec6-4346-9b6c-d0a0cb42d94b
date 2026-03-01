@@ -6,10 +6,10 @@ import (
 	"fmt"
 	"os"
 
-	"github.com/valkyrieworks/vault"
-	"github.com/valkyrieworks/vault/ed25519"
-	cometjson "github.com/valkyrieworks/utils/json"
-	cometos "github.com/valkyrieworks/utils/os"
+	"github.com/valkyrieworks/dffc4ef0-4ec6-4346-9b6c-d0a0cb42d94b/security"
+	"github.com/valkyrieworks/dffc4ef0-4ec6-4346-9b6c-d0a0cb42d94b/security/edwards25519"
+	strongmindjson "github.com/valkyrieworks/dffc4ef0-4ec6-4346-9b6c-d0a0cb42d94b/utils/jsn"
+	strongos "github.com/valkyrieworks/dffc4ef0-4ec6-4346-9b6c-d0a0cb42d94b/utils/os"
 )
 
 //
@@ -17,7 +17,7 @@ type ID string
 
 //
 //
-const UIDOctetExtent = vault.LocationVolume
+const UUIDOctetMagnitude = security.LocatorExtent
 
 //
 //
@@ -25,70 +25,70 @@ const UIDOctetExtent = vault.LocationVolume
 
 //
 //
-type MemberKey struct {
-	PrivateKey vault.PrivateKey `json:"private_key"` //
+type PeerToken struct {
+	PrivateToken security.PrivateToken `json:"private_token"` //
 }
 
 //
-func (memberKey *MemberKey) ID() ID {
-	return PublicKeyToUID(memberKey.PublicKey())
+func (peerToken *PeerToken) ID() ID {
+	return PublicTokenTowardUUID(peerToken.PublicToken())
 }
 
 //
-func (memberKey *MemberKey) PublicKey() vault.PublicKey {
-	return memberKey.PrivateKey.PublicKey()
-}
-
-//
-//
-func PublicKeyToUID(publicKey vault.PublicKey) ID {
-	return ID(hex.EncodeToString(publicKey.Location()))
+func (peerToken *PeerToken) PublicToken() security.PublicToken {
+	return peerToken.PrivateToken.PublicToken()
 }
 
 //
 //
-func ImportOrGenerateMemberKey(entryRoute string) (*MemberKey, error) {
-	if cometos.EntryPresent(entryRoute) {
-		memberKey, err := ImportMemberKey(entryRoute)
+func PublicTokenTowardUUID(publicToken security.PublicToken) ID {
+	return ID(hex.EncodeToString(publicToken.Location()))
+}
+
+//
+//
+func FetchEitherProducePeerToken(recordRoute string) (*PeerToken, error) {
+	if strongos.RecordPresent(recordRoute) {
+		peerToken, err := FetchPeerToken(recordRoute)
 		if err != nil {
 			return nil, err
 		}
-		return memberKey, nil
+		return peerToken, nil
 	}
 
-	privateKey := ed25519.GeneratePrivateKey()
-	memberKey := &MemberKey{
-		PrivateKey: privateKey,
+	privateToken := edwards25519.ProducePrivateToken()
+	peerToken := &PeerToken{
+		PrivateToken: privateToken,
 	}
 
-	if err := memberKey.PersistAs(entryRoute); err != nil {
+	if err := peerToken.PersistLike(recordRoute); err != nil {
 		return nil, err
 	}
 
-	return memberKey, nil
+	return peerToken, nil
 }
 
 //
-func ImportMemberKey(entryRoute string) (*MemberKey, error) {
-	jsonOctets, err := os.ReadFile(entryRoute)
+func FetchPeerToken(recordRoute string) (*PeerToken, error) {
+	jsnOctets, err := os.ReadFile(recordRoute)
 	if err != nil {
 		return nil, err
 	}
-	memberKey := new(MemberKey)
-	err = cometjson.Unserialize(jsonOctets, memberKey)
+	peerToken := new(PeerToken)
+	err = strongmindjson.Decode(jsnOctets, peerToken)
 	if err != nil {
 		return nil, err
 	}
-	return memberKey, nil
+	return peerToken, nil
 }
 
 //
-func (memberKey *MemberKey) PersistAs(entryRoute string) error {
-	jsonOctets, err := cometjson.Serialize(memberKey)
+func (peerToken *PeerToken) PersistLike(recordRoute string) error {
+	jsnOctets, err := strongmindjson.Serialize(peerToken)
 	if err != nil {
 		return err
 	}
-	err = os.WriteFile(entryRoute, jsonOctets, 0o600)
+	err = os.WriteFile(recordRoute, jsnOctets, 0o600)
 	if err != nil {
 		return err
 	}
@@ -100,21 +100,21 @@ func (memberKey *MemberKey) PersistAs(entryRoute string) error {
 //
 //
 //
-func CreatePoWriterObjective(complexity, objectiveBits uint) []byte {
-	if objectiveBits%8 != 0 {
-		panic(fmt.Sprintf("REDACTED", objectiveBits))
+func CreatePositionWRObjective(complexity, objectiveDigits uint) []byte {
+	if objectiveDigits%8 != 0 {
+		panic(fmt.Sprintf("REDACTED", objectiveDigits))
 	}
-	if complexity >= objectiveBits {
-		panic(fmt.Sprintf("REDACTED", complexity, objectiveBits))
+	if complexity >= objectiveDigits {
+		panic(fmt.Sprintf("REDACTED", complexity, objectiveDigits))
 	}
-	objectiveOctets := objectiveBits / 8
-	nilPrefixSize := (int(complexity) / 8)
-	prefix := bytes.Repeat([]byte{0}, nilPrefixSize)
+	objectiveOctets := objectiveDigits / 8
+	nullHeadingLength := (int(complexity) / 8)
+	heading := bytes.Repeat([]byte{0}, nullHeadingLength)
 	mod := (complexity % 8)
 	if mod > 0 {
-		notNilPrefix := byte(1<<(8-mod) - 1)
-		prefix = append(prefix, notNilPrefix)
+		unNullHeading := byte(1<<(8-mod) - 1)
+		heading = append(heading, unNullHeading)
 	}
-	endSize := int(objectiveOctets) - len(prefix)
-	return append(prefix, bytes.Repeat([]byte{0xFF}, endSize)...)
+	endLength := int(objectiveOctets) - len(heading)
+	return append(heading, bytes.Repeat([]byte{0xFF}, endLength)...)
 }

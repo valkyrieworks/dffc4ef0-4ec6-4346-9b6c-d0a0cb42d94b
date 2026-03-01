@@ -7,40 +7,40 @@ import (
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/require"
 
-	dbm "github.com/valkyrieworks/-db"
+	dbm "github.com/valkyrieworks/dffc4ef0-4ec6-4346-9b6c-d0a0cb42d94b/-db"
 
-	engineseed "github.com/valkyrieworks/utils/random"
-	sm "github.com/valkyrieworks/status"
-	"github.com/valkyrieworks/kinds"
+	commitrand "github.com/valkyrieworks/dffc4ef0-4ec6-4346-9b6c-d0a0cb42d94b/utils/arbitrary"
+	sm "github.com/valkyrieworks/dffc4ef0-4ec6-4346-9b6c-d0a0cb42d94b/status"
+	"github.com/valkyrieworks/dffc4ef0-4ec6-4346-9b6c-d0a0cb42d94b/kinds"
 )
 
 func VerifyTransferRefine(t *testing.T) {
-	generatePaper := arbitraryOriginPaper()
-	generatePaper.AgreementOptions.Ledger.MaximumOctets = 3000
-	generatePaper.AgreementOptions.Proof.MaximumOctets = 1500
+	producePaper := unpredictableInaugurationPaper()
+	producePaper.AgreementSettings.Ledger.MaximumOctets = 3000
+	producePaper.AgreementSettings.Proof.MaximumOctets = 1500
 
 	//
 	//
 	verifyScenarios := []struct {
 		tx    kinds.Tx
-		isErr bool
+		equalsFault bool
 	}{
-		{kinds.Tx(engineseed.Octets(2122)), false},
-		{kinds.Tx(engineseed.Octets(2123)), true},
-		{kinds.Tx(engineseed.Octets(3000)), true},
+		{kinds.Tx(commitrand.Octets(2122)), false},
+		{kinds.Tx(commitrand.Octets(2123)), true},
+		{kinds.Tx(commitrand.Octets(3000)), true},
 	}
 
 	for i, tc := range verifyScenarios {
-		statusStore, err := dbm.NewStore("REDACTED", "REDACTED", os.TempDir())
+		statusDatastore, err := dbm.FreshDatastore("REDACTED", "REDACTED", os.TempDir())
 		require.NoError(t, err)
-		statusDepot := sm.NewDepot(statusStore, sm.DepotSettings{
-			DropIfaceReplies: false,
+		statusDepot := sm.FreshDepot(statusDatastore, sm.DepotChoices{
+			EjectIfaceReplies: false,
 		})
-		status, err := statusDepot.ImportFromStoreOrOriginPaper(generatePaper)
+		status, err := statusDepot.FetchOriginatingDatastoreEitherOriginPaper(producePaper)
 		require.NoError(t, err)
 
-		f := sm.TransferPreInspect(status)
-		if tc.isErr {
+		f := sm.TransferPriorInspect(status)
+		if tc.equalsFault {
 			assert.NotNil(t, f(tc.tx), "REDACTED", i)
 		} else {
 			assert.Nil(t, f(tc.tx), "REDACTED", i)

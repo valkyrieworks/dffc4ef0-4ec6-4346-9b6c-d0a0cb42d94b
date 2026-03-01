@@ -6,14 +6,14 @@ import (
 	"fmt"
 	"time"
 
-	iface "github.com/valkyrieworks/iface/kinds"
-	cryptocode "github.com/valkyrieworks/vault/codec"
-	"github.com/valkyrieworks/utils/abort"
-	"github.com/valkyrieworks/utils/log"
-	"github.com/valkyrieworks/txpool"
-	engineproto "github.com/valkyrieworks/schema/consensuscore/kinds"
-	"github.com/valkyrieworks/gateway"
-	"github.com/valkyrieworks/kinds"
+	iface "github.com/valkyrieworks/dffc4ef0-4ec6-4346-9b6c-d0a0cb42d94b/iface/kinds"
+	cryptocode "github.com/valkyrieworks/dffc4ef0-4ec6-4346-9b6c-d0a0cb42d94b/security/serialization"
+	"github.com/valkyrieworks/dffc4ef0-4ec6-4346-9b6c-d0a0cb42d94b/utils/abort"
+	"github.com/valkyrieworks/dffc4ef0-4ec6-4346-9b6c-d0a0cb42d94b/utils/log"
+	"github.com/valkyrieworks/dffc4ef0-4ec6-4346-9b6c-d0a0cb42d94b/txpool"
+	commitchema "github.com/valkyrieworks/dffc4ef0-4ec6-4346-9b6c-d0a0cb42d94b/schema/strongmind/kinds"
+	"github.com/valkyrieworks/dffc4ef0-4ec6-4346-9b6c-d0a0cb42d94b/delegate"
+	"github.com/valkyrieworks/dffc4ef0-4ec6-4346-9b6c-d0a0cb42d94b/kinds"
 )
 
 //
@@ -22,7 +22,7 @@ import (
 //
 
 //
-type LedgerRunner struct {
+type LedgerHandler struct {
 	//
 	depot Depot
 
@@ -30,69 +30,69 @@ type LedgerRunner struct {
 	ledgerDepot LedgerDepot
 
 	//
-	gatewayApplication gateway.ApplicationLinkAgreement
+	delegatePlatform delegate.ApplicationLinkAgreement
 
 	//
-	eventBus kinds.LedgerEventBroadcaster
+	incidentPipeline kinds.LedgerIncidentBroadcaster
 
 	//
 	//
 	txpool txpool.Txpool
-	eventpool  ProofDepository
+	incidentpool  ProofHub
 
 	//
-	finalCertifiedLedger *kinds.Ledger
+	finalVerifiedLedger *kinds.Ledger
 
 	tracer log.Tracer
 
-	stats *Stats
+	telemetry *Telemetry
 }
 
-type LedgerRunnerSetting func(runner *LedgerRunner)
+type LedgerHandlerSelection func(handler *LedgerHandler)
 
-func LedgerRunnerWithStats(stats *Stats) LedgerRunnerSetting {
-	return func(ledgerExecute *LedgerRunner) {
-		ledgerExecute.stats = stats
+func LedgerHandlerUsingTelemetry(telemetry *Telemetry) LedgerHandlerSelection {
+	return func(ledgerExecute *LedgerHandler) {
+		ledgerExecute.telemetry = telemetry
 	}
 }
 
 //
 //
-func NewLedgerRunner(
+func FreshLedgerHandler(
 	statusDepot Depot,
 	tracer log.Tracer,
-	gatewayApplication gateway.ApplicationLinkAgreement,
+	delegatePlatform delegate.ApplicationLinkAgreement,
 	txpool txpool.Txpool,
-	eventpool ProofDepository,
+	incidentpool ProofHub,
 	ledgerDepot LedgerDepot,
-	options ...LedgerRunnerSetting,
-) *LedgerRunner {
-	res := &LedgerRunner{
+	choices ...LedgerHandlerSelection,
+) *LedgerHandler {
+	res := &LedgerHandler{
 		depot:      statusDepot,
-		gatewayApplication:   gatewayApplication,
-		eventBus:   kinds.NoopEventBus{},
+		delegatePlatform:   delegatePlatform,
+		incidentPipeline:   kinds.NooperationIncidentPipeline{},
 		txpool:    txpool,
-		eventpool:     eventpool,
+		incidentpool:     incidentpool,
 		tracer:     tracer,
-		stats:    NoopStats(),
+		telemetry:    NooperationTelemetry(),
 		ledgerDepot: ledgerDepot,
 	}
 
-	for _, setting := range options {
-		setting(res)
+	for _, selection := range choices {
+		selection(res)
 	}
 
 	return res
 }
 
-func (ledgerExecute *LedgerRunner) Depot() Depot {
+func (ledgerExecute *LedgerHandler) Depot() Depot {
 	return ledgerExecute.depot
 }
 
 //
 //
-func (ledgerExecute *LedgerRunner) AssignEventBus(eventBus kinds.LedgerEventBroadcaster) {
-	ledgerExecute.eventBus = eventBus
+func (ledgerExecute *LedgerHandler) AssignIncidentChannel(incidentPipeline kinds.LedgerIncidentBroadcaster) {
+	ledgerExecute.incidentPipeline = incidentPipeline
 }
 
 //
@@ -101,47 +101,47 @@ func (ledgerExecute *LedgerRunner) AssignEventBus(eventBus kinds.LedgerEventBroa
 //
 //
 //
-func (ledgerExecute *LedgerRunner) InstantiateNominationLedger(
+func (ledgerExecute *LedgerHandler) GenerateNominationLedger(
 	ctx context.Context,
-	level int64,
+	altitude int64,
 	status Status,
-	finalExtensionEndorse *kinds.ExpandedEndorse,
-	recommenderAddress []byte,
+	finalAddnEndorse *kinds.ExpandedEndorse,
+	nominatorLocation []byte,
 ) (*kinds.Ledger, error) {
-	maximumOctets := status.AgreementOptions.Ledger.MaximumOctets
-	emptyMaximumOctets := maximumOctets == -1
-	if emptyMaximumOctets {
-		maximumOctets = int64(kinds.MaximumLedgerVolumeOctets)
+	maximumOctets := status.AgreementSettings.Ledger.MaximumOctets
+	blankMaximumOctets := maximumOctets == -1
+	if blankMaximumOctets {
+		maximumOctets = int64(kinds.MaximumLedgerExtentOctets)
 	}
 
-	maximumFuel := status.AgreementOptions.Ledger.MaximumFuel
+	maximumFuel := status.AgreementSettings.Ledger.MaximumFuel
 
-	proof, evtVolume := ledgerExecute.eventpool.AwaitingProof(status.AgreementOptions.Proof.MaximumOctets)
+	proof, occurenceExtent := ledgerExecute.incidentpool.AwaitingProof(status.AgreementSettings.Proof.MaximumOctets)
 
 	//
-	maximumDataOctets := kinds.MaximumDataOctets(maximumOctets, evtVolume, status.Ratifiers.Volume())
+	maximumDataOctets := kinds.MaximumDataOctets(maximumOctets, occurenceExtent, status.Assessors.Extent())
 	maximumHarvestOctets := maximumDataOctets
-	if emptyMaximumOctets {
+	if blankMaximumOctets {
 		maximumHarvestOctets = -1
 	}
 
 	txs := ledgerExecute.txpool.HarvestMaximumOctetsMaximumFuel(maximumHarvestOctets, maximumFuel)
-	endorse := finalExtensionEndorse.ToEndorse()
-	ledger, err := status.CreateLedger(level, txs, endorse, proof, recommenderAddress)
+	endorse := finalAddnEndorse.TowardEndorse()
+	ledger, err := status.CreateLedger(altitude, txs, endorse, proof, nominatorLocation)
 	if err != nil {
 		return nil, err
 	}
-	rpp, err := ledgerExecute.gatewayApplication.ArrangeNomination(
+	rpp, err := ledgerExecute.delegatePlatform.ArrangeNomination(
 		ctx,
-		&iface.QueryArrangeNomination{
+		&iface.SolicitArrangeNomination{
 			MaximumTransferOctets:         maximumDataOctets,
-			Txs:                ledger.Txs.ToSegmentOfOctets(),
-			NativeFinalEndorse:    constructExpandedEndorseDetailsFromDepot(finalExtensionEndorse, ledgerExecute.depot, status.PrimaryLevel, status.AgreementOptions.Iface),
-			Malpractice:        ledger.Proof.Proof.ToIface(),
-			Level:             ledger.Level,
-			Time:               ledger.Time,
-			FollowingRatifiersDigest: ledger.FollowingRatifiersDigest,
-			RecommenderLocation:    ledger.RecommenderLocation,
+			Txs:                ledger.Txs.TowardSegmentBelongingOctets(),
+			RegionalFinalEndorse:    constructExpandedEndorseDetailsOriginatingDepot(finalAddnEndorse, ledgerExecute.depot, status.PrimaryAltitude, status.AgreementSettings.Iface),
+			Malpractice:        ledger.Proof.Proof.TowardIface(),
+			Altitude:             ledger.Altitude,
+			Moment:               ledger.Moment,
+			FollowingAssessorsDigest: ledger.FollowingAssessorsDigest,
+			NominatorLocation:    ledger.NominatorLocation,
 		},
 	)
 	if err != nil {
@@ -156,57 +156,57 @@ func (ledgerExecute *LedgerRunner) InstantiateNominationLedger(
 		return nil, err
 	}
 
-	txl := kinds.ToTrans(rpp.Txs)
+	txl := kinds.TowardTrans(rpp.Txs)
 	if err := txl.Certify(maximumDataOctets); err != nil {
 		return nil, err
 	}
 
-	return status.CreateLedger(level, txl, endorse, proof, recommenderAddress)
+	return status.CreateLedger(altitude, txl, endorse, proof, nominatorLocation)
 }
 
-func (ledgerExecute *LedgerRunner) HandleNomination(
+func (ledgerExecute *LedgerHandler) HandleNomination(
 	ledger *kinds.Ledger,
 	status Status,
 ) (bool, error) {
-	reply, err := ledgerExecute.gatewayApplication.HandleNomination(context.TODO(), &iface.QueryHandleNomination{
+	reply, err := ledgerExecute.delegatePlatform.HandleNomination(context.TODO(), &iface.SolicitHandleNomination{
 		Digest:               ledger.Heading.Digest(),
-		Level:             ledger.Level,
-		Time:               ledger.Time,
-		Txs:                ledger.Txs.ToSegmentOfOctets(),
-		NominatedFinalEndorse: constructFinalEndorseDetailsFromDepot(ledger, ledgerExecute.depot, status.PrimaryLevel),
-		Malpractice:        ledger.Proof.Proof.ToIface(),
-		RecommenderLocation:    ledger.RecommenderLocation,
-		FollowingRatifiersDigest: ledger.FollowingRatifiersDigest,
+		Altitude:             ledger.Altitude,
+		Moment:               ledger.Moment,
+		Txs:                ledger.Txs.TowardSegmentBelongingOctets(),
+		ItemizedFinalEndorse: constructFinalEndorseDetailsOriginatingDepot(ledger, ledgerExecute.depot, status.PrimaryAltitude),
+		Malpractice:        ledger.Proof.Proof.TowardIface(),
+		NominatorLocation:    ledger.NominatorLocation,
+		FollowingAssessorsDigest: ledger.FollowingAssessorsDigest,
 	})
 	if err != nil {
 		return false, err
 	}
-	if reply.IsStateUnclear() {
-		panic(fmt.Sprintf("REDACTED", reply.Status.String()))
+	if reply.EqualsConditionUnfamiliar() {
+		panic(fmt.Sprintf("REDACTED", reply.Condition.Text()))
 	}
 
-	return reply.IsApproved(), nil
+	return reply.EqualsApproved(), nil
 }
 
 //
 //
 //
 //
-func (ledgerExecute *LedgerRunner) CertifyLedger(status Status, ledger *kinds.Ledger) error {
-	if !ledgerExecute.finalCertifiedLedger.DigestsTo(ledger.Digest()) {
+func (ledgerExecute *LedgerHandler) CertifyLedger(status Status, ledger *kinds.Ledger) error {
+	if !ledgerExecute.finalVerifiedLedger.DigestsToward(ledger.Digest()) {
 		if err := certifyLedger(status, ledger); err != nil {
 			return err
 		}
-		ledgerExecute.finalCertifiedLedger = ledger
+		ledgerExecute.finalVerifiedLedger = ledger
 	}
-	return ledgerExecute.eventpool.InspectProof(ledger.Proof.Proof)
+	return ledgerExecute.incidentpool.InspectProof(ledger.Proof.Proof)
 }
 
 //
-func (ledgerExecute *LedgerRunner) ExecuteValidatedLedger(
-	status Status, ledgerUID kinds.LedgerUID, ledger *kinds.Ledger,
+func (ledgerExecute *LedgerHandler) ExecuteAttestedLedger(
+	status Status, ledgerUUID kinds.LedgerUUID, ledger *kinds.Ledger,
 ) (Status, error) {
-	return ledgerExecute.executeLedger(status, ledgerUID, ledger)
+	return ledgerExecute.executeLedger(status, ledgerUUID, ledger)
 }
 
 //
@@ -215,170 +215,170 @@ func (ledgerExecute *LedgerRunner) ExecuteValidatedLedger(
 //
 //
 //
-func (ledgerExecute *LedgerRunner) ExecuteLedger(
-	status Status, ledgerUID kinds.LedgerUID, ledger *kinds.Ledger,
+func (ledgerExecute *LedgerHandler) ExecuteLedger(
+	status Status, ledgerUUID kinds.LedgerUUID, ledger *kinds.Ledger,
 ) (Status, error) {
-	if !ledgerExecute.finalCertifiedLedger.DigestsTo(ledger.Digest()) {
+	if !ledgerExecute.finalVerifiedLedger.DigestsToward(ledger.Digest()) {
 		if err := certifyLedger(status, ledger); err != nil {
-			return status, ErrCorruptLedger(err)
+			return status, FaultUnfitLedger(err)
 		}
-		ledgerExecute.finalCertifiedLedger = ledger
+		ledgerExecute.finalVerifiedLedger = ledger
 	}
-	return ledgerExecute.executeLedger(status, ledgerUID, ledger)
+	return ledgerExecute.executeLedger(status, ledgerUUID, ledger)
 }
 
-func (ledgerExecute *LedgerRunner) executeLedger(status Status, ledgerUID kinds.LedgerUID, ledger *kinds.Ledger) (Status, error) {
-	beginMoment := time.Now().UnixNano()
-	ifaceReply, err := ledgerExecute.gatewayApplication.CompleteLedger(context.TODO(), &iface.QueryCompleteLedger{
+func (ledgerExecute *LedgerHandler) executeLedger(status Status, ledgerUUID kinds.LedgerUUID, ledger *kinds.Ledger) (Status, error) {
+	initiateMoment := time.Now().UnixNano()
+	ifaceReply, err := ledgerExecute.delegatePlatform.CulminateLedger(context.TODO(), &iface.SolicitCulminateLedger{
 		Digest:               ledger.Digest(),
-		FollowingRatifiersDigest: ledger.FollowingRatifiersDigest,
-		RecommenderLocation:    ledger.RecommenderLocation,
-		Level:             ledger.Level,
-		Time:               ledger.Time,
-		ResolvedFinalEndorse:  constructFinalEndorseDetailsFromDepot(ledger, ledgerExecute.depot, status.PrimaryLevel),
-		Malpractice:        ledger.Proof.Proof.ToIface(),
-		Txs:                ledger.Txs.ToSegmentOfOctets(),
+		FollowingAssessorsDigest: ledger.FollowingAssessorsDigest,
+		NominatorLocation:    ledger.NominatorLocation,
+		Altitude:             ledger.Altitude,
+		Moment:               ledger.Moment,
+		ResolvedFinalEndorse:  constructFinalEndorseDetailsOriginatingDepot(ledger, ledgerExecute.depot, status.PrimaryAltitude),
+		Malpractice:        ledger.Proof.Proof.TowardIface(),
+		Txs:                ledger.Txs.TowardSegmentBelongingOctets(),
 	})
-	terminateTime := time.Now().UnixNano()
-	ledgerExecute.stats.LedgerExecutionTime.Observe(float64(terminateTime-beginMoment) / 1000000)
+	terminateMoment := time.Now().UnixNano()
+	ledgerExecute.telemetry.LedgerHandlingMoment.Observe(float64(terminateMoment-initiateMoment) / 1000000)
 	if err != nil {
-		ledgerExecute.tracer.Fault("REDACTED", "REDACTED", err)
+		ledgerExecute.tracer.Failure("REDACTED", "REDACTED", err)
 		return status, err
 	}
 
 	ledgerExecute.tracer.Details(
 		"REDACTED",
-		"REDACTED", ledger.Level,
-		"REDACTED", len(ifaceReply.TransOutcomes),
-		"REDACTED", len(ifaceReply.RatifierRefreshes),
-		"REDACTED", fmt.Sprintf("REDACTED", ifaceReply.ApplicationDigest),
+		"REDACTED", ledger.Altitude,
+		"REDACTED", len(ifaceReply.TransferOutcomes),
+		"REDACTED", len(ifaceReply.AssessorRevisions),
+		"REDACTED", fmt.Sprintf("REDACTED", ifaceReply.PlatformDigest),
 	)
 
 	//
-	if len(ledger.Txs) != len(ifaceReply.TransOutcomes) {
-		return status, fmt.Errorf("REDACTED", len(ledger.Txs), len(ifaceReply.TransOutcomes))
+	if len(ledger.Txs) != len(ifaceReply.TransferOutcomes) {
+		return status, fmt.Errorf("REDACTED", len(ledger.Txs), len(ifaceReply.TransferOutcomes))
 	}
 
-	ledgerExecute.tracer.Details("REDACTED", "REDACTED", ledger.Level, "REDACTED", fmt.Sprintf("REDACTED", ifaceReply.ApplicationDigest))
+	ledgerExecute.tracer.Details("REDACTED", "REDACTED", ledger.Altitude, "REDACTED", fmt.Sprintf("REDACTED", ifaceReply.PlatformDigest))
 
-	abort.Abort() //
+	abort.Mishap() //
 
 	//
-	if err := ledgerExecute.depot.PersistCompleteLedgerReply(ledger.Level, ifaceReply); err != nil {
+	if err := ledgerExecute.depot.PersistCulminateLedgerReply(ledger.Altitude, ifaceReply); err != nil {
 		return status, err
 	}
 
-	abort.Abort() //
+	abort.Mishap() //
 
 	//
-	err = certifyRatifierRefreshes(ifaceReply.RatifierRefreshes, status.AgreementOptions.Ratifier)
+	err = certifyAssessorRevisions(ifaceReply.AssessorRevisions, status.AgreementSettings.Assessor)
 	if err != nil {
 		return status, fmt.Errorf("REDACTED", err)
 	}
 
-	ratifierRefreshes, err := kinds.Schema2tm.RatifierRefreshes(ifaceReply.RatifierRefreshes)
+	assessorRevisions, err := kinds.Buffer2temp.AssessorRevisions(ifaceReply.AssessorRevisions)
 	if err != nil {
 		return status, err
 	}
-	if len(ratifierRefreshes) > 0 {
-		ledgerExecute.tracer.Details("REDACTED", "REDACTED", kinds.RatifierCatalogString(ratifierRefreshes))
-		ledgerExecute.stats.RatifierCollectionRefreshes.Add(1)
+	if len(assessorRevisions) > 0 {
+		ledgerExecute.tracer.Details("REDACTED", "REDACTED", kinds.AssessorCatalogText(assessorRevisions))
+		ledgerExecute.telemetry.AssessorAssignRevisions.Add(1)
 	}
-	if ifaceReply.AgreementArgumentRefreshes != nil {
-		ledgerExecute.stats.AgreementArgumentRefreshes.Add(1)
+	if ifaceReply.AgreementArgumentRevisions != nil {
+		ledgerExecute.telemetry.AgreementArgumentRevisions.Add(1)
 	}
 
 	//
-	status, err = modifyStatus(status, ledgerUID, &ledger.Heading, ifaceReply, ratifierRefreshes)
+	status, err = reviseStatus(status, ledgerUUID, &ledger.Heading, ifaceReply, assessorRevisions)
 	if err != nil {
 		return status, fmt.Errorf("REDACTED", err)
 	}
 
 	//
-	preserveLevel, err := ledgerExecute.Endorse(status, ledger, ifaceReply)
+	preserveAltitude, err := ledgerExecute.Endorse(status, ledger, ifaceReply)
 	if err != nil {
 		return status, fmt.Errorf("REDACTED", err)
 	}
 
 	//
-	ledgerExecute.eventpool.Modify(status, ledger.Proof.Proof)
+	ledgerExecute.incidentpool.Revise(status, ledger.Proof.Proof)
 
-	abort.Abort() //
+	abort.Mishap() //
 
 	//
-	status.ApplicationDigest = ifaceReply.ApplicationDigest
+	status.PlatformDigest = ifaceReply.PlatformDigest
 	if err := ledgerExecute.depot.Persist(status); err != nil {
 		return status, err
 	}
 
-	abort.Abort() //
+	abort.Mishap() //
 
 	//
-	if preserveLevel > 0 {
-		trimmed, err := ledgerExecute.trimLedgers(preserveLevel, status)
+	if preserveAltitude > 0 {
+		trimmed, err := ledgerExecute.trimLedgers(preserveAltitude, status)
 		if err != nil {
-			ledgerExecute.tracer.Fault("REDACTED", "REDACTED", preserveLevel, "REDACTED", err)
+			ledgerExecute.tracer.Failure("REDACTED", "REDACTED", preserveAltitude, "REDACTED", err)
 		} else {
-			ledgerExecute.tracer.Diagnose("REDACTED", "REDACTED", trimmed, "REDACTED", preserveLevel)
+			ledgerExecute.tracer.Diagnose("REDACTED", "REDACTED", trimmed, "REDACTED", preserveAltitude)
 		}
 	}
 
 	//
 	//
-	triggerEvents(ledgerExecute.tracer, ledgerExecute.eventBus, ledger, ledgerUID, ifaceReply, ratifierRefreshes)
+	triggerIncidents(ledgerExecute.tracer, ledgerExecute.incidentPipeline, ledger, ledgerUUID, ifaceReply, assessorRevisions)
 
 	return status, nil
 }
 
-func (ledgerExecute *LedgerRunner) ExpandBallot(
+func (ledgerExecute *LedgerHandler) BroadenBallot(
 	ctx context.Context,
 	ballot *kinds.Ballot,
 	ledger *kinds.Ledger,
 	status Status,
 ) ([]byte, error) {
-	if !ledger.DigestsTo(ballot.LedgerUID.Digest) {
-		panic(fmt.Sprintf("REDACTED", ledger.Digest(), ballot.LedgerUID.Digest))
+	if !ledger.DigestsToward(ballot.LedgerUUID.Digest) {
+		panic(fmt.Sprintf("REDACTED", ledger.Digest(), ballot.LedgerUUID.Digest))
 	}
-	if ballot.Level != ledger.Level {
-		panic(fmt.Sprintf("REDACTED", ledger.Level, ballot.Level))
-	}
-
-	req := iface.QueryExpandBallot{
-		Digest:               ballot.LedgerUID.Digest,
-		Level:             ballot.Level,
-		Time:               ledger.Time,
-		Txs:                ledger.Txs.ToSegmentOfOctets(),
-		NominatedFinalEndorse: constructFinalEndorseDetailsFromDepot(ledger, ledgerExecute.depot, status.PrimaryLevel),
-		Malpractice:        ledger.Proof.Proof.ToIface(),
-		FollowingRatifiersDigest: ledger.FollowingRatifiersDigest,
-		RecommenderLocation:    ledger.RecommenderLocation,
+	if ballot.Altitude != ledger.Altitude {
+		panic(fmt.Sprintf("REDACTED", ledger.Altitude, ballot.Altitude))
 	}
 
-	reply, err := ledgerExecute.gatewayApplication.ExpandBallot(ctx, &req)
+	req := iface.SolicitBroadenBallot{
+		Digest:               ballot.LedgerUUID.Digest,
+		Altitude:             ballot.Altitude,
+		Moment:               ledger.Moment,
+		Txs:                ledger.Txs.TowardSegmentBelongingOctets(),
+		ItemizedFinalEndorse: constructFinalEndorseDetailsOriginatingDepot(ledger, ledgerExecute.depot, status.PrimaryAltitude),
+		Malpractice:        ledger.Proof.Proof.TowardIface(),
+		FollowingAssessorsDigest: ledger.FollowingAssessorsDigest,
+		NominatorLocation:    ledger.NominatorLocation,
+	}
+
+	reply, err := ledgerExecute.delegatePlatform.BroadenBallot(ctx, &req)
 	if err != nil {
 		panic(fmt.Errorf("REDACTED", err))
 	}
 	return reply.BallotAddition, nil
 }
 
-func (ledgerExecute *LedgerRunner) ValidateBallotAddition(ctx context.Context, ballot *kinds.Ballot) error {
-	req := iface.QueryValidateBallotAddition{
-		Digest:             ballot.LedgerUID.Digest,
-		RatifierLocation: ballot.RatifierLocation,
-		Level:           ballot.Level,
+func (ledgerExecute *LedgerHandler) ValidateBallotAddition(ctx context.Context, ballot *kinds.Ballot) error {
+	req := iface.SolicitValidateBallotAddition{
+		Digest:             ballot.LedgerUUID.Digest,
+		AssessorLocation: ballot.AssessorLocation,
+		Altitude:           ballot.Altitude,
 		BallotAddition:    ballot.Addition,
 	}
 
-	reply, err := ledgerExecute.gatewayApplication.ValidateBallotAddition(ctx, &req)
+	reply, err := ledgerExecute.delegatePlatform.ValidateBallotAddition(ctx, &req)
 	if err != nil {
 		panic(fmt.Errorf("REDACTED", err))
 	}
-	if reply.IsStateUnclear() {
-		panic(fmt.Sprintf("REDACTED", reply.Status.String()))
+	if reply.EqualsConditionUnfamiliar() {
+		panic(fmt.Sprintf("REDACTED", reply.Condition.Text()))
 	}
 
-	if !reply.IsApproved() {
-		return kinds.ErrCorruptBallotAddition
+	if !reply.EqualsApproved() {
+		return kinds.FaultUnfitBallotAddition
 	}
 	return nil
 }
@@ -394,59 +394,59 @@ func (ledgerExecute *LedgerRunner) ValidateBallotAddition(ctx context.Context, b
 //
 //
 //
-func (ledgerExecute *LedgerRunner) Endorse(
+func (ledgerExecute *LedgerHandler) Endorse(
 	status Status,
 	ledger *kinds.Ledger,
-	ifaceReply *iface.ReplyCompleteLedger,
+	ifaceReply *iface.ReplyCulminateLedger,
 ) (int64, error) {
 	ledgerExecute.txpool.Secure()
-	unsealTxpool := func() { ledgerExecute.txpool.Release() }
+	releaseTxpool := func() { ledgerExecute.txpool.Release() }
 
 	//
 	//
 	err := ledgerExecute.txpool.PurgeApplicationLink()
 	if err != nil {
-		unsealTxpool()
-		ledgerExecute.tracer.Fault("REDACTED", "REDACTED", err)
+		releaseTxpool()
+		ledgerExecute.tracer.Failure("REDACTED", "REDACTED", err)
 		return 0, err
 	}
 
 	//
-	res, err := ledgerExecute.gatewayApplication.Endorse(context.TODO())
+	res, err := ledgerExecute.delegatePlatform.Endorse(context.TODO())
 	if err != nil {
-		unsealTxpool()
-		ledgerExecute.tracer.Fault("REDACTED", "REDACTED", err)
+		releaseTxpool()
+		ledgerExecute.tracer.Failure("REDACTED", "REDACTED", err)
 		return 0, err
 	}
 
 	//
 	ledgerExecute.tracer.Details(
 		"REDACTED",
-		"REDACTED", ledger.Level,
-		"REDACTED", fmt.Sprintf("REDACTED", ledger.ApplicationDigest),
+		"REDACTED", ledger.Altitude,
+		"REDACTED", fmt.Sprintf("REDACTED", ledger.PlatformDigest),
 	)
 
 	//
-	go ledgerExecute.asyncModifyTxpool(unsealTxpool, ledger, status.Clone(), ifaceReply)
+	go ledgerExecute.asyncronousReviseTxpool(releaseTxpool, ledger, status.Duplicate(), ifaceReply)
 
-	return res.PreserveLevel, nil
+	return res.PreserveAltitude, nil
 }
 
 //
-func (ledgerExecute *LedgerRunner) asyncModifyTxpool(
-	unsealTxpool func(),
+func (ledgerExecute *LedgerHandler) asyncronousReviseTxpool(
+	releaseTxpool func(),
 	ledger *kinds.Ledger,
 	status Status,
-	ifaceReply *iface.ReplyCompleteLedger,
+	ifaceReply *iface.ReplyCulminateLedger,
 ) {
-	defer unsealTxpool()
+	defer releaseTxpool()
 
-	err := ledgerExecute.txpool.Modify(
-		ledger.Level,
+	err := ledgerExecute.txpool.Revise(
+		ledger.Altitude,
 		ledger.Txs,
-		ifaceReply.TransOutcomes,
-		TransferPreInspect(status),
-		TransferSubmitInspect(status),
+		ifaceReply.TransferOutcomes,
+		TransferPriorInspect(status),
+		TransferRelayInspect(status),
 	)
 	if err != nil {
 		//
@@ -462,56 +462,56 @@ func (ledgerExecute *LedgerRunner) asyncModifyTxpool(
 //
 //
 
-func constructFinalEndorseDetailsFromDepot(ledger *kinds.Ledger, depot Depot, primaryLevel int64) iface.EndorseDetails {
-	if ledger.Level == primaryLevel { //
+func constructFinalEndorseDetailsOriginatingDepot(ledger *kinds.Ledger, depot Depot, primaryAltitude int64) iface.EndorseDetails {
+	if ledger.Altitude == primaryAltitude { //
 		//
 		//
 		return iface.EndorseDetails{}
 	}
 
-	finalValueCollection, err := depot.ImportRatifiers(ledger.Level - 1)
+	finalItemAssign, err := depot.FetchAssessors(ledger.Altitude - 1)
 	if err != nil {
-		panic(fmt.Errorf("REDACTED", ledger.Level-1, err))
+		panic(fmt.Errorf("REDACTED", ledger.Altitude-1, err))
 	}
 
-	return ConstructFinalEndorseDetails(ledger, finalValueCollection, primaryLevel)
+	return ConstructFinalEndorseDetails(ledger, finalItemAssign, primaryAltitude)
 }
 
 //
 //
 //
-func ConstructFinalEndorseDetails(ledger *kinds.Ledger, finalValueCollection *kinds.RatifierAssign, primaryLevel int64) iface.EndorseDetails {
-	if ledger.Level == primaryLevel {
+func ConstructFinalEndorseDetails(ledger *kinds.Ledger, finalItemAssign *kinds.AssessorAssign, primaryAltitude int64) iface.EndorseDetails {
+	if ledger.Altitude == primaryAltitude {
 		//
 		//
 		return iface.EndorseDetails{}
 	}
 
 	var (
-		endorseVolume = ledger.FinalEndorse.Volume()
-		valueCollectionSize  = len(finalValueCollection.Ratifiers)
+		endorseExtent = ledger.FinalEndorse.Extent()
+		itemAssignLength  = len(finalItemAssign.Assessors)
 	)
 
 	//
 	//
-	if endorseVolume != valueCollectionSize {
+	if endorseExtent != itemAssignLength {
 		panic(fmt.Sprintf(
 			"REDACTED",
-			endorseVolume, valueCollectionSize, ledger.Level, ledger.FinalEndorse.Endorsements, finalValueCollection.Ratifiers,
+			endorseExtent, itemAssignLength, ledger.Altitude, ledger.FinalEndorse.Notations, finalItemAssign.Assessors,
 		))
 	}
 
-	ballots := make([]iface.BallotDetails, ledger.FinalEndorse.Volume())
-	for i, val := range finalValueCollection.Ratifiers {
-		endorseSignature := ledger.FinalEndorse.Endorsements[i]
+	ballots := make([]iface.BallotDetails, ledger.FinalEndorse.Extent())
+	for i, val := range finalItemAssign.Assessors {
+		endorseSignature := ledger.FinalEndorse.Notations[i]
 		ballots[i] = iface.BallotDetails{
-			Ratifier:   kinds.Tm2schema.Ratifier(val),
-			LedgerUidMark: engineproto.LedgerUIDMark(endorseSignature.LedgerUIDMark),
+			Assessor:   kinds.Temp2buffer.Assessor(val),
+			LedgerUuidMarker: commitchema.LedgerUUIDMarker(endorseSignature.LedgerUUIDMarker),
 		}
 	}
 
 	return iface.EndorseDetails{
-		Cycle: ledger.FinalEndorse.Cycle,
+		Iteration: ledger.FinalEndorse.Iteration,
 		Ballots: ballots,
 	}
 }
@@ -525,52 +525,52 @@ func ConstructFinalEndorseDetails(ledger *kinds.Ledger, finalValueCollection *ki
 //
 //
 //
-func constructExpandedEndorseDetailsFromDepot(ec *kinds.ExpandedEndorse, depot Depot, primaryLevel int64, ap kinds.IfaceOptions) iface.ExpandedEndorseDetails {
-	if ec.Level < primaryLevel {
+func constructExpandedEndorseDetailsOriginatingDepot(ec *kinds.ExpandedEndorse, depot Depot, primaryAltitude int64, ap kinds.IfaceParameters) iface.ExpandedEndorseDetails {
+	if ec.Altitude < primaryAltitude {
 		//
 		return iface.ExpandedEndorseDetails{}
 	}
 
-	valueCollection, err := depot.ImportRatifiers(ec.Level)
+	itemAssign, err := depot.FetchAssessors(ec.Altitude)
 	if err != nil {
-		panic(fmt.Errorf("REDACTED", ec.Level, primaryLevel, err))
+		panic(fmt.Errorf("REDACTED", ec.Altitude, primaryAltitude, err))
 	}
 
-	return ConstructExpandedEndorseDetails(ec, valueCollection, primaryLevel, ap)
+	return ConstructExpandedEndorseDetails(ec, itemAssign, primaryAltitude, ap)
 }
 
 //
 //
 //
-func ConstructExpandedEndorseDetails(ec *kinds.ExpandedEndorse, valueCollection *kinds.RatifierAssign, primaryLevel int64, ap kinds.IfaceOptions) iface.ExpandedEndorseDetails {
-	if ec.Level < primaryLevel {
+func ConstructExpandedEndorseDetails(ec *kinds.ExpandedEndorse, itemAssign *kinds.AssessorAssign, primaryAltitude int64, ap kinds.IfaceParameters) iface.ExpandedEndorseDetails {
+	if ec.Altitude < primaryAltitude {
 		//
 		return iface.ExpandedEndorseDetails{}
 	}
 
 	var (
-		ecVolume    = ec.Volume()
-		valueCollectionSize = len(valueCollection.Ratifiers)
+		eccodeExtent    = ec.Extent()
+		itemAssignLength = len(itemAssign.Assessors)
 	)
 
 	//
 	//
-	if ecVolume != valueCollectionSize {
+	if eccodeExtent != itemAssignLength {
 		panic(fmt.Errorf(
 			"REDACTED",
-			ecVolume, valueCollectionSize, ec.Level, ec.ExpandedEndorsements, valueCollection.Ratifiers,
+			eccodeExtent, itemAssignLength, ec.Altitude, ec.ExpandedNotations, itemAssign.Assessors,
 		))
 	}
 
-	ballots := make([]iface.ExpandedBallotDetails, ecVolume)
-	for i, val := range valueCollection.Ratifiers {
-		ecs := ec.ExpandedEndorsements[i]
+	ballots := make([]iface.ExpandedBallotDetails, eccodeExtent)
+	for i, val := range itemAssign.Assessors {
+		ecs := ec.ExpandedNotations[i]
 
 		//
 		//
-		if ecs.LedgerUIDMark != kinds.LedgerUIDMarkMissing && !bytes.Equal(ecs.RatifierLocation, val.Location) {
+		if ecs.LedgerUUIDMarker != kinds.LedgerUUIDMarkerMissing && !bytes.Equal(ecs.AssessorLocation, val.Location) {
 			panic(fmt.Errorf("REDACTED",
-				i, ecs.RatifierLocation, ec.Level, val.Location,
+				i, ecs.AssessorLocation, ec.Altitude, val.Location,
 			))
 		}
 
@@ -579,179 +579,179 @@ func ConstructExpandedEndorseDetails(ec *kinds.ExpandedEndorse, valueCollection 
 		//
 		//
 		//
-		if err := ecs.AssureAddition(ap.BallotPluginsActivated(ec.Level)); err != nil {
-			panic(fmt.Errorf("REDACTED", ec.Level, err))
+		if err := ecs.AssureAddition(ap.BallotAdditionsActivated(ec.Altitude)); err != nil {
+			panic(fmt.Errorf("REDACTED", ec.Altitude, err))
 		}
 
 		ballots[i] = iface.ExpandedBallotDetails{
-			Ratifier:          kinds.Tm2schema.Ratifier(val),
-			LedgerUidMark:        engineproto.LedgerUIDMark(ecs.LedgerUIDMark),
+			Assessor:          kinds.Temp2buffer.Assessor(val),
+			LedgerUuidMarker:        commitchema.LedgerUUIDMarker(ecs.LedgerUUIDMarker),
 			BallotAddition:      ecs.Addition,
-			AdditionAutograph: ecs.AdditionAutograph,
+			AdditionNotation: ecs.AdditionNotation,
 		}
 	}
 
 	return iface.ExpandedEndorseDetails{
-		Cycle: ec.Cycle,
+		Iteration: ec.Iteration,
 		Ballots: ballots,
 	}
 }
 
-func certifyRatifierRefreshes(ifaceRefreshes []iface.RatifierModify,
-	options kinds.RatifierOptions,
+func certifyAssessorRevisions(ifaceRevisions []iface.AssessorRevise,
+	parameters kinds.AssessorParameters,
 ) error {
-	for _, valueModify := range ifaceRefreshes {
-		if valueModify.FetchEnergy() < 0 {
-			return fmt.Errorf("REDACTED", valueModify)
-		} else if valueModify.FetchEnergy() == 0 {
+	for _, itemRevise := range ifaceRevisions {
+		if itemRevise.ObtainPotency() < 0 {
+			return fmt.Errorf("REDACTED", itemRevise)
+		} else if itemRevise.ObtainPotency() == 0 {
 			//
 			//
 			continue
 		}
 
 		//
-		pk, err := cryptocode.PublicKeyFromSchema(valueModify.PublicKey)
+		pk, err := cryptocode.PublicTokenOriginatingSchema(itemRevise.PublicToken)
 		if err != nil {
 			return err
 		}
 
-		if !kinds.IsSoundPublickeyKind(options, pk.Kind()) {
+		if !kinds.EqualsSoundPublickeyKind(parameters, pk.Kind()) {
 			return fmt.Errorf("REDACTED",
-				valueModify, pk.Kind())
+				itemRevise, pk.Kind())
 		}
 	}
 	return nil
 }
 
 //
-func modifyStatus(
+func reviseStatus(
 	status Status,
-	ledgerUID kinds.LedgerUID,
+	ledgerUUID kinds.LedgerUUID,
 	heading *kinds.Heading,
-	ifaceReply *iface.ReplyCompleteLedger,
-	ratifierRefreshes []*kinds.Ratifier,
+	ifaceReply *iface.ReplyCulminateLedger,
+	assessorRevisions []*kinds.Assessor,
 ) (Status, error) {
 	//
 	//
-	nValueCollection := status.FollowingRatifiers.Clone()
+	nthItemAssign := status.FollowingAssessors.Duplicate()
 
 	//
-	finalLevelValuesModified := status.FinalLevelRatifiersModified
-	if len(ratifierRefreshes) > 0 {
-		err := nValueCollection.ModifyWithAlterCollection(ratifierRefreshes)
+	finalAltitudeValuesAltered := status.FinalAltitudeAssessorsAltered
+	if len(assessorRevisions) > 0 {
+		err := nthItemAssign.ReviseUsingModifyAssign(assessorRevisions)
 		if err != nil {
 			return status, fmt.Errorf("REDACTED", err)
 		}
 		//
-		finalLevelValuesModified = heading.Level + 1 + 1
+		finalAltitudeValuesAltered = heading.Altitude + 1 + 1
 	}
 
 	//
-	nValueCollection.AugmentRecommenderUrgency(1)
+	nthItemAssign.AdvanceNominatorUrgency(1)
 
 	//
-	followingOptions := status.AgreementOptions
-	finalLevelOptionsModified := status.FinalLevelAgreementOptionsModified
-	if ifaceReply.AgreementArgumentRefreshes != nil {
+	followingParameters := status.AgreementSettings
+	finalAltitudeParametersAltered := status.FinalAltitudeAgreementParametersAltered
+	if ifaceReply.AgreementArgumentRevisions != nil {
 		//
-		followingOptions = status.AgreementOptions.Modify(ifaceReply.AgreementArgumentRefreshes)
-		err := followingOptions.CertifySimple()
+		followingParameters = status.AgreementSettings.Revise(ifaceReply.AgreementArgumentRevisions)
+		err := followingParameters.CertifyFundamental()
 		if err != nil {
 			return status, fmt.Errorf("REDACTED", err)
 		}
 
-		err = status.AgreementOptions.CertifyModify(ifaceReply.AgreementArgumentRefreshes, heading.Level)
+		err = status.AgreementSettings.CertifyRevise(ifaceReply.AgreementArgumentRevisions, heading.Altitude)
 		if err != nil {
 			return status, fmt.Errorf("REDACTED", err)
 		}
 
-		status.Release.Agreement.App = followingOptions.Release.App
+		status.Edition.Agreement.App = followingParameters.Edition.App
 
 		//
-		finalLevelOptionsModified = heading.Level + 1
+		finalAltitudeParametersAltered = heading.Altitude + 1
 	}
 
-	followingRelease := status.Release
+	followingEdition := status.Edition
 
 	//
 	//
 	return Status{
-		Release:                          followingRelease,
-		LedgerUID:                          status.LedgerUID,
-		PrimaryLevel:                    status.PrimaryLevel,
-		FinalLedgerLevel:                  heading.Level,
-		FinalLedgerUID:                      ledgerUID,
-		FinalLedgerTime:                    heading.Time,
-		FollowingRatifiers:                   nValueCollection,
-		Ratifiers:                       status.FollowingRatifiers.Clone(),
-		FinalRatifiers:                   status.Ratifiers.Clone(),
-		FinalLevelRatifiersModified:      finalLevelValuesModified,
-		AgreementOptions:                  followingOptions,
-		FinalLevelAgreementOptionsModified: finalLevelOptionsModified,
-		FinalOutcomesDigest:                  TransferOutcomesDigest(ifaceReply.TransOutcomes),
-		ApplicationDigest:                          nil,
+		Edition:                          followingEdition,
+		SuccessionUUID:                          status.SuccessionUUID,
+		PrimaryAltitude:                    status.PrimaryAltitude,
+		FinalLedgerAltitude:                  heading.Altitude,
+		FinalLedgerUUID:                      ledgerUUID,
+		FinalLedgerMoment:                    heading.Moment,
+		FollowingAssessors:                   nthItemAssign,
+		Assessors:                       status.FollowingAssessors.Duplicate(),
+		FinalAssessors:                   status.Assessors.Duplicate(),
+		FinalAltitudeAssessorsAltered:      finalAltitudeValuesAltered,
+		AgreementSettings:                  followingParameters,
+		FinalAltitudeAgreementParametersAltered: finalAltitudeParametersAltered,
+		FinalOutcomesDigest:                  TransferOutcomesDigest(ifaceReply.TransferOutcomes),
+		PlatformDigest:                          nil,
 	}, nil
 }
 
 //
 //
 //
-func triggerEvents(
+func triggerIncidents(
 	tracer log.Tracer,
-	eventBus kinds.LedgerEventBroadcaster,
+	incidentPipeline kinds.LedgerIncidentBroadcaster,
 	ledger *kinds.Ledger,
-	ledgerUID kinds.LedgerUID,
-	ifaceReply *iface.ReplyCompleteLedger,
-	ratifierRefreshes []*kinds.Ratifier,
+	ledgerUUID kinds.LedgerUUID,
+	ifaceReply *iface.ReplyCulminateLedger,
+	assessorRevisions []*kinds.Assessor,
 ) {
-	if err := eventBus.BroadcastEventNewLedger(kinds.EventDataNewLedger{
+	if err := incidentPipeline.BroadcastIncidentFreshLedger(kinds.IncidentDataFreshLedger{
 		Ledger:               ledger,
-		LedgerUID:             ledgerUID,
-		OutcomeCompleteLedger: *ifaceReply,
+		LedgerUUID:             ledgerUUID,
+		OutcomeCulminateLedger: *ifaceReply,
 	}); err != nil {
-		tracer.Fault("REDACTED", "REDACTED", err)
+		tracer.Failure("REDACTED", "REDACTED", err)
 	}
 
-	if err := eventBus.BroadcastEventNewLedgerHeading(kinds.EventDataNewLedgerHeading{
+	if err := incidentPipeline.BroadcastIncidentFreshLedgerHeading(kinds.IncidentDataFreshLedgerHeading{
 		Heading: ledger.Heading,
 	}); err != nil {
-		tracer.Fault("REDACTED", "REDACTED", err)
+		tracer.Failure("REDACTED", "REDACTED", err)
 	}
 
-	if err := eventBus.BroadcastEventNewLedgerEvents(kinds.EventDataNewLedgerEvents{
-		Level: ledger.Level,
-		Events: ifaceReply.Events,
+	if err := incidentPipeline.BroadcastIncidentFreshLedgerIncidents(kinds.IncidentDataFreshLedgerIncidents{
+		Altitude: ledger.Altitude,
+		Incidents: ifaceReply.Incidents,
 		CountTrans: int64(len(ledger.Txs)),
 	}); err != nil {
-		tracer.Fault("REDACTED", "REDACTED", err)
+		tracer.Failure("REDACTED", "REDACTED", err)
 	}
 
 	if len(ledger.Proof.Proof) != 0 {
 		for _, ev := range ledger.Proof.Proof {
-			if err := eventBus.BroadcastEventNewProof(kinds.EventDataNewProof{
+			if err := incidentPipeline.BroadcastIncidentFreshProof(kinds.IncidentDataFreshProof{
 				Proof: ev,
-				Level:   ledger.Level,
+				Altitude:   ledger.Altitude,
 			}); err != nil {
-				tracer.Fault("REDACTED", "REDACTED", err)
+				tracer.Failure("REDACTED", "REDACTED", err)
 			}
 		}
 	}
 
 	for i, tx := range ledger.Txs {
-		if err := eventBus.BroadcastEventTransfer(kinds.EventDataTransfer{TransOutcome: iface.TransOutcome{
-			Level: ledger.Level,
+		if err := incidentPipeline.BroadcastIncidentTransfer(kinds.IncidentDataTransfer{TransferOutcome: iface.TransferOutcome{
+			Altitude: ledger.Altitude,
 			Ordinal:  uint32(i),
 			Tx:     tx,
-			Outcome: *(ifaceReply.TransOutcomes[i]),
+			Outcome: *(ifaceReply.TransferOutcomes[i]),
 		}}); err != nil {
-			tracer.Fault("REDACTED", "REDACTED", err)
+			tracer.Failure("REDACTED", "REDACTED", err)
 		}
 	}
 
-	if len(ratifierRefreshes) > 0 {
-		if err := eventBus.BroadcastEventRatifierCollectionRefreshes(
-			kinds.EventDataRatifierCollectionRefreshes{RatifierRefreshes: ratifierRefreshes}); err != nil {
-			tracer.Fault("REDACTED", "REDACTED", err)
+	if len(assessorRevisions) > 0 {
+		if err := incidentPipeline.BroadcastIncidentAssessorAssignRevisions(
+			kinds.IncidentDataAssessorAssignRevisions{AssessorRevisions: assessorRevisions}); err != nil {
+			tracer.Failure("REDACTED", "REDACTED", err)
 		}
 	}
 }
@@ -762,59 +762,59 @@ func triggerEvents(
 //
 //
 func InvokeEndorseLedger(
-	applicationLinkAgreement gateway.ApplicationLinkAgreement,
+	applicationLinkAgreement delegate.ApplicationLinkAgreement,
 	ledger *kinds.Ledger,
 	tracer log.Tracer,
 	depot Depot,
-	primaryLevel int64,
+	primaryAltitude int64,
 ) ([]byte, error) {
-	endorseDetails := constructFinalEndorseDetailsFromDepot(ledger, depot, primaryLevel)
+	endorseDetails := constructFinalEndorseDetailsOriginatingDepot(ledger, depot, primaryAltitude)
 
-	reply, err := applicationLinkAgreement.CompleteLedger(context.TODO(), &iface.QueryCompleteLedger{
+	reply, err := applicationLinkAgreement.CulminateLedger(context.TODO(), &iface.SolicitCulminateLedger{
 		Digest:               ledger.Digest(),
-		FollowingRatifiersDigest: ledger.FollowingRatifiersDigest,
-		RecommenderLocation:    ledger.RecommenderLocation,
-		Level:             ledger.Level,
-		Time:               ledger.Time,
+		FollowingAssessorsDigest: ledger.FollowingAssessorsDigest,
+		NominatorLocation:    ledger.NominatorLocation,
+		Altitude:             ledger.Altitude,
+		Moment:               ledger.Moment,
 		ResolvedFinalEndorse:  endorseDetails,
-		Malpractice:        ledger.Proof.Proof.ToIface(),
-		Txs:                ledger.Txs.ToSegmentOfOctets(),
+		Malpractice:        ledger.Proof.Proof.TowardIface(),
+		Txs:                ledger.Txs.TowardSegmentBelongingOctets(),
 	})
 	if err != nil {
-		tracer.Fault("REDACTED", "REDACTED", err)
+		tracer.Failure("REDACTED", "REDACTED", err)
 		return nil, err
 	}
 
 	//
-	if len(ledger.Txs) != len(reply.TransOutcomes) {
-		return nil, fmt.Errorf("REDACTED", len(ledger.Txs), len(reply.TransOutcomes))
+	if len(ledger.Txs) != len(reply.TransferOutcomes) {
+		return nil, fmt.Errorf("REDACTED", len(ledger.Txs), len(reply.TransferOutcomes))
 	}
 
-	tracer.Details("REDACTED", "REDACTED", ledger.Level, "REDACTED", fmt.Sprintf("REDACTED", reply.ApplicationDigest))
+	tracer.Details("REDACTED", "REDACTED", ledger.Altitude, "REDACTED", fmt.Sprintf("REDACTED", reply.PlatformDigest))
 
 	//
 	_, err = applicationLinkAgreement.Endorse(context.TODO())
 	if err != nil {
-		tracer.Fault("REDACTED", "REDACTED", err)
+		tracer.Failure("REDACTED", "REDACTED", err)
 		return nil, err
 	}
 
 	//
-	return reply.ApplicationDigest, nil
+	return reply.PlatformDigest, nil
 }
 
-func (ledgerExecute *LedgerRunner) trimLedgers(preserveLevel int64, status Status) (uint64, error) {
-	root := ledgerExecute.ledgerDepot.Root()
-	if preserveLevel <= root {
+func (ledgerExecute *LedgerHandler) trimLedgers(preserveAltitude int64, status Status) (uint64, error) {
+	foundation := ledgerExecute.ledgerDepot.Foundation()
+	if preserveAltitude <= foundation {
 		return 0, nil
 	}
 
-	quantityTrimmed, trimmedHeadingLevel, err := ledgerExecute.ledgerDepot.TrimLedgers(preserveLevel, status)
+	quantityTrimmed, trimmedHeadlineAltitude, err := ledgerExecute.ledgerDepot.TrimLedgers(preserveAltitude, status)
 	if err != nil {
 		return 0, fmt.Errorf("REDACTED", err)
 	}
 
-	err = ledgerExecute.Depot().TrimConditions(root, preserveLevel, trimmedHeadingLevel)
+	err = ledgerExecute.Depot().TrimStatuses(foundation, preserveAltitude, trimmedHeadlineAltitude)
 	if err != nil {
 		return 0, fmt.Errorf("REDACTED", err)
 	}

@@ -9,16 +9,16 @@ import (
 
 	"github.com/cosmos/gogoproto/proto"
 
-	cometstatus "github.com/valkyrieworks/schema/consensuscore/status"
-	cometrelease "github.com/valkyrieworks/schema/consensuscore/release"
-	"github.com/valkyrieworks/kinds"
-	engineclock "github.com/valkyrieworks/kinds/moment"
-	"github.com/valkyrieworks/release"
+	strongstatus "github.com/valkyrieworks/dffc4ef0-4ec6-4346-9b6c-d0a0cb42d94b/schema/strongmind/status"
+	strongmindedition "github.com/valkyrieworks/dffc4ef0-4ec6-4346-9b6c-d0a0cb42d94b/schema/strongmind/edition"
+	"github.com/valkyrieworks/dffc4ef0-4ec6-4346-9b6c-d0a0cb42d94b/kinds"
+	committime "github.com/valkyrieworks/dffc4ef0-4ec6-4346-9b6c-d0a0cb42d94b/kinds/moment"
+	"github.com/valkyrieworks/dffc4ef0-4ec6-4346-9b6c-d0a0cb42d94b/edition"
 )
 
 //
 var (
-	statusKey = []byte("REDACTED")
+	statusToken = []byte("REDACTED")
 )
 
 //
@@ -27,12 +27,12 @@ var (
 //
 //
 //
-var InitStatusRelease = cometstatus.Release{
-	Agreement: cometrelease.Agreement{
-		Ledger: release.LedgerProtocol,
+var InitializeStatusEdition = strongstatus.Edition{
+	Agreement: strongmindedition.Agreement{
+		Ledger: edition.LedgerScheme,
 		App:   0,
 	},
-	Software: release.TMCoreSemaphoreRev,
+	Package: edition.TEMPBaseSemaphoreEdtn,
 }
 
 //
@@ -45,60 +45,60 @@ var InitStatusRelease = cometstatus.Release{
 //
 //
 type Status struct {
-	Release cometstatus.Release
+	Edition strongstatus.Edition
 
 	//
-	LedgerUID       string
-	PrimaryLevel int64 //
+	SuccessionUUID       string
+	PrimaryAltitude int64 //
 
 	//
-	FinalLedgerLevel int64
-	FinalLedgerUID     kinds.LedgerUID
-	FinalLedgerTime   time.Time
-
-	//
-	//
-	//
-	//
-	//
-	//
-	FollowingRatifiers              *kinds.RatifierAssign
-	Ratifiers                  *kinds.RatifierAssign
-	FinalRatifiers              *kinds.RatifierAssign
-	FinalLevelRatifiersModified int64
+	FinalLedgerAltitude int64
+	FinalLedgerUUID     kinds.LedgerUUID
+	FinalLedgerMoment   time.Time
 
 	//
 	//
-	AgreementOptions                  kinds.AgreementOptions
-	FinalLevelAgreementOptionsModified int64
+	//
+	//
+	//
+	//
+	FollowingAssessors              *kinds.AssessorAssign
+	Assessors                  *kinds.AssessorAssign
+	FinalAssessors              *kinds.AssessorAssign
+	FinalAltitudeAssessorsAltered int64
+
+	//
+	//
+	AgreementSettings                  kinds.AgreementSettings
+	FinalAltitudeAgreementParametersAltered int64
 
 	//
 	FinalOutcomesDigest []byte
 
 	//
-	ApplicationDigest []byte
+	PlatformDigest []byte
 }
 
 //
-func (status Status) Clone() Status {
+func (status Status) Duplicate() Status {
 	return Status{
-		Release:       status.Release,
-		LedgerUID:       status.LedgerUID,
-		PrimaryLevel: status.PrimaryLevel,
+		Edition:       status.Edition,
+		SuccessionUUID:       status.SuccessionUUID,
+		PrimaryAltitude: status.PrimaryAltitude,
 
-		FinalLedgerLevel: status.FinalLedgerLevel,
-		FinalLedgerUID:     status.FinalLedgerUID,
-		FinalLedgerTime:   status.FinalLedgerTime,
+		FinalLedgerAltitude: status.FinalLedgerAltitude,
+		FinalLedgerUUID:     status.FinalLedgerUUID,
+		FinalLedgerMoment:   status.FinalLedgerMoment,
 
-		FollowingRatifiers:              status.FollowingRatifiers.Clone(),
-		Ratifiers:                  status.Ratifiers.Clone(),
-		FinalRatifiers:              status.FinalRatifiers.Clone(),
-		FinalLevelRatifiersModified: status.FinalLevelRatifiersModified,
+		FollowingAssessors:              status.FollowingAssessors.Duplicate(),
+		Assessors:                  status.Assessors.Duplicate(),
+		FinalAssessors:              status.FinalAssessors.Duplicate(),
+		FinalAltitudeAssessorsAltered: status.FinalAltitudeAssessorsAltered,
 
-		AgreementOptions:                  status.AgreementOptions,
-		FinalLevelAgreementOptionsModified: status.FinalLevelAgreementOptionsModified,
+		AgreementSettings:                  status.AgreementSettings,
+		FinalAltitudeAgreementParametersAltered: status.FinalAltitudeAgreementParametersAltered,
 
-		ApplicationDigest: status.ApplicationDigest,
+		PlatformDigest: status.PlatformDigest,
 
 		FinalOutcomesDigest: status.FinalOutcomesDigest,
 	}
@@ -106,14 +106,14 @@ func (status Status) Clone() Status {
 
 //
 func (status Status) Matches(status2 Status) bool {
-	sbz, s2bz := status.Octets(), status2.Octets()
-	return bytes.Equal(sbz, s2bz)
+	sbz, s2by := status.Octets(), status2.Octets()
+	return bytes.Equal(sbz, s2by)
 }
 
 //
 //
 func (status Status) Octets() []byte {
-	sm, err := status.ToSchema()
+	sm, err := status.TowardSchema()
 	if err != nil {
 		panic(err)
 	}
@@ -125,101 +125,101 @@ func (status Status) Octets() []byte {
 }
 
 //
-func (status Status) IsEmpty() bool {
-	return status.Ratifiers == nil //
+func (status Status) EqualsBlank() bool {
+	return status.Assessors == nil //
 }
 
 //
-func (status *Status) ToSchema() (*cometstatus.Status, error) {
+func (status *Status) TowardSchema() (*strongstatus.Status, error) {
 	if status == nil {
 		return nil, errors.New("REDACTED")
 	}
 
-	sm := new(cometstatus.Status)
+	sm := new(strongstatus.Status)
 
-	sm.Release = status.Release
-	sm.LedgerUID = status.LedgerUID
-	sm.PrimaryLevel = status.PrimaryLevel
-	sm.FinalLedgerLevel = status.FinalLedgerLevel
+	sm.Edition = status.Edition
+	sm.SuccessionUUID = status.SuccessionUUID
+	sm.PrimaryAltitude = status.PrimaryAltitude
+	sm.FinalLedgerAltitude = status.FinalLedgerAltitude
 
-	sm.FinalLedgerUID = status.FinalLedgerUID.ToSchema()
-	sm.FinalLedgerTime = status.FinalLedgerTime
-	values, err := status.Ratifiers.ToSchema()
+	sm.FinalLedgerUUID = status.FinalLedgerUUID.TowardSchema()
+	sm.FinalLedgerMoment = status.FinalLedgerMoment
+	values, err := status.Assessors.TowardSchema()
 	if err != nil {
 		return nil, err
 	}
-	sm.Ratifiers = values
+	sm.Assessors = values
 
-	nValues, err := status.FollowingRatifiers.ToSchema()
+	nthValues, err := status.FollowingAssessors.TowardSchema()
 	if err != nil {
 		return nil, err
 	}
-	sm.FollowingRatifiers = nValues
+	sm.FollowingAssessors = nthValues
 
-	if status.FinalLedgerLevel >= 1 { //
-		lValues, err := status.FinalRatifiers.ToSchema()
+	if status.FinalLedgerAltitude >= 1 { //
+		lengthValues, err := status.FinalAssessors.TowardSchema()
 		if err != nil {
 			return nil, err
 		}
-		sm.FinalRatifiers = lValues
+		sm.FinalAssessors = lengthValues
 	}
 
-	sm.FinalLevelRatifiersModified = status.FinalLevelRatifiersModified
-	sm.AgreementOptions = status.AgreementOptions.ToSchema()
-	sm.FinalLevelAgreementOptionsModified = status.FinalLevelAgreementOptionsModified
+	sm.FinalAltitudeAssessorsAltered = status.FinalAltitudeAssessorsAltered
+	sm.AgreementSettings = status.AgreementSettings.TowardSchema()
+	sm.FinalAltitudeAgreementParametersAltered = status.FinalAltitudeAgreementParametersAltered
 	sm.FinalOutcomesDigest = status.FinalOutcomesDigest
-	sm.ApplicationDigest = status.ApplicationDigest
+	sm.PlatformDigest = status.PlatformDigest
 
 	return sm, nil
 }
 
 //
-func FromSchema(pb *cometstatus.Status) (*Status, error) { //
+func OriginatingSchema(pb *strongstatus.Status) (*Status, error) { //
 	if pb == nil {
 		return nil, errors.New("REDACTED")
 	}
 
 	status := new(Status)
 
-	status.Release = pb.Release
-	status.LedgerUID = pb.LedgerUID
-	status.PrimaryLevel = pb.PrimaryLevel
+	status.Edition = pb.Edition
+	status.SuccessionUUID = pb.SuccessionUUID
+	status.PrimaryAltitude = pb.PrimaryAltitude
 
-	bi, err := kinds.LedgerUIDFromSchema(&pb.FinalLedgerUID)
+	bi, err := kinds.LedgerUUIDOriginatingSchema(&pb.FinalLedgerUUID)
 	if err != nil {
 		return nil, err
 	}
-	status.FinalLedgerUID = *bi
-	status.FinalLedgerLevel = pb.FinalLedgerLevel
-	status.FinalLedgerTime = pb.FinalLedgerTime
+	status.FinalLedgerUUID = *bi
+	status.FinalLedgerAltitude = pb.FinalLedgerAltitude
+	status.FinalLedgerMoment = pb.FinalLedgerMoment
 
-	values, err := kinds.RatifierCollectionFromSchema(pb.Ratifiers)
+	values, err := kinds.AssessorAssignOriginatingSchema(pb.Assessors)
 	if err != nil {
 		return nil, err
 	}
-	status.Ratifiers = values
+	status.Assessors = values
 
-	nValues, err := kinds.RatifierCollectionFromSchema(pb.FollowingRatifiers)
+	nthValues, err := kinds.AssessorAssignOriginatingSchema(pb.FollowingAssessors)
 	if err != nil {
 		return nil, err
 	}
-	status.FollowingRatifiers = nValues
+	status.FollowingAssessors = nthValues
 
-	if status.FinalLedgerLevel >= 1 { //
-		lValues, err := kinds.RatifierCollectionFromSchema(pb.FinalRatifiers)
+	if status.FinalLedgerAltitude >= 1 { //
+		lengthValues, err := kinds.AssessorAssignOriginatingSchema(pb.FinalAssessors)
 		if err != nil {
 			return nil, err
 		}
-		status.FinalRatifiers = lValues
+		status.FinalAssessors = lengthValues
 	} else {
-		status.FinalRatifiers = kinds.NewRatifierCollection(nil)
+		status.FinalAssessors = kinds.FreshAssessorAssign(nil)
 	}
 
-	status.FinalLevelRatifiersModified = pb.FinalLevelRatifiersModified
-	status.AgreementOptions = kinds.AgreementOptionsFromSchema(pb.AgreementOptions)
-	status.FinalLevelAgreementOptionsModified = pb.FinalLevelAgreementOptionsModified
+	status.FinalAltitudeAssessorsAltered = pb.FinalAltitudeAssessorsAltered
+	status.AgreementSettings = kinds.AgreementParametersOriginatingSchema(pb.AgreementSettings)
+	status.FinalAltitudeAgreementParametersAltered = pb.FinalAltitudeAgreementParametersAltered
 	status.FinalOutcomesDigest = pb.FinalOutcomesDigest
-	status.ApplicationDigest = pb.ApplicationDigest
+	status.PlatformDigest = pb.PlatformDigest
 
 	return status, nil
 }
@@ -231,22 +231,22 @@ func FromSchema(pb *cometstatus.Status) (*Status, error) { //
 //
 //
 func (status Status) CreateLedger(
-	level int64,
+	altitude int64,
 	txs []kinds.Tx,
 	finalEndorse *kinds.Endorse,
 	proof []kinds.Proof,
-	recommenderLocation []byte,
+	nominatorLocator []byte,
 ) (*kinds.Ledger, error) {
 
 	//
-	ledger := kinds.CreateLedger(level, txs, finalEndorse, proof)
+	ledger := kinds.CreateLedger(altitude, txs, finalEndorse, proof)
 
 	//
 	var timestamp time.Time
-	if level == status.PrimaryLevel {
-		timestamp = status.FinalLedgerTime //
+	if altitude == status.PrimaryAltitude {
+		timestamp = status.FinalLedgerMoment //
 	} else {
-		ts, err := MidpointTime(finalEndorse, status.FinalRatifiers)
+		ts, err := AverageMoment(finalEndorse, status.FinalAssessors)
 		if err != nil {
 			return nil, fmt.Errorf("REDACTED", err)
 		}
@@ -254,40 +254,45 @@ func (status Status) CreateLedger(
 	}
 
 	//
-	ledger.Fill(
-		status.Release.Agreement, status.LedgerUID,
-		timestamp, status.FinalLedgerUID,
-		status.Ratifiers.Digest(), status.FollowingRatifiers.Digest(),
-		status.AgreementOptions.Digest(), status.ApplicationDigest, status.FinalOutcomesDigest,
-		recommenderLocation,
+	ledger.Inhabit(
+		status.Edition.Agreement, status.SuccessionUUID,
+		timestamp, status.FinalLedgerUUID,
+		status.Assessors.Digest(), status.FollowingAssessors.Digest(),
+		status.AgreementSettings.Digest(), status.PlatformDigest, status.FinalOutcomesDigest,
+		nominatorLocator,
 	)
 
 	return ledger, nil
 }
 
 //
-//
-//
-//
-func MidpointTime(endorse *kinds.Endorse, ratifiers *kinds.RatifierAssign) (time.Time, error) {
-	scaledInstances := make([]*engineclock.ScaledTime, len(endorse.Endorsements))
-	sumPollingEnergy := int64(0)
+func (status Status) CertifyLedger(ledger *kinds.Ledger) error {
+	return certifyLedger(status, ledger)
+}
 
-	for i, endorseSignature := range endorse.Endorsements {
-		if endorseSignature.LedgerUIDMark == kinds.LedgerUIDMarkMissing {
+//
+//
+//
+//
+func AverageMoment(endorse *kinds.Endorse, assessors *kinds.AssessorAssign) (time.Time, error) {
+	burdenedMultiples := make([]*committime.BurdenedMoment, len(endorse.Notations))
+	sumBallotingPotency := int64(0)
+
+	for i, endorseSignature := range endorse.Notations {
+		if endorseSignature.LedgerUUIDMarker == kinds.LedgerUUIDMarkerMissing {
 			continue
 		}
-		_, ratifier := ratifiers.FetchByLocation(endorseSignature.RatifierLocation)
+		_, assessor := assessors.ObtainViaLocation(endorseSignature.AssessorLocation)
 		//
-		if ratifier == nil {
+		if assessor == nil {
 			return time.Time{}, fmt.Errorf("REDACTED",
-				endorseSignature.RatifierLocation)
+				endorseSignature.AssessorLocation)
 		}
-		sumPollingEnergy += ratifier.PollingEnergy
-		scaledInstances[i] = engineclock.NewScaledTime(endorseSignature.Timestamp, ratifier.PollingEnergy)
+		sumBallotingPotency += assessor.BallotingPotency
+		burdenedMultiples[i] = committime.FreshBurdenedMoment(endorseSignature.Timestamp, assessor.BallotingPotency)
 	}
 
-	return engineclock.ScaledAverage(scaledInstances, sumPollingEnergy), nil
+	return committime.BurdenedAverage(burdenedMultiples, sumBallotingPotency), nil
 }
 
 //
@@ -297,64 +302,64 @@ func MidpointTime(endorse *kinds.Endorse, ratifiers *kinds.RatifierAssign) (time
 //
 //
 //
-func CreateOriginStatusFromEntry(generatePaperEntry string) (Status, error) {
-	generatePaper, err := CreateOriginPaperFromEntry(generatePaperEntry)
+func CreateInaugurationStatusOriginatingRecord(producePaperRecord string) (Status, error) {
+	producePaper, err := CreateInaugurationPaperOriginatingRecord(producePaperRecord)
 	if err != nil {
 		return Status{}, err
 	}
-	return CreateOriginStatus(generatePaper)
+	return CreateInaugurationStatus(producePaper)
 }
 
 //
-func CreateOriginPaperFromEntry(generatePaperEntry string) (*kinds.OriginPaper, error) {
-	generatePaperJSON, err := os.ReadFile(generatePaperEntry)
+func CreateInaugurationPaperOriginatingRecord(producePaperRecord string) (*kinds.OriginPaper, error) {
+	producePaperJSN, err := os.ReadFile(producePaperRecord)
 	if err != nil {
 		return nil, fmt.Errorf("REDACTED", err)
 	}
-	generatePaper, err := kinds.OriginPaperFromJSON(generatePaperJSON)
+	producePaper, err := kinds.InaugurationPaperOriginatingJSN(producePaperJSN)
 	if err != nil {
 		return nil, fmt.Errorf("REDACTED", err)
 	}
-	return generatePaper, nil
+	return producePaper, nil
 }
 
 //
-func CreateOriginStatus(generatePaper *kinds.OriginPaper) (Status, error) {
-	err := generatePaper.CertifyAndFinished()
+func CreateInaugurationStatus(producePaper *kinds.OriginPaper) (Status, error) {
+	err := producePaper.CertifyAlsoFinish()
 	if err != nil {
 		return Status{}, fmt.Errorf("REDACTED", err)
 	}
 
-	var ratifierCollection, followingRatifierCollection *kinds.RatifierAssign
-	if generatePaper.Ratifiers == nil {
-		ratifierCollection = kinds.NewRatifierCollection(nil)
-		followingRatifierCollection = kinds.NewRatifierCollection(nil)
+	var assessorAssign, followingAssessorCollection *kinds.AssessorAssign
+	if producePaper.Assessors == nil {
+		assessorAssign = kinds.FreshAssessorAssign(nil)
+		followingAssessorCollection = kinds.FreshAssessorAssign(nil)
 	} else {
-		ratifiers := make([]*kinds.Ratifier, len(generatePaper.Ratifiers))
-		for i, val := range generatePaper.Ratifiers {
-			ratifiers[i] = kinds.NewRatifier(val.PublicKey, val.Energy)
+		assessors := make([]*kinds.Assessor, len(producePaper.Assessors))
+		for i, val := range producePaper.Assessors {
+			assessors[i] = kinds.FreshAssessor(val.PublicToken, val.Potency)
 		}
-		ratifierCollection = kinds.NewRatifierCollection(ratifiers)
-		followingRatifierCollection = kinds.NewRatifierCollection(ratifiers).CloneAugmentRecommenderUrgency(1)
+		assessorAssign = kinds.FreshAssessorAssign(assessors)
+		followingAssessorCollection = kinds.FreshAssessorAssign(assessors).DuplicateAdvanceNominatorUrgency(1)
 	}
 
 	return Status{
-		Release:       InitStatusRelease,
-		LedgerUID:       generatePaper.LedgerUID,
-		PrimaryLevel: generatePaper.PrimaryLevel,
+		Edition:       InitializeStatusEdition,
+		SuccessionUUID:       producePaper.SuccessionUUID,
+		PrimaryAltitude: producePaper.PrimaryAltitude,
 
-		FinalLedgerLevel: 0,
-		FinalLedgerUID:     kinds.LedgerUID{},
-		FinalLedgerTime:   generatePaper.OriginMoment,
+		FinalLedgerAltitude: 0,
+		FinalLedgerUUID:     kinds.LedgerUUID{},
+		FinalLedgerMoment:   producePaper.OriginMoment,
 
-		FollowingRatifiers:              followingRatifierCollection,
-		Ratifiers:                  ratifierCollection,
-		FinalRatifiers:              kinds.NewRatifierCollection(nil),
-		FinalLevelRatifiersModified: generatePaper.PrimaryLevel,
+		FollowingAssessors:              followingAssessorCollection,
+		Assessors:                  assessorAssign,
+		FinalAssessors:              kinds.FreshAssessorAssign(nil),
+		FinalAltitudeAssessorsAltered: producePaper.PrimaryAltitude,
 
-		AgreementOptions:                  *generatePaper.AgreementOptions,
-		FinalLevelAgreementOptionsModified: generatePaper.PrimaryLevel,
+		AgreementSettings:                  *producePaper.AgreementSettings,
+		FinalAltitudeAgreementParametersAltered: producePaper.PrimaryAltitude,
 
-		ApplicationDigest: generatePaper.ApplicationDigest,
+		PlatformDigest: producePaper.PlatformDigest,
 	}, nil
 }

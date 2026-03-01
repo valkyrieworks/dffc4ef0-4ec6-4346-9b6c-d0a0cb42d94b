@@ -1,4 +1,4 @@
-package settings_test
+package param_test
 
 import (
 	"reflect"
@@ -8,73 +8,73 @@ import (
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/require"
 
-	"github.com/valkyrieworks/settings"
+	"github.com/valkyrieworks/dffc4ef0-4ec6-4346-9b6c-d0a0cb42d94b/settings"
 )
 
-func VerifyStandardSettings(t *testing.T) {
+func VerifyFallbackSettings(t *testing.T) {
 	affirm := assert.New(t)
 
 	//
-	cfg := settings.StandardSettings()
+	cfg := settings.FallbackSettings()
 	assert.NotNil(cfg.P2P)
 	assert.NotNil(cfg.Txpool)
 	assert.NotNil(cfg.Agreement)
 
 	//
 	cfg.AssignOrigin("REDACTED")
-	cfg.Origin = "REDACTED"
-	cfg.StoreRoute = "REDACTED"
+	cfg.Inauguration = "REDACTED"
+	cfg.DatastoreRoute = "REDACTED"
 	cfg.Txpool.JournalRoute = "REDACTED"
 
-	assert.Equal("REDACTED", cfg.OriginEntry())
-	assert.Equal("REDACTED", cfg.StoreFolder())
-	assert.Equal("REDACTED", cfg.Txpool.JournalFolder())
+	assert.Equal("REDACTED", cfg.InaugurationRecord())
+	assert.Equal("REDACTED", cfg.DatastorePath())
+	assert.Equal("REDACTED", cfg.Txpool.JournalPath())
 }
 
-func VerifySettingsCertifySimple(t *testing.T) {
-	cfg := settings.StandardSettings()
-	assert.NoError(t, cfg.CertifySimple())
+func VerifySettingsCertifyFundamental(t *testing.T) {
+	cfg := settings.FallbackSettings()
+	assert.NoError(t, cfg.CertifyFundamental())
 
 	//
 	cfg.Agreement.DeadlineNominate = -10 * time.Second
-	assert.Error(t, cfg.CertifySimple())
+	assert.Error(t, cfg.CertifyFundamental())
 	cfg.Agreement.DeadlineNominate = 3 * time.Second
 
-	cfg.Agreement.GenerateEmptyLedgers = false
-	cfg.Txpool.Kind = settings.TxpoolKindNoop
-	assert.Error(t, cfg.CertifySimple())
+	cfg.Agreement.GenerateVoidLedgers = false
+	cfg.Txpool.Kind = settings.TxpoolKindNooperation
+	assert.Error(t, cfg.CertifyFundamental())
 }
 
-func VerifyTLSSetup(t *testing.T) {
+func VerifyTransportsecSetup(t *testing.T) {
 	affirm := assert.New(t)
-	cfg := settings.StandardSettings()
+	cfg := settings.FallbackSettings()
 	cfg.AssignOrigin("REDACTED")
 
-	cfg.RPC.TLSTokenEntry = "REDACTED"
-	assert.Equal("REDACTED", cfg.RPC.TokenEntry())
-	cfg.RPC.TLSKeyEntry = "REDACTED"
-	assert.Equal("REDACTED", cfg.RPC.KeyEntry())
+	cfg.RPC.TransportsecLicenseRecord = "REDACTED"
+	assert.Equal("REDACTED", cfg.RPC.LicenseRecord())
+	cfg.RPC.TransportsecTokenRecord = "REDACTED"
+	assert.Equal("REDACTED", cfg.RPC.TokenRecord())
 
-	cfg.RPC.TLSTokenEntry = "REDACTED"
-	assert.Equal("REDACTED", cfg.RPC.TokenEntry())
-	cfg.RPC.TLSKeyEntry = "REDACTED"
-	assert.Equal("REDACTED", cfg.RPC.KeyEntry())
+	cfg.RPC.TransportsecLicenseRecord = "REDACTED"
+	assert.Equal("REDACTED", cfg.RPC.LicenseRecord())
+	cfg.RPC.TransportsecTokenRecord = "REDACTED"
+	assert.Equal("REDACTED", cfg.RPC.TokenRecord())
 }
 
-func VerifyRootSettingsCertifySimple(t *testing.T) {
-	cfg := settings.VerifyRootSettings()
-	assert.NoError(t, cfg.CertifySimple())
+func VerifyFoundationSettingsCertifyFundamental(t *testing.T) {
+	cfg := settings.VerifyFoundationSettings()
+	assert.NoError(t, cfg.CertifyFundamental())
 
 	//
-	cfg.TraceLayout = "REDACTED"
-	assert.Error(t, cfg.CertifySimple())
+	cfg.RecordLayout = "REDACTED"
+	assert.Error(t, cfg.CertifyFundamental())
 }
 
-func VerifyRPCSettingsCertifySimple(t *testing.T) {
-	cfg := settings.VerifyRPCSettings()
-	assert.NoError(t, cfg.CertifySimple())
+func VerifyRemoteSettingsCertifyFundamental(t *testing.T) {
+	cfg := settings.VerifyRemoteSettings()
+	assert.NoError(t, cfg.CertifyFundamental())
 
-	attributesToVerify := []string{
+	areasTowardVerify := []string{
 		"REDACTED",
 		"REDACTED",
 		"REDACTED",
@@ -85,105 +85,105 @@ func VerifyRPCSettingsCertifySimple(t *testing.T) {
 		"REDACTED",
 	}
 
-	for _, fieldLabel := range attributesToVerify {
-		reflect.ValueOf(cfg).Elem().FieldByName(fieldLabel).SetInt(-1)
-		assert.Error(t, cfg.CertifySimple())
-		reflect.ValueOf(cfg).Elem().FieldByName(fieldLabel).SetInt(0)
-	}
-}
-
-func VerifyP2PSettingsCertifySimple(t *testing.T) {
-	cfg := settings.VerifyP2PSettings()
-	assert.NoError(t, cfg.CertifySimple())
-
-	attributesToVerify := []string{
-		"REDACTED",
-		"REDACTED",
-		"REDACTED",
-		"REDACTED",
-		"REDACTED",
-		"REDACTED",
-	}
-
-	for _, fieldLabel := range attributesToVerify {
-		reflect.ValueOf(cfg).Elem().FieldByName(fieldLabel).SetInt(-1)
-		assert.Error(t, cfg.CertifySimple())
-		reflect.ValueOf(cfg).Elem().FieldByName(fieldLabel).SetInt(0)
+	for _, attributeAlias := range areasTowardVerify {
+		reflect.ValueOf(cfg).Elem().FieldByName(attributeAlias).SetInt(-1)
+		assert.Error(t, cfg.CertifyFundamental())
+		reflect.ValueOf(cfg).Elem().FieldByName(attributeAlias).SetInt(0)
 	}
 }
 
-func VerifyTxpoolSettingsCertifySimple(t *testing.T) {
+func VerifyPeer2peerSettingsCertifyFundamental(t *testing.T) {
+	cfg := settings.VerifyPeer2peerSettings()
+	assert.NoError(t, cfg.CertifyFundamental())
+
+	areasTowardVerify := []string{
+		"REDACTED",
+		"REDACTED",
+		"REDACTED",
+		"REDACTED",
+		"REDACTED",
+		"REDACTED",
+	}
+
+	for _, attributeAlias := range areasTowardVerify {
+		reflect.ValueOf(cfg).Elem().FieldByName(attributeAlias).SetInt(-1)
+		assert.Error(t, cfg.CertifyFundamental())
+		reflect.ValueOf(cfg).Elem().FieldByName(attributeAlias).SetInt(0)
+	}
+}
+
+func VerifyTxpoolSettingsCertifyFundamental(t *testing.T) {
 	cfg := settings.VerifyTxpoolSettings()
-	assert.NoError(t, cfg.CertifySimple())
+	assert.NoError(t, cfg.CertifyFundamental())
 
-	attributesToVerify := []string{
+	areasTowardVerify := []string{
 		"REDACTED",
 		"REDACTED",
 		"REDACTED",
 		"REDACTED",
 	}
 
-	for _, fieldLabel := range attributesToVerify {
-		reflect.ValueOf(cfg).Elem().FieldByName(fieldLabel).SetInt(-1)
-		assert.Error(t, cfg.CertifySimple())
-		reflect.ValueOf(cfg).Elem().FieldByName(fieldLabel).SetInt(0)
+	for _, attributeAlias := range areasTowardVerify {
+		reflect.ValueOf(cfg).Elem().FieldByName(attributeAlias).SetInt(-1)
+		assert.Error(t, cfg.CertifyFundamental())
+		reflect.ValueOf(cfg).Elem().FieldByName(attributeAlias).SetInt(0)
 	}
 
 	reflect.ValueOf(cfg).Elem().FieldByName("REDACTED").SetString("REDACTED")
-	assert.Error(t, cfg.CertifySimple())
+	assert.Error(t, cfg.CertifyFundamental())
 }
 
-func VerifyStatusAlignSettingsCertifySimple(t *testing.T) {
-	cfg := settings.VerifyStatusAlignSettings()
-	require.NoError(t, cfg.CertifySimple())
+func VerifyStatusChronizeSettingsCertifyFundamental(t *testing.T) {
+	cfg := settings.VerifyStatusChronizeSettings()
+	require.NoError(t, cfg.CertifyFundamental())
 }
 
-func VerifyLedgerAlignSettingsCertifySimple(t *testing.T) {
-	cfg := settings.VerifyLedgerAlignSettings()
-	assert.NoError(t, cfg.CertifySimple())
+func VerifyLedgerChronizeSettingsCertifyFundamental(t *testing.T) {
+	cfg := settings.VerifyLedgerChronizeSettings()
+	assert.NoError(t, cfg.CertifyFundamental())
 
 	//
-	cfg.Release = "REDACTED"
-	assert.Error(t, cfg.CertifySimple())
+	cfg.Edition = "REDACTED"
+	assert.Error(t, cfg.CertifyFundamental())
 
-	cfg.Release = "REDACTED"
-	assert.Error(t, cfg.CertifySimple())
+	cfg.Edition = "REDACTED"
+	assert.Error(t, cfg.CertifyFundamental())
 }
 
-func Verifyagreementsettings_Verifybasic(t *testing.T) {
+func Mockagreementsettings_Certifyfundamental(t *testing.T) {
 	//
-	verifyscenarios := map[string]struct {
-		adjust    func(*settings.AgreementSettings)
-		anticipateErr bool
+	verifycases := map[string]struct {
+		alter    func(*settings.AgreementSettings)
+		anticipateFault bool
 	}{
 		"REDACTED":                       {func(c *settings.AgreementSettings) { c.DeadlineNominate = time.Second }, false},
 		"REDACTED":              {func(c *settings.AgreementSettings) { c.DeadlineNominate = -1 }, true},
-		"REDACTED":                  {func(c *settings.AgreementSettings) { c.DeadlineNominateVariance = time.Second }, false},
-		"REDACTED":         {func(c *settings.AgreementSettings) { c.DeadlineNominateVariance = -1 }, true},
+		"REDACTED":                  {func(c *settings.AgreementSettings) { c.DeadlineNominateVariation = time.Second }, false},
+		"REDACTED":         {func(c *settings.AgreementSettings) { c.DeadlineNominateVariation = -1 }, true},
 		"REDACTED":                       {func(c *settings.AgreementSettings) { c.DeadlinePreballot = time.Second }, false},
 		"REDACTED":              {func(c *settings.AgreementSettings) { c.DeadlinePreballot = -1 }, true},
-		"REDACTED":                  {func(c *settings.AgreementSettings) { c.DeadlinePreballotVariance = time.Second }, false},
-		"REDACTED":         {func(c *settings.AgreementSettings) { c.DeadlinePreballotVariance = -1 }, true},
+		"REDACTED":                  {func(c *settings.AgreementSettings) { c.DeadlinePreballotVariation = time.Second }, false},
+		"REDACTED":         {func(c *settings.AgreementSettings) { c.DeadlinePreballotVariation = -1 }, true},
 		"REDACTED":                     {func(c *settings.AgreementSettings) { c.DeadlinePreendorse = time.Second }, false},
 		"REDACTED":            {func(c *settings.AgreementSettings) { c.DeadlinePreendorse = -1 }, true},
-		"REDACTED":                {func(c *settings.AgreementSettings) { c.DeadlinePreendorseVariance = time.Second }, false},
-		"REDACTED":       {func(c *settings.AgreementSettings) { c.DeadlinePreendorseVariance = -1 }, true},
+		"REDACTED":                {func(c *settings.AgreementSettings) { c.DeadlinePreendorseVariation = time.Second }, false},
+		"REDACTED":       {func(c *settings.AgreementSettings) { c.DeadlinePreendorseVariation = -1 }, true},
 		"REDACTED":                        {func(c *settings.AgreementSettings) { c.DeadlineEndorse = time.Second }, false},
 		"REDACTED":               {func(c *settings.AgreementSettings) { c.DeadlineEndorse = -1 }, true},
-		"REDACTED":              {func(c *settings.AgreementSettings) { c.NodeGossipPausePeriod = time.Second }, false},
-		"REDACTED":     {func(c *settings.AgreementSettings) { c.NodeGossipPausePeriod = -1 }, true},
-		"REDACTED":          {func(c *settings.AgreementSettings) { c.NodeInquireMaj23pausePeriod = time.Second }, false},
-		"REDACTED": {func(c *settings.AgreementSettings) { c.NodeInquireMaj23pausePeriod = -1 }, true},
-		"REDACTED":       {func(c *settings.AgreementSettings) { c.RepeatAttestInspectLevel = -1 }, true},
+		"REDACTED":              {func(c *settings.AgreementSettings) { c.NodeMulticastSnoozeInterval = time.Second }, false},
+		"REDACTED":     {func(c *settings.AgreementSettings) { c.NodeMulticastSnoozeInterval = -1 }, true},
+		"REDACTED":          {func(c *settings.AgreementSettings) { c.NodeInquireMajor23dormantInterval = time.Second }, false},
+		"REDACTED": {func(c *settings.AgreementSettings) { c.NodeInquireMajor23dormantInterval = -1 }, true},
+		"REDACTED":       {func(c *settings.AgreementSettings) { c.DuplicateAttestInspectAltitude = -1 }, true},
 	}
-	for note, tc := range verifyscenarios {
+	for description, tc := range verifycases {
 		//
-		t.Run(note, func(t *testing.T) {
-			cfg := settings.StandardAgreementSettings()
-			tc.adjust(cfg)
+		t.Run(description, func(t *testing.T) {
+			cfg := settings.FallbackAgreementSettings()
+			tc.alter(cfg)
 
-			err := cfg.CertifySimple()
-			if tc.anticipateErr {
+			err := cfg.CertifyFundamental()
+			if tc.anticipateFault {
 				assert.Error(t, err)
 			} else {
 				assert.NoError(t, err)
@@ -192,11 +192,11 @@ func Verifyagreementsettings_Verifybasic(t *testing.T) {
 	}
 }
 
-func VerifyTelemetrySettingsCertifySimple(t *testing.T) {
+func VerifyTelemetrySettingsCertifyFundamental(t *testing.T) {
 	cfg := settings.VerifyTelemetrySettings()
-	assert.NoError(t, cfg.CertifySimple())
+	assert.NoError(t, cfg.CertifyFundamental())
 
 	//
-	cfg.MaximumAccessLinks = -1
-	assert.Error(t, cfg.CertifySimple())
+	cfg.MaximumInitiateLinks = -1
+	assert.Error(t, cfg.CertifyFundamental())
 }

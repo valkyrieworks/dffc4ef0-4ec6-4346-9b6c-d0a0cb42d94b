@@ -6,41 +6,41 @@ import (
 )
 
 var (
-	ErrEmptyRPCHostRecord             = errors.New("REDACTED")
-	ErrNoSufficientRPCHosts             = errors.New("REDACTED")
-	ErrInadequateDetectionTime       = errors.New("REDACTED")
-	ErrInadequateSegmentQueryDeadline = errors.New("REDACTED")
-	ErrUnclearTraceLayout                = errors.New("REDACTED")
-	ErrEnrollmentBufferVolumeCorrupt   = fmt.Errorf("REDACTED", minimumEnrollmentBufferVolume)
+	FaultBlankRemoteDaemonPiece             = errors.New("REDACTED")
+	FaultNegationAmpleRemoteHosts             = errors.New("REDACTED")
+	FaultLackingExplorationMoment       = errors.New("REDACTED")
+	FaultLackingSegmentSolicitDeadline = errors.New("REDACTED")
+	FaultUnfamiliarReportLayout                = errors.New("REDACTED")
+	FaultListeningReserveExtentUnfit   = fmt.Errorf("REDACTED", minimumListeningReserveExtent)
 )
 
 //
-type ErrInSegment struct {
+type FaultInsideSegment struct {
 	Err     error
 	Segment string
 }
 
-func (e ErrInSegment) Fault() string {
+func (e FaultInsideSegment) Failure() string {
 	return fmt.Sprintf("REDACTED", e.Segment, e.Err.Error())
 }
 
-func (e ErrInSegment) Disclose() error {
+func (e FaultInsideSegment) Disclose() error {
 	return e.Err
 }
 
-type ErrObsoleteChainconnectRelease struct {
-	Release string
+type FaultObsoleteChainchronizeEdition struct {
+	Edition string
 	Permitted []string
 }
 
-func (e ErrObsoleteChainconnectRelease) Fault() string {
-	return fmt.Sprintf("REDACTED", e.Release, e.Permitted)
+func (e FaultObsoleteChainchronizeEdition) Failure() string {
+	return fmt.Sprintf("REDACTED", e.Edition, e.Permitted)
 }
 
-type ErrUnclearChainconnectRelease struct {
-	Release string
+type FaultUnfamiliarChainchronizeEdition struct {
+	Edition string
 }
 
-func (e ErrUnclearChainconnectRelease) Fault() string {
-	return fmt.Sprintf("REDACTED", e.Release)
+func (e FaultUnfamiliarChainchronizeEdition) Failure() string {
+	return fmt.Sprintf("REDACTED", e.Edition)
 }

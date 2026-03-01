@@ -3,22 +3,22 @@
 package simulations
 
 import (
-	ifacetypes "github.com/valkyrieworks/iface/kinds"
-	txpool "github.com/valkyrieworks/txpool"
+	ifacetypes "github.com/valkyrieworks/dffc4ef0-4ec6-4346-9b6c-d0a0cb42d94b/iface/kinds"
+	txpool "github.com/valkyrieworks/dffc4ef0-4ec6-4346-9b6c-d0a0cb42d94b/txpool"
 
 	mock "github.com/stretchr/testify/mock"
 
-	kinds "github.com/valkyrieworks/kinds"
+	kinds "github.com/valkyrieworks/dffc4ef0-4ec6-4346-9b6c-d0a0cb42d94b/kinds"
 )
 
 //
 type Txpool struct {
-	mock.Emulate
+	mock.Simulate
 }
 
 //
-func (_m *Txpool) InspectTransfer(tx kinds.Tx, callback func(*ifacetypes.ReplyInspectTransfer), transferDetails txpool.TransferDetails) error {
-	ret := _m.Called(tx, callback, transferDetails)
+func (_m *Txpool) InspectTransfer(tx kinds.Tx, clbk func(*ifacetypes.ReplyInspectTransfer), transferDetails txpool.TransferDetails) error {
+	ret := _m.Called(tx, clbk, transferDetails)
 
 	if len(ret) == 0 {
 		panic("REDACTED")
@@ -26,7 +26,7 @@ func (_m *Txpool) InspectTransfer(tx kinds.Tx, callback func(*ifacetypes.ReplyIn
 
 	var r0 error
 	if rf, ok := ret.Get(0).(func(kinds.Tx, func(*ifacetypes.ReplyInspectTransfer), txpool.TransferDetails) error); ok {
-		r0 = rf(tx, callback, transferDetails)
+		r0 = rf(tx, clbk, transferDetails)
 	} else {
 		r0 = ret.Error(0)
 	}
@@ -108,16 +108,16 @@ func (_m *Txpool) HarvestMaximumTrans(max int) kinds.Txs {
 }
 
 //
-func (_m *Txpool) DeleteTransferByKey(transferKey kinds.TransferKey) error {
-	ret := _m.Called(transferKey)
+func (_m *Txpool) DiscardTransferViaToken(transferToken kinds.TransferToken) error {
+	ret := _m.Called(transferToken)
 
 	if len(ret) == 0 {
 		panic("REDACTED")
 	}
 
 	var r0 error
-	if rf, ok := ret.Get(0).(func(kinds.TransferKey) error); ok {
-		r0 = rf(transferKey)
+	if rf, ok := ret.Get(0).(func(kinds.TransferToken) error); ok {
+		r0 = rf(transferToken)
 	} else {
 		r0 = ret.Error(0)
 	}
@@ -126,7 +126,7 @@ func (_m *Txpool) DeleteTransferByKey(transferKey kinds.TransferKey) error {
 }
 
 //
-func (_m *Txpool) Volume() int {
+func (_m *Txpool) Extent() int {
 	ret := _m.Called()
 
 	if len(ret) == 0 {
@@ -144,7 +144,7 @@ func (_m *Txpool) Volume() int {
 }
 
 //
-func (_m *Txpool) VolumeOctets() int64 {
+func (_m *Txpool) ExtentOctets() int64 {
 	ret := _m.Called()
 
 	if len(ret) == 0 {
@@ -187,16 +187,16 @@ func (_m *Txpool) Release() {
 }
 
 //
-func (_m *Txpool) Modify(ledgerLevel int64, ledgerTrans kinds.Txs, dispatchTransferReplies []*ifacetypes.InvokeTransferOutcome, newPreFn txpool.PreInspectFunction, newSubmitFn txpool.SubmitInspectFunction) error {
-	ret := _m.Called(ledgerLevel, ledgerTrans, dispatchTransferReplies, newPreFn, newSubmitFn)
+func (_m *Txpool) Revise(ledgerAltitude int64, ledgerTrans kinds.Txs, dispatchTransferReplies []*ifacetypes.InvokeTransferOutcome, freshAnteProc txpool.PriorInspectMethod, freshSubmitProc txpool.RelayInspectMethod) error {
+	ret := _m.Called(ledgerAltitude, ledgerTrans, dispatchTransferReplies, freshAnteProc, freshSubmitProc)
 
 	if len(ret) == 0 {
 		panic("REDACTED")
 	}
 
 	var r0 error
-	if rf, ok := ret.Get(0).(func(int64, kinds.Txs, []*ifacetypes.InvokeTransferOutcome, txpool.PreInspectFunction, txpool.SubmitInspectFunction) error); ok {
-		r0 = rf(ledgerLevel, ledgerTrans, dispatchTransferReplies, newPreFn, newSubmitFn)
+	if rf, ok := ret.Get(0).(func(int64, kinds.Txs, []*ifacetypes.InvokeTransferOutcome, txpool.PriorInspectMethod, txpool.RelayInspectMethod) error); ok {
+		r0 = rf(ledgerAltitude, ledgerTrans, dispatchTransferReplies, freshAnteProc, freshSubmitProc)
 	} else {
 		r0 = ret.Error(0)
 	}
@@ -206,14 +206,14 @@ func (_m *Txpool) Modify(ledgerLevel int64, ledgerTrans kinds.Txs, dispatchTrans
 
 //
 //
-func NewTxpool(t interface {
+func FreshTxpool(t interface {
 	mock.TestingT
 	Sanitize(func())
 }) *Txpool {
-	emulate := &Txpool{}
-	mock.Emulate.Test(t)
+	simulate := &Txpool{}
+	mock.Simulate.Test(t)
 
 	t.Sanitize(func() { mock.AssertExpectations(t) })
 
-	return emulate
+	return simulate
 }

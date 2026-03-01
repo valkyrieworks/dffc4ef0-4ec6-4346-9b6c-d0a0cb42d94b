@@ -11,28 +11,28 @@ import (
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/require"
 
-	"github.com/valkyrieworks/vault"
-	"github.com/valkyrieworks/vault/ed25519"
-	"github.com/valkyrieworks/utils/octets"
-	"github.com/valkyrieworks/utils/log"
-	"github.com/valkyrieworks/schema/consensuscore/p2p"
+	"github.com/valkyrieworks/dffc4ef0-4ec6-4346-9b6c-d0a0cb42d94b/security"
+	"github.com/valkyrieworks/dffc4ef0-4ec6-4346-9b6c-d0a0cb42d94b/security/edwards25519"
+	"github.com/valkyrieworks/dffc4ef0-4ec6-4346-9b6c-d0a0cb42d94b/utils/octets"
+	"github.com/valkyrieworks/dffc4ef0-4ec6-4346-9b6c-d0a0cb42d94b/utils/log"
+	"github.com/valkyrieworks/dffc4ef0-4ec6-4346-9b6c-d0a0cb42d94b/schema/strongmind/p2p"
 
-	"github.com/valkyrieworks/settings"
-	cmtconn "github.com/valkyrieworks/p2p/link"
+	"github.com/valkyrieworks/dffc4ef0-4ec6-4346-9b6c-d0a0cb42d94b/settings"
+	consensuslink "github.com/valkyrieworks/dffc4ef0-4ec6-4346-9b6c-d0a0cb42d94b/p2p/link"
 )
 
-func VerifyNodeSimple(t *testing.T) {
+func VerifyNodeFundamental(t *testing.T) {
 	affirm, demand := assert.New(t), require.New(t)
 
 	//
-	rp := &distantNode{PrivateKey: ed25519.GeneratePrivateKey(), Settings: cfg}
-	rp.Begin()
+	rp := &distantNode{PrivateToken: edwards25519.ProducePrivateToken(), Settings: cfg}
+	rp.Initiate()
 	t.Cleanup(rp.Halt)
 
-	p, err := instantiateOutgoingNodeAndExecuteGreeting(rp.Address(), cfg, cmtconn.StandardMLinkSettings())
+	p, err := generateOutgoingNodeAlsoExecuteNegotiation(rp.Location(), cfg, consensuslink.FallbackModuleLinkSettings())
 	require.Nil(err)
 
-	err = p.Begin()
+	err = p.Initiate()
 	require.Nil(err)
 	t.Cleanup(func() {
 		if err := p.Halt(); err != nil {
@@ -40,12 +40,12 @@ func VerifyNodeSimple(t *testing.T) {
 		}
 	})
 
-	assert.True(p.IsActive())
-	assert.True(p.IsOutgoing())
-	assert.False(p.IsDurable())
-	p.durable = true
-	assert.True(p.IsDurable())
-	assert.Equal(rp.Address().CallString(), p.DistantAddress().String())
+	assert.True(p.EqualsActive())
+	assert.True(p.EqualsOutgoing())
+	assert.False(p.EqualsEnduring())
+	p.enduring = true
+	assert.True(p.EqualsEnduring())
+	assert.Equal(rp.Location().CallText(), p.DistantLocation().String())
 	assert.Equal(rp.ID(), p.ID())
 }
 
@@ -55,14 +55,14 @@ func VerifyNodeTransmit(t *testing.T) {
 	settings := cfg
 
 	//
-	rp := &distantNode{PrivateKey: ed25519.GeneratePrivateKey(), Settings: settings}
-	rp.Begin()
+	rp := &distantNode{PrivateToken: edwards25519.ProducePrivateToken(), Settings: settings}
+	rp.Initiate()
 	t.Cleanup(rp.Halt)
 
-	p, err := instantiateOutgoingNodeAndExecuteGreeting(rp.Address(), settings, cmtconn.StandardMLinkSettings())
+	p, err := generateOutgoingNodeAlsoExecuteNegotiation(rp.Location(), settings, consensuslink.FallbackModuleLinkSettings())
 	require.Nil(err)
 
-	err = p.Begin()
+	err = p.Initiate()
 	require.Nil(err)
 
 	t.Cleanup(func() {
@@ -71,45 +71,45 @@ func VerifyNodeTransmit(t *testing.T) {
 		}
 	})
 
-	assert.True(p.MayTransmit(verifyChan))
-	assert.True(p.Transmit(Packet{StreamUID: verifyChan, Signal: &p2p.Signal{}}))
+	assert.True(p.AbleTransmit(verifyChnl))
+	assert.True(p.Transmit(Wrapper{ConduitUUID: verifyChnl, Signal: &p2p.Signal{}}))
 }
 
-func instantiateOutgoingNodeAndExecuteGreeting(
-	address *NetLocation,
-	settings *settings.P2PSettings,
-	mSettings cmtconn.MLinkSettings,
+func generateOutgoingNodeAlsoExecuteNegotiation(
+	location *NetworkLocator,
+	settings *settings.Peer2peerSettings,
+	moduleSettings consensuslink.ModuleLinkSettings,
 ) (*node, error) {
-	chanTraits := []*cmtconn.StreamDefinition{
-		{ID: verifyChan, Urgency: 1},
+	chnlDescriptions := []*consensuslink.ConduitDefinition{
+		{ID: verifyChnl, Urgency: 1},
 	}
-	handlersByChan := map[byte]Handler{verifyChan: NewVerifyHandler(chanTraits, true)}
-	messageKindByChanUID := map[byte]proto.Message{
-		verifyChan: &p2p.Signal{},
+	enginesViaChnl := map[byte]Handler{verifyChnl: FreshVerifyHandler(chnlDescriptions, true)}
+	signalKindViaChnlUUID := map[byte]proto.Message{
+		verifyChnl: &p2p.Signal{},
 	}
-	pk := ed25519.GeneratePrivateKey()
-	pc, err := verifyOutgoingNodeLink(address, settings, false, pk)
+	pk := edwards25519.ProducePrivateToken()
+	pc, err := verifyOutgoingNodeLink(location, settings, false, pk)
 	if err != nil {
 		return nil, err
 	}
 	deadline := 1 * time.Second
-	ourMemberDetails := verifyMemberDetails(address.ID, "REDACTED")
-	nodeMemberDetails, err := greeting(pc.link, deadline, ourMemberDetails)
+	minePeerDetails := verifyPeerDetails(location.ID, "REDACTED")
+	nodePeerDetails, err := negotiation(pc.link, deadline, minePeerDetails)
 	if err != nil {
 		return nil, err
 	}
 
-	p := newNode(pc, mSettings, nodeMemberDetails, handlersByChan, messageKindByChanUID, chanTraits, func(p Node, r any) {}, newStatsTagRepository())
-	p.AssignTracer(log.VerifyingTracer().With("REDACTED", address))
+	p := freshNode(pc, moduleSettings, nodePeerDetails, enginesViaChnl, signalKindViaChnlUUID, chnlDescriptions, func(p Node, r any) {}, freshTelemetryTagStash())
+	p.AssignTracer(log.VerifyingTracer().Using("REDACTED", location))
 	return p, nil
 }
 
-func verifyCall(address *NetLocation, cfg *settings.P2PSettings) (net.Conn, error) {
-	if cfg.VerifyCallAbort {
+func verifyCall(location *NetworkLocator, cfg *settings.Peer2peerSettings) (net.Conn, error) {
+	if cfg.VerifyCallMishap {
 		return nil, fmt.Errorf("REDACTED")
 	}
 
-	link, err := address.CallDeadline(cfg.CallDeadline)
+	link, err := location.CallDeadline(cfg.CallDeadline)
 	if err != nil {
 		return nil, err
 	}
@@ -117,91 +117,91 @@ func verifyCall(address *NetLocation, cfg *settings.P2PSettings) (net.Conn, erro
 }
 
 func verifyOutgoingNodeLink(
-	address *NetLocation,
-	settings *settings.P2PSettings,
-	durable bool,
-	ourMemberPrivateKey vault.PrivateKey,
+	location *NetworkLocator,
+	settings *settings.Peer2peerSettings,
+	enduring bool,
+	minePeerPrivateToken security.PrivateToken,
 ) (nodeLink, error) {
 	var pc nodeLink
-	link, err := verifyCall(address, settings)
+	link, err := verifyCall(location, settings)
 	if err != nil {
 		return pc, fmt.Errorf("REDACTED", err)
 	}
 
-	pc, err = verifyNodeLink(link, settings, true, durable, ourMemberPrivateKey, address)
+	pc, err = verifyNodeLink(link, settings, true, enduring, minePeerPrivateToken, location)
 	if err != nil {
-		if cerr := link.Close(); cerr != nil {
-			return pc, fmt.Errorf("REDACTED", cerr.Error(), err)
+		if checkfault := link.Close(); checkfault != nil {
+			return pc, fmt.Errorf("REDACTED", checkfault.Error(), err)
 		}
 		return pc, err
 	}
 
 	//
-	if address.ID != pc.ID() {
-		if cerr := link.Close(); cerr != nil {
-			return pc, fmt.Errorf("REDACTED", cerr.Error(), err)
+	if location.ID != pc.ID() {
+		if checkfault := link.Close(); checkfault != nil {
+			return pc, fmt.Errorf("REDACTED", checkfault.Error(), err)
 		}
-		return pc, ErrRouterAuthorizationBreakdown{address, pc.ID()}
+		return pc, FaultRouterAuthorizationBreakdown{location, pc.ID()}
 	}
 
 	return pc, nil
 }
 
 type distantNode struct {
-	PrivateKey    vault.PrivateKey
-	Settings     *settings.P2PSettings
-	address       *NetLocation
-	streams   octets.HexOctets
-	acceptAddress string
+	PrivateToken    security.PrivateToken
+	Settings     *settings.Peer2peerSettings
+	location       *NetworkLocator
+	conduits   octets.HexadecimalOctets
+	overhearLocation string
 	observer   net.Listener
 }
 
-func (rp *distantNode) Address() *NetLocation {
-	return rp.address
+func (rp *distantNode) Location() *NetworkLocator {
+	return rp.location
 }
 
 func (rp *distantNode) ID() ID {
-	return PublicKeyToUID(rp.PrivateKey.PublicKey())
+	return PublicTokenTowardUUID(rp.PrivateToken.PublicToken())
 }
 
-func (rp *distantNode) Begin() {
-	if rp.acceptAddress == "REDACTED" {
-		rp.acceptAddress = "REDACTED"
+func (rp *distantNode) Initiate() {
+	if rp.overhearLocation == "REDACTED" {
+		rp.overhearLocation = "REDACTED"
 	}
 
-	l, e := net.Listen("REDACTED", rp.acceptAddress) //
+	l, e := net.Listen("REDACTED", rp.overhearLocation) //
 	if e != nil {
 		golog.Fatalf("REDACTED", e)
 	}
 	rp.observer = l
-	rp.address = NewNetLocation(PublicKeyToUID(rp.PrivateKey.PublicKey()), l.Addr())
-	if rp.streams == nil {
-		rp.streams = []byte{verifyChan}
+	rp.location = FreshNetworkLocator(PublicTokenTowardUUID(rp.PrivateToken.PublicToken()), l.Addr())
+	if rp.conduits == nil {
+		rp.conduits = []byte{verifyChnl}
 	}
-	go rp.allow()
+	go rp.embrace()
 }
 
 func (rp *distantNode) Halt() {
 	rp.observer.Close()
 }
 
-func (rp *distantNode) Call(address *NetLocation) (net.Conn, error) {
-	link, err := address.CallDeadline(1 * time.Second)
+func (rp *distantNode) Call(location *NetworkLocator) (net.Conn, error) {
+	link, err := location.CallDeadline(1 * time.Second)
 	if err != nil {
 		return nil, err
 	}
-	pc, err := verifyIncomingNodeLink(link, rp.Settings, rp.PrivateKey)
+	pc, err := verifyIncomingNodeLink(link, rp.Settings, rp.PrivateToken)
 	if err != nil {
 		return nil, err
 	}
-	_, err = greeting(pc.link, time.Second, rp.memberDetails())
+	_, err = negotiation(pc.link, time.Second, rp.peerDetails())
 	if err != nil {
 		return nil, err
 	}
 	return link, err
 }
 
-func (rp *distantNode) allow() {
+func (rp *distantNode) embrace() {
 	links := []net.Conn{}
 
 	for {
@@ -214,12 +214,12 @@ func (rp *distantNode) allow() {
 			return
 		}
 
-		pc, err := verifyIncomingNodeLink(link, rp.Settings, rp.PrivateKey)
+		pc, err := verifyIncomingNodeLink(link, rp.Settings, rp.PrivateToken)
 		if err != nil {
 			golog.Fatalf("REDACTED", err)
 		}
 
-		_, err = greeting(pc.link, time.Second, rp.memberDetails())
+		_, err = negotiation(pc.link, time.Second, rp.peerDetails())
 		if err != nil {
 			golog.Fatalf("REDACTED", err)
 		}
@@ -228,14 +228,14 @@ func (rp *distantNode) allow() {
 	}
 }
 
-func (rp *distantNode) memberDetails() MemberDetails {
-	return StandardMemberDetails{
-		ProtocolRelease: standardProtocolRelease,
-		StandardMemberUID:   rp.Address().ID,
-		ObserveAddress:      rp.observer.Addr().String(),
+func (rp *distantNode) peerDetails() PeerDetails {
+	return FallbackPeerDetails{
+		SchemeEdition: fallbackSchemeEdition,
+		FallbackPeerUUID:   rp.Location().ID,
+		OverhearLocation:      rp.observer.Addr().String(),
 		Fabric:         "REDACTED",
-		Release:         "REDACTED",
-		Streams:        rp.streams,
-		Moniker:         "REDACTED",
+		Edition:         "REDACTED",
+		Conduits:        rp.conduits,
+		Pseudonym:         "REDACTED",
 	}
 }

@@ -6,16 +6,16 @@ import (
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/require"
 
-	iface "github.com/valkyrieworks/iface/kinds"
+	iface "github.com/valkyrieworks/dffc4ef0-4ec6-4346-9b6c-d0a0cb42d94b/iface/kinds"
 )
 
 func VerifyIfaceOutcomes(t *testing.T) {
-	a := &iface.InvokeTransferOutcome{Code: 0, Data: nil}
-	b := &iface.InvokeTransferOutcome{Code: 0, Data: []byte{}}
-	c := &iface.InvokeTransferOutcome{Code: 0, Data: []byte("REDACTED")}
-	d := &iface.InvokeTransferOutcome{Code: 14, Data: nil}
-	e := &iface.InvokeTransferOutcome{Code: 14, Data: []byte("REDACTED")}
-	f := &iface.InvokeTransferOutcome{Code: 14, Data: []byte("REDACTED")}
+	a := &iface.InvokeTransferOutcome{Cipher: 0, Data: nil}
+	b := &iface.InvokeTransferOutcome{Cipher: 0, Data: []byte{}}
+	c := &iface.InvokeTransferOutcome{Cipher: 0, Data: []byte("REDACTED")}
+	d := &iface.InvokeTransferOutcome{Cipher: 14, Data: nil}
+	e := &iface.InvokeTransferOutcome{Cipher: 14, Data: []byte("REDACTED")}
+	f := &iface.InvokeTransferOutcome{Cipher: 14, Data: []byte("REDACTED")}
 
 	//
 	bzA, err := a.Serialize()
@@ -47,8 +47,8 @@ func VerifyIfaceOutcomes(t *testing.T) {
 		bz, err := res.Serialize()
 		require.NoError(t, err)
 
-		evidence := outcomes.DemonstrateOutcome(i)
-		sound := evidence.Validate(origin, bz)
+		attestation := outcomes.AscertainOutcome(i)
+		sound := attestation.Validate(origin, bz)
 		assert.NoError(t, sound, "REDACTED", i)
 	}
 }

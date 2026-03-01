@@ -1,4 +1,4 @@
-package main
+package primary
 
 import (
 	"context"
@@ -7,19 +7,19 @@ import (
 	"os"
 	"path/filepath"
 
-	"github.com/valkyrieworks/utils/log"
-	e2e "github.com/valkyrieworks/verify/e2e/pkg"
-	"github.com/valkyrieworks/verify/e2e/pkg/invoke"
-	"github.com/valkyrieworks/verify/e2e/pkg/platform/docker"
+	"github.com/valkyrieworks/dffc4ef0-4ec6-4346-9b6c-d0a0cb42d94b/utils/log"
+	e2e "github.com/valkyrieworks/dffc4ef0-4ec6-4346-9b6c-d0a0cb42d94b/verify/e2e/pkg"
+	"github.com/valkyrieworks/dffc4ef0-4ec6-4346-9b6c-d0a0cb42d94b/verify/e2e/pkg/invoke"
+	"github.com/valkyrieworks/dffc4ef0-4ec6-4346-9b6c-d0a0cb42d94b/verify/e2e/pkg/platform/dock"
 )
 
 //
-func Sanitize(verifychain *e2e.Verifychain) error {
-	err := sanitizeDocker()
+func Sanitize(simnet *e2e.Simnet) error {
+	err := sanitizeDock()
 	if err != nil {
 		return err
 	}
-	err = sanitizeFolder(verifychain.Dir)
+	err = sanitizePath(simnet.Dir)
 	if err != nil {
 		return err
 	}
@@ -28,21 +28,21 @@ func Sanitize(verifychain *e2e.Verifychain) error {
 
 //
 //
-func sanitizeDocker() error {
+func sanitizeDock() error {
 	tracer.Details("REDACTED")
 
 	//
 	//
-	xargsReader := "REDACTED"
+	extargsReader := "REDACTED"
 
 	err := invoke.Directive(context.Background(), "REDACTED", "REDACTED", fmt.Sprintf(
-		"REDACTED", xargsReader))
+		"REDACTED", extargsReader))
 	if err != nil {
 		return err
 	}
 
 	err = invoke.Directive(context.Background(), "REDACTED", "REDACTED", fmt.Sprintf(
-		"REDACTED", xargsReader))
+		"REDACTED", extargsReader))
 	if err != nil {
 		return err
 	}
@@ -51,7 +51,7 @@ func sanitizeDocker() error {
 }
 
 //
-func sanitizeFolder(dir string) error {
+func sanitizePath(dir string) error {
 	if dir == "REDACTED" {
 		return errors.New("REDACTED")
 	}
@@ -63,16 +63,16 @@ func sanitizeFolder(dir string) error {
 		return err
 	}
 
-	tracer.Details("REDACTED", "REDACTED", log.NewIdleFormat("REDACTED", dir))
+	tracer.Details("REDACTED", "REDACTED", log.FreshIdleFormat("REDACTED", dir))
 
 	//
 	//
 	//
-	absoluteFolder, err := filepath.Abs(dir)
+	absolutePath, err := filepath.Abs(dir)
 	if err != nil {
 		return err
 	}
-	err = docker.Invoke(context.Background(), "REDACTED", "REDACTED", "REDACTED", "REDACTED", "REDACTED", fmt.Sprintf("REDACTED", absoluteFolder),
+	err = dock.Invoke(context.Background(), "REDACTED", "REDACTED", "REDACTED", "REDACTED", "REDACTED", fmt.Sprintf("REDACTED", absolutePath),
 		"REDACTED", "REDACTED", "REDACTED", "REDACTED")
 	if err != nil {
 		return err

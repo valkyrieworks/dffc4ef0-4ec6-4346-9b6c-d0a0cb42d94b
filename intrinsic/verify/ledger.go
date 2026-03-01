@@ -6,34 +6,34 @@ import (
 
 	"github.com/stretchr/testify/require"
 
-	"github.com/valkyrieworks/vault"
-	"github.com/valkyrieworks/vault/comethash"
-	"github.com/valkyrieworks/kinds"
-	"github.com/valkyrieworks/release"
+	"github.com/valkyrieworks/dffc4ef0-4ec6-4346-9b6c-d0a0cb42d94b/security"
+	"github.com/valkyrieworks/dffc4ef0-4ec6-4346-9b6c-d0a0cb42d94b/security/tenderminthash"
+	"github.com/valkyrieworks/dffc4ef0-4ec6-4346-9b6c-d0a0cb42d94b/kinds"
+	"github.com/valkyrieworks/dffc4ef0-4ec6-4346-9b6c-d0a0cb42d94b/edition"
 )
 
 const (
-	StandardVerifyLedgerUID = "REDACTED"
+	FallbackVerifySuccessionUUID = "REDACTED"
 )
 
-var StandardVerifyTime = time.Date(2020, 1, 1, 0, 0, 0, 0, time.UTC)
+var FallbackVerifyMoment = time.Date(2020, 1, 1, 0, 0, 0, 0, time.UTC)
 
-func ArbitraryLocation() []byte {
-	return vault.CRandomOctets(vault.LocationVolume)
+func UnpredictableLocator() []byte {
+	return security.CHARArbitraryOctets(security.LocatorExtent)
 }
 
 func ArbitraryDigest() []byte {
-	return vault.CRandomOctets(comethash.Volume)
+	return security.CHARArbitraryOctets(tenderminthash.Extent)
 }
 
-func CreateLedgerUID() kinds.LedgerUID {
-	return CreateLedgerUIDWithDigest(ArbitraryDigest())
+func CreateLedgerUUID() kinds.LedgerUUID {
+	return CreateLedgerUUIDUsingDigest(ArbitraryDigest())
 }
 
-func CreateLedgerUIDWithDigest(digest []byte) kinds.LedgerUID {
-	return kinds.LedgerUID{
+func CreateLedgerUUIDUsingDigest(digest []byte) kinds.LedgerUUID {
+	return kinds.LedgerUUID{
 		Digest: digest,
-		SegmentAssignHeading: kinds.SegmentAssignHeading{
+		FragmentAssignHeading: kinds.FragmentAssignHeading{
 			Sum: 100,
 			Digest:  ArbitraryDigest(),
 		},
@@ -42,19 +42,19 @@ func CreateLedgerUIDWithDigest(digest []byte) kinds.LedgerUID {
 
 //
 //
-func CreateHeading(t *testing.T, h *kinds.Heading) *kinds.Heading {
+func CreateHeadline(t *testing.T, h *kinds.Heading) *kinds.Heading {
 	t.Helper()
-	if h.Release.Ledger == 0 {
-		h.Release.Ledger = release.LedgerProtocol
+	if h.Edition.Ledger == 0 {
+		h.Edition.Ledger = edition.LedgerScheme
 	}
-	if h.Level == 0 {
-		h.Level = 1
+	if h.Altitude == 0 {
+		h.Altitude = 1
 	}
-	if h.FinalLedgerUID.IsNil() {
-		h.FinalLedgerUID = CreateLedgerUID()
+	if h.FinalLedgerUUID.EqualsNull() {
+		h.FinalLedgerUUID = CreateLedgerUUID()
 	}
-	if h.LedgerUID == "REDACTED" {
-		h.LedgerUID = StandardVerifyLedgerUID
+	if h.SuccessionUUID == "REDACTED" {
+		h.SuccessionUUID = FallbackVerifySuccessionUUID
 	}
 	if len(h.FinalEndorseDigest) == 0 {
 		h.FinalEndorseDigest = ArbitraryDigest()
@@ -62,17 +62,17 @@ func CreateHeading(t *testing.T, h *kinds.Heading) *kinds.Heading {
 	if len(h.DataDigest) == 0 {
 		h.DataDigest = ArbitraryDigest()
 	}
-	if len(h.RatifiersDigest) == 0 {
-		h.RatifiersDigest = ArbitraryDigest()
+	if len(h.AssessorsDigest) == 0 {
+		h.AssessorsDigest = ArbitraryDigest()
 	}
-	if len(h.FollowingRatifiersDigest) == 0 {
-		h.FollowingRatifiersDigest = ArbitraryDigest()
+	if len(h.FollowingAssessorsDigest) == 0 {
+		h.FollowingAssessorsDigest = ArbitraryDigest()
 	}
 	if len(h.AgreementDigest) == 0 {
 		h.AgreementDigest = ArbitraryDigest()
 	}
-	if len(h.ApplicationDigest) == 0 {
-		h.ApplicationDigest = ArbitraryDigest()
+	if len(h.PlatformDigest) == 0 {
+		h.PlatformDigest = ArbitraryDigest()
 	}
 	if len(h.FinalOutcomesDigest) == 0 {
 		h.FinalOutcomesDigest = ArbitraryDigest()
@@ -80,11 +80,11 @@ func CreateHeading(t *testing.T, h *kinds.Heading) *kinds.Heading {
 	if len(h.ProofDigest) == 0 {
 		h.ProofDigest = ArbitraryDigest()
 	}
-	if len(h.RecommenderLocation) == 0 {
-		h.RecommenderLocation = ArbitraryLocation()
+	if len(h.NominatorLocation) == 0 {
+		h.NominatorLocation = UnpredictableLocator()
 	}
 
-	require.NoError(t, h.CertifySimple())
+	require.NoError(t, h.CertifyFundamental())
 
 	return h
 }

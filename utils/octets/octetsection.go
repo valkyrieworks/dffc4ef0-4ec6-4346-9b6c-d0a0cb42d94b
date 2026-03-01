@@ -3,8 +3,8 @@ package octets
 //
 //
 //
-func Footprint(section []byte) []byte {
-	footprint := make([]byte, 6)
-	copy(footprint, section)
-	return footprint
+func Identifier(section []byte) []byte {
+	signature := make([]byte, 6)
+	copy(signature, section)
+	return signature
 }

@@ -7,10 +7,10 @@ import (
 	"testing"
 	"time"
 
-	abciemulate "github.com/valkyrieworks/iface/customer/simulations"
-	iface "github.com/valkyrieworks/iface/kinds"
-	"github.com/valkyrieworks/settings"
-	"github.com/valkyrieworks/kinds"
+	ifacemimic "github.com/valkyrieworks/dffc4ef0-4ec6-4346-9b6c-d0a0cb42d94b/iface/customer/simulations"
+	iface "github.com/valkyrieworks/dffc4ef0-4ec6-4346-9b6c-d0a0cb42d94b/iface/kinds"
+	"github.com/valkyrieworks/dffc4ef0-4ec6-4346-9b6c-d0a0cb42d94b/settings"
+	"github.com/valkyrieworks/dffc4ef0-4ec6-4346-9b6c-d0a0cb42d94b/kinds"
 	"github.com/stretchr/testify/mock"
 	"github.com/stretchr/testify/require"
 )
@@ -23,94 +23,94 @@ func VerifyApplicationTxpool(t *testing.T) {
 		appended := atomic.Uint64{}
 
 		//
-		app := abciemulate.NewCustomer(t)
+		app := ifacemimic.FreshCustomer(t)
 		app.
 			On("REDACTED", mock.Anything, mock.Anything).
-			Return(func(_ context.Context, req *iface.QueryEmbedTransfer) (*iface.ReplyEmbedTransfer, error) {
+			Return(func(_ context.Context, req *iface.SolicitAppendTransfer) (*iface.ReplyAppendTransfer, error) {
 				if string(req.Tx) == "REDACTED" {
 					t.Logf("REDACTED")
-					return &iface.ReplyEmbedTransfer{Code: iface.CodeKindReprocess}, nil
+					return &iface.ReplyAppendTransfer{Cipher: iface.CipherKindReissue}, nil
 				}
 
 				appended.Add(1)
-				return &iface.ReplyEmbedTransfer{Code: iface.CodeKindSuccess}, nil
+				return &iface.ReplyAppendTransfer{Cipher: iface.CipherKindOKAY}, nil
 			})
 
 		//
-		m := NewApplicationTxpool(settings.StandardTxpoolSettings(), app)
+		m := FreshApplicationTxpool(settings.FallbackTxpoolSettings(), app)
 
 		//
 		txs := []kinds.Tx{tx("REDACTED"), tx("REDACTED"), tx("REDACTED"), tx("REDACTED")}
 
 		//
-		fault1 := m.EmbedTransfer(txs[0])
-		err2 := m.EmbedTransfer(txs[1])
-		err3 := m.EmbedTransfer(txs[0]) //
-		err4 := m.EmbedTransfer(txs[2]) //
-		fault5 := m.EmbedTransfer(txs[3]) //
+		faultone := m.AppendTransfer(txs[0])
+		fault2 := m.AppendTransfer(txs[1])
+		fault3 := m.AppendTransfer(txs[0]) //
+		fault4 := m.AppendTransfer(txs[2]) //
+		fault5 := m.AppendTransfer(txs[3]) //
 
 		//
-		require.NoError(t, fault1)
-		require.NoError(t, err2)
+		require.NoError(t, faultone)
+		require.NoError(t, fault2)
 
-		require.ErrorIs(t, err3, ErrViewedTransfer)
-		require.ErrorIs(t, err4, ErrEmptyTransfer)
+		require.ErrorIs(t, fault3, FaultObservedTransfer)
+		require.ErrorIs(t, fault4, FaultBlankTransfer)
 
 		require.ErrorContains(t, fault5, "REDACTED")
-		require.False(t, m.viewed.Has(txs[3]), "REDACTED")
+		require.False(t, m.observed.Has(txs[3]), "REDACTED")
 
 		require.Equal(t, uint64(2), appended.Load())
 
 		t.Run("REDACTED", func(t *testing.T) {
 			for _, tt := range []struct {
-				label        string
+				alias        string
 				tx          kinds.Tx
-				errIncludes string
-				noResponse  bool
+				faultIncludes string
+				negativeReact  bool
 				affirm      func(t *testing.T, res *iface.ReplyInspectTransfer)
 			}{
 				{
-					label:        "REDACTED",
+					alias:        "REDACTED",
 					tx:          tx("REDACTED"),
-					errIncludes: "REDACTED",
+					faultIncludes: "REDACTED",
 				},
 				{
-					label: "REDACTED",
+					alias: "REDACTED",
 					tx:   tx("REDACTED"),
 					affirm: func(t *testing.T, res *iface.ReplyInspectTransfer) {
-						require.Equal(t, iface.CodeKindReprocess, res.Code)
+						require.Equal(t, iface.CipherKindReissue, res.Cipher)
 					},
 				},
 				{
-					label: "REDACTED",
+					alias: "REDACTED",
 					tx:   tx("REDACTED"),
 					affirm: func(t *testing.T, res *iface.ReplyInspectTransfer) {
-						require.Equal(t, iface.CodeKindSuccess, res.Code)
+						require.Equal(t, iface.CipherKindOKAY, res.Cipher)
 					},
 				},
 				{
-					label: "REDACTED",
+					alias: "REDACTED",
 					tx:   tx("REDACTED"),
 				},
 			} {
-				t.Run(tt.label, func(t *testing.T) {
+				t.Run(tt.alias, func(t *testing.T) {
 					//
 					var (
 						outcome       = atomic.Pointer[iface.ReplyInspectTransfer]{}
-						callback     = func(res *iface.ReplyInspectTransfer) { outcome.Store(res) }
+						clbk     = func(res *iface.ReplyInspectTransfer) { outcome.Store(res) }
 						assureOutcome = func() bool { return outcome.Load() != nil }
 					)
 
-					if tt.noResponse {
-						callback = nil
+					if tt.negativeReact {
+						clbk = nil
 					}
 
 					//
-					err := m.InspectTransfer(tt.tx, callback, TransferDetails{})
+					err := m.InspectTransfer(tt.tx, clbk, TransferDetails{})
 
 					//
-					if tt.errIncludes != "REDACTED" {
-						require.ErrorContains(t, err, tt.errIncludes)
+					if tt.faultIncludes != "REDACTED" {
+						require.ErrorContains(t, err, tt.faultIncludes)
 						return
 					}
 
@@ -128,46 +128,46 @@ func VerifyApplicationTxpool(t *testing.T) {
 	t.Run("REDACTED", func(t *testing.T) {
 		//
 		const quantity = 100
-		const invocationsToRevoke = 4
+		const invocationsTowardAbort = 4
 
 		//
-		ctx, revoke := context.WithCancel(context.Background())
+		ctx, abort := context.WithCancel(context.Background())
 		invocations := atomic.Uint64{}
 
 		//
-		allTxpoolTrans := [][]byte{}
+		everyTxpoolTrans := [][]byte{}
 
-		app := abciemulate.NewCustomer(t)
+		app := ifacemimic.FreshCustomer(t)
 		app.
 			On("REDACTED", mock.Anything, mock.Anything).
-			Return(func(_ context.Context, _ *iface.QueryHarvestTrans) (*iface.ReplyHarvestTrans, error) {
+			Return(func(_ context.Context, _ *iface.SolicitHarvestTrans) (*iface.ReplyHarvestTrans, error) {
 				txs := make([][]byte, 0, quantity)
 				for i := 0; i < quantity; i++ {
 					txs = append(txs, []byte(fmt.Sprintf("REDACTED", i)))
 				}
 
-				allTxpoolTrans = append(allTxpoolTrans, txs...)
+				everyTxpoolTrans = append(everyTxpoolTrans, txs...)
 
 				invocations.Add(1)
-				if invocations.Load() == invocationsToRevoke {
-					revoke()
+				if invocations.Load() == invocationsTowardAbort {
+					abort()
 				}
 
 				return &iface.ReplyHarvestTrans{Txs: txs}, nil
 			})
 
 		//
-		m := NewApplicationTxpool(settings.StandardTxpoolSettings(), app)
+		m := FreshApplicationTxpool(settings.FallbackTxpoolSettings(), app)
 
 		//
 		//
-		drain := [][]byte{}
-		ch := m.TransferFlow(ctx)
+		receiver := [][]byte{}
+		ch := m.TransferInflux(ctx)
 
 		for txs := range ch {
-			drain = append(drain, txs.ToSegmentOfOctets()...)
+			receiver = append(receiver, txs.TowardSegmentBelongingOctets()...)
 		}
 
-		require.Subset(t, allTxpoolTrans, drain)
+		require.Subset(t, everyTxpoolTrans, receiver)
 	})
 }

@@ -6,8 +6,8 @@ package kinds
 import (
 	context "context"
 	fmt "fmt"
-	vault "github.com/valkyrieworks/schema/consensuscore/vault"
-	kinds1 "github.com/valkyrieworks/schema/consensuscore/kinds"
+	security "github.com/valkyrieworks/dffc4ef0-4ec6-4346-9b6c-d0a0cb42d94b/schema/strongmind/security"
+	kinds1 "github.com/valkyrieworks/dffc4ef0-4ec6-4346-9b6c-d0a0cb42d94b/schema/strongmind/kinds"
 	_ "github.com/cosmos/gogoproto/gogoproto"
 	grpc1 "github.com/cosmos/gogoproto/grpc"
 	proto "github.com/cosmos/gogoproto/proto"
@@ -37,68 +37,68 @@ const _ = proto.GoGoProtoPackageIsVersion3 //
 type InspectTransferKind int32
 
 const (
-	Transfercheckkind_New     InspectTransferKind = 0
-	Transfercheckkind_Revalidate InspectTransferKind = 1
+	Inspecttranskind_Fresh     InspectTransferKind = 0
+	Inspecttranskind_Reinspect InspectTransferKind = 1
 )
 
-var Transfercheckkind_label = map[int32]string{
+var Inspecttranskind_alias = map[int32]string{
 	0: "REDACTED",
 	1: "REDACTED",
 }
 
-var Transfercheckkind_item = map[string]int32{
+var Inspecttranskind_datum = map[string]int32{
 	"REDACTED":     0,
 	"REDACTED": 1,
 }
 
-func (x InspectTransferKind) String() string {
-	return proto.EnumName(Transfercheckkind_label, int32(x))
+func (x InspectTransferKind) Text() string {
+	return proto.EnumName(Inspecttranskind_alias, int32(x))
 }
 
 func (InspectTransferKind) EnumerationDefinition() ([]byte, []int) {
-	return filedefinition_252557cfdd89a31a, []int{0}
+	return filedescriptor_252557cfdd89a31a, []int{0}
 }
 
 type MalpracticeKind int32
 
 const (
-	Misconductkind_UNCLEAR             MalpracticeKind = 0
-	Misconductkind_REPLICATED_BALLOT      MalpracticeKind = 1
-	Misconductkind_RAPID_CUSTOMER_ASSAULT MalpracticeKind = 2
+	Malfunctionkind_UNFAMILIAR             MalpracticeKind = 0
+	Malfunctionkind_REPLICATED_BALLOT      MalpracticeKind = 1
+	Malfunctionkind_AGILE_CUSTOMER_ONSLAUGHT MalpracticeKind = 2
 )
 
-var Misconductkind_label = map[int32]string{
+var Malfunctionkind_alias = map[int32]string{
 	0: "REDACTED",
 	1: "REDACTED",
 	2: "REDACTED",
 }
 
-var Misconductkind_item = map[string]int32{
+var Malfunctionkind_datum = map[string]int32{
 	"REDACTED":             0,
 	"REDACTED":      1,
 	"REDACTED": 2,
 }
 
-func (x MalpracticeKind) String() string {
-	return proto.EnumName(Misconductkind_label, int32(x))
+func (x MalpracticeKind) Text() string {
+	return proto.EnumName(Malfunctionkind_alias, int32(x))
 }
 
 func (MalpracticeKind) EnumerationDefinition() ([]byte, []int) {
-	return filedefinition_252557cfdd89a31a, []int{1}
+	return filedescriptor_252557cfdd89a31a, []int{1}
 }
 
-type Replymirrorsnapshot_Outcome int32
+type Replyextendimage_Outcome int32
 
 const (
-	Replymirrorsnapshot_UNCLEAR       Replymirrorsnapshot_Outcome = 0
-	Replymirrorsnapshot_ALLOW        Replymirrorsnapshot_Outcome = 1
-	Replymirrorsnapshot_CANCEL         Replymirrorsnapshot_Outcome = 2
-	Replymirrorsnapshot_DECLINE        Replymirrorsnapshot_Outcome = 3
-	Replymirrorsnapshot_DECLINE_LAYOUT Replymirrorsnapshot_Outcome = 4
-	Replymirrorsnapshot_DECLINE_EMITTER Replymirrorsnapshot_Outcome = 5
+	Replyextendimage_UNFAMILIAR       Replyextendimage_Outcome = 0
+	Replyextendimage_EMBRACE        Replyextendimage_Outcome = 1
+	Replyextendimage_CANCEL         Replyextendimage_Outcome = 2
+	Replyextendimage_DECLINE        Replyextendimage_Outcome = 3
+	Replyextendimage_DECLINE_LAYOUT Replyextendimage_Outcome = 4
+	Replyextendimage_DECLINE_ORIGINATOR Replyextendimage_Outcome = 5
 )
 
-var Replymirrorsnapshot_Outcome_label = map[int32]string{
+var Replyextendimage_Outcome_alias = map[int32]string{
 	0: "REDACTED",
 	1: "REDACTED",
 	2: "REDACTED",
@@ -107,7 +107,7 @@ var Replymirrorsnapshot_Outcome_label = map[int32]string{
 	5: "REDACTED",
 }
 
-var Replymirrorsnapshot_Outcome_item = map[string]int32{
+var Replyextendimage_Outcome_datum = map[string]int32{
 	"REDACTED":       0,
 	"REDACTED":        1,
 	"REDACTED":         2,
@@ -116,26 +116,26 @@ var Replymirrorsnapshot_Outcome_item = map[string]int32{
 	"REDACTED": 5,
 }
 
-func (x Replymirrorsnapshot_Outcome) String() string {
-	return proto.EnumName(Replymirrorsnapshot_Outcome_label, int32(x))
+func (x Replyextendimage_Outcome) Text() string {
+	return proto.EnumName(Replyextendimage_Outcome_alias, int32(x))
 }
 
-func (Replymirrorsnapshot_Outcome) EnumerationDefinition() ([]byte, []int) {
-	return filedefinition_252557cfdd89a31a, []int{31, 0}
+func (Replyextendimage_Outcome) EnumerationDefinition() ([]byte, []int) {
+	return filedescriptor_252557cfdd89a31a, []int{31, 0}
 }
 
-type Replyexecutemirrorsegment_Outcome int32
+type Replyapplyimagefragment_Outcome int32
 
 const (
-	Replyexecutemirrorsegment_UNCLEAR         Replyexecutemirrorsegment_Outcome = 0
-	Replyexecutemirrorsegment_ALLOW          Replyexecutemirrorsegment_Outcome = 1
-	Replyexecutemirrorsegment_CANCEL           Replyexecutemirrorsegment_Outcome = 2
-	Replyexecutemirrorsegment_REPROCESS           Replyexecutemirrorsegment_Outcome = 3
-	Replyexecutemirrorsegment_REPROCESS_MIRROR  Replyexecutemirrorsegment_Outcome = 4
-	Replyexecutemirrorsegment_DECLINE_MIRROR Replyexecutemirrorsegment_Outcome = 5
+	Replyapplyimagefragment_UNFAMILIAR         Replyapplyimagefragment_Outcome = 0
+	Replyapplyimagefragment_EMBRACE          Replyapplyimagefragment_Outcome = 1
+	Replyapplyimagefragment_CANCEL           Replyapplyimagefragment_Outcome = 2
+	Replyapplyimagefragment_REISSUE           Replyapplyimagefragment_Outcome = 3
+	Replyapplyimagefragment_REISSUE_IMAGE  Replyapplyimagefragment_Outcome = 4
+	Replyapplyimagefragment_DECLINE_IMAGE Replyapplyimagefragment_Outcome = 5
 )
 
-var Replyexecutemirrorsegment_Outcome_label = map[int32]string{
+var Replyapplyimagefragment_Outcome_alias = map[int32]string{
 	0: "REDACTED",
 	1: "REDACTED",
 	2: "REDACTED",
@@ -144,7 +144,7 @@ var Replyexecutemirrorsegment_Outcome_label = map[int32]string{
 	5: "REDACTED",
 }
 
-var Replyexecutemirrorsegment_Outcome_item = map[string]int32{
+var Replyapplyimagefragment_Outcome_datum = map[string]int32{
 	"REDACTED":         0,
 	"REDACTED":          1,
 	"REDACTED":           2,
@@ -153,75 +153,75 @@ var Replyexecutemirrorsegment_Outcome_item = map[string]int32{
 	"REDACTED": 5,
 }
 
-func (x Replyexecutemirrorsegment_Outcome) String() string {
-	return proto.EnumName(Replyexecutemirrorsegment_Outcome_label, int32(x))
+func (x Replyapplyimagefragment_Outcome) Text() string {
+	return proto.EnumName(Replyapplyimagefragment_Outcome_alias, int32(x))
 }
 
-func (Replyexecutemirrorsegment_Outcome) EnumerationDefinition() ([]byte, []int) {
-	return filedefinition_252557cfdd89a31a, []int{33, 0}
+func (Replyapplyimagefragment_Outcome) EnumerationDefinition() ([]byte, []int) {
+	return filedescriptor_252557cfdd89a31a, []int{33, 0}
 }
 
-type Responseprocessnomination_Nominationstate int32
+type Responseexecuteitem_Itemstatus int32
 
 const (
-	Responseprocessnomination_UNCLEAR Responseprocessnomination_Nominationstate = 0
-	Responseprocessnomination_ALLOW  Responseprocessnomination_Nominationstate = 1
-	Responseprocessnomination_DECLINE  Responseprocessnomination_Nominationstate = 2
+	Responseexecuteitem_UNFAMILIAR Responseexecuteitem_Itemstatus = 0
+	Responseexecuteitem_EMBRACE  Responseexecuteitem_Itemstatus = 1
+	Responseexecuteitem_DECLINE  Responseexecuteitem_Itemstatus = 2
 )
 
-var Responseprocessnomination_Nominationstate_label = map[int32]string{
+var Responseexecuteitem_Itemstatus_alias = map[int32]string{
 	0: "REDACTED",
 	1: "REDACTED",
 	2: "REDACTED",
 }
 
-var Responseprocessnomination_Nominationstate_item = map[string]int32{
+var Responseexecuteitem_Itemstatus_datum = map[string]int32{
 	"REDACTED": 0,
 	"REDACTED":  1,
 	"REDACTED":  2,
 }
 
-func (x Responseprocessnomination_Nominationstate) String() string {
-	return proto.EnumName(Responseprocessnomination_Nominationstate_label, int32(x))
+func (x Responseexecuteitem_Itemstatus) Text() string {
+	return proto.EnumName(Responseexecuteitem_Itemstatus_alias, int32(x))
 }
 
-func (Responseprocessnomination_Nominationstate) EnumerationDefinition() ([]byte, []int) {
-	return filedefinition_252557cfdd89a31a, []int{35, 0}
+func (Responseexecuteitem_Itemstatus) EnumerationDefinition() ([]byte, []int) {
+	return filedescriptor_252557cfdd89a31a, []int{35, 0}
 }
 
-type Responseverifyballotextension_Validatestatus int32
+type Responsecertifyballotaddition_Verifystatus int32
 
 const (
-	Responseverifyballotextension_UNCLEAR Responseverifyballotextension_Validatestatus = 0
-	Responseverifyballotextension_ALLOW  Responseverifyballotextension_Validatestatus = 1
+	Responsecertifyballotaddition_UNFAMILIAR Responsecertifyballotaddition_Verifystatus = 0
+	Responsecertifyballotaddition_EMBRACE  Responsecertifyballotaddition_Verifystatus = 1
 	//
 	//
 	//
 	//
-	Responseverifyballotextension_DECLINE Responseverifyballotextension_Validatestatus = 2
+	Responsecertifyballotaddition_DECLINE Responsecertifyballotaddition_Verifystatus = 2
 )
 
-var Responseverifyballotextension_Validatestatus_label = map[int32]string{
+var Responsecertifyballotaddition_Verifystatus_alias = map[int32]string{
 	0: "REDACTED",
 	1: "REDACTED",
 	2: "REDACTED",
 }
 
-var Responseverifyballotextension_Validatestatus_item = map[string]int32{
+var Responsecertifyballotaddition_Verifystatus_datum = map[string]int32{
 	"REDACTED": 0,
 	"REDACTED":  1,
 	"REDACTED":  2,
 }
 
-func (x Responseverifyballotextension_Validatestatus) String() string {
-	return proto.EnumName(Responseverifyballotextension_Validatestatus_label, int32(x))
+func (x Responsecertifyballotaddition_Verifystatus) Text() string {
+	return proto.EnumName(Responsecertifyballotaddition_Verifystatus_alias, int32(x))
 }
 
-func (Responseverifyballotextension_Validatestatus) EnumerationDefinition() ([]byte, []int) {
-	return filedefinition_252557cfdd89a31a, []int{37, 0}
+func (Responsecertifyballotaddition_Verifystatus) EnumerationDefinition() ([]byte, []int) {
+	return filedescriptor_252557cfdd89a31a, []int{37, 0}
 }
 
-type Query struct {
+type Solicit struct {
 	//
 	//
 	//
@@ -241,908 +241,908 @@ type Query struct {
 	//
 	//
 	//
-	Item isquery_Item `protobuf_oneof:"item"`
+	Datum isrequesting_Datum `protobuf_oneof:"datum"`
 }
 
-func (m *Query) Restore()         { *m = Query{} }
-func (m *Query) String() string { return proto.CompactTextString(m) }
-func (*Query) SchemaSignal()    {}
-func (*Query) Definition() ([]byte, []int) {
-	return filedefinition_252557cfdd89a31a, []int{0}
+func (m *Solicit) Restore()         { *m = Solicit{} }
+func (m *Solicit) Text() string { return proto.CompactTextString(m) }
+func (*Solicit) SchemaArtifact()    {}
+func (*Solicit) Definition() ([]byte, []int) {
+	return filedescriptor_252557cfdd89a31a, []int{0}
 }
-func (m *Query) XXX_Unserialize(b []byte) error {
-	return m.Unserialize(b)
+func (m *Solicit) XXX_Decode(b []byte) error {
+	return m.Decode(b)
 }
-func (m *Query) XXX_Serialize(b []byte, certain bool) ([]byte, error) {
+func (m *Solicit) XXX_Serialize(b []byte, certain bool) ([]byte, error) {
 	if certain {
-		return xxx_messagedata_Query.Marshal(b, m, certain)
+		return xxx_signaldetails_Solicit.Marshal(b, m, certain)
 	} else {
 		b = b[:cap(b)]
-		n, err := m.SerializeToDimensionedBuffer(b)
+		n, err := m.SerializeTowardDimensionedReserve(b)
 		if err != nil {
 			return nil, err
 		}
 		return b[:n], nil
 	}
 }
-func (m *Query) XXX_Coalesce(src proto.Message) {
-	xxx_messagedata_Query.Merge(m, src)
+func (m *Solicit) XXX_Consolidate(src proto.Message) {
+	xxx_signaldetails_Solicit.Merge(m, src)
 }
-func (m *Query) XXX_Volume() int {
-	return m.Volume()
+func (m *Solicit) XXX_Extent() int {
+	return m.Extent()
 }
-func (m *Query) XXX_Omitunclear() {
-	xxx_messagedata_Query.DiscardUnknown(m)
-}
-
-var xxx_messagedata_Query proto.InternalMessageInfo
-
-type isquery_Item interface {
-	isquery_Item()
-	SerializeTo([]byte) (int, error)
-	Volume() int
+func (m *Solicit) XXX_Dropunfamiliar() {
+	xxx_signaldetails_Solicit.DiscardUnknown(m)
 }
 
-type Query_Reverberate struct {
-	Replicate *QueryReverberate `protobuf:"octets,1,opt,name=echo,proto3,oneof" json:"reverberate,omitempty"`
-}
-type Query_Purge struct {
-	Purge *QueryPurge `protobuf:"octets,2,opt,name=flush,proto3,oneof" json:"purge,omitempty"`
-}
-type Query_Details struct {
-	Details *QueryDetails `protobuf:"octets,3,opt,name=info,proto3,oneof" json:"details,omitempty"`
-}
-type Query_Initiatechain struct {
-	InitSeries *QueryInitSeries `protobuf:"octets,5,opt,name=init_chain,json=initChain,proto3,oneof" json:"init_series,omitempty"`
-}
-type Query_Inquire struct {
-	Inquire *QueryInquire `protobuf:"octets,6,opt,name=query,proto3,oneof" json:"inquire,omitempty"`
-}
-type Query_Transfercheck struct {
-	InspectTransfer *QueryInspectTransfer `protobuf:"octets,8,opt,name=check_tx,json=checkTx,proto3,oneof" json:"inspect_transfer,omitempty"`
-}
-type Query_Endorse struct {
-	Endorse *QueryEndorse `protobuf:"octets,11,opt,name=commit,proto3,oneof" json:"endorse,omitempty"`
-}
-type Query_Catalogmirrors struct {
-	CatalogMirrors *QueryCatalogMirrors `protobuf:"octets,12,opt,name=list_snapshots,json=listSnapshots,proto3,oneof" json:"catalog_mirrors,omitempty"`
-}
-type Query_Mirrorsnapshot struct {
-	ProposalMirror *QueryProposalMirror `protobuf:"octets,13,opt,name=offer_snapshot,json=offerSnapshot,proto3,oneof" json:"proposal_mirror,omitempty"`
-}
-type Query_Loadmirrorsegment struct {
-	ImportMirrorSegment *QueryImportMirrorSegment `protobuf:"octets,14,opt,name=load_snapshot_chunk,json=loadSnapshotChunk,proto3,oneof" json:"import_mirror_segment,omitempty"`
-}
-type Query_Executemirrorsegment struct {
-	ExecuteMirrorSegment *QueryExecuteMirrorSegment `protobuf:"octets,15,opt,name=apply_snapshot_chunk,json=applySnapshotChunk,proto3,oneof" json:"execute_mirror_segment,omitempty"`
-}
-type Query_Arrangenomination struct {
-	ArrangeNomination *QueryArrangeNomination `protobuf:"octets,16,opt,name=prepare_proposal,json=prepareProposal,proto3,oneof" json:"arrange_nomination,omitempty"`
-}
-type Query_Processnomination struct {
-	HandleNomination *QueryHandleNomination `protobuf:"octets,17,opt,name=process_proposal,json=processProposal,proto3,oneof" json:"handle_nomination,omitempty"`
-}
-type Query_Ballotextend struct {
-	ExpandBallot *QueryExpandBallot `protobuf:"octets,18,opt,name=extend_vote,json=extendVote,proto3,oneof" json:"expand_ballot,omitempty"`
-}
-type Query_Validateballotextension struct {
-	ValidateBallotAddition *QueryValidateBallotAddition `protobuf:"octets,19,opt,name=verify_vote_extension,json=verifyVoteExtension,proto3,oneof" json:"validate_ballot_addition,omitempty"`
-}
-type Query_Terminateblock struct {
-	CompleteLedger *QueryCompleteLedger `protobuf:"octets,20,opt,name=finalize_block,json=finalizeBlock,proto3,oneof" json:"complete_ledger,omitempty"`
-}
-type Query_Transferinsert struct {
-	EmbedTransfer *QueryEmbedTransfer `protobuf:"octets,21,opt,name=insert_tx,json=insertTx,proto3,oneof" json:"append_transfer,omitempty"`
-}
-type Query_Reaptransfers struct {
-	HarvestTrans *QueryHarvestTrans `protobuf:"octets,22,opt,name=reap_txs,json=reapTxs,proto3,oneof" json:"harvest_trans,omitempty"`
+var xxx_signaldetails_Solicit proto.InternalMessageInfo
+
+type isrequesting_Datum interface {
+	isrequesting_Datum()
+	SerializeToward([]byte) (int, error)
+	Extent() int
 }
 
-func (*Query_Reverberate) isquery_Item()                {}
-func (*Query_Purge) isquery_Item()               {}
-func (*Query_Details) isquery_Item()                {}
-func (*Query_Initiatechain) isquery_Item()           {}
-func (*Query_Inquire) isquery_Item()               {}
-func (*Query_Transfercheck) isquery_Item()             {}
-func (*Query_Endorse) isquery_Item()              {}
-func (*Query_Catalogmirrors) isquery_Item()       {}
-func (*Query_Mirrorsnapshot) isquery_Item()       {}
-func (*Query_Loadmirrorsegment) isquery_Item()   {}
-func (*Query_Executemirrorsegment) isquery_Item()  {}
-func (*Query_Arrangenomination) isquery_Item()     {}
-func (*Query_Processnomination) isquery_Item()     {}
-func (*Query_Ballotextend) isquery_Item()          {}
-func (*Query_Validateballotextension) isquery_Item() {}
-func (*Query_Terminateblock) isquery_Item()       {}
-func (*Query_Transferinsert) isquery_Item()            {}
-func (*Query_Reaptransfers) isquery_Item()             {}
+type Solicit_Reverberate struct {
+	Reverberate *SolicitReverberate `protobuf:"octets,1,opt,name=echo,proto3,oneof" json:"reverberate,omitempty"`
+}
+type Solicit_Purge struct {
+	Purge *SolicitPurge `protobuf:"octets,2,opt,name=flush,proto3,oneof" json:"purge,omitempty"`
+}
+type Solicit_Details struct {
+	Details *SolicitDetails `protobuf:"octets,3,opt,name=info,proto3,oneof" json:"details,omitempty"`
+}
+type Solicit_Initiatechain struct {
+	InitializeSuccession *SolicitInitializeSuccession `protobuf:"octets,5,opt,name=init_chain,json=initChain,proto3,oneof" json:"initialize_succession,omitempty"`
+}
+type Solicit_Inquire struct {
+	Inquire *SolicitInquire `protobuf:"octets,6,opt,name=query,proto3,oneof" json:"inquire,omitempty"`
+}
+type Solicit_Inspecttrans struct {
+	InspectTransfer *SolicitInspectTransfer `protobuf:"octets,8,opt,name=check_tx,json=checkTx,proto3,oneof" json:"inspect_transfer,omitempty"`
+}
+type Solicit_Endorse struct {
+	Endorse *SolicitEndorse `protobuf:"octets,11,opt,name=commit,proto3,oneof" json:"endorse,omitempty"`
+}
+type Solicit_Catalogimages struct {
+	CollectionImages *SolicitCollectionImages `protobuf:"octets,12,opt,name=list_snapshots,json=listSnapshots,proto3,oneof" json:"catalog_images,omitempty"`
+}
+type Solicit_Extendimage struct {
+	ExtendImage *SolicitExtendImage `protobuf:"octets,13,opt,name=offer_snapshot,json=offerSnapshot,proto3,oneof" json:"extend_image,omitempty"`
+}
+type Solicit_Loadimagefragment struct {
+	FetchImageSegment *SolicitFetchImageSegment `protobuf:"octets,14,opt,name=load_snapshot_chunk,json=loadSnapshotChunk,proto3,oneof" json:"fetch_image_segment,omitempty"`
+}
+type Solicit_Executeimagefragment struct {
+	ExecuteImageSegment *SolicitExecuteImageSegment `protobuf:"octets,15,opt,name=apply_snapshot_chunk,json=applySnapshotChunk,proto3,oneof" json:"execute_image_segment,omitempty"`
+}
+type Solicit_Prepareitem struct {
+	ArrangeNomination *SolicitArrangeNomination `protobuf:"octets,16,opt,name=prepare_proposal,json=prepareProposal,proto3,oneof" json:"arrange_nomination,omitempty"`
+}
+type Solicit_Executeitem struct {
+	HandleNomination *SolicitHandleNomination `protobuf:"octets,17,opt,name=process_proposal,json=processProposal,proto3,oneof" json:"handle_nomination,omitempty"`
+}
+type Solicit_Extendballot struct {
+	BroadenBallot *SolicitBroadenBallot `protobuf:"octets,18,opt,name=extend_vote,json=extendVote,proto3,oneof" json:"broaden_ballot,omitempty"`
+}
+type Solicit_Verifyballotaddition struct {
+	ValidateBallotAddition *SolicitValidateBallotAddition `protobuf:"octets,19,opt,name=verify_vote_extension,json=verifyVoteExtension,proto3,oneof" json:"validate_ballot_addition,omitempty"`
+}
+type Solicit_Finalizeledger struct {
+	CulminateLedger *SolicitCulminateLedger `protobuf:"octets,20,opt,name=finalize_block,json=finalizeBlock,proto3,oneof" json:"culminate_ledger,omitempty"`
+}
+type Solicit_Appendtrans struct {
+	AppendTransfer *SolicitAppendTransfer `protobuf:"octets,21,opt,name=insert_tx,json=insertTx,proto3,oneof" json:"append_transfer,omitempty"`
+}
+type Solicit_Harvesttrans struct {
+	HarvestTrans *SolicitHarvestTrans `protobuf:"octets,22,opt,name=reap_txs,json=reapTxs,proto3,oneof" json:"harvest_trans,omitempty"`
+}
 
-func (m *Query) FetchItem() isquery_Item {
+func (*Solicit_Reverberate) isrequesting_Datum()                {}
+func (*Solicit_Purge) isrequesting_Datum()               {}
+func (*Solicit_Details) isrequesting_Datum()                {}
+func (*Solicit_Initiatechain) isrequesting_Datum()           {}
+func (*Solicit_Inquire) isrequesting_Datum()               {}
+func (*Solicit_Inspecttrans) isrequesting_Datum()             {}
+func (*Solicit_Endorse) isrequesting_Datum()              {}
+func (*Solicit_Catalogimages) isrequesting_Datum()       {}
+func (*Solicit_Extendimage) isrequesting_Datum()       {}
+func (*Solicit_Loadimagefragment) isrequesting_Datum()   {}
+func (*Solicit_Executeimagefragment) isrequesting_Datum()  {}
+func (*Solicit_Prepareitem) isrequesting_Datum()     {}
+func (*Solicit_Executeitem) isrequesting_Datum()     {}
+func (*Solicit_Extendballot) isrequesting_Datum()          {}
+func (*Solicit_Verifyballotaddition) isrequesting_Datum() {}
+func (*Solicit_Finalizeledger) isrequesting_Datum()       {}
+func (*Solicit_Appendtrans) isrequesting_Datum()            {}
+func (*Solicit_Harvesttrans) isrequesting_Datum()             {}
+
+func (m *Solicit) ObtainDatum() isrequesting_Datum {
 	if m != nil {
-		return m.Item
+		return m.Datum
 	}
 	return nil
 }
 
-func (m *Query) FetchReverberate() *QueryReverberate {
-	if x, ok := m.FetchItem().(*Query_Reverberate); ok {
-		return x.Replicate
+func (m *Solicit) ObtainReverberate() *SolicitReverberate {
+	if x, ok := m.ObtainDatum().(*Solicit_Reverberate); ok {
+		return x.Reverberate
 	}
 	return nil
 }
 
-func (m *Query) FetchPurge() *QueryPurge {
-	if x, ok := m.FetchItem().(*Query_Purge); ok {
+func (m *Solicit) ObtainPurge() *SolicitPurge {
+	if x, ok := m.ObtainDatum().(*Solicit_Purge); ok {
 		return x.Purge
 	}
 	return nil
 }
 
-func (m *Query) FetchDetails() *QueryDetails {
-	if x, ok := m.FetchItem().(*Query_Details); ok {
+func (m *Solicit) ObtainDetails() *SolicitDetails {
+	if x, ok := m.ObtainDatum().(*Solicit_Details); ok {
 		return x.Details
 	}
 	return nil
 }
 
-func (m *Query) FetchInitSeries() *QueryInitSeries {
-	if x, ok := m.FetchItem().(*Query_Initiatechain); ok {
-		return x.InitSeries
+func (m *Solicit) ObtainInitializeSuccession() *SolicitInitializeSuccession {
+	if x, ok := m.ObtainDatum().(*Solicit_Initiatechain); ok {
+		return x.InitializeSuccession
 	}
 	return nil
 }
 
-func (m *Query) FetchInquire() *QueryInquire {
-	if x, ok := m.FetchItem().(*Query_Inquire); ok {
+func (m *Solicit) ObtainInquire() *SolicitInquire {
+	if x, ok := m.ObtainDatum().(*Solicit_Inquire); ok {
 		return x.Inquire
 	}
 	return nil
 }
 
-func (m *Query) FetchInspectTransfer() *QueryInspectTransfer {
-	if x, ok := m.FetchItem().(*Query_Transfercheck); ok {
+func (m *Solicit) ObtainInspectTransfer() *SolicitInspectTransfer {
+	if x, ok := m.ObtainDatum().(*Solicit_Inspecttrans); ok {
 		return x.InspectTransfer
 	}
 	return nil
 }
 
-func (m *Query) FetchEndorse() *QueryEndorse {
-	if x, ok := m.FetchItem().(*Query_Endorse); ok {
+func (m *Solicit) ObtainEndorse() *SolicitEndorse {
+	if x, ok := m.ObtainDatum().(*Solicit_Endorse); ok {
 		return x.Endorse
 	}
 	return nil
 }
 
-func (m *Query) FetchCatalogMirrors() *QueryCatalogMirrors {
-	if x, ok := m.FetchItem().(*Query_Catalogmirrors); ok {
-		return x.CatalogMirrors
+func (m *Solicit) ObtainCatalogImages() *SolicitCollectionImages {
+	if x, ok := m.ObtainDatum().(*Solicit_Catalogimages); ok {
+		return x.CollectionImages
 	}
 	return nil
 }
 
-func (m *Query) FetchProposalMirror() *QueryProposalMirror {
-	if x, ok := m.FetchItem().(*Query_Mirrorsnapshot); ok {
-		return x.ProposalMirror
+func (m *Solicit) ObtainExtendImage() *SolicitExtendImage {
+	if x, ok := m.ObtainDatum().(*Solicit_Extendimage); ok {
+		return x.ExtendImage
 	}
 	return nil
 }
 
-func (m *Query) FetchImportMirrorSegment() *QueryImportMirrorSegment {
-	if x, ok := m.FetchItem().(*Query_Loadmirrorsegment); ok {
-		return x.ImportMirrorSegment
+func (m *Solicit) ObtainFetchImageSegment() *SolicitFetchImageSegment {
+	if x, ok := m.ObtainDatum().(*Solicit_Loadimagefragment); ok {
+		return x.FetchImageSegment
 	}
 	return nil
 }
 
-func (m *Query) FetchExecuteMirrorSegment() *QueryExecuteMirrorSegment {
-	if x, ok := m.FetchItem().(*Query_Executemirrorsegment); ok {
-		return x.ExecuteMirrorSegment
+func (m *Solicit) ObtainExecuteImageSegment() *SolicitExecuteImageSegment {
+	if x, ok := m.ObtainDatum().(*Solicit_Executeimagefragment); ok {
+		return x.ExecuteImageSegment
 	}
 	return nil
 }
 
-func (m *Query) FetchArrangeNomination() *QueryArrangeNomination {
-	if x, ok := m.FetchItem().(*Query_Arrangenomination); ok {
+func (m *Solicit) ObtainArrangeNomination() *SolicitArrangeNomination {
+	if x, ok := m.ObtainDatum().(*Solicit_Prepareitem); ok {
 		return x.ArrangeNomination
 	}
 	return nil
 }
 
-func (m *Query) FetchHandleNomination() *QueryHandleNomination {
-	if x, ok := m.FetchItem().(*Query_Processnomination); ok {
+func (m *Solicit) ObtainHandleNomination() *SolicitHandleNomination {
+	if x, ok := m.ObtainDatum().(*Solicit_Executeitem); ok {
 		return x.HandleNomination
 	}
 	return nil
 }
 
-func (m *Query) FetchExpandBallot() *QueryExpandBallot {
-	if x, ok := m.FetchItem().(*Query_Ballotextend); ok {
-		return x.ExpandBallot
+func (m *Solicit) ObtainBroadenBallot() *SolicitBroadenBallot {
+	if x, ok := m.ObtainDatum().(*Solicit_Extendballot); ok {
+		return x.BroadenBallot
 	}
 	return nil
 }
 
-func (m *Query) FetchValidateBallotAddition() *QueryValidateBallotAddition {
-	if x, ok := m.FetchItem().(*Query_Validateballotextension); ok {
+func (m *Solicit) ObtainValidateBallotAddition() *SolicitValidateBallotAddition {
+	if x, ok := m.ObtainDatum().(*Solicit_Verifyballotaddition); ok {
 		return x.ValidateBallotAddition
 	}
 	return nil
 }
 
-func (m *Query) FetchCompleteLedger() *QueryCompleteLedger {
-	if x, ok := m.FetchItem().(*Query_Terminateblock); ok {
-		return x.CompleteLedger
+func (m *Solicit) ObtainCulminateLedger() *SolicitCulminateLedger {
+	if x, ok := m.ObtainDatum().(*Solicit_Finalizeledger); ok {
+		return x.CulminateLedger
 	}
 	return nil
 }
 
-func (m *Query) FetchEmbedTransfer() *QueryEmbedTransfer {
-	if x, ok := m.FetchItem().(*Query_Transferinsert); ok {
-		return x.EmbedTransfer
+func (m *Solicit) ObtainAppendTransfer() *SolicitAppendTransfer {
+	if x, ok := m.ObtainDatum().(*Solicit_Appendtrans); ok {
+		return x.AppendTransfer
 	}
 	return nil
 }
 
-func (m *Query) FetchHarvestTrans() *QueryHarvestTrans {
-	if x, ok := m.FetchItem().(*Query_Reaptransfers); ok {
+func (m *Solicit) ObtainHarvestTrans() *SolicitHarvestTrans {
+	if x, ok := m.ObtainDatum().(*Solicit_Harvesttrans); ok {
 		return x.HarvestTrans
 	}
 	return nil
 }
 
 //
-func (*Query) XXX_Variantcontainers() []interface{} {
+func (*Solicit) XXX_Oneofwrappers() []interface{} {
 	return []interface{}{
-		(*Query_Reverberate)(nil),
-		(*Query_Purge)(nil),
-		(*Query_Details)(nil),
-		(*Query_Initiatechain)(nil),
-		(*Query_Inquire)(nil),
-		(*Query_Transfercheck)(nil),
-		(*Query_Endorse)(nil),
-		(*Query_Catalogmirrors)(nil),
-		(*Query_Mirrorsnapshot)(nil),
-		(*Query_Loadmirrorsegment)(nil),
-		(*Query_Executemirrorsegment)(nil),
-		(*Query_Arrangenomination)(nil),
-		(*Query_Processnomination)(nil),
-		(*Query_Ballotextend)(nil),
-		(*Query_Validateballotextension)(nil),
-		(*Query_Terminateblock)(nil),
-		(*Query_Transferinsert)(nil),
-		(*Query_Reaptransfers)(nil),
+		(*Solicit_Reverberate)(nil),
+		(*Solicit_Purge)(nil),
+		(*Solicit_Details)(nil),
+		(*Solicit_Initiatechain)(nil),
+		(*Solicit_Inquire)(nil),
+		(*Solicit_Inspecttrans)(nil),
+		(*Solicit_Endorse)(nil),
+		(*Solicit_Catalogimages)(nil),
+		(*Solicit_Extendimage)(nil),
+		(*Solicit_Loadimagefragment)(nil),
+		(*Solicit_Executeimagefragment)(nil),
+		(*Solicit_Prepareitem)(nil),
+		(*Solicit_Executeitem)(nil),
+		(*Solicit_Extendballot)(nil),
+		(*Solicit_Verifyballotaddition)(nil),
+		(*Solicit_Finalizeledger)(nil),
+		(*Solicit_Appendtrans)(nil),
+		(*Solicit_Harvesttrans)(nil),
 	}
 }
 
-type QueryReverberate struct {
+type SolicitReverberate struct {
 	Signal string `protobuf:"octets,1,opt,name=message,proto3" json:"signal,omitempty"`
 }
 
-func (m *QueryReverberate) Restore()         { *m = QueryReverberate{} }
-func (m *QueryReverberate) String() string { return proto.CompactTextString(m) }
-func (*QueryReverberate) SchemaSignal()    {}
-func (*QueryReverberate) Definition() ([]byte, []int) {
-	return filedefinition_252557cfdd89a31a, []int{1}
+func (m *SolicitReverberate) Restore()         { *m = SolicitReverberate{} }
+func (m *SolicitReverberate) Text() string { return proto.CompactTextString(m) }
+func (*SolicitReverberate) SchemaArtifact()    {}
+func (*SolicitReverberate) Definition() ([]byte, []int) {
+	return filedescriptor_252557cfdd89a31a, []int{1}
 }
-func (m *QueryReverberate) XXX_Unserialize(b []byte) error {
-	return m.Unserialize(b)
+func (m *SolicitReverberate) XXX_Decode(b []byte) error {
+	return m.Decode(b)
 }
-func (m *QueryReverberate) XXX_Serialize(b []byte, certain bool) ([]byte, error) {
+func (m *SolicitReverberate) XXX_Serialize(b []byte, certain bool) ([]byte, error) {
 	if certain {
-		return xxx_messagedata_Queryecho.Marshal(b, m, certain)
+		return xxx_signaldetails_Requestecho.Marshal(b, m, certain)
 	} else {
 		b = b[:cap(b)]
-		n, err := m.SerializeToDimensionedBuffer(b)
+		n, err := m.SerializeTowardDimensionedReserve(b)
 		if err != nil {
 			return nil, err
 		}
 		return b[:n], nil
 	}
 }
-func (m *QueryReverberate) XXX_Coalesce(src proto.Message) {
-	xxx_messagedata_Queryecho.Merge(m, src)
+func (m *SolicitReverberate) XXX_Consolidate(src proto.Message) {
+	xxx_signaldetails_Requestecho.Merge(m, src)
 }
-func (m *QueryReverberate) XXX_Volume() int {
-	return m.Volume()
+func (m *SolicitReverberate) XXX_Extent() int {
+	return m.Extent()
 }
-func (m *QueryReverberate) XXX_Omitunclear() {
-	xxx_messagedata_Queryecho.DiscardUnknown(m)
+func (m *SolicitReverberate) XXX_Dropunfamiliar() {
+	xxx_signaldetails_Requestecho.DiscardUnknown(m)
 }
 
-var xxx_messagedata_Queryecho proto.InternalMessageInfo
+var xxx_signaldetails_Requestecho proto.InternalMessageInfo
 
-func (m *QueryReverberate) FetchSignal() string {
+func (m *SolicitReverberate) ObtainArtifact() string {
 	if m != nil {
 		return m.Signal
 	}
 	return "REDACTED"
 }
 
-type QueryPurge struct {
+type SolicitPurge struct {
 }
 
-func (m *QueryPurge) Restore()         { *m = QueryPurge{} }
-func (m *QueryPurge) String() string { return proto.CompactTextString(m) }
-func (*QueryPurge) SchemaSignal()    {}
-func (*QueryPurge) Definition() ([]byte, []int) {
-	return filedefinition_252557cfdd89a31a, []int{2}
+func (m *SolicitPurge) Restore()         { *m = SolicitPurge{} }
+func (m *SolicitPurge) Text() string { return proto.CompactTextString(m) }
+func (*SolicitPurge) SchemaArtifact()    {}
+func (*SolicitPurge) Definition() ([]byte, []int) {
+	return filedescriptor_252557cfdd89a31a, []int{2}
 }
-func (m *QueryPurge) XXX_Unserialize(b []byte) error {
-	return m.Unserialize(b)
+func (m *SolicitPurge) XXX_Decode(b []byte) error {
+	return m.Decode(b)
 }
-func (m *QueryPurge) XXX_Serialize(b []byte, certain bool) ([]byte, error) {
+func (m *SolicitPurge) XXX_Serialize(b []byte, certain bool) ([]byte, error) {
 	if certain {
-		return xxx_messagedata_Querypurge.Marshal(b, m, certain)
+		return xxx_signaldetails_Requestpurge.Marshal(b, m, certain)
 	} else {
 		b = b[:cap(b)]
-		n, err := m.SerializeToDimensionedBuffer(b)
+		n, err := m.SerializeTowardDimensionedReserve(b)
 		if err != nil {
 			return nil, err
 		}
 		return b[:n], nil
 	}
 }
-func (m *QueryPurge) XXX_Coalesce(src proto.Message) {
-	xxx_messagedata_Querypurge.Merge(m, src)
+func (m *SolicitPurge) XXX_Consolidate(src proto.Message) {
+	xxx_signaldetails_Requestpurge.Merge(m, src)
 }
-func (m *QueryPurge) XXX_Volume() int {
-	return m.Volume()
+func (m *SolicitPurge) XXX_Extent() int {
+	return m.Extent()
 }
-func (m *QueryPurge) XXX_Omitunclear() {
-	xxx_messagedata_Querypurge.DiscardUnknown(m)
-}
-
-var xxx_messagedata_Querypurge proto.InternalMessageInfo
-
-type QueryDetails struct {
-	Release      string `protobuf:"octets,1,opt,name=version,proto3" json:"release,omitempty"`
-	LedgerRelease uint64 `protobuf:"variableint,2,opt,name=block_version,json=blockVersion,proto3" json:"ledger_release,omitempty"`
-	P2PRelease   uint64 `protobuf:"variableint,3,opt,name=p2p_version,json=p2pVersion,proto3" json:"p2p_release,omitempty"`
-	IfaceRelease  string `protobuf:"octets,4,opt,name=abci_version,json=abciVersion,proto3" json:"iface_release,omitempty"`
+func (m *SolicitPurge) XXX_Dropunfamiliar() {
+	xxx_signaldetails_Requestpurge.DiscardUnknown(m)
 }
 
-func (m *QueryDetails) Restore()         { *m = QueryDetails{} }
-func (m *QueryDetails) String() string { return proto.CompactTextString(m) }
-func (*QueryDetails) SchemaSignal()    {}
-func (*QueryDetails) Definition() ([]byte, []int) {
-	return filedefinition_252557cfdd89a31a, []int{3}
+var xxx_signaldetails_Requestpurge proto.InternalMessageInfo
+
+type SolicitDetails struct {
+	Edition      string `protobuf:"octets,1,opt,name=version,proto3" json:"edition,omitempty"`
+	LedgerEdition uint64 `protobuf:"variableint,2,opt,name=block_version,json=blockVersion,proto3" json:"ledger_edition,omitempty"`
+	Peer2peerEdition   uint64 `protobuf:"variableint,3,opt,name=p2p_version,json=p2pVersion,proto3" json:"peer2peer_edition,omitempty"`
+	IfaceEdition  string `protobuf:"octets,4,opt,name=abci_version,json=abciVersion,proto3" json:"iface_edition,omitempty"`
 }
-func (m *QueryDetails) XXX_Unserialize(b []byte) error {
-	return m.Unserialize(b)
+
+func (m *SolicitDetails) Restore()         { *m = SolicitDetails{} }
+func (m *SolicitDetails) Text() string { return proto.CompactTextString(m) }
+func (*SolicitDetails) SchemaArtifact()    {}
+func (*SolicitDetails) Definition() ([]byte, []int) {
+	return filedescriptor_252557cfdd89a31a, []int{3}
 }
-func (m *QueryDetails) XXX_Serialize(b []byte, certain bool) ([]byte, error) {
+func (m *SolicitDetails) XXX_Decode(b []byte) error {
+	return m.Decode(b)
+}
+func (m *SolicitDetails) XXX_Serialize(b []byte, certain bool) ([]byte, error) {
 	if certain {
-		return xxx_messagedata_Querydata.Marshal(b, m, certain)
+		return xxx_signaldetails_Requestdetails.Marshal(b, m, certain)
 	} else {
 		b = b[:cap(b)]
-		n, err := m.SerializeToDimensionedBuffer(b)
+		n, err := m.SerializeTowardDimensionedReserve(b)
 		if err != nil {
 			return nil, err
 		}
 		return b[:n], nil
 	}
 }
-func (m *QueryDetails) XXX_Coalesce(src proto.Message) {
-	xxx_messagedata_Querydata.Merge(m, src)
+func (m *SolicitDetails) XXX_Consolidate(src proto.Message) {
+	xxx_signaldetails_Requestdetails.Merge(m, src)
 }
-func (m *QueryDetails) XXX_Volume() int {
-	return m.Volume()
+func (m *SolicitDetails) XXX_Extent() int {
+	return m.Extent()
 }
-func (m *QueryDetails) XXX_Omitunclear() {
-	xxx_messagedata_Querydata.DiscardUnknown(m)
+func (m *SolicitDetails) XXX_Dropunfamiliar() {
+	xxx_signaldetails_Requestdetails.DiscardUnknown(m)
 }
 
-var xxx_messagedata_Querydata proto.InternalMessageInfo
+var xxx_signaldetails_Requestdetails proto.InternalMessageInfo
 
-func (m *QueryDetails) FetchRelease() string {
+func (m *SolicitDetails) ObtainEdition() string {
 	if m != nil {
-		return m.Release
+		return m.Edition
 	}
 	return "REDACTED"
 }
 
-func (m *QueryDetails) FetchLedgerRelease() uint64 {
+func (m *SolicitDetails) ObtainLedgerEdition() uint64 {
 	if m != nil {
-		return m.LedgerRelease
+		return m.LedgerEdition
 	}
 	return 0
 }
 
-func (m *QueryDetails) FetchP2PRelease() uint64 {
+func (m *SolicitDetails) ObtainPeer2peerEdition() uint64 {
 	if m != nil {
-		return m.P2PRelease
+		return m.Peer2peerEdition
 	}
 	return 0
 }
 
-func (m *QueryDetails) FetchIfaceRelease() string {
+func (m *SolicitDetails) ObtainIfaceEdition() string {
 	if m != nil {
-		return m.IfaceRelease
+		return m.IfaceEdition
 	}
 	return "REDACTED"
 }
 
-type QueryInitSeries struct {
-	Time            time.Time               `protobuf:"octets,1,opt,name=time,proto3,stdtime" json:"moment"`
-	SeriesUid         string                  `protobuf:"octets,2,opt,name=chain_id,json=chainId,proto3" json:"series_uid,omitempty"`
-	AgreementOptions *kinds1.AgreementOptions `protobuf:"octets,3,opt,name=consensus_params,json=consensusParams,proto3" json:"agreement_options,omitempty"`
-	Ratifiers      []RatifierModify       `protobuf:"octets,4,rep,name=validators,proto3" json:"ratifiers"`
+type SolicitInitializeSuccession struct {
+	Moment            time.Time               `protobuf:"octets,1,opt,name=time,proto3,stdtime" json:"moment"`
+	SuccessionUuid         string                  `protobuf:"octets,2,opt,name=chain_id,json=chainId,proto3" json:"succession_uuid,omitempty"`
+	AgreementSettings *kinds1.AgreementSettings `protobuf:"octets,3,opt,name=consensus_params,json=consensusParams,proto3" json:"agreement_parameters,omitempty"`
+	Assessors      []AssessorRevise       `protobuf:"octets,4,rep,name=validators,proto3" json:"assessors"`
 	ApplicationStatusOctets   []byte                  `protobuf:"octets,5,opt,name=app_state_bytes,json=appStateBytes,proto3" json:"application_status_octets,omitempty"`
-	PrimaryLevel   int64                   `protobuf:"variableint,6,opt,name=initial_height,json=initialHeight,proto3" json:"primary_level,omitempty"`
+	PrimaryAltitude   int64                   `protobuf:"variableint,6,opt,name=initial_height,json=initialHeight,proto3" json:"primary_altitude,omitempty"`
 }
 
-func (m *QueryInitSeries) Restore()         { *m = QueryInitSeries{} }
-func (m *QueryInitSeries) String() string { return proto.CompactTextString(m) }
-func (*QueryInitSeries) SchemaSignal()    {}
-func (*QueryInitSeries) Definition() ([]byte, []int) {
-	return filedefinition_252557cfdd89a31a, []int{4}
+func (m *SolicitInitializeSuccession) Restore()         { *m = SolicitInitializeSuccession{} }
+func (m *SolicitInitializeSuccession) Text() string { return proto.CompactTextString(m) }
+func (*SolicitInitializeSuccession) SchemaArtifact()    {}
+func (*SolicitInitializeSuccession) Definition() ([]byte, []int) {
+	return filedescriptor_252557cfdd89a31a, []int{4}
 }
-func (m *QueryInitSeries) XXX_Unserialize(b []byte) error {
-	return m.Unserialize(b)
+func (m *SolicitInitializeSuccession) XXX_Decode(b []byte) error {
+	return m.Decode(b)
 }
-func (m *QueryInitSeries) XXX_Serialize(b []byte, certain bool) ([]byte, error) {
+func (m *SolicitInitializeSuccession) XXX_Serialize(b []byte, certain bool) ([]byte, error) {
 	if certain {
-		return xxx_messagedata_Queryinitiatechain.Marshal(b, m, certain)
+		return xxx_signaldetails_Requestinitiatechain.Marshal(b, m, certain)
 	} else {
 		b = b[:cap(b)]
-		n, err := m.SerializeToDimensionedBuffer(b)
+		n, err := m.SerializeTowardDimensionedReserve(b)
 		if err != nil {
 			return nil, err
 		}
 		return b[:n], nil
 	}
 }
-func (m *QueryInitSeries) XXX_Coalesce(src proto.Message) {
-	xxx_messagedata_Queryinitiatechain.Merge(m, src)
+func (m *SolicitInitializeSuccession) XXX_Consolidate(src proto.Message) {
+	xxx_signaldetails_Requestinitiatechain.Merge(m, src)
 }
-func (m *QueryInitSeries) XXX_Volume() int {
-	return m.Volume()
+func (m *SolicitInitializeSuccession) XXX_Extent() int {
+	return m.Extent()
 }
-func (m *QueryInitSeries) XXX_Omitunclear() {
-	xxx_messagedata_Queryinitiatechain.DiscardUnknown(m)
+func (m *SolicitInitializeSuccession) XXX_Dropunfamiliar() {
+	xxx_signaldetails_Requestinitiatechain.DiscardUnknown(m)
 }
 
-var xxx_messagedata_Queryinitiatechain proto.InternalMessageInfo
+var xxx_signaldetails_Requestinitiatechain proto.InternalMessageInfo
 
-func (m *QueryInitSeries) FetchTime() time.Time {
+func (m *SolicitInitializeSuccession) ObtainMoment() time.Time {
 	if m != nil {
-		return m.Time
+		return m.Moment
 	}
 	return time.Time{}
 }
 
-func (m *QueryInitSeries) FetchSeriesUid() string {
+func (m *SolicitInitializeSuccession) ObtainSuccessionUuid() string {
 	if m != nil {
-		return m.SeriesUid
+		return m.SuccessionUuid
 	}
 	return "REDACTED"
 }
 
-func (m *QueryInitSeries) FetchAgreementOptions() *kinds1.AgreementOptions {
+func (m *SolicitInitializeSuccession) ObtainAgreementParameters() *kinds1.AgreementSettings {
 	if m != nil {
-		return m.AgreementOptions
+		return m.AgreementSettings
 	}
 	return nil
 }
 
-func (m *QueryInitSeries) FetchRatifiers() []RatifierModify {
+func (m *SolicitInitializeSuccession) ObtainAssessors() []AssessorRevise {
 	if m != nil {
-		return m.Ratifiers
+		return m.Assessors
 	}
 	return nil
 }
 
-func (m *QueryInitSeries) FetchApplicationStatusOctets() []byte {
+func (m *SolicitInitializeSuccession) ObtainApplicationStatusOctets() []byte {
 	if m != nil {
 		return m.ApplicationStatusOctets
 	}
 	return nil
 }
 
-func (m *QueryInitSeries) FetchPrimaryLevel() int64 {
+func (m *SolicitInitializeSuccession) ObtainPrimaryAltitude() int64 {
 	if m != nil {
-		return m.PrimaryLevel
+		return m.PrimaryAltitude
 	}
 	return 0
 }
 
-type QueryInquire struct {
+type SolicitInquire struct {
 	Data   []byte `protobuf:"octets,1,opt,name=data,proto3" json:"data,omitempty"`
 	Route   string `protobuf:"octets,2,opt,name=path,proto3" json:"route,omitempty"`
-	Level int64  `protobuf:"variableint,3,opt,name=height,proto3" json:"level,omitempty"`
-	Demonstrate  bool   `protobuf:"variableint,4,opt,name=prove,proto3" json:"demonstrate,omitempty"`
+	Altitude int64  `protobuf:"variableint,3,opt,name=height,proto3" json:"altitude,omitempty"`
+	Validate  bool   `protobuf:"variableint,4,opt,name=prove,proto3" json:"ascertain,omitempty"`
 }
 
-func (m *QueryInquire) Restore()         { *m = QueryInquire{} }
-func (m *QueryInquire) String() string { return proto.CompactTextString(m) }
-func (*QueryInquire) SchemaSignal()    {}
-func (*QueryInquire) Definition() ([]byte, []int) {
-	return filedefinition_252557cfdd89a31a, []int{5}
+func (m *SolicitInquire) Restore()         { *m = SolicitInquire{} }
+func (m *SolicitInquire) Text() string { return proto.CompactTextString(m) }
+func (*SolicitInquire) SchemaArtifact()    {}
+func (*SolicitInquire) Definition() ([]byte, []int) {
+	return filedescriptor_252557cfdd89a31a, []int{5}
 }
-func (m *QueryInquire) XXX_Unserialize(b []byte) error {
-	return m.Unserialize(b)
+func (m *SolicitInquire) XXX_Decode(b []byte) error {
+	return m.Decode(b)
 }
-func (m *QueryInquire) XXX_Serialize(b []byte, certain bool) ([]byte, error) {
+func (m *SolicitInquire) XXX_Serialize(b []byte, certain bool) ([]byte, error) {
 	if certain {
-		return xxx_messagedata_Queryquery.Marshal(b, m, certain)
+		return xxx_signaldetails_Requestsearch.Marshal(b, m, certain)
 	} else {
 		b = b[:cap(b)]
-		n, err := m.SerializeToDimensionedBuffer(b)
+		n, err := m.SerializeTowardDimensionedReserve(b)
 		if err != nil {
 			return nil, err
 		}
 		return b[:n], nil
 	}
 }
-func (m *QueryInquire) XXX_Coalesce(src proto.Message) {
-	xxx_messagedata_Queryquery.Merge(m, src)
+func (m *SolicitInquire) XXX_Consolidate(src proto.Message) {
+	xxx_signaldetails_Requestsearch.Merge(m, src)
 }
-func (m *QueryInquire) XXX_Volume() int {
-	return m.Volume()
+func (m *SolicitInquire) XXX_Extent() int {
+	return m.Extent()
 }
-func (m *QueryInquire) XXX_Omitunclear() {
-	xxx_messagedata_Queryquery.DiscardUnknown(m)
+func (m *SolicitInquire) XXX_Dropunfamiliar() {
+	xxx_signaldetails_Requestsearch.DiscardUnknown(m)
 }
 
-var xxx_messagedata_Queryquery proto.InternalMessageInfo
+var xxx_signaldetails_Requestsearch proto.InternalMessageInfo
 
-func (m *QueryInquire) FetchData() []byte {
+func (m *SolicitInquire) ObtainData() []byte {
 	if m != nil {
 		return m.Data
 	}
 	return nil
 }
 
-func (m *QueryInquire) FetchRoute() string {
+func (m *SolicitInquire) ObtainRoute() string {
 	if m != nil {
 		return m.Route
 	}
 	return "REDACTED"
 }
 
-func (m *QueryInquire) FetchLevel() int64 {
+func (m *SolicitInquire) ObtainAltitude() int64 {
 	if m != nil {
-		return m.Level
+		return m.Altitude
 	}
 	return 0
 }
 
-func (m *QueryInquire) FetchDemonstrate() bool {
+func (m *SolicitInquire) ObtainAscertain() bool {
 	if m != nil {
-		return m.Demonstrate
+		return m.Validate
 	}
 	return false
 }
 
-type QueryInspectTransfer struct {
+type SolicitInspectTransfer struct {
 	Tx   []byte      `protobuf:"octets,1,opt,name=tx,proto3" json:"tx,omitempty"`
 	Kind InspectTransferKind `protobuf:"variableint,2,opt,name=type,proto3,enum=tendermint.abci.CheckTxType" json:"kind,omitempty"`
 }
 
-func (m *QueryInspectTransfer) Restore()         { *m = QueryInspectTransfer{} }
-func (m *QueryInspectTransfer) String() string { return proto.CompactTextString(m) }
-func (*QueryInspectTransfer) SchemaSignal()    {}
-func (*QueryInspectTransfer) Definition() ([]byte, []int) {
-	return filedefinition_252557cfdd89a31a, []int{6}
+func (m *SolicitInspectTransfer) Restore()         { *m = SolicitInspectTransfer{} }
+func (m *SolicitInspectTransfer) Text() string { return proto.CompactTextString(m) }
+func (*SolicitInspectTransfer) SchemaArtifact()    {}
+func (*SolicitInspectTransfer) Definition() ([]byte, []int) {
+	return filedescriptor_252557cfdd89a31a, []int{6}
 }
-func (m *QueryInspectTransfer) XXX_Unserialize(b []byte) error {
-	return m.Unserialize(b)
+func (m *SolicitInspectTransfer) XXX_Decode(b []byte) error {
+	return m.Decode(b)
 }
-func (m *QueryInspectTransfer) XXX_Serialize(b []byte, certain bool) ([]byte, error) {
+func (m *SolicitInspectTransfer) XXX_Serialize(b []byte, certain bool) ([]byte, error) {
 	if certain {
-		return xxx_messagedata_Querytransfercheck.Marshal(b, m, certain)
+		return xxx_signaldetails_Requestinspecttrans.Marshal(b, m, certain)
 	} else {
 		b = b[:cap(b)]
-		n, err := m.SerializeToDimensionedBuffer(b)
+		n, err := m.SerializeTowardDimensionedReserve(b)
 		if err != nil {
 			return nil, err
 		}
 		return b[:n], nil
 	}
 }
-func (m *QueryInspectTransfer) XXX_Coalesce(src proto.Message) {
-	xxx_messagedata_Querytransfercheck.Merge(m, src)
+func (m *SolicitInspectTransfer) XXX_Consolidate(src proto.Message) {
+	xxx_signaldetails_Requestinspecttrans.Merge(m, src)
 }
-func (m *QueryInspectTransfer) XXX_Volume() int {
-	return m.Volume()
+func (m *SolicitInspectTransfer) XXX_Extent() int {
+	return m.Extent()
 }
-func (m *QueryInspectTransfer) XXX_Omitunclear() {
-	xxx_messagedata_Querytransfercheck.DiscardUnknown(m)
+func (m *SolicitInspectTransfer) XXX_Dropunfamiliar() {
+	xxx_signaldetails_Requestinspecttrans.DiscardUnknown(m)
 }
 
-var xxx_messagedata_Querytransfercheck proto.InternalMessageInfo
+var xxx_signaldetails_Requestinspecttrans proto.InternalMessageInfo
 
-func (m *QueryInspectTransfer) FetchTransfer() []byte {
+func (m *SolicitInspectTransfer) ObtainTransfer() []byte {
 	if m != nil {
 		return m.Tx
 	}
 	return nil
 }
 
-func (m *QueryInspectTransfer) FetchKind() InspectTransferKind {
+func (m *SolicitInspectTransfer) ObtainKind() InspectTransferKind {
 	if m != nil {
 		return m.Kind
 	}
-	return Transfercheckkind_New
+	return Inspecttranskind_Fresh
 }
 
-type QueryEmbedTransfer struct {
+type SolicitAppendTransfer struct {
 	Tx []byte `protobuf:"octets,1,opt,name=tx,proto3" json:"tx,omitempty"`
 }
 
-func (m *QueryEmbedTransfer) Restore()         { *m = QueryEmbedTransfer{} }
-func (m *QueryEmbedTransfer) String() string { return proto.CompactTextString(m) }
-func (*QueryEmbedTransfer) SchemaSignal()    {}
-func (*QueryEmbedTransfer) Definition() ([]byte, []int) {
-	return filedefinition_252557cfdd89a31a, []int{7}
+func (m *SolicitAppendTransfer) Restore()         { *m = SolicitAppendTransfer{} }
+func (m *SolicitAppendTransfer) Text() string { return proto.CompactTextString(m) }
+func (*SolicitAppendTransfer) SchemaArtifact()    {}
+func (*SolicitAppendTransfer) Definition() ([]byte, []int) {
+	return filedescriptor_252557cfdd89a31a, []int{7}
 }
-func (m *QueryEmbedTransfer) XXX_Unserialize(b []byte) error {
-	return m.Unserialize(b)
+func (m *SolicitAppendTransfer) XXX_Decode(b []byte) error {
+	return m.Decode(b)
 }
-func (m *QueryEmbedTransfer) XXX_Serialize(b []byte, certain bool) ([]byte, error) {
+func (m *SolicitAppendTransfer) XXX_Serialize(b []byte, certain bool) ([]byte, error) {
 	if certain {
-		return xxx_messagedata_Querytransferinsert.Marshal(b, m, certain)
+		return xxx_signaldetails_Requestappendtrans.Marshal(b, m, certain)
 	} else {
 		b = b[:cap(b)]
-		n, err := m.SerializeToDimensionedBuffer(b)
+		n, err := m.SerializeTowardDimensionedReserve(b)
 		if err != nil {
 			return nil, err
 		}
 		return b[:n], nil
 	}
 }
-func (m *QueryEmbedTransfer) XXX_Coalesce(src proto.Message) {
-	xxx_messagedata_Querytransferinsert.Merge(m, src)
+func (m *SolicitAppendTransfer) XXX_Consolidate(src proto.Message) {
+	xxx_signaldetails_Requestappendtrans.Merge(m, src)
 }
-func (m *QueryEmbedTransfer) XXX_Volume() int {
-	return m.Volume()
+func (m *SolicitAppendTransfer) XXX_Extent() int {
+	return m.Extent()
 }
-func (m *QueryEmbedTransfer) XXX_Omitunclear() {
-	xxx_messagedata_Querytransferinsert.DiscardUnknown(m)
+func (m *SolicitAppendTransfer) XXX_Dropunfamiliar() {
+	xxx_signaldetails_Requestappendtrans.DiscardUnknown(m)
 }
 
-var xxx_messagedata_Querytransferinsert proto.InternalMessageInfo
+var xxx_signaldetails_Requestappendtrans proto.InternalMessageInfo
 
-func (m *QueryEmbedTransfer) FetchTransfer() []byte {
+func (m *SolicitAppendTransfer) ObtainTransfer() []byte {
 	if m != nil {
 		return m.Tx
 	}
 	return nil
 }
 
-type QueryHarvestTrans struct {
+type SolicitHarvestTrans struct {
 	MaximumOctets uint64 `protobuf:"variableint,1,opt,name=max_bytes,json=maxBytes,proto3" json:"maximum_octets,omitempty"`
 	MaximumFuel   uint64 `protobuf:"variableint,2,opt,name=max_gas,json=maxGas,proto3" json:"maximum_fuel,omitempty"`
 }
 
-func (m *QueryHarvestTrans) Restore()         { *m = QueryHarvestTrans{} }
-func (m *QueryHarvestTrans) String() string { return proto.CompactTextString(m) }
-func (*QueryHarvestTrans) SchemaSignal()    {}
-func (*QueryHarvestTrans) Definition() ([]byte, []int) {
-	return filedefinition_252557cfdd89a31a, []int{8}
+func (m *SolicitHarvestTrans) Restore()         { *m = SolicitHarvestTrans{} }
+func (m *SolicitHarvestTrans) Text() string { return proto.CompactTextString(m) }
+func (*SolicitHarvestTrans) SchemaArtifact()    {}
+func (*SolicitHarvestTrans) Definition() ([]byte, []int) {
+	return filedescriptor_252557cfdd89a31a, []int{8}
 }
-func (m *QueryHarvestTrans) XXX_Unserialize(b []byte) error {
-	return m.Unserialize(b)
+func (m *SolicitHarvestTrans) XXX_Decode(b []byte) error {
+	return m.Decode(b)
 }
-func (m *QueryHarvestTrans) XXX_Serialize(b []byte, certain bool) ([]byte, error) {
+func (m *SolicitHarvestTrans) XXX_Serialize(b []byte, certain bool) ([]byte, error) {
 	if certain {
-		return xxx_messagedata_Queryreaptransfers.Marshal(b, m, certain)
+		return xxx_signaldetails_Requestharvesttrans.Marshal(b, m, certain)
 	} else {
 		b = b[:cap(b)]
-		n, err := m.SerializeToDimensionedBuffer(b)
+		n, err := m.SerializeTowardDimensionedReserve(b)
 		if err != nil {
 			return nil, err
 		}
 		return b[:n], nil
 	}
 }
-func (m *QueryHarvestTrans) XXX_Coalesce(src proto.Message) {
-	xxx_messagedata_Queryreaptransfers.Merge(m, src)
+func (m *SolicitHarvestTrans) XXX_Consolidate(src proto.Message) {
+	xxx_signaldetails_Requestharvesttrans.Merge(m, src)
 }
-func (m *QueryHarvestTrans) XXX_Volume() int {
-	return m.Volume()
+func (m *SolicitHarvestTrans) XXX_Extent() int {
+	return m.Extent()
 }
-func (m *QueryHarvestTrans) XXX_Omitunclear() {
-	xxx_messagedata_Queryreaptransfers.DiscardUnknown(m)
+func (m *SolicitHarvestTrans) XXX_Dropunfamiliar() {
+	xxx_signaldetails_Requestharvesttrans.DiscardUnknown(m)
 }
 
-var xxx_messagedata_Queryreaptransfers proto.InternalMessageInfo
+var xxx_signaldetails_Requestharvesttrans proto.InternalMessageInfo
 
-func (m *QueryHarvestTrans) FetchMaximumOctets() uint64 {
+func (m *SolicitHarvestTrans) ObtainMaximumOctets() uint64 {
 	if m != nil {
 		return m.MaximumOctets
 	}
 	return 0
 }
 
-func (m *QueryHarvestTrans) FetchMaximumFuel() uint64 {
+func (m *SolicitHarvestTrans) ObtainMaximumFuel() uint64 {
 	if m != nil {
 		return m.MaximumFuel
 	}
 	return 0
 }
 
-type QueryEndorse struct {
+type SolicitEndorse struct {
 }
 
-func (m *QueryEndorse) Restore()         { *m = QueryEndorse{} }
-func (m *QueryEndorse) String() string { return proto.CompactTextString(m) }
-func (*QueryEndorse) SchemaSignal()    {}
-func (*QueryEndorse) Definition() ([]byte, []int) {
-	return filedefinition_252557cfdd89a31a, []int{9}
+func (m *SolicitEndorse) Restore()         { *m = SolicitEndorse{} }
+func (m *SolicitEndorse) Text() string { return proto.CompactTextString(m) }
+func (*SolicitEndorse) SchemaArtifact()    {}
+func (*SolicitEndorse) Definition() ([]byte, []int) {
+	return filedescriptor_252557cfdd89a31a, []int{9}
 }
-func (m *QueryEndorse) XXX_Unserialize(b []byte) error {
-	return m.Unserialize(b)
+func (m *SolicitEndorse) XXX_Decode(b []byte) error {
+	return m.Decode(b)
 }
-func (m *QueryEndorse) XXX_Serialize(b []byte, certain bool) ([]byte, error) {
+func (m *SolicitEndorse) XXX_Serialize(b []byte, certain bool) ([]byte, error) {
 	if certain {
-		return xxx_messagedata_Queryendorse.Marshal(b, m, certain)
+		return xxx_signaldetails_Requestendorse.Marshal(b, m, certain)
 	} else {
 		b = b[:cap(b)]
-		n, err := m.SerializeToDimensionedBuffer(b)
+		n, err := m.SerializeTowardDimensionedReserve(b)
 		if err != nil {
 			return nil, err
 		}
 		return b[:n], nil
 	}
 }
-func (m *QueryEndorse) XXX_Coalesce(src proto.Message) {
-	xxx_messagedata_Queryendorse.Merge(m, src)
+func (m *SolicitEndorse) XXX_Consolidate(src proto.Message) {
+	xxx_signaldetails_Requestendorse.Merge(m, src)
 }
-func (m *QueryEndorse) XXX_Volume() int {
-	return m.Volume()
+func (m *SolicitEndorse) XXX_Extent() int {
+	return m.Extent()
 }
-func (m *QueryEndorse) XXX_Omitunclear() {
-	xxx_messagedata_Queryendorse.DiscardUnknown(m)
+func (m *SolicitEndorse) XXX_Dropunfamiliar() {
+	xxx_signaldetails_Requestendorse.DiscardUnknown(m)
 }
 
-var xxx_messagedata_Queryendorse proto.InternalMessageInfo
+var xxx_signaldetails_Requestendorse proto.InternalMessageInfo
 
 //
-type QueryCatalogMirrors struct {
+type SolicitCollectionImages struct {
 }
 
-func (m *QueryCatalogMirrors) Restore()         { *m = QueryCatalogMirrors{} }
-func (m *QueryCatalogMirrors) String() string { return proto.CompactTextString(m) }
-func (*QueryCatalogMirrors) SchemaSignal()    {}
-func (*QueryCatalogMirrors) Definition() ([]byte, []int) {
-	return filedefinition_252557cfdd89a31a, []int{10}
+func (m *SolicitCollectionImages) Restore()         { *m = SolicitCollectionImages{} }
+func (m *SolicitCollectionImages) Text() string { return proto.CompactTextString(m) }
+func (*SolicitCollectionImages) SchemaArtifact()    {}
+func (*SolicitCollectionImages) Definition() ([]byte, []int) {
+	return filedescriptor_252557cfdd89a31a, []int{10}
 }
-func (m *QueryCatalogMirrors) XXX_Unserialize(b []byte) error {
-	return m.Unserialize(b)
+func (m *SolicitCollectionImages) XXX_Decode(b []byte) error {
+	return m.Decode(b)
 }
-func (m *QueryCatalogMirrors) XXX_Serialize(b []byte, certain bool) ([]byte, error) {
+func (m *SolicitCollectionImages) XXX_Serialize(b []byte, certain bool) ([]byte, error) {
 	if certain {
-		return xxx_messagedata_Querycatalogmirrors.Marshal(b, m, certain)
+		return xxx_signaldetails_Requestcatalogimages.Marshal(b, m, certain)
 	} else {
 		b = b[:cap(b)]
-		n, err := m.SerializeToDimensionedBuffer(b)
+		n, err := m.SerializeTowardDimensionedReserve(b)
 		if err != nil {
 			return nil, err
 		}
 		return b[:n], nil
 	}
 }
-func (m *QueryCatalogMirrors) XXX_Coalesce(src proto.Message) {
-	xxx_messagedata_Querycatalogmirrors.Merge(m, src)
+func (m *SolicitCollectionImages) XXX_Consolidate(src proto.Message) {
+	xxx_signaldetails_Requestcatalogimages.Merge(m, src)
 }
-func (m *QueryCatalogMirrors) XXX_Volume() int {
-	return m.Volume()
+func (m *SolicitCollectionImages) XXX_Extent() int {
+	return m.Extent()
 }
-func (m *QueryCatalogMirrors) XXX_Omitunclear() {
-	xxx_messagedata_Querycatalogmirrors.DiscardUnknown(m)
+func (m *SolicitCollectionImages) XXX_Dropunfamiliar() {
+	xxx_signaldetails_Requestcatalogimages.DiscardUnknown(m)
 }
 
-var xxx_messagedata_Querycatalogmirrors proto.InternalMessageInfo
+var xxx_signaldetails_Requestcatalogimages proto.InternalMessageInfo
 
 //
-type QueryProposalMirror struct {
-	Mirror *Mirror `protobuf:"octets,1,opt,name=snapshot,proto3" json:"mirror,omitempty"`
-	ApplicationDigest  []byte    `protobuf:"octets,2,opt,name=app_hash,json=appHash,proto3" json:"application_digest,omitempty"`
+type SolicitExtendImage struct {
+	Image *Image `protobuf:"octets,1,opt,name=snapshot,proto3" json:"image,omitempty"`
+	PlatformDigest  []byte    `protobuf:"octets,2,opt,name=app_hash,json=appHash,proto3" json:"application_digest,omitempty"`
 }
 
-func (m *QueryProposalMirror) Restore()         { *m = QueryProposalMirror{} }
-func (m *QueryProposalMirror) String() string { return proto.CompactTextString(m) }
-func (*QueryProposalMirror) SchemaSignal()    {}
-func (*QueryProposalMirror) Definition() ([]byte, []int) {
-	return filedefinition_252557cfdd89a31a, []int{11}
+func (m *SolicitExtendImage) Restore()         { *m = SolicitExtendImage{} }
+func (m *SolicitExtendImage) Text() string { return proto.CompactTextString(m) }
+func (*SolicitExtendImage) SchemaArtifact()    {}
+func (*SolicitExtendImage) Definition() ([]byte, []int) {
+	return filedescriptor_252557cfdd89a31a, []int{11}
 }
-func (m *QueryProposalMirror) XXX_Unserialize(b []byte) error {
-	return m.Unserialize(b)
+func (m *SolicitExtendImage) XXX_Decode(b []byte) error {
+	return m.Decode(b)
 }
-func (m *QueryProposalMirror) XXX_Serialize(b []byte, certain bool) ([]byte, error) {
+func (m *SolicitExtendImage) XXX_Serialize(b []byte, certain bool) ([]byte, error) {
 	if certain {
-		return xxx_messagedata_Querymirrorsnapshot.Marshal(b, m, certain)
+		return xxx_signaldetails_Requestextendimage.Marshal(b, m, certain)
 	} else {
 		b = b[:cap(b)]
-		n, err := m.SerializeToDimensionedBuffer(b)
+		n, err := m.SerializeTowardDimensionedReserve(b)
 		if err != nil {
 			return nil, err
 		}
 		return b[:n], nil
 	}
 }
-func (m *QueryProposalMirror) XXX_Coalesce(src proto.Message) {
-	xxx_messagedata_Querymirrorsnapshot.Merge(m, src)
+func (m *SolicitExtendImage) XXX_Consolidate(src proto.Message) {
+	xxx_signaldetails_Requestextendimage.Merge(m, src)
 }
-func (m *QueryProposalMirror) XXX_Volume() int {
-	return m.Volume()
+func (m *SolicitExtendImage) XXX_Extent() int {
+	return m.Extent()
 }
-func (m *QueryProposalMirror) XXX_Omitunclear() {
-	xxx_messagedata_Querymirrorsnapshot.DiscardUnknown(m)
+func (m *SolicitExtendImage) XXX_Dropunfamiliar() {
+	xxx_signaldetails_Requestextendimage.DiscardUnknown(m)
 }
 
-var xxx_messagedata_Querymirrorsnapshot proto.InternalMessageInfo
+var xxx_signaldetails_Requestextendimage proto.InternalMessageInfo
 
-func (m *QueryProposalMirror) FetchMirror() *Mirror {
+func (m *SolicitExtendImage) ObtainImage() *Image {
 	if m != nil {
-		return m.Mirror
+		return m.Image
 	}
 	return nil
 }
 
-func (m *QueryProposalMirror) FetchApplicationDigest() []byte {
+func (m *SolicitExtendImage) ObtainApplicationDigest() []byte {
 	if m != nil {
-		return m.ApplicationDigest
+		return m.PlatformDigest
 	}
 	return nil
 }
 
 //
-type QueryImportMirrorSegment struct {
-	Level uint64 `protobuf:"variableint,1,opt,name=height,proto3" json:"level,omitempty"`
+type SolicitFetchImageSegment struct {
+	Altitude uint64 `protobuf:"variableint,1,opt,name=height,proto3" json:"altitude,omitempty"`
 	Layout uint32 `protobuf:"variableint,2,opt,name=format,proto3" json:"layout,omitempty"`
 	Segment  uint32 `protobuf:"variableint,3,opt,name=chunk,proto3" json:"segment,omitempty"`
 }
 
-func (m *QueryImportMirrorSegment) Restore()         { *m = QueryImportMirrorSegment{} }
-func (m *QueryImportMirrorSegment) String() string { return proto.CompactTextString(m) }
-func (*QueryImportMirrorSegment) SchemaSignal()    {}
-func (*QueryImportMirrorSegment) Definition() ([]byte, []int) {
-	return filedefinition_252557cfdd89a31a, []int{12}
+func (m *SolicitFetchImageSegment) Restore()         { *m = SolicitFetchImageSegment{} }
+func (m *SolicitFetchImageSegment) Text() string { return proto.CompactTextString(m) }
+func (*SolicitFetchImageSegment) SchemaArtifact()    {}
+func (*SolicitFetchImageSegment) Definition() ([]byte, []int) {
+	return filedescriptor_252557cfdd89a31a, []int{12}
 }
-func (m *QueryImportMirrorSegment) XXX_Unserialize(b []byte) error {
-	return m.Unserialize(b)
+func (m *SolicitFetchImageSegment) XXX_Decode(b []byte) error {
+	return m.Decode(b)
 }
-func (m *QueryImportMirrorSegment) XXX_Serialize(b []byte, certain bool) ([]byte, error) {
+func (m *SolicitFetchImageSegment) XXX_Serialize(b []byte, certain bool) ([]byte, error) {
 	if certain {
-		return xxx_messagedata_Queryloadmirrorsegment.Marshal(b, m, certain)
+		return xxx_signaldetails_Requestloadimagefragment.Marshal(b, m, certain)
 	} else {
 		b = b[:cap(b)]
-		n, err := m.SerializeToDimensionedBuffer(b)
+		n, err := m.SerializeTowardDimensionedReserve(b)
 		if err != nil {
 			return nil, err
 		}
 		return b[:n], nil
 	}
 }
-func (m *QueryImportMirrorSegment) XXX_Coalesce(src proto.Message) {
-	xxx_messagedata_Queryloadmirrorsegment.Merge(m, src)
+func (m *SolicitFetchImageSegment) XXX_Consolidate(src proto.Message) {
+	xxx_signaldetails_Requestloadimagefragment.Merge(m, src)
 }
-func (m *QueryImportMirrorSegment) XXX_Volume() int {
-	return m.Volume()
+func (m *SolicitFetchImageSegment) XXX_Extent() int {
+	return m.Extent()
 }
-func (m *QueryImportMirrorSegment) XXX_Omitunclear() {
-	xxx_messagedata_Queryloadmirrorsegment.DiscardUnknown(m)
+func (m *SolicitFetchImageSegment) XXX_Dropunfamiliar() {
+	xxx_signaldetails_Requestloadimagefragment.DiscardUnknown(m)
 }
 
-var xxx_messagedata_Queryloadmirrorsegment proto.InternalMessageInfo
+var xxx_signaldetails_Requestloadimagefragment proto.InternalMessageInfo
 
-func (m *QueryImportMirrorSegment) FetchLevel() uint64 {
+func (m *SolicitFetchImageSegment) ObtainAltitude() uint64 {
 	if m != nil {
-		return m.Level
+		return m.Altitude
 	}
 	return 0
 }
 
-func (m *QueryImportMirrorSegment) FetchLayout() uint32 {
+func (m *SolicitFetchImageSegment) ObtainLayout() uint32 {
 	if m != nil {
 		return m.Layout
 	}
 	return 0
 }
 
-func (m *QueryImportMirrorSegment) FetchSegment() uint32 {
+func (m *SolicitFetchImageSegment) ObtainSegment() uint32 {
 	if m != nil {
 		return m.Segment
 	}
@@ -1150,546 +1150,546 @@ func (m *QueryImportMirrorSegment) FetchSegment() uint32 {
 }
 
 //
-type QueryExecuteMirrorSegment struct {
+type SolicitExecuteImageSegment struct {
 	Ordinal  uint32 `protobuf:"variableint,1,opt,name=index,proto3" json:"ordinal,omitempty"`
 	Segment  []byte `protobuf:"octets,2,opt,name=chunk,proto3" json:"segment,omitempty"`
-	Emitter string `protobuf:"octets,3,opt,name=sender,proto3" json:"emitter,omitempty"`
+	Originator string `protobuf:"octets,3,opt,name=sender,proto3" json:"originator,omitempty"`
 }
 
-func (m *QueryExecuteMirrorSegment) Restore()         { *m = QueryExecuteMirrorSegment{} }
-func (m *QueryExecuteMirrorSegment) String() string { return proto.CompactTextString(m) }
-func (*QueryExecuteMirrorSegment) SchemaSignal()    {}
-func (*QueryExecuteMirrorSegment) Definition() ([]byte, []int) {
-	return filedefinition_252557cfdd89a31a, []int{13}
+func (m *SolicitExecuteImageSegment) Restore()         { *m = SolicitExecuteImageSegment{} }
+func (m *SolicitExecuteImageSegment) Text() string { return proto.CompactTextString(m) }
+func (*SolicitExecuteImageSegment) SchemaArtifact()    {}
+func (*SolicitExecuteImageSegment) Definition() ([]byte, []int) {
+	return filedescriptor_252557cfdd89a31a, []int{13}
 }
-func (m *QueryExecuteMirrorSegment) XXX_Unserialize(b []byte) error {
-	return m.Unserialize(b)
+func (m *SolicitExecuteImageSegment) XXX_Decode(b []byte) error {
+	return m.Decode(b)
 }
-func (m *QueryExecuteMirrorSegment) XXX_Serialize(b []byte, certain bool) ([]byte, error) {
+func (m *SolicitExecuteImageSegment) XXX_Serialize(b []byte, certain bool) ([]byte, error) {
 	if certain {
-		return xxx_messagedata_Queryexecutemirrorsegment.Marshal(b, m, certain)
+		return xxx_signaldetails_Requestexecuteimagefragment.Marshal(b, m, certain)
 	} else {
 		b = b[:cap(b)]
-		n, err := m.SerializeToDimensionedBuffer(b)
+		n, err := m.SerializeTowardDimensionedReserve(b)
 		if err != nil {
 			return nil, err
 		}
 		return b[:n], nil
 	}
 }
-func (m *QueryExecuteMirrorSegment) XXX_Coalesce(src proto.Message) {
-	xxx_messagedata_Queryexecutemirrorsegment.Merge(m, src)
+func (m *SolicitExecuteImageSegment) XXX_Consolidate(src proto.Message) {
+	xxx_signaldetails_Requestexecuteimagefragment.Merge(m, src)
 }
-func (m *QueryExecuteMirrorSegment) XXX_Volume() int {
-	return m.Volume()
+func (m *SolicitExecuteImageSegment) XXX_Extent() int {
+	return m.Extent()
 }
-func (m *QueryExecuteMirrorSegment) XXX_Omitunclear() {
-	xxx_messagedata_Queryexecutemirrorsegment.DiscardUnknown(m)
+func (m *SolicitExecuteImageSegment) XXX_Dropunfamiliar() {
+	xxx_signaldetails_Requestexecuteimagefragment.DiscardUnknown(m)
 }
 
-var xxx_messagedata_Queryexecutemirrorsegment proto.InternalMessageInfo
+var xxx_signaldetails_Requestexecuteimagefragment proto.InternalMessageInfo
 
-func (m *QueryExecuteMirrorSegment) FetchOrdinal() uint32 {
+func (m *SolicitExecuteImageSegment) ObtainOrdinal() uint32 {
 	if m != nil {
 		return m.Ordinal
 	}
 	return 0
 }
 
-func (m *QueryExecuteMirrorSegment) FetchSegment() []byte {
+func (m *SolicitExecuteImageSegment) ObtainSegment() []byte {
 	if m != nil {
 		return m.Segment
 	}
 	return nil
 }
 
-func (m *QueryExecuteMirrorSegment) FetchEmitter() string {
+func (m *SolicitExecuteImageSegment) ObtainOriginator() string {
 	if m != nil {
-		return m.Emitter
+		return m.Originator
 	}
 	return "REDACTED"
 }
 
-type QueryArrangeNomination struct {
+type SolicitArrangeNomination struct {
 	//
 	MaximumTransferOctets int64 `protobuf:"variableint,1,opt,name=max_tx_bytes,json=maxTxBytes,proto3" json:"maximum_transfer_octets,omitempty"`
 	//
 	//
 	Txs                [][]byte           `protobuf:"octets,2,rep,name=txs,proto3" json:"txs,omitempty"`
-	NativeFinalEndorse    ExpandedEndorseDetails `protobuf:"octets,3,opt,name=local_last_commit,json=localLastCommit,proto3" json:"native_final_endorse"`
+	RegionalFinalEndorse    ExpandedEndorseDetails `protobuf:"octets,3,opt,name=local_last_commit,json=localLastCommit,proto3" json:"regional_final_endorse"`
 	Malpractice        []Malpractice      `protobuf:"octets,4,rep,name=misbehavior,proto3" json:"malpractice"`
-	Level             int64              `protobuf:"variableint,5,opt,name=height,proto3" json:"level,omitempty"`
-	Time               time.Time          `protobuf:"octets,6,opt,name=time,proto3,stdtime" json:"moment"`
-	FollowingRatifiersDigest []byte             `protobuf:"octets,7,opt,name=next_validators_hash,json=nextValidatorsHash,proto3" json:"following_ratifiers_digest,omitempty"`
+	Altitude             int64              `protobuf:"variableint,5,opt,name=height,proto3" json:"altitude,omitempty"`
+	Moment               time.Time          `protobuf:"octets,6,opt,name=time,proto3,stdtime" json:"moment"`
+	FollowingAssessorsDigest []byte             `protobuf:"octets,7,opt,name=next_validators_hash,json=nextValidatorsHash,proto3" json:"following_assessors_digest,omitempty"`
 	//
-	RecommenderLocation []byte `protobuf:"octets,8,opt,name=proposer_address,json=proposerAddress,proto3" json:"recommender_location,omitempty"`
+	NominatorLocation []byte `protobuf:"octets,8,opt,name=proposer_address,json=proposerAddress,proto3" json:"nominator_location,omitempty"`
 }
 
-func (m *QueryArrangeNomination) Restore()         { *m = QueryArrangeNomination{} }
-func (m *QueryArrangeNomination) String() string { return proto.CompactTextString(m) }
-func (*QueryArrangeNomination) SchemaSignal()    {}
-func (*QueryArrangeNomination) Definition() ([]byte, []int) {
-	return filedefinition_252557cfdd89a31a, []int{14}
+func (m *SolicitArrangeNomination) Restore()         { *m = SolicitArrangeNomination{} }
+func (m *SolicitArrangeNomination) Text() string { return proto.CompactTextString(m) }
+func (*SolicitArrangeNomination) SchemaArtifact()    {}
+func (*SolicitArrangeNomination) Definition() ([]byte, []int) {
+	return filedescriptor_252557cfdd89a31a, []int{14}
 }
-func (m *QueryArrangeNomination) XXX_Unserialize(b []byte) error {
-	return m.Unserialize(b)
+func (m *SolicitArrangeNomination) XXX_Decode(b []byte) error {
+	return m.Decode(b)
 }
-func (m *QueryArrangeNomination) XXX_Serialize(b []byte, certain bool) ([]byte, error) {
+func (m *SolicitArrangeNomination) XXX_Serialize(b []byte, certain bool) ([]byte, error) {
 	if certain {
-		return xxx_messagedata_Queryarrangenomination.Marshal(b, m, certain)
+		return xxx_signaldetails_Requestprepareitem.Marshal(b, m, certain)
 	} else {
 		b = b[:cap(b)]
-		n, err := m.SerializeToDimensionedBuffer(b)
+		n, err := m.SerializeTowardDimensionedReserve(b)
 		if err != nil {
 			return nil, err
 		}
 		return b[:n], nil
 	}
 }
-func (m *QueryArrangeNomination) XXX_Coalesce(src proto.Message) {
-	xxx_messagedata_Queryarrangenomination.Merge(m, src)
+func (m *SolicitArrangeNomination) XXX_Consolidate(src proto.Message) {
+	xxx_signaldetails_Requestprepareitem.Merge(m, src)
 }
-func (m *QueryArrangeNomination) XXX_Volume() int {
-	return m.Volume()
+func (m *SolicitArrangeNomination) XXX_Extent() int {
+	return m.Extent()
 }
-func (m *QueryArrangeNomination) XXX_Omitunclear() {
-	xxx_messagedata_Queryarrangenomination.DiscardUnknown(m)
+func (m *SolicitArrangeNomination) XXX_Dropunfamiliar() {
+	xxx_signaldetails_Requestprepareitem.DiscardUnknown(m)
 }
 
-var xxx_messagedata_Queryarrangenomination proto.InternalMessageInfo
+var xxx_signaldetails_Requestprepareitem proto.InternalMessageInfo
 
-func (m *QueryArrangeNomination) FetchMaximumTransferOctets() int64 {
+func (m *SolicitArrangeNomination) ObtainMaximumTransferOctets() int64 {
 	if m != nil {
 		return m.MaximumTransferOctets
 	}
 	return 0
 }
 
-func (m *QueryArrangeNomination) FetchTrans() [][]byte {
+func (m *SolicitArrangeNomination) ObtainTrans() [][]byte {
 	if m != nil {
 		return m.Txs
 	}
 	return nil
 }
 
-func (m *QueryArrangeNomination) FetchNativeFinalEndorse() ExpandedEndorseDetails {
+func (m *SolicitArrangeNomination) ObtainRegionalFinalEndorse() ExpandedEndorseDetails {
 	if m != nil {
-		return m.NativeFinalEndorse
+		return m.RegionalFinalEndorse
 	}
 	return ExpandedEndorseDetails{}
 }
 
-func (m *QueryArrangeNomination) FetchMalpractice() []Malpractice {
+func (m *SolicitArrangeNomination) ObtainMalpractice() []Malpractice {
 	if m != nil {
 		return m.Malpractice
 	}
 	return nil
 }
 
-func (m *QueryArrangeNomination) FetchLevel() int64 {
+func (m *SolicitArrangeNomination) ObtainAltitude() int64 {
 	if m != nil {
-		return m.Level
+		return m.Altitude
 	}
 	return 0
 }
 
-func (m *QueryArrangeNomination) FetchTime() time.Time {
+func (m *SolicitArrangeNomination) ObtainMoment() time.Time {
 	if m != nil {
-		return m.Time
+		return m.Moment
 	}
 	return time.Time{}
 }
 
-func (m *QueryArrangeNomination) FetchFollowingRatifiersDigest() []byte {
+func (m *SolicitArrangeNomination) ObtainFollowingAssessorsDigest() []byte {
 	if m != nil {
-		return m.FollowingRatifiersDigest
+		return m.FollowingAssessorsDigest
 	}
 	return nil
 }
 
-func (m *QueryArrangeNomination) FetchRecommenderLocation() []byte {
+func (m *SolicitArrangeNomination) ObtainNominatorLocator() []byte {
 	if m != nil {
-		return m.RecommenderLocation
+		return m.NominatorLocation
 	}
 	return nil
 }
 
-type QueryHandleNomination struct {
+type SolicitHandleNomination struct {
 	Txs                [][]byte      `protobuf:"octets,1,rep,name=txs,proto3" json:"txs,omitempty"`
-	NominatedFinalEndorse EndorseDetails    `protobuf:"octets,2,opt,name=proposed_last_commit,json=proposedLastCommit,proto3" json:"nominated_final_endorse"`
+	ItemizedFinalEndorse EndorseDetails    `protobuf:"octets,2,opt,name=proposed_last_commit,json=proposedLastCommit,proto3" json:"itemized_final_endorse"`
 	Malpractice        []Malpractice `protobuf:"octets,3,rep,name=misbehavior,proto3" json:"malpractice"`
 	//
 	Digest               []byte    `protobuf:"octets,4,opt,name=hash,proto3" json:"digest,omitempty"`
-	Level             int64     `protobuf:"variableint,5,opt,name=height,proto3" json:"level,omitempty"`
-	Time               time.Time `protobuf:"octets,6,opt,name=time,proto3,stdtime" json:"moment"`
-	FollowingRatifiersDigest []byte    `protobuf:"octets,7,opt,name=next_validators_hash,json=nextValidatorsHash,proto3" json:"following_ratifiers_digest,omitempty"`
+	Altitude             int64     `protobuf:"variableint,5,opt,name=height,proto3" json:"altitude,omitempty"`
+	Moment               time.Time `protobuf:"octets,6,opt,name=time,proto3,stdtime" json:"moment"`
+	FollowingAssessorsDigest []byte    `protobuf:"octets,7,opt,name=next_validators_hash,json=nextValidatorsHash,proto3" json:"following_assessors_digest,omitempty"`
 	//
-	RecommenderLocation []byte `protobuf:"octets,8,opt,name=proposer_address,json=proposerAddress,proto3" json:"recommender_location,omitempty"`
+	NominatorLocation []byte `protobuf:"octets,8,opt,name=proposer_address,json=proposerAddress,proto3" json:"nominator_location,omitempty"`
 }
 
-func (m *QueryHandleNomination) Restore()         { *m = QueryHandleNomination{} }
-func (m *QueryHandleNomination) String() string { return proto.CompactTextString(m) }
-func (*QueryHandleNomination) SchemaSignal()    {}
-func (*QueryHandleNomination) Definition() ([]byte, []int) {
-	return filedefinition_252557cfdd89a31a, []int{15}
+func (m *SolicitHandleNomination) Restore()         { *m = SolicitHandleNomination{} }
+func (m *SolicitHandleNomination) Text() string { return proto.CompactTextString(m) }
+func (*SolicitHandleNomination) SchemaArtifact()    {}
+func (*SolicitHandleNomination) Definition() ([]byte, []int) {
+	return filedescriptor_252557cfdd89a31a, []int{15}
 }
-func (m *QueryHandleNomination) XXX_Unserialize(b []byte) error {
-	return m.Unserialize(b)
+func (m *SolicitHandleNomination) XXX_Decode(b []byte) error {
+	return m.Decode(b)
 }
-func (m *QueryHandleNomination) XXX_Serialize(b []byte, certain bool) ([]byte, error) {
+func (m *SolicitHandleNomination) XXX_Serialize(b []byte, certain bool) ([]byte, error) {
 	if certain {
-		return xxx_messagedata_Querynominationprocess.Marshal(b, m, certain)
+		return xxx_signaldetails_Requestexecuteitem.Marshal(b, m, certain)
 	} else {
 		b = b[:cap(b)]
-		n, err := m.SerializeToDimensionedBuffer(b)
+		n, err := m.SerializeTowardDimensionedReserve(b)
 		if err != nil {
 			return nil, err
 		}
 		return b[:n], nil
 	}
 }
-func (m *QueryHandleNomination) XXX_Coalesce(src proto.Message) {
-	xxx_messagedata_Querynominationprocess.Merge(m, src)
+func (m *SolicitHandleNomination) XXX_Consolidate(src proto.Message) {
+	xxx_signaldetails_Requestexecuteitem.Merge(m, src)
 }
-func (m *QueryHandleNomination) XXX_Volume() int {
-	return m.Volume()
+func (m *SolicitHandleNomination) XXX_Extent() int {
+	return m.Extent()
 }
-func (m *QueryHandleNomination) XXX_Omitunclear() {
-	xxx_messagedata_Querynominationprocess.DiscardUnknown(m)
+func (m *SolicitHandleNomination) XXX_Dropunfamiliar() {
+	xxx_signaldetails_Requestexecuteitem.DiscardUnknown(m)
 }
 
-var xxx_messagedata_Querynominationprocess proto.InternalMessageInfo
+var xxx_signaldetails_Requestexecuteitem proto.InternalMessageInfo
 
-func (m *QueryHandleNomination) FetchTrans() [][]byte {
+func (m *SolicitHandleNomination) ObtainTrans() [][]byte {
 	if m != nil {
 		return m.Txs
 	}
 	return nil
 }
 
-func (m *QueryHandleNomination) FetchNominatedFinalEndorse() EndorseDetails {
+func (m *SolicitHandleNomination) ObtainItemizedFinalEndorse() EndorseDetails {
 	if m != nil {
-		return m.NominatedFinalEndorse
+		return m.ItemizedFinalEndorse
 	}
 	return EndorseDetails{}
 }
 
-func (m *QueryHandleNomination) FetchMalpractice() []Malpractice {
+func (m *SolicitHandleNomination) ObtainMalpractice() []Malpractice {
 	if m != nil {
 		return m.Malpractice
 	}
 	return nil
 }
 
-func (m *QueryHandleNomination) FetchDigest() []byte {
+func (m *SolicitHandleNomination) ObtainDigest() []byte {
 	if m != nil {
 		return m.Digest
 	}
 	return nil
 }
 
-func (m *QueryHandleNomination) FetchLevel() int64 {
+func (m *SolicitHandleNomination) ObtainAltitude() int64 {
 	if m != nil {
-		return m.Level
+		return m.Altitude
 	}
 	return 0
 }
 
-func (m *QueryHandleNomination) FetchTime() time.Time {
+func (m *SolicitHandleNomination) ObtainMoment() time.Time {
 	if m != nil {
-		return m.Time
+		return m.Moment
 	}
 	return time.Time{}
 }
 
-func (m *QueryHandleNomination) FetchFollowingRatifiersDigest() []byte {
+func (m *SolicitHandleNomination) ObtainFollowingAssessorsDigest() []byte {
 	if m != nil {
-		return m.FollowingRatifiersDigest
+		return m.FollowingAssessorsDigest
 	}
 	return nil
 }
 
-func (m *QueryHandleNomination) FetchRecommenderLocation() []byte {
+func (m *SolicitHandleNomination) ObtainNominatorLocator() []byte {
 	if m != nil {
-		return m.RecommenderLocation
+		return m.NominatorLocation
 	}
 	return nil
 }
 
 //
-type QueryExpandBallot struct {
+type SolicitBroadenBallot struct {
 	//
 	Digest []byte `protobuf:"octets,1,opt,name=hash,proto3" json:"digest,omitempty"`
 	//
-	Level int64 `protobuf:"variableint,2,opt,name=height,proto3" json:"level,omitempty"`
+	Altitude int64 `protobuf:"variableint,2,opt,name=height,proto3" json:"altitude,omitempty"`
 	//
-	Time               time.Time     `protobuf:"octets,3,opt,name=time,proto3,stdtime" json:"moment"`
+	Moment               time.Time     `protobuf:"octets,3,opt,name=time,proto3,stdtime" json:"moment"`
 	Txs                [][]byte      `protobuf:"octets,4,rep,name=txs,proto3" json:"txs,omitempty"`
-	NominatedFinalEndorse EndorseDetails    `protobuf:"octets,5,opt,name=proposed_last_commit,json=proposedLastCommit,proto3" json:"nominated_final_endorse"`
+	ItemizedFinalEndorse EndorseDetails    `protobuf:"octets,5,opt,name=proposed_last_commit,json=proposedLastCommit,proto3" json:"itemized_final_endorse"`
 	Malpractice        []Malpractice `protobuf:"octets,6,rep,name=misbehavior,proto3" json:"malpractice"`
-	FollowingRatifiersDigest []byte        `protobuf:"octets,7,opt,name=next_validators_hash,json=nextValidatorsHash,proto3" json:"following_ratifiers_digest,omitempty"`
+	FollowingAssessorsDigest []byte        `protobuf:"octets,7,opt,name=next_validators_hash,json=nextValidatorsHash,proto3" json:"following_assessors_digest,omitempty"`
 	//
-	RecommenderLocation []byte `protobuf:"octets,8,opt,name=proposer_address,json=proposerAddress,proto3" json:"recommender_location,omitempty"`
+	NominatorLocation []byte `protobuf:"octets,8,opt,name=proposer_address,json=proposerAddress,proto3" json:"nominator_location,omitempty"`
 }
 
-func (m *QueryExpandBallot) Restore()         { *m = QueryExpandBallot{} }
-func (m *QueryExpandBallot) String() string { return proto.CompactTextString(m) }
-func (*QueryExpandBallot) SchemaSignal()    {}
-func (*QueryExpandBallot) Definition() ([]byte, []int) {
-	return filedefinition_252557cfdd89a31a, []int{16}
+func (m *SolicitBroadenBallot) Restore()         { *m = SolicitBroadenBallot{} }
+func (m *SolicitBroadenBallot) Text() string { return proto.CompactTextString(m) }
+func (*SolicitBroadenBallot) SchemaArtifact()    {}
+func (*SolicitBroadenBallot) Definition() ([]byte, []int) {
+	return filedescriptor_252557cfdd89a31a, []int{16}
 }
-func (m *QueryExpandBallot) XXX_Unserialize(b []byte) error {
-	return m.Unserialize(b)
+func (m *SolicitBroadenBallot) XXX_Decode(b []byte) error {
+	return m.Decode(b)
 }
-func (m *QueryExpandBallot) XXX_Serialize(b []byte, certain bool) ([]byte, error) {
+func (m *SolicitBroadenBallot) XXX_Serialize(b []byte, certain bool) ([]byte, error) {
 	if certain {
-		return xxx_messagedata_Queryballotextend.Marshal(b, m, certain)
+		return xxx_signaldetails_Requestextendballot.Marshal(b, m, certain)
 	} else {
 		b = b[:cap(b)]
-		n, err := m.SerializeToDimensionedBuffer(b)
+		n, err := m.SerializeTowardDimensionedReserve(b)
 		if err != nil {
 			return nil, err
 		}
 		return b[:n], nil
 	}
 }
-func (m *QueryExpandBallot) XXX_Coalesce(src proto.Message) {
-	xxx_messagedata_Queryballotextend.Merge(m, src)
+func (m *SolicitBroadenBallot) XXX_Consolidate(src proto.Message) {
+	xxx_signaldetails_Requestextendballot.Merge(m, src)
 }
-func (m *QueryExpandBallot) XXX_Volume() int {
-	return m.Volume()
+func (m *SolicitBroadenBallot) XXX_Extent() int {
+	return m.Extent()
 }
-func (m *QueryExpandBallot) XXX_Omitunclear() {
-	xxx_messagedata_Queryballotextend.DiscardUnknown(m)
+func (m *SolicitBroadenBallot) XXX_Dropunfamiliar() {
+	xxx_signaldetails_Requestextendballot.DiscardUnknown(m)
 }
 
-var xxx_messagedata_Queryballotextend proto.InternalMessageInfo
+var xxx_signaldetails_Requestextendballot proto.InternalMessageInfo
 
-func (m *QueryExpandBallot) FetchDigest() []byte {
+func (m *SolicitBroadenBallot) ObtainDigest() []byte {
 	if m != nil {
 		return m.Digest
 	}
 	return nil
 }
 
-func (m *QueryExpandBallot) FetchLevel() int64 {
+func (m *SolicitBroadenBallot) ObtainAltitude() int64 {
 	if m != nil {
-		return m.Level
+		return m.Altitude
 	}
 	return 0
 }
 
-func (m *QueryExpandBallot) FetchTime() time.Time {
+func (m *SolicitBroadenBallot) ObtainMoment() time.Time {
 	if m != nil {
-		return m.Time
+		return m.Moment
 	}
 	return time.Time{}
 }
 
-func (m *QueryExpandBallot) FetchTrans() [][]byte {
+func (m *SolicitBroadenBallot) ObtainTrans() [][]byte {
 	if m != nil {
 		return m.Txs
 	}
 	return nil
 }
 
-func (m *QueryExpandBallot) FetchNominatedFinalEndorse() EndorseDetails {
+func (m *SolicitBroadenBallot) ObtainItemizedFinalEndorse() EndorseDetails {
 	if m != nil {
-		return m.NominatedFinalEndorse
+		return m.ItemizedFinalEndorse
 	}
 	return EndorseDetails{}
 }
 
-func (m *QueryExpandBallot) FetchMalpractice() []Malpractice {
+func (m *SolicitBroadenBallot) ObtainMalpractice() []Malpractice {
 	if m != nil {
 		return m.Malpractice
 	}
 	return nil
 }
 
-func (m *QueryExpandBallot) FetchFollowingRatifiersDigest() []byte {
+func (m *SolicitBroadenBallot) ObtainFollowingAssessorsDigest() []byte {
 	if m != nil {
-		return m.FollowingRatifiersDigest
+		return m.FollowingAssessorsDigest
 	}
 	return nil
 }
 
-func (m *QueryExpandBallot) FetchRecommenderLocation() []byte {
+func (m *SolicitBroadenBallot) ObtainNominatorLocator() []byte {
 	if m != nil {
-		return m.RecommenderLocation
+		return m.NominatorLocation
 	}
 	return nil
 }
 
 //
-type QueryValidateBallotAddition struct {
+type SolicitValidateBallotAddition struct {
 	//
 	Digest []byte `protobuf:"octets,1,opt,name=hash,proto3" json:"digest,omitempty"`
 	//
-	RatifierLocation []byte `protobuf:"octets,2,opt,name=validator_address,json=validatorAddress,proto3" json:"ratifier_location,omitempty"`
-	Level           int64  `protobuf:"variableint,3,opt,name=height,proto3" json:"level,omitempty"`
+	AssessorLocation []byte `protobuf:"octets,2,opt,name=validator_address,json=validatorAddress,proto3" json:"assessor_location,omitempty"`
+	Altitude           int64  `protobuf:"variableint,3,opt,name=height,proto3" json:"altitude,omitempty"`
 	BallotAddition    []byte `protobuf:"octets,4,opt,name=vote_extension,json=voteExtension,proto3" json:"ballot_addition,omitempty"`
 }
 
-func (m *QueryValidateBallotAddition) Restore()         { *m = QueryValidateBallotAddition{} }
-func (m *QueryValidateBallotAddition) String() string { return proto.CompactTextString(m) }
-func (*QueryValidateBallotAddition) SchemaSignal()    {}
-func (*QueryValidateBallotAddition) Definition() ([]byte, []int) {
-	return filedefinition_252557cfdd89a31a, []int{17}
+func (m *SolicitValidateBallotAddition) Restore()         { *m = SolicitValidateBallotAddition{} }
+func (m *SolicitValidateBallotAddition) Text() string { return proto.CompactTextString(m) }
+func (*SolicitValidateBallotAddition) SchemaArtifact()    {}
+func (*SolicitValidateBallotAddition) Definition() ([]byte, []int) {
+	return filedescriptor_252557cfdd89a31a, []int{17}
 }
-func (m *QueryValidateBallotAddition) XXX_Unserialize(b []byte) error {
-	return m.Unserialize(b)
+func (m *SolicitValidateBallotAddition) XXX_Decode(b []byte) error {
+	return m.Decode(b)
 }
-func (m *QueryValidateBallotAddition) XXX_Serialize(b []byte, certain bool) ([]byte, error) {
+func (m *SolicitValidateBallotAddition) XXX_Serialize(b []byte, certain bool) ([]byte, error) {
 	if certain {
-		return xxx_messagedata_Queryvalidateballotextension.Marshal(b, m, certain)
+		return xxx_signaldetails_Requestverifyballotaddition.Marshal(b, m, certain)
 	} else {
 		b = b[:cap(b)]
-		n, err := m.SerializeToDimensionedBuffer(b)
+		n, err := m.SerializeTowardDimensionedReserve(b)
 		if err != nil {
 			return nil, err
 		}
 		return b[:n], nil
 	}
 }
-func (m *QueryValidateBallotAddition) XXX_Coalesce(src proto.Message) {
-	xxx_messagedata_Queryvalidateballotextension.Merge(m, src)
+func (m *SolicitValidateBallotAddition) XXX_Consolidate(src proto.Message) {
+	xxx_signaldetails_Requestverifyballotaddition.Merge(m, src)
 }
-func (m *QueryValidateBallotAddition) XXX_Volume() int {
-	return m.Volume()
+func (m *SolicitValidateBallotAddition) XXX_Extent() int {
+	return m.Extent()
 }
-func (m *QueryValidateBallotAddition) XXX_Omitunclear() {
-	xxx_messagedata_Queryvalidateballotextension.DiscardUnknown(m)
+func (m *SolicitValidateBallotAddition) XXX_Dropunfamiliar() {
+	xxx_signaldetails_Requestverifyballotaddition.DiscardUnknown(m)
 }
 
-var xxx_messagedata_Queryvalidateballotextension proto.InternalMessageInfo
+var xxx_signaldetails_Requestverifyballotaddition proto.InternalMessageInfo
 
-func (m *QueryValidateBallotAddition) FetchDigest() []byte {
+func (m *SolicitValidateBallotAddition) ObtainDigest() []byte {
 	if m != nil {
 		return m.Digest
 	}
 	return nil
 }
 
-func (m *QueryValidateBallotAddition) FetchRatifierLocation() []byte {
+func (m *SolicitValidateBallotAddition) ObtainAssessorLocation() []byte {
 	if m != nil {
-		return m.RatifierLocation
+		return m.AssessorLocation
 	}
 	return nil
 }
 
-func (m *QueryValidateBallotAddition) FetchLevel() int64 {
+func (m *SolicitValidateBallotAddition) ObtainAltitude() int64 {
 	if m != nil {
-		return m.Level
+		return m.Altitude
 	}
 	return 0
 }
 
-func (m *QueryValidateBallotAddition) FetchBallotAddition() []byte {
+func (m *SolicitValidateBallotAddition) ObtainBallotAddition() []byte {
 	if m != nil {
 		return m.BallotAddition
 	}
 	return nil
 }
 
-type QueryCompleteLedger struct {
+type SolicitCulminateLedger struct {
 	Txs               [][]byte      `protobuf:"octets,1,rep,name=txs,proto3" json:"txs,omitempty"`
 	ResolvedFinalEndorse EndorseDetails    `protobuf:"octets,2,opt,name=decided_last_commit,json=decidedLastCommit,proto3" json:"resolved_final_endorse"`
 	Malpractice       []Malpractice `protobuf:"octets,3,rep,name=misbehavior,proto3" json:"malpractice"`
 	//
 	Digest               []byte    `protobuf:"octets,4,opt,name=hash,proto3" json:"digest,omitempty"`
-	Level             int64     `protobuf:"variableint,5,opt,name=height,proto3" json:"level,omitempty"`
-	Time               time.Time `protobuf:"octets,6,opt,name=time,proto3,stdtime" json:"moment"`
-	FollowingRatifiersDigest []byte    `protobuf:"octets,7,opt,name=next_validators_hash,json=nextValidatorsHash,proto3" json:"following_ratifiers_digest,omitempty"`
+	Altitude             int64     `protobuf:"variableint,5,opt,name=height,proto3" json:"altitude,omitempty"`
+	Moment               time.Time `protobuf:"octets,6,opt,name=time,proto3,stdtime" json:"moment"`
+	FollowingAssessorsDigest []byte    `protobuf:"octets,7,opt,name=next_validators_hash,json=nextValidatorsHash,proto3" json:"following_assessors_digest,omitempty"`
 	//
-	RecommenderLocation []byte `protobuf:"octets,8,opt,name=proposer_address,json=proposerAddress,proto3" json:"recommender_location,omitempty"`
+	NominatorLocation []byte `protobuf:"octets,8,opt,name=proposer_address,json=proposerAddress,proto3" json:"nominator_location,omitempty"`
 }
 
-func (m *QueryCompleteLedger) Restore()         { *m = QueryCompleteLedger{} }
-func (m *QueryCompleteLedger) String() string { return proto.CompactTextString(m) }
-func (*QueryCompleteLedger) SchemaSignal()    {}
-func (*QueryCompleteLedger) Definition() ([]byte, []int) {
-	return filedefinition_252557cfdd89a31a, []int{18}
+func (m *SolicitCulminateLedger) Restore()         { *m = SolicitCulminateLedger{} }
+func (m *SolicitCulminateLedger) Text() string { return proto.CompactTextString(m) }
+func (*SolicitCulminateLedger) SchemaArtifact()    {}
+func (*SolicitCulminateLedger) Definition() ([]byte, []int) {
+	return filedescriptor_252557cfdd89a31a, []int{18}
 }
-func (m *QueryCompleteLedger) XXX_Unserialize(b []byte) error {
-	return m.Unserialize(b)
+func (m *SolicitCulminateLedger) XXX_Decode(b []byte) error {
+	return m.Decode(b)
 }
-func (m *QueryCompleteLedger) XXX_Serialize(b []byte, certain bool) ([]byte, error) {
+func (m *SolicitCulminateLedger) XXX_Serialize(b []byte, certain bool) ([]byte, error) {
 	if certain {
-		return xxx_messagedata_Queryterminateblock.Marshal(b, m, certain)
+		return xxx_signaldetails_Requestfinalizeledger.Marshal(b, m, certain)
 	} else {
 		b = b[:cap(b)]
-		n, err := m.SerializeToDimensionedBuffer(b)
+		n, err := m.SerializeTowardDimensionedReserve(b)
 		if err != nil {
 			return nil, err
 		}
 		return b[:n], nil
 	}
 }
-func (m *QueryCompleteLedger) XXX_Coalesce(src proto.Message) {
-	xxx_messagedata_Queryterminateblock.Merge(m, src)
+func (m *SolicitCulminateLedger) XXX_Consolidate(src proto.Message) {
+	xxx_signaldetails_Requestfinalizeledger.Merge(m, src)
 }
-func (m *QueryCompleteLedger) XXX_Volume() int {
-	return m.Volume()
+func (m *SolicitCulminateLedger) XXX_Extent() int {
+	return m.Extent()
 }
-func (m *QueryCompleteLedger) XXX_Omitunclear() {
-	xxx_messagedata_Queryterminateblock.DiscardUnknown(m)
+func (m *SolicitCulminateLedger) XXX_Dropunfamiliar() {
+	xxx_signaldetails_Requestfinalizeledger.DiscardUnknown(m)
 }
 
-var xxx_messagedata_Queryterminateblock proto.InternalMessageInfo
+var xxx_signaldetails_Requestfinalizeledger proto.InternalMessageInfo
 
-func (m *QueryCompleteLedger) FetchTrans() [][]byte {
+func (m *SolicitCulminateLedger) ObtainTrans() [][]byte {
 	if m != nil {
 		return m.Txs
 	}
 	return nil
 }
 
-func (m *QueryCompleteLedger) FetchResolvedFinalEndorse() EndorseDetails {
+func (m *SolicitCulminateLedger) ObtainResolvedFinalEndorse() EndorseDetails {
 	if m != nil {
 		return m.ResolvedFinalEndorse
 	}
 	return EndorseDetails{}
 }
 
-func (m *QueryCompleteLedger) FetchMalpractice() []Malpractice {
+func (m *SolicitCulminateLedger) ObtainMalpractice() []Malpractice {
 	if m != nil {
 		return m.Malpractice
 	}
 	return nil
 }
 
-func (m *QueryCompleteLedger) FetchDigest() []byte {
+func (m *SolicitCulminateLedger) ObtainDigest() []byte {
 	if m != nil {
 		return m.Digest
 	}
 	return nil
 }
 
-func (m *QueryCompleteLedger) FetchLevel() int64 {
+func (m *SolicitCulminateLedger) ObtainAltitude() int64 {
 	if m != nil {
-		return m.Level
+		return m.Altitude
 	}
 	return 0
 }
 
-func (m *QueryCompleteLedger) FetchTime() time.Time {
+func (m *SolicitCulminateLedger) ObtainMoment() time.Time {
 	if m != nil {
-		return m.Time
+		return m.Moment
 	}
 	return time.Time{}
 }
 
-func (m *QueryCompleteLedger) FetchFollowingRatifiersDigest() []byte {
+func (m *SolicitCulminateLedger) ObtainFollowingAssessorsDigest() []byte {
 	if m != nil {
-		return m.FollowingRatifiersDigest
+		return m.FollowingAssessorsDigest
 	}
 	return nil
 }
 
-func (m *QueryCompleteLedger) FetchRecommenderLocation() []byte {
+func (m *SolicitCulminateLedger) ObtainNominatorLocator() []byte {
 	if m != nil {
-		return m.RecommenderLocation
+		return m.NominatorLocation
 	}
 	return nil
 }
@@ -1716,53 +1716,53 @@ type Reply struct {
 	//
 	//
 	//
-	Item isreply_Item `protobuf_oneof:"item"`
+	Datum isreplying_Datum `protobuf_oneof:"datum"`
 }
 
 func (m *Reply) Restore()         { *m = Reply{} }
-func (m *Reply) String() string { return proto.CompactTextString(m) }
-func (*Reply) SchemaSignal()    {}
+func (m *Reply) Text() string { return proto.CompactTextString(m) }
+func (*Reply) SchemaArtifact()    {}
 func (*Reply) Definition() ([]byte, []int) {
-	return filedefinition_252557cfdd89a31a, []int{19}
+	return filedescriptor_252557cfdd89a31a, []int{19}
 }
-func (m *Reply) XXX_Unserialize(b []byte) error {
-	return m.Unserialize(b)
+func (m *Reply) XXX_Decode(b []byte) error {
+	return m.Decode(b)
 }
 func (m *Reply) XXX_Serialize(b []byte, certain bool) ([]byte, error) {
 	if certain {
-		return xxx_messagedata_Reply.Marshal(b, m, certain)
+		return xxx_signaldetails_Reply.Marshal(b, m, certain)
 	} else {
 		b = b[:cap(b)]
-		n, err := m.SerializeToDimensionedBuffer(b)
+		n, err := m.SerializeTowardDimensionedReserve(b)
 		if err != nil {
 			return nil, err
 		}
 		return b[:n], nil
 	}
 }
-func (m *Reply) XXX_Coalesce(src proto.Message) {
-	xxx_messagedata_Reply.Merge(m, src)
+func (m *Reply) XXX_Consolidate(src proto.Message) {
+	xxx_signaldetails_Reply.Merge(m, src)
 }
-func (m *Reply) XXX_Volume() int {
-	return m.Volume()
+func (m *Reply) XXX_Extent() int {
+	return m.Extent()
 }
-func (m *Reply) XXX_Omitunclear() {
-	xxx_messagedata_Reply.DiscardUnknown(m)
+func (m *Reply) XXX_Dropunfamiliar() {
+	xxx_signaldetails_Reply.DiscardUnknown(m)
 }
 
-var xxx_messagedata_Reply proto.InternalMessageInfo
+var xxx_signaldetails_Reply proto.InternalMessageInfo
 
-type isreply_Item interface {
-	isreply_Item()
-	SerializeTo([]byte) (int, error)
-	Volume() int
+type isreplying_Datum interface {
+	isreplying_Datum()
+	SerializeToward([]byte) (int, error)
+	Extent() int
 }
 
 type Reply_Exemption struct {
 	Exemption *ReplyExemption `protobuf:"octets,1,opt,name=exception,proto3,oneof" json:"exemption,omitempty"`
 }
 type Reply_Reverberate struct {
-	Replicate *ReplyReverberate `protobuf:"octets,2,opt,name=echo,proto3,oneof" json:"reverberate,omitempty"`
+	Reverberate *ReplyReverberate `protobuf:"octets,2,opt,name=echo,proto3,oneof" json:"reverberate,omitempty"`
 }
 type Reply_Purge struct {
 	Purge *ReplyPurge `protobuf:"octets,3,opt,name=flush,proto3,oneof" json:"purge,omitempty"`
@@ -1771,213 +1771,213 @@ type Reply_Details struct {
 	Details *ReplyDetails `protobuf:"octets,4,opt,name=info,proto3,oneof" json:"details,omitempty"`
 }
 type Reply_Initiatechain struct {
-	InitSeries *ReplyInitSeries `protobuf:"octets,6,opt,name=init_chain,json=initChain,proto3,oneof" json:"init_series,omitempty"`
+	InitializeSuccession *ReplyInitializeSuccession `protobuf:"octets,6,opt,name=init_chain,json=initChain,proto3,oneof" json:"initialize_succession,omitempty"`
 }
 type Reply_Inquire struct {
 	Inquire *ReplyInquire `protobuf:"octets,7,opt,name=query,proto3,oneof" json:"inquire,omitempty"`
 }
-type Reply_Transfercheck struct {
+type Reply_Inspecttrans struct {
 	InspectTransfer *ReplyInspectTransfer `protobuf:"octets,9,opt,name=check_tx,json=checkTx,proto3,oneof" json:"inspect_transfer,omitempty"`
 }
 type Reply_Endorse struct {
 	Endorse *ReplyEndorse `protobuf:"octets,12,opt,name=commit,proto3,oneof" json:"endorse,omitempty"`
 }
-type Reply_Catalogmirrors struct {
-	CatalogMirrors *ReplyCatalogMirrors `protobuf:"octets,13,opt,name=list_snapshots,json=listSnapshots,proto3,oneof" json:"catalog_mirrors,omitempty"`
+type Reply_Catalogimages struct {
+	CollectionImages *ReplyCatalogImages `protobuf:"octets,13,opt,name=list_snapshots,json=listSnapshots,proto3,oneof" json:"catalog_images,omitempty"`
 }
-type Reply_Mirrorsnapshot struct {
-	ProposalMirror *ReplyProposalMirror `protobuf:"octets,14,opt,name=offer_snapshot,json=offerSnapshot,proto3,oneof" json:"proposal_mirror,omitempty"`
+type Reply_Extendimage struct {
+	ExtendImage *ReplyExtendImage `protobuf:"octets,14,opt,name=offer_snapshot,json=offerSnapshot,proto3,oneof" json:"extend_image,omitempty"`
 }
-type Reply_Loadmirrorsegment struct {
-	ImportMirrorSegment *ReplyImportMirrorSegment `protobuf:"octets,15,opt,name=load_snapshot_chunk,json=loadSnapshotChunk,proto3,oneof" json:"import_mirror_segment,omitempty"`
+type Reply_Loadimagefragment struct {
+	FetchImageSegment *ReplyFetchImageSegment `protobuf:"octets,15,opt,name=load_snapshot_chunk,json=loadSnapshotChunk,proto3,oneof" json:"fetch_image_segment,omitempty"`
 }
-type Reply_Executemirrorsegment struct {
-	ExecuteMirrorSegment *ReplyExecuteMirrorSegment `protobuf:"octets,16,opt,name=apply_snapshot_chunk,json=applySnapshotChunk,proto3,oneof" json:"execute_mirror_segment,omitempty"`
+type Reply_Executeimagefragment struct {
+	ExecuteImageSegment *ReplyExecuteImageSegment `protobuf:"octets,16,opt,name=apply_snapshot_chunk,json=applySnapshotChunk,proto3,oneof" json:"execute_image_segment,omitempty"`
 }
-type Reply_Arrangenomination struct {
+type Reply_Prepareitem struct {
 	ArrangeNomination *ReplyArrangeNomination `protobuf:"octets,17,opt,name=prepare_proposal,json=prepareProposal,proto3,oneof" json:"arrange_nomination,omitempty"`
 }
-type Reply_Processnomination struct {
+type Reply_Executeitem struct {
 	HandleNomination *ReplyHandleNomination `protobuf:"octets,18,opt,name=process_proposal,json=processProposal,proto3,oneof" json:"handle_nomination,omitempty"`
 }
-type Reply_Ballotextend struct {
-	ExpandBallot *ReplyExpandBallot `protobuf:"octets,19,opt,name=extend_vote,json=extendVote,proto3,oneof" json:"expand_ballot,omitempty"`
+type Reply_Extendballot struct {
+	BroadenBallot *ReplyBroadenBallot `protobuf:"octets,19,opt,name=extend_vote,json=extendVote,proto3,oneof" json:"broaden_ballot,omitempty"`
 }
-type Reply_Validateballotextension struct {
+type Reply_Verifyballotaddition struct {
 	ValidateBallotAddition *ReplyValidateBallotAddition `protobuf:"octets,20,opt,name=verify_vote_extension,json=verifyVoteExtension,proto3,oneof" json:"validate_ballot_addition,omitempty"`
 }
-type Reply_Terminateblock struct {
-	CompleteLedger *ReplyCompleteLedger `protobuf:"octets,21,opt,name=finalize_block,json=finalizeBlock,proto3,oneof" json:"complete_ledger,omitempty"`
+type Reply_Finalizeledger struct {
+	CulminateLedger *ReplyCulminateLedger `protobuf:"octets,21,opt,name=finalize_block,json=finalizeBlock,proto3,oneof" json:"culminate_ledger,omitempty"`
 }
-type Reply_Transferinsert struct {
-	EmbedTransfer *ReplyEmbedTransfer `protobuf:"octets,22,opt,name=insert_tx,json=insertTx,proto3,oneof" json:"append_transfer,omitempty"`
+type Reply_Appendtrans struct {
+	AppendTransfer *ReplyAppendTransfer `protobuf:"octets,22,opt,name=insert_tx,json=insertTx,proto3,oneof" json:"append_transfer,omitempty"`
 }
-type Reply_Reaptransfers struct {
+type Reply_Harvesttrans struct {
 	HarvestTrans *ReplyHarvestTrans `protobuf:"octets,23,opt,name=reap_txs,json=reapTxs,proto3,oneof" json:"harvest_trans,omitempty"`
 }
 
-func (*Reply_Exemption) isreply_Item()           {}
-func (*Reply_Reverberate) isreply_Item()                {}
-func (*Reply_Purge) isreply_Item()               {}
-func (*Reply_Details) isreply_Item()                {}
-func (*Reply_Initiatechain) isreply_Item()           {}
-func (*Reply_Inquire) isreply_Item()               {}
-func (*Reply_Transfercheck) isreply_Item()             {}
-func (*Reply_Endorse) isreply_Item()              {}
-func (*Reply_Catalogmirrors) isreply_Item()       {}
-func (*Reply_Mirrorsnapshot) isreply_Item()       {}
-func (*Reply_Loadmirrorsegment) isreply_Item()   {}
-func (*Reply_Executemirrorsegment) isreply_Item()  {}
-func (*Reply_Arrangenomination) isreply_Item()     {}
-func (*Reply_Processnomination) isreply_Item()     {}
-func (*Reply_Ballotextend) isreply_Item()          {}
-func (*Reply_Validateballotextension) isreply_Item() {}
-func (*Reply_Terminateblock) isreply_Item()       {}
-func (*Reply_Transferinsert) isreply_Item()            {}
-func (*Reply_Reaptransfers) isreply_Item()             {}
+func (*Reply_Exemption) isreplying_Datum()           {}
+func (*Reply_Reverberate) isreplying_Datum()                {}
+func (*Reply_Purge) isreplying_Datum()               {}
+func (*Reply_Details) isreplying_Datum()                {}
+func (*Reply_Initiatechain) isreplying_Datum()           {}
+func (*Reply_Inquire) isreplying_Datum()               {}
+func (*Reply_Inspecttrans) isreplying_Datum()             {}
+func (*Reply_Endorse) isreplying_Datum()              {}
+func (*Reply_Catalogimages) isreplying_Datum()       {}
+func (*Reply_Extendimage) isreplying_Datum()       {}
+func (*Reply_Loadimagefragment) isreplying_Datum()   {}
+func (*Reply_Executeimagefragment) isreplying_Datum()  {}
+func (*Reply_Prepareitem) isreplying_Datum()     {}
+func (*Reply_Executeitem) isreplying_Datum()     {}
+func (*Reply_Extendballot) isreplying_Datum()          {}
+func (*Reply_Verifyballotaddition) isreplying_Datum() {}
+func (*Reply_Finalizeledger) isreplying_Datum()       {}
+func (*Reply_Appendtrans) isreplying_Datum()            {}
+func (*Reply_Harvesttrans) isreplying_Datum()             {}
 
-func (m *Reply) FetchItem() isreply_Item {
+func (m *Reply) ObtainDatum() isreplying_Datum {
 	if m != nil {
-		return m.Item
+		return m.Datum
 	}
 	return nil
 }
 
-func (m *Reply) FetchExemption() *ReplyExemption {
-	if x, ok := m.FetchItem().(*Reply_Exemption); ok {
+func (m *Reply) ObtainExemption() *ReplyExemption {
+	if x, ok := m.ObtainDatum().(*Reply_Exemption); ok {
 		return x.Exemption
 	}
 	return nil
 }
 
-func (m *Reply) FetchReverberate() *ReplyReverberate {
-	if x, ok := m.FetchItem().(*Reply_Reverberate); ok {
-		return x.Replicate
+func (m *Reply) ObtainReverberate() *ReplyReverberate {
+	if x, ok := m.ObtainDatum().(*Reply_Reverberate); ok {
+		return x.Reverberate
 	}
 	return nil
 }
 
-func (m *Reply) FetchPurge() *ReplyPurge {
-	if x, ok := m.FetchItem().(*Reply_Purge); ok {
+func (m *Reply) ObtainPurge() *ReplyPurge {
+	if x, ok := m.ObtainDatum().(*Reply_Purge); ok {
 		return x.Purge
 	}
 	return nil
 }
 
-func (m *Reply) FetchDetails() *ReplyDetails {
-	if x, ok := m.FetchItem().(*Reply_Details); ok {
+func (m *Reply) ObtainDetails() *ReplyDetails {
+	if x, ok := m.ObtainDatum().(*Reply_Details); ok {
 		return x.Details
 	}
 	return nil
 }
 
-func (m *Reply) FetchInitSeries() *ReplyInitSeries {
-	if x, ok := m.FetchItem().(*Reply_Initiatechain); ok {
-		return x.InitSeries
+func (m *Reply) ObtainInitializeSuccession() *ReplyInitializeSuccession {
+	if x, ok := m.ObtainDatum().(*Reply_Initiatechain); ok {
+		return x.InitializeSuccession
 	}
 	return nil
 }
 
-func (m *Reply) FetchInquire() *ReplyInquire {
-	if x, ok := m.FetchItem().(*Reply_Inquire); ok {
+func (m *Reply) ObtainInquire() *ReplyInquire {
+	if x, ok := m.ObtainDatum().(*Reply_Inquire); ok {
 		return x.Inquire
 	}
 	return nil
 }
 
-func (m *Reply) FetchInspectTransfer() *ReplyInspectTransfer {
-	if x, ok := m.FetchItem().(*Reply_Transfercheck); ok {
+func (m *Reply) ObtainInspectTransfer() *ReplyInspectTransfer {
+	if x, ok := m.ObtainDatum().(*Reply_Inspecttrans); ok {
 		return x.InspectTransfer
 	}
 	return nil
 }
 
-func (m *Reply) FetchEndorse() *ReplyEndorse {
-	if x, ok := m.FetchItem().(*Reply_Endorse); ok {
+func (m *Reply) ObtainEndorse() *ReplyEndorse {
+	if x, ok := m.ObtainDatum().(*Reply_Endorse); ok {
 		return x.Endorse
 	}
 	return nil
 }
 
-func (m *Reply) FetchCatalogMirrors() *ReplyCatalogMirrors {
-	if x, ok := m.FetchItem().(*Reply_Catalogmirrors); ok {
-		return x.CatalogMirrors
+func (m *Reply) ObtainCatalogImages() *ReplyCatalogImages {
+	if x, ok := m.ObtainDatum().(*Reply_Catalogimages); ok {
+		return x.CollectionImages
 	}
 	return nil
 }
 
-func (m *Reply) FetchProposalMirror() *ReplyProposalMirror {
-	if x, ok := m.FetchItem().(*Reply_Mirrorsnapshot); ok {
-		return x.ProposalMirror
+func (m *Reply) ObtainExtendImage() *ReplyExtendImage {
+	if x, ok := m.ObtainDatum().(*Reply_Extendimage); ok {
+		return x.ExtendImage
 	}
 	return nil
 }
 
-func (m *Reply) FetchImportMirrorSegment() *ReplyImportMirrorSegment {
-	if x, ok := m.FetchItem().(*Reply_Loadmirrorsegment); ok {
-		return x.ImportMirrorSegment
+func (m *Reply) ObtainFetchImageSegment() *ReplyFetchImageSegment {
+	if x, ok := m.ObtainDatum().(*Reply_Loadimagefragment); ok {
+		return x.FetchImageSegment
 	}
 	return nil
 }
 
-func (m *Reply) FetchExecuteMirrorSegment() *ReplyExecuteMirrorSegment {
-	if x, ok := m.FetchItem().(*Reply_Executemirrorsegment); ok {
-		return x.ExecuteMirrorSegment
+func (m *Reply) ObtainExecuteImageSegment() *ReplyExecuteImageSegment {
+	if x, ok := m.ObtainDatum().(*Reply_Executeimagefragment); ok {
+		return x.ExecuteImageSegment
 	}
 	return nil
 }
 
-func (m *Reply) FetchArrangeNomination() *ReplyArrangeNomination {
-	if x, ok := m.FetchItem().(*Reply_Arrangenomination); ok {
+func (m *Reply) ObtainArrangeNomination() *ReplyArrangeNomination {
+	if x, ok := m.ObtainDatum().(*Reply_Prepareitem); ok {
 		return x.ArrangeNomination
 	}
 	return nil
 }
 
-func (m *Reply) FetchHandleNomination() *ReplyHandleNomination {
-	if x, ok := m.FetchItem().(*Reply_Processnomination); ok {
+func (m *Reply) ObtainHandleNomination() *ReplyHandleNomination {
+	if x, ok := m.ObtainDatum().(*Reply_Executeitem); ok {
 		return x.HandleNomination
 	}
 	return nil
 }
 
-func (m *Reply) FetchExpandBallot() *ReplyExpandBallot {
-	if x, ok := m.FetchItem().(*Reply_Ballotextend); ok {
-		return x.ExpandBallot
+func (m *Reply) ObtainBroadenBallot() *ReplyBroadenBallot {
+	if x, ok := m.ObtainDatum().(*Reply_Extendballot); ok {
+		return x.BroadenBallot
 	}
 	return nil
 }
 
-func (m *Reply) FetchValidateBallotAddition() *ReplyValidateBallotAddition {
-	if x, ok := m.FetchItem().(*Reply_Validateballotextension); ok {
+func (m *Reply) ObtainValidateBallotAddition() *ReplyValidateBallotAddition {
+	if x, ok := m.ObtainDatum().(*Reply_Verifyballotaddition); ok {
 		return x.ValidateBallotAddition
 	}
 	return nil
 }
 
-func (m *Reply) FetchCompleteLedger() *ReplyCompleteLedger {
-	if x, ok := m.FetchItem().(*Reply_Terminateblock); ok {
-		return x.CompleteLedger
+func (m *Reply) ObtainCulminateLedger() *ReplyCulminateLedger {
+	if x, ok := m.ObtainDatum().(*Reply_Finalizeledger); ok {
+		return x.CulminateLedger
 	}
 	return nil
 }
 
-func (m *Reply) FetchEmbedTransfer() *ReplyEmbedTransfer {
-	if x, ok := m.FetchItem().(*Reply_Transferinsert); ok {
-		return x.EmbedTransfer
+func (m *Reply) ObtainAppendTransfer() *ReplyAppendTransfer {
+	if x, ok := m.ObtainDatum().(*Reply_Appendtrans); ok {
+		return x.AppendTransfer
 	}
 	return nil
 }
 
-func (m *Reply) FetchHarvestTrans() *ReplyHarvestTrans {
-	if x, ok := m.FetchItem().(*Reply_Reaptransfers); ok {
+func (m *Reply) ObtainHarvestTrans() *ReplyHarvestTrans {
+	if x, ok := m.ObtainDatum().(*Reply_Harvesttrans); ok {
 		return x.HarvestTrans
 	}
 	return nil
 }
 
 //
-func (*Reply) XXX_Variantcontainers() []interface{} {
+func (*Reply) XXX_Oneofwrappers() []interface{} {
 	return []interface{}{
 		(*Reply_Exemption)(nil),
 		(*Reply_Reverberate)(nil),
@@ -1985,63 +1985,63 @@ func (*Reply) XXX_Variantcontainers() []interface{} {
 		(*Reply_Details)(nil),
 		(*Reply_Initiatechain)(nil),
 		(*Reply_Inquire)(nil),
-		(*Reply_Transfercheck)(nil),
+		(*Reply_Inspecttrans)(nil),
 		(*Reply_Endorse)(nil),
-		(*Reply_Catalogmirrors)(nil),
-		(*Reply_Mirrorsnapshot)(nil),
-		(*Reply_Loadmirrorsegment)(nil),
-		(*Reply_Executemirrorsegment)(nil),
-		(*Reply_Arrangenomination)(nil),
-		(*Reply_Processnomination)(nil),
-		(*Reply_Ballotextend)(nil),
-		(*Reply_Validateballotextension)(nil),
-		(*Reply_Terminateblock)(nil),
-		(*Reply_Transferinsert)(nil),
-		(*Reply_Reaptransfers)(nil),
+		(*Reply_Catalogimages)(nil),
+		(*Reply_Extendimage)(nil),
+		(*Reply_Loadimagefragment)(nil),
+		(*Reply_Executeimagefragment)(nil),
+		(*Reply_Prepareitem)(nil),
+		(*Reply_Executeitem)(nil),
+		(*Reply_Extendballot)(nil),
+		(*Reply_Verifyballotaddition)(nil),
+		(*Reply_Finalizeledger)(nil),
+		(*Reply_Appendtrans)(nil),
+		(*Reply_Harvesttrans)(nil),
 	}
 }
 
 //
 type ReplyExemption struct {
-	Fault string `protobuf:"octets,1,opt,name=error,proto3" json:"fault,omitempty"`
+	Failure string `protobuf:"octets,1,opt,name=error,proto3" json:"failure,omitempty"`
 }
 
 func (m *ReplyExemption) Restore()         { *m = ReplyExemption{} }
-func (m *ReplyExemption) String() string { return proto.CompactTextString(m) }
-func (*ReplyExemption) SchemaSignal()    {}
+func (m *ReplyExemption) Text() string { return proto.CompactTextString(m) }
+func (*ReplyExemption) SchemaArtifact()    {}
 func (*ReplyExemption) Definition() ([]byte, []int) {
-	return filedefinition_252557cfdd89a31a, []int{20}
+	return filedescriptor_252557cfdd89a31a, []int{20}
 }
-func (m *ReplyExemption) XXX_Unserialize(b []byte) error {
-	return m.Unserialize(b)
+func (m *ReplyExemption) XXX_Decode(b []byte) error {
+	return m.Decode(b)
 }
 func (m *ReplyExemption) XXX_Serialize(b []byte, certain bool) ([]byte, error) {
 	if certain {
-		return xxx_messagedata_Replyfault.Marshal(b, m, certain)
+		return xxx_signaldetails_Replyexemption.Marshal(b, m, certain)
 	} else {
 		b = b[:cap(b)]
-		n, err := m.SerializeToDimensionedBuffer(b)
+		n, err := m.SerializeTowardDimensionedReserve(b)
 		if err != nil {
 			return nil, err
 		}
 		return b[:n], nil
 	}
 }
-func (m *ReplyExemption) XXX_Coalesce(src proto.Message) {
-	xxx_messagedata_Replyfault.Merge(m, src)
+func (m *ReplyExemption) XXX_Consolidate(src proto.Message) {
+	xxx_signaldetails_Replyexemption.Merge(m, src)
 }
-func (m *ReplyExemption) XXX_Volume() int {
-	return m.Volume()
+func (m *ReplyExemption) XXX_Extent() int {
+	return m.Extent()
 }
-func (m *ReplyExemption) XXX_Omitunclear() {
-	xxx_messagedata_Replyfault.DiscardUnknown(m)
+func (m *ReplyExemption) XXX_Dropunfamiliar() {
+	xxx_signaldetails_Replyexemption.DiscardUnknown(m)
 }
 
-var xxx_messagedata_Replyfault proto.InternalMessageInfo
+var xxx_signaldetails_Replyexemption proto.InternalMessageInfo
 
-func (m *ReplyExemption) FetchFault() string {
+func (m *ReplyExemption) ObtainFailure() string {
 	if m != nil {
-		return m.Fault
+		return m.Failure
 	}
 	return "REDACTED"
 }
@@ -2051,39 +2051,39 @@ type ReplyReverberate struct {
 }
 
 func (m *ReplyReverberate) Restore()         { *m = ReplyReverberate{} }
-func (m *ReplyReverberate) String() string { return proto.CompactTextString(m) }
-func (*ReplyReverberate) SchemaSignal()    {}
+func (m *ReplyReverberate) Text() string { return proto.CompactTextString(m) }
+func (*ReplyReverberate) SchemaArtifact()    {}
 func (*ReplyReverberate) Definition() ([]byte, []int) {
-	return filedefinition_252557cfdd89a31a, []int{21}
+	return filedescriptor_252557cfdd89a31a, []int{21}
 }
-func (m *ReplyReverberate) XXX_Unserialize(b []byte) error {
-	return m.Unserialize(b)
+func (m *ReplyReverberate) XXX_Decode(b []byte) error {
+	return m.Decode(b)
 }
 func (m *ReplyReverberate) XXX_Serialize(b []byte, certain bool) ([]byte, error) {
 	if certain {
-		return xxx_messagedata_Replyecho.Marshal(b, m, certain)
+		return xxx_signaldetails_Replyecho.Marshal(b, m, certain)
 	} else {
 		b = b[:cap(b)]
-		n, err := m.SerializeToDimensionedBuffer(b)
+		n, err := m.SerializeTowardDimensionedReserve(b)
 		if err != nil {
 			return nil, err
 		}
 		return b[:n], nil
 	}
 }
-func (m *ReplyReverberate) XXX_Coalesce(src proto.Message) {
-	xxx_messagedata_Replyecho.Merge(m, src)
+func (m *ReplyReverberate) XXX_Consolidate(src proto.Message) {
+	xxx_signaldetails_Replyecho.Merge(m, src)
 }
-func (m *ReplyReverberate) XXX_Volume() int {
-	return m.Volume()
+func (m *ReplyReverberate) XXX_Extent() int {
+	return m.Extent()
 }
-func (m *ReplyReverberate) XXX_Omitunclear() {
-	xxx_messagedata_Replyecho.DiscardUnknown(m)
+func (m *ReplyReverberate) XXX_Dropunfamiliar() {
+	xxx_signaldetails_Replyecho.DiscardUnknown(m)
 }
 
-var xxx_messagedata_Replyecho proto.InternalMessageInfo
+var xxx_signaldetails_Replyecho proto.InternalMessageInfo
 
-func (m *ReplyReverberate) FetchSignal() string {
+func (m *ReplyReverberate) ObtainArtifact() string {
 	if m != nil {
 		return m.Signal
 	}
@@ -2094,423 +2094,423 @@ type ReplyPurge struct {
 }
 
 func (m *ReplyPurge) Restore()         { *m = ReplyPurge{} }
-func (m *ReplyPurge) String() string { return proto.CompactTextString(m) }
-func (*ReplyPurge) SchemaSignal()    {}
+func (m *ReplyPurge) Text() string { return proto.CompactTextString(m) }
+func (*ReplyPurge) SchemaArtifact()    {}
 func (*ReplyPurge) Definition() ([]byte, []int) {
-	return filedefinition_252557cfdd89a31a, []int{22}
+	return filedescriptor_252557cfdd89a31a, []int{22}
 }
-func (m *ReplyPurge) XXX_Unserialize(b []byte) error {
-	return m.Unserialize(b)
+func (m *ReplyPurge) XXX_Decode(b []byte) error {
+	return m.Decode(b)
 }
 func (m *ReplyPurge) XXX_Serialize(b []byte, certain bool) ([]byte, error) {
 	if certain {
-		return xxx_messagedata_Replypurge.Marshal(b, m, certain)
+		return xxx_signaldetails_Replypurge.Marshal(b, m, certain)
 	} else {
 		b = b[:cap(b)]
-		n, err := m.SerializeToDimensionedBuffer(b)
+		n, err := m.SerializeTowardDimensionedReserve(b)
 		if err != nil {
 			return nil, err
 		}
 		return b[:n], nil
 	}
 }
-func (m *ReplyPurge) XXX_Coalesce(src proto.Message) {
-	xxx_messagedata_Replypurge.Merge(m, src)
+func (m *ReplyPurge) XXX_Consolidate(src proto.Message) {
+	xxx_signaldetails_Replypurge.Merge(m, src)
 }
-func (m *ReplyPurge) XXX_Volume() int {
-	return m.Volume()
+func (m *ReplyPurge) XXX_Extent() int {
+	return m.Extent()
 }
-func (m *ReplyPurge) XXX_Omitunclear() {
-	xxx_messagedata_Replypurge.DiscardUnknown(m)
+func (m *ReplyPurge) XXX_Dropunfamiliar() {
+	xxx_signaldetails_Replypurge.DiscardUnknown(m)
 }
 
-var xxx_messagedata_Replypurge proto.InternalMessageInfo
+var xxx_signaldetails_Replypurge proto.InternalMessageInfo
 
 type ReplyDetails struct {
 	Data             string `protobuf:"octets,1,opt,name=data,proto3" json:"data,omitempty"`
-	Release          string `protobuf:"octets,2,opt,name=version,proto3" json:"release,omitempty"`
-	ApplicationRelease       uint64 `protobuf:"variableint,3,opt,name=app_version,json=appVersion,proto3" json:"application_release,omitempty"`
-	FinalLedgerLevel  int64  `protobuf:"variableint,4,opt,name=last_block_height,json=lastBlockHeight,proto3" json:"final_ledger_level,omitempty"`
-	FinalLedgerApplicationDigest []byte `protobuf:"octets,5,opt,name=last_block_app_hash,json=lastBlockAppHash,proto3" json:"final_ledger_application_digest,omitempty"`
+	Edition          string `protobuf:"octets,2,opt,name=version,proto3" json:"edition,omitempty"`
+	PlatformEdition       uint64 `protobuf:"variableint,3,opt,name=app_version,json=appVersion,proto3" json:"application_edition,omitempty"`
+	FinalLedgerAltitude  int64  `protobuf:"variableint,4,opt,name=last_block_height,json=lastBlockHeight,proto3" json:"final_ledger_altitude,omitempty"`
+	FinalLedgerPlatformDigest []byte `protobuf:"octets,5,opt,name=last_block_app_hash,json=lastBlockAppHash,proto3" json:"final_ledger_application_digest,omitempty"`
 }
 
 func (m *ReplyDetails) Restore()         { *m = ReplyDetails{} }
-func (m *ReplyDetails) String() string { return proto.CompactTextString(m) }
-func (*ReplyDetails) SchemaSignal()    {}
+func (m *ReplyDetails) Text() string { return proto.CompactTextString(m) }
+func (*ReplyDetails) SchemaArtifact()    {}
 func (*ReplyDetails) Definition() ([]byte, []int) {
-	return filedefinition_252557cfdd89a31a, []int{23}
+	return filedescriptor_252557cfdd89a31a, []int{23}
 }
-func (m *ReplyDetails) XXX_Unserialize(b []byte) error {
-	return m.Unserialize(b)
+func (m *ReplyDetails) XXX_Decode(b []byte) error {
+	return m.Decode(b)
 }
 func (m *ReplyDetails) XXX_Serialize(b []byte, certain bool) ([]byte, error) {
 	if certain {
-		return xxx_messagedata_Replydata.Marshal(b, m, certain)
+		return xxx_signaldetails_Replydetails.Marshal(b, m, certain)
 	} else {
 		b = b[:cap(b)]
-		n, err := m.SerializeToDimensionedBuffer(b)
+		n, err := m.SerializeTowardDimensionedReserve(b)
 		if err != nil {
 			return nil, err
 		}
 		return b[:n], nil
 	}
 }
-func (m *ReplyDetails) XXX_Coalesce(src proto.Message) {
-	xxx_messagedata_Replydata.Merge(m, src)
+func (m *ReplyDetails) XXX_Consolidate(src proto.Message) {
+	xxx_signaldetails_Replydetails.Merge(m, src)
 }
-func (m *ReplyDetails) XXX_Volume() int {
-	return m.Volume()
+func (m *ReplyDetails) XXX_Extent() int {
+	return m.Extent()
 }
-func (m *ReplyDetails) XXX_Omitunclear() {
-	xxx_messagedata_Replydata.DiscardUnknown(m)
+func (m *ReplyDetails) XXX_Dropunfamiliar() {
+	xxx_signaldetails_Replydetails.DiscardUnknown(m)
 }
 
-var xxx_messagedata_Replydata proto.InternalMessageInfo
+var xxx_signaldetails_Replydetails proto.InternalMessageInfo
 
-func (m *ReplyDetails) FetchData() string {
+func (m *ReplyDetails) ObtainData() string {
 	if m != nil {
 		return m.Data
 	}
 	return "REDACTED"
 }
 
-func (m *ReplyDetails) FetchRelease() string {
+func (m *ReplyDetails) ObtainEdition() string {
 	if m != nil {
-		return m.Release
+		return m.Edition
 	}
 	return "REDACTED"
 }
 
-func (m *ReplyDetails) FetchApplicationRelease() uint64 {
+func (m *ReplyDetails) ObtainApplicationEdition() uint64 {
 	if m != nil {
-		return m.ApplicationRelease
+		return m.PlatformEdition
 	}
 	return 0
 }
 
-func (m *ReplyDetails) FetchFinalLedgerLevel() int64 {
+func (m *ReplyDetails) ObtainFinalLedgerAltitude() int64 {
 	if m != nil {
-		return m.FinalLedgerLevel
+		return m.FinalLedgerAltitude
 	}
 	return 0
 }
 
-func (m *ReplyDetails) FetchFinalLedgerApplicationDigest() []byte {
+func (m *ReplyDetails) ObtainFinalLedgerApplicationDigest() []byte {
 	if m != nil {
-		return m.FinalLedgerApplicationDigest
+		return m.FinalLedgerPlatformDigest
 	}
 	return nil
 }
 
-type ReplyInitSeries struct {
-	AgreementOptions *kinds1.AgreementOptions `protobuf:"octets,1,opt,name=consensus_params,json=consensusParams,proto3" json:"agreement_options,omitempty"`
-	Ratifiers      []RatifierModify       `protobuf:"octets,2,rep,name=validators,proto3" json:"ratifiers"`
-	ApplicationDigest         []byte                  `protobuf:"octets,3,opt,name=app_hash,json=appHash,proto3" json:"application_digest,omitempty"`
+type ReplyInitializeSuccession struct {
+	AgreementSettings *kinds1.AgreementSettings `protobuf:"octets,1,opt,name=consensus_params,json=consensusParams,proto3" json:"agreement_parameters,omitempty"`
+	Assessors      []AssessorRevise       `protobuf:"octets,2,rep,name=validators,proto3" json:"assessors"`
+	PlatformDigest         []byte                  `protobuf:"octets,3,opt,name=app_hash,json=appHash,proto3" json:"application_digest,omitempty"`
 }
 
-func (m *ReplyInitSeries) Restore()         { *m = ReplyInitSeries{} }
-func (m *ReplyInitSeries) String() string { return proto.CompactTextString(m) }
-func (*ReplyInitSeries) SchemaSignal()    {}
-func (*ReplyInitSeries) Definition() ([]byte, []int) {
-	return filedefinition_252557cfdd89a31a, []int{24}
+func (m *ReplyInitializeSuccession) Restore()         { *m = ReplyInitializeSuccession{} }
+func (m *ReplyInitializeSuccession) Text() string { return proto.CompactTextString(m) }
+func (*ReplyInitializeSuccession) SchemaArtifact()    {}
+func (*ReplyInitializeSuccession) Definition() ([]byte, []int) {
+	return filedescriptor_252557cfdd89a31a, []int{24}
 }
-func (m *ReplyInitSeries) XXX_Unserialize(b []byte) error {
-	return m.Unserialize(b)
+func (m *ReplyInitializeSuccession) XXX_Decode(b []byte) error {
+	return m.Decode(b)
 }
-func (m *ReplyInitSeries) XXX_Serialize(b []byte, certain bool) ([]byte, error) {
+func (m *ReplyInitializeSuccession) XXX_Serialize(b []byte, certain bool) ([]byte, error) {
 	if certain {
-		return xxx_messagedata_Replyinitiatechain.Marshal(b, m, certain)
+		return xxx_signaldetails_Replyinitiatechain.Marshal(b, m, certain)
 	} else {
 		b = b[:cap(b)]
-		n, err := m.SerializeToDimensionedBuffer(b)
+		n, err := m.SerializeTowardDimensionedReserve(b)
 		if err != nil {
 			return nil, err
 		}
 		return b[:n], nil
 	}
 }
-func (m *ReplyInitSeries) XXX_Coalesce(src proto.Message) {
-	xxx_messagedata_Replyinitiatechain.Merge(m, src)
+func (m *ReplyInitializeSuccession) XXX_Consolidate(src proto.Message) {
+	xxx_signaldetails_Replyinitiatechain.Merge(m, src)
 }
-func (m *ReplyInitSeries) XXX_Volume() int {
-	return m.Volume()
+func (m *ReplyInitializeSuccession) XXX_Extent() int {
+	return m.Extent()
 }
-func (m *ReplyInitSeries) XXX_Omitunclear() {
-	xxx_messagedata_Replyinitiatechain.DiscardUnknown(m)
+func (m *ReplyInitializeSuccession) XXX_Dropunfamiliar() {
+	xxx_signaldetails_Replyinitiatechain.DiscardUnknown(m)
 }
 
-var xxx_messagedata_Replyinitiatechain proto.InternalMessageInfo
+var xxx_signaldetails_Replyinitiatechain proto.InternalMessageInfo
 
-func (m *ReplyInitSeries) FetchAgreementOptions() *kinds1.AgreementOptions {
+func (m *ReplyInitializeSuccession) ObtainAgreementParameters() *kinds1.AgreementSettings {
 	if m != nil {
-		return m.AgreementOptions
+		return m.AgreementSettings
 	}
 	return nil
 }
 
-func (m *ReplyInitSeries) FetchRatifiers() []RatifierModify {
+func (m *ReplyInitializeSuccession) ObtainAssessors() []AssessorRevise {
 	if m != nil {
-		return m.Ratifiers
+		return m.Assessors
 	}
 	return nil
 }
 
-func (m *ReplyInitSeries) FetchApplicationDigest() []byte {
+func (m *ReplyInitializeSuccession) ObtainApplicationDigest() []byte {
 	if m != nil {
-		return m.ApplicationDigest
+		return m.PlatformDigest
 	}
 	return nil
 }
 
 type ReplyInquire struct {
-	Code uint32 `protobuf:"variableint,1,opt,name=code,proto3" json:"code,omitempty"`
+	Cipher uint32 `protobuf:"variableint,1,opt,name=code,proto3" json:"cipher,omitempty"`
 	//
 	Log       string           `protobuf:"octets,3,opt,name=log,proto3" json:"log,omitempty"`
 	Details      string           `protobuf:"octets,4,opt,name=info,proto3" json:"details,omitempty"`
 	Ordinal     int64            `protobuf:"variableint,5,opt,name=index,proto3" json:"ordinal,omitempty"`
 	Key       []byte           `protobuf:"octets,6,opt,name=key,proto3" json:"key,omitempty"`
-	Item     []byte           `protobuf:"octets,7,opt,name=value,proto3" json:"item,omitempty"`
-	EvidenceActions  *vault.EvidenceActions `protobuf:"octets,8,opt,name=proof_ops,json=proofOps,proto3" json:"evidence_actions,omitempty"`
-	Level    int64            `protobuf:"variableint,9,opt,name=height,proto3" json:"level,omitempty"`
-	Codex string           `protobuf:"octets,10,opt,name=codespace,proto3" json:"codex,omitempty"`
+	Datum     []byte           `protobuf:"octets,7,opt,name=value,proto3" json:"datum,omitempty"`
+	AttestationActions  *security.AttestationActions `protobuf:"octets,8,opt,name=proof_ops,json=proofOps,proto3" json:"attestation_actions,omitempty"`
+	Altitude    int64            `protobuf:"variableint,9,opt,name=height,proto3" json:"altitude,omitempty"`
+	Codeset string           `protobuf:"octets,10,opt,name=codespace,proto3" json:"codeset,omitempty"`
 }
 
 func (m *ReplyInquire) Restore()         { *m = ReplyInquire{} }
-func (m *ReplyInquire) String() string { return proto.CompactTextString(m) }
-func (*ReplyInquire) SchemaSignal()    {}
+func (m *ReplyInquire) Text() string { return proto.CompactTextString(m) }
+func (*ReplyInquire) SchemaArtifact()    {}
 func (*ReplyInquire) Definition() ([]byte, []int) {
-	return filedefinition_252557cfdd89a31a, []int{25}
+	return filedescriptor_252557cfdd89a31a, []int{25}
 }
-func (m *ReplyInquire) XXX_Unserialize(b []byte) error {
-	return m.Unserialize(b)
+func (m *ReplyInquire) XXX_Decode(b []byte) error {
+	return m.Decode(b)
 }
 func (m *ReplyInquire) XXX_Serialize(b []byte, certain bool) ([]byte, error) {
 	if certain {
-		return xxx_messagedata_Replyquery.Marshal(b, m, certain)
+		return xxx_signaldetails_Replysearch.Marshal(b, m, certain)
 	} else {
 		b = b[:cap(b)]
-		n, err := m.SerializeToDimensionedBuffer(b)
+		n, err := m.SerializeTowardDimensionedReserve(b)
 		if err != nil {
 			return nil, err
 		}
 		return b[:n], nil
 	}
 }
-func (m *ReplyInquire) XXX_Coalesce(src proto.Message) {
-	xxx_messagedata_Replyquery.Merge(m, src)
+func (m *ReplyInquire) XXX_Consolidate(src proto.Message) {
+	xxx_signaldetails_Replysearch.Merge(m, src)
 }
-func (m *ReplyInquire) XXX_Volume() int {
-	return m.Volume()
+func (m *ReplyInquire) XXX_Extent() int {
+	return m.Extent()
 }
-func (m *ReplyInquire) XXX_Omitunclear() {
-	xxx_messagedata_Replyquery.DiscardUnknown(m)
+func (m *ReplyInquire) XXX_Dropunfamiliar() {
+	xxx_signaldetails_Replysearch.DiscardUnknown(m)
 }
 
-var xxx_messagedata_Replyquery proto.InternalMessageInfo
+var xxx_signaldetails_Replysearch proto.InternalMessageInfo
 
-func (m *ReplyInquire) FetchCode() uint32 {
+func (m *ReplyInquire) ObtainCipher() uint32 {
 	if m != nil {
-		return m.Code
+		return m.Cipher
 	}
 	return 0
 }
 
-func (m *ReplyInquire) FetchTrace() string {
+func (m *ReplyInquire) ObtainRecord() string {
 	if m != nil {
 		return m.Log
 	}
 	return "REDACTED"
 }
 
-func (m *ReplyInquire) FetchDetails() string {
+func (m *ReplyInquire) ObtainDetails() string {
 	if m != nil {
 		return m.Details
 	}
 	return "REDACTED"
 }
 
-func (m *ReplyInquire) FetchOrdinal() int64 {
+func (m *ReplyInquire) ObtainOrdinal() int64 {
 	if m != nil {
 		return m.Ordinal
 	}
 	return 0
 }
 
-func (m *ReplyInquire) FetchKey() []byte {
+func (m *ReplyInquire) ObtainToken() []byte {
 	if m != nil {
 		return m.Key
 	}
 	return nil
 }
 
-func (m *ReplyInquire) FetchItem() []byte {
+func (m *ReplyInquire) ObtainDatum() []byte {
 	if m != nil {
-		return m.Item
+		return m.Datum
 	}
 	return nil
 }
 
-func (m *ReplyInquire) FetchEvidenceActions() *vault.EvidenceActions {
+func (m *ReplyInquire) ObtainAttestationActions() *security.AttestationActions {
 	if m != nil {
-		return m.EvidenceActions
+		return m.AttestationActions
 	}
 	return nil
 }
 
-func (m *ReplyInquire) FetchLevel() int64 {
+func (m *ReplyInquire) ObtainAltitude() int64 {
 	if m != nil {
-		return m.Level
+		return m.Altitude
 	}
 	return 0
 }
 
-func (m *ReplyInquire) FetchCodex() string {
+func (m *ReplyInquire) ObtainCodeset() string {
 	if m != nil {
-		return m.Codex
+		return m.Codeset
 	}
 	return "REDACTED"
 }
 
 type ReplyInspectTransfer struct {
-	Code      uint32  `protobuf:"variableint,1,opt,name=code,proto3" json:"code,omitempty"`
+	Cipher      uint32  `protobuf:"variableint,1,opt,name=code,proto3" json:"cipher,omitempty"`
 	Data      []byte  `protobuf:"octets,2,opt,name=data,proto3" json:"data,omitempty"`
 	Log       string  `protobuf:"octets,3,opt,name=log,proto3" json:"log,omitempty"`
 	Details      string  `protobuf:"octets,4,opt,name=info,proto3" json:"details,omitempty"`
 	FuelDesired int64   `protobuf:"variableint,5,opt,name=gas_wanted,proto3" json:"fuel_desired,omitempty"`
-	FuelApplied   int64   `protobuf:"variableint,6,opt,name=gas_used,proto3" json:"fuel_applied,omitempty"`
-	Events    []Event `protobuf:"octets,7,rep,name=events,proto3" json:"events,omitempty"`
-	Codex string  `protobuf:"octets,8,opt,name=codespace,proto3" json:"codex,omitempty"`
+	FuelUtilized   int64   `protobuf:"variableint,6,opt,name=gas_used,proto3" json:"fuel_utilized,omitempty"`
+	Incidents    []Incident `protobuf:"octets,7,rep,name=events,proto3" json:"incidents,omitempty"`
+	Codeset string  `protobuf:"octets,8,opt,name=codespace,proto3" json:"codeset,omitempty"`
 }
 
 func (m *ReplyInspectTransfer) Restore()         { *m = ReplyInspectTransfer{} }
-func (m *ReplyInspectTransfer) String() string { return proto.CompactTextString(m) }
-func (*ReplyInspectTransfer) SchemaSignal()    {}
+func (m *ReplyInspectTransfer) Text() string { return proto.CompactTextString(m) }
+func (*ReplyInspectTransfer) SchemaArtifact()    {}
 func (*ReplyInspectTransfer) Definition() ([]byte, []int) {
-	return filedefinition_252557cfdd89a31a, []int{26}
+	return filedescriptor_252557cfdd89a31a, []int{26}
 }
-func (m *ReplyInspectTransfer) XXX_Unserialize(b []byte) error {
-	return m.Unserialize(b)
+func (m *ReplyInspectTransfer) XXX_Decode(b []byte) error {
+	return m.Decode(b)
 }
 func (m *ReplyInspectTransfer) XXX_Serialize(b []byte, certain bool) ([]byte, error) {
 	if certain {
-		return xxx_messagedata_Replytransfercheck.Marshal(b, m, certain)
+		return xxx_signaldetails_Replyinspecttrans.Marshal(b, m, certain)
 	} else {
 		b = b[:cap(b)]
-		n, err := m.SerializeToDimensionedBuffer(b)
+		n, err := m.SerializeTowardDimensionedReserve(b)
 		if err != nil {
 			return nil, err
 		}
 		return b[:n], nil
 	}
 }
-func (m *ReplyInspectTransfer) XXX_Coalesce(src proto.Message) {
-	xxx_messagedata_Replytransfercheck.Merge(m, src)
+func (m *ReplyInspectTransfer) XXX_Consolidate(src proto.Message) {
+	xxx_signaldetails_Replyinspecttrans.Merge(m, src)
 }
-func (m *ReplyInspectTransfer) XXX_Volume() int {
-	return m.Volume()
+func (m *ReplyInspectTransfer) XXX_Extent() int {
+	return m.Extent()
 }
-func (m *ReplyInspectTransfer) XXX_Omitunclear() {
-	xxx_messagedata_Replytransfercheck.DiscardUnknown(m)
+func (m *ReplyInspectTransfer) XXX_Dropunfamiliar() {
+	xxx_signaldetails_Replyinspecttrans.DiscardUnknown(m)
 }
 
-var xxx_messagedata_Replytransfercheck proto.InternalMessageInfo
+var xxx_signaldetails_Replyinspecttrans proto.InternalMessageInfo
 
-func (m *ReplyInspectTransfer) FetchCode() uint32 {
+func (m *ReplyInspectTransfer) ObtainCipher() uint32 {
 	if m != nil {
-		return m.Code
+		return m.Cipher
 	}
 	return 0
 }
 
-func (m *ReplyInspectTransfer) FetchData() []byte {
+func (m *ReplyInspectTransfer) ObtainData() []byte {
 	if m != nil {
 		return m.Data
 	}
 	return nil
 }
 
-func (m *ReplyInspectTransfer) FetchTrace() string {
+func (m *ReplyInspectTransfer) ObtainRecord() string {
 	if m != nil {
 		return m.Log
 	}
 	return "REDACTED"
 }
 
-func (m *ReplyInspectTransfer) FetchDetails() string {
+func (m *ReplyInspectTransfer) ObtainDetails() string {
 	if m != nil {
 		return m.Details
 	}
 	return "REDACTED"
 }
 
-func (m *ReplyInspectTransfer) FetchFuelDesired() int64 {
+func (m *ReplyInspectTransfer) ObtainFuelDesired() int64 {
 	if m != nil {
 		return m.FuelDesired
 	}
 	return 0
 }
 
-func (m *ReplyInspectTransfer) FetchFuelApplied() int64 {
+func (m *ReplyInspectTransfer) ObtainFuelUtilized() int64 {
 	if m != nil {
-		return m.FuelApplied
+		return m.FuelUtilized
 	}
 	return 0
 }
 
-func (m *ReplyInspectTransfer) FetchEvents() []Event {
+func (m *ReplyInspectTransfer) ObtainIncidents() []Incident {
 	if m != nil {
-		return m.Events
+		return m.Incidents
 	}
 	return nil
 }
 
-func (m *ReplyInspectTransfer) FetchCodex() string {
+func (m *ReplyInspectTransfer) ObtainCodeset() string {
 	if m != nil {
-		return m.Codex
+		return m.Codeset
 	}
 	return "REDACTED"
 }
 
-type ReplyEmbedTransfer struct {
-	Code uint32 `protobuf:"variableint,1,opt,name=code,proto3" json:"code,omitempty"`
+type ReplyAppendTransfer struct {
+	Cipher uint32 `protobuf:"variableint,1,opt,name=code,proto3" json:"cipher,omitempty"`
 }
 
-func (m *ReplyEmbedTransfer) Restore()         { *m = ReplyEmbedTransfer{} }
-func (m *ReplyEmbedTransfer) String() string { return proto.CompactTextString(m) }
-func (*ReplyEmbedTransfer) SchemaSignal()    {}
-func (*ReplyEmbedTransfer) Definition() ([]byte, []int) {
-	return filedefinition_252557cfdd89a31a, []int{27}
+func (m *ReplyAppendTransfer) Restore()         { *m = ReplyAppendTransfer{} }
+func (m *ReplyAppendTransfer) Text() string { return proto.CompactTextString(m) }
+func (*ReplyAppendTransfer) SchemaArtifact()    {}
+func (*ReplyAppendTransfer) Definition() ([]byte, []int) {
+	return filedescriptor_252557cfdd89a31a, []int{27}
 }
-func (m *ReplyEmbedTransfer) XXX_Unserialize(b []byte) error {
-	return m.Unserialize(b)
+func (m *ReplyAppendTransfer) XXX_Decode(b []byte) error {
+	return m.Decode(b)
 }
-func (m *ReplyEmbedTransfer) XXX_Serialize(b []byte, certain bool) ([]byte, error) {
+func (m *ReplyAppendTransfer) XXX_Serialize(b []byte, certain bool) ([]byte, error) {
 	if certain {
-		return xxx_messagedata_Replytransferinsert.Marshal(b, m, certain)
+		return xxx_signaldetails_Replyappendtrans.Marshal(b, m, certain)
 	} else {
 		b = b[:cap(b)]
-		n, err := m.SerializeToDimensionedBuffer(b)
+		n, err := m.SerializeTowardDimensionedReserve(b)
 		if err != nil {
 			return nil, err
 		}
 		return b[:n], nil
 	}
 }
-func (m *ReplyEmbedTransfer) XXX_Coalesce(src proto.Message) {
-	xxx_messagedata_Replytransferinsert.Merge(m, src)
+func (m *ReplyAppendTransfer) XXX_Consolidate(src proto.Message) {
+	xxx_signaldetails_Replyappendtrans.Merge(m, src)
 }
-func (m *ReplyEmbedTransfer) XXX_Volume() int {
-	return m.Volume()
+func (m *ReplyAppendTransfer) XXX_Extent() int {
+	return m.Extent()
 }
-func (m *ReplyEmbedTransfer) XXX_Omitunclear() {
-	xxx_messagedata_Replytransferinsert.DiscardUnknown(m)
+func (m *ReplyAppendTransfer) XXX_Dropunfamiliar() {
+	xxx_signaldetails_Replyappendtrans.DiscardUnknown(m)
 }
 
-var xxx_messagedata_Replytransferinsert proto.InternalMessageInfo
+var xxx_signaldetails_Replyappendtrans proto.InternalMessageInfo
 
-func (m *ReplyEmbedTransfer) FetchCode() uint32 {
+func (m *ReplyAppendTransfer) ObtainCipher() uint32 {
 	if m != nil {
-		return m.Code
+		return m.Cipher
 	}
 	return 0
 }
@@ -2520,39 +2520,39 @@ type ReplyHarvestTrans struct {
 }
 
 func (m *ReplyHarvestTrans) Restore()         { *m = ReplyHarvestTrans{} }
-func (m *ReplyHarvestTrans) String() string { return proto.CompactTextString(m) }
-func (*ReplyHarvestTrans) SchemaSignal()    {}
+func (m *ReplyHarvestTrans) Text() string { return proto.CompactTextString(m) }
+func (*ReplyHarvestTrans) SchemaArtifact()    {}
 func (*ReplyHarvestTrans) Definition() ([]byte, []int) {
-	return filedefinition_252557cfdd89a31a, []int{28}
+	return filedescriptor_252557cfdd89a31a, []int{28}
 }
-func (m *ReplyHarvestTrans) XXX_Unserialize(b []byte) error {
-	return m.Unserialize(b)
+func (m *ReplyHarvestTrans) XXX_Decode(b []byte) error {
+	return m.Decode(b)
 }
 func (m *ReplyHarvestTrans) XXX_Serialize(b []byte, certain bool) ([]byte, error) {
 	if certain {
-		return xxx_messagedata_Replyreaptransfers.Marshal(b, m, certain)
+		return xxx_signaldetails_Replyharvesttrans.Marshal(b, m, certain)
 	} else {
 		b = b[:cap(b)]
-		n, err := m.SerializeToDimensionedBuffer(b)
+		n, err := m.SerializeTowardDimensionedReserve(b)
 		if err != nil {
 			return nil, err
 		}
 		return b[:n], nil
 	}
 }
-func (m *ReplyHarvestTrans) XXX_Coalesce(src proto.Message) {
-	xxx_messagedata_Replyreaptransfers.Merge(m, src)
+func (m *ReplyHarvestTrans) XXX_Consolidate(src proto.Message) {
+	xxx_signaldetails_Replyharvesttrans.Merge(m, src)
 }
-func (m *ReplyHarvestTrans) XXX_Volume() int {
-	return m.Volume()
+func (m *ReplyHarvestTrans) XXX_Extent() int {
+	return m.Extent()
 }
-func (m *ReplyHarvestTrans) XXX_Omitunclear() {
-	xxx_messagedata_Replyreaptransfers.DiscardUnknown(m)
+func (m *ReplyHarvestTrans) XXX_Dropunfamiliar() {
+	xxx_signaldetails_Replyharvesttrans.DiscardUnknown(m)
 }
 
-var xxx_messagedata_Replyreaptransfers proto.InternalMessageInfo
+var xxx_signaldetails_Replyharvesttrans proto.InternalMessageInfo
 
-func (m *ReplyHarvestTrans) FetchTrans() [][]byte {
+func (m *ReplyHarvestTrans) ObtainTrans() [][]byte {
 	if m != nil {
 		return m.Txs
 	}
@@ -2560,237 +2560,237 @@ func (m *ReplyHarvestTrans) FetchTrans() [][]byte {
 }
 
 type ReplyEndorse struct {
-	PreserveLevel int64 `protobuf:"variableint,3,opt,name=retain_height,json=retainHeight,proto3" json:"preserve_level,omitempty"`
+	PreserveAltitude int64 `protobuf:"variableint,3,opt,name=retain_height,json=retainHeight,proto3" json:"preserve_altitude,omitempty"`
 }
 
 func (m *ReplyEndorse) Restore()         { *m = ReplyEndorse{} }
-func (m *ReplyEndorse) String() string { return proto.CompactTextString(m) }
-func (*ReplyEndorse) SchemaSignal()    {}
+func (m *ReplyEndorse) Text() string { return proto.CompactTextString(m) }
+func (*ReplyEndorse) SchemaArtifact()    {}
 func (*ReplyEndorse) Definition() ([]byte, []int) {
-	return filedefinition_252557cfdd89a31a, []int{29}
+	return filedescriptor_252557cfdd89a31a, []int{29}
 }
-func (m *ReplyEndorse) XXX_Unserialize(b []byte) error {
-	return m.Unserialize(b)
+func (m *ReplyEndorse) XXX_Decode(b []byte) error {
+	return m.Decode(b)
 }
 func (m *ReplyEndorse) XXX_Serialize(b []byte, certain bool) ([]byte, error) {
 	if certain {
-		return xxx_messagedata_Replyendorse.Marshal(b, m, certain)
+		return xxx_signaldetails_Replyendorse.Marshal(b, m, certain)
 	} else {
 		b = b[:cap(b)]
-		n, err := m.SerializeToDimensionedBuffer(b)
+		n, err := m.SerializeTowardDimensionedReserve(b)
 		if err != nil {
 			return nil, err
 		}
 		return b[:n], nil
 	}
 }
-func (m *ReplyEndorse) XXX_Coalesce(src proto.Message) {
-	xxx_messagedata_Replyendorse.Merge(m, src)
+func (m *ReplyEndorse) XXX_Consolidate(src proto.Message) {
+	xxx_signaldetails_Replyendorse.Merge(m, src)
 }
-func (m *ReplyEndorse) XXX_Volume() int {
-	return m.Volume()
+func (m *ReplyEndorse) XXX_Extent() int {
+	return m.Extent()
 }
-func (m *ReplyEndorse) XXX_Omitunclear() {
-	xxx_messagedata_Replyendorse.DiscardUnknown(m)
+func (m *ReplyEndorse) XXX_Dropunfamiliar() {
+	xxx_signaldetails_Replyendorse.DiscardUnknown(m)
 }
 
-var xxx_messagedata_Replyendorse proto.InternalMessageInfo
+var xxx_signaldetails_Replyendorse proto.InternalMessageInfo
 
-func (m *ReplyEndorse) FetchPreserveLevel() int64 {
+func (m *ReplyEndorse) ObtainPreserveAltitude() int64 {
 	if m != nil {
-		return m.PreserveLevel
+		return m.PreserveAltitude
 	}
 	return 0
 }
 
-type ReplyCatalogMirrors struct {
-	Mirrors []*Mirror `protobuf:"octets,1,rep,name=snapshots,proto3" json:"mirrors,omitempty"`
+type ReplyCatalogImages struct {
+	Images []*Image `protobuf:"octets,1,rep,name=snapshots,proto3" json:"images,omitempty"`
 }
 
-func (m *ReplyCatalogMirrors) Restore()         { *m = ReplyCatalogMirrors{} }
-func (m *ReplyCatalogMirrors) String() string { return proto.CompactTextString(m) }
-func (*ReplyCatalogMirrors) SchemaSignal()    {}
-func (*ReplyCatalogMirrors) Definition() ([]byte, []int) {
-	return filedefinition_252557cfdd89a31a, []int{30}
+func (m *ReplyCatalogImages) Restore()         { *m = ReplyCatalogImages{} }
+func (m *ReplyCatalogImages) Text() string { return proto.CompactTextString(m) }
+func (*ReplyCatalogImages) SchemaArtifact()    {}
+func (*ReplyCatalogImages) Definition() ([]byte, []int) {
+	return filedescriptor_252557cfdd89a31a, []int{30}
 }
-func (m *ReplyCatalogMirrors) XXX_Unserialize(b []byte) error {
-	return m.Unserialize(b)
+func (m *ReplyCatalogImages) XXX_Decode(b []byte) error {
+	return m.Decode(b)
 }
-func (m *ReplyCatalogMirrors) XXX_Serialize(b []byte, certain bool) ([]byte, error) {
+func (m *ReplyCatalogImages) XXX_Serialize(b []byte, certain bool) ([]byte, error) {
 	if certain {
-		return xxx_messagedata_Replycatalogmirrors.Marshal(b, m, certain)
+		return xxx_signaldetails_Replycatalogimages.Marshal(b, m, certain)
 	} else {
 		b = b[:cap(b)]
-		n, err := m.SerializeToDimensionedBuffer(b)
+		n, err := m.SerializeTowardDimensionedReserve(b)
 		if err != nil {
 			return nil, err
 		}
 		return b[:n], nil
 	}
 }
-func (m *ReplyCatalogMirrors) XXX_Coalesce(src proto.Message) {
-	xxx_messagedata_Replycatalogmirrors.Merge(m, src)
+func (m *ReplyCatalogImages) XXX_Consolidate(src proto.Message) {
+	xxx_signaldetails_Replycatalogimages.Merge(m, src)
 }
-func (m *ReplyCatalogMirrors) XXX_Volume() int {
-	return m.Volume()
+func (m *ReplyCatalogImages) XXX_Extent() int {
+	return m.Extent()
 }
-func (m *ReplyCatalogMirrors) XXX_Omitunclear() {
-	xxx_messagedata_Replycatalogmirrors.DiscardUnknown(m)
+func (m *ReplyCatalogImages) XXX_Dropunfamiliar() {
+	xxx_signaldetails_Replycatalogimages.DiscardUnknown(m)
 }
 
-var xxx_messagedata_Replycatalogmirrors proto.InternalMessageInfo
+var xxx_signaldetails_Replycatalogimages proto.InternalMessageInfo
 
-func (m *ReplyCatalogMirrors) FetchMirrors() []*Mirror {
+func (m *ReplyCatalogImages) ObtainImages() []*Image {
 	if m != nil {
-		return m.Mirrors
+		return m.Images
 	}
 	return nil
 }
 
-type ReplyProposalMirror struct {
-	Outcome Replymirrorsnapshot_Outcome `protobuf:"variableint,1,opt,name=result,proto3,enum=tendermint.abci.ResponseOfferSnapshot_Result" json:"outcome,omitempty"`
+type ReplyExtendImage struct {
+	Outcome Replyextendimage_Outcome `protobuf:"variableint,1,opt,name=result,proto3,enum=tendermint.abci.ResponseOfferSnapshot_Result" json:"outcome,omitempty"`
 }
 
-func (m *ReplyProposalMirror) Restore()         { *m = ReplyProposalMirror{} }
-func (m *ReplyProposalMirror) String() string { return proto.CompactTextString(m) }
-func (*ReplyProposalMirror) SchemaSignal()    {}
-func (*ReplyProposalMirror) Definition() ([]byte, []int) {
-	return filedefinition_252557cfdd89a31a, []int{31}
+func (m *ReplyExtendImage) Restore()         { *m = ReplyExtendImage{} }
+func (m *ReplyExtendImage) Text() string { return proto.CompactTextString(m) }
+func (*ReplyExtendImage) SchemaArtifact()    {}
+func (*ReplyExtendImage) Definition() ([]byte, []int) {
+	return filedescriptor_252557cfdd89a31a, []int{31}
 }
-func (m *ReplyProposalMirror) XXX_Unserialize(b []byte) error {
-	return m.Unserialize(b)
+func (m *ReplyExtendImage) XXX_Decode(b []byte) error {
+	return m.Decode(b)
 }
-func (m *ReplyProposalMirror) XXX_Serialize(b []byte, certain bool) ([]byte, error) {
+func (m *ReplyExtendImage) XXX_Serialize(b []byte, certain bool) ([]byte, error) {
 	if certain {
-		return xxx_messagedata_Replymirrorsnapshot.Marshal(b, m, certain)
+		return xxx_signaldetails_Replyextendimage.Marshal(b, m, certain)
 	} else {
 		b = b[:cap(b)]
-		n, err := m.SerializeToDimensionedBuffer(b)
+		n, err := m.SerializeTowardDimensionedReserve(b)
 		if err != nil {
 			return nil, err
 		}
 		return b[:n], nil
 	}
 }
-func (m *ReplyProposalMirror) XXX_Coalesce(src proto.Message) {
-	xxx_messagedata_Replymirrorsnapshot.Merge(m, src)
+func (m *ReplyExtendImage) XXX_Consolidate(src proto.Message) {
+	xxx_signaldetails_Replyextendimage.Merge(m, src)
 }
-func (m *ReplyProposalMirror) XXX_Volume() int {
-	return m.Volume()
+func (m *ReplyExtendImage) XXX_Extent() int {
+	return m.Extent()
 }
-func (m *ReplyProposalMirror) XXX_Omitunclear() {
-	xxx_messagedata_Replymirrorsnapshot.DiscardUnknown(m)
+func (m *ReplyExtendImage) XXX_Dropunfamiliar() {
+	xxx_signaldetails_Replyextendimage.DiscardUnknown(m)
 }
 
-var xxx_messagedata_Replymirrorsnapshot proto.InternalMessageInfo
+var xxx_signaldetails_Replyextendimage proto.InternalMessageInfo
 
-func (m *ReplyProposalMirror) FetchOutcome() Replymirrorsnapshot_Outcome {
+func (m *ReplyExtendImage) ObtainOutcome() Replyextendimage_Outcome {
 	if m != nil {
 		return m.Outcome
 	}
-	return Replymirrorsnapshot_UNCLEAR
+	return Replyextendimage_UNFAMILIAR
 }
 
-type ReplyImportMirrorSegment struct {
+type ReplyFetchImageSegment struct {
 	Segment []byte `protobuf:"octets,1,opt,name=chunk,proto3" json:"segment,omitempty"`
 }
 
-func (m *ReplyImportMirrorSegment) Restore()         { *m = ReplyImportMirrorSegment{} }
-func (m *ReplyImportMirrorSegment) String() string { return proto.CompactTextString(m) }
-func (*ReplyImportMirrorSegment) SchemaSignal()    {}
-func (*ReplyImportMirrorSegment) Definition() ([]byte, []int) {
-	return filedefinition_252557cfdd89a31a, []int{32}
+func (m *ReplyFetchImageSegment) Restore()         { *m = ReplyFetchImageSegment{} }
+func (m *ReplyFetchImageSegment) Text() string { return proto.CompactTextString(m) }
+func (*ReplyFetchImageSegment) SchemaArtifact()    {}
+func (*ReplyFetchImageSegment) Definition() ([]byte, []int) {
+	return filedescriptor_252557cfdd89a31a, []int{32}
 }
-func (m *ReplyImportMirrorSegment) XXX_Unserialize(b []byte) error {
-	return m.Unserialize(b)
+func (m *ReplyFetchImageSegment) XXX_Decode(b []byte) error {
+	return m.Decode(b)
 }
-func (m *ReplyImportMirrorSegment) XXX_Serialize(b []byte, certain bool) ([]byte, error) {
+func (m *ReplyFetchImageSegment) XXX_Serialize(b []byte, certain bool) ([]byte, error) {
 	if certain {
-		return xxx_messagedata_Replyloadmirrorsegment.Marshal(b, m, certain)
+		return xxx_signaldetails_Replyloadimagefragment.Marshal(b, m, certain)
 	} else {
 		b = b[:cap(b)]
-		n, err := m.SerializeToDimensionedBuffer(b)
+		n, err := m.SerializeTowardDimensionedReserve(b)
 		if err != nil {
 			return nil, err
 		}
 		return b[:n], nil
 	}
 }
-func (m *ReplyImportMirrorSegment) XXX_Coalesce(src proto.Message) {
-	xxx_messagedata_Replyloadmirrorsegment.Merge(m, src)
+func (m *ReplyFetchImageSegment) XXX_Consolidate(src proto.Message) {
+	xxx_signaldetails_Replyloadimagefragment.Merge(m, src)
 }
-func (m *ReplyImportMirrorSegment) XXX_Volume() int {
-	return m.Volume()
+func (m *ReplyFetchImageSegment) XXX_Extent() int {
+	return m.Extent()
 }
-func (m *ReplyImportMirrorSegment) XXX_Omitunclear() {
-	xxx_messagedata_Replyloadmirrorsegment.DiscardUnknown(m)
+func (m *ReplyFetchImageSegment) XXX_Dropunfamiliar() {
+	xxx_signaldetails_Replyloadimagefragment.DiscardUnknown(m)
 }
 
-var xxx_messagedata_Replyloadmirrorsegment proto.InternalMessageInfo
+var xxx_signaldetails_Replyloadimagefragment proto.InternalMessageInfo
 
-func (m *ReplyImportMirrorSegment) FetchSegment() []byte {
+func (m *ReplyFetchImageSegment) ObtainSegment() []byte {
 	if m != nil {
 		return m.Segment
 	}
 	return nil
 }
 
-type ReplyExecuteMirrorSegment struct {
-	Outcome        Replyexecutemirrorsegment_Outcome `protobuf:"variableint,1,opt,name=result,proto3,enum=tendermint.abci.ResponseApplySnapshotChunk_Result" json:"outcome,omitempty"`
-	ReacquireSegments []uint32                          `protobuf:"variableint,2,rep,packed,name=refetch_chunks,json=refetchChunks,proto3" json:"reacquire_segments,omitempty"`
-	DeclineEmitters []string                          `protobuf:"octets,3,rep,name=reject_senders,json=rejectSenders,proto3" json:"decline_emitters,omitempty"`
+type ReplyExecuteImageSegment struct {
+	Outcome        Replyapplyimagefragment_Outcome `protobuf:"variableint,1,opt,name=result,proto3,enum=tendermint.abci.ResponseApplySnapshotChunk_Result" json:"outcome,omitempty"`
+	RetrieveSegments []uint32                          `protobuf:"variableint,2,rep,packed,name=refetch_chunks,json=refetchChunks,proto3" json:"retrieve_segments,omitempty"`
+	DeclineOriginators []string                          `protobuf:"octets,3,rep,name=reject_senders,json=rejectSenders,proto3" json:"decline_originators,omitempty"`
 }
 
-func (m *ReplyExecuteMirrorSegment) Restore()         { *m = ReplyExecuteMirrorSegment{} }
-func (m *ReplyExecuteMirrorSegment) String() string { return proto.CompactTextString(m) }
-func (*ReplyExecuteMirrorSegment) SchemaSignal()    {}
-func (*ReplyExecuteMirrorSegment) Definition() ([]byte, []int) {
-	return filedefinition_252557cfdd89a31a, []int{33}
+func (m *ReplyExecuteImageSegment) Restore()         { *m = ReplyExecuteImageSegment{} }
+func (m *ReplyExecuteImageSegment) Text() string { return proto.CompactTextString(m) }
+func (*ReplyExecuteImageSegment) SchemaArtifact()    {}
+func (*ReplyExecuteImageSegment) Definition() ([]byte, []int) {
+	return filedescriptor_252557cfdd89a31a, []int{33}
 }
-func (m *ReplyExecuteMirrorSegment) XXX_Unserialize(b []byte) error {
-	return m.Unserialize(b)
+func (m *ReplyExecuteImageSegment) XXX_Decode(b []byte) error {
+	return m.Decode(b)
 }
-func (m *ReplyExecuteMirrorSegment) XXX_Serialize(b []byte, certain bool) ([]byte, error) {
+func (m *ReplyExecuteImageSegment) XXX_Serialize(b []byte, certain bool) ([]byte, error) {
 	if certain {
-		return xxx_messagedata_Replyexecutemirrorsegment.Marshal(b, m, certain)
+		return xxx_signaldetails_Replyapplyimagefragment.Marshal(b, m, certain)
 	} else {
 		b = b[:cap(b)]
-		n, err := m.SerializeToDimensionedBuffer(b)
+		n, err := m.SerializeTowardDimensionedReserve(b)
 		if err != nil {
 			return nil, err
 		}
 		return b[:n], nil
 	}
 }
-func (m *ReplyExecuteMirrorSegment) XXX_Coalesce(src proto.Message) {
-	xxx_messagedata_Replyexecutemirrorsegment.Merge(m, src)
+func (m *ReplyExecuteImageSegment) XXX_Consolidate(src proto.Message) {
+	xxx_signaldetails_Replyapplyimagefragment.Merge(m, src)
 }
-func (m *ReplyExecuteMirrorSegment) XXX_Volume() int {
-	return m.Volume()
+func (m *ReplyExecuteImageSegment) XXX_Extent() int {
+	return m.Extent()
 }
-func (m *ReplyExecuteMirrorSegment) XXX_Omitunclear() {
-	xxx_messagedata_Replyexecutemirrorsegment.DiscardUnknown(m)
+func (m *ReplyExecuteImageSegment) XXX_Dropunfamiliar() {
+	xxx_signaldetails_Replyapplyimagefragment.DiscardUnknown(m)
 }
 
-var xxx_messagedata_Replyexecutemirrorsegment proto.InternalMessageInfo
+var xxx_signaldetails_Replyapplyimagefragment proto.InternalMessageInfo
 
-func (m *ReplyExecuteMirrorSegment) FetchOutcome() Replyexecutemirrorsegment_Outcome {
+func (m *ReplyExecuteImageSegment) ObtainOutcome() Replyapplyimagefragment_Outcome {
 	if m != nil {
 		return m.Outcome
 	}
-	return Replyexecutemirrorsegment_UNCLEAR
+	return Replyapplyimagefragment_UNFAMILIAR
 }
 
-func (m *ReplyExecuteMirrorSegment) FetchReacquireSegments() []uint32 {
+func (m *ReplyExecuteImageSegment) ObtainRetrieveSegments() []uint32 {
 	if m != nil {
-		return m.ReacquireSegments
+		return m.RetrieveSegments
 	}
 	return nil
 }
 
-func (m *ReplyExecuteMirrorSegment) FetchDeclineEmitters() []string {
+func (m *ReplyExecuteImageSegment) ObtainDeclineOriginators() []string {
 	if m != nil {
-		return m.DeclineEmitters
+		return m.DeclineOriginators
 	}
 	return nil
 }
@@ -2800,39 +2800,39 @@ type ReplyArrangeNomination struct {
 }
 
 func (m *ReplyArrangeNomination) Restore()         { *m = ReplyArrangeNomination{} }
-func (m *ReplyArrangeNomination) String() string { return proto.CompactTextString(m) }
-func (*ReplyArrangeNomination) SchemaSignal()    {}
+func (m *ReplyArrangeNomination) Text() string { return proto.CompactTextString(m) }
+func (*ReplyArrangeNomination) SchemaArtifact()    {}
 func (*ReplyArrangeNomination) Definition() ([]byte, []int) {
-	return filedefinition_252557cfdd89a31a, []int{34}
+	return filedescriptor_252557cfdd89a31a, []int{34}
 }
-func (m *ReplyArrangeNomination) XXX_Unserialize(b []byte) error {
-	return m.Unserialize(b)
+func (m *ReplyArrangeNomination) XXX_Decode(b []byte) error {
+	return m.Decode(b)
 }
 func (m *ReplyArrangeNomination) XXX_Serialize(b []byte, certain bool) ([]byte, error) {
 	if certain {
-		return xxx_messagedata_Replyarrangenomination.Marshal(b, m, certain)
+		return xxx_signaldetails_Replyprepareitem.Marshal(b, m, certain)
 	} else {
 		b = b[:cap(b)]
-		n, err := m.SerializeToDimensionedBuffer(b)
+		n, err := m.SerializeTowardDimensionedReserve(b)
 		if err != nil {
 			return nil, err
 		}
 		return b[:n], nil
 	}
 }
-func (m *ReplyArrangeNomination) XXX_Coalesce(src proto.Message) {
-	xxx_messagedata_Replyarrangenomination.Merge(m, src)
+func (m *ReplyArrangeNomination) XXX_Consolidate(src proto.Message) {
+	xxx_signaldetails_Replyprepareitem.Merge(m, src)
 }
-func (m *ReplyArrangeNomination) XXX_Volume() int {
-	return m.Volume()
+func (m *ReplyArrangeNomination) XXX_Extent() int {
+	return m.Extent()
 }
-func (m *ReplyArrangeNomination) XXX_Omitunclear() {
-	xxx_messagedata_Replyarrangenomination.DiscardUnknown(m)
+func (m *ReplyArrangeNomination) XXX_Dropunfamiliar() {
+	xxx_signaldetails_Replyprepareitem.DiscardUnknown(m)
 }
 
-var xxx_messagedata_Replyarrangenomination proto.InternalMessageInfo
+var xxx_signaldetails_Replyprepareitem proto.InternalMessageInfo
 
-func (m *ReplyArrangeNomination) FetchTrans() [][]byte {
+func (m *ReplyArrangeNomination) ObtainTrans() [][]byte {
 	if m != nil {
 		return m.Txs
 	}
@@ -2840,87 +2840,87 @@ func (m *ReplyArrangeNomination) FetchTrans() [][]byte {
 }
 
 type ReplyHandleNomination struct {
-	Status Responseprocessnomination_Nominationstate `protobuf:"variableint,1,opt,name=status,proto3,enum=tendermint.abci.ResponseProcessProposal_ProposalStatus" json:"state,omitempty"`
+	Condition Responseexecuteitem_Itemstatus `protobuf:"variableint,1,opt,name=status,proto3,enum=tendermint.abci.ResponseProcessProposal_ProposalStatus" json:"condition,omitempty"`
 }
 
 func (m *ReplyHandleNomination) Restore()         { *m = ReplyHandleNomination{} }
-func (m *ReplyHandleNomination) String() string { return proto.CompactTextString(m) }
-func (*ReplyHandleNomination) SchemaSignal()    {}
+func (m *ReplyHandleNomination) Text() string { return proto.CompactTextString(m) }
+func (*ReplyHandleNomination) SchemaArtifact()    {}
 func (*ReplyHandleNomination) Definition() ([]byte, []int) {
-	return filedefinition_252557cfdd89a31a, []int{35}
+	return filedescriptor_252557cfdd89a31a, []int{35}
 }
-func (m *ReplyHandleNomination) XXX_Unserialize(b []byte) error {
-	return m.Unserialize(b)
+func (m *ReplyHandleNomination) XXX_Decode(b []byte) error {
+	return m.Decode(b)
 }
 func (m *ReplyHandleNomination) XXX_Serialize(b []byte, certain bool) ([]byte, error) {
 	if certain {
-		return xxx_messagedata_Responseprocessnomination.Marshal(b, m, certain)
+		return xxx_signaldetails_Responseexecuteitem.Marshal(b, m, certain)
 	} else {
 		b = b[:cap(b)]
-		n, err := m.SerializeToDimensionedBuffer(b)
+		n, err := m.SerializeTowardDimensionedReserve(b)
 		if err != nil {
 			return nil, err
 		}
 		return b[:n], nil
 	}
 }
-func (m *ReplyHandleNomination) XXX_Coalesce(src proto.Message) {
-	xxx_messagedata_Responseprocessnomination.Merge(m, src)
+func (m *ReplyHandleNomination) XXX_Consolidate(src proto.Message) {
+	xxx_signaldetails_Responseexecuteitem.Merge(m, src)
 }
-func (m *ReplyHandleNomination) XXX_Volume() int {
-	return m.Volume()
+func (m *ReplyHandleNomination) XXX_Extent() int {
+	return m.Extent()
 }
-func (m *ReplyHandleNomination) XXX_Omitunclear() {
-	xxx_messagedata_Responseprocessnomination.DiscardUnknown(m)
+func (m *ReplyHandleNomination) XXX_Dropunfamiliar() {
+	xxx_signaldetails_Responseexecuteitem.DiscardUnknown(m)
 }
 
-var xxx_messagedata_Responseprocessnomination proto.InternalMessageInfo
+var xxx_signaldetails_Responseexecuteitem proto.InternalMessageInfo
 
-func (m *ReplyHandleNomination) FetchStatus() Responseprocessnomination_Nominationstate {
+func (m *ReplyHandleNomination) ObtainCondition() Responseexecuteitem_Itemstatus {
 	if m != nil {
-		return m.Status
+		return m.Condition
 	}
-	return Responseprocessnomination_UNCLEAR
+	return Responseexecuteitem_UNFAMILIAR
 }
 
-type ReplyExpandBallot struct {
+type ReplyBroadenBallot struct {
 	BallotAddition []byte `protobuf:"octets,1,opt,name=vote_extension,json=voteExtension,proto3" json:"ballot_addition,omitempty"`
 }
 
-func (m *ReplyExpandBallot) Restore()         { *m = ReplyExpandBallot{} }
-func (m *ReplyExpandBallot) String() string { return proto.CompactTextString(m) }
-func (*ReplyExpandBallot) SchemaSignal()    {}
-func (*ReplyExpandBallot) Definition() ([]byte, []int) {
-	return filedefinition_252557cfdd89a31a, []int{36}
+func (m *ReplyBroadenBallot) Restore()         { *m = ReplyBroadenBallot{} }
+func (m *ReplyBroadenBallot) Text() string { return proto.CompactTextString(m) }
+func (*ReplyBroadenBallot) SchemaArtifact()    {}
+func (*ReplyBroadenBallot) Definition() ([]byte, []int) {
+	return filedescriptor_252557cfdd89a31a, []int{36}
 }
-func (m *ReplyExpandBallot) XXX_Unserialize(b []byte) error {
-	return m.Unserialize(b)
+func (m *ReplyBroadenBallot) XXX_Decode(b []byte) error {
+	return m.Decode(b)
 }
-func (m *ReplyExpandBallot) XXX_Serialize(b []byte, certain bool) ([]byte, error) {
+func (m *ReplyBroadenBallot) XXX_Serialize(b []byte, certain bool) ([]byte, error) {
 	if certain {
-		return xxx_messagedata_Replyballotextend.Marshal(b, m, certain)
+		return xxx_signaldetails_Replyextendballot.Marshal(b, m, certain)
 	} else {
 		b = b[:cap(b)]
-		n, err := m.SerializeToDimensionedBuffer(b)
+		n, err := m.SerializeTowardDimensionedReserve(b)
 		if err != nil {
 			return nil, err
 		}
 		return b[:n], nil
 	}
 }
-func (m *ReplyExpandBallot) XXX_Coalesce(src proto.Message) {
-	xxx_messagedata_Replyballotextend.Merge(m, src)
+func (m *ReplyBroadenBallot) XXX_Consolidate(src proto.Message) {
+	xxx_signaldetails_Replyextendballot.Merge(m, src)
 }
-func (m *ReplyExpandBallot) XXX_Volume() int {
-	return m.Volume()
+func (m *ReplyBroadenBallot) XXX_Extent() int {
+	return m.Extent()
 }
-func (m *ReplyExpandBallot) XXX_Omitunclear() {
-	xxx_messagedata_Replyballotextend.DiscardUnknown(m)
+func (m *ReplyBroadenBallot) XXX_Dropunfamiliar() {
+	xxx_signaldetails_Replyextendballot.DiscardUnknown(m)
 }
 
-var xxx_messagedata_Replyballotextend proto.InternalMessageInfo
+var xxx_signaldetails_Replyextendballot proto.InternalMessageInfo
 
-func (m *ReplyExpandBallot) FetchBallotAddition() []byte {
+func (m *ReplyBroadenBallot) ObtainBallotAddition() []byte {
 	if m != nil {
 		return m.BallotAddition
 	}
@@ -2928,178 +2928,178 @@ func (m *ReplyExpandBallot) FetchBallotAddition() []byte {
 }
 
 type ReplyValidateBallotAddition struct {
-	Status Responseverifyballotextension_Validatestatus `protobuf:"variableint,1,opt,name=status,proto3,enum=tendermint.abci.ResponseVerifyVoteExtension_VerifyStatus" json:"state,omitempty"`
+	Condition Responsecertifyballotaddition_Verifystatus `protobuf:"variableint,1,opt,name=status,proto3,enum=tendermint.abci.ResponseVerifyVoteExtension_VerifyStatus" json:"condition,omitempty"`
 }
 
 func (m *ReplyValidateBallotAddition) Restore()         { *m = ReplyValidateBallotAddition{} }
-func (m *ReplyValidateBallotAddition) String() string { return proto.CompactTextString(m) }
-func (*ReplyValidateBallotAddition) SchemaSignal()    {}
+func (m *ReplyValidateBallotAddition) Text() string { return proto.CompactTextString(m) }
+func (*ReplyValidateBallotAddition) SchemaArtifact()    {}
 func (*ReplyValidateBallotAddition) Definition() ([]byte, []int) {
-	return filedefinition_252557cfdd89a31a, []int{37}
+	return filedescriptor_252557cfdd89a31a, []int{37}
 }
-func (m *ReplyValidateBallotAddition) XXX_Unserialize(b []byte) error {
-	return m.Unserialize(b)
+func (m *ReplyValidateBallotAddition) XXX_Decode(b []byte) error {
+	return m.Decode(b)
 }
 func (m *ReplyValidateBallotAddition) XXX_Serialize(b []byte, certain bool) ([]byte, error) {
 	if certain {
-		return xxx_messagedata_Responseverifyballotextension.Marshal(b, m, certain)
+		return xxx_signaldetails_Responsecertifyballotaddition.Marshal(b, m, certain)
 	} else {
 		b = b[:cap(b)]
-		n, err := m.SerializeToDimensionedBuffer(b)
+		n, err := m.SerializeTowardDimensionedReserve(b)
 		if err != nil {
 			return nil, err
 		}
 		return b[:n], nil
 	}
 }
-func (m *ReplyValidateBallotAddition) XXX_Coalesce(src proto.Message) {
-	xxx_messagedata_Responseverifyballotextension.Merge(m, src)
+func (m *ReplyValidateBallotAddition) XXX_Consolidate(src proto.Message) {
+	xxx_signaldetails_Responsecertifyballotaddition.Merge(m, src)
 }
-func (m *ReplyValidateBallotAddition) XXX_Volume() int {
-	return m.Volume()
+func (m *ReplyValidateBallotAddition) XXX_Extent() int {
+	return m.Extent()
 }
-func (m *ReplyValidateBallotAddition) XXX_Omitunclear() {
-	xxx_messagedata_Responseverifyballotextension.DiscardUnknown(m)
+func (m *ReplyValidateBallotAddition) XXX_Dropunfamiliar() {
+	xxx_signaldetails_Responsecertifyballotaddition.DiscardUnknown(m)
 }
 
-var xxx_messagedata_Responseverifyballotextension proto.InternalMessageInfo
+var xxx_signaldetails_Responsecertifyballotaddition proto.InternalMessageInfo
 
-func (m *ReplyValidateBallotAddition) FetchStatus() Responseverifyballotextension_Validatestatus {
+func (m *ReplyValidateBallotAddition) ObtainCondition() Responsecertifyballotaddition_Verifystatus {
 	if m != nil {
-		return m.Status
+		return m.Condition
 	}
-	return Responseverifyballotextension_UNCLEAR
+	return Responsecertifyballotaddition_UNFAMILIAR
 }
 
-type ReplyCompleteLedger struct {
+type ReplyCulminateLedger struct {
 	//
-	Events []Event `protobuf:"octets,1,rep,name=events,proto3" json:"events,omitempty"`
+	Incidents []Incident `protobuf:"octets,1,rep,name=events,proto3" json:"incidents,omitempty"`
 	//
 	//
 	//
-	TransOutcomes []*InvokeTransferOutcome `protobuf:"octets,2,rep,name=tx_results,json=txResults,proto3" json:"transfer_outcomes,omitempty"`
+	TransferOutcomes []*InvokeTransferOutcome `protobuf:"octets,2,rep,name=tx_results,json=txResults,proto3" json:"transfer_outcomes,omitempty"`
 	//
-	RatifierRefreshes []RatifierModify `protobuf:"octets,3,rep,name=validator_updates,json=validatorUpdates,proto3" json:"ratifier_refreshes"`
+	AssessorRevisions []AssessorRevise `protobuf:"octets,3,rep,name=validator_updates,json=validatorUpdates,proto3" json:"assessor_revisions"`
 	//
-	AgreementArgumentRefreshes *kinds1.AgreementOptions `protobuf:"octets,4,opt,name=consensus_param_updates,json=consensusParamUpdates,proto3" json:"agreement_argument_refreshes,omitempty"`
+	AgreementArgumentRevisions *kinds1.AgreementSettings `protobuf:"octets,4,opt,name=consensus_param_updates,json=consensusParamUpdates,proto3" json:"agreement_argument_revisions,omitempty"`
 	//
-	ApplicationDigest []byte `protobuf:"octets,5,opt,name=app_hash,json=appHash,proto3" json:"application_digest,omitempty"`
+	PlatformDigest []byte `protobuf:"octets,5,opt,name=app_hash,json=appHash,proto3" json:"application_digest,omitempty"`
 }
 
-func (m *ReplyCompleteLedger) Restore()         { *m = ReplyCompleteLedger{} }
-func (m *ReplyCompleteLedger) String() string { return proto.CompactTextString(m) }
-func (*ReplyCompleteLedger) SchemaSignal()    {}
-func (*ReplyCompleteLedger) Definition() ([]byte, []int) {
-	return filedefinition_252557cfdd89a31a, []int{38}
+func (m *ReplyCulminateLedger) Restore()         { *m = ReplyCulminateLedger{} }
+func (m *ReplyCulminateLedger) Text() string { return proto.CompactTextString(m) }
+func (*ReplyCulminateLedger) SchemaArtifact()    {}
+func (*ReplyCulminateLedger) Definition() ([]byte, []int) {
+	return filedescriptor_252557cfdd89a31a, []int{38}
 }
-func (m *ReplyCompleteLedger) XXX_Unserialize(b []byte) error {
-	return m.Unserialize(b)
+func (m *ReplyCulminateLedger) XXX_Decode(b []byte) error {
+	return m.Decode(b)
 }
-func (m *ReplyCompleteLedger) XXX_Serialize(b []byte, certain bool) ([]byte, error) {
+func (m *ReplyCulminateLedger) XXX_Serialize(b []byte, certain bool) ([]byte, error) {
 	if certain {
-		return xxx_messagedata_Replyterminateblock.Marshal(b, m, certain)
+		return xxx_signaldetails_Replyfinalizeledger.Marshal(b, m, certain)
 	} else {
 		b = b[:cap(b)]
-		n, err := m.SerializeToDimensionedBuffer(b)
+		n, err := m.SerializeTowardDimensionedReserve(b)
 		if err != nil {
 			return nil, err
 		}
 		return b[:n], nil
 	}
 }
-func (m *ReplyCompleteLedger) XXX_Coalesce(src proto.Message) {
-	xxx_messagedata_Replyterminateblock.Merge(m, src)
+func (m *ReplyCulminateLedger) XXX_Consolidate(src proto.Message) {
+	xxx_signaldetails_Replyfinalizeledger.Merge(m, src)
 }
-func (m *ReplyCompleteLedger) XXX_Volume() int {
-	return m.Volume()
+func (m *ReplyCulminateLedger) XXX_Extent() int {
+	return m.Extent()
 }
-func (m *ReplyCompleteLedger) XXX_Omitunclear() {
-	xxx_messagedata_Replyterminateblock.DiscardUnknown(m)
+func (m *ReplyCulminateLedger) XXX_Dropunfamiliar() {
+	xxx_signaldetails_Replyfinalizeledger.DiscardUnknown(m)
 }
 
-var xxx_messagedata_Replyterminateblock proto.InternalMessageInfo
+var xxx_signaldetails_Replyfinalizeledger proto.InternalMessageInfo
 
-func (m *ReplyCompleteLedger) FetchEvents() []Event {
+func (m *ReplyCulminateLedger) ObtainIncidents() []Incident {
 	if m != nil {
-		return m.Events
+		return m.Incidents
 	}
 	return nil
 }
 
-func (m *ReplyCompleteLedger) FetchTransferOutcomes() []*InvokeTransferOutcome {
+func (m *ReplyCulminateLedger) ObtainTransferOutcomes() []*InvokeTransferOutcome {
 	if m != nil {
-		return m.TransOutcomes
+		return m.TransferOutcomes
 	}
 	return nil
 }
 
-func (m *ReplyCompleteLedger) FetchRatifierRefreshes() []RatifierModify {
+func (m *ReplyCulminateLedger) ObtainAssessorRevisions() []AssessorRevise {
 	if m != nil {
-		return m.RatifierRefreshes
+		return m.AssessorRevisions
 	}
 	return nil
 }
 
-func (m *ReplyCompleteLedger) FetchAgreementArgumentRefreshes() *kinds1.AgreementOptions {
+func (m *ReplyCulminateLedger) ObtainAgreementArgumentRevisions() *kinds1.AgreementSettings {
 	if m != nil {
-		return m.AgreementArgumentRefreshes
+		return m.AgreementArgumentRevisions
 	}
 	return nil
 }
 
-func (m *ReplyCompleteLedger) FetchApplicationDigest() []byte {
+func (m *ReplyCulminateLedger) ObtainApplicationDigest() []byte {
 	if m != nil {
-		return m.ApplicationDigest
+		return m.PlatformDigest
 	}
 	return nil
 }
 
 type EndorseDetails struct {
-	Cycle int32      `protobuf:"variableint,1,opt,name=round,proto3" json:"epoch,omitempty"`
+	Iteration int32      `protobuf:"variableint,1,opt,name=round,proto3" json:"iteration,omitempty"`
 	Ballots []BallotDetails `protobuf:"octets,2,rep,name=votes,proto3" json:"ballots"`
 }
 
 func (m *EndorseDetails) Restore()         { *m = EndorseDetails{} }
-func (m *EndorseDetails) String() string { return proto.CompactTextString(m) }
-func (*EndorseDetails) SchemaSignal()    {}
+func (m *EndorseDetails) Text() string { return proto.CompactTextString(m) }
+func (*EndorseDetails) SchemaArtifact()    {}
 func (*EndorseDetails) Definition() ([]byte, []int) {
-	return filedefinition_252557cfdd89a31a, []int{39}
+	return filedescriptor_252557cfdd89a31a, []int{39}
 }
-func (m *EndorseDetails) XXX_Unserialize(b []byte) error {
-	return m.Unserialize(b)
+func (m *EndorseDetails) XXX_Decode(b []byte) error {
+	return m.Decode(b)
 }
 func (m *EndorseDetails) XXX_Serialize(b []byte, certain bool) ([]byte, error) {
 	if certain {
-		return xxx_messagedata_Endorsementdata.Marshal(b, m, certain)
+		return xxx_signaldetails_Endorseinfo.Marshal(b, m, certain)
 	} else {
 		b = b[:cap(b)]
-		n, err := m.SerializeToDimensionedBuffer(b)
+		n, err := m.SerializeTowardDimensionedReserve(b)
 		if err != nil {
 			return nil, err
 		}
 		return b[:n], nil
 	}
 }
-func (m *EndorseDetails) XXX_Coalesce(src proto.Message) {
-	xxx_messagedata_Endorsementdata.Merge(m, src)
+func (m *EndorseDetails) XXX_Consolidate(src proto.Message) {
+	xxx_signaldetails_Endorseinfo.Merge(m, src)
 }
-func (m *EndorseDetails) XXX_Volume() int {
-	return m.Volume()
+func (m *EndorseDetails) XXX_Extent() int {
+	return m.Extent()
 }
-func (m *EndorseDetails) XXX_Omitunclear() {
-	xxx_messagedata_Endorsementdata.DiscardUnknown(m)
+func (m *EndorseDetails) XXX_Dropunfamiliar() {
+	xxx_signaldetails_Endorseinfo.DiscardUnknown(m)
 }
 
-var xxx_messagedata_Endorsementdata proto.InternalMessageInfo
+var xxx_signaldetails_Endorseinfo proto.InternalMessageInfo
 
-func (m *EndorseDetails) FetchDuration() int32 {
+func (m *EndorseDetails) ObtainIteration() int32 {
 	if m != nil {
-		return m.Cycle
+		return m.Iteration
 	}
 	return 0
 }
 
-func (m *EndorseDetails) FetchBallots() []BallotDetails {
+func (m *EndorseDetails) ObtainBallots() []BallotDetails {
 	if m != nil {
 		return m.Ballots
 	}
@@ -3111,53 +3111,53 @@ func (m *EndorseDetails) FetchBallots() []BallotDetails {
 //
 type ExpandedEndorseDetails struct {
 	//
-	Cycle int32 `protobuf:"variableint,1,opt,name=round,proto3" json:"epoch,omitempty"`
+	Iteration int32 `protobuf:"variableint,1,opt,name=round,proto3" json:"iteration,omitempty"`
 	//
 	//
 	Ballots []ExpandedBallotDetails `protobuf:"octets,2,rep,name=votes,proto3" json:"ballots"`
 }
 
 func (m *ExpandedEndorseDetails) Restore()         { *m = ExpandedEndorseDetails{} }
-func (m *ExpandedEndorseDetails) String() string { return proto.CompactTextString(m) }
-func (*ExpandedEndorseDetails) SchemaSignal()    {}
+func (m *ExpandedEndorseDetails) Text() string { return proto.CompactTextString(m) }
+func (*ExpandedEndorseDetails) SchemaArtifact()    {}
 func (*ExpandedEndorseDetails) Definition() ([]byte, []int) {
-	return filedefinition_252557cfdd89a31a, []int{40}
+	return filedescriptor_252557cfdd89a31a, []int{40}
 }
-func (m *ExpandedEndorseDetails) XXX_Unserialize(b []byte) error {
-	return m.Unserialize(b)
+func (m *ExpandedEndorseDetails) XXX_Decode(b []byte) error {
+	return m.Decode(b)
 }
 func (m *ExpandedEndorseDetails) XXX_Serialize(b []byte, certain bool) ([]byte, error) {
 	if certain {
-		return xxx_messagedata_Enhancedendorsementdata.Marshal(b, m, certain)
+		return xxx_signaldetails_Expandedendorseinfo.Marshal(b, m, certain)
 	} else {
 		b = b[:cap(b)]
-		n, err := m.SerializeToDimensionedBuffer(b)
+		n, err := m.SerializeTowardDimensionedReserve(b)
 		if err != nil {
 			return nil, err
 		}
 		return b[:n], nil
 	}
 }
-func (m *ExpandedEndorseDetails) XXX_Coalesce(src proto.Message) {
-	xxx_messagedata_Enhancedendorsementdata.Merge(m, src)
+func (m *ExpandedEndorseDetails) XXX_Consolidate(src proto.Message) {
+	xxx_signaldetails_Expandedendorseinfo.Merge(m, src)
 }
-func (m *ExpandedEndorseDetails) XXX_Volume() int {
-	return m.Volume()
+func (m *ExpandedEndorseDetails) XXX_Extent() int {
+	return m.Extent()
 }
-func (m *ExpandedEndorseDetails) XXX_Omitunclear() {
-	xxx_messagedata_Enhancedendorsementdata.DiscardUnknown(m)
+func (m *ExpandedEndorseDetails) XXX_Dropunfamiliar() {
+	xxx_signaldetails_Expandedendorseinfo.DiscardUnknown(m)
 }
 
-var xxx_messagedata_Enhancedendorsementdata proto.InternalMessageInfo
+var xxx_signaldetails_Expandedendorseinfo proto.InternalMessageInfo
 
-func (m *ExpandedEndorseDetails) FetchDuration() int32 {
+func (m *ExpandedEndorseDetails) ObtainIteration() int32 {
 	if m != nil {
-		return m.Cycle
+		return m.Iteration
 	}
 	return 0
 }
 
-func (m *ExpandedEndorseDetails) FetchBallots() []ExpandedBallotDetails {
+func (m *ExpandedEndorseDetails) ObtainBallots() []ExpandedBallotDetails {
 	if m != nil {
 		return m.Ballots
 	}
@@ -3167,52 +3167,52 @@ func (m *ExpandedEndorseDetails) FetchBallots() []ExpandedBallotDetails {
 //
 //
 //
-type Event struct {
+type Incident struct {
 	Kind       string           `protobuf:"octets,1,opt,name=type,proto3" json:"kind,omitempty"`
-	Properties []EventProperty `protobuf:"octets,2,rep,name=attributes,proto3" json:"properties,omitempty"`
+	Properties []IncidentProperty `protobuf:"octets,2,rep,name=attributes,proto3" json:"properties,omitempty"`
 }
 
-func (m *Event) Restore()         { *m = Event{} }
-func (m *Event) String() string { return proto.CompactTextString(m) }
-func (*Event) SchemaSignal()    {}
-func (*Event) Definition() ([]byte, []int) {
-	return filedefinition_252557cfdd89a31a, []int{41}
+func (m *Incident) Restore()         { *m = Incident{} }
+func (m *Incident) Text() string { return proto.CompactTextString(m) }
+func (*Incident) SchemaArtifact()    {}
+func (*Incident) Definition() ([]byte, []int) {
+	return filedescriptor_252557cfdd89a31a, []int{41}
 }
-func (m *Event) XXX_Unserialize(b []byte) error {
-	return m.Unserialize(b)
+func (m *Incident) XXX_Decode(b []byte) error {
+	return m.Decode(b)
 }
-func (m *Event) XXX_Serialize(b []byte, certain bool) ([]byte, error) {
+func (m *Incident) XXX_Serialize(b []byte, certain bool) ([]byte, error) {
 	if certain {
-		return xxx_messagedata_Event.Marshal(b, m, certain)
+		return xxx_signaldetails_Incident.Marshal(b, m, certain)
 	} else {
 		b = b[:cap(b)]
-		n, err := m.SerializeToDimensionedBuffer(b)
+		n, err := m.SerializeTowardDimensionedReserve(b)
 		if err != nil {
 			return nil, err
 		}
 		return b[:n], nil
 	}
 }
-func (m *Event) XXX_Coalesce(src proto.Message) {
-	xxx_messagedata_Event.Merge(m, src)
+func (m *Incident) XXX_Consolidate(src proto.Message) {
+	xxx_signaldetails_Incident.Merge(m, src)
 }
-func (m *Event) XXX_Volume() int {
-	return m.Volume()
+func (m *Incident) XXX_Extent() int {
+	return m.Extent()
 }
-func (m *Event) XXX_Omitunclear() {
-	xxx_messagedata_Event.DiscardUnknown(m)
+func (m *Incident) XXX_Dropunfamiliar() {
+	xxx_signaldetails_Incident.DiscardUnknown(m)
 }
 
-var xxx_messagedata_Event proto.InternalMessageInfo
+var xxx_signaldetails_Incident proto.InternalMessageInfo
 
-func (m *Event) FetchKind() string {
+func (m *Incident) ObtainKind() string {
 	if m != nil {
 		return m.Kind
 	}
 	return "REDACTED"
 }
 
-func (m *Event) FetchProperties() []EventProperty {
+func (m *Incident) ObtainProperties() []IncidentProperty {
 	if m != nil {
 		return m.Properties
 	}
@@ -3220,60 +3220,60 @@ func (m *Event) FetchProperties() []EventProperty {
 }
 
 //
-type EventProperty struct {
+type IncidentProperty struct {
 	Key   string `protobuf:"octets,1,opt,name=key,proto3" json:"key,omitempty"`
-	Item string `protobuf:"octets,2,opt,name=value,proto3" json:"item,omitempty"`
+	Datum string `protobuf:"octets,2,opt,name=value,proto3" json:"datum,omitempty"`
 	Ordinal bool   `protobuf:"variableint,3,opt,name=index,proto3" json:"ordinal,omitempty"`
 }
 
-func (m *EventProperty) Restore()         { *m = EventProperty{} }
-func (m *EventProperty) String() string { return proto.CompactTextString(m) }
-func (*EventProperty) SchemaSignal()    {}
-func (*EventProperty) Definition() ([]byte, []int) {
-	return filedefinition_252557cfdd89a31a, []int{42}
+func (m *IncidentProperty) Restore()         { *m = IncidentProperty{} }
+func (m *IncidentProperty) Text() string { return proto.CompactTextString(m) }
+func (*IncidentProperty) SchemaArtifact()    {}
+func (*IncidentProperty) Definition() ([]byte, []int) {
+	return filedescriptor_252557cfdd89a31a, []int{42}
 }
-func (m *EventProperty) XXX_Unserialize(b []byte) error {
-	return m.Unserialize(b)
+func (m *IncidentProperty) XXX_Decode(b []byte) error {
+	return m.Decode(b)
 }
-func (m *EventProperty) XXX_Serialize(b []byte, certain bool) ([]byte, error) {
+func (m *IncidentProperty) XXX_Serialize(b []byte, certain bool) ([]byte, error) {
 	if certain {
-		return xxx_messagedata_Eventproperty.Marshal(b, m, certain)
+		return xxx_signaldetails_Incidentproperty.Marshal(b, m, certain)
 	} else {
 		b = b[:cap(b)]
-		n, err := m.SerializeToDimensionedBuffer(b)
+		n, err := m.SerializeTowardDimensionedReserve(b)
 		if err != nil {
 			return nil, err
 		}
 		return b[:n], nil
 	}
 }
-func (m *EventProperty) XXX_Coalesce(src proto.Message) {
-	xxx_messagedata_Eventproperty.Merge(m, src)
+func (m *IncidentProperty) XXX_Consolidate(src proto.Message) {
+	xxx_signaldetails_Incidentproperty.Merge(m, src)
 }
-func (m *EventProperty) XXX_Volume() int {
-	return m.Volume()
+func (m *IncidentProperty) XXX_Extent() int {
+	return m.Extent()
 }
-func (m *EventProperty) XXX_Omitunclear() {
-	xxx_messagedata_Eventproperty.DiscardUnknown(m)
+func (m *IncidentProperty) XXX_Dropunfamiliar() {
+	xxx_signaldetails_Incidentproperty.DiscardUnknown(m)
 }
 
-var xxx_messagedata_Eventproperty proto.InternalMessageInfo
+var xxx_signaldetails_Incidentproperty proto.InternalMessageInfo
 
-func (m *EventProperty) FetchKey() string {
+func (m *IncidentProperty) ObtainToken() string {
 	if m != nil {
 		return m.Key
 	}
 	return "REDACTED"
 }
 
-func (m *EventProperty) FetchItem() string {
+func (m *IncidentProperty) ObtainDatum() string {
 	if m != nil {
-		return m.Item
+		return m.Datum
 	}
 	return "REDACTED"
 }
 
-func (m *EventProperty) FetchOrdinal() bool {
+func (m *IncidentProperty) ObtainOrdinal() bool {
 	if m != nil {
 		return m.Ordinal
 	}
@@ -3284,101 +3284,101 @@ func (m *EventProperty) FetchOrdinal() bool {
 //
 //
 type InvokeTransferOutcome struct {
-	Code      uint32  `protobuf:"variableint,1,opt,name=code,proto3" json:"code,omitempty"`
+	Cipher      uint32  `protobuf:"variableint,1,opt,name=code,proto3" json:"cipher,omitempty"`
 	Data      []byte  `protobuf:"octets,2,opt,name=data,proto3" json:"data,omitempty"`
 	Log       string  `protobuf:"octets,3,opt,name=log,proto3" json:"log,omitempty"`
 	Details      string  `protobuf:"octets,4,opt,name=info,proto3" json:"details,omitempty"`
 	FuelDesired int64   `protobuf:"variableint,5,opt,name=gas_wanted,proto3" json:"fuel_desired,omitempty"`
-	FuelApplied   int64   `protobuf:"variableint,6,opt,name=gas_used,proto3" json:"fuel_applied,omitempty"`
-	Events    []Event `protobuf:"octets,7,rep,name=events,proto3" json:"events,omitempty"`
-	Codex string  `protobuf:"octets,8,opt,name=codespace,proto3" json:"codex,omitempty"`
+	FuelUtilized   int64   `protobuf:"variableint,6,opt,name=gas_used,proto3" json:"fuel_utilized,omitempty"`
+	Incidents    []Incident `protobuf:"octets,7,rep,name=events,proto3" json:"incidents,omitempty"`
+	Codeset string  `protobuf:"octets,8,opt,name=codespace,proto3" json:"codeset,omitempty"`
 }
 
 func (m *InvokeTransferOutcome) Restore()         { *m = InvokeTransferOutcome{} }
-func (m *InvokeTransferOutcome) String() string { return proto.CompactTextString(m) }
-func (*InvokeTransferOutcome) SchemaSignal()    {}
+func (m *InvokeTransferOutcome) Text() string { return proto.CompactTextString(m) }
+func (*InvokeTransferOutcome) SchemaArtifact()    {}
 func (*InvokeTransferOutcome) Definition() ([]byte, []int) {
-	return filedefinition_252557cfdd89a31a, []int{43}
+	return filedescriptor_252557cfdd89a31a, []int{43}
 }
-func (m *InvokeTransferOutcome) XXX_Unserialize(b []byte) error {
-	return m.Unserialize(b)
+func (m *InvokeTransferOutcome) XXX_Decode(b []byte) error {
+	return m.Decode(b)
 }
 func (m *InvokeTransferOutcome) XXX_Serialize(b []byte, certain bool) ([]byte, error) {
 	if certain {
-		return xxx_messagedata_Invoketransferoutcome.Marshal(b, m, certain)
+		return xxx_signaldetails_Executecontextoutcome.Marshal(b, m, certain)
 	} else {
 		b = b[:cap(b)]
-		n, err := m.SerializeToDimensionedBuffer(b)
+		n, err := m.SerializeTowardDimensionedReserve(b)
 		if err != nil {
 			return nil, err
 		}
 		return b[:n], nil
 	}
 }
-func (m *InvokeTransferOutcome) XXX_Coalesce(src proto.Message) {
-	xxx_messagedata_Invoketransferoutcome.Merge(m, src)
+func (m *InvokeTransferOutcome) XXX_Consolidate(src proto.Message) {
+	xxx_signaldetails_Executecontextoutcome.Merge(m, src)
 }
-func (m *InvokeTransferOutcome) XXX_Volume() int {
-	return m.Volume()
+func (m *InvokeTransferOutcome) XXX_Extent() int {
+	return m.Extent()
 }
-func (m *InvokeTransferOutcome) XXX_Omitunclear() {
-	xxx_messagedata_Invoketransferoutcome.DiscardUnknown(m)
+func (m *InvokeTransferOutcome) XXX_Dropunfamiliar() {
+	xxx_signaldetails_Executecontextoutcome.DiscardUnknown(m)
 }
 
-var xxx_messagedata_Invoketransferoutcome proto.InternalMessageInfo
+var xxx_signaldetails_Executecontextoutcome proto.InternalMessageInfo
 
-func (m *InvokeTransferOutcome) FetchCode() uint32 {
+func (m *InvokeTransferOutcome) ObtainCipher() uint32 {
 	if m != nil {
-		return m.Code
+		return m.Cipher
 	}
 	return 0
 }
 
-func (m *InvokeTransferOutcome) FetchData() []byte {
+func (m *InvokeTransferOutcome) ObtainData() []byte {
 	if m != nil {
 		return m.Data
 	}
 	return nil
 }
 
-func (m *InvokeTransferOutcome) FetchTrace() string {
+func (m *InvokeTransferOutcome) ObtainRecord() string {
 	if m != nil {
 		return m.Log
 	}
 	return "REDACTED"
 }
 
-func (m *InvokeTransferOutcome) FetchDetails() string {
+func (m *InvokeTransferOutcome) ObtainDetails() string {
 	if m != nil {
 		return m.Details
 	}
 	return "REDACTED"
 }
 
-func (m *InvokeTransferOutcome) FetchFuelDesired() int64 {
+func (m *InvokeTransferOutcome) ObtainFuelDesired() int64 {
 	if m != nil {
 		return m.FuelDesired
 	}
 	return 0
 }
 
-func (m *InvokeTransferOutcome) FetchFuelApplied() int64 {
+func (m *InvokeTransferOutcome) ObtainFuelUtilized() int64 {
 	if m != nil {
-		return m.FuelApplied
+		return m.FuelUtilized
 	}
 	return 0
 }
 
-func (m *InvokeTransferOutcome) FetchEvents() []Event {
+func (m *InvokeTransferOutcome) ObtainIncidents() []Incident {
 	if m != nil {
-		return m.Events
+		return m.Incidents
 	}
 	return nil
 }
 
-func (m *InvokeTransferOutcome) FetchCodex() string {
+func (m *InvokeTransferOutcome) ObtainCodeset() string {
 	if m != nil {
-		return m.Codex
+		return m.Codeset
 	}
 	return "REDACTED"
 }
@@ -3386,524 +3386,524 @@ func (m *InvokeTransferOutcome) FetchCodex() string {
 //
 //
 //
-type TransOutcome struct {
-	Level int64        `protobuf:"variableint,1,opt,name=height,proto3" json:"level,omitempty"`
+type TransferOutcome struct {
+	Altitude int64        `protobuf:"variableint,1,opt,name=height,proto3" json:"altitude,omitempty"`
 	Ordinal  uint32       `protobuf:"variableint,2,opt,name=index,proto3" json:"ordinal,omitempty"`
 	Tx     []byte       `protobuf:"octets,3,opt,name=tx,proto3" json:"tx,omitempty"`
 	Outcome InvokeTransferOutcome `protobuf:"octets,4,opt,name=result,proto3" json:"outcome"`
 }
 
-func (m *TransOutcome) Restore()         { *m = TransOutcome{} }
-func (m *TransOutcome) String() string { return proto.CompactTextString(m) }
-func (*TransOutcome) SchemaSignal()    {}
-func (*TransOutcome) Definition() ([]byte, []int) {
-	return filedefinition_252557cfdd89a31a, []int{44}
+func (m *TransferOutcome) Restore()         { *m = TransferOutcome{} }
+func (m *TransferOutcome) Text() string { return proto.CompactTextString(m) }
+func (*TransferOutcome) SchemaArtifact()    {}
+func (*TransferOutcome) Definition() ([]byte, []int) {
+	return filedescriptor_252557cfdd89a31a, []int{44}
 }
-func (m *TransOutcome) XXX_Unserialize(b []byte) error {
-	return m.Unserialize(b)
+func (m *TransferOutcome) XXX_Decode(b []byte) error {
+	return m.Decode(b)
 }
-func (m *TransOutcome) XXX_Serialize(b []byte, certain bool) ([]byte, error) {
+func (m *TransferOutcome) XXX_Serialize(b []byte, certain bool) ([]byte, error) {
 	if certain {
-		return xxx_messagedata_Transferoutcome.Marshal(b, m, certain)
+		return xxx_signaldetails_Transoutcome.Marshal(b, m, certain)
 	} else {
 		b = b[:cap(b)]
-		n, err := m.SerializeToDimensionedBuffer(b)
+		n, err := m.SerializeTowardDimensionedReserve(b)
 		if err != nil {
 			return nil, err
 		}
 		return b[:n], nil
 	}
 }
-func (m *TransOutcome) XXX_Coalesce(src proto.Message) {
-	xxx_messagedata_Transferoutcome.Merge(m, src)
+func (m *TransferOutcome) XXX_Consolidate(src proto.Message) {
+	xxx_signaldetails_Transoutcome.Merge(m, src)
 }
-func (m *TransOutcome) XXX_Volume() int {
-	return m.Volume()
+func (m *TransferOutcome) XXX_Extent() int {
+	return m.Extent()
 }
-func (m *TransOutcome) XXX_Omitunclear() {
-	xxx_messagedata_Transferoutcome.DiscardUnknown(m)
+func (m *TransferOutcome) XXX_Dropunfamiliar() {
+	xxx_signaldetails_Transoutcome.DiscardUnknown(m)
 }
 
-var xxx_messagedata_Transferoutcome proto.InternalMessageInfo
+var xxx_signaldetails_Transoutcome proto.InternalMessageInfo
 
-func (m *TransOutcome) FetchLevel() int64 {
+func (m *TransferOutcome) ObtainAltitude() int64 {
 	if m != nil {
-		return m.Level
+		return m.Altitude
 	}
 	return 0
 }
 
-func (m *TransOutcome) FetchOrdinal() uint32 {
+func (m *TransferOutcome) ObtainOrdinal() uint32 {
 	if m != nil {
 		return m.Ordinal
 	}
 	return 0
 }
 
-func (m *TransOutcome) FetchTransfer() []byte {
+func (m *TransferOutcome) ObtainTransfer() []byte {
 	if m != nil {
 		return m.Tx
 	}
 	return nil
 }
 
-func (m *TransOutcome) FetchOutcome() InvokeTransferOutcome {
+func (m *TransferOutcome) ObtainOutcome() InvokeTransferOutcome {
 	if m != nil {
 		return m.Outcome
 	}
 	return InvokeTransferOutcome{}
 }
 
-type Ratifier struct {
+type Assessor struct {
 	Location []byte `protobuf:"octets,1,opt,name=address,proto3" json:"location,omitempty"`
 	//
-	Energy int64 `protobuf:"variableint,3,opt,name=power,proto3" json:"energy,omitempty"`
+	Potency int64 `protobuf:"variableint,3,opt,name=power,proto3" json:"potency,omitempty"`
 }
 
-func (m *Ratifier) Restore()         { *m = Ratifier{} }
-func (m *Ratifier) String() string { return proto.CompactTextString(m) }
-func (*Ratifier) SchemaSignal()    {}
-func (*Ratifier) Definition() ([]byte, []int) {
-	return filedefinition_252557cfdd89a31a, []int{45}
+func (m *Assessor) Restore()         { *m = Assessor{} }
+func (m *Assessor) Text() string { return proto.CompactTextString(m) }
+func (*Assessor) SchemaArtifact()    {}
+func (*Assessor) Definition() ([]byte, []int) {
+	return filedescriptor_252557cfdd89a31a, []int{45}
 }
-func (m *Ratifier) XXX_Unserialize(b []byte) error {
-	return m.Unserialize(b)
+func (m *Assessor) XXX_Decode(b []byte) error {
+	return m.Decode(b)
 }
-func (m *Ratifier) XXX_Serialize(b []byte, certain bool) ([]byte, error) {
+func (m *Assessor) XXX_Serialize(b []byte, certain bool) ([]byte, error) {
 	if certain {
-		return xxx_messagedata_Ratifier.Marshal(b, m, certain)
+		return xxx_signaldetails_Assessor.Marshal(b, m, certain)
 	} else {
 		b = b[:cap(b)]
-		n, err := m.SerializeToDimensionedBuffer(b)
+		n, err := m.SerializeTowardDimensionedReserve(b)
 		if err != nil {
 			return nil, err
 		}
 		return b[:n], nil
 	}
 }
-func (m *Ratifier) XXX_Coalesce(src proto.Message) {
-	xxx_messagedata_Ratifier.Merge(m, src)
+func (m *Assessor) XXX_Consolidate(src proto.Message) {
+	xxx_signaldetails_Assessor.Merge(m, src)
 }
-func (m *Ratifier) XXX_Volume() int {
-	return m.Volume()
+func (m *Assessor) XXX_Extent() int {
+	return m.Extent()
 }
-func (m *Ratifier) XXX_Omitunclear() {
-	xxx_messagedata_Ratifier.DiscardUnknown(m)
+func (m *Assessor) XXX_Dropunfamiliar() {
+	xxx_signaldetails_Assessor.DiscardUnknown(m)
 }
 
-var xxx_messagedata_Ratifier proto.InternalMessageInfo
+var xxx_signaldetails_Assessor proto.InternalMessageInfo
 
-func (m *Ratifier) FetchLocation() []byte {
+func (m *Assessor) ObtainLocator() []byte {
 	if m != nil {
 		return m.Location
 	}
 	return nil
 }
 
-func (m *Ratifier) FetchEnergy() int64 {
+func (m *Assessor) ObtainPotency() int64 {
 	if m != nil {
-		return m.Energy
+		return m.Potency
 	}
 	return 0
 }
 
-type RatifierModify struct {
-	PublicKey vault.PublicKey `protobuf:"octets,1,opt,name=pub_key,json=pubKey,proto3" json:"public_key"`
-	Energy  int64            `protobuf:"variableint,2,opt,name=power,proto3" json:"energy,omitempty"`
+type AssessorRevise struct {
+	PublicToken security.CommonToken `protobuf:"octets,1,opt,name=pub_key,json=pubKey,proto3" json:"public_token"`
+	Potency  int64            `protobuf:"variableint,2,opt,name=power,proto3" json:"potency,omitempty"`
 }
 
-func (m *RatifierModify) Restore()         { *m = RatifierModify{} }
-func (m *RatifierModify) String() string { return proto.CompactTextString(m) }
-func (*RatifierModify) SchemaSignal()    {}
-func (*RatifierModify) Definition() ([]byte, []int) {
-	return filedefinition_252557cfdd89a31a, []int{46}
+func (m *AssessorRevise) Restore()         { *m = AssessorRevise{} }
+func (m *AssessorRevise) Text() string { return proto.CompactTextString(m) }
+func (*AssessorRevise) SchemaArtifact()    {}
+func (*AssessorRevise) Definition() ([]byte, []int) {
+	return filedescriptor_252557cfdd89a31a, []int{46}
 }
-func (m *RatifierModify) XXX_Unserialize(b []byte) error {
-	return m.Unserialize(b)
+func (m *AssessorRevise) XXX_Decode(b []byte) error {
+	return m.Decode(b)
 }
-func (m *RatifierModify) XXX_Serialize(b []byte, certain bool) ([]byte, error) {
+func (m *AssessorRevise) XXX_Serialize(b []byte, certain bool) ([]byte, error) {
 	if certain {
-		return xxx_messagedata_Ratifierrefresh.Marshal(b, m, certain)
+		return xxx_signaldetails_Assessorupdate.Marshal(b, m, certain)
 	} else {
 		b = b[:cap(b)]
-		n, err := m.SerializeToDimensionedBuffer(b)
+		n, err := m.SerializeTowardDimensionedReserve(b)
 		if err != nil {
 			return nil, err
 		}
 		return b[:n], nil
 	}
 }
-func (m *RatifierModify) XXX_Coalesce(src proto.Message) {
-	xxx_messagedata_Ratifierrefresh.Merge(m, src)
+func (m *AssessorRevise) XXX_Consolidate(src proto.Message) {
+	xxx_signaldetails_Assessorupdate.Merge(m, src)
 }
-func (m *RatifierModify) XXX_Volume() int {
-	return m.Volume()
+func (m *AssessorRevise) XXX_Extent() int {
+	return m.Extent()
 }
-func (m *RatifierModify) XXX_Omitunclear() {
-	xxx_messagedata_Ratifierrefresh.DiscardUnknown(m)
+func (m *AssessorRevise) XXX_Dropunfamiliar() {
+	xxx_signaldetails_Assessorupdate.DiscardUnknown(m)
 }
 
-var xxx_messagedata_Ratifierrefresh proto.InternalMessageInfo
+var xxx_signaldetails_Assessorupdate proto.InternalMessageInfo
 
-func (m *RatifierModify) FetchPublicKey() vault.PublicKey {
+func (m *AssessorRevise) ObtainPublicToken() security.CommonToken {
 	if m != nil {
-		return m.PublicKey
+		return m.PublicToken
 	}
-	return vault.PublicKey{}
+	return security.CommonToken{}
 }
 
-func (m *RatifierModify) FetchEnergy() int64 {
+func (m *AssessorRevise) ObtainPotency() int64 {
 	if m != nil {
-		return m.Energy
+		return m.Potency
 	}
 	return 0
 }
 
 type BallotDetails struct {
-	Ratifier   Ratifier          `protobuf:"octets,1,opt,name=validator,proto3" json:"ratifier"`
-	LedgerUidMark kinds1.LedgerUIDMark `protobuf:"variableint,3,opt,name=block_id_flag,json=blockIdFlag,proto3,enum=tendermint.types.BlockIDFlag" json:"ledger_uid_mark,omitempty"`
+	Assessor   Assessor          `protobuf:"octets,1,opt,name=validator,proto3" json:"assessor"`
+	LedgerUuidMarker kinds1.LedgerUUIDMarker `protobuf:"variableint,3,opt,name=block_id_flag,json=blockIdFlag,proto3,enum=tendermint.types.BlockIDFlag" json:"ledger_uuid_marker,omitempty"`
 }
 
 func (m *BallotDetails) Restore()         { *m = BallotDetails{} }
-func (m *BallotDetails) String() string { return proto.CompactTextString(m) }
-func (*BallotDetails) SchemaSignal()    {}
+func (m *BallotDetails) Text() string { return proto.CompactTextString(m) }
+func (*BallotDetails) SchemaArtifact()    {}
 func (*BallotDetails) Definition() ([]byte, []int) {
-	return filedefinition_252557cfdd89a31a, []int{47}
+	return filedescriptor_252557cfdd89a31a, []int{47}
 }
-func (m *BallotDetails) XXX_Unserialize(b []byte) error {
-	return m.Unserialize(b)
+func (m *BallotDetails) XXX_Decode(b []byte) error {
+	return m.Decode(b)
 }
 func (m *BallotDetails) XXX_Serialize(b []byte, certain bool) ([]byte, error) {
 	if certain {
-		return xxx_messagedata_Ballotdata.Marshal(b, m, certain)
+		return xxx_signaldetails_Ballotdetails.Marshal(b, m, certain)
 	} else {
 		b = b[:cap(b)]
-		n, err := m.SerializeToDimensionedBuffer(b)
+		n, err := m.SerializeTowardDimensionedReserve(b)
 		if err != nil {
 			return nil, err
 		}
 		return b[:n], nil
 	}
 }
-func (m *BallotDetails) XXX_Coalesce(src proto.Message) {
-	xxx_messagedata_Ballotdata.Merge(m, src)
+func (m *BallotDetails) XXX_Consolidate(src proto.Message) {
+	xxx_signaldetails_Ballotdetails.Merge(m, src)
 }
-func (m *BallotDetails) XXX_Volume() int {
-	return m.Volume()
+func (m *BallotDetails) XXX_Extent() int {
+	return m.Extent()
 }
-func (m *BallotDetails) XXX_Omitunclear() {
-	xxx_messagedata_Ballotdata.DiscardUnknown(m)
+func (m *BallotDetails) XXX_Dropunfamiliar() {
+	xxx_signaldetails_Ballotdetails.DiscardUnknown(m)
 }
 
-var xxx_messagedata_Ballotdata proto.InternalMessageInfo
+var xxx_signaldetails_Ballotdetails proto.InternalMessageInfo
 
-func (m *BallotDetails) FetchRatifier() Ratifier {
+func (m *BallotDetails) ObtainAssessor() Assessor {
 	if m != nil {
-		return m.Ratifier
+		return m.Assessor
 	}
-	return Ratifier{}
+	return Assessor{}
 }
 
-func (m *BallotDetails) FetchLedgerUidMark() kinds1.LedgerUIDMark {
+func (m *BallotDetails) ObtainLedgerUuidMarker() kinds1.LedgerUUIDMarker {
 	if m != nil {
-		return m.LedgerUidMark
+		return m.LedgerUuidMarker
 	}
-	return kinds1.LedgerUIDMarkUnclear
+	return kinds1.LedgerUUIDMarkerUnfamiliar
 }
 
 type ExpandedBallotDetails struct {
 	//
-	Ratifier Ratifier `protobuf:"octets,1,opt,name=validator,proto3" json:"ratifier"`
+	Assessor Assessor `protobuf:"octets,1,opt,name=validator,proto3" json:"assessor"`
 	//
 	BallotAddition []byte `protobuf:"octets,3,opt,name=vote_extension,json=voteExtension,proto3" json:"ballot_addition,omitempty"`
 	//
-	AdditionAutograph []byte `protobuf:"octets,4,opt,name=extension_signature,json=extensionSignature,proto3" json:"addition_autograph,omitempty"`
+	AdditionNotation []byte `protobuf:"octets,4,opt,name=extension_signature,json=extensionSignature,proto3" json:"addition_signing,omitempty"`
 	//
-	LedgerUidMark kinds1.LedgerUIDMark `protobuf:"variableint,5,opt,name=block_id_flag,json=blockIdFlag,proto3,enum=tendermint.types.BlockIDFlag" json:"ledger_uid_mark,omitempty"`
+	LedgerUuidMarker kinds1.LedgerUUIDMarker `protobuf:"variableint,5,opt,name=block_id_flag,json=blockIdFlag,proto3,enum=tendermint.types.BlockIDFlag" json:"ledger_uuid_marker,omitempty"`
 }
 
 func (m *ExpandedBallotDetails) Restore()         { *m = ExpandedBallotDetails{} }
-func (m *ExpandedBallotDetails) String() string { return proto.CompactTextString(m) }
-func (*ExpandedBallotDetails) SchemaSignal()    {}
+func (m *ExpandedBallotDetails) Text() string { return proto.CompactTextString(m) }
+func (*ExpandedBallotDetails) SchemaArtifact()    {}
 func (*ExpandedBallotDetails) Definition() ([]byte, []int) {
-	return filedefinition_252557cfdd89a31a, []int{48}
+	return filedescriptor_252557cfdd89a31a, []int{48}
 }
-func (m *ExpandedBallotDetails) XXX_Unserialize(b []byte) error {
-	return m.Unserialize(b)
+func (m *ExpandedBallotDetails) XXX_Decode(b []byte) error {
+	return m.Decode(b)
 }
 func (m *ExpandedBallotDetails) XXX_Serialize(b []byte, certain bool) ([]byte, error) {
 	if certain {
-		return xxx_messagedata_Enhancedballotdata.Marshal(b, m, certain)
+		return xxx_signaldetails_Expandedballotdetails.Marshal(b, m, certain)
 	} else {
 		b = b[:cap(b)]
-		n, err := m.SerializeToDimensionedBuffer(b)
+		n, err := m.SerializeTowardDimensionedReserve(b)
 		if err != nil {
 			return nil, err
 		}
 		return b[:n], nil
 	}
 }
-func (m *ExpandedBallotDetails) XXX_Coalesce(src proto.Message) {
-	xxx_messagedata_Enhancedballotdata.Merge(m, src)
+func (m *ExpandedBallotDetails) XXX_Consolidate(src proto.Message) {
+	xxx_signaldetails_Expandedballotdetails.Merge(m, src)
 }
-func (m *ExpandedBallotDetails) XXX_Volume() int {
-	return m.Volume()
+func (m *ExpandedBallotDetails) XXX_Extent() int {
+	return m.Extent()
 }
-func (m *ExpandedBallotDetails) XXX_Omitunclear() {
-	xxx_messagedata_Enhancedballotdata.DiscardUnknown(m)
+func (m *ExpandedBallotDetails) XXX_Dropunfamiliar() {
+	xxx_signaldetails_Expandedballotdetails.DiscardUnknown(m)
 }
 
-var xxx_messagedata_Enhancedballotdata proto.InternalMessageInfo
+var xxx_signaldetails_Expandedballotdetails proto.InternalMessageInfo
 
-func (m *ExpandedBallotDetails) FetchRatifier() Ratifier {
+func (m *ExpandedBallotDetails) ObtainAssessor() Assessor {
 	if m != nil {
-		return m.Ratifier
+		return m.Assessor
 	}
-	return Ratifier{}
+	return Assessor{}
 }
 
-func (m *ExpandedBallotDetails) FetchBallotAddition() []byte {
+func (m *ExpandedBallotDetails) ObtainBallotAddition() []byte {
 	if m != nil {
 		return m.BallotAddition
 	}
 	return nil
 }
 
-func (m *ExpandedBallotDetails) FetchAdditionAutograph() []byte {
+func (m *ExpandedBallotDetails) ObtainAdditionSigning() []byte {
 	if m != nil {
-		return m.AdditionAutograph
+		return m.AdditionNotation
 	}
 	return nil
 }
 
-func (m *ExpandedBallotDetails) FetchLedgerUidMark() kinds1.LedgerUIDMark {
+func (m *ExpandedBallotDetails) ObtainLedgerUuidMarker() kinds1.LedgerUUIDMarker {
 	if m != nil {
-		return m.LedgerUidMark
+		return m.LedgerUuidMarker
 	}
-	return kinds1.LedgerUIDMarkUnclear
+	return kinds1.LedgerUUIDMarkerUnfamiliar
 }
 
 type Malpractice struct {
 	Kind MalpracticeKind `protobuf:"variableint,1,opt,name=type,proto3,enum=tendermint.abci.MisbehaviorType" json:"kind,omitempty"`
 	//
-	Ratifier Ratifier `protobuf:"octets,2,opt,name=validator,proto3" json:"ratifier"`
+	Assessor Assessor `protobuf:"octets,2,opt,name=validator,proto3" json:"assessor"`
 	//
-	Level int64 `protobuf:"variableint,3,opt,name=height,proto3" json:"level,omitempty"`
+	Altitude int64 `protobuf:"variableint,3,opt,name=height,proto3" json:"altitude,omitempty"`
 	//
-	Time time.Time `protobuf:"octets,4,opt,name=time,proto3,stdtime" json:"moment"`
+	Moment time.Time `protobuf:"octets,4,opt,name=time,proto3,stdtime" json:"moment"`
 	//
 	//
 	//
-	SumPollingEnergy int64 `protobuf:"variableint,5,opt,name=total_voting_power,json=totalVotingPower,proto3" json:"sum_polling_energy,omitempty"`
+	SumBallotingPotency int64 `protobuf:"variableint,5,opt,name=total_voting_power,json=totalVotingPower,proto3" json:"sum_balloting_potency,omitempty"`
 }
 
 func (m *Malpractice) Restore()         { *m = Malpractice{} }
-func (m *Malpractice) String() string { return proto.CompactTextString(m) }
-func (*Malpractice) SchemaSignal()    {}
+func (m *Malpractice) Text() string { return proto.CompactTextString(m) }
+func (*Malpractice) SchemaArtifact()    {}
 func (*Malpractice) Definition() ([]byte, []int) {
-	return filedefinition_252557cfdd89a31a, []int{49}
+	return filedescriptor_252557cfdd89a31a, []int{49}
 }
-func (m *Malpractice) XXX_Unserialize(b []byte) error {
-	return m.Unserialize(b)
+func (m *Malpractice) XXX_Decode(b []byte) error {
+	return m.Decode(b)
 }
 func (m *Malpractice) XXX_Serialize(b []byte, certain bool) ([]byte, error) {
 	if certain {
-		return xxx_messagedata_Malpractice.Marshal(b, m, certain)
+		return xxx_signaldetails_Malpractice.Marshal(b, m, certain)
 	} else {
 		b = b[:cap(b)]
-		n, err := m.SerializeToDimensionedBuffer(b)
+		n, err := m.SerializeTowardDimensionedReserve(b)
 		if err != nil {
 			return nil, err
 		}
 		return b[:n], nil
 	}
 }
-func (m *Malpractice) XXX_Coalesce(src proto.Message) {
-	xxx_messagedata_Malpractice.Merge(m, src)
+func (m *Malpractice) XXX_Consolidate(src proto.Message) {
+	xxx_signaldetails_Malpractice.Merge(m, src)
 }
-func (m *Malpractice) XXX_Volume() int {
-	return m.Volume()
+func (m *Malpractice) XXX_Extent() int {
+	return m.Extent()
 }
-func (m *Malpractice) XXX_Omitunclear() {
-	xxx_messagedata_Malpractice.DiscardUnknown(m)
+func (m *Malpractice) XXX_Dropunfamiliar() {
+	xxx_signaldetails_Malpractice.DiscardUnknown(m)
 }
 
-var xxx_messagedata_Malpractice proto.InternalMessageInfo
+var xxx_signaldetails_Malpractice proto.InternalMessageInfo
 
-func (m *Malpractice) FetchKind() MalpracticeKind {
+func (m *Malpractice) ObtainKind() MalpracticeKind {
 	if m != nil {
 		return m.Kind
 	}
-	return Misconductkind_UNCLEAR
+	return Malfunctionkind_UNFAMILIAR
 }
 
-func (m *Malpractice) FetchRatifier() Ratifier {
+func (m *Malpractice) ObtainAssessor() Assessor {
 	if m != nil {
-		return m.Ratifier
+		return m.Assessor
 	}
-	return Ratifier{}
+	return Assessor{}
 }
 
-func (m *Malpractice) FetchLevel() int64 {
+func (m *Malpractice) ObtainAltitude() int64 {
 	if m != nil {
-		return m.Level
+		return m.Altitude
 	}
 	return 0
 }
 
-func (m *Malpractice) FetchTime() time.Time {
+func (m *Malpractice) ObtainMoment() time.Time {
 	if m != nil {
-		return m.Time
+		return m.Moment
 	}
 	return time.Time{}
 }
 
-func (m *Malpractice) FetchSumPollingEnergy() int64 {
+func (m *Malpractice) ObtainSumBallotingPotency() int64 {
 	if m != nil {
-		return m.SumPollingEnergy
+		return m.SumBallotingPotency
 	}
 	return 0
 }
 
-type Mirror struct {
-	Level   uint64 `protobuf:"variableint,1,opt,name=height,proto3" json:"level,omitempty"`
+type Image struct {
+	Altitude   uint64 `protobuf:"variableint,1,opt,name=height,proto3" json:"altitude,omitempty"`
 	Layout   uint32 `protobuf:"variableint,2,opt,name=format,proto3" json:"layout,omitempty"`
 	Segments   uint32 `protobuf:"variableint,3,opt,name=chunks,proto3" json:"segments,omitempty"`
 	Digest     []byte `protobuf:"octets,4,opt,name=hash,proto3" json:"digest,omitempty"`
-	Metainfo []byte `protobuf:"octets,5,opt,name=metadata,proto3" json:"metainfo,omitempty"`
+	Attributes []byte `protobuf:"octets,5,opt,name=metadata,proto3" json:"attributes,omitempty"`
 }
 
-func (m *Mirror) Restore()         { *m = Mirror{} }
-func (m *Mirror) String() string { return proto.CompactTextString(m) }
-func (*Mirror) SchemaSignal()    {}
-func (*Mirror) Definition() ([]byte, []int) {
-	return filedefinition_252557cfdd89a31a, []int{50}
+func (m *Image) Restore()         { *m = Image{} }
+func (m *Image) Text() string { return proto.CompactTextString(m) }
+func (*Image) SchemaArtifact()    {}
+func (*Image) Definition() ([]byte, []int) {
+	return filedescriptor_252557cfdd89a31a, []int{50}
 }
-func (m *Mirror) XXX_Unserialize(b []byte) error {
-	return m.Unserialize(b)
+func (m *Image) XXX_Decode(b []byte) error {
+	return m.Decode(b)
 }
-func (m *Mirror) XXX_Serialize(b []byte, certain bool) ([]byte, error) {
+func (m *Image) XXX_Serialize(b []byte, certain bool) ([]byte, error) {
 	if certain {
-		return xxx_messagedata_Mirror.Marshal(b, m, certain)
+		return xxx_signaldetails_Image.Marshal(b, m, certain)
 	} else {
 		b = b[:cap(b)]
-		n, err := m.SerializeToDimensionedBuffer(b)
+		n, err := m.SerializeTowardDimensionedReserve(b)
 		if err != nil {
 			return nil, err
 		}
 		return b[:n], nil
 	}
 }
-func (m *Mirror) XXX_Coalesce(src proto.Message) {
-	xxx_messagedata_Mirror.Merge(m, src)
+func (m *Image) XXX_Consolidate(src proto.Message) {
+	xxx_signaldetails_Image.Merge(m, src)
 }
-func (m *Mirror) XXX_Volume() int {
-	return m.Volume()
+func (m *Image) XXX_Extent() int {
+	return m.Extent()
 }
-func (m *Mirror) XXX_Omitunclear() {
-	xxx_messagedata_Mirror.DiscardUnknown(m)
+func (m *Image) XXX_Dropunfamiliar() {
+	xxx_signaldetails_Image.DiscardUnknown(m)
 }
 
-var xxx_messagedata_Mirror proto.InternalMessageInfo
+var xxx_signaldetails_Image proto.InternalMessageInfo
 
-func (m *Mirror) FetchLevel() uint64 {
+func (m *Image) ObtainAltitude() uint64 {
 	if m != nil {
-		return m.Level
+		return m.Altitude
 	}
 	return 0
 }
 
-func (m *Mirror) FetchLayout() uint32 {
+func (m *Image) ObtainLayout() uint32 {
 	if m != nil {
 		return m.Layout
 	}
 	return 0
 }
 
-func (m *Mirror) FetchSegments() uint32 {
+func (m *Image) ObtainSegments() uint32 {
 	if m != nil {
 		return m.Segments
 	}
 	return 0
 }
 
-func (m *Mirror) FetchDigest() []byte {
+func (m *Image) ObtainDigest() []byte {
 	if m != nil {
 		return m.Digest
 	}
 	return nil
 }
 
-func (m *Mirror) FetchMetainfo() []byte {
+func (m *Image) ObtainAttributes() []byte {
 	if m != nil {
-		return m.Metainfo
+		return m.Attributes
 	}
 	return nil
 }
 
-func init() {
-	proto.RegisterEnum("REDACTED", Transfercheckkind_label, Transfercheckkind_item)
-	proto.RegisterEnum("REDACTED", Misconductkind_label, Misconductkind_item)
-	proto.RegisterEnum("REDACTED", Replymirrorsnapshot_Outcome_label, Replymirrorsnapshot_Outcome_item)
-	proto.RegisterEnum("REDACTED", Replyexecutemirrorsegment_Outcome_label, Replyexecutemirrorsegment_Outcome_item)
-	proto.RegisterEnum("REDACTED", Responseprocessnomination_Nominationstate_label, Responseprocessnomination_Nominationstate_item)
-	proto.RegisterEnum("REDACTED", Responseverifyballotextension_Validatestatus_label, Responseverifyballotextension_Validatestatus_item)
-	proto.RegisterType((*Query)(nil), "REDACTED")
-	proto.RegisterType((*QueryReverberate)(nil), "REDACTED")
-	proto.RegisterType((*QueryPurge)(nil), "REDACTED")
-	proto.RegisterType((*QueryDetails)(nil), "REDACTED")
-	proto.RegisterType((*QueryInitSeries)(nil), "REDACTED")
-	proto.RegisterType((*QueryInquire)(nil), "REDACTED")
-	proto.RegisterType((*QueryInspectTransfer)(nil), "REDACTED")
-	proto.RegisterType((*QueryEmbedTransfer)(nil), "REDACTED")
-	proto.RegisterType((*QueryHarvestTrans)(nil), "REDACTED")
-	proto.RegisterType((*QueryEndorse)(nil), "REDACTED")
-	proto.RegisterType((*QueryCatalogMirrors)(nil), "REDACTED")
-	proto.RegisterType((*QueryProposalMirror)(nil), "REDACTED")
-	proto.RegisterType((*QueryImportMirrorSegment)(nil), "REDACTED")
-	proto.RegisterType((*QueryExecuteMirrorSegment)(nil), "REDACTED")
-	proto.RegisterType((*QueryArrangeNomination)(nil), "REDACTED")
-	proto.RegisterType((*QueryHandleNomination)(nil), "REDACTED")
-	proto.RegisterType((*QueryExpandBallot)(nil), "REDACTED")
-	proto.RegisterType((*QueryValidateBallotAddition)(nil), "REDACTED")
-	proto.RegisterType((*QueryCompleteLedger)(nil), "REDACTED")
+func initialize() {
+	proto.RegisterEnum("REDACTED", Inspecttranskind_alias, Inspecttranskind_datum)
+	proto.RegisterEnum("REDACTED", Malfunctionkind_alias, Malfunctionkind_datum)
+	proto.RegisterEnum("REDACTED", Replyextendimage_Outcome_alias, Replyextendimage_Outcome_datum)
+	proto.RegisterEnum("REDACTED", Replyapplyimagefragment_Outcome_alias, Replyapplyimagefragment_Outcome_datum)
+	proto.RegisterEnum("REDACTED", Responseexecuteitem_Itemstatus_alias, Responseexecuteitem_Itemstatus_datum)
+	proto.RegisterEnum("REDACTED", Responsecertifyballotaddition_Verifystatus_alias, Responsecertifyballotaddition_Verifystatus_datum)
+	proto.RegisterType((*Solicit)(nil), "REDACTED")
+	proto.RegisterType((*SolicitReverberate)(nil), "REDACTED")
+	proto.RegisterType((*SolicitPurge)(nil), "REDACTED")
+	proto.RegisterType((*SolicitDetails)(nil), "REDACTED")
+	proto.RegisterType((*SolicitInitializeSuccession)(nil), "REDACTED")
+	proto.RegisterType((*SolicitInquire)(nil), "REDACTED")
+	proto.RegisterType((*SolicitInspectTransfer)(nil), "REDACTED")
+	proto.RegisterType((*SolicitAppendTransfer)(nil), "REDACTED")
+	proto.RegisterType((*SolicitHarvestTrans)(nil), "REDACTED")
+	proto.RegisterType((*SolicitEndorse)(nil), "REDACTED")
+	proto.RegisterType((*SolicitCollectionImages)(nil), "REDACTED")
+	proto.RegisterType((*SolicitExtendImage)(nil), "REDACTED")
+	proto.RegisterType((*SolicitFetchImageSegment)(nil), "REDACTED")
+	proto.RegisterType((*SolicitExecuteImageSegment)(nil), "REDACTED")
+	proto.RegisterType((*SolicitArrangeNomination)(nil), "REDACTED")
+	proto.RegisterType((*SolicitHandleNomination)(nil), "REDACTED")
+	proto.RegisterType((*SolicitBroadenBallot)(nil), "REDACTED")
+	proto.RegisterType((*SolicitValidateBallotAddition)(nil), "REDACTED")
+	proto.RegisterType((*SolicitCulminateLedger)(nil), "REDACTED")
 	proto.RegisterType((*Reply)(nil), "REDACTED")
 	proto.RegisterType((*ReplyExemption)(nil), "REDACTED")
 	proto.RegisterType((*ReplyReverberate)(nil), "REDACTED")
 	proto.RegisterType((*ReplyPurge)(nil), "REDACTED")
 	proto.RegisterType((*ReplyDetails)(nil), "REDACTED")
-	proto.RegisterType((*ReplyInitSeries)(nil), "REDACTED")
+	proto.RegisterType((*ReplyInitializeSuccession)(nil), "REDACTED")
 	proto.RegisterType((*ReplyInquire)(nil), "REDACTED")
 	proto.RegisterType((*ReplyInspectTransfer)(nil), "REDACTED")
-	proto.RegisterType((*ReplyEmbedTransfer)(nil), "REDACTED")
+	proto.RegisterType((*ReplyAppendTransfer)(nil), "REDACTED")
 	proto.RegisterType((*ReplyHarvestTrans)(nil), "REDACTED")
 	proto.RegisterType((*ReplyEndorse)(nil), "REDACTED")
-	proto.RegisterType((*ReplyCatalogMirrors)(nil), "REDACTED")
-	proto.RegisterType((*ReplyProposalMirror)(nil), "REDACTED")
-	proto.RegisterType((*ReplyImportMirrorSegment)(nil), "REDACTED")
-	proto.RegisterType((*ReplyExecuteMirrorSegment)(nil), "REDACTED")
+	proto.RegisterType((*ReplyCatalogImages)(nil), "REDACTED")
+	proto.RegisterType((*ReplyExtendImage)(nil), "REDACTED")
+	proto.RegisterType((*ReplyFetchImageSegment)(nil), "REDACTED")
+	proto.RegisterType((*ReplyExecuteImageSegment)(nil), "REDACTED")
 	proto.RegisterType((*ReplyArrangeNomination)(nil), "REDACTED")
 	proto.RegisterType((*ReplyHandleNomination)(nil), "REDACTED")
-	proto.RegisterType((*ReplyExpandBallot)(nil), "REDACTED")
+	proto.RegisterType((*ReplyBroadenBallot)(nil), "REDACTED")
 	proto.RegisterType((*ReplyValidateBallotAddition)(nil), "REDACTED")
-	proto.RegisterType((*ReplyCompleteLedger)(nil), "REDACTED")
+	proto.RegisterType((*ReplyCulminateLedger)(nil), "REDACTED")
 	proto.RegisterType((*EndorseDetails)(nil), "REDACTED")
 	proto.RegisterType((*ExpandedEndorseDetails)(nil), "REDACTED")
-	proto.RegisterType((*Event)(nil), "REDACTED")
-	proto.RegisterType((*EventProperty)(nil), "REDACTED")
+	proto.RegisterType((*Incident)(nil), "REDACTED")
+	proto.RegisterType((*IncidentProperty)(nil), "REDACTED")
 	proto.RegisterType((*InvokeTransferOutcome)(nil), "REDACTED")
-	proto.RegisterType((*TransOutcome)(nil), "REDACTED")
-	proto.RegisterType((*Ratifier)(nil), "REDACTED")
-	proto.RegisterType((*RatifierModify)(nil), "REDACTED")
+	proto.RegisterType((*TransferOutcome)(nil), "REDACTED")
+	proto.RegisterType((*Assessor)(nil), "REDACTED")
+	proto.RegisterType((*AssessorRevise)(nil), "REDACTED")
 	proto.RegisterType((*BallotDetails)(nil), "REDACTED")
 	proto.RegisterType((*ExpandedBallotDetails)(nil), "REDACTED")
 	proto.RegisterType((*Malpractice)(nil), "REDACTED")
-	proto.RegisterType((*Mirror)(nil), "REDACTED")
+	proto.RegisterType((*Image)(nil), "REDACTED")
 }
 
-func init() { proto.RegisterFile("REDACTED", filedefinition_252557cfdd89a31a) }
+func initialize() { proto.RegisterFile("REDACTED", filedescriptor_252557cfdd89a31a) }
 
-var filedefinition_252557cfdd89a31a = []byte{
+var filedescriptor_252557cfdd89a31a = []byte{
 	//
 	0x1f, 0x8b, 0x08, 0x00, 0x00, 0x00, 0x00, 0x00, 0x02, 0xff, 0xec, 0x5a, 0xc9, 0x73, 0x1b, 0xc7,
 	0xd5, 0xc7, 0x60, 0xc7, 0xc3, 0xc2, 0x61, 0x93, 0xa2, 0x20, 0x48, 0x26, 0xa9, 0x51, 0xd9, 0x96,
@@ -4127,190 +4127,190 @@ const _ = grpc.SupportPackageIsVersion4
 //
 //
 type IfaceCustomer interface {
-	Replicate(ctx context.Context, in *QueryReverberate, opts ...grpc.CallOption) (*ReplyReverberate, error)
-	Purge(ctx context.Context, in *QueryPurge, opts ...grpc.CallOption) (*ReplyPurge, error)
-	Details(ctx context.Context, in *QueryDetails, opts ...grpc.CallOption) (*ReplyDetails, error)
-	InspectTransfer(ctx context.Context, in *QueryInspectTransfer, opts ...grpc.CallOption) (*ReplyInspectTransfer, error)
-	EmbedTransfer(ctx context.Context, in *QueryEmbedTransfer, opts ...grpc.CallOption) (*ReplyEmbedTransfer, error)
-	HarvestTrans(ctx context.Context, in *QueryHarvestTrans, opts ...grpc.CallOption) (*ReplyHarvestTrans, error)
-	Inquire(ctx context.Context, in *QueryInquire, opts ...grpc.CallOption) (*ReplyInquire, error)
-	Endorse(ctx context.Context, in *QueryEndorse, opts ...grpc.CallOption) (*ReplyEndorse, error)
-	InitSeries(ctx context.Context, in *QueryInitSeries, opts ...grpc.CallOption) (*ReplyInitSeries, error)
-	CatalogMirrors(ctx context.Context, in *QueryCatalogMirrors, opts ...grpc.CallOption) (*ReplyCatalogMirrors, error)
-	ProposalMirror(ctx context.Context, in *QueryProposalMirror, opts ...grpc.CallOption) (*ReplyProposalMirror, error)
-	ImportMirrorSegment(ctx context.Context, in *QueryImportMirrorSegment, opts ...grpc.CallOption) (*ReplyImportMirrorSegment, error)
-	ExecuteMirrorSegment(ctx context.Context, in *QueryExecuteMirrorSegment, opts ...grpc.CallOption) (*ReplyExecuteMirrorSegment, error)
-	ArrangeNomination(ctx context.Context, in *QueryArrangeNomination, opts ...grpc.CallOption) (*ReplyArrangeNomination, error)
-	HandleNomination(ctx context.Context, in *QueryHandleNomination, opts ...grpc.CallOption) (*ReplyHandleNomination, error)
-	ExpandBallot(ctx context.Context, in *QueryExpandBallot, opts ...grpc.CallOption) (*ReplyExpandBallot, error)
-	ValidateBallotAddition(ctx context.Context, in *QueryValidateBallotAddition, opts ...grpc.CallOption) (*ReplyValidateBallotAddition, error)
-	CompleteLedger(ctx context.Context, in *QueryCompleteLedger, opts ...grpc.CallOption) (*ReplyCompleteLedger, error)
+	Reverberate(ctx context.Context, in *SolicitReverberate, choices ...grpc.CallOption) (*ReplyReverberate, error)
+	Purge(ctx context.Context, in *SolicitPurge, choices ...grpc.CallOption) (*ReplyPurge, error)
+	Details(ctx context.Context, in *SolicitDetails, choices ...grpc.CallOption) (*ReplyDetails, error)
+	InspectTransfer(ctx context.Context, in *SolicitInspectTransfer, choices ...grpc.CallOption) (*ReplyInspectTransfer, error)
+	AppendTransfer(ctx context.Context, in *SolicitAppendTransfer, choices ...grpc.CallOption) (*ReplyAppendTransfer, error)
+	HarvestTrans(ctx context.Context, in *SolicitHarvestTrans, choices ...grpc.CallOption) (*ReplyHarvestTrans, error)
+	Inquire(ctx context.Context, in *SolicitInquire, choices ...grpc.CallOption) (*ReplyInquire, error)
+	Endorse(ctx context.Context, in *SolicitEndorse, choices ...grpc.CallOption) (*ReplyEndorse, error)
+	InitializeSuccession(ctx context.Context, in *SolicitInitializeSuccession, choices ...grpc.CallOption) (*ReplyInitializeSuccession, error)
+	CollectionImages(ctx context.Context, in *SolicitCollectionImages, choices ...grpc.CallOption) (*ReplyCatalogImages, error)
+	ExtendImage(ctx context.Context, in *SolicitExtendImage, choices ...grpc.CallOption) (*ReplyExtendImage, error)
+	FetchImageSegment(ctx context.Context, in *SolicitFetchImageSegment, choices ...grpc.CallOption) (*ReplyFetchImageSegment, error)
+	ExecuteImageSegment(ctx context.Context, in *SolicitExecuteImageSegment, choices ...grpc.CallOption) (*ReplyExecuteImageSegment, error)
+	ArrangeNomination(ctx context.Context, in *SolicitArrangeNomination, choices ...grpc.CallOption) (*ReplyArrangeNomination, error)
+	HandleNomination(ctx context.Context, in *SolicitHandleNomination, choices ...grpc.CallOption) (*ReplyHandleNomination, error)
+	BroadenBallot(ctx context.Context, in *SolicitBroadenBallot, choices ...grpc.CallOption) (*ReplyBroadenBallot, error)
+	ValidateBallotAddition(ctx context.Context, in *SolicitValidateBallotAddition, choices ...grpc.CallOption) (*ReplyValidateBallotAddition, error)
+	CulminateLedger(ctx context.Context, in *SolicitCulminateLedger, choices ...grpc.CallOption) (*ReplyCulminateLedger, error)
 }
 
-type aBCICustomer struct {
+type anBCICustomer struct {
 	cc grpc1.ClientConn
 }
 
-func NewIfaceCustomer(cc grpc1.ClientConn) IfaceCustomer {
-	return &aBCICustomer{cc}
+func FreshIfaceCustomer(cc grpc1.ClientConn) IfaceCustomer {
+	return &anBCICustomer{cc}
 }
 
-func (c *aBCICustomer) Replicate(ctx context.Context, in *QueryReverberate, opts ...grpc.CallOption) (*ReplyReverberate, error) {
+func (c *anBCICustomer) Reverberate(ctx context.Context, in *SolicitReverberate, choices ...grpc.CallOption) (*ReplyReverberate, error) {
 	out := new(ReplyReverberate)
-	err := c.cc.Invoke(ctx, "REDACTED", in, out, opts...)
+	err := c.cc.Invoke(ctx, "REDACTED", in, out, choices...)
 	if err != nil {
 		return nil, err
 	}
 	return out, nil
 }
 
-func (c *aBCICustomer) Purge(ctx context.Context, in *QueryPurge, opts ...grpc.CallOption) (*ReplyPurge, error) {
+func (c *anBCICustomer) Purge(ctx context.Context, in *SolicitPurge, choices ...grpc.CallOption) (*ReplyPurge, error) {
 	out := new(ReplyPurge)
-	err := c.cc.Invoke(ctx, "REDACTED", in, out, opts...)
+	err := c.cc.Invoke(ctx, "REDACTED", in, out, choices...)
 	if err != nil {
 		return nil, err
 	}
 	return out, nil
 }
 
-func (c *aBCICustomer) Details(ctx context.Context, in *QueryDetails, opts ...grpc.CallOption) (*ReplyDetails, error) {
+func (c *anBCICustomer) Details(ctx context.Context, in *SolicitDetails, choices ...grpc.CallOption) (*ReplyDetails, error) {
 	out := new(ReplyDetails)
-	err := c.cc.Invoke(ctx, "REDACTED", in, out, opts...)
+	err := c.cc.Invoke(ctx, "REDACTED", in, out, choices...)
 	if err != nil {
 		return nil, err
 	}
 	return out, nil
 }
 
-func (c *aBCICustomer) InspectTransfer(ctx context.Context, in *QueryInspectTransfer, opts ...grpc.CallOption) (*ReplyInspectTransfer, error) {
+func (c *anBCICustomer) InspectTransfer(ctx context.Context, in *SolicitInspectTransfer, choices ...grpc.CallOption) (*ReplyInspectTransfer, error) {
 	out := new(ReplyInspectTransfer)
-	err := c.cc.Invoke(ctx, "REDACTED", in, out, opts...)
+	err := c.cc.Invoke(ctx, "REDACTED", in, out, choices...)
 	if err != nil {
 		return nil, err
 	}
 	return out, nil
 }
 
-func (c *aBCICustomer) EmbedTransfer(ctx context.Context, in *QueryEmbedTransfer, opts ...grpc.CallOption) (*ReplyEmbedTransfer, error) {
-	out := new(ReplyEmbedTransfer)
-	err := c.cc.Invoke(ctx, "REDACTED", in, out, opts...)
+func (c *anBCICustomer) AppendTransfer(ctx context.Context, in *SolicitAppendTransfer, choices ...grpc.CallOption) (*ReplyAppendTransfer, error) {
+	out := new(ReplyAppendTransfer)
+	err := c.cc.Invoke(ctx, "REDACTED", in, out, choices...)
 	if err != nil {
 		return nil, err
 	}
 	return out, nil
 }
 
-func (c *aBCICustomer) HarvestTrans(ctx context.Context, in *QueryHarvestTrans, opts ...grpc.CallOption) (*ReplyHarvestTrans, error) {
+func (c *anBCICustomer) HarvestTrans(ctx context.Context, in *SolicitHarvestTrans, choices ...grpc.CallOption) (*ReplyHarvestTrans, error) {
 	out := new(ReplyHarvestTrans)
-	err := c.cc.Invoke(ctx, "REDACTED", in, out, opts...)
+	err := c.cc.Invoke(ctx, "REDACTED", in, out, choices...)
 	if err != nil {
 		return nil, err
 	}
 	return out, nil
 }
 
-func (c *aBCICustomer) Inquire(ctx context.Context, in *QueryInquire, opts ...grpc.CallOption) (*ReplyInquire, error) {
+func (c *anBCICustomer) Inquire(ctx context.Context, in *SolicitInquire, choices ...grpc.CallOption) (*ReplyInquire, error) {
 	out := new(ReplyInquire)
-	err := c.cc.Invoke(ctx, "REDACTED", in, out, opts...)
+	err := c.cc.Invoke(ctx, "REDACTED", in, out, choices...)
 	if err != nil {
 		return nil, err
 	}
 	return out, nil
 }
 
-func (c *aBCICustomer) Endorse(ctx context.Context, in *QueryEndorse, opts ...grpc.CallOption) (*ReplyEndorse, error) {
+func (c *anBCICustomer) Endorse(ctx context.Context, in *SolicitEndorse, choices ...grpc.CallOption) (*ReplyEndorse, error) {
 	out := new(ReplyEndorse)
-	err := c.cc.Invoke(ctx, "REDACTED", in, out, opts...)
+	err := c.cc.Invoke(ctx, "REDACTED", in, out, choices...)
 	if err != nil {
 		return nil, err
 	}
 	return out, nil
 }
 
-func (c *aBCICustomer) InitSeries(ctx context.Context, in *QueryInitSeries, opts ...grpc.CallOption) (*ReplyInitSeries, error) {
-	out := new(ReplyInitSeries)
-	err := c.cc.Invoke(ctx, "REDACTED", in, out, opts...)
+func (c *anBCICustomer) InitializeSuccession(ctx context.Context, in *SolicitInitializeSuccession, choices ...grpc.CallOption) (*ReplyInitializeSuccession, error) {
+	out := new(ReplyInitializeSuccession)
+	err := c.cc.Invoke(ctx, "REDACTED", in, out, choices...)
 	if err != nil {
 		return nil, err
 	}
 	return out, nil
 }
 
-func (c *aBCICustomer) CatalogMirrors(ctx context.Context, in *QueryCatalogMirrors, opts ...grpc.CallOption) (*ReplyCatalogMirrors, error) {
-	out := new(ReplyCatalogMirrors)
-	err := c.cc.Invoke(ctx, "REDACTED", in, out, opts...)
+func (c *anBCICustomer) CollectionImages(ctx context.Context, in *SolicitCollectionImages, choices ...grpc.CallOption) (*ReplyCatalogImages, error) {
+	out := new(ReplyCatalogImages)
+	err := c.cc.Invoke(ctx, "REDACTED", in, out, choices...)
 	if err != nil {
 		return nil, err
 	}
 	return out, nil
 }
 
-func (c *aBCICustomer) ProposalMirror(ctx context.Context, in *QueryProposalMirror, opts ...grpc.CallOption) (*ReplyProposalMirror, error) {
-	out := new(ReplyProposalMirror)
-	err := c.cc.Invoke(ctx, "REDACTED", in, out, opts...)
+func (c *anBCICustomer) ExtendImage(ctx context.Context, in *SolicitExtendImage, choices ...grpc.CallOption) (*ReplyExtendImage, error) {
+	out := new(ReplyExtendImage)
+	err := c.cc.Invoke(ctx, "REDACTED", in, out, choices...)
 	if err != nil {
 		return nil, err
 	}
 	return out, nil
 }
 
-func (c *aBCICustomer) ImportMirrorSegment(ctx context.Context, in *QueryImportMirrorSegment, opts ...grpc.CallOption) (*ReplyImportMirrorSegment, error) {
-	out := new(ReplyImportMirrorSegment)
-	err := c.cc.Invoke(ctx, "REDACTED", in, out, opts...)
+func (c *anBCICustomer) FetchImageSegment(ctx context.Context, in *SolicitFetchImageSegment, choices ...grpc.CallOption) (*ReplyFetchImageSegment, error) {
+	out := new(ReplyFetchImageSegment)
+	err := c.cc.Invoke(ctx, "REDACTED", in, out, choices...)
 	if err != nil {
 		return nil, err
 	}
 	return out, nil
 }
 
-func (c *aBCICustomer) ExecuteMirrorSegment(ctx context.Context, in *QueryExecuteMirrorSegment, opts ...grpc.CallOption) (*ReplyExecuteMirrorSegment, error) {
-	out := new(ReplyExecuteMirrorSegment)
-	err := c.cc.Invoke(ctx, "REDACTED", in, out, opts...)
+func (c *anBCICustomer) ExecuteImageSegment(ctx context.Context, in *SolicitExecuteImageSegment, choices ...grpc.CallOption) (*ReplyExecuteImageSegment, error) {
+	out := new(ReplyExecuteImageSegment)
+	err := c.cc.Invoke(ctx, "REDACTED", in, out, choices...)
 	if err != nil {
 		return nil, err
 	}
 	return out, nil
 }
 
-func (c *aBCICustomer) ArrangeNomination(ctx context.Context, in *QueryArrangeNomination, opts ...grpc.CallOption) (*ReplyArrangeNomination, error) {
+func (c *anBCICustomer) ArrangeNomination(ctx context.Context, in *SolicitArrangeNomination, choices ...grpc.CallOption) (*ReplyArrangeNomination, error) {
 	out := new(ReplyArrangeNomination)
-	err := c.cc.Invoke(ctx, "REDACTED", in, out, opts...)
+	err := c.cc.Invoke(ctx, "REDACTED", in, out, choices...)
 	if err != nil {
 		return nil, err
 	}
 	return out, nil
 }
 
-func (c *aBCICustomer) HandleNomination(ctx context.Context, in *QueryHandleNomination, opts ...grpc.CallOption) (*ReplyHandleNomination, error) {
+func (c *anBCICustomer) HandleNomination(ctx context.Context, in *SolicitHandleNomination, choices ...grpc.CallOption) (*ReplyHandleNomination, error) {
 	out := new(ReplyHandleNomination)
-	err := c.cc.Invoke(ctx, "REDACTED", in, out, opts...)
+	err := c.cc.Invoke(ctx, "REDACTED", in, out, choices...)
 	if err != nil {
 		return nil, err
 	}
 	return out, nil
 }
 
-func (c *aBCICustomer) ExpandBallot(ctx context.Context, in *QueryExpandBallot, opts ...grpc.CallOption) (*ReplyExpandBallot, error) {
-	out := new(ReplyExpandBallot)
-	err := c.cc.Invoke(ctx, "REDACTED", in, out, opts...)
+func (c *anBCICustomer) BroadenBallot(ctx context.Context, in *SolicitBroadenBallot, choices ...grpc.CallOption) (*ReplyBroadenBallot, error) {
+	out := new(ReplyBroadenBallot)
+	err := c.cc.Invoke(ctx, "REDACTED", in, out, choices...)
 	if err != nil {
 		return nil, err
 	}
 	return out, nil
 }
 
-func (c *aBCICustomer) ValidateBallotAddition(ctx context.Context, in *QueryValidateBallotAddition, opts ...grpc.CallOption) (*ReplyValidateBallotAddition, error) {
+func (c *anBCICustomer) ValidateBallotAddition(ctx context.Context, in *SolicitValidateBallotAddition, choices ...grpc.CallOption) (*ReplyValidateBallotAddition, error) {
 	out := new(ReplyValidateBallotAddition)
-	err := c.cc.Invoke(ctx, "REDACTED", in, out, opts...)
+	err := c.cc.Invoke(ctx, "REDACTED", in, out, choices...)
 	if err != nil {
 		return nil, err
 	}
 	return out, nil
 }
 
-func (c *aBCICustomer) CompleteLedger(ctx context.Context, in *QueryCompleteLedger, opts ...grpc.CallOption) (*ReplyCompleteLedger, error) {
-	out := new(ReplyCompleteLedger)
-	err := c.cc.Invoke(ctx, "REDACTED", in, out, opts...)
+func (c *anBCICustomer) CulminateLedger(ctx context.Context, in *SolicitCulminateLedger, choices ...grpc.CallOption) (*ReplyCulminateLedger, error) {
+	out := new(ReplyCulminateLedger)
+	err := c.cc.Invoke(ctx, "REDACTED", in, out, choices...)
 	if err != nil {
 		return nil, err
 	}
@@ -4318,3882 +4318,3882 @@ func (c *aBCICustomer) CompleteLedger(ctx context.Context, in *QueryCompleteLedg
 }
 
 //
-type IfaceHost interface {
-	Replicate(context.Context, *QueryReverberate) (*ReplyReverberate, error)
-	Purge(context.Context, *QueryPurge) (*ReplyPurge, error)
-	Details(context.Context, *QueryDetails) (*ReplyDetails, error)
-	InspectTransfer(context.Context, *QueryInspectTransfer) (*ReplyInspectTransfer, error)
-	EmbedTransfer(context.Context, *QueryEmbedTransfer) (*ReplyEmbedTransfer, error)
-	HarvestTrans(context.Context, *QueryHarvestTrans) (*ReplyHarvestTrans, error)
-	Inquire(context.Context, *QueryInquire) (*ReplyInquire, error)
-	Endorse(context.Context, *QueryEndorse) (*ReplyEndorse, error)
-	InitSeries(context.Context, *QueryInitSeries) (*ReplyInitSeries, error)
-	CatalogMirrors(context.Context, *QueryCatalogMirrors) (*ReplyCatalogMirrors, error)
-	ProposalMirror(context.Context, *QueryProposalMirror) (*ReplyProposalMirror, error)
-	ImportMirrorSegment(context.Context, *QueryImportMirrorSegment) (*ReplyImportMirrorSegment, error)
-	ExecuteMirrorSegment(context.Context, *QueryExecuteMirrorSegment) (*ReplyExecuteMirrorSegment, error)
-	ArrangeNomination(context.Context, *QueryArrangeNomination) (*ReplyArrangeNomination, error)
-	HandleNomination(context.Context, *QueryHandleNomination) (*ReplyHandleNomination, error)
-	ExpandBallot(context.Context, *QueryExpandBallot) (*ReplyExpandBallot, error)
-	ValidateBallotAddition(context.Context, *QueryValidateBallotAddition) (*ReplyValidateBallotAddition, error)
-	CompleteLedger(context.Context, *QueryCompleteLedger) (*ReplyCompleteLedger, error)
+type IfaceDaemon interface {
+	Reverberate(context.Context, *SolicitReverberate) (*ReplyReverberate, error)
+	Purge(context.Context, *SolicitPurge) (*ReplyPurge, error)
+	Details(context.Context, *SolicitDetails) (*ReplyDetails, error)
+	InspectTransfer(context.Context, *SolicitInspectTransfer) (*ReplyInspectTransfer, error)
+	AppendTransfer(context.Context, *SolicitAppendTransfer) (*ReplyAppendTransfer, error)
+	HarvestTrans(context.Context, *SolicitHarvestTrans) (*ReplyHarvestTrans, error)
+	Inquire(context.Context, *SolicitInquire) (*ReplyInquire, error)
+	Endorse(context.Context, *SolicitEndorse) (*ReplyEndorse, error)
+	InitializeSuccession(context.Context, *SolicitInitializeSuccession) (*ReplyInitializeSuccession, error)
+	CollectionImages(context.Context, *SolicitCollectionImages) (*ReplyCatalogImages, error)
+	ExtendImage(context.Context, *SolicitExtendImage) (*ReplyExtendImage, error)
+	FetchImageSegment(context.Context, *SolicitFetchImageSegment) (*ReplyFetchImageSegment, error)
+	ExecuteImageSegment(context.Context, *SolicitExecuteImageSegment) (*ReplyExecuteImageSegment, error)
+	ArrangeNomination(context.Context, *SolicitArrangeNomination) (*ReplyArrangeNomination, error)
+	HandleNomination(context.Context, *SolicitHandleNomination) (*ReplyHandleNomination, error)
+	BroadenBallot(context.Context, *SolicitBroadenBallot) (*ReplyBroadenBallot, error)
+	ValidateBallotAddition(context.Context, *SolicitValidateBallotAddition) (*ReplyValidateBallotAddition, error)
+	CulminateLedger(context.Context, *SolicitCulminateLedger) (*ReplyCulminateLedger, error)
 }
 
 //
-type UnexecutedIfaceHost struct {
+type UndevelopedIfaceDaemon struct {
 }
 
-func (*UnexecutedIfaceHost) Replicate(ctx context.Context, req *QueryReverberate) (*ReplyReverberate, error) {
+func (*UndevelopedIfaceDaemon) Reverberate(ctx context.Context, req *SolicitReverberate) (*ReplyReverberate, error) {
 	return nil, status.Errorf(codes.Unimplemented, "REDACTED")
 }
-func (*UnexecutedIfaceHost) Purge(ctx context.Context, req *QueryPurge) (*ReplyPurge, error) {
+func (*UndevelopedIfaceDaemon) Purge(ctx context.Context, req *SolicitPurge) (*ReplyPurge, error) {
 	return nil, status.Errorf(codes.Unimplemented, "REDACTED")
 }
-func (*UnexecutedIfaceHost) Details(ctx context.Context, req *QueryDetails) (*ReplyDetails, error) {
+func (*UndevelopedIfaceDaemon) Details(ctx context.Context, req *SolicitDetails) (*ReplyDetails, error) {
 	return nil, status.Errorf(codes.Unimplemented, "REDACTED")
 }
-func (*UnexecutedIfaceHost) InspectTransfer(ctx context.Context, req *QueryInspectTransfer) (*ReplyInspectTransfer, error) {
+func (*UndevelopedIfaceDaemon) InspectTransfer(ctx context.Context, req *SolicitInspectTransfer) (*ReplyInspectTransfer, error) {
 	return nil, status.Errorf(codes.Unimplemented, "REDACTED")
 }
-func (*UnexecutedIfaceHost) EmbedTransfer(ctx context.Context, req *QueryEmbedTransfer) (*ReplyEmbedTransfer, error) {
+func (*UndevelopedIfaceDaemon) AppendTransfer(ctx context.Context, req *SolicitAppendTransfer) (*ReplyAppendTransfer, error) {
 	return nil, status.Errorf(codes.Unimplemented, "REDACTED")
 }
-func (*UnexecutedIfaceHost) HarvestTrans(ctx context.Context, req *QueryHarvestTrans) (*ReplyHarvestTrans, error) {
+func (*UndevelopedIfaceDaemon) HarvestTrans(ctx context.Context, req *SolicitHarvestTrans) (*ReplyHarvestTrans, error) {
 	return nil, status.Errorf(codes.Unimplemented, "REDACTED")
 }
-func (*UnexecutedIfaceHost) Inquire(ctx context.Context, req *QueryInquire) (*ReplyInquire, error) {
+func (*UndevelopedIfaceDaemon) Inquire(ctx context.Context, req *SolicitInquire) (*ReplyInquire, error) {
 	return nil, status.Errorf(codes.Unimplemented, "REDACTED")
 }
-func (*UnexecutedIfaceHost) Endorse(ctx context.Context, req *QueryEndorse) (*ReplyEndorse, error) {
+func (*UndevelopedIfaceDaemon) Endorse(ctx context.Context, req *SolicitEndorse) (*ReplyEndorse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "REDACTED")
 }
-func (*UnexecutedIfaceHost) InitSeries(ctx context.Context, req *QueryInitSeries) (*ReplyInitSeries, error) {
+func (*UndevelopedIfaceDaemon) InitializeSuccession(ctx context.Context, req *SolicitInitializeSuccession) (*ReplyInitializeSuccession, error) {
 	return nil, status.Errorf(codes.Unimplemented, "REDACTED")
 }
-func (*UnexecutedIfaceHost) CatalogMirrors(ctx context.Context, req *QueryCatalogMirrors) (*ReplyCatalogMirrors, error) {
+func (*UndevelopedIfaceDaemon) CollectionImages(ctx context.Context, req *SolicitCollectionImages) (*ReplyCatalogImages, error) {
 	return nil, status.Errorf(codes.Unimplemented, "REDACTED")
 }
-func (*UnexecutedIfaceHost) ProposalMirror(ctx context.Context, req *QueryProposalMirror) (*ReplyProposalMirror, error) {
+func (*UndevelopedIfaceDaemon) ExtendImage(ctx context.Context, req *SolicitExtendImage) (*ReplyExtendImage, error) {
 	return nil, status.Errorf(codes.Unimplemented, "REDACTED")
 }
-func (*UnexecutedIfaceHost) ImportMirrorSegment(ctx context.Context, req *QueryImportMirrorSegment) (*ReplyImportMirrorSegment, error) {
+func (*UndevelopedIfaceDaemon) FetchImageSegment(ctx context.Context, req *SolicitFetchImageSegment) (*ReplyFetchImageSegment, error) {
 	return nil, status.Errorf(codes.Unimplemented, "REDACTED")
 }
-func (*UnexecutedIfaceHost) ExecuteMirrorSegment(ctx context.Context, req *QueryExecuteMirrorSegment) (*ReplyExecuteMirrorSegment, error) {
+func (*UndevelopedIfaceDaemon) ExecuteImageSegment(ctx context.Context, req *SolicitExecuteImageSegment) (*ReplyExecuteImageSegment, error) {
 	return nil, status.Errorf(codes.Unimplemented, "REDACTED")
 }
-func (*UnexecutedIfaceHost) ArrangeNomination(ctx context.Context, req *QueryArrangeNomination) (*ReplyArrangeNomination, error) {
+func (*UndevelopedIfaceDaemon) ArrangeNomination(ctx context.Context, req *SolicitArrangeNomination) (*ReplyArrangeNomination, error) {
 	return nil, status.Errorf(codes.Unimplemented, "REDACTED")
 }
-func (*UnexecutedIfaceHost) HandleNomination(ctx context.Context, req *QueryHandleNomination) (*ReplyHandleNomination, error) {
+func (*UndevelopedIfaceDaemon) HandleNomination(ctx context.Context, req *SolicitHandleNomination) (*ReplyHandleNomination, error) {
 	return nil, status.Errorf(codes.Unimplemented, "REDACTED")
 }
-func (*UnexecutedIfaceHost) ExpandBallot(ctx context.Context, req *QueryExpandBallot) (*ReplyExpandBallot, error) {
+func (*UndevelopedIfaceDaemon) BroadenBallot(ctx context.Context, req *SolicitBroadenBallot) (*ReplyBroadenBallot, error) {
 	return nil, status.Errorf(codes.Unimplemented, "REDACTED")
 }
-func (*UnexecutedIfaceHost) ValidateBallotAddition(ctx context.Context, req *QueryValidateBallotAddition) (*ReplyValidateBallotAddition, error) {
+func (*UndevelopedIfaceDaemon) ValidateBallotAddition(ctx context.Context, req *SolicitValidateBallotAddition) (*ReplyValidateBallotAddition, error) {
 	return nil, status.Errorf(codes.Unimplemented, "REDACTED")
 }
-func (*UnexecutedIfaceHost) CompleteLedger(ctx context.Context, req *QueryCompleteLedger) (*ReplyCompleteLedger, error) {
+func (*UndevelopedIfaceDaemon) CulminateLedger(ctx context.Context, req *SolicitCulminateLedger) (*ReplyCulminateLedger, error) {
 	return nil, status.Errorf(codes.Unimplemented, "REDACTED")
 }
 
-func EnrollIfaceHost(s grpc1.Server, srv IfaceHost) {
-	s.RegisterService(&_IFACE_servicedefinition, srv)
+func EnrollIfaceDaemon(s grpc1.Server, srv IfaceDaemon) {
+	s.RegisterService(&_IFACE_servicedetails, srv)
 }
 
-func _IFACE_Reverberate_Manager(srv interface{}, ctx context.Context, dec func(interface{}) error, overseer grpc.UnaryServerInterceptor) (interface{}, error) {
-	in := new(QueryReverberate)
+func _IFACE_Reverberate_Processor(srv interface{}, ctx context.Context, dec func(interface{}) error, overseer grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(SolicitReverberate)
 	if err := dec(in); err != nil {
 		return nil, err
 	}
 	if overseer == nil {
-		return srv.(IfaceHost).Replicate(ctx, in)
+		return srv.(IfaceDaemon).Reverberate(ctx, in)
 	}
 	details := &grpc.UnaryServerInfo{
 		Server:     srv,
 		FullMethod: "REDACTED",
 	}
-	manager := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(IfaceHost).Replicate(ctx, req.(*QueryReverberate))
+	processor := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(IfaceDaemon).Reverberate(ctx, req.(*SolicitReverberate))
 	}
-	return overseer(ctx, in, details, manager)
+	return overseer(ctx, in, details, processor)
 }
 
-func _IFACE_Purge_Manager(srv interface{}, ctx context.Context, dec func(interface{}) error, overseer grpc.UnaryServerInterceptor) (interface{}, error) {
-	in := new(QueryPurge)
+func _IFACE_Purge_Processor(srv interface{}, ctx context.Context, dec func(interface{}) error, overseer grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(SolicitPurge)
 	if err := dec(in); err != nil {
 		return nil, err
 	}
 	if overseer == nil {
-		return srv.(IfaceHost).Purge(ctx, in)
+		return srv.(IfaceDaemon).Purge(ctx, in)
 	}
 	details := &grpc.UnaryServerInfo{
 		Server:     srv,
 		FullMethod: "REDACTED",
 	}
-	manager := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(IfaceHost).Purge(ctx, req.(*QueryPurge))
+	processor := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(IfaceDaemon).Purge(ctx, req.(*SolicitPurge))
 	}
-	return overseer(ctx, in, details, manager)
+	return overseer(ctx, in, details, processor)
 }
 
-func _IFACE_Details_Manager(srv interface{}, ctx context.Context, dec func(interface{}) error, overseer grpc.UnaryServerInterceptor) (interface{}, error) {
-	in := new(QueryDetails)
+func _IFACE_Details_Processor(srv interface{}, ctx context.Context, dec func(interface{}) error, overseer grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(SolicitDetails)
 	if err := dec(in); err != nil {
 		return nil, err
 	}
 	if overseer == nil {
-		return srv.(IfaceHost).Details(ctx, in)
+		return srv.(IfaceDaemon).Details(ctx, in)
 	}
 	details := &grpc.UnaryServerInfo{
 		Server:     srv,
 		FullMethod: "REDACTED",
 	}
-	manager := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(IfaceHost).Details(ctx, req.(*QueryDetails))
+	processor := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(IfaceDaemon).Details(ctx, req.(*SolicitDetails))
 	}
-	return overseer(ctx, in, details, manager)
+	return overseer(ctx, in, details, processor)
 }
 
-func _IFACE_Transfercheck_Manager(srv interface{}, ctx context.Context, dec func(interface{}) error, overseer grpc.UnaryServerInterceptor) (interface{}, error) {
-	in := new(QueryInspectTransfer)
+func _IFACE_Inspecttrans_Processor(srv interface{}, ctx context.Context, dec func(interface{}) error, overseer grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(SolicitInspectTransfer)
 	if err := dec(in); err != nil {
 		return nil, err
 	}
 	if overseer == nil {
-		return srv.(IfaceHost).InspectTransfer(ctx, in)
+		return srv.(IfaceDaemon).InspectTransfer(ctx, in)
 	}
 	details := &grpc.UnaryServerInfo{
 		Server:     srv,
 		FullMethod: "REDACTED",
 	}
-	manager := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(IfaceHost).InspectTransfer(ctx, req.(*QueryInspectTransfer))
+	processor := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(IfaceDaemon).InspectTransfer(ctx, req.(*SolicitInspectTransfer))
 	}
-	return overseer(ctx, in, details, manager)
+	return overseer(ctx, in, details, processor)
 }
 
-func _IFACE_Transferinsert_Manager(srv interface{}, ctx context.Context, dec func(interface{}) error, overseer grpc.UnaryServerInterceptor) (interface{}, error) {
-	in := new(QueryEmbedTransfer)
+func _IFACE_Appendtrans_Processor(srv interface{}, ctx context.Context, dec func(interface{}) error, overseer grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(SolicitAppendTransfer)
 	if err := dec(in); err != nil {
 		return nil, err
 	}
 	if overseer == nil {
-		return srv.(IfaceHost).EmbedTransfer(ctx, in)
+		return srv.(IfaceDaemon).AppendTransfer(ctx, in)
 	}
 	details := &grpc.UnaryServerInfo{
 		Server:     srv,
 		FullMethod: "REDACTED",
 	}
-	manager := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(IfaceHost).EmbedTransfer(ctx, req.(*QueryEmbedTransfer))
+	processor := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(IfaceDaemon).AppendTransfer(ctx, req.(*SolicitAppendTransfer))
 	}
-	return overseer(ctx, in, details, manager)
+	return overseer(ctx, in, details, processor)
 }
 
-func _IFACE_Reaptransfers_Manager(srv interface{}, ctx context.Context, dec func(interface{}) error, overseer grpc.UnaryServerInterceptor) (interface{}, error) {
-	in := new(QueryHarvestTrans)
+func _IFACE_Harvesttrans_Processor(srv interface{}, ctx context.Context, dec func(interface{}) error, overseer grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(SolicitHarvestTrans)
 	if err := dec(in); err != nil {
 		return nil, err
 	}
 	if overseer == nil {
-		return srv.(IfaceHost).HarvestTrans(ctx, in)
+		return srv.(IfaceDaemon).HarvestTrans(ctx, in)
 	}
 	details := &grpc.UnaryServerInfo{
 		Server:     srv,
 		FullMethod: "REDACTED",
 	}
-	manager := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(IfaceHost).HarvestTrans(ctx, req.(*QueryHarvestTrans))
+	processor := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(IfaceDaemon).HarvestTrans(ctx, req.(*SolicitHarvestTrans))
 	}
-	return overseer(ctx, in, details, manager)
+	return overseer(ctx, in, details, processor)
 }
 
-func _IFACE_Inquire_Manager(srv interface{}, ctx context.Context, dec func(interface{}) error, overseer grpc.UnaryServerInterceptor) (interface{}, error) {
-	in := new(QueryInquire)
+func _IFACE_Inquire_Processor(srv interface{}, ctx context.Context, dec func(interface{}) error, overseer grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(SolicitInquire)
 	if err := dec(in); err != nil {
 		return nil, err
 	}
 	if overseer == nil {
-		return srv.(IfaceHost).Inquire(ctx, in)
+		return srv.(IfaceDaemon).Inquire(ctx, in)
 	}
 	details := &grpc.UnaryServerInfo{
 		Server:     srv,
 		FullMethod: "REDACTED",
 	}
-	manager := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(IfaceHost).Inquire(ctx, req.(*QueryInquire))
+	processor := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(IfaceDaemon).Inquire(ctx, req.(*SolicitInquire))
 	}
-	return overseer(ctx, in, details, manager)
+	return overseer(ctx, in, details, processor)
 }
 
-func _IFACE_Endorse_Manager(srv interface{}, ctx context.Context, dec func(interface{}) error, overseer grpc.UnaryServerInterceptor) (interface{}, error) {
-	in := new(QueryEndorse)
+func _IFACE_Endorse_Processor(srv interface{}, ctx context.Context, dec func(interface{}) error, overseer grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(SolicitEndorse)
 	if err := dec(in); err != nil {
 		return nil, err
 	}
 	if overseer == nil {
-		return srv.(IfaceHost).Endorse(ctx, in)
+		return srv.(IfaceDaemon).Endorse(ctx, in)
 	}
 	details := &grpc.UnaryServerInfo{
 		Server:     srv,
 		FullMethod: "REDACTED",
 	}
-	manager := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(IfaceHost).Endorse(ctx, req.(*QueryEndorse))
+	processor := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(IfaceDaemon).Endorse(ctx, req.(*SolicitEndorse))
 	}
-	return overseer(ctx, in, details, manager)
+	return overseer(ctx, in, details, processor)
 }
 
-func _IFACE_Initiatechain_Manager(srv interface{}, ctx context.Context, dec func(interface{}) error, overseer grpc.UnaryServerInterceptor) (interface{}, error) {
-	in := new(QueryInitSeries)
+func _IFACE_Initiatechain_Processor(srv interface{}, ctx context.Context, dec func(interface{}) error, overseer grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(SolicitInitializeSuccession)
 	if err := dec(in); err != nil {
 		return nil, err
 	}
 	if overseer == nil {
-		return srv.(IfaceHost).InitSeries(ctx, in)
+		return srv.(IfaceDaemon).InitializeSuccession(ctx, in)
 	}
 	details := &grpc.UnaryServerInfo{
 		Server:     srv,
 		FullMethod: "REDACTED",
 	}
-	manager := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(IfaceHost).InitSeries(ctx, req.(*QueryInitSeries))
+	processor := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(IfaceDaemon).InitializeSuccession(ctx, req.(*SolicitInitializeSuccession))
 	}
-	return overseer(ctx, in, details, manager)
+	return overseer(ctx, in, details, processor)
 }
 
-func _IFACE_Catalogmirrors_Manager(srv interface{}, ctx context.Context, dec func(interface{}) error, overseer grpc.UnaryServerInterceptor) (interface{}, error) {
-	in := new(QueryCatalogMirrors)
+func _IFACE_Catalogimages_Processor(srv interface{}, ctx context.Context, dec func(interface{}) error, overseer grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(SolicitCollectionImages)
 	if err := dec(in); err != nil {
 		return nil, err
 	}
 	if overseer == nil {
-		return srv.(IfaceHost).CatalogMirrors(ctx, in)
+		return srv.(IfaceDaemon).CollectionImages(ctx, in)
 	}
 	details := &grpc.UnaryServerInfo{
 		Server:     srv,
 		FullMethod: "REDACTED",
 	}
-	manager := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(IfaceHost).CatalogMirrors(ctx, req.(*QueryCatalogMirrors))
+	processor := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(IfaceDaemon).CollectionImages(ctx, req.(*SolicitCollectionImages))
 	}
-	return overseer(ctx, in, details, manager)
+	return overseer(ctx, in, details, processor)
 }
 
-func _IFACE_Mirrorsnapshot_Manager(srv interface{}, ctx context.Context, dec func(interface{}) error, overseer grpc.UnaryServerInterceptor) (interface{}, error) {
-	in := new(QueryProposalMirror)
+func _IFACE_Extendimage_Processor(srv interface{}, ctx context.Context, dec func(interface{}) error, overseer grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(SolicitExtendImage)
 	if err := dec(in); err != nil {
 		return nil, err
 	}
 	if overseer == nil {
-		return srv.(IfaceHost).ProposalMirror(ctx, in)
+		return srv.(IfaceDaemon).ExtendImage(ctx, in)
 	}
 	details := &grpc.UnaryServerInfo{
 		Server:     srv,
 		FullMethod: "REDACTED",
 	}
-	manager := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(IfaceHost).ProposalMirror(ctx, req.(*QueryProposalMirror))
+	processor := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(IfaceDaemon).ExtendImage(ctx, req.(*SolicitExtendImage))
 	}
-	return overseer(ctx, in, details, manager)
+	return overseer(ctx, in, details, processor)
 }
 
-func _IFACE_Loadmirrorsegment_Manager(srv interface{}, ctx context.Context, dec func(interface{}) error, overseer grpc.UnaryServerInterceptor) (interface{}, error) {
-	in := new(QueryImportMirrorSegment)
+func _IFACE_Loadimagefragment_Processor(srv interface{}, ctx context.Context, dec func(interface{}) error, overseer grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(SolicitFetchImageSegment)
 	if err := dec(in); err != nil {
 		return nil, err
 	}
 	if overseer == nil {
-		return srv.(IfaceHost).ImportMirrorSegment(ctx, in)
+		return srv.(IfaceDaemon).FetchImageSegment(ctx, in)
 	}
 	details := &grpc.UnaryServerInfo{
 		Server:     srv,
 		FullMethod: "REDACTED",
 	}
-	manager := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(IfaceHost).ImportMirrorSegment(ctx, req.(*QueryImportMirrorSegment))
+	processor := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(IfaceDaemon).FetchImageSegment(ctx, req.(*SolicitFetchImageSegment))
 	}
-	return overseer(ctx, in, details, manager)
+	return overseer(ctx, in, details, processor)
 }
 
-func _IFACE_Executemirrorsegment_Manager(srv interface{}, ctx context.Context, dec func(interface{}) error, overseer grpc.UnaryServerInterceptor) (interface{}, error) {
-	in := new(QueryExecuteMirrorSegment)
+func _IFACE_Executeimagefragment_Processor(srv interface{}, ctx context.Context, dec func(interface{}) error, overseer grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(SolicitExecuteImageSegment)
 	if err := dec(in); err != nil {
 		return nil, err
 	}
 	if overseer == nil {
-		return srv.(IfaceHost).ExecuteMirrorSegment(ctx, in)
+		return srv.(IfaceDaemon).ExecuteImageSegment(ctx, in)
 	}
 	details := &grpc.UnaryServerInfo{
 		Server:     srv,
 		FullMethod: "REDACTED",
 	}
-	manager := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(IfaceHost).ExecuteMirrorSegment(ctx, req.(*QueryExecuteMirrorSegment))
+	processor := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(IfaceDaemon).ExecuteImageSegment(ctx, req.(*SolicitExecuteImageSegment))
 	}
-	return overseer(ctx, in, details, manager)
+	return overseer(ctx, in, details, processor)
 }
 
-func _IFACE_Arrangenomination_Manager(srv interface{}, ctx context.Context, dec func(interface{}) error, overseer grpc.UnaryServerInterceptor) (interface{}, error) {
-	in := new(QueryArrangeNomination)
+func _IFACE_Prepareitem_Processor(srv interface{}, ctx context.Context, dec func(interface{}) error, overseer grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(SolicitArrangeNomination)
 	if err := dec(in); err != nil {
 		return nil, err
 	}
 	if overseer == nil {
-		return srv.(IfaceHost).ArrangeNomination(ctx, in)
+		return srv.(IfaceDaemon).ArrangeNomination(ctx, in)
 	}
 	details := &grpc.UnaryServerInfo{
 		Server:     srv,
 		FullMethod: "REDACTED",
 	}
-	manager := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(IfaceHost).ArrangeNomination(ctx, req.(*QueryArrangeNomination))
+	processor := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(IfaceDaemon).ArrangeNomination(ctx, req.(*SolicitArrangeNomination))
 	}
-	return overseer(ctx, in, details, manager)
+	return overseer(ctx, in, details, processor)
 }
 
-func _IFACE_Processnomination_Manager(srv interface{}, ctx context.Context, dec func(interface{}) error, overseer grpc.UnaryServerInterceptor) (interface{}, error) {
-	in := new(QueryHandleNomination)
+func _IFACE_Executeitem_Processor(srv interface{}, ctx context.Context, dec func(interface{}) error, overseer grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(SolicitHandleNomination)
 	if err := dec(in); err != nil {
 		return nil, err
 	}
 	if overseer == nil {
-		return srv.(IfaceHost).HandleNomination(ctx, in)
+		return srv.(IfaceDaemon).HandleNomination(ctx, in)
 	}
 	details := &grpc.UnaryServerInfo{
 		Server:     srv,
 		FullMethod: "REDACTED",
 	}
-	manager := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(IfaceHost).HandleNomination(ctx, req.(*QueryHandleNomination))
+	processor := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(IfaceDaemon).HandleNomination(ctx, req.(*SolicitHandleNomination))
 	}
-	return overseer(ctx, in, details, manager)
+	return overseer(ctx, in, details, processor)
 }
 
-func _IFACE_Ballotextend_Manager(srv interface{}, ctx context.Context, dec func(interface{}) error, overseer grpc.UnaryServerInterceptor) (interface{}, error) {
-	in := new(QueryExpandBallot)
+func _IFACE_Extendballot_Processor(srv interface{}, ctx context.Context, dec func(interface{}) error, overseer grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(SolicitBroadenBallot)
 	if err := dec(in); err != nil {
 		return nil, err
 	}
 	if overseer == nil {
-		return srv.(IfaceHost).ExpandBallot(ctx, in)
+		return srv.(IfaceDaemon).BroadenBallot(ctx, in)
 	}
 	details := &grpc.UnaryServerInfo{
 		Server:     srv,
 		FullMethod: "REDACTED",
 	}
-	manager := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(IfaceHost).ExpandBallot(ctx, req.(*QueryExpandBallot))
+	processor := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(IfaceDaemon).BroadenBallot(ctx, req.(*SolicitBroadenBallot))
 	}
-	return overseer(ctx, in, details, manager)
+	return overseer(ctx, in, details, processor)
 }
 
-func _IFACE_Validateballotextension_Manager(srv interface{}, ctx context.Context, dec func(interface{}) error, overseer grpc.UnaryServerInterceptor) (interface{}, error) {
-	in := new(QueryValidateBallotAddition)
+func _IFACE_Verifyballotaddition_Processor(srv interface{}, ctx context.Context, dec func(interface{}) error, overseer grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(SolicitValidateBallotAddition)
 	if err := dec(in); err != nil {
 		return nil, err
 	}
 	if overseer == nil {
-		return srv.(IfaceHost).ValidateBallotAddition(ctx, in)
+		return srv.(IfaceDaemon).ValidateBallotAddition(ctx, in)
 	}
 	details := &grpc.UnaryServerInfo{
 		Server:     srv,
 		FullMethod: "REDACTED",
 	}
-	manager := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(IfaceHost).ValidateBallotAddition(ctx, req.(*QueryValidateBallotAddition))
+	processor := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(IfaceDaemon).ValidateBallotAddition(ctx, req.(*SolicitValidateBallotAddition))
 	}
-	return overseer(ctx, in, details, manager)
+	return overseer(ctx, in, details, processor)
 }
 
-func _IFACE_Terminateblock_Manager(srv interface{}, ctx context.Context, dec func(interface{}) error, overseer grpc.UnaryServerInterceptor) (interface{}, error) {
-	in := new(QueryCompleteLedger)
+func _IFACE_Finalizeledger_Processor(srv interface{}, ctx context.Context, dec func(interface{}) error, overseer grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(SolicitCulminateLedger)
 	if err := dec(in); err != nil {
 		return nil, err
 	}
 	if overseer == nil {
-		return srv.(IfaceHost).CompleteLedger(ctx, in)
+		return srv.(IfaceDaemon).CulminateLedger(ctx, in)
 	}
 	details := &grpc.UnaryServerInfo{
 		Server:     srv,
 		FullMethod: "REDACTED",
 	}
-	manager := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(IfaceHost).CompleteLedger(ctx, req.(*QueryCompleteLedger))
+	processor := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(IfaceDaemon).CulminateLedger(ctx, req.(*SolicitCulminateLedger))
 	}
-	return overseer(ctx, in, details, manager)
+	return overseer(ctx, in, details, processor)
 }
 
-var IFACE_servicedefinition = _IFACE_servicedefinition
-var _IFACE_servicedefinition = grpc.ServiceDesc{
+var IFACE_servicedetails = _IFACE_servicedetails
+var _IFACE_servicedetails = grpc.ServiceDesc{
 	ServiceName: "REDACTED",
-	HandlerType: (*IfaceHost)(nil),
+	HandlerType: (*IfaceDaemon)(nil),
 	Methods: []grpc.MethodDesc{
 		{
 			MethodName: "REDACTED",
-			Handler:    _IFACE_Reverberate_Manager,
+			Handler:    _IFACE_Reverberate_Processor,
 		},
 		{
 			MethodName: "REDACTED",
-			Handler:    _IFACE_Purge_Manager,
+			Handler:    _IFACE_Purge_Processor,
 		},
 		{
 			MethodName: "REDACTED",
-			Handler:    _IFACE_Details_Manager,
+			Handler:    _IFACE_Details_Processor,
 		},
 		{
 			MethodName: "REDACTED",
-			Handler:    _IFACE_Transfercheck_Manager,
+			Handler:    _IFACE_Inspecttrans_Processor,
 		},
 		{
 			MethodName: "REDACTED",
-			Handler:    _IFACE_Transferinsert_Manager,
+			Handler:    _IFACE_Appendtrans_Processor,
 		},
 		{
 			MethodName: "REDACTED",
-			Handler:    _IFACE_Reaptransfers_Manager,
+			Handler:    _IFACE_Harvesttrans_Processor,
 		},
 		{
 			MethodName: "REDACTED",
-			Handler:    _IFACE_Inquire_Manager,
+			Handler:    _IFACE_Inquire_Processor,
 		},
 		{
 			MethodName: "REDACTED",
-			Handler:    _IFACE_Endorse_Manager,
+			Handler:    _IFACE_Endorse_Processor,
 		},
 		{
 			MethodName: "REDACTED",
-			Handler:    _IFACE_Initiatechain_Manager,
+			Handler:    _IFACE_Initiatechain_Processor,
 		},
 		{
 			MethodName: "REDACTED",
-			Handler:    _IFACE_Catalogmirrors_Manager,
+			Handler:    _IFACE_Catalogimages_Processor,
 		},
 		{
 			MethodName: "REDACTED",
-			Handler:    _IFACE_Mirrorsnapshot_Manager,
+			Handler:    _IFACE_Extendimage_Processor,
 		},
 		{
 			MethodName: "REDACTED",
-			Handler:    _IFACE_Loadmirrorsegment_Manager,
+			Handler:    _IFACE_Loadimagefragment_Processor,
 		},
 		{
 			MethodName: "REDACTED",
-			Handler:    _IFACE_Executemirrorsegment_Manager,
+			Handler:    _IFACE_Executeimagefragment_Processor,
 		},
 		{
 			MethodName: "REDACTED",
-			Handler:    _IFACE_Arrangenomination_Manager,
+			Handler:    _IFACE_Prepareitem_Processor,
 		},
 		{
 			MethodName: "REDACTED",
-			Handler:    _IFACE_Processnomination_Manager,
+			Handler:    _IFACE_Executeitem_Processor,
 		},
 		{
 			MethodName: "REDACTED",
-			Handler:    _IFACE_Ballotextend_Manager,
+			Handler:    _IFACE_Extendballot_Processor,
 		},
 		{
 			MethodName: "REDACTED",
-			Handler:    _IFACE_Validateballotextension_Manager,
+			Handler:    _IFACE_Verifyballotaddition_Processor,
 		},
 		{
 			MethodName: "REDACTED",
-			Handler:    _IFACE_Terminateblock_Manager,
+			Handler:    _IFACE_Finalizeledger_Processor,
 		},
 	},
 	Streams:  []grpc.StreamDesc{},
 	Metadata: "REDACTED",
 }
 
-func (m *Query) Serialize() (dAtA []byte, err error) {
-	volume := m.Volume()
-	dAtA = make([]byte, volume)
-	n, err := m.SerializeToDimensionedBuffer(dAtA[:volume])
+func (m *Solicit) Serialize() (deltaLocatedAN []byte, err error) {
+	extent := m.Extent()
+	deltaLocatedAN = make([]byte, extent)
+	n, err := m.SerializeTowardDimensionedReserve(deltaLocatedAN[:extent])
 	if err != nil {
 		return nil, err
 	}
-	return dAtA[:n], nil
+	return deltaLocatedAN[:n], nil
 }
 
-func (m *Query) SerializeTo(dAtA []byte) (int, error) {
-	volume := m.Volume()
-	return m.SerializeToDimensionedBuffer(dAtA[:volume])
+func (m *Solicit) SerializeToward(deltaLocatedAN []byte) (int, error) {
+	extent := m.Extent()
+	return m.SerializeTowardDimensionedReserve(deltaLocatedAN[:extent])
 }
 
-func (m *Query) SerializeToDimensionedBuffer(dAtA []byte) (int, error) {
-	i := len(dAtA)
+func (m *Solicit) SerializeTowardDimensionedReserve(deltaLocatedAN []byte) (int, error) {
+	i := len(deltaLocatedAN)
 	_ = i
 	var l int
 	_ = l
-	if m.Item != nil {
+	if m.Datum != nil {
 		{
-			volume := m.Item.Volume()
-			i -= volume
-			if _, err := m.Item.SerializeTo(dAtA[i:]); err != nil {
+			extent := m.Datum.Extent()
+			i -= extent
+			if _, err := m.Datum.SerializeToward(deltaLocatedAN[i:]); err != nil {
 				return 0, err
 			}
 		}
 	}
-	return len(dAtA) - i, nil
+	return len(deltaLocatedAN) - i, nil
 }
 
-func (m *Query_Reverberate) SerializeTo(dAtA []byte) (int, error) {
-	volume := m.Volume()
-	return m.SerializeToDimensionedBuffer(dAtA[:volume])
+func (m *Solicit_Reverberate) SerializeToward(deltaLocatedAN []byte) (int, error) {
+	extent := m.Extent()
+	return m.SerializeTowardDimensionedReserve(deltaLocatedAN[:extent])
 }
 
-func (m *Query_Reverberate) SerializeToDimensionedBuffer(dAtA []byte) (int, error) {
-	i := len(dAtA)
-	if m.Replicate != nil {
+func (m *Solicit_Reverberate) SerializeTowardDimensionedReserve(deltaLocatedAN []byte) (int, error) {
+	i := len(deltaLocatedAN)
+	if m.Reverberate != nil {
 		{
-			volume, err := m.Replicate.SerializeToDimensionedBuffer(dAtA[:i])
+			extent, err := m.Reverberate.SerializeTowardDimensionedReserve(deltaLocatedAN[:i])
 			if err != nil {
 				return 0, err
 			}
-			i -= volume
-			i = formatVariableintKinds(dAtA, i, uint64(volume))
+			i -= extent
+			i = serializeVariableintKinds(deltaLocatedAN, i, uint64(extent))
 		}
 		i--
-		dAtA[i] = 0xa
+		deltaLocatedAN[i] = 0xa
 	}
-	return len(dAtA) - i, nil
+	return len(deltaLocatedAN) - i, nil
 }
-func (m *Query_Purge) SerializeTo(dAtA []byte) (int, error) {
-	volume := m.Volume()
-	return m.SerializeToDimensionedBuffer(dAtA[:volume])
+func (m *Solicit_Purge) SerializeToward(deltaLocatedAN []byte) (int, error) {
+	extent := m.Extent()
+	return m.SerializeTowardDimensionedReserve(deltaLocatedAN[:extent])
 }
 
-func (m *Query_Purge) SerializeToDimensionedBuffer(dAtA []byte) (int, error) {
-	i := len(dAtA)
+func (m *Solicit_Purge) SerializeTowardDimensionedReserve(deltaLocatedAN []byte) (int, error) {
+	i := len(deltaLocatedAN)
 	if m.Purge != nil {
 		{
-			volume, err := m.Purge.SerializeToDimensionedBuffer(dAtA[:i])
+			extent, err := m.Purge.SerializeTowardDimensionedReserve(deltaLocatedAN[:i])
 			if err != nil {
 				return 0, err
 			}
-			i -= volume
-			i = formatVariableintKinds(dAtA, i, uint64(volume))
+			i -= extent
+			i = serializeVariableintKinds(deltaLocatedAN, i, uint64(extent))
 		}
 		i--
-		dAtA[i] = 0x12
+		deltaLocatedAN[i] = 0x12
 	}
-	return len(dAtA) - i, nil
+	return len(deltaLocatedAN) - i, nil
 }
-func (m *Query_Details) SerializeTo(dAtA []byte) (int, error) {
-	volume := m.Volume()
-	return m.SerializeToDimensionedBuffer(dAtA[:volume])
+func (m *Solicit_Details) SerializeToward(deltaLocatedAN []byte) (int, error) {
+	extent := m.Extent()
+	return m.SerializeTowardDimensionedReserve(deltaLocatedAN[:extent])
 }
 
-func (m *Query_Details) SerializeToDimensionedBuffer(dAtA []byte) (int, error) {
-	i := len(dAtA)
+func (m *Solicit_Details) SerializeTowardDimensionedReserve(deltaLocatedAN []byte) (int, error) {
+	i := len(deltaLocatedAN)
 	if m.Details != nil {
 		{
-			volume, err := m.Details.SerializeToDimensionedBuffer(dAtA[:i])
+			extent, err := m.Details.SerializeTowardDimensionedReserve(deltaLocatedAN[:i])
 			if err != nil {
 				return 0, err
 			}
-			i -= volume
-			i = formatVariableintKinds(dAtA, i, uint64(volume))
+			i -= extent
+			i = serializeVariableintKinds(deltaLocatedAN, i, uint64(extent))
 		}
 		i--
-		dAtA[i] = 0x1a
+		deltaLocatedAN[i] = 0x1a
 	}
-	return len(dAtA) - i, nil
+	return len(deltaLocatedAN) - i, nil
 }
-func (m *Query_Initiatechain) SerializeTo(dAtA []byte) (int, error) {
-	volume := m.Volume()
-	return m.SerializeToDimensionedBuffer(dAtA[:volume])
+func (m *Solicit_Initiatechain) SerializeToward(deltaLocatedAN []byte) (int, error) {
+	extent := m.Extent()
+	return m.SerializeTowardDimensionedReserve(deltaLocatedAN[:extent])
 }
 
-func (m *Query_Initiatechain) SerializeToDimensionedBuffer(dAtA []byte) (int, error) {
-	i := len(dAtA)
-	if m.InitSeries != nil {
+func (m *Solicit_Initiatechain) SerializeTowardDimensionedReserve(deltaLocatedAN []byte) (int, error) {
+	i := len(deltaLocatedAN)
+	if m.InitializeSuccession != nil {
 		{
-			volume, err := m.InitSeries.SerializeToDimensionedBuffer(dAtA[:i])
+			extent, err := m.InitializeSuccession.SerializeTowardDimensionedReserve(deltaLocatedAN[:i])
 			if err != nil {
 				return 0, err
 			}
-			i -= volume
-			i = formatVariableintKinds(dAtA, i, uint64(volume))
+			i -= extent
+			i = serializeVariableintKinds(deltaLocatedAN, i, uint64(extent))
 		}
 		i--
-		dAtA[i] = 0x2a
+		deltaLocatedAN[i] = 0x2a
 	}
-	return len(dAtA) - i, nil
+	return len(deltaLocatedAN) - i, nil
 }
-func (m *Query_Inquire) SerializeTo(dAtA []byte) (int, error) {
-	volume := m.Volume()
-	return m.SerializeToDimensionedBuffer(dAtA[:volume])
+func (m *Solicit_Inquire) SerializeToward(deltaLocatedAN []byte) (int, error) {
+	extent := m.Extent()
+	return m.SerializeTowardDimensionedReserve(deltaLocatedAN[:extent])
 }
 
-func (m *Query_Inquire) SerializeToDimensionedBuffer(dAtA []byte) (int, error) {
-	i := len(dAtA)
+func (m *Solicit_Inquire) SerializeTowardDimensionedReserve(deltaLocatedAN []byte) (int, error) {
+	i := len(deltaLocatedAN)
 	if m.Inquire != nil {
 		{
-			volume, err := m.Inquire.SerializeToDimensionedBuffer(dAtA[:i])
+			extent, err := m.Inquire.SerializeTowardDimensionedReserve(deltaLocatedAN[:i])
 			if err != nil {
 				return 0, err
 			}
-			i -= volume
-			i = formatVariableintKinds(dAtA, i, uint64(volume))
+			i -= extent
+			i = serializeVariableintKinds(deltaLocatedAN, i, uint64(extent))
 		}
 		i--
-		dAtA[i] = 0x32
+		deltaLocatedAN[i] = 0x32
 	}
-	return len(dAtA) - i, nil
+	return len(deltaLocatedAN) - i, nil
 }
-func (m *Query_Transfercheck) SerializeTo(dAtA []byte) (int, error) {
-	volume := m.Volume()
-	return m.SerializeToDimensionedBuffer(dAtA[:volume])
+func (m *Solicit_Inspecttrans) SerializeToward(deltaLocatedAN []byte) (int, error) {
+	extent := m.Extent()
+	return m.SerializeTowardDimensionedReserve(deltaLocatedAN[:extent])
 }
 
-func (m *Query_Transfercheck) SerializeToDimensionedBuffer(dAtA []byte) (int, error) {
-	i := len(dAtA)
+func (m *Solicit_Inspecttrans) SerializeTowardDimensionedReserve(deltaLocatedAN []byte) (int, error) {
+	i := len(deltaLocatedAN)
 	if m.InspectTransfer != nil {
 		{
-			volume, err := m.InspectTransfer.SerializeToDimensionedBuffer(dAtA[:i])
+			extent, err := m.InspectTransfer.SerializeTowardDimensionedReserve(deltaLocatedAN[:i])
 			if err != nil {
 				return 0, err
 			}
-			i -= volume
-			i = formatVariableintKinds(dAtA, i, uint64(volume))
+			i -= extent
+			i = serializeVariableintKinds(deltaLocatedAN, i, uint64(extent))
 		}
 		i--
-		dAtA[i] = 0x42
+		deltaLocatedAN[i] = 0x42
 	}
-	return len(dAtA) - i, nil
+	return len(deltaLocatedAN) - i, nil
 }
-func (m *Query_Endorse) SerializeTo(dAtA []byte) (int, error) {
-	volume := m.Volume()
-	return m.SerializeToDimensionedBuffer(dAtA[:volume])
+func (m *Solicit_Endorse) SerializeToward(deltaLocatedAN []byte) (int, error) {
+	extent := m.Extent()
+	return m.SerializeTowardDimensionedReserve(deltaLocatedAN[:extent])
 }
 
-func (m *Query_Endorse) SerializeToDimensionedBuffer(dAtA []byte) (int, error) {
-	i := len(dAtA)
+func (m *Solicit_Endorse) SerializeTowardDimensionedReserve(deltaLocatedAN []byte) (int, error) {
+	i := len(deltaLocatedAN)
 	if m.Endorse != nil {
 		{
-			volume, err := m.Endorse.SerializeToDimensionedBuffer(dAtA[:i])
+			extent, err := m.Endorse.SerializeTowardDimensionedReserve(deltaLocatedAN[:i])
 			if err != nil {
 				return 0, err
 			}
-			i -= volume
-			i = formatVariableintKinds(dAtA, i, uint64(volume))
+			i -= extent
+			i = serializeVariableintKinds(deltaLocatedAN, i, uint64(extent))
 		}
 		i--
-		dAtA[i] = 0x5a
+		deltaLocatedAN[i] = 0x5a
 	}
-	return len(dAtA) - i, nil
+	return len(deltaLocatedAN) - i, nil
 }
-func (m *Query_Catalogmirrors) SerializeTo(dAtA []byte) (int, error) {
-	volume := m.Volume()
-	return m.SerializeToDimensionedBuffer(dAtA[:volume])
+func (m *Solicit_Catalogimages) SerializeToward(deltaLocatedAN []byte) (int, error) {
+	extent := m.Extent()
+	return m.SerializeTowardDimensionedReserve(deltaLocatedAN[:extent])
 }
 
-func (m *Query_Catalogmirrors) SerializeToDimensionedBuffer(dAtA []byte) (int, error) {
-	i := len(dAtA)
-	if m.CatalogMirrors != nil {
+func (m *Solicit_Catalogimages) SerializeTowardDimensionedReserve(deltaLocatedAN []byte) (int, error) {
+	i := len(deltaLocatedAN)
+	if m.CollectionImages != nil {
 		{
-			volume, err := m.CatalogMirrors.SerializeToDimensionedBuffer(dAtA[:i])
+			extent, err := m.CollectionImages.SerializeTowardDimensionedReserve(deltaLocatedAN[:i])
 			if err != nil {
 				return 0, err
 			}
-			i -= volume
-			i = formatVariableintKinds(dAtA, i, uint64(volume))
+			i -= extent
+			i = serializeVariableintKinds(deltaLocatedAN, i, uint64(extent))
 		}
 		i--
-		dAtA[i] = 0x62
+		deltaLocatedAN[i] = 0x62
 	}
-	return len(dAtA) - i, nil
+	return len(deltaLocatedAN) - i, nil
 }
-func (m *Query_Mirrorsnapshot) SerializeTo(dAtA []byte) (int, error) {
-	volume := m.Volume()
-	return m.SerializeToDimensionedBuffer(dAtA[:volume])
+func (m *Solicit_Extendimage) SerializeToward(deltaLocatedAN []byte) (int, error) {
+	extent := m.Extent()
+	return m.SerializeTowardDimensionedReserve(deltaLocatedAN[:extent])
 }
 
-func (m *Query_Mirrorsnapshot) SerializeToDimensionedBuffer(dAtA []byte) (int, error) {
-	i := len(dAtA)
-	if m.ProposalMirror != nil {
+func (m *Solicit_Extendimage) SerializeTowardDimensionedReserve(deltaLocatedAN []byte) (int, error) {
+	i := len(deltaLocatedAN)
+	if m.ExtendImage != nil {
 		{
-			volume, err := m.ProposalMirror.SerializeToDimensionedBuffer(dAtA[:i])
+			extent, err := m.ExtendImage.SerializeTowardDimensionedReserve(deltaLocatedAN[:i])
 			if err != nil {
 				return 0, err
 			}
-			i -= volume
-			i = formatVariableintKinds(dAtA, i, uint64(volume))
+			i -= extent
+			i = serializeVariableintKinds(deltaLocatedAN, i, uint64(extent))
 		}
 		i--
-		dAtA[i] = 0x6a
+		deltaLocatedAN[i] = 0x6a
 	}
-	return len(dAtA) - i, nil
+	return len(deltaLocatedAN) - i, nil
 }
-func (m *Query_Loadmirrorsegment) SerializeTo(dAtA []byte) (int, error) {
-	volume := m.Volume()
-	return m.SerializeToDimensionedBuffer(dAtA[:volume])
+func (m *Solicit_Loadimagefragment) SerializeToward(deltaLocatedAN []byte) (int, error) {
+	extent := m.Extent()
+	return m.SerializeTowardDimensionedReserve(deltaLocatedAN[:extent])
 }
 
-func (m *Query_Loadmirrorsegment) SerializeToDimensionedBuffer(dAtA []byte) (int, error) {
-	i := len(dAtA)
-	if m.ImportMirrorSegment != nil {
+func (m *Solicit_Loadimagefragment) SerializeTowardDimensionedReserve(deltaLocatedAN []byte) (int, error) {
+	i := len(deltaLocatedAN)
+	if m.FetchImageSegment != nil {
 		{
-			volume, err := m.ImportMirrorSegment.SerializeToDimensionedBuffer(dAtA[:i])
+			extent, err := m.FetchImageSegment.SerializeTowardDimensionedReserve(deltaLocatedAN[:i])
 			if err != nil {
 				return 0, err
 			}
-			i -= volume
-			i = formatVariableintKinds(dAtA, i, uint64(volume))
+			i -= extent
+			i = serializeVariableintKinds(deltaLocatedAN, i, uint64(extent))
 		}
 		i--
-		dAtA[i] = 0x72
+		deltaLocatedAN[i] = 0x72
 	}
-	return len(dAtA) - i, nil
+	return len(deltaLocatedAN) - i, nil
 }
-func (m *Query_Executemirrorsegment) SerializeTo(dAtA []byte) (int, error) {
-	volume := m.Volume()
-	return m.SerializeToDimensionedBuffer(dAtA[:volume])
+func (m *Solicit_Executeimagefragment) SerializeToward(deltaLocatedAN []byte) (int, error) {
+	extent := m.Extent()
+	return m.SerializeTowardDimensionedReserve(deltaLocatedAN[:extent])
 }
 
-func (m *Query_Executemirrorsegment) SerializeToDimensionedBuffer(dAtA []byte) (int, error) {
-	i := len(dAtA)
-	if m.ExecuteMirrorSegment != nil {
+func (m *Solicit_Executeimagefragment) SerializeTowardDimensionedReserve(deltaLocatedAN []byte) (int, error) {
+	i := len(deltaLocatedAN)
+	if m.ExecuteImageSegment != nil {
 		{
-			volume, err := m.ExecuteMirrorSegment.SerializeToDimensionedBuffer(dAtA[:i])
+			extent, err := m.ExecuteImageSegment.SerializeTowardDimensionedReserve(deltaLocatedAN[:i])
 			if err != nil {
 				return 0, err
 			}
-			i -= volume
-			i = formatVariableintKinds(dAtA, i, uint64(volume))
+			i -= extent
+			i = serializeVariableintKinds(deltaLocatedAN, i, uint64(extent))
 		}
 		i--
-		dAtA[i] = 0x7a
+		deltaLocatedAN[i] = 0x7a
 	}
-	return len(dAtA) - i, nil
+	return len(deltaLocatedAN) - i, nil
 }
-func (m *Query_Arrangenomination) SerializeTo(dAtA []byte) (int, error) {
-	volume := m.Volume()
-	return m.SerializeToDimensionedBuffer(dAtA[:volume])
+func (m *Solicit_Prepareitem) SerializeToward(deltaLocatedAN []byte) (int, error) {
+	extent := m.Extent()
+	return m.SerializeTowardDimensionedReserve(deltaLocatedAN[:extent])
 }
 
-func (m *Query_Arrangenomination) SerializeToDimensionedBuffer(dAtA []byte) (int, error) {
-	i := len(dAtA)
+func (m *Solicit_Prepareitem) SerializeTowardDimensionedReserve(deltaLocatedAN []byte) (int, error) {
+	i := len(deltaLocatedAN)
 	if m.ArrangeNomination != nil {
 		{
-			volume, err := m.ArrangeNomination.SerializeToDimensionedBuffer(dAtA[:i])
+			extent, err := m.ArrangeNomination.SerializeTowardDimensionedReserve(deltaLocatedAN[:i])
 			if err != nil {
 				return 0, err
 			}
-			i -= volume
-			i = formatVariableintKinds(dAtA, i, uint64(volume))
+			i -= extent
+			i = serializeVariableintKinds(deltaLocatedAN, i, uint64(extent))
 		}
 		i--
-		dAtA[i] = 0x1
+		deltaLocatedAN[i] = 0x1
 		i--
-		dAtA[i] = 0x82
+		deltaLocatedAN[i] = 0x82
 	}
-	return len(dAtA) - i, nil
+	return len(deltaLocatedAN) - i, nil
 }
-func (m *Query_Processnomination) SerializeTo(dAtA []byte) (int, error) {
-	volume := m.Volume()
-	return m.SerializeToDimensionedBuffer(dAtA[:volume])
+func (m *Solicit_Executeitem) SerializeToward(deltaLocatedAN []byte) (int, error) {
+	extent := m.Extent()
+	return m.SerializeTowardDimensionedReserve(deltaLocatedAN[:extent])
 }
 
-func (m *Query_Processnomination) SerializeToDimensionedBuffer(dAtA []byte) (int, error) {
-	i := len(dAtA)
+func (m *Solicit_Executeitem) SerializeTowardDimensionedReserve(deltaLocatedAN []byte) (int, error) {
+	i := len(deltaLocatedAN)
 	if m.HandleNomination != nil {
 		{
-			volume, err := m.HandleNomination.SerializeToDimensionedBuffer(dAtA[:i])
+			extent, err := m.HandleNomination.SerializeTowardDimensionedReserve(deltaLocatedAN[:i])
 			if err != nil {
 				return 0, err
 			}
-			i -= volume
-			i = formatVariableintKinds(dAtA, i, uint64(volume))
+			i -= extent
+			i = serializeVariableintKinds(deltaLocatedAN, i, uint64(extent))
 		}
 		i--
-		dAtA[i] = 0x1
+		deltaLocatedAN[i] = 0x1
 		i--
-		dAtA[i] = 0x8a
+		deltaLocatedAN[i] = 0x8a
 	}
-	return len(dAtA) - i, nil
+	return len(deltaLocatedAN) - i, nil
 }
-func (m *Query_Ballotextend) SerializeTo(dAtA []byte) (int, error) {
-	volume := m.Volume()
-	return m.SerializeToDimensionedBuffer(dAtA[:volume])
+func (m *Solicit_Extendballot) SerializeToward(deltaLocatedAN []byte) (int, error) {
+	extent := m.Extent()
+	return m.SerializeTowardDimensionedReserve(deltaLocatedAN[:extent])
 }
 
-func (m *Query_Ballotextend) SerializeToDimensionedBuffer(dAtA []byte) (int, error) {
-	i := len(dAtA)
-	if m.ExpandBallot != nil {
+func (m *Solicit_Extendballot) SerializeTowardDimensionedReserve(deltaLocatedAN []byte) (int, error) {
+	i := len(deltaLocatedAN)
+	if m.BroadenBallot != nil {
 		{
-			volume, err := m.ExpandBallot.SerializeToDimensionedBuffer(dAtA[:i])
+			extent, err := m.BroadenBallot.SerializeTowardDimensionedReserve(deltaLocatedAN[:i])
 			if err != nil {
 				return 0, err
 			}
-			i -= volume
-			i = formatVariableintKinds(dAtA, i, uint64(volume))
+			i -= extent
+			i = serializeVariableintKinds(deltaLocatedAN, i, uint64(extent))
 		}
 		i--
-		dAtA[i] = 0x1
+		deltaLocatedAN[i] = 0x1
 		i--
-		dAtA[i] = 0x92
+		deltaLocatedAN[i] = 0x92
 	}
-	return len(dAtA) - i, nil
+	return len(deltaLocatedAN) - i, nil
 }
-func (m *Query_Validateballotextension) SerializeTo(dAtA []byte) (int, error) {
-	volume := m.Volume()
-	return m.SerializeToDimensionedBuffer(dAtA[:volume])
+func (m *Solicit_Verifyballotaddition) SerializeToward(deltaLocatedAN []byte) (int, error) {
+	extent := m.Extent()
+	return m.SerializeTowardDimensionedReserve(deltaLocatedAN[:extent])
 }
 
-func (m *Query_Validateballotextension) SerializeToDimensionedBuffer(dAtA []byte) (int, error) {
-	i := len(dAtA)
+func (m *Solicit_Verifyballotaddition) SerializeTowardDimensionedReserve(deltaLocatedAN []byte) (int, error) {
+	i := len(deltaLocatedAN)
 	if m.ValidateBallotAddition != nil {
 		{
-			volume, err := m.ValidateBallotAddition.SerializeToDimensionedBuffer(dAtA[:i])
+			extent, err := m.ValidateBallotAddition.SerializeTowardDimensionedReserve(deltaLocatedAN[:i])
 			if err != nil {
 				return 0, err
 			}
-			i -= volume
-			i = formatVariableintKinds(dAtA, i, uint64(volume))
+			i -= extent
+			i = serializeVariableintKinds(deltaLocatedAN, i, uint64(extent))
 		}
 		i--
-		dAtA[i] = 0x1
+		deltaLocatedAN[i] = 0x1
 		i--
-		dAtA[i] = 0x9a
+		deltaLocatedAN[i] = 0x9a
 	}
-	return len(dAtA) - i, nil
+	return len(deltaLocatedAN) - i, nil
 }
-func (m *Query_Terminateblock) SerializeTo(dAtA []byte) (int, error) {
-	volume := m.Volume()
-	return m.SerializeToDimensionedBuffer(dAtA[:volume])
+func (m *Solicit_Finalizeledger) SerializeToward(deltaLocatedAN []byte) (int, error) {
+	extent := m.Extent()
+	return m.SerializeTowardDimensionedReserve(deltaLocatedAN[:extent])
 }
 
-func (m *Query_Terminateblock) SerializeToDimensionedBuffer(dAtA []byte) (int, error) {
-	i := len(dAtA)
-	if m.CompleteLedger != nil {
+func (m *Solicit_Finalizeledger) SerializeTowardDimensionedReserve(deltaLocatedAN []byte) (int, error) {
+	i := len(deltaLocatedAN)
+	if m.CulminateLedger != nil {
 		{
-			volume, err := m.CompleteLedger.SerializeToDimensionedBuffer(dAtA[:i])
+			extent, err := m.CulminateLedger.SerializeTowardDimensionedReserve(deltaLocatedAN[:i])
 			if err != nil {
 				return 0, err
 			}
-			i -= volume
-			i = formatVariableintKinds(dAtA, i, uint64(volume))
+			i -= extent
+			i = serializeVariableintKinds(deltaLocatedAN, i, uint64(extent))
 		}
 		i--
-		dAtA[i] = 0x1
+		deltaLocatedAN[i] = 0x1
 		i--
-		dAtA[i] = 0xa2
+		deltaLocatedAN[i] = 0xa2
 	}
-	return len(dAtA) - i, nil
+	return len(deltaLocatedAN) - i, nil
 }
-func (m *Query_Transferinsert) SerializeTo(dAtA []byte) (int, error) {
-	volume := m.Volume()
-	return m.SerializeToDimensionedBuffer(dAtA[:volume])
+func (m *Solicit_Appendtrans) SerializeToward(deltaLocatedAN []byte) (int, error) {
+	extent := m.Extent()
+	return m.SerializeTowardDimensionedReserve(deltaLocatedAN[:extent])
 }
 
-func (m *Query_Transferinsert) SerializeToDimensionedBuffer(dAtA []byte) (int, error) {
-	i := len(dAtA)
-	if m.EmbedTransfer != nil {
+func (m *Solicit_Appendtrans) SerializeTowardDimensionedReserve(deltaLocatedAN []byte) (int, error) {
+	i := len(deltaLocatedAN)
+	if m.AppendTransfer != nil {
 		{
-			volume, err := m.EmbedTransfer.SerializeToDimensionedBuffer(dAtA[:i])
+			extent, err := m.AppendTransfer.SerializeTowardDimensionedReserve(deltaLocatedAN[:i])
 			if err != nil {
 				return 0, err
 			}
-			i -= volume
-			i = formatVariableintKinds(dAtA, i, uint64(volume))
+			i -= extent
+			i = serializeVariableintKinds(deltaLocatedAN, i, uint64(extent))
 		}
 		i--
-		dAtA[i] = 0x1
+		deltaLocatedAN[i] = 0x1
 		i--
-		dAtA[i] = 0xaa
+		deltaLocatedAN[i] = 0xaa
 	}
-	return len(dAtA) - i, nil
+	return len(deltaLocatedAN) - i, nil
 }
-func (m *Query_Reaptransfers) SerializeTo(dAtA []byte) (int, error) {
-	volume := m.Volume()
-	return m.SerializeToDimensionedBuffer(dAtA[:volume])
+func (m *Solicit_Harvesttrans) SerializeToward(deltaLocatedAN []byte) (int, error) {
+	extent := m.Extent()
+	return m.SerializeTowardDimensionedReserve(deltaLocatedAN[:extent])
 }
 
-func (m *Query_Reaptransfers) SerializeToDimensionedBuffer(dAtA []byte) (int, error) {
-	i := len(dAtA)
+func (m *Solicit_Harvesttrans) SerializeTowardDimensionedReserve(deltaLocatedAN []byte) (int, error) {
+	i := len(deltaLocatedAN)
 	if m.HarvestTrans != nil {
 		{
-			volume, err := m.HarvestTrans.SerializeToDimensionedBuffer(dAtA[:i])
+			extent, err := m.HarvestTrans.SerializeTowardDimensionedReserve(deltaLocatedAN[:i])
 			if err != nil {
 				return 0, err
 			}
-			i -= volume
-			i = formatVariableintKinds(dAtA, i, uint64(volume))
+			i -= extent
+			i = serializeVariableintKinds(deltaLocatedAN, i, uint64(extent))
 		}
 		i--
-		dAtA[i] = 0x1
+		deltaLocatedAN[i] = 0x1
 		i--
-		dAtA[i] = 0xb2
+		deltaLocatedAN[i] = 0xb2
 	}
-	return len(dAtA) - i, nil
+	return len(deltaLocatedAN) - i, nil
 }
-func (m *QueryReverberate) Serialize() (dAtA []byte, err error) {
-	volume := m.Volume()
-	dAtA = make([]byte, volume)
-	n, err := m.SerializeToDimensionedBuffer(dAtA[:volume])
+func (m *SolicitReverberate) Serialize() (deltaLocatedAN []byte, err error) {
+	extent := m.Extent()
+	deltaLocatedAN = make([]byte, extent)
+	n, err := m.SerializeTowardDimensionedReserve(deltaLocatedAN[:extent])
 	if err != nil {
 		return nil, err
 	}
-	return dAtA[:n], nil
+	return deltaLocatedAN[:n], nil
 }
 
-func (m *QueryReverberate) SerializeTo(dAtA []byte) (int, error) {
-	volume := m.Volume()
-	return m.SerializeToDimensionedBuffer(dAtA[:volume])
+func (m *SolicitReverberate) SerializeToward(deltaLocatedAN []byte) (int, error) {
+	extent := m.Extent()
+	return m.SerializeTowardDimensionedReserve(deltaLocatedAN[:extent])
 }
 
-func (m *QueryReverberate) SerializeToDimensionedBuffer(dAtA []byte) (int, error) {
-	i := len(dAtA)
+func (m *SolicitReverberate) SerializeTowardDimensionedReserve(deltaLocatedAN []byte) (int, error) {
+	i := len(deltaLocatedAN)
 	_ = i
 	var l int
 	_ = l
 	if len(m.Signal) > 0 {
 		i -= len(m.Signal)
-		copy(dAtA[i:], m.Signal)
-		i = formatVariableintKinds(dAtA, i, uint64(len(m.Signal)))
+		copy(deltaLocatedAN[i:], m.Signal)
+		i = serializeVariableintKinds(deltaLocatedAN, i, uint64(len(m.Signal)))
 		i--
-		dAtA[i] = 0xa
+		deltaLocatedAN[i] = 0xa
 	}
-	return len(dAtA) - i, nil
+	return len(deltaLocatedAN) - i, nil
 }
 
-func (m *QueryPurge) Serialize() (dAtA []byte, err error) {
-	volume := m.Volume()
-	dAtA = make([]byte, volume)
-	n, err := m.SerializeToDimensionedBuffer(dAtA[:volume])
+func (m *SolicitPurge) Serialize() (deltaLocatedAN []byte, err error) {
+	extent := m.Extent()
+	deltaLocatedAN = make([]byte, extent)
+	n, err := m.SerializeTowardDimensionedReserve(deltaLocatedAN[:extent])
 	if err != nil {
 		return nil, err
 	}
-	return dAtA[:n], nil
+	return deltaLocatedAN[:n], nil
 }
 
-func (m *QueryPurge) SerializeTo(dAtA []byte) (int, error) {
-	volume := m.Volume()
-	return m.SerializeToDimensionedBuffer(dAtA[:volume])
+func (m *SolicitPurge) SerializeToward(deltaLocatedAN []byte) (int, error) {
+	extent := m.Extent()
+	return m.SerializeTowardDimensionedReserve(deltaLocatedAN[:extent])
 }
 
-func (m *QueryPurge) SerializeToDimensionedBuffer(dAtA []byte) (int, error) {
-	i := len(dAtA)
+func (m *SolicitPurge) SerializeTowardDimensionedReserve(deltaLocatedAN []byte) (int, error) {
+	i := len(deltaLocatedAN)
 	_ = i
 	var l int
 	_ = l
-	return len(dAtA) - i, nil
+	return len(deltaLocatedAN) - i, nil
 }
 
-func (m *QueryDetails) Serialize() (dAtA []byte, err error) {
-	volume := m.Volume()
-	dAtA = make([]byte, volume)
-	n, err := m.SerializeToDimensionedBuffer(dAtA[:volume])
+func (m *SolicitDetails) Serialize() (deltaLocatedAN []byte, err error) {
+	extent := m.Extent()
+	deltaLocatedAN = make([]byte, extent)
+	n, err := m.SerializeTowardDimensionedReserve(deltaLocatedAN[:extent])
 	if err != nil {
 		return nil, err
 	}
-	return dAtA[:n], nil
+	return deltaLocatedAN[:n], nil
 }
 
-func (m *QueryDetails) SerializeTo(dAtA []byte) (int, error) {
-	volume := m.Volume()
-	return m.SerializeToDimensionedBuffer(dAtA[:volume])
+func (m *SolicitDetails) SerializeToward(deltaLocatedAN []byte) (int, error) {
+	extent := m.Extent()
+	return m.SerializeTowardDimensionedReserve(deltaLocatedAN[:extent])
 }
 
-func (m *QueryDetails) SerializeToDimensionedBuffer(dAtA []byte) (int, error) {
-	i := len(dAtA)
+func (m *SolicitDetails) SerializeTowardDimensionedReserve(deltaLocatedAN []byte) (int, error) {
+	i := len(deltaLocatedAN)
 	_ = i
 	var l int
 	_ = l
-	if len(m.IfaceRelease) > 0 {
-		i -= len(m.IfaceRelease)
-		copy(dAtA[i:], m.IfaceRelease)
-		i = formatVariableintKinds(dAtA, i, uint64(len(m.IfaceRelease)))
+	if len(m.IfaceEdition) > 0 {
+		i -= len(m.IfaceEdition)
+		copy(deltaLocatedAN[i:], m.IfaceEdition)
+		i = serializeVariableintKinds(deltaLocatedAN, i, uint64(len(m.IfaceEdition)))
 		i--
-		dAtA[i] = 0x22
+		deltaLocatedAN[i] = 0x22
 	}
-	if m.P2PRelease != 0 {
-		i = formatVariableintKinds(dAtA, i, uint64(m.P2PRelease))
+	if m.Peer2peerEdition != 0 {
+		i = serializeVariableintKinds(deltaLocatedAN, i, uint64(m.Peer2peerEdition))
 		i--
-		dAtA[i] = 0x18
+		deltaLocatedAN[i] = 0x18
 	}
-	if m.LedgerRelease != 0 {
-		i = formatVariableintKinds(dAtA, i, uint64(m.LedgerRelease))
+	if m.LedgerEdition != 0 {
+		i = serializeVariableintKinds(deltaLocatedAN, i, uint64(m.LedgerEdition))
 		i--
-		dAtA[i] = 0x10
+		deltaLocatedAN[i] = 0x10
 	}
-	if len(m.Release) > 0 {
-		i -= len(m.Release)
-		copy(dAtA[i:], m.Release)
-		i = formatVariableintKinds(dAtA, i, uint64(len(m.Release)))
+	if len(m.Edition) > 0 {
+		i -= len(m.Edition)
+		copy(deltaLocatedAN[i:], m.Edition)
+		i = serializeVariableintKinds(deltaLocatedAN, i, uint64(len(m.Edition)))
 		i--
-		dAtA[i] = 0xa
+		deltaLocatedAN[i] = 0xa
 	}
-	return len(dAtA) - i, nil
+	return len(deltaLocatedAN) - i, nil
 }
 
-func (m *QueryInitSeries) Serialize() (dAtA []byte, err error) {
-	volume := m.Volume()
-	dAtA = make([]byte, volume)
-	n, err := m.SerializeToDimensionedBuffer(dAtA[:volume])
+func (m *SolicitInitializeSuccession) Serialize() (deltaLocatedAN []byte, err error) {
+	extent := m.Extent()
+	deltaLocatedAN = make([]byte, extent)
+	n, err := m.SerializeTowardDimensionedReserve(deltaLocatedAN[:extent])
 	if err != nil {
 		return nil, err
 	}
-	return dAtA[:n], nil
+	return deltaLocatedAN[:n], nil
 }
 
-func (m *QueryInitSeries) SerializeTo(dAtA []byte) (int, error) {
-	volume := m.Volume()
-	return m.SerializeToDimensionedBuffer(dAtA[:volume])
+func (m *SolicitInitializeSuccession) SerializeToward(deltaLocatedAN []byte) (int, error) {
+	extent := m.Extent()
+	return m.SerializeTowardDimensionedReserve(deltaLocatedAN[:extent])
 }
 
-func (m *QueryInitSeries) SerializeToDimensionedBuffer(dAtA []byte) (int, error) {
-	i := len(dAtA)
+func (m *SolicitInitializeSuccession) SerializeTowardDimensionedReserve(deltaLocatedAN []byte) (int, error) {
+	i := len(deltaLocatedAN)
 	_ = i
 	var l int
 	_ = l
-	if m.PrimaryLevel != 0 {
-		i = formatVariableintKinds(dAtA, i, uint64(m.PrimaryLevel))
+	if m.PrimaryAltitude != 0 {
+		i = serializeVariableintKinds(deltaLocatedAN, i, uint64(m.PrimaryAltitude))
 		i--
-		dAtA[i] = 0x30
+		deltaLocatedAN[i] = 0x30
 	}
 	if len(m.ApplicationStatusOctets) > 0 {
 		i -= len(m.ApplicationStatusOctets)
-		copy(dAtA[i:], m.ApplicationStatusOctets)
-		i = formatVariableintKinds(dAtA, i, uint64(len(m.ApplicationStatusOctets)))
+		copy(deltaLocatedAN[i:], m.ApplicationStatusOctets)
+		i = serializeVariableintKinds(deltaLocatedAN, i, uint64(len(m.ApplicationStatusOctets)))
 		i--
-		dAtA[i] = 0x2a
+		deltaLocatedAN[i] = 0x2a
 	}
-	if len(m.Ratifiers) > 0 {
-		for idxNdEx := len(m.Ratifiers) - 1; idxNdEx >= 0; idxNdEx-- {
+	if len(m.Assessors) > 0 {
+		for idxNdExc := len(m.Assessors) - 1; idxNdExc >= 0; idxNdExc-- {
 			{
-				volume, err := m.Ratifiers[idxNdEx].SerializeToDimensionedBuffer(dAtA[:i])
+				extent, err := m.Assessors[idxNdExc].SerializeTowardDimensionedReserve(deltaLocatedAN[:i])
 				if err != nil {
 					return 0, err
 				}
-				i -= volume
-				i = formatVariableintKinds(dAtA, i, uint64(volume))
+				i -= extent
+				i = serializeVariableintKinds(deltaLocatedAN, i, uint64(extent))
 			}
 			i--
-			dAtA[i] = 0x22
+			deltaLocatedAN[i] = 0x22
 		}
 	}
-	if m.AgreementOptions != nil {
+	if m.AgreementSettings != nil {
 		{
-			volume, err := m.AgreementOptions.SerializeToDimensionedBuffer(dAtA[:i])
+			extent, err := m.AgreementSettings.SerializeTowardDimensionedReserve(deltaLocatedAN[:i])
 			if err != nil {
 				return 0, err
 			}
-			i -= volume
-			i = formatVariableintKinds(dAtA, i, uint64(volume))
+			i -= extent
+			i = serializeVariableintKinds(deltaLocatedAN, i, uint64(extent))
 		}
 		i--
-		dAtA[i] = 0x1a
+		deltaLocatedAN[i] = 0x1a
 	}
-	if len(m.SeriesUid) > 0 {
-		i -= len(m.SeriesUid)
-		copy(dAtA[i:], m.SeriesUid)
-		i = formatVariableintKinds(dAtA, i, uint64(len(m.SeriesUid)))
+	if len(m.SuccessionUuid) > 0 {
+		i -= len(m.SuccessionUuid)
+		copy(deltaLocatedAN[i:], m.SuccessionUuid)
+		i = serializeVariableintKinds(deltaLocatedAN, i, uint64(len(m.SuccessionUuid)))
 		i--
-		dAtA[i] = 0x12
+		deltaLocatedAN[i] = 0x12
 	}
-	n20, fault20 := github_com_cosmos_gogoproto_types.StdTimeMarshalTo(m.Time, dAtA[i-github_com_cosmos_gogoproto_types.SizeOfStdTime(m.Time):])
+	n20, fault20 := github_com_cosmos_gogoproto_types.StdTimeMarshalTo(m.Moment, deltaLocatedAN[i-github_com_cosmos_gogoproto_types.SizeOfStdTime(m.Moment):])
 	if fault20 != nil {
 		return 0, fault20
 	}
 	i -= n20
-	i = formatVariableintKinds(dAtA, i, uint64(n20))
+	i = serializeVariableintKinds(deltaLocatedAN, i, uint64(n20))
 	i--
-	dAtA[i] = 0xa
-	return len(dAtA) - i, nil
+	deltaLocatedAN[i] = 0xa
+	return len(deltaLocatedAN) - i, nil
 }
 
-func (m *QueryInquire) Serialize() (dAtA []byte, err error) {
-	volume := m.Volume()
-	dAtA = make([]byte, volume)
-	n, err := m.SerializeToDimensionedBuffer(dAtA[:volume])
+func (m *SolicitInquire) Serialize() (deltaLocatedAN []byte, err error) {
+	extent := m.Extent()
+	deltaLocatedAN = make([]byte, extent)
+	n, err := m.SerializeTowardDimensionedReserve(deltaLocatedAN[:extent])
 	if err != nil {
 		return nil, err
 	}
-	return dAtA[:n], nil
+	return deltaLocatedAN[:n], nil
 }
 
-func (m *QueryInquire) SerializeTo(dAtA []byte) (int, error) {
-	volume := m.Volume()
-	return m.SerializeToDimensionedBuffer(dAtA[:volume])
+func (m *SolicitInquire) SerializeToward(deltaLocatedAN []byte) (int, error) {
+	extent := m.Extent()
+	return m.SerializeTowardDimensionedReserve(deltaLocatedAN[:extent])
 }
 
-func (m *QueryInquire) SerializeToDimensionedBuffer(dAtA []byte) (int, error) {
-	i := len(dAtA)
+func (m *SolicitInquire) SerializeTowardDimensionedReserve(deltaLocatedAN []byte) (int, error) {
+	i := len(deltaLocatedAN)
 	_ = i
 	var l int
 	_ = l
-	if m.Demonstrate {
+	if m.Validate {
 		i--
-		if m.Demonstrate {
-			dAtA[i] = 1
+		if m.Validate {
+			deltaLocatedAN[i] = 1
 		} else {
-			dAtA[i] = 0
+			deltaLocatedAN[i] = 0
 		}
 		i--
-		dAtA[i] = 0x20
+		deltaLocatedAN[i] = 0x20
 	}
-	if m.Level != 0 {
-		i = formatVariableintKinds(dAtA, i, uint64(m.Level))
+	if m.Altitude != 0 {
+		i = serializeVariableintKinds(deltaLocatedAN, i, uint64(m.Altitude))
 		i--
-		dAtA[i] = 0x18
+		deltaLocatedAN[i] = 0x18
 	}
 	if len(m.Route) > 0 {
 		i -= len(m.Route)
-		copy(dAtA[i:], m.Route)
-		i = formatVariableintKinds(dAtA, i, uint64(len(m.Route)))
+		copy(deltaLocatedAN[i:], m.Route)
+		i = serializeVariableintKinds(deltaLocatedAN, i, uint64(len(m.Route)))
 		i--
-		dAtA[i] = 0x12
+		deltaLocatedAN[i] = 0x12
 	}
 	if len(m.Data) > 0 {
 		i -= len(m.Data)
-		copy(dAtA[i:], m.Data)
-		i = formatVariableintKinds(dAtA, i, uint64(len(m.Data)))
+		copy(deltaLocatedAN[i:], m.Data)
+		i = serializeVariableintKinds(deltaLocatedAN, i, uint64(len(m.Data)))
 		i--
-		dAtA[i] = 0xa
+		deltaLocatedAN[i] = 0xa
 	}
-	return len(dAtA) - i, nil
+	return len(deltaLocatedAN) - i, nil
 }
 
-func (m *QueryInspectTransfer) Serialize() (dAtA []byte, err error) {
-	volume := m.Volume()
-	dAtA = make([]byte, volume)
-	n, err := m.SerializeToDimensionedBuffer(dAtA[:volume])
+func (m *SolicitInspectTransfer) Serialize() (deltaLocatedAN []byte, err error) {
+	extent := m.Extent()
+	deltaLocatedAN = make([]byte, extent)
+	n, err := m.SerializeTowardDimensionedReserve(deltaLocatedAN[:extent])
 	if err != nil {
 		return nil, err
 	}
-	return dAtA[:n], nil
+	return deltaLocatedAN[:n], nil
 }
 
-func (m *QueryInspectTransfer) SerializeTo(dAtA []byte) (int, error) {
-	volume := m.Volume()
-	return m.SerializeToDimensionedBuffer(dAtA[:volume])
+func (m *SolicitInspectTransfer) SerializeToward(deltaLocatedAN []byte) (int, error) {
+	extent := m.Extent()
+	return m.SerializeTowardDimensionedReserve(deltaLocatedAN[:extent])
 }
 
-func (m *QueryInspectTransfer) SerializeToDimensionedBuffer(dAtA []byte) (int, error) {
-	i := len(dAtA)
+func (m *SolicitInspectTransfer) SerializeTowardDimensionedReserve(deltaLocatedAN []byte) (int, error) {
+	i := len(deltaLocatedAN)
 	_ = i
 	var l int
 	_ = l
 	if m.Kind != 0 {
-		i = formatVariableintKinds(dAtA, i, uint64(m.Kind))
+		i = serializeVariableintKinds(deltaLocatedAN, i, uint64(m.Kind))
 		i--
-		dAtA[i] = 0x10
+		deltaLocatedAN[i] = 0x10
 	}
 	if len(m.Tx) > 0 {
 		i -= len(m.Tx)
-		copy(dAtA[i:], m.Tx)
-		i = formatVariableintKinds(dAtA, i, uint64(len(m.Tx)))
+		copy(deltaLocatedAN[i:], m.Tx)
+		i = serializeVariableintKinds(deltaLocatedAN, i, uint64(len(m.Tx)))
 		i--
-		dAtA[i] = 0xa
+		deltaLocatedAN[i] = 0xa
 	}
-	return len(dAtA) - i, nil
+	return len(deltaLocatedAN) - i, nil
 }
 
-func (m *QueryEmbedTransfer) Serialize() (dAtA []byte, err error) {
-	volume := m.Volume()
-	dAtA = make([]byte, volume)
-	n, err := m.SerializeToDimensionedBuffer(dAtA[:volume])
+func (m *SolicitAppendTransfer) Serialize() (deltaLocatedAN []byte, err error) {
+	extent := m.Extent()
+	deltaLocatedAN = make([]byte, extent)
+	n, err := m.SerializeTowardDimensionedReserve(deltaLocatedAN[:extent])
 	if err != nil {
 		return nil, err
 	}
-	return dAtA[:n], nil
+	return deltaLocatedAN[:n], nil
 }
 
-func (m *QueryEmbedTransfer) SerializeTo(dAtA []byte) (int, error) {
-	volume := m.Volume()
-	return m.SerializeToDimensionedBuffer(dAtA[:volume])
+func (m *SolicitAppendTransfer) SerializeToward(deltaLocatedAN []byte) (int, error) {
+	extent := m.Extent()
+	return m.SerializeTowardDimensionedReserve(deltaLocatedAN[:extent])
 }
 
-func (m *QueryEmbedTransfer) SerializeToDimensionedBuffer(dAtA []byte) (int, error) {
-	i := len(dAtA)
+func (m *SolicitAppendTransfer) SerializeTowardDimensionedReserve(deltaLocatedAN []byte) (int, error) {
+	i := len(deltaLocatedAN)
 	_ = i
 	var l int
 	_ = l
 	if len(m.Tx) > 0 {
 		i -= len(m.Tx)
-		copy(dAtA[i:], m.Tx)
-		i = formatVariableintKinds(dAtA, i, uint64(len(m.Tx)))
+		copy(deltaLocatedAN[i:], m.Tx)
+		i = serializeVariableintKinds(deltaLocatedAN, i, uint64(len(m.Tx)))
 		i--
-		dAtA[i] = 0xa
+		deltaLocatedAN[i] = 0xa
 	}
-	return len(dAtA) - i, nil
+	return len(deltaLocatedAN) - i, nil
 }
 
-func (m *QueryHarvestTrans) Serialize() (dAtA []byte, err error) {
-	volume := m.Volume()
-	dAtA = make([]byte, volume)
-	n, err := m.SerializeToDimensionedBuffer(dAtA[:volume])
+func (m *SolicitHarvestTrans) Serialize() (deltaLocatedAN []byte, err error) {
+	extent := m.Extent()
+	deltaLocatedAN = make([]byte, extent)
+	n, err := m.SerializeTowardDimensionedReserve(deltaLocatedAN[:extent])
 	if err != nil {
 		return nil, err
 	}
-	return dAtA[:n], nil
+	return deltaLocatedAN[:n], nil
 }
 
-func (m *QueryHarvestTrans) SerializeTo(dAtA []byte) (int, error) {
-	volume := m.Volume()
-	return m.SerializeToDimensionedBuffer(dAtA[:volume])
+func (m *SolicitHarvestTrans) SerializeToward(deltaLocatedAN []byte) (int, error) {
+	extent := m.Extent()
+	return m.SerializeTowardDimensionedReserve(deltaLocatedAN[:extent])
 }
 
-func (m *QueryHarvestTrans) SerializeToDimensionedBuffer(dAtA []byte) (int, error) {
-	i := len(dAtA)
+func (m *SolicitHarvestTrans) SerializeTowardDimensionedReserve(deltaLocatedAN []byte) (int, error) {
+	i := len(deltaLocatedAN)
 	_ = i
 	var l int
 	_ = l
 	if m.MaximumFuel != 0 {
-		i = formatVariableintKinds(dAtA, i, uint64(m.MaximumFuel))
+		i = serializeVariableintKinds(deltaLocatedAN, i, uint64(m.MaximumFuel))
 		i--
-		dAtA[i] = 0x10
+		deltaLocatedAN[i] = 0x10
 	}
 	if m.MaximumOctets != 0 {
-		i = formatVariableintKinds(dAtA, i, uint64(m.MaximumOctets))
+		i = serializeVariableintKinds(deltaLocatedAN, i, uint64(m.MaximumOctets))
 		i--
-		dAtA[i] = 0x8
+		deltaLocatedAN[i] = 0x8
 	}
-	return len(dAtA) - i, nil
+	return len(deltaLocatedAN) - i, nil
 }
 
-func (m *QueryEndorse) Serialize() (dAtA []byte, err error) {
-	volume := m.Volume()
-	dAtA = make([]byte, volume)
-	n, err := m.SerializeToDimensionedBuffer(dAtA[:volume])
+func (m *SolicitEndorse) Serialize() (deltaLocatedAN []byte, err error) {
+	extent := m.Extent()
+	deltaLocatedAN = make([]byte, extent)
+	n, err := m.SerializeTowardDimensionedReserve(deltaLocatedAN[:extent])
 	if err != nil {
 		return nil, err
 	}
-	return dAtA[:n], nil
+	return deltaLocatedAN[:n], nil
 }
 
-func (m *QueryEndorse) SerializeTo(dAtA []byte) (int, error) {
-	volume := m.Volume()
-	return m.SerializeToDimensionedBuffer(dAtA[:volume])
+func (m *SolicitEndorse) SerializeToward(deltaLocatedAN []byte) (int, error) {
+	extent := m.Extent()
+	return m.SerializeTowardDimensionedReserve(deltaLocatedAN[:extent])
 }
 
-func (m *QueryEndorse) SerializeToDimensionedBuffer(dAtA []byte) (int, error) {
-	i := len(dAtA)
+func (m *SolicitEndorse) SerializeTowardDimensionedReserve(deltaLocatedAN []byte) (int, error) {
+	i := len(deltaLocatedAN)
 	_ = i
 	var l int
 	_ = l
-	return len(dAtA) - i, nil
+	return len(deltaLocatedAN) - i, nil
 }
 
-func (m *QueryCatalogMirrors) Serialize() (dAtA []byte, err error) {
-	volume := m.Volume()
-	dAtA = make([]byte, volume)
-	n, err := m.SerializeToDimensionedBuffer(dAtA[:volume])
+func (m *SolicitCollectionImages) Serialize() (deltaLocatedAN []byte, err error) {
+	extent := m.Extent()
+	deltaLocatedAN = make([]byte, extent)
+	n, err := m.SerializeTowardDimensionedReserve(deltaLocatedAN[:extent])
 	if err != nil {
 		return nil, err
 	}
-	return dAtA[:n], nil
+	return deltaLocatedAN[:n], nil
 }
 
-func (m *QueryCatalogMirrors) SerializeTo(dAtA []byte) (int, error) {
-	volume := m.Volume()
-	return m.SerializeToDimensionedBuffer(dAtA[:volume])
+func (m *SolicitCollectionImages) SerializeToward(deltaLocatedAN []byte) (int, error) {
+	extent := m.Extent()
+	return m.SerializeTowardDimensionedReserve(deltaLocatedAN[:extent])
 }
 
-func (m *QueryCatalogMirrors) SerializeToDimensionedBuffer(dAtA []byte) (int, error) {
-	i := len(dAtA)
+func (m *SolicitCollectionImages) SerializeTowardDimensionedReserve(deltaLocatedAN []byte) (int, error) {
+	i := len(deltaLocatedAN)
 	_ = i
 	var l int
 	_ = l
-	return len(dAtA) - i, nil
+	return len(deltaLocatedAN) - i, nil
 }
 
-func (m *QueryProposalMirror) Serialize() (dAtA []byte, err error) {
-	volume := m.Volume()
-	dAtA = make([]byte, volume)
-	n, err := m.SerializeToDimensionedBuffer(dAtA[:volume])
+func (m *SolicitExtendImage) Serialize() (deltaLocatedAN []byte, err error) {
+	extent := m.Extent()
+	deltaLocatedAN = make([]byte, extent)
+	n, err := m.SerializeTowardDimensionedReserve(deltaLocatedAN[:extent])
 	if err != nil {
 		return nil, err
 	}
-	return dAtA[:n], nil
+	return deltaLocatedAN[:n], nil
 }
 
-func (m *QueryProposalMirror) SerializeTo(dAtA []byte) (int, error) {
-	volume := m.Volume()
-	return m.SerializeToDimensionedBuffer(dAtA[:volume])
+func (m *SolicitExtendImage) SerializeToward(deltaLocatedAN []byte) (int, error) {
+	extent := m.Extent()
+	return m.SerializeTowardDimensionedReserve(deltaLocatedAN[:extent])
 }
 
-func (m *QueryProposalMirror) SerializeToDimensionedBuffer(dAtA []byte) (int, error) {
-	i := len(dAtA)
+func (m *SolicitExtendImage) SerializeTowardDimensionedReserve(deltaLocatedAN []byte) (int, error) {
+	i := len(deltaLocatedAN)
 	_ = i
 	var l int
 	_ = l
-	if len(m.ApplicationDigest) > 0 {
-		i -= len(m.ApplicationDigest)
-		copy(dAtA[i:], m.ApplicationDigest)
-		i = formatVariableintKinds(dAtA, i, uint64(len(m.ApplicationDigest)))
+	if len(m.PlatformDigest) > 0 {
+		i -= len(m.PlatformDigest)
+		copy(deltaLocatedAN[i:], m.PlatformDigest)
+		i = serializeVariableintKinds(deltaLocatedAN, i, uint64(len(m.PlatformDigest)))
 		i--
-		dAtA[i] = 0x12
+		deltaLocatedAN[i] = 0x12
 	}
-	if m.Mirror != nil {
+	if m.Image != nil {
 		{
-			volume, err := m.Mirror.SerializeToDimensionedBuffer(dAtA[:i])
+			extent, err := m.Image.SerializeTowardDimensionedReserve(deltaLocatedAN[:i])
 			if err != nil {
 				return 0, err
 			}
-			i -= volume
-			i = formatVariableintKinds(dAtA, i, uint64(volume))
+			i -= extent
+			i = serializeVariableintKinds(deltaLocatedAN, i, uint64(extent))
 		}
 		i--
-		dAtA[i] = 0xa
+		deltaLocatedAN[i] = 0xa
 	}
-	return len(dAtA) - i, nil
+	return len(deltaLocatedAN) - i, nil
 }
 
-func (m *QueryImportMirrorSegment) Serialize() (dAtA []byte, err error) {
-	volume := m.Volume()
-	dAtA = make([]byte, volume)
-	n, err := m.SerializeToDimensionedBuffer(dAtA[:volume])
+func (m *SolicitFetchImageSegment) Serialize() (deltaLocatedAN []byte, err error) {
+	extent := m.Extent()
+	deltaLocatedAN = make([]byte, extent)
+	n, err := m.SerializeTowardDimensionedReserve(deltaLocatedAN[:extent])
 	if err != nil {
 		return nil, err
 	}
-	return dAtA[:n], nil
+	return deltaLocatedAN[:n], nil
 }
 
-func (m *QueryImportMirrorSegment) SerializeTo(dAtA []byte) (int, error) {
-	volume := m.Volume()
-	return m.SerializeToDimensionedBuffer(dAtA[:volume])
+func (m *SolicitFetchImageSegment) SerializeToward(deltaLocatedAN []byte) (int, error) {
+	extent := m.Extent()
+	return m.SerializeTowardDimensionedReserve(deltaLocatedAN[:extent])
 }
 
-func (m *QueryImportMirrorSegment) SerializeToDimensionedBuffer(dAtA []byte) (int, error) {
-	i := len(dAtA)
+func (m *SolicitFetchImageSegment) SerializeTowardDimensionedReserve(deltaLocatedAN []byte) (int, error) {
+	i := len(deltaLocatedAN)
 	_ = i
 	var l int
 	_ = l
 	if m.Segment != 0 {
-		i = formatVariableintKinds(dAtA, i, uint64(m.Segment))
+		i = serializeVariableintKinds(deltaLocatedAN, i, uint64(m.Segment))
 		i--
-		dAtA[i] = 0x18
+		deltaLocatedAN[i] = 0x18
 	}
 	if m.Layout != 0 {
-		i = formatVariableintKinds(dAtA, i, uint64(m.Layout))
+		i = serializeVariableintKinds(deltaLocatedAN, i, uint64(m.Layout))
 		i--
-		dAtA[i] = 0x10
+		deltaLocatedAN[i] = 0x10
 	}
-	if m.Level != 0 {
-		i = formatVariableintKinds(dAtA, i, uint64(m.Level))
+	if m.Altitude != 0 {
+		i = serializeVariableintKinds(deltaLocatedAN, i, uint64(m.Altitude))
 		i--
-		dAtA[i] = 0x8
+		deltaLocatedAN[i] = 0x8
 	}
-	return len(dAtA) - i, nil
+	return len(deltaLocatedAN) - i, nil
 }
 
-func (m *QueryExecuteMirrorSegment) Serialize() (dAtA []byte, err error) {
-	volume := m.Volume()
-	dAtA = make([]byte, volume)
-	n, err := m.SerializeToDimensionedBuffer(dAtA[:volume])
+func (m *SolicitExecuteImageSegment) Serialize() (deltaLocatedAN []byte, err error) {
+	extent := m.Extent()
+	deltaLocatedAN = make([]byte, extent)
+	n, err := m.SerializeTowardDimensionedReserve(deltaLocatedAN[:extent])
 	if err != nil {
 		return nil, err
 	}
-	return dAtA[:n], nil
+	return deltaLocatedAN[:n], nil
 }
 
-func (m *QueryExecuteMirrorSegment) SerializeTo(dAtA []byte) (int, error) {
-	volume := m.Volume()
-	return m.SerializeToDimensionedBuffer(dAtA[:volume])
+func (m *SolicitExecuteImageSegment) SerializeToward(deltaLocatedAN []byte) (int, error) {
+	extent := m.Extent()
+	return m.SerializeTowardDimensionedReserve(deltaLocatedAN[:extent])
 }
 
-func (m *QueryExecuteMirrorSegment) SerializeToDimensionedBuffer(dAtA []byte) (int, error) {
-	i := len(dAtA)
+func (m *SolicitExecuteImageSegment) SerializeTowardDimensionedReserve(deltaLocatedAN []byte) (int, error) {
+	i := len(deltaLocatedAN)
 	_ = i
 	var l int
 	_ = l
-	if len(m.Emitter) > 0 {
-		i -= len(m.Emitter)
-		copy(dAtA[i:], m.Emitter)
-		i = formatVariableintKinds(dAtA, i, uint64(len(m.Emitter)))
+	if len(m.Originator) > 0 {
+		i -= len(m.Originator)
+		copy(deltaLocatedAN[i:], m.Originator)
+		i = serializeVariableintKinds(deltaLocatedAN, i, uint64(len(m.Originator)))
 		i--
-		dAtA[i] = 0x1a
+		deltaLocatedAN[i] = 0x1a
 	}
 	if len(m.Segment) > 0 {
 		i -= len(m.Segment)
-		copy(dAtA[i:], m.Segment)
-		i = formatVariableintKinds(dAtA, i, uint64(len(m.Segment)))
+		copy(deltaLocatedAN[i:], m.Segment)
+		i = serializeVariableintKinds(deltaLocatedAN, i, uint64(len(m.Segment)))
 		i--
-		dAtA[i] = 0x12
+		deltaLocatedAN[i] = 0x12
 	}
 	if m.Ordinal != 0 {
-		i = formatVariableintKinds(dAtA, i, uint64(m.Ordinal))
+		i = serializeVariableintKinds(deltaLocatedAN, i, uint64(m.Ordinal))
 		i--
-		dAtA[i] = 0x8
+		deltaLocatedAN[i] = 0x8
 	}
-	return len(dAtA) - i, nil
+	return len(deltaLocatedAN) - i, nil
 }
 
-func (m *QueryArrangeNomination) Serialize() (dAtA []byte, err error) {
-	volume := m.Volume()
-	dAtA = make([]byte, volume)
-	n, err := m.SerializeToDimensionedBuffer(dAtA[:volume])
+func (m *SolicitArrangeNomination) Serialize() (deltaLocatedAN []byte, err error) {
+	extent := m.Extent()
+	deltaLocatedAN = make([]byte, extent)
+	n, err := m.SerializeTowardDimensionedReserve(deltaLocatedAN[:extent])
 	if err != nil {
 		return nil, err
 	}
-	return dAtA[:n], nil
+	return deltaLocatedAN[:n], nil
 }
 
-func (m *QueryArrangeNomination) SerializeTo(dAtA []byte) (int, error) {
-	volume := m.Volume()
-	return m.SerializeToDimensionedBuffer(dAtA[:volume])
+func (m *SolicitArrangeNomination) SerializeToward(deltaLocatedAN []byte) (int, error) {
+	extent := m.Extent()
+	return m.SerializeTowardDimensionedReserve(deltaLocatedAN[:extent])
 }
 
-func (m *QueryArrangeNomination) SerializeToDimensionedBuffer(dAtA []byte) (int, error) {
-	i := len(dAtA)
+func (m *SolicitArrangeNomination) SerializeTowardDimensionedReserve(deltaLocatedAN []byte) (int, error) {
+	i := len(deltaLocatedAN)
 	_ = i
 	var l int
 	_ = l
-	if len(m.RecommenderLocation) > 0 {
-		i -= len(m.RecommenderLocation)
-		copy(dAtA[i:], m.RecommenderLocation)
-		i = formatVariableintKinds(dAtA, i, uint64(len(m.RecommenderLocation)))
+	if len(m.NominatorLocation) > 0 {
+		i -= len(m.NominatorLocation)
+		copy(deltaLocatedAN[i:], m.NominatorLocation)
+		i = serializeVariableintKinds(deltaLocatedAN, i, uint64(len(m.NominatorLocation)))
 		i--
-		dAtA[i] = 0x42
+		deltaLocatedAN[i] = 0x42
 	}
-	if len(m.FollowingRatifiersDigest) > 0 {
-		i -= len(m.FollowingRatifiersDigest)
-		copy(dAtA[i:], m.FollowingRatifiersDigest)
-		i = formatVariableintKinds(dAtA, i, uint64(len(m.FollowingRatifiersDigest)))
+	if len(m.FollowingAssessorsDigest) > 0 {
+		i -= len(m.FollowingAssessorsDigest)
+		copy(deltaLocatedAN[i:], m.FollowingAssessorsDigest)
+		i = serializeVariableintKinds(deltaLocatedAN, i, uint64(len(m.FollowingAssessorsDigest)))
 		i--
-		dAtA[i] = 0x3a
+		deltaLocatedAN[i] = 0x3a
 	}
-	n22, fault22 := github_com_cosmos_gogoproto_types.StdTimeMarshalTo(m.Time, dAtA[i-github_com_cosmos_gogoproto_types.SizeOfStdTime(m.Time):])
+	n22, fault22 := github_com_cosmos_gogoproto_types.StdTimeMarshalTo(m.Moment, deltaLocatedAN[i-github_com_cosmos_gogoproto_types.SizeOfStdTime(m.Moment):])
 	if fault22 != nil {
 		return 0, fault22
 	}
 	i -= n22
-	i = formatVariableintKinds(dAtA, i, uint64(n22))
+	i = serializeVariableintKinds(deltaLocatedAN, i, uint64(n22))
 	i--
-	dAtA[i] = 0x32
-	if m.Level != 0 {
-		i = formatVariableintKinds(dAtA, i, uint64(m.Level))
+	deltaLocatedAN[i] = 0x32
+	if m.Altitude != 0 {
+		i = serializeVariableintKinds(deltaLocatedAN, i, uint64(m.Altitude))
 		i--
-		dAtA[i] = 0x28
+		deltaLocatedAN[i] = 0x28
 	}
 	if len(m.Malpractice) > 0 {
-		for idxNdEx := len(m.Malpractice) - 1; idxNdEx >= 0; idxNdEx-- {
+		for idxNdExc := len(m.Malpractice) - 1; idxNdExc >= 0; idxNdExc-- {
 			{
-				volume, err := m.Malpractice[idxNdEx].SerializeToDimensionedBuffer(dAtA[:i])
+				extent, err := m.Malpractice[idxNdExc].SerializeTowardDimensionedReserve(deltaLocatedAN[:i])
 				if err != nil {
 					return 0, err
 				}
-				i -= volume
-				i = formatVariableintKinds(dAtA, i, uint64(volume))
+				i -= extent
+				i = serializeVariableintKinds(deltaLocatedAN, i, uint64(extent))
 			}
 			i--
-			dAtA[i] = 0x22
+			deltaLocatedAN[i] = 0x22
 		}
 	}
 	{
-		volume, err := m.NativeFinalEndorse.SerializeToDimensionedBuffer(dAtA[:i])
+		extent, err := m.RegionalFinalEndorse.SerializeTowardDimensionedReserve(deltaLocatedAN[:i])
 		if err != nil {
 			return 0, err
 		}
-		i -= volume
-		i = formatVariableintKinds(dAtA, i, uint64(volume))
+		i -= extent
+		i = serializeVariableintKinds(deltaLocatedAN, i, uint64(extent))
 	}
 	i--
-	dAtA[i] = 0x1a
+	deltaLocatedAN[i] = 0x1a
 	if len(m.Txs) > 0 {
-		for idxNdEx := len(m.Txs) - 1; idxNdEx >= 0; idxNdEx-- {
-			i -= len(m.Txs[idxNdEx])
-			copy(dAtA[i:], m.Txs[idxNdEx])
-			i = formatVariableintKinds(dAtA, i, uint64(len(m.Txs[idxNdEx])))
+		for idxNdExc := len(m.Txs) - 1; idxNdExc >= 0; idxNdExc-- {
+			i -= len(m.Txs[idxNdExc])
+			copy(deltaLocatedAN[i:], m.Txs[idxNdExc])
+			i = serializeVariableintKinds(deltaLocatedAN, i, uint64(len(m.Txs[idxNdExc])))
 			i--
-			dAtA[i] = 0x12
+			deltaLocatedAN[i] = 0x12
 		}
 	}
 	if m.MaximumTransferOctets != 0 {
-		i = formatVariableintKinds(dAtA, i, uint64(m.MaximumTransferOctets))
+		i = serializeVariableintKinds(deltaLocatedAN, i, uint64(m.MaximumTransferOctets))
 		i--
-		dAtA[i] = 0x8
+		deltaLocatedAN[i] = 0x8
 	}
-	return len(dAtA) - i, nil
+	return len(deltaLocatedAN) - i, nil
 }
 
-func (m *QueryHandleNomination) Serialize() (dAtA []byte, err error) {
-	volume := m.Volume()
-	dAtA = make([]byte, volume)
-	n, err := m.SerializeToDimensionedBuffer(dAtA[:volume])
+func (m *SolicitHandleNomination) Serialize() (deltaLocatedAN []byte, err error) {
+	extent := m.Extent()
+	deltaLocatedAN = make([]byte, extent)
+	n, err := m.SerializeTowardDimensionedReserve(deltaLocatedAN[:extent])
 	if err != nil {
 		return nil, err
 	}
-	return dAtA[:n], nil
+	return deltaLocatedAN[:n], nil
 }
 
-func (m *QueryHandleNomination) SerializeTo(dAtA []byte) (int, error) {
-	volume := m.Volume()
-	return m.SerializeToDimensionedBuffer(dAtA[:volume])
+func (m *SolicitHandleNomination) SerializeToward(deltaLocatedAN []byte) (int, error) {
+	extent := m.Extent()
+	return m.SerializeTowardDimensionedReserve(deltaLocatedAN[:extent])
 }
 
-func (m *QueryHandleNomination) SerializeToDimensionedBuffer(dAtA []byte) (int, error) {
-	i := len(dAtA)
+func (m *SolicitHandleNomination) SerializeTowardDimensionedReserve(deltaLocatedAN []byte) (int, error) {
+	i := len(deltaLocatedAN)
 	_ = i
 	var l int
 	_ = l
-	if len(m.RecommenderLocation) > 0 {
-		i -= len(m.RecommenderLocation)
-		copy(dAtA[i:], m.RecommenderLocation)
-		i = formatVariableintKinds(dAtA, i, uint64(len(m.RecommenderLocation)))
+	if len(m.NominatorLocation) > 0 {
+		i -= len(m.NominatorLocation)
+		copy(deltaLocatedAN[i:], m.NominatorLocation)
+		i = serializeVariableintKinds(deltaLocatedAN, i, uint64(len(m.NominatorLocation)))
 		i--
-		dAtA[i] = 0x42
+		deltaLocatedAN[i] = 0x42
 	}
-	if len(m.FollowingRatifiersDigest) > 0 {
-		i -= len(m.FollowingRatifiersDigest)
-		copy(dAtA[i:], m.FollowingRatifiersDigest)
-		i = formatVariableintKinds(dAtA, i, uint64(len(m.FollowingRatifiersDigest)))
+	if len(m.FollowingAssessorsDigest) > 0 {
+		i -= len(m.FollowingAssessorsDigest)
+		copy(deltaLocatedAN[i:], m.FollowingAssessorsDigest)
+		i = serializeVariableintKinds(deltaLocatedAN, i, uint64(len(m.FollowingAssessorsDigest)))
 		i--
-		dAtA[i] = 0x3a
+		deltaLocatedAN[i] = 0x3a
 	}
-	n24, fault24 := github_com_cosmos_gogoproto_types.StdTimeMarshalTo(m.Time, dAtA[i-github_com_cosmos_gogoproto_types.SizeOfStdTime(m.Time):])
+	n24, fault24 := github_com_cosmos_gogoproto_types.StdTimeMarshalTo(m.Moment, deltaLocatedAN[i-github_com_cosmos_gogoproto_types.SizeOfStdTime(m.Moment):])
 	if fault24 != nil {
 		return 0, fault24
 	}
 	i -= n24
-	i = formatVariableintKinds(dAtA, i, uint64(n24))
+	i = serializeVariableintKinds(deltaLocatedAN, i, uint64(n24))
 	i--
-	dAtA[i] = 0x32
-	if m.Level != 0 {
-		i = formatVariableintKinds(dAtA, i, uint64(m.Level))
+	deltaLocatedAN[i] = 0x32
+	if m.Altitude != 0 {
+		i = serializeVariableintKinds(deltaLocatedAN, i, uint64(m.Altitude))
 		i--
-		dAtA[i] = 0x28
+		deltaLocatedAN[i] = 0x28
 	}
 	if len(m.Digest) > 0 {
 		i -= len(m.Digest)
-		copy(dAtA[i:], m.Digest)
-		i = formatVariableintKinds(dAtA, i, uint64(len(m.Digest)))
+		copy(deltaLocatedAN[i:], m.Digest)
+		i = serializeVariableintKinds(deltaLocatedAN, i, uint64(len(m.Digest)))
 		i--
-		dAtA[i] = 0x22
+		deltaLocatedAN[i] = 0x22
 	}
 	if len(m.Malpractice) > 0 {
-		for idxNdEx := len(m.Malpractice) - 1; idxNdEx >= 0; idxNdEx-- {
+		for idxNdExc := len(m.Malpractice) - 1; idxNdExc >= 0; idxNdExc-- {
 			{
-				volume, err := m.Malpractice[idxNdEx].SerializeToDimensionedBuffer(dAtA[:i])
+				extent, err := m.Malpractice[idxNdExc].SerializeTowardDimensionedReserve(deltaLocatedAN[:i])
 				if err != nil {
 					return 0, err
 				}
-				i -= volume
-				i = formatVariableintKinds(dAtA, i, uint64(volume))
+				i -= extent
+				i = serializeVariableintKinds(deltaLocatedAN, i, uint64(extent))
 			}
 			i--
-			dAtA[i] = 0x1a
+			deltaLocatedAN[i] = 0x1a
 		}
 	}
 	{
-		volume, err := m.NominatedFinalEndorse.SerializeToDimensionedBuffer(dAtA[:i])
+		extent, err := m.ItemizedFinalEndorse.SerializeTowardDimensionedReserve(deltaLocatedAN[:i])
 		if err != nil {
 			return 0, err
 		}
-		i -= volume
-		i = formatVariableintKinds(dAtA, i, uint64(volume))
+		i -= extent
+		i = serializeVariableintKinds(deltaLocatedAN, i, uint64(extent))
 	}
 	i--
-	dAtA[i] = 0x12
+	deltaLocatedAN[i] = 0x12
 	if len(m.Txs) > 0 {
-		for idxNdEx := len(m.Txs) - 1; idxNdEx >= 0; idxNdEx-- {
-			i -= len(m.Txs[idxNdEx])
-			copy(dAtA[i:], m.Txs[idxNdEx])
-			i = formatVariableintKinds(dAtA, i, uint64(len(m.Txs[idxNdEx])))
+		for idxNdExc := len(m.Txs) - 1; idxNdExc >= 0; idxNdExc-- {
+			i -= len(m.Txs[idxNdExc])
+			copy(deltaLocatedAN[i:], m.Txs[idxNdExc])
+			i = serializeVariableintKinds(deltaLocatedAN, i, uint64(len(m.Txs[idxNdExc])))
 			i--
-			dAtA[i] = 0xa
+			deltaLocatedAN[i] = 0xa
 		}
 	}
-	return len(dAtA) - i, nil
+	return len(deltaLocatedAN) - i, nil
 }
 
-func (m *QueryExpandBallot) Serialize() (dAtA []byte, err error) {
-	volume := m.Volume()
-	dAtA = make([]byte, volume)
-	n, err := m.SerializeToDimensionedBuffer(dAtA[:volume])
+func (m *SolicitBroadenBallot) Serialize() (deltaLocatedAN []byte, err error) {
+	extent := m.Extent()
+	deltaLocatedAN = make([]byte, extent)
+	n, err := m.SerializeTowardDimensionedReserve(deltaLocatedAN[:extent])
 	if err != nil {
 		return nil, err
 	}
-	return dAtA[:n], nil
+	return deltaLocatedAN[:n], nil
 }
 
-func (m *QueryExpandBallot) SerializeTo(dAtA []byte) (int, error) {
-	volume := m.Volume()
-	return m.SerializeToDimensionedBuffer(dAtA[:volume])
+func (m *SolicitBroadenBallot) SerializeToward(deltaLocatedAN []byte) (int, error) {
+	extent := m.Extent()
+	return m.SerializeTowardDimensionedReserve(deltaLocatedAN[:extent])
 }
 
-func (m *QueryExpandBallot) SerializeToDimensionedBuffer(dAtA []byte) (int, error) {
-	i := len(dAtA)
+func (m *SolicitBroadenBallot) SerializeTowardDimensionedReserve(deltaLocatedAN []byte) (int, error) {
+	i := len(deltaLocatedAN)
 	_ = i
 	var l int
 	_ = l
-	if len(m.RecommenderLocation) > 0 {
-		i -= len(m.RecommenderLocation)
-		copy(dAtA[i:], m.RecommenderLocation)
-		i = formatVariableintKinds(dAtA, i, uint64(len(m.RecommenderLocation)))
+	if len(m.NominatorLocation) > 0 {
+		i -= len(m.NominatorLocation)
+		copy(deltaLocatedAN[i:], m.NominatorLocation)
+		i = serializeVariableintKinds(deltaLocatedAN, i, uint64(len(m.NominatorLocation)))
 		i--
-		dAtA[i] = 0x42
+		deltaLocatedAN[i] = 0x42
 	}
-	if len(m.FollowingRatifiersDigest) > 0 {
-		i -= len(m.FollowingRatifiersDigest)
-		copy(dAtA[i:], m.FollowingRatifiersDigest)
-		i = formatVariableintKinds(dAtA, i, uint64(len(m.FollowingRatifiersDigest)))
+	if len(m.FollowingAssessorsDigest) > 0 {
+		i -= len(m.FollowingAssessorsDigest)
+		copy(deltaLocatedAN[i:], m.FollowingAssessorsDigest)
+		i = serializeVariableintKinds(deltaLocatedAN, i, uint64(len(m.FollowingAssessorsDigest)))
 		i--
-		dAtA[i] = 0x3a
+		deltaLocatedAN[i] = 0x3a
 	}
 	if len(m.Malpractice) > 0 {
-		for idxNdEx := len(m.Malpractice) - 1; idxNdEx >= 0; idxNdEx-- {
+		for idxNdExc := len(m.Malpractice) - 1; idxNdExc >= 0; idxNdExc-- {
 			{
-				volume, err := m.Malpractice[idxNdEx].SerializeToDimensionedBuffer(dAtA[:i])
+				extent, err := m.Malpractice[idxNdExc].SerializeTowardDimensionedReserve(deltaLocatedAN[:i])
 				if err != nil {
 					return 0, err
 				}
-				i -= volume
-				i = formatVariableintKinds(dAtA, i, uint64(volume))
+				i -= extent
+				i = serializeVariableintKinds(deltaLocatedAN, i, uint64(extent))
 			}
 			i--
-			dAtA[i] = 0x32
+			deltaLocatedAN[i] = 0x32
 		}
 	}
 	{
-		volume, err := m.NominatedFinalEndorse.SerializeToDimensionedBuffer(dAtA[:i])
+		extent, err := m.ItemizedFinalEndorse.SerializeTowardDimensionedReserve(deltaLocatedAN[:i])
 		if err != nil {
 			return 0, err
 		}
-		i -= volume
-		i = formatVariableintKinds(dAtA, i, uint64(volume))
+		i -= extent
+		i = serializeVariableintKinds(deltaLocatedAN, i, uint64(extent))
 	}
 	i--
-	dAtA[i] = 0x2a
+	deltaLocatedAN[i] = 0x2a
 	if len(m.Txs) > 0 {
-		for idxNdEx := len(m.Txs) - 1; idxNdEx >= 0; idxNdEx-- {
-			i -= len(m.Txs[idxNdEx])
-			copy(dAtA[i:], m.Txs[idxNdEx])
-			i = formatVariableintKinds(dAtA, i, uint64(len(m.Txs[idxNdEx])))
+		for idxNdExc := len(m.Txs) - 1; idxNdExc >= 0; idxNdExc-- {
+			i -= len(m.Txs[idxNdExc])
+			copy(deltaLocatedAN[i:], m.Txs[idxNdExc])
+			i = serializeVariableintKinds(deltaLocatedAN, i, uint64(len(m.Txs[idxNdExc])))
 			i--
-			dAtA[i] = 0x22
+			deltaLocatedAN[i] = 0x22
 		}
 	}
-	n27, fault27 := github_com_cosmos_gogoproto_types.StdTimeMarshalTo(m.Time, dAtA[i-github_com_cosmos_gogoproto_types.SizeOfStdTime(m.Time):])
+	n27, fault27 := github_com_cosmos_gogoproto_types.StdTimeMarshalTo(m.Moment, deltaLocatedAN[i-github_com_cosmos_gogoproto_types.SizeOfStdTime(m.Moment):])
 	if fault27 != nil {
 		return 0, fault27
 	}
 	i -= n27
-	i = formatVariableintKinds(dAtA, i, uint64(n27))
+	i = serializeVariableintKinds(deltaLocatedAN, i, uint64(n27))
 	i--
-	dAtA[i] = 0x1a
-	if m.Level != 0 {
-		i = formatVariableintKinds(dAtA, i, uint64(m.Level))
+	deltaLocatedAN[i] = 0x1a
+	if m.Altitude != 0 {
+		i = serializeVariableintKinds(deltaLocatedAN, i, uint64(m.Altitude))
 		i--
-		dAtA[i] = 0x10
+		deltaLocatedAN[i] = 0x10
 	}
 	if len(m.Digest) > 0 {
 		i -= len(m.Digest)
-		copy(dAtA[i:], m.Digest)
-		i = formatVariableintKinds(dAtA, i, uint64(len(m.Digest)))
+		copy(deltaLocatedAN[i:], m.Digest)
+		i = serializeVariableintKinds(deltaLocatedAN, i, uint64(len(m.Digest)))
 		i--
-		dAtA[i] = 0xa
+		deltaLocatedAN[i] = 0xa
 	}
-	return len(dAtA) - i, nil
+	return len(deltaLocatedAN) - i, nil
 }
 
-func (m *QueryValidateBallotAddition) Serialize() (dAtA []byte, err error) {
-	volume := m.Volume()
-	dAtA = make([]byte, volume)
-	n, err := m.SerializeToDimensionedBuffer(dAtA[:volume])
+func (m *SolicitValidateBallotAddition) Serialize() (deltaLocatedAN []byte, err error) {
+	extent := m.Extent()
+	deltaLocatedAN = make([]byte, extent)
+	n, err := m.SerializeTowardDimensionedReserve(deltaLocatedAN[:extent])
 	if err != nil {
 		return nil, err
 	}
-	return dAtA[:n], nil
+	return deltaLocatedAN[:n], nil
 }
 
-func (m *QueryValidateBallotAddition) SerializeTo(dAtA []byte) (int, error) {
-	volume := m.Volume()
-	return m.SerializeToDimensionedBuffer(dAtA[:volume])
+func (m *SolicitValidateBallotAddition) SerializeToward(deltaLocatedAN []byte) (int, error) {
+	extent := m.Extent()
+	return m.SerializeTowardDimensionedReserve(deltaLocatedAN[:extent])
 }
 
-func (m *QueryValidateBallotAddition) SerializeToDimensionedBuffer(dAtA []byte) (int, error) {
-	i := len(dAtA)
+func (m *SolicitValidateBallotAddition) SerializeTowardDimensionedReserve(deltaLocatedAN []byte) (int, error) {
+	i := len(deltaLocatedAN)
 	_ = i
 	var l int
 	_ = l
 	if len(m.BallotAddition) > 0 {
 		i -= len(m.BallotAddition)
-		copy(dAtA[i:], m.BallotAddition)
-		i = formatVariableintKinds(dAtA, i, uint64(len(m.BallotAddition)))
+		copy(deltaLocatedAN[i:], m.BallotAddition)
+		i = serializeVariableintKinds(deltaLocatedAN, i, uint64(len(m.BallotAddition)))
 		i--
-		dAtA[i] = 0x22
+		deltaLocatedAN[i] = 0x22
 	}
-	if m.Level != 0 {
-		i = formatVariableintKinds(dAtA, i, uint64(m.Level))
+	if m.Altitude != 0 {
+		i = serializeVariableintKinds(deltaLocatedAN, i, uint64(m.Altitude))
 		i--
-		dAtA[i] = 0x18
+		deltaLocatedAN[i] = 0x18
 	}
-	if len(m.RatifierLocation) > 0 {
-		i -= len(m.RatifierLocation)
-		copy(dAtA[i:], m.RatifierLocation)
-		i = formatVariableintKinds(dAtA, i, uint64(len(m.RatifierLocation)))
+	if len(m.AssessorLocation) > 0 {
+		i -= len(m.AssessorLocation)
+		copy(deltaLocatedAN[i:], m.AssessorLocation)
+		i = serializeVariableintKinds(deltaLocatedAN, i, uint64(len(m.AssessorLocation)))
 		i--
-		dAtA[i] = 0x12
+		deltaLocatedAN[i] = 0x12
 	}
 	if len(m.Digest) > 0 {
 		i -= len(m.Digest)
-		copy(dAtA[i:], m.Digest)
-		i = formatVariableintKinds(dAtA, i, uint64(len(m.Digest)))
+		copy(deltaLocatedAN[i:], m.Digest)
+		i = serializeVariableintKinds(deltaLocatedAN, i, uint64(len(m.Digest)))
 		i--
-		dAtA[i] = 0xa
+		deltaLocatedAN[i] = 0xa
 	}
-	return len(dAtA) - i, nil
+	return len(deltaLocatedAN) - i, nil
 }
 
-func (m *QueryCompleteLedger) Serialize() (dAtA []byte, err error) {
-	volume := m.Volume()
-	dAtA = make([]byte, volume)
-	n, err := m.SerializeToDimensionedBuffer(dAtA[:volume])
+func (m *SolicitCulminateLedger) Serialize() (deltaLocatedAN []byte, err error) {
+	extent := m.Extent()
+	deltaLocatedAN = make([]byte, extent)
+	n, err := m.SerializeTowardDimensionedReserve(deltaLocatedAN[:extent])
 	if err != nil {
 		return nil, err
 	}
-	return dAtA[:n], nil
+	return deltaLocatedAN[:n], nil
 }
 
-func (m *QueryCompleteLedger) SerializeTo(dAtA []byte) (int, error) {
-	volume := m.Volume()
-	return m.SerializeToDimensionedBuffer(dAtA[:volume])
+func (m *SolicitCulminateLedger) SerializeToward(deltaLocatedAN []byte) (int, error) {
+	extent := m.Extent()
+	return m.SerializeTowardDimensionedReserve(deltaLocatedAN[:extent])
 }
 
-func (m *QueryCompleteLedger) SerializeToDimensionedBuffer(dAtA []byte) (int, error) {
-	i := len(dAtA)
+func (m *SolicitCulminateLedger) SerializeTowardDimensionedReserve(deltaLocatedAN []byte) (int, error) {
+	i := len(deltaLocatedAN)
 	_ = i
 	var l int
 	_ = l
-	if len(m.RecommenderLocation) > 0 {
-		i -= len(m.RecommenderLocation)
-		copy(dAtA[i:], m.RecommenderLocation)
-		i = formatVariableintKinds(dAtA, i, uint64(len(m.RecommenderLocation)))
+	if len(m.NominatorLocation) > 0 {
+		i -= len(m.NominatorLocation)
+		copy(deltaLocatedAN[i:], m.NominatorLocation)
+		i = serializeVariableintKinds(deltaLocatedAN, i, uint64(len(m.NominatorLocation)))
 		i--
-		dAtA[i] = 0x42
+		deltaLocatedAN[i] = 0x42
 	}
-	if len(m.FollowingRatifiersDigest) > 0 {
-		i -= len(m.FollowingRatifiersDigest)
-		copy(dAtA[i:], m.FollowingRatifiersDigest)
-		i = formatVariableintKinds(dAtA, i, uint64(len(m.FollowingRatifiersDigest)))
+	if len(m.FollowingAssessorsDigest) > 0 {
+		i -= len(m.FollowingAssessorsDigest)
+		copy(deltaLocatedAN[i:], m.FollowingAssessorsDigest)
+		i = serializeVariableintKinds(deltaLocatedAN, i, uint64(len(m.FollowingAssessorsDigest)))
 		i--
-		dAtA[i] = 0x3a
+		deltaLocatedAN[i] = 0x3a
 	}
-	n28, fault28 := github_com_cosmos_gogoproto_types.StdTimeMarshalTo(m.Time, dAtA[i-github_com_cosmos_gogoproto_types.SizeOfStdTime(m.Time):])
+	n28, fault28 := github_com_cosmos_gogoproto_types.StdTimeMarshalTo(m.Moment, deltaLocatedAN[i-github_com_cosmos_gogoproto_types.SizeOfStdTime(m.Moment):])
 	if fault28 != nil {
 		return 0, fault28
 	}
 	i -= n28
-	i = formatVariableintKinds(dAtA, i, uint64(n28))
+	i = serializeVariableintKinds(deltaLocatedAN, i, uint64(n28))
 	i--
-	dAtA[i] = 0x32
-	if m.Level != 0 {
-		i = formatVariableintKinds(dAtA, i, uint64(m.Level))
+	deltaLocatedAN[i] = 0x32
+	if m.Altitude != 0 {
+		i = serializeVariableintKinds(deltaLocatedAN, i, uint64(m.Altitude))
 		i--
-		dAtA[i] = 0x28
+		deltaLocatedAN[i] = 0x28
 	}
 	if len(m.Digest) > 0 {
 		i -= len(m.Digest)
-		copy(dAtA[i:], m.Digest)
-		i = formatVariableintKinds(dAtA, i, uint64(len(m.Digest)))
+		copy(deltaLocatedAN[i:], m.Digest)
+		i = serializeVariableintKinds(deltaLocatedAN, i, uint64(len(m.Digest)))
 		i--
-		dAtA[i] = 0x22
+		deltaLocatedAN[i] = 0x22
 	}
 	if len(m.Malpractice) > 0 {
-		for idxNdEx := len(m.Malpractice) - 1; idxNdEx >= 0; idxNdEx-- {
+		for idxNdExc := len(m.Malpractice) - 1; idxNdExc >= 0; idxNdExc-- {
 			{
-				volume, err := m.Malpractice[idxNdEx].SerializeToDimensionedBuffer(dAtA[:i])
+				extent, err := m.Malpractice[idxNdExc].SerializeTowardDimensionedReserve(deltaLocatedAN[:i])
 				if err != nil {
 					return 0, err
 				}
-				i -= volume
-				i = formatVariableintKinds(dAtA, i, uint64(volume))
+				i -= extent
+				i = serializeVariableintKinds(deltaLocatedAN, i, uint64(extent))
 			}
 			i--
-			dAtA[i] = 0x1a
+			deltaLocatedAN[i] = 0x1a
 		}
 	}
 	{
-		volume, err := m.ResolvedFinalEndorse.SerializeToDimensionedBuffer(dAtA[:i])
+		extent, err := m.ResolvedFinalEndorse.SerializeTowardDimensionedReserve(deltaLocatedAN[:i])
 		if err != nil {
 			return 0, err
 		}
-		i -= volume
-		i = formatVariableintKinds(dAtA, i, uint64(volume))
+		i -= extent
+		i = serializeVariableintKinds(deltaLocatedAN, i, uint64(extent))
 	}
 	i--
-	dAtA[i] = 0x12
+	deltaLocatedAN[i] = 0x12
 	if len(m.Txs) > 0 {
-		for idxNdEx := len(m.Txs) - 1; idxNdEx >= 0; idxNdEx-- {
-			i -= len(m.Txs[idxNdEx])
-			copy(dAtA[i:], m.Txs[idxNdEx])
-			i = formatVariableintKinds(dAtA, i, uint64(len(m.Txs[idxNdEx])))
+		for idxNdExc := len(m.Txs) - 1; idxNdExc >= 0; idxNdExc-- {
+			i -= len(m.Txs[idxNdExc])
+			copy(deltaLocatedAN[i:], m.Txs[idxNdExc])
+			i = serializeVariableintKinds(deltaLocatedAN, i, uint64(len(m.Txs[idxNdExc])))
 			i--
-			dAtA[i] = 0xa
+			deltaLocatedAN[i] = 0xa
 		}
 	}
-	return len(dAtA) - i, nil
+	return len(deltaLocatedAN) - i, nil
 }
 
-func (m *Reply) Serialize() (dAtA []byte, err error) {
-	volume := m.Volume()
-	dAtA = make([]byte, volume)
-	n, err := m.SerializeToDimensionedBuffer(dAtA[:volume])
+func (m *Reply) Serialize() (deltaLocatedAN []byte, err error) {
+	extent := m.Extent()
+	deltaLocatedAN = make([]byte, extent)
+	n, err := m.SerializeTowardDimensionedReserve(deltaLocatedAN[:extent])
 	if err != nil {
 		return nil, err
 	}
-	return dAtA[:n], nil
+	return deltaLocatedAN[:n], nil
 }
 
-func (m *Reply) SerializeTo(dAtA []byte) (int, error) {
-	volume := m.Volume()
-	return m.SerializeToDimensionedBuffer(dAtA[:volume])
+func (m *Reply) SerializeToward(deltaLocatedAN []byte) (int, error) {
+	extent := m.Extent()
+	return m.SerializeTowardDimensionedReserve(deltaLocatedAN[:extent])
 }
 
-func (m *Reply) SerializeToDimensionedBuffer(dAtA []byte) (int, error) {
-	i := len(dAtA)
+func (m *Reply) SerializeTowardDimensionedReserve(deltaLocatedAN []byte) (int, error) {
+	i := len(deltaLocatedAN)
 	_ = i
 	var l int
 	_ = l
-	if m.Item != nil {
+	if m.Datum != nil {
 		{
-			volume := m.Item.Volume()
-			i -= volume
-			if _, err := m.Item.SerializeTo(dAtA[i:]); err != nil {
+			extent := m.Datum.Extent()
+			i -= extent
+			if _, err := m.Datum.SerializeToward(deltaLocatedAN[i:]); err != nil {
 				return 0, err
 			}
 		}
 	}
-	return len(dAtA) - i, nil
+	return len(deltaLocatedAN) - i, nil
 }
 
-func (m *Reply_Exemption) SerializeTo(dAtA []byte) (int, error) {
-	volume := m.Volume()
-	return m.SerializeToDimensionedBuffer(dAtA[:volume])
+func (m *Reply_Exemption) SerializeToward(deltaLocatedAN []byte) (int, error) {
+	extent := m.Extent()
+	return m.SerializeTowardDimensionedReserve(deltaLocatedAN[:extent])
 }
 
-func (m *Reply_Exemption) SerializeToDimensionedBuffer(dAtA []byte) (int, error) {
-	i := len(dAtA)
+func (m *Reply_Exemption) SerializeTowardDimensionedReserve(deltaLocatedAN []byte) (int, error) {
+	i := len(deltaLocatedAN)
 	if m.Exemption != nil {
 		{
-			volume, err := m.Exemption.SerializeToDimensionedBuffer(dAtA[:i])
+			extent, err := m.Exemption.SerializeTowardDimensionedReserve(deltaLocatedAN[:i])
 			if err != nil {
 				return 0, err
 			}
-			i -= volume
-			i = formatVariableintKinds(dAtA, i, uint64(volume))
+			i -= extent
+			i = serializeVariableintKinds(deltaLocatedAN, i, uint64(extent))
 		}
 		i--
-		dAtA[i] = 0xa
+		deltaLocatedAN[i] = 0xa
 	}
-	return len(dAtA) - i, nil
+	return len(deltaLocatedAN) - i, nil
 }
-func (m *Reply_Reverberate) SerializeTo(dAtA []byte) (int, error) {
-	volume := m.Volume()
-	return m.SerializeToDimensionedBuffer(dAtA[:volume])
+func (m *Reply_Reverberate) SerializeToward(deltaLocatedAN []byte) (int, error) {
+	extent := m.Extent()
+	return m.SerializeTowardDimensionedReserve(deltaLocatedAN[:extent])
 }
 
-func (m *Reply_Reverberate) SerializeToDimensionedBuffer(dAtA []byte) (int, error) {
-	i := len(dAtA)
-	if m.Replicate != nil {
+func (m *Reply_Reverberate) SerializeTowardDimensionedReserve(deltaLocatedAN []byte) (int, error) {
+	i := len(deltaLocatedAN)
+	if m.Reverberate != nil {
 		{
-			volume, err := m.Replicate.SerializeToDimensionedBuffer(dAtA[:i])
+			extent, err := m.Reverberate.SerializeTowardDimensionedReserve(deltaLocatedAN[:i])
 			if err != nil {
 				return 0, err
 			}
-			i -= volume
-			i = formatVariableintKinds(dAtA, i, uint64(volume))
+			i -= extent
+			i = serializeVariableintKinds(deltaLocatedAN, i, uint64(extent))
 		}
 		i--
-		dAtA[i] = 0x12
+		deltaLocatedAN[i] = 0x12
 	}
-	return len(dAtA) - i, nil
+	return len(deltaLocatedAN) - i, nil
 }
-func (m *Reply_Purge) SerializeTo(dAtA []byte) (int, error) {
-	volume := m.Volume()
-	return m.SerializeToDimensionedBuffer(dAtA[:volume])
+func (m *Reply_Purge) SerializeToward(deltaLocatedAN []byte) (int, error) {
+	extent := m.Extent()
+	return m.SerializeTowardDimensionedReserve(deltaLocatedAN[:extent])
 }
 
-func (m *Reply_Purge) SerializeToDimensionedBuffer(dAtA []byte) (int, error) {
-	i := len(dAtA)
+func (m *Reply_Purge) SerializeTowardDimensionedReserve(deltaLocatedAN []byte) (int, error) {
+	i := len(deltaLocatedAN)
 	if m.Purge != nil {
 		{
-			volume, err := m.Purge.SerializeToDimensionedBuffer(dAtA[:i])
+			extent, err := m.Purge.SerializeTowardDimensionedReserve(deltaLocatedAN[:i])
 			if err != nil {
 				return 0, err
 			}
-			i -= volume
-			i = formatVariableintKinds(dAtA, i, uint64(volume))
+			i -= extent
+			i = serializeVariableintKinds(deltaLocatedAN, i, uint64(extent))
 		}
 		i--
-		dAtA[i] = 0x1a
+		deltaLocatedAN[i] = 0x1a
 	}
-	return len(dAtA) - i, nil
+	return len(deltaLocatedAN) - i, nil
 }
-func (m *Reply_Details) SerializeTo(dAtA []byte) (int, error) {
-	volume := m.Volume()
-	return m.SerializeToDimensionedBuffer(dAtA[:volume])
+func (m *Reply_Details) SerializeToward(deltaLocatedAN []byte) (int, error) {
+	extent := m.Extent()
+	return m.SerializeTowardDimensionedReserve(deltaLocatedAN[:extent])
 }
 
-func (m *Reply_Details) SerializeToDimensionedBuffer(dAtA []byte) (int, error) {
-	i := len(dAtA)
+func (m *Reply_Details) SerializeTowardDimensionedReserve(deltaLocatedAN []byte) (int, error) {
+	i := len(deltaLocatedAN)
 	if m.Details != nil {
 		{
-			volume, err := m.Details.SerializeToDimensionedBuffer(dAtA[:i])
+			extent, err := m.Details.SerializeTowardDimensionedReserve(deltaLocatedAN[:i])
 			if err != nil {
 				return 0, err
 			}
-			i -= volume
-			i = formatVariableintKinds(dAtA, i, uint64(volume))
+			i -= extent
+			i = serializeVariableintKinds(deltaLocatedAN, i, uint64(extent))
 		}
 		i--
-		dAtA[i] = 0x22
+		deltaLocatedAN[i] = 0x22
 	}
-	return len(dAtA) - i, nil
+	return len(deltaLocatedAN) - i, nil
 }
-func (m *Reply_Initiatechain) SerializeTo(dAtA []byte) (int, error) {
-	volume := m.Volume()
-	return m.SerializeToDimensionedBuffer(dAtA[:volume])
+func (m *Reply_Initiatechain) SerializeToward(deltaLocatedAN []byte) (int, error) {
+	extent := m.Extent()
+	return m.SerializeTowardDimensionedReserve(deltaLocatedAN[:extent])
 }
 
-func (m *Reply_Initiatechain) SerializeToDimensionedBuffer(dAtA []byte) (int, error) {
-	i := len(dAtA)
-	if m.InitSeries != nil {
+func (m *Reply_Initiatechain) SerializeTowardDimensionedReserve(deltaLocatedAN []byte) (int, error) {
+	i := len(deltaLocatedAN)
+	if m.InitializeSuccession != nil {
 		{
-			volume, err := m.InitSeries.SerializeToDimensionedBuffer(dAtA[:i])
+			extent, err := m.InitializeSuccession.SerializeTowardDimensionedReserve(deltaLocatedAN[:i])
 			if err != nil {
 				return 0, err
 			}
-			i -= volume
-			i = formatVariableintKinds(dAtA, i, uint64(volume))
+			i -= extent
+			i = serializeVariableintKinds(deltaLocatedAN, i, uint64(extent))
 		}
 		i--
-		dAtA[i] = 0x32
+		deltaLocatedAN[i] = 0x32
 	}
-	return len(dAtA) - i, nil
+	return len(deltaLocatedAN) - i, nil
 }
-func (m *Reply_Inquire) SerializeTo(dAtA []byte) (int, error) {
-	volume := m.Volume()
-	return m.SerializeToDimensionedBuffer(dAtA[:volume])
+func (m *Reply_Inquire) SerializeToward(deltaLocatedAN []byte) (int, error) {
+	extent := m.Extent()
+	return m.SerializeTowardDimensionedReserve(deltaLocatedAN[:extent])
 }
 
-func (m *Reply_Inquire) SerializeToDimensionedBuffer(dAtA []byte) (int, error) {
-	i := len(dAtA)
+func (m *Reply_Inquire) SerializeTowardDimensionedReserve(deltaLocatedAN []byte) (int, error) {
+	i := len(deltaLocatedAN)
 	if m.Inquire != nil {
 		{
-			volume, err := m.Inquire.SerializeToDimensionedBuffer(dAtA[:i])
+			extent, err := m.Inquire.SerializeTowardDimensionedReserve(deltaLocatedAN[:i])
 			if err != nil {
 				return 0, err
 			}
-			i -= volume
-			i = formatVariableintKinds(dAtA, i, uint64(volume))
+			i -= extent
+			i = serializeVariableintKinds(deltaLocatedAN, i, uint64(extent))
 		}
 		i--
-		dAtA[i] = 0x3a
+		deltaLocatedAN[i] = 0x3a
 	}
-	return len(dAtA) - i, nil
+	return len(deltaLocatedAN) - i, nil
 }
-func (m *Reply_Transfercheck) SerializeTo(dAtA []byte) (int, error) {
-	volume := m.Volume()
-	return m.SerializeToDimensionedBuffer(dAtA[:volume])
+func (m *Reply_Inspecttrans) SerializeToward(deltaLocatedAN []byte) (int, error) {
+	extent := m.Extent()
+	return m.SerializeTowardDimensionedReserve(deltaLocatedAN[:extent])
 }
 
-func (m *Reply_Transfercheck) SerializeToDimensionedBuffer(dAtA []byte) (int, error) {
-	i := len(dAtA)
+func (m *Reply_Inspecttrans) SerializeTowardDimensionedReserve(deltaLocatedAN []byte) (int, error) {
+	i := len(deltaLocatedAN)
 	if m.InspectTransfer != nil {
 		{
-			volume, err := m.InspectTransfer.SerializeToDimensionedBuffer(dAtA[:i])
+			extent, err := m.InspectTransfer.SerializeTowardDimensionedReserve(deltaLocatedAN[:i])
 			if err != nil {
 				return 0, err
 			}
-			i -= volume
-			i = formatVariableintKinds(dAtA, i, uint64(volume))
+			i -= extent
+			i = serializeVariableintKinds(deltaLocatedAN, i, uint64(extent))
 		}
 		i--
-		dAtA[i] = 0x4a
+		deltaLocatedAN[i] = 0x4a
 	}
-	return len(dAtA) - i, nil
+	return len(deltaLocatedAN) - i, nil
 }
-func (m *Reply_Endorse) SerializeTo(dAtA []byte) (int, error) {
-	volume := m.Volume()
-	return m.SerializeToDimensionedBuffer(dAtA[:volume])
+func (m *Reply_Endorse) SerializeToward(deltaLocatedAN []byte) (int, error) {
+	extent := m.Extent()
+	return m.SerializeTowardDimensionedReserve(deltaLocatedAN[:extent])
 }
 
-func (m *Reply_Endorse) SerializeToDimensionedBuffer(dAtA []byte) (int, error) {
-	i := len(dAtA)
+func (m *Reply_Endorse) SerializeTowardDimensionedReserve(deltaLocatedAN []byte) (int, error) {
+	i := len(deltaLocatedAN)
 	if m.Endorse != nil {
 		{
-			volume, err := m.Endorse.SerializeToDimensionedBuffer(dAtA[:i])
+			extent, err := m.Endorse.SerializeTowardDimensionedReserve(deltaLocatedAN[:i])
 			if err != nil {
 				return 0, err
 			}
-			i -= volume
-			i = formatVariableintKinds(dAtA, i, uint64(volume))
+			i -= extent
+			i = serializeVariableintKinds(deltaLocatedAN, i, uint64(extent))
 		}
 		i--
-		dAtA[i] = 0x62
+		deltaLocatedAN[i] = 0x62
 	}
-	return len(dAtA) - i, nil
+	return len(deltaLocatedAN) - i, nil
 }
-func (m *Reply_Catalogmirrors) SerializeTo(dAtA []byte) (int, error) {
-	volume := m.Volume()
-	return m.SerializeToDimensionedBuffer(dAtA[:volume])
+func (m *Reply_Catalogimages) SerializeToward(deltaLocatedAN []byte) (int, error) {
+	extent := m.Extent()
+	return m.SerializeTowardDimensionedReserve(deltaLocatedAN[:extent])
 }
 
-func (m *Reply_Catalogmirrors) SerializeToDimensionedBuffer(dAtA []byte) (int, error) {
-	i := len(dAtA)
-	if m.CatalogMirrors != nil {
+func (m *Reply_Catalogimages) SerializeTowardDimensionedReserve(deltaLocatedAN []byte) (int, error) {
+	i := len(deltaLocatedAN)
+	if m.CollectionImages != nil {
 		{
-			volume, err := m.CatalogMirrors.SerializeToDimensionedBuffer(dAtA[:i])
+			extent, err := m.CollectionImages.SerializeTowardDimensionedReserve(deltaLocatedAN[:i])
 			if err != nil {
 				return 0, err
 			}
-			i -= volume
-			i = formatVariableintKinds(dAtA, i, uint64(volume))
+			i -= extent
+			i = serializeVariableintKinds(deltaLocatedAN, i, uint64(extent))
 		}
 		i--
-		dAtA[i] = 0x6a
+		deltaLocatedAN[i] = 0x6a
 	}
-	return len(dAtA) - i, nil
+	return len(deltaLocatedAN) - i, nil
 }
-func (m *Reply_Mirrorsnapshot) SerializeTo(dAtA []byte) (int, error) {
-	volume := m.Volume()
-	return m.SerializeToDimensionedBuffer(dAtA[:volume])
+func (m *Reply_Extendimage) SerializeToward(deltaLocatedAN []byte) (int, error) {
+	extent := m.Extent()
+	return m.SerializeTowardDimensionedReserve(deltaLocatedAN[:extent])
 }
 
-func (m *Reply_Mirrorsnapshot) SerializeToDimensionedBuffer(dAtA []byte) (int, error) {
-	i := len(dAtA)
-	if m.ProposalMirror != nil {
+func (m *Reply_Extendimage) SerializeTowardDimensionedReserve(deltaLocatedAN []byte) (int, error) {
+	i := len(deltaLocatedAN)
+	if m.ExtendImage != nil {
 		{
-			volume, err := m.ProposalMirror.SerializeToDimensionedBuffer(dAtA[:i])
+			extent, err := m.ExtendImage.SerializeTowardDimensionedReserve(deltaLocatedAN[:i])
 			if err != nil {
 				return 0, err
 			}
-			i -= volume
-			i = formatVariableintKinds(dAtA, i, uint64(volume))
+			i -= extent
+			i = serializeVariableintKinds(deltaLocatedAN, i, uint64(extent))
 		}
 		i--
-		dAtA[i] = 0x72
+		deltaLocatedAN[i] = 0x72
 	}
-	return len(dAtA) - i, nil
+	return len(deltaLocatedAN) - i, nil
 }
-func (m *Reply_Loadmirrorsegment) SerializeTo(dAtA []byte) (int, error) {
-	volume := m.Volume()
-	return m.SerializeToDimensionedBuffer(dAtA[:volume])
+func (m *Reply_Loadimagefragment) SerializeToward(deltaLocatedAN []byte) (int, error) {
+	extent := m.Extent()
+	return m.SerializeTowardDimensionedReserve(deltaLocatedAN[:extent])
 }
 
-func (m *Reply_Loadmirrorsegment) SerializeToDimensionedBuffer(dAtA []byte) (int, error) {
-	i := len(dAtA)
-	if m.ImportMirrorSegment != nil {
+func (m *Reply_Loadimagefragment) SerializeTowardDimensionedReserve(deltaLocatedAN []byte) (int, error) {
+	i := len(deltaLocatedAN)
+	if m.FetchImageSegment != nil {
 		{
-			volume, err := m.ImportMirrorSegment.SerializeToDimensionedBuffer(dAtA[:i])
+			extent, err := m.FetchImageSegment.SerializeTowardDimensionedReserve(deltaLocatedAN[:i])
 			if err != nil {
 				return 0, err
 			}
-			i -= volume
-			i = formatVariableintKinds(dAtA, i, uint64(volume))
+			i -= extent
+			i = serializeVariableintKinds(deltaLocatedAN, i, uint64(extent))
 		}
 		i--
-		dAtA[i] = 0x7a
+		deltaLocatedAN[i] = 0x7a
 	}
-	return len(dAtA) - i, nil
+	return len(deltaLocatedAN) - i, nil
 }
-func (m *Reply_Executemirrorsegment) SerializeTo(dAtA []byte) (int, error) {
-	volume := m.Volume()
-	return m.SerializeToDimensionedBuffer(dAtA[:volume])
+func (m *Reply_Executeimagefragment) SerializeToward(deltaLocatedAN []byte) (int, error) {
+	extent := m.Extent()
+	return m.SerializeTowardDimensionedReserve(deltaLocatedAN[:extent])
 }
 
-func (m *Reply_Executemirrorsegment) SerializeToDimensionedBuffer(dAtA []byte) (int, error) {
-	i := len(dAtA)
-	if m.ExecuteMirrorSegment != nil {
+func (m *Reply_Executeimagefragment) SerializeTowardDimensionedReserve(deltaLocatedAN []byte) (int, error) {
+	i := len(deltaLocatedAN)
+	if m.ExecuteImageSegment != nil {
 		{
-			volume, err := m.ExecuteMirrorSegment.SerializeToDimensionedBuffer(dAtA[:i])
+			extent, err := m.ExecuteImageSegment.SerializeTowardDimensionedReserve(deltaLocatedAN[:i])
 			if err != nil {
 				return 0, err
 			}
-			i -= volume
-			i = formatVariableintKinds(dAtA, i, uint64(volume))
+			i -= extent
+			i = serializeVariableintKinds(deltaLocatedAN, i, uint64(extent))
 		}
 		i--
-		dAtA[i] = 0x1
+		deltaLocatedAN[i] = 0x1
 		i--
-		dAtA[i] = 0x82
+		deltaLocatedAN[i] = 0x82
 	}
-	return len(dAtA) - i, nil
+	return len(deltaLocatedAN) - i, nil
 }
-func (m *Reply_Arrangenomination) SerializeTo(dAtA []byte) (int, error) {
-	volume := m.Volume()
-	return m.SerializeToDimensionedBuffer(dAtA[:volume])
+func (m *Reply_Prepareitem) SerializeToward(deltaLocatedAN []byte) (int, error) {
+	extent := m.Extent()
+	return m.SerializeTowardDimensionedReserve(deltaLocatedAN[:extent])
 }
 
-func (m *Reply_Arrangenomination) SerializeToDimensionedBuffer(dAtA []byte) (int, error) {
-	i := len(dAtA)
+func (m *Reply_Prepareitem) SerializeTowardDimensionedReserve(deltaLocatedAN []byte) (int, error) {
+	i := len(deltaLocatedAN)
 	if m.ArrangeNomination != nil {
 		{
-			volume, err := m.ArrangeNomination.SerializeToDimensionedBuffer(dAtA[:i])
+			extent, err := m.ArrangeNomination.SerializeTowardDimensionedReserve(deltaLocatedAN[:i])
 			if err != nil {
 				return 0, err
 			}
-			i -= volume
-			i = formatVariableintKinds(dAtA, i, uint64(volume))
+			i -= extent
+			i = serializeVariableintKinds(deltaLocatedAN, i, uint64(extent))
 		}
 		i--
-		dAtA[i] = 0x1
+		deltaLocatedAN[i] = 0x1
 		i--
-		dAtA[i] = 0x8a
+		deltaLocatedAN[i] = 0x8a
 	}
-	return len(dAtA) - i, nil
+	return len(deltaLocatedAN) - i, nil
 }
-func (m *Reply_Processnomination) SerializeTo(dAtA []byte) (int, error) {
-	volume := m.Volume()
-	return m.SerializeToDimensionedBuffer(dAtA[:volume])
+func (m *Reply_Executeitem) SerializeToward(deltaLocatedAN []byte) (int, error) {
+	extent := m.Extent()
+	return m.SerializeTowardDimensionedReserve(deltaLocatedAN[:extent])
 }
 
-func (m *Reply_Processnomination) SerializeToDimensionedBuffer(dAtA []byte) (int, error) {
-	i := len(dAtA)
+func (m *Reply_Executeitem) SerializeTowardDimensionedReserve(deltaLocatedAN []byte) (int, error) {
+	i := len(deltaLocatedAN)
 	if m.HandleNomination != nil {
 		{
-			volume, err := m.HandleNomination.SerializeToDimensionedBuffer(dAtA[:i])
+			extent, err := m.HandleNomination.SerializeTowardDimensionedReserve(deltaLocatedAN[:i])
 			if err != nil {
 				return 0, err
 			}
-			i -= volume
-			i = formatVariableintKinds(dAtA, i, uint64(volume))
+			i -= extent
+			i = serializeVariableintKinds(deltaLocatedAN, i, uint64(extent))
 		}
 		i--
-		dAtA[i] = 0x1
+		deltaLocatedAN[i] = 0x1
 		i--
-		dAtA[i] = 0x92
+		deltaLocatedAN[i] = 0x92
 	}
-	return len(dAtA) - i, nil
+	return len(deltaLocatedAN) - i, nil
 }
-func (m *Reply_Ballotextend) SerializeTo(dAtA []byte) (int, error) {
-	volume := m.Volume()
-	return m.SerializeToDimensionedBuffer(dAtA[:volume])
+func (m *Reply_Extendballot) SerializeToward(deltaLocatedAN []byte) (int, error) {
+	extent := m.Extent()
+	return m.SerializeTowardDimensionedReserve(deltaLocatedAN[:extent])
 }
 
-func (m *Reply_Ballotextend) SerializeToDimensionedBuffer(dAtA []byte) (int, error) {
-	i := len(dAtA)
-	if m.ExpandBallot != nil {
+func (m *Reply_Extendballot) SerializeTowardDimensionedReserve(deltaLocatedAN []byte) (int, error) {
+	i := len(deltaLocatedAN)
+	if m.BroadenBallot != nil {
 		{
-			volume, err := m.ExpandBallot.SerializeToDimensionedBuffer(dAtA[:i])
+			extent, err := m.BroadenBallot.SerializeTowardDimensionedReserve(deltaLocatedAN[:i])
 			if err != nil {
 				return 0, err
 			}
-			i -= volume
-			i = formatVariableintKinds(dAtA, i, uint64(volume))
+			i -= extent
+			i = serializeVariableintKinds(deltaLocatedAN, i, uint64(extent))
 		}
 		i--
-		dAtA[i] = 0x1
+		deltaLocatedAN[i] = 0x1
 		i--
-		dAtA[i] = 0x9a
+		deltaLocatedAN[i] = 0x9a
 	}
-	return len(dAtA) - i, nil
+	return len(deltaLocatedAN) - i, nil
 }
-func (m *Reply_Validateballotextension) SerializeTo(dAtA []byte) (int, error) {
-	volume := m.Volume()
-	return m.SerializeToDimensionedBuffer(dAtA[:volume])
+func (m *Reply_Verifyballotaddition) SerializeToward(deltaLocatedAN []byte) (int, error) {
+	extent := m.Extent()
+	return m.SerializeTowardDimensionedReserve(deltaLocatedAN[:extent])
 }
 
-func (m *Reply_Validateballotextension) SerializeToDimensionedBuffer(dAtA []byte) (int, error) {
-	i := len(dAtA)
+func (m *Reply_Verifyballotaddition) SerializeTowardDimensionedReserve(deltaLocatedAN []byte) (int, error) {
+	i := len(deltaLocatedAN)
 	if m.ValidateBallotAddition != nil {
 		{
-			volume, err := m.ValidateBallotAddition.SerializeToDimensionedBuffer(dAtA[:i])
+			extent, err := m.ValidateBallotAddition.SerializeTowardDimensionedReserve(deltaLocatedAN[:i])
 			if err != nil {
 				return 0, err
 			}
-			i -= volume
-			i = formatVariableintKinds(dAtA, i, uint64(volume))
+			i -= extent
+			i = serializeVariableintKinds(deltaLocatedAN, i, uint64(extent))
 		}
 		i--
-		dAtA[i] = 0x1
+		deltaLocatedAN[i] = 0x1
 		i--
-		dAtA[i] = 0xa2
+		deltaLocatedAN[i] = 0xa2
 	}
-	return len(dAtA) - i, nil
+	return len(deltaLocatedAN) - i, nil
 }
-func (m *Reply_Terminateblock) SerializeTo(dAtA []byte) (int, error) {
-	volume := m.Volume()
-	return m.SerializeToDimensionedBuffer(dAtA[:volume])
+func (m *Reply_Finalizeledger) SerializeToward(deltaLocatedAN []byte) (int, error) {
+	extent := m.Extent()
+	return m.SerializeTowardDimensionedReserve(deltaLocatedAN[:extent])
 }
 
-func (m *Reply_Terminateblock) SerializeToDimensionedBuffer(dAtA []byte) (int, error) {
-	i := len(dAtA)
-	if m.CompleteLedger != nil {
+func (m *Reply_Finalizeledger) SerializeTowardDimensionedReserve(deltaLocatedAN []byte) (int, error) {
+	i := len(deltaLocatedAN)
+	if m.CulminateLedger != nil {
 		{
-			volume, err := m.CompleteLedger.SerializeToDimensionedBuffer(dAtA[:i])
+			extent, err := m.CulminateLedger.SerializeTowardDimensionedReserve(deltaLocatedAN[:i])
 			if err != nil {
 				return 0, err
 			}
-			i -= volume
-			i = formatVariableintKinds(dAtA, i, uint64(volume))
+			i -= extent
+			i = serializeVariableintKinds(deltaLocatedAN, i, uint64(extent))
 		}
 		i--
-		dAtA[i] = 0x1
+		deltaLocatedAN[i] = 0x1
 		i--
-		dAtA[i] = 0xaa
+		deltaLocatedAN[i] = 0xaa
 	}
-	return len(dAtA) - i, nil
+	return len(deltaLocatedAN) - i, nil
 }
-func (m *Reply_Transferinsert) SerializeTo(dAtA []byte) (int, error) {
-	volume := m.Volume()
-	return m.SerializeToDimensionedBuffer(dAtA[:volume])
+func (m *Reply_Appendtrans) SerializeToward(deltaLocatedAN []byte) (int, error) {
+	extent := m.Extent()
+	return m.SerializeTowardDimensionedReserve(deltaLocatedAN[:extent])
 }
 
-func (m *Reply_Transferinsert) SerializeToDimensionedBuffer(dAtA []byte) (int, error) {
-	i := len(dAtA)
-	if m.EmbedTransfer != nil {
+func (m *Reply_Appendtrans) SerializeTowardDimensionedReserve(deltaLocatedAN []byte) (int, error) {
+	i := len(deltaLocatedAN)
+	if m.AppendTransfer != nil {
 		{
-			volume, err := m.EmbedTransfer.SerializeToDimensionedBuffer(dAtA[:i])
+			extent, err := m.AppendTransfer.SerializeTowardDimensionedReserve(deltaLocatedAN[:i])
 			if err != nil {
 				return 0, err
 			}
-			i -= volume
-			i = formatVariableintKinds(dAtA, i, uint64(volume))
+			i -= extent
+			i = serializeVariableintKinds(deltaLocatedAN, i, uint64(extent))
 		}
 		i--
-		dAtA[i] = 0x1
+		deltaLocatedAN[i] = 0x1
 		i--
-		dAtA[i] = 0xb2
+		deltaLocatedAN[i] = 0xb2
 	}
-	return len(dAtA) - i, nil
+	return len(deltaLocatedAN) - i, nil
 }
-func (m *Reply_Reaptransfers) SerializeTo(dAtA []byte) (int, error) {
-	volume := m.Volume()
-	return m.SerializeToDimensionedBuffer(dAtA[:volume])
+func (m *Reply_Harvesttrans) SerializeToward(deltaLocatedAN []byte) (int, error) {
+	extent := m.Extent()
+	return m.SerializeTowardDimensionedReserve(deltaLocatedAN[:extent])
 }
 
-func (m *Reply_Reaptransfers) SerializeToDimensionedBuffer(dAtA []byte) (int, error) {
-	i := len(dAtA)
+func (m *Reply_Harvesttrans) SerializeTowardDimensionedReserve(deltaLocatedAN []byte) (int, error) {
+	i := len(deltaLocatedAN)
 	if m.HarvestTrans != nil {
 		{
-			volume, err := m.HarvestTrans.SerializeToDimensionedBuffer(dAtA[:i])
+			extent, err := m.HarvestTrans.SerializeTowardDimensionedReserve(deltaLocatedAN[:i])
 			if err != nil {
 				return 0, err
 			}
-			i -= volume
-			i = formatVariableintKinds(dAtA, i, uint64(volume))
+			i -= extent
+			i = serializeVariableintKinds(deltaLocatedAN, i, uint64(extent))
 		}
 		i--
-		dAtA[i] = 0x1
+		deltaLocatedAN[i] = 0x1
 		i--
-		dAtA[i] = 0xba
+		deltaLocatedAN[i] = 0xba
 	}
-	return len(dAtA) - i, nil
+	return len(deltaLocatedAN) - i, nil
 }
-func (m *ReplyExemption) Serialize() (dAtA []byte, err error) {
-	volume := m.Volume()
-	dAtA = make([]byte, volume)
-	n, err := m.SerializeToDimensionedBuffer(dAtA[:volume])
+func (m *ReplyExemption) Serialize() (deltaLocatedAN []byte, err error) {
+	extent := m.Extent()
+	deltaLocatedAN = make([]byte, extent)
+	n, err := m.SerializeTowardDimensionedReserve(deltaLocatedAN[:extent])
 	if err != nil {
 		return nil, err
 	}
-	return dAtA[:n], nil
+	return deltaLocatedAN[:n], nil
 }
 
-func (m *ReplyExemption) SerializeTo(dAtA []byte) (int, error) {
-	volume := m.Volume()
-	return m.SerializeToDimensionedBuffer(dAtA[:volume])
+func (m *ReplyExemption) SerializeToward(deltaLocatedAN []byte) (int, error) {
+	extent := m.Extent()
+	return m.SerializeTowardDimensionedReserve(deltaLocatedAN[:extent])
 }
 
-func (m *ReplyExemption) SerializeToDimensionedBuffer(dAtA []byte) (int, error) {
-	i := len(dAtA)
+func (m *ReplyExemption) SerializeTowardDimensionedReserve(deltaLocatedAN []byte) (int, error) {
+	i := len(deltaLocatedAN)
 	_ = i
 	var l int
 	_ = l
-	if len(m.Fault) > 0 {
-		i -= len(m.Fault)
-		copy(dAtA[i:], m.Fault)
-		i = formatVariableintKinds(dAtA, i, uint64(len(m.Fault)))
+	if len(m.Failure) > 0 {
+		i -= len(m.Failure)
+		copy(deltaLocatedAN[i:], m.Failure)
+		i = serializeVariableintKinds(deltaLocatedAN, i, uint64(len(m.Failure)))
 		i--
-		dAtA[i] = 0xa
+		deltaLocatedAN[i] = 0xa
 	}
-	return len(dAtA) - i, nil
+	return len(deltaLocatedAN) - i, nil
 }
 
-func (m *ReplyReverberate) Serialize() (dAtA []byte, err error) {
-	volume := m.Volume()
-	dAtA = make([]byte, volume)
-	n, err := m.SerializeToDimensionedBuffer(dAtA[:volume])
+func (m *ReplyReverberate) Serialize() (deltaLocatedAN []byte, err error) {
+	extent := m.Extent()
+	deltaLocatedAN = make([]byte, extent)
+	n, err := m.SerializeTowardDimensionedReserve(deltaLocatedAN[:extent])
 	if err != nil {
 		return nil, err
 	}
-	return dAtA[:n], nil
+	return deltaLocatedAN[:n], nil
 }
 
-func (m *ReplyReverberate) SerializeTo(dAtA []byte) (int, error) {
-	volume := m.Volume()
-	return m.SerializeToDimensionedBuffer(dAtA[:volume])
+func (m *ReplyReverberate) SerializeToward(deltaLocatedAN []byte) (int, error) {
+	extent := m.Extent()
+	return m.SerializeTowardDimensionedReserve(deltaLocatedAN[:extent])
 }
 
-func (m *ReplyReverberate) SerializeToDimensionedBuffer(dAtA []byte) (int, error) {
-	i := len(dAtA)
+func (m *ReplyReverberate) SerializeTowardDimensionedReserve(deltaLocatedAN []byte) (int, error) {
+	i := len(deltaLocatedAN)
 	_ = i
 	var l int
 	_ = l
 	if len(m.Signal) > 0 {
 		i -= len(m.Signal)
-		copy(dAtA[i:], m.Signal)
-		i = formatVariableintKinds(dAtA, i, uint64(len(m.Signal)))
+		copy(deltaLocatedAN[i:], m.Signal)
+		i = serializeVariableintKinds(deltaLocatedAN, i, uint64(len(m.Signal)))
 		i--
-		dAtA[i] = 0xa
+		deltaLocatedAN[i] = 0xa
 	}
-	return len(dAtA) - i, nil
+	return len(deltaLocatedAN) - i, nil
 }
 
-func (m *ReplyPurge) Serialize() (dAtA []byte, err error) {
-	volume := m.Volume()
-	dAtA = make([]byte, volume)
-	n, err := m.SerializeToDimensionedBuffer(dAtA[:volume])
+func (m *ReplyPurge) Serialize() (deltaLocatedAN []byte, err error) {
+	extent := m.Extent()
+	deltaLocatedAN = make([]byte, extent)
+	n, err := m.SerializeTowardDimensionedReserve(deltaLocatedAN[:extent])
 	if err != nil {
 		return nil, err
 	}
-	return dAtA[:n], nil
+	return deltaLocatedAN[:n], nil
 }
 
-func (m *ReplyPurge) SerializeTo(dAtA []byte) (int, error) {
-	volume := m.Volume()
-	return m.SerializeToDimensionedBuffer(dAtA[:volume])
+func (m *ReplyPurge) SerializeToward(deltaLocatedAN []byte) (int, error) {
+	extent := m.Extent()
+	return m.SerializeTowardDimensionedReserve(deltaLocatedAN[:extent])
 }
 
-func (m *ReplyPurge) SerializeToDimensionedBuffer(dAtA []byte) (int, error) {
-	i := len(dAtA)
+func (m *ReplyPurge) SerializeTowardDimensionedReserve(deltaLocatedAN []byte) (int, error) {
+	i := len(deltaLocatedAN)
 	_ = i
 	var l int
 	_ = l
-	return len(dAtA) - i, nil
+	return len(deltaLocatedAN) - i, nil
 }
 
-func (m *ReplyDetails) Serialize() (dAtA []byte, err error) {
-	volume := m.Volume()
-	dAtA = make([]byte, volume)
-	n, err := m.SerializeToDimensionedBuffer(dAtA[:volume])
+func (m *ReplyDetails) Serialize() (deltaLocatedAN []byte, err error) {
+	extent := m.Extent()
+	deltaLocatedAN = make([]byte, extent)
+	n, err := m.SerializeTowardDimensionedReserve(deltaLocatedAN[:extent])
 	if err != nil {
 		return nil, err
 	}
-	return dAtA[:n], nil
+	return deltaLocatedAN[:n], nil
 }
 
-func (m *ReplyDetails) SerializeTo(dAtA []byte) (int, error) {
-	volume := m.Volume()
-	return m.SerializeToDimensionedBuffer(dAtA[:volume])
+func (m *ReplyDetails) SerializeToward(deltaLocatedAN []byte) (int, error) {
+	extent := m.Extent()
+	return m.SerializeTowardDimensionedReserve(deltaLocatedAN[:extent])
 }
 
-func (m *ReplyDetails) SerializeToDimensionedBuffer(dAtA []byte) (int, error) {
-	i := len(dAtA)
+func (m *ReplyDetails) SerializeTowardDimensionedReserve(deltaLocatedAN []byte) (int, error) {
+	i := len(deltaLocatedAN)
 	_ = i
 	var l int
 	_ = l
-	if len(m.FinalLedgerApplicationDigest) > 0 {
-		i -= len(m.FinalLedgerApplicationDigest)
-		copy(dAtA[i:], m.FinalLedgerApplicationDigest)
-		i = formatVariableintKinds(dAtA, i, uint64(len(m.FinalLedgerApplicationDigest)))
+	if len(m.FinalLedgerPlatformDigest) > 0 {
+		i -= len(m.FinalLedgerPlatformDigest)
+		copy(deltaLocatedAN[i:], m.FinalLedgerPlatformDigest)
+		i = serializeVariableintKinds(deltaLocatedAN, i, uint64(len(m.FinalLedgerPlatformDigest)))
 		i--
-		dAtA[i] = 0x2a
+		deltaLocatedAN[i] = 0x2a
 	}
-	if m.FinalLedgerLevel != 0 {
-		i = formatVariableintKinds(dAtA, i, uint64(m.FinalLedgerLevel))
+	if m.FinalLedgerAltitude != 0 {
+		i = serializeVariableintKinds(deltaLocatedAN, i, uint64(m.FinalLedgerAltitude))
 		i--
-		dAtA[i] = 0x20
+		deltaLocatedAN[i] = 0x20
 	}
-	if m.ApplicationRelease != 0 {
-		i = formatVariableintKinds(dAtA, i, uint64(m.ApplicationRelease))
+	if m.PlatformEdition != 0 {
+		i = serializeVariableintKinds(deltaLocatedAN, i, uint64(m.PlatformEdition))
 		i--
-		dAtA[i] = 0x18
+		deltaLocatedAN[i] = 0x18
 	}
-	if len(m.Release) > 0 {
-		i -= len(m.Release)
-		copy(dAtA[i:], m.Release)
-		i = formatVariableintKinds(dAtA, i, uint64(len(m.Release)))
+	if len(m.Edition) > 0 {
+		i -= len(m.Edition)
+		copy(deltaLocatedAN[i:], m.Edition)
+		i = serializeVariableintKinds(deltaLocatedAN, i, uint64(len(m.Edition)))
 		i--
-		dAtA[i] = 0x12
+		deltaLocatedAN[i] = 0x12
 	}
 	if len(m.Data) > 0 {
 		i -= len(m.Data)
-		copy(dAtA[i:], m.Data)
-		i = formatVariableintKinds(dAtA, i, uint64(len(m.Data)))
+		copy(deltaLocatedAN[i:], m.Data)
+		i = serializeVariableintKinds(deltaLocatedAN, i, uint64(len(m.Data)))
 		i--
-		dAtA[i] = 0xa
+		deltaLocatedAN[i] = 0xa
 	}
-	return len(dAtA) - i, nil
+	return len(deltaLocatedAN) - i, nil
 }
 
-func (m *ReplyInitSeries) Serialize() (dAtA []byte, err error) {
-	volume := m.Volume()
-	dAtA = make([]byte, volume)
-	n, err := m.SerializeToDimensionedBuffer(dAtA[:volume])
+func (m *ReplyInitializeSuccession) Serialize() (deltaLocatedAN []byte, err error) {
+	extent := m.Extent()
+	deltaLocatedAN = make([]byte, extent)
+	n, err := m.SerializeTowardDimensionedReserve(deltaLocatedAN[:extent])
 	if err != nil {
 		return nil, err
 	}
-	return dAtA[:n], nil
+	return deltaLocatedAN[:n], nil
 }
 
-func (m *ReplyInitSeries) SerializeTo(dAtA []byte) (int, error) {
-	volume := m.Volume()
-	return m.SerializeToDimensionedBuffer(dAtA[:volume])
+func (m *ReplyInitializeSuccession) SerializeToward(deltaLocatedAN []byte) (int, error) {
+	extent := m.Extent()
+	return m.SerializeTowardDimensionedReserve(deltaLocatedAN[:extent])
 }
 
-func (m *ReplyInitSeries) SerializeToDimensionedBuffer(dAtA []byte) (int, error) {
-	i := len(dAtA)
+func (m *ReplyInitializeSuccession) SerializeTowardDimensionedReserve(deltaLocatedAN []byte) (int, error) {
+	i := len(deltaLocatedAN)
 	_ = i
 	var l int
 	_ = l
-	if len(m.ApplicationDigest) > 0 {
-		i -= len(m.ApplicationDigest)
-		copy(dAtA[i:], m.ApplicationDigest)
-		i = formatVariableintKinds(dAtA, i, uint64(len(m.ApplicationDigest)))
+	if len(m.PlatformDigest) > 0 {
+		i -= len(m.PlatformDigest)
+		copy(deltaLocatedAN[i:], m.PlatformDigest)
+		i = serializeVariableintKinds(deltaLocatedAN, i, uint64(len(m.PlatformDigest)))
 		i--
-		dAtA[i] = 0x1a
+		deltaLocatedAN[i] = 0x1a
 	}
-	if len(m.Ratifiers) > 0 {
-		for idxNdEx := len(m.Ratifiers) - 1; idxNdEx >= 0; idxNdEx-- {
+	if len(m.Assessors) > 0 {
+		for idxNdExc := len(m.Assessors) - 1; idxNdExc >= 0; idxNdExc-- {
 			{
-				volume, err := m.Ratifiers[idxNdEx].SerializeToDimensionedBuffer(dAtA[:i])
+				extent, err := m.Assessors[idxNdExc].SerializeTowardDimensionedReserve(deltaLocatedAN[:i])
 				if err != nil {
 					return 0, err
 				}
-				i -= volume
-				i = formatVariableintKinds(dAtA, i, uint64(volume))
+				i -= extent
+				i = serializeVariableintKinds(deltaLocatedAN, i, uint64(extent))
 			}
 			i--
-			dAtA[i] = 0x12
+			deltaLocatedAN[i] = 0x12
 		}
 	}
-	if m.AgreementOptions != nil {
+	if m.AgreementSettings != nil {
 		{
-			volume, err := m.AgreementOptions.SerializeToDimensionedBuffer(dAtA[:i])
+			extent, err := m.AgreementSettings.SerializeTowardDimensionedReserve(deltaLocatedAN[:i])
 			if err != nil {
 				return 0, err
 			}
-			i -= volume
-			i = formatVariableintKinds(dAtA, i, uint64(volume))
+			i -= extent
+			i = serializeVariableintKinds(deltaLocatedAN, i, uint64(extent))
 		}
 		i--
-		dAtA[i] = 0xa
+		deltaLocatedAN[i] = 0xa
 	}
-	return len(dAtA) - i, nil
+	return len(deltaLocatedAN) - i, nil
 }
 
-func (m *ReplyInquire) Serialize() (dAtA []byte, err error) {
-	volume := m.Volume()
-	dAtA = make([]byte, volume)
-	n, err := m.SerializeToDimensionedBuffer(dAtA[:volume])
+func (m *ReplyInquire) Serialize() (deltaLocatedAN []byte, err error) {
+	extent := m.Extent()
+	deltaLocatedAN = make([]byte, extent)
+	n, err := m.SerializeTowardDimensionedReserve(deltaLocatedAN[:extent])
 	if err != nil {
 		return nil, err
 	}
-	return dAtA[:n], nil
+	return deltaLocatedAN[:n], nil
 }
 
-func (m *ReplyInquire) SerializeTo(dAtA []byte) (int, error) {
-	volume := m.Volume()
-	return m.SerializeToDimensionedBuffer(dAtA[:volume])
+func (m *ReplyInquire) SerializeToward(deltaLocatedAN []byte) (int, error) {
+	extent := m.Extent()
+	return m.SerializeTowardDimensionedReserve(deltaLocatedAN[:extent])
 }
 
-func (m *ReplyInquire) SerializeToDimensionedBuffer(dAtA []byte) (int, error) {
-	i := len(dAtA)
+func (m *ReplyInquire) SerializeTowardDimensionedReserve(deltaLocatedAN []byte) (int, error) {
+	i := len(deltaLocatedAN)
 	_ = i
 	var l int
 	_ = l
-	if len(m.Codex) > 0 {
-		i -= len(m.Codex)
-		copy(dAtA[i:], m.Codex)
-		i = formatVariableintKinds(dAtA, i, uint64(len(m.Codex)))
+	if len(m.Codeset) > 0 {
+		i -= len(m.Codeset)
+		copy(deltaLocatedAN[i:], m.Codeset)
+		i = serializeVariableintKinds(deltaLocatedAN, i, uint64(len(m.Codeset)))
 		i--
-		dAtA[i] = 0x52
+		deltaLocatedAN[i] = 0x52
 	}
-	if m.Level != 0 {
-		i = formatVariableintKinds(dAtA, i, uint64(m.Level))
+	if m.Altitude != 0 {
+		i = serializeVariableintKinds(deltaLocatedAN, i, uint64(m.Altitude))
 		i--
-		dAtA[i] = 0x48
+		deltaLocatedAN[i] = 0x48
 	}
-	if m.EvidenceActions != nil {
+	if m.AttestationActions != nil {
 		{
-			volume, err := m.EvidenceActions.SerializeToDimensionedBuffer(dAtA[:i])
+			extent, err := m.AttestationActions.SerializeTowardDimensionedReserve(deltaLocatedAN[:i])
 			if err != nil {
 				return 0, err
 			}
-			i -= volume
-			i = formatVariableintKinds(dAtA, i, uint64(volume))
+			i -= extent
+			i = serializeVariableintKinds(deltaLocatedAN, i, uint64(extent))
 		}
 		i--
-		dAtA[i] = 0x42
+		deltaLocatedAN[i] = 0x42
 	}
-	if len(m.Item) > 0 {
-		i -= len(m.Item)
-		copy(dAtA[i:], m.Item)
-		i = formatVariableintKinds(dAtA, i, uint64(len(m.Item)))
+	if len(m.Datum) > 0 {
+		i -= len(m.Datum)
+		copy(deltaLocatedAN[i:], m.Datum)
+		i = serializeVariableintKinds(deltaLocatedAN, i, uint64(len(m.Datum)))
 		i--
-		dAtA[i] = 0x3a
+		deltaLocatedAN[i] = 0x3a
 	}
 	if len(m.Key) > 0 {
 		i -= len(m.Key)
-		copy(dAtA[i:], m.Key)
-		i = formatVariableintKinds(dAtA, i, uint64(len(m.Key)))
+		copy(deltaLocatedAN[i:], m.Key)
+		i = serializeVariableintKinds(deltaLocatedAN, i, uint64(len(m.Key)))
 		i--
-		dAtA[i] = 0x32
+		deltaLocatedAN[i] = 0x32
 	}
 	if m.Ordinal != 0 {
-		i = formatVariableintKinds(dAtA, i, uint64(m.Ordinal))
+		i = serializeVariableintKinds(deltaLocatedAN, i, uint64(m.Ordinal))
 		i--
-		dAtA[i] = 0x28
+		deltaLocatedAN[i] = 0x28
 	}
 	if len(m.Details) > 0 {
 		i -= len(m.Details)
-		copy(dAtA[i:], m.Details)
-		i = formatVariableintKinds(dAtA, i, uint64(len(m.Details)))
+		copy(deltaLocatedAN[i:], m.Details)
+		i = serializeVariableintKinds(deltaLocatedAN, i, uint64(len(m.Details)))
 		i--
-		dAtA[i] = 0x22
+		deltaLocatedAN[i] = 0x22
 	}
 	if len(m.Log) > 0 {
 		i -= len(m.Log)
-		copy(dAtA[i:], m.Log)
-		i = formatVariableintKinds(dAtA, i, uint64(len(m.Log)))
+		copy(deltaLocatedAN[i:], m.Log)
+		i = serializeVariableintKinds(deltaLocatedAN, i, uint64(len(m.Log)))
 		i--
-		dAtA[i] = 0x1a
+		deltaLocatedAN[i] = 0x1a
 	}
-	if m.Code != 0 {
-		i = formatVariableintKinds(dAtA, i, uint64(m.Code))
+	if m.Cipher != 0 {
+		i = serializeVariableintKinds(deltaLocatedAN, i, uint64(m.Cipher))
 		i--
-		dAtA[i] = 0x8
+		deltaLocatedAN[i] = 0x8
 	}
-	return len(dAtA) - i, nil
+	return len(deltaLocatedAN) - i, nil
 }
 
-func (m *ReplyInspectTransfer) Serialize() (dAtA []byte, err error) {
-	volume := m.Volume()
-	dAtA = make([]byte, volume)
-	n, err := m.SerializeToDimensionedBuffer(dAtA[:volume])
+func (m *ReplyInspectTransfer) Serialize() (deltaLocatedAN []byte, err error) {
+	extent := m.Extent()
+	deltaLocatedAN = make([]byte, extent)
+	n, err := m.SerializeTowardDimensionedReserve(deltaLocatedAN[:extent])
 	if err != nil {
 		return nil, err
 	}
-	return dAtA[:n], nil
+	return deltaLocatedAN[:n], nil
 }
 
-func (m *ReplyInspectTransfer) SerializeTo(dAtA []byte) (int, error) {
-	volume := m.Volume()
-	return m.SerializeToDimensionedBuffer(dAtA[:volume])
+func (m *ReplyInspectTransfer) SerializeToward(deltaLocatedAN []byte) (int, error) {
+	extent := m.Extent()
+	return m.SerializeTowardDimensionedReserve(deltaLocatedAN[:extent])
 }
 
-func (m *ReplyInspectTransfer) SerializeToDimensionedBuffer(dAtA []byte) (int, error) {
-	i := len(dAtA)
+func (m *ReplyInspectTransfer) SerializeTowardDimensionedReserve(deltaLocatedAN []byte) (int, error) {
+	i := len(deltaLocatedAN)
 	_ = i
 	var l int
 	_ = l
-	if len(m.Codex) > 0 {
-		i -= len(m.Codex)
-		copy(dAtA[i:], m.Codex)
-		i = formatVariableintKinds(dAtA, i, uint64(len(m.Codex)))
+	if len(m.Codeset) > 0 {
+		i -= len(m.Codeset)
+		copy(deltaLocatedAN[i:], m.Codeset)
+		i = serializeVariableintKinds(deltaLocatedAN, i, uint64(len(m.Codeset)))
 		i--
-		dAtA[i] = 0x42
+		deltaLocatedAN[i] = 0x42
 	}
-	if len(m.Events) > 0 {
-		for idxNdEx := len(m.Events) - 1; idxNdEx >= 0; idxNdEx-- {
+	if len(m.Incidents) > 0 {
+		for idxNdExc := len(m.Incidents) - 1; idxNdExc >= 0; idxNdExc-- {
 			{
-				volume, err := m.Events[idxNdEx].SerializeToDimensionedBuffer(dAtA[:i])
+				extent, err := m.Incidents[idxNdExc].SerializeTowardDimensionedReserve(deltaLocatedAN[:i])
 				if err != nil {
 					return 0, err
 				}
-				i -= volume
-				i = formatVariableintKinds(dAtA, i, uint64(volume))
+				i -= extent
+				i = serializeVariableintKinds(deltaLocatedAN, i, uint64(extent))
 			}
 			i--
-			dAtA[i] = 0x3a
+			deltaLocatedAN[i] = 0x3a
 		}
 	}
-	if m.FuelApplied != 0 {
-		i = formatVariableintKinds(dAtA, i, uint64(m.FuelApplied))
+	if m.FuelUtilized != 0 {
+		i = serializeVariableintKinds(deltaLocatedAN, i, uint64(m.FuelUtilized))
 		i--
-		dAtA[i] = 0x30
+		deltaLocatedAN[i] = 0x30
 	}
 	if m.FuelDesired != 0 {
-		i = formatVariableintKinds(dAtA, i, uint64(m.FuelDesired))
+		i = serializeVariableintKinds(deltaLocatedAN, i, uint64(m.FuelDesired))
 		i--
-		dAtA[i] = 0x28
+		deltaLocatedAN[i] = 0x28
 	}
 	if len(m.Details) > 0 {
 		i -= len(m.Details)
-		copy(dAtA[i:], m.Details)
-		i = formatVariableintKinds(dAtA, i, uint64(len(m.Details)))
+		copy(deltaLocatedAN[i:], m.Details)
+		i = serializeVariableintKinds(deltaLocatedAN, i, uint64(len(m.Details)))
 		i--
-		dAtA[i] = 0x22
+		deltaLocatedAN[i] = 0x22
 	}
 	if len(m.Log) > 0 {
 		i -= len(m.Log)
-		copy(dAtA[i:], m.Log)
-		i = formatVariableintKinds(dAtA, i, uint64(len(m.Log)))
+		copy(deltaLocatedAN[i:], m.Log)
+		i = serializeVariableintKinds(deltaLocatedAN, i, uint64(len(m.Log)))
 		i--
-		dAtA[i] = 0x1a
+		deltaLocatedAN[i] = 0x1a
 	}
 	if len(m.Data) > 0 {
 		i -= len(m.Data)
-		copy(dAtA[i:], m.Data)
-		i = formatVariableintKinds(dAtA, i, uint64(len(m.Data)))
+		copy(deltaLocatedAN[i:], m.Data)
+		i = serializeVariableintKinds(deltaLocatedAN, i, uint64(len(m.Data)))
 		i--
-		dAtA[i] = 0x12
+		deltaLocatedAN[i] = 0x12
 	}
-	if m.Code != 0 {
-		i = formatVariableintKinds(dAtA, i, uint64(m.Code))
+	if m.Cipher != 0 {
+		i = serializeVariableintKinds(deltaLocatedAN, i, uint64(m.Cipher))
 		i--
-		dAtA[i] = 0x8
+		deltaLocatedAN[i] = 0x8
 	}
-	return len(dAtA) - i, nil
+	return len(deltaLocatedAN) - i, nil
 }
 
-func (m *ReplyEmbedTransfer) Serialize() (dAtA []byte, err error) {
-	volume := m.Volume()
-	dAtA = make([]byte, volume)
-	n, err := m.SerializeToDimensionedBuffer(dAtA[:volume])
+func (m *ReplyAppendTransfer) Serialize() (deltaLocatedAN []byte, err error) {
+	extent := m.Extent()
+	deltaLocatedAN = make([]byte, extent)
+	n, err := m.SerializeTowardDimensionedReserve(deltaLocatedAN[:extent])
 	if err != nil {
 		return nil, err
 	}
-	return dAtA[:n], nil
+	return deltaLocatedAN[:n], nil
 }
 
-func (m *ReplyEmbedTransfer) SerializeTo(dAtA []byte) (int, error) {
-	volume := m.Volume()
-	return m.SerializeToDimensionedBuffer(dAtA[:volume])
+func (m *ReplyAppendTransfer) SerializeToward(deltaLocatedAN []byte) (int, error) {
+	extent := m.Extent()
+	return m.SerializeTowardDimensionedReserve(deltaLocatedAN[:extent])
 }
 
-func (m *ReplyEmbedTransfer) SerializeToDimensionedBuffer(dAtA []byte) (int, error) {
-	i := len(dAtA)
+func (m *ReplyAppendTransfer) SerializeTowardDimensionedReserve(deltaLocatedAN []byte) (int, error) {
+	i := len(deltaLocatedAN)
 	_ = i
 	var l int
 	_ = l
-	if m.Code != 0 {
-		i = formatVariableintKinds(dAtA, i, uint64(m.Code))
+	if m.Cipher != 0 {
+		i = serializeVariableintKinds(deltaLocatedAN, i, uint64(m.Cipher))
 		i--
-		dAtA[i] = 0x8
+		deltaLocatedAN[i] = 0x8
 	}
-	return len(dAtA) - i, nil
+	return len(deltaLocatedAN) - i, nil
 }
 
-func (m *ReplyHarvestTrans) Serialize() (dAtA []byte, err error) {
-	volume := m.Volume()
-	dAtA = make([]byte, volume)
-	n, err := m.SerializeToDimensionedBuffer(dAtA[:volume])
+func (m *ReplyHarvestTrans) Serialize() (deltaLocatedAN []byte, err error) {
+	extent := m.Extent()
+	deltaLocatedAN = make([]byte, extent)
+	n, err := m.SerializeTowardDimensionedReserve(deltaLocatedAN[:extent])
 	if err != nil {
 		return nil, err
 	}
-	return dAtA[:n], nil
+	return deltaLocatedAN[:n], nil
 }
 
-func (m *ReplyHarvestTrans) SerializeTo(dAtA []byte) (int, error) {
-	volume := m.Volume()
-	return m.SerializeToDimensionedBuffer(dAtA[:volume])
+func (m *ReplyHarvestTrans) SerializeToward(deltaLocatedAN []byte) (int, error) {
+	extent := m.Extent()
+	return m.SerializeTowardDimensionedReserve(deltaLocatedAN[:extent])
 }
 
-func (m *ReplyHarvestTrans) SerializeToDimensionedBuffer(dAtA []byte) (int, error) {
-	i := len(dAtA)
+func (m *ReplyHarvestTrans) SerializeTowardDimensionedReserve(deltaLocatedAN []byte) (int, error) {
+	i := len(deltaLocatedAN)
 	_ = i
 	var l int
 	_ = l
 	if len(m.Txs) > 0 {
-		for idxNdEx := len(m.Txs) - 1; idxNdEx >= 0; idxNdEx-- {
-			i -= len(m.Txs[idxNdEx])
-			copy(dAtA[i:], m.Txs[idxNdEx])
-			i = formatVariableintKinds(dAtA, i, uint64(len(m.Txs[idxNdEx])))
+		for idxNdExc := len(m.Txs) - 1; idxNdExc >= 0; idxNdExc-- {
+			i -= len(m.Txs[idxNdExc])
+			copy(deltaLocatedAN[i:], m.Txs[idxNdExc])
+			i = serializeVariableintKinds(deltaLocatedAN, i, uint64(len(m.Txs[idxNdExc])))
 			i--
-			dAtA[i] = 0xa
+			deltaLocatedAN[i] = 0xa
 		}
 	}
-	return len(dAtA) - i, nil
+	return len(deltaLocatedAN) - i, nil
 }
 
-func (m *ReplyEndorse) Serialize() (dAtA []byte, err error) {
-	volume := m.Volume()
-	dAtA = make([]byte, volume)
-	n, err := m.SerializeToDimensionedBuffer(dAtA[:volume])
+func (m *ReplyEndorse) Serialize() (deltaLocatedAN []byte, err error) {
+	extent := m.Extent()
+	deltaLocatedAN = make([]byte, extent)
+	n, err := m.SerializeTowardDimensionedReserve(deltaLocatedAN[:extent])
 	if err != nil {
 		return nil, err
 	}
-	return dAtA[:n], nil
+	return deltaLocatedAN[:n], nil
 }
 
-func (m *ReplyEndorse) SerializeTo(dAtA []byte) (int, error) {
-	volume := m.Volume()
-	return m.SerializeToDimensionedBuffer(dAtA[:volume])
+func (m *ReplyEndorse) SerializeToward(deltaLocatedAN []byte) (int, error) {
+	extent := m.Extent()
+	return m.SerializeTowardDimensionedReserve(deltaLocatedAN[:extent])
 }
 
-func (m *ReplyEndorse) SerializeToDimensionedBuffer(dAtA []byte) (int, error) {
-	i := len(dAtA)
+func (m *ReplyEndorse) SerializeTowardDimensionedReserve(deltaLocatedAN []byte) (int, error) {
+	i := len(deltaLocatedAN)
 	_ = i
 	var l int
 	_ = l
-	if m.PreserveLevel != 0 {
-		i = formatVariableintKinds(dAtA, i, uint64(m.PreserveLevel))
+	if m.PreserveAltitude != 0 {
+		i = serializeVariableintKinds(deltaLocatedAN, i, uint64(m.PreserveAltitude))
 		i--
-		dAtA[i] = 0x18
+		deltaLocatedAN[i] = 0x18
 	}
-	return len(dAtA) - i, nil
+	return len(deltaLocatedAN) - i, nil
 }
 
-func (m *ReplyCatalogMirrors) Serialize() (dAtA []byte, err error) {
-	volume := m.Volume()
-	dAtA = make([]byte, volume)
-	n, err := m.SerializeToDimensionedBuffer(dAtA[:volume])
+func (m *ReplyCatalogImages) Serialize() (deltaLocatedAN []byte, err error) {
+	extent := m.Extent()
+	deltaLocatedAN = make([]byte, extent)
+	n, err := m.SerializeTowardDimensionedReserve(deltaLocatedAN[:extent])
 	if err != nil {
 		return nil, err
 	}
-	return dAtA[:n], nil
+	return deltaLocatedAN[:n], nil
 }
 
-func (m *ReplyCatalogMirrors) SerializeTo(dAtA []byte) (int, error) {
-	volume := m.Volume()
-	return m.SerializeToDimensionedBuffer(dAtA[:volume])
+func (m *ReplyCatalogImages) SerializeToward(deltaLocatedAN []byte) (int, error) {
+	extent := m.Extent()
+	return m.SerializeTowardDimensionedReserve(deltaLocatedAN[:extent])
 }
 
-func (m *ReplyCatalogMirrors) SerializeToDimensionedBuffer(dAtA []byte) (int, error) {
-	i := len(dAtA)
+func (m *ReplyCatalogImages) SerializeTowardDimensionedReserve(deltaLocatedAN []byte) (int, error) {
+	i := len(deltaLocatedAN)
 	_ = i
 	var l int
 	_ = l
-	if len(m.Mirrors) > 0 {
-		for idxNdEx := len(m.Mirrors) - 1; idxNdEx >= 0; idxNdEx-- {
+	if len(m.Images) > 0 {
+		for idxNdExc := len(m.Images) - 1; idxNdExc >= 0; idxNdExc-- {
 			{
-				volume, err := m.Mirrors[idxNdEx].SerializeToDimensionedBuffer(dAtA[:i])
+				extent, err := m.Images[idxNdExc].SerializeTowardDimensionedReserve(deltaLocatedAN[:i])
 				if err != nil {
 					return 0, err
 				}
-				i -= volume
-				i = formatVariableintKinds(dAtA, i, uint64(volume))
+				i -= extent
+				i = serializeVariableintKinds(deltaLocatedAN, i, uint64(extent))
 			}
 			i--
-			dAtA[i] = 0xa
+			deltaLocatedAN[i] = 0xa
 		}
 	}
-	return len(dAtA) - i, nil
+	return len(deltaLocatedAN) - i, nil
 }
 
-func (m *ReplyProposalMirror) Serialize() (dAtA []byte, err error) {
-	volume := m.Volume()
-	dAtA = make([]byte, volume)
-	n, err := m.SerializeToDimensionedBuffer(dAtA[:volume])
+func (m *ReplyExtendImage) Serialize() (deltaLocatedAN []byte, err error) {
+	extent := m.Extent()
+	deltaLocatedAN = make([]byte, extent)
+	n, err := m.SerializeTowardDimensionedReserve(deltaLocatedAN[:extent])
 	if err != nil {
 		return nil, err
 	}
-	return dAtA[:n], nil
+	return deltaLocatedAN[:n], nil
 }
 
-func (m *ReplyProposalMirror) SerializeTo(dAtA []byte) (int, error) {
-	volume := m.Volume()
-	return m.SerializeToDimensionedBuffer(dAtA[:volume])
+func (m *ReplyExtendImage) SerializeToward(deltaLocatedAN []byte) (int, error) {
+	extent := m.Extent()
+	return m.SerializeTowardDimensionedReserve(deltaLocatedAN[:extent])
 }
 
-func (m *ReplyProposalMirror) SerializeToDimensionedBuffer(dAtA []byte) (int, error) {
-	i := len(dAtA)
+func (m *ReplyExtendImage) SerializeTowardDimensionedReserve(deltaLocatedAN []byte) (int, error) {
+	i := len(deltaLocatedAN)
 	_ = i
 	var l int
 	_ = l
 	if m.Outcome != 0 {
-		i = formatVariableintKinds(dAtA, i, uint64(m.Outcome))
+		i = serializeVariableintKinds(deltaLocatedAN, i, uint64(m.Outcome))
 		i--
-		dAtA[i] = 0x8
+		deltaLocatedAN[i] = 0x8
 	}
-	return len(dAtA) - i, nil
+	return len(deltaLocatedAN) - i, nil
 }
 
-func (m *ReplyImportMirrorSegment) Serialize() (dAtA []byte, err error) {
-	volume := m.Volume()
-	dAtA = make([]byte, volume)
-	n, err := m.SerializeToDimensionedBuffer(dAtA[:volume])
+func (m *ReplyFetchImageSegment) Serialize() (deltaLocatedAN []byte, err error) {
+	extent := m.Extent()
+	deltaLocatedAN = make([]byte, extent)
+	n, err := m.SerializeTowardDimensionedReserve(deltaLocatedAN[:extent])
 	if err != nil {
 		return nil, err
 	}
-	return dAtA[:n], nil
+	return deltaLocatedAN[:n], nil
 }
 
-func (m *ReplyImportMirrorSegment) SerializeTo(dAtA []byte) (int, error) {
-	volume := m.Volume()
-	return m.SerializeToDimensionedBuffer(dAtA[:volume])
+func (m *ReplyFetchImageSegment) SerializeToward(deltaLocatedAN []byte) (int, error) {
+	extent := m.Extent()
+	return m.SerializeTowardDimensionedReserve(deltaLocatedAN[:extent])
 }
 
-func (m *ReplyImportMirrorSegment) SerializeToDimensionedBuffer(dAtA []byte) (int, error) {
-	i := len(dAtA)
+func (m *ReplyFetchImageSegment) SerializeTowardDimensionedReserve(deltaLocatedAN []byte) (int, error) {
+	i := len(deltaLocatedAN)
 	_ = i
 	var l int
 	_ = l
 	if len(m.Segment) > 0 {
 		i -= len(m.Segment)
-		copy(dAtA[i:], m.Segment)
-		i = formatVariableintKinds(dAtA, i, uint64(len(m.Segment)))
+		copy(deltaLocatedAN[i:], m.Segment)
+		i = serializeVariableintKinds(deltaLocatedAN, i, uint64(len(m.Segment)))
 		i--
-		dAtA[i] = 0xa
+		deltaLocatedAN[i] = 0xa
 	}
-	return len(dAtA) - i, nil
+	return len(deltaLocatedAN) - i, nil
 }
 
-func (m *ReplyExecuteMirrorSegment) Serialize() (dAtA []byte, err error) {
-	volume := m.Volume()
-	dAtA = make([]byte, volume)
-	n, err := m.SerializeToDimensionedBuffer(dAtA[:volume])
+func (m *ReplyExecuteImageSegment) Serialize() (deltaLocatedAN []byte, err error) {
+	extent := m.Extent()
+	deltaLocatedAN = make([]byte, extent)
+	n, err := m.SerializeTowardDimensionedReserve(deltaLocatedAN[:extent])
 	if err != nil {
 		return nil, err
 	}
-	return dAtA[:n], nil
+	return deltaLocatedAN[:n], nil
 }
 
-func (m *ReplyExecuteMirrorSegment) SerializeTo(dAtA []byte) (int, error) {
-	volume := m.Volume()
-	return m.SerializeToDimensionedBuffer(dAtA[:volume])
+func (m *ReplyExecuteImageSegment) SerializeToward(deltaLocatedAN []byte) (int, error) {
+	extent := m.Extent()
+	return m.SerializeTowardDimensionedReserve(deltaLocatedAN[:extent])
 }
 
-func (m *ReplyExecuteMirrorSegment) SerializeToDimensionedBuffer(dAtA []byte) (int, error) {
-	i := len(dAtA)
+func (m *ReplyExecuteImageSegment) SerializeTowardDimensionedReserve(deltaLocatedAN []byte) (int, error) {
+	i := len(deltaLocatedAN)
 	_ = i
 	var l int
 	_ = l
-	if len(m.DeclineEmitters) > 0 {
-		for idxNdEx := len(m.DeclineEmitters) - 1; idxNdEx >= 0; idxNdEx-- {
-			i -= len(m.DeclineEmitters[idxNdEx])
-			copy(dAtA[i:], m.DeclineEmitters[idxNdEx])
-			i = formatVariableintKinds(dAtA, i, uint64(len(m.DeclineEmitters[idxNdEx])))
+	if len(m.DeclineOriginators) > 0 {
+		for idxNdExc := len(m.DeclineOriginators) - 1; idxNdExc >= 0; idxNdExc-- {
+			i -= len(m.DeclineOriginators[idxNdExc])
+			copy(deltaLocatedAN[i:], m.DeclineOriginators[idxNdExc])
+			i = serializeVariableintKinds(deltaLocatedAN, i, uint64(len(m.DeclineOriginators[idxNdExc])))
 			i--
-			dAtA[i] = 0x1a
+			deltaLocatedAN[i] = 0x1a
 		}
 	}
-	if len(m.ReacquireSegments) > 0 {
-		dAtA52 := make([]byte, len(m.ReacquireSegments)*10)
+	if len(m.RetrieveSegments) > 0 {
+		deltaLocatedA52 := make([]byte, len(m.RetrieveSegments)*10)
 		var j51 int
-		for _, num := range m.ReacquireSegments {
+		for _, num := range m.RetrieveSegments {
 			for num >= 1<<7 {
-				dAtA52[j51] = uint8(uint64(num)&0x7f | 0x80)
+				deltaLocatedA52[j51] = uint8(uint64(num)&0x7f | 0x80)
 				num >>= 7
 				j51++
 			}
-			dAtA52[j51] = uint8(num)
+			deltaLocatedA52[j51] = uint8(num)
 			j51++
 		}
 		i -= j51
-		copy(dAtA[i:], dAtA52[:j51])
-		i = formatVariableintKinds(dAtA, i, uint64(j51))
+		copy(deltaLocatedAN[i:], deltaLocatedA52[:j51])
+		i = serializeVariableintKinds(deltaLocatedAN, i, uint64(j51))
 		i--
-		dAtA[i] = 0x12
+		deltaLocatedAN[i] = 0x12
 	}
 	if m.Outcome != 0 {
-		i = formatVariableintKinds(dAtA, i, uint64(m.Outcome))
+		i = serializeVariableintKinds(deltaLocatedAN, i, uint64(m.Outcome))
 		i--
-		dAtA[i] = 0x8
+		deltaLocatedAN[i] = 0x8
 	}
-	return len(dAtA) - i, nil
+	return len(deltaLocatedAN) - i, nil
 }
 
-func (m *ReplyArrangeNomination) Serialize() (dAtA []byte, err error) {
-	volume := m.Volume()
-	dAtA = make([]byte, volume)
-	n, err := m.SerializeToDimensionedBuffer(dAtA[:volume])
+func (m *ReplyArrangeNomination) Serialize() (deltaLocatedAN []byte, err error) {
+	extent := m.Extent()
+	deltaLocatedAN = make([]byte, extent)
+	n, err := m.SerializeTowardDimensionedReserve(deltaLocatedAN[:extent])
 	if err != nil {
 		return nil, err
 	}
-	return dAtA[:n], nil
+	return deltaLocatedAN[:n], nil
 }
 
-func (m *ReplyArrangeNomination) SerializeTo(dAtA []byte) (int, error) {
-	volume := m.Volume()
-	return m.SerializeToDimensionedBuffer(dAtA[:volume])
+func (m *ReplyArrangeNomination) SerializeToward(deltaLocatedAN []byte) (int, error) {
+	extent := m.Extent()
+	return m.SerializeTowardDimensionedReserve(deltaLocatedAN[:extent])
 }
 
-func (m *ReplyArrangeNomination) SerializeToDimensionedBuffer(dAtA []byte) (int, error) {
-	i := len(dAtA)
+func (m *ReplyArrangeNomination) SerializeTowardDimensionedReserve(deltaLocatedAN []byte) (int, error) {
+	i := len(deltaLocatedAN)
 	_ = i
 	var l int
 	_ = l
 	if len(m.Txs) > 0 {
-		for idxNdEx := len(m.Txs) - 1; idxNdEx >= 0; idxNdEx-- {
-			i -= len(m.Txs[idxNdEx])
-			copy(dAtA[i:], m.Txs[idxNdEx])
-			i = formatVariableintKinds(dAtA, i, uint64(len(m.Txs[idxNdEx])))
+		for idxNdExc := len(m.Txs) - 1; idxNdExc >= 0; idxNdExc-- {
+			i -= len(m.Txs[idxNdExc])
+			copy(deltaLocatedAN[i:], m.Txs[idxNdExc])
+			i = serializeVariableintKinds(deltaLocatedAN, i, uint64(len(m.Txs[idxNdExc])))
 			i--
-			dAtA[i] = 0xa
+			deltaLocatedAN[i] = 0xa
 		}
 	}
-	return len(dAtA) - i, nil
+	return len(deltaLocatedAN) - i, nil
 }
 
-func (m *ReplyHandleNomination) Serialize() (dAtA []byte, err error) {
-	volume := m.Volume()
-	dAtA = make([]byte, volume)
-	n, err := m.SerializeToDimensionedBuffer(dAtA[:volume])
+func (m *ReplyHandleNomination) Serialize() (deltaLocatedAN []byte, err error) {
+	extent := m.Extent()
+	deltaLocatedAN = make([]byte, extent)
+	n, err := m.SerializeTowardDimensionedReserve(deltaLocatedAN[:extent])
 	if err != nil {
 		return nil, err
 	}
-	return dAtA[:n], nil
+	return deltaLocatedAN[:n], nil
 }
 
-func (m *ReplyHandleNomination) SerializeTo(dAtA []byte) (int, error) {
-	volume := m.Volume()
-	return m.SerializeToDimensionedBuffer(dAtA[:volume])
+func (m *ReplyHandleNomination) SerializeToward(deltaLocatedAN []byte) (int, error) {
+	extent := m.Extent()
+	return m.SerializeTowardDimensionedReserve(deltaLocatedAN[:extent])
 }
 
-func (m *ReplyHandleNomination) SerializeToDimensionedBuffer(dAtA []byte) (int, error) {
-	i := len(dAtA)
+func (m *ReplyHandleNomination) SerializeTowardDimensionedReserve(deltaLocatedAN []byte) (int, error) {
+	i := len(deltaLocatedAN)
 	_ = i
 	var l int
 	_ = l
-	if m.Status != 0 {
-		i = formatVariableintKinds(dAtA, i, uint64(m.Status))
+	if m.Condition != 0 {
+		i = serializeVariableintKinds(deltaLocatedAN, i, uint64(m.Condition))
 		i--
-		dAtA[i] = 0x8
+		deltaLocatedAN[i] = 0x8
 	}
-	return len(dAtA) - i, nil
+	return len(deltaLocatedAN) - i, nil
 }
 
-func (m *ReplyExpandBallot) Serialize() (dAtA []byte, err error) {
-	volume := m.Volume()
-	dAtA = make([]byte, volume)
-	n, err := m.SerializeToDimensionedBuffer(dAtA[:volume])
+func (m *ReplyBroadenBallot) Serialize() (deltaLocatedAN []byte, err error) {
+	extent := m.Extent()
+	deltaLocatedAN = make([]byte, extent)
+	n, err := m.SerializeTowardDimensionedReserve(deltaLocatedAN[:extent])
 	if err != nil {
 		return nil, err
 	}
-	return dAtA[:n], nil
+	return deltaLocatedAN[:n], nil
 }
 
-func (m *ReplyExpandBallot) SerializeTo(dAtA []byte) (int, error) {
-	volume := m.Volume()
-	return m.SerializeToDimensionedBuffer(dAtA[:volume])
+func (m *ReplyBroadenBallot) SerializeToward(deltaLocatedAN []byte) (int, error) {
+	extent := m.Extent()
+	return m.SerializeTowardDimensionedReserve(deltaLocatedAN[:extent])
 }
 
-func (m *ReplyExpandBallot) SerializeToDimensionedBuffer(dAtA []byte) (int, error) {
-	i := len(dAtA)
+func (m *ReplyBroadenBallot) SerializeTowardDimensionedReserve(deltaLocatedAN []byte) (int, error) {
+	i := len(deltaLocatedAN)
 	_ = i
 	var l int
 	_ = l
 	if len(m.BallotAddition) > 0 {
 		i -= len(m.BallotAddition)
-		copy(dAtA[i:], m.BallotAddition)
-		i = formatVariableintKinds(dAtA, i, uint64(len(m.BallotAddition)))
+		copy(deltaLocatedAN[i:], m.BallotAddition)
+		i = serializeVariableintKinds(deltaLocatedAN, i, uint64(len(m.BallotAddition)))
 		i--
-		dAtA[i] = 0xa
+		deltaLocatedAN[i] = 0xa
 	}
-	return len(dAtA) - i, nil
+	return len(deltaLocatedAN) - i, nil
 }
 
-func (m *ReplyValidateBallotAddition) Serialize() (dAtA []byte, err error) {
-	volume := m.Volume()
-	dAtA = make([]byte, volume)
-	n, err := m.SerializeToDimensionedBuffer(dAtA[:volume])
+func (m *ReplyValidateBallotAddition) Serialize() (deltaLocatedAN []byte, err error) {
+	extent := m.Extent()
+	deltaLocatedAN = make([]byte, extent)
+	n, err := m.SerializeTowardDimensionedReserve(deltaLocatedAN[:extent])
 	if err != nil {
 		return nil, err
 	}
-	return dAtA[:n], nil
+	return deltaLocatedAN[:n], nil
 }
 
-func (m *ReplyValidateBallotAddition) SerializeTo(dAtA []byte) (int, error) {
-	volume := m.Volume()
-	return m.SerializeToDimensionedBuffer(dAtA[:volume])
+func (m *ReplyValidateBallotAddition) SerializeToward(deltaLocatedAN []byte) (int, error) {
+	extent := m.Extent()
+	return m.SerializeTowardDimensionedReserve(deltaLocatedAN[:extent])
 }
 
-func (m *ReplyValidateBallotAddition) SerializeToDimensionedBuffer(dAtA []byte) (int, error) {
-	i := len(dAtA)
+func (m *ReplyValidateBallotAddition) SerializeTowardDimensionedReserve(deltaLocatedAN []byte) (int, error) {
+	i := len(deltaLocatedAN)
 	_ = i
 	var l int
 	_ = l
-	if m.Status != 0 {
-		i = formatVariableintKinds(dAtA, i, uint64(m.Status))
+	if m.Condition != 0 {
+		i = serializeVariableintKinds(deltaLocatedAN, i, uint64(m.Condition))
 		i--
-		dAtA[i] = 0x8
+		deltaLocatedAN[i] = 0x8
 	}
-	return len(dAtA) - i, nil
+	return len(deltaLocatedAN) - i, nil
 }
 
-func (m *ReplyCompleteLedger) Serialize() (dAtA []byte, err error) {
-	volume := m.Volume()
-	dAtA = make([]byte, volume)
-	n, err := m.SerializeToDimensionedBuffer(dAtA[:volume])
+func (m *ReplyCulminateLedger) Serialize() (deltaLocatedAN []byte, err error) {
+	extent := m.Extent()
+	deltaLocatedAN = make([]byte, extent)
+	n, err := m.SerializeTowardDimensionedReserve(deltaLocatedAN[:extent])
 	if err != nil {
 		return nil, err
 	}
-	return dAtA[:n], nil
+	return deltaLocatedAN[:n], nil
 }
 
-func (m *ReplyCompleteLedger) SerializeTo(dAtA []byte) (int, error) {
-	volume := m.Volume()
-	return m.SerializeToDimensionedBuffer(dAtA[:volume])
+func (m *ReplyCulminateLedger) SerializeToward(deltaLocatedAN []byte) (int, error) {
+	extent := m.Extent()
+	return m.SerializeTowardDimensionedReserve(deltaLocatedAN[:extent])
 }
 
-func (m *ReplyCompleteLedger) SerializeToDimensionedBuffer(dAtA []byte) (int, error) {
-	i := len(dAtA)
+func (m *ReplyCulminateLedger) SerializeTowardDimensionedReserve(deltaLocatedAN []byte) (int, error) {
+	i := len(deltaLocatedAN)
 	_ = i
 	var l int
 	_ = l
-	if len(m.ApplicationDigest) > 0 {
-		i -= len(m.ApplicationDigest)
-		copy(dAtA[i:], m.ApplicationDigest)
-		i = formatVariableintKinds(dAtA, i, uint64(len(m.ApplicationDigest)))
+	if len(m.PlatformDigest) > 0 {
+		i -= len(m.PlatformDigest)
+		copy(deltaLocatedAN[i:], m.PlatformDigest)
+		i = serializeVariableintKinds(deltaLocatedAN, i, uint64(len(m.PlatformDigest)))
 		i--
-		dAtA[i] = 0x2a
+		deltaLocatedAN[i] = 0x2a
 	}
-	if m.AgreementArgumentRefreshes != nil {
+	if m.AgreementArgumentRevisions != nil {
 		{
-			volume, err := m.AgreementArgumentRefreshes.SerializeToDimensionedBuffer(dAtA[:i])
+			extent, err := m.AgreementArgumentRevisions.SerializeTowardDimensionedReserve(deltaLocatedAN[:i])
 			if err != nil {
 				return 0, err
 			}
-			i -= volume
-			i = formatVariableintKinds(dAtA, i, uint64(volume))
+			i -= extent
+			i = serializeVariableintKinds(deltaLocatedAN, i, uint64(extent))
 		}
 		i--
-		dAtA[i] = 0x22
+		deltaLocatedAN[i] = 0x22
 	}
-	if len(m.RatifierRefreshes) > 0 {
-		for idxNdEx := len(m.RatifierRefreshes) - 1; idxNdEx >= 0; idxNdEx-- {
+	if len(m.AssessorRevisions) > 0 {
+		for idxNdExc := len(m.AssessorRevisions) - 1; idxNdExc >= 0; idxNdExc-- {
 			{
-				volume, err := m.RatifierRefreshes[idxNdEx].SerializeToDimensionedBuffer(dAtA[:i])
+				extent, err := m.AssessorRevisions[idxNdExc].SerializeTowardDimensionedReserve(deltaLocatedAN[:i])
 				if err != nil {
 					return 0, err
 				}
-				i -= volume
-				i = formatVariableintKinds(dAtA, i, uint64(volume))
+				i -= extent
+				i = serializeVariableintKinds(deltaLocatedAN, i, uint64(extent))
 			}
 			i--
-			dAtA[i] = 0x1a
+			deltaLocatedAN[i] = 0x1a
 		}
 	}
-	if len(m.TransOutcomes) > 0 {
-		for idxNdEx := len(m.TransOutcomes) - 1; idxNdEx >= 0; idxNdEx-- {
+	if len(m.TransferOutcomes) > 0 {
+		for idxNdExc := len(m.TransferOutcomes) - 1; idxNdExc >= 0; idxNdExc-- {
 			{
-				volume, err := m.TransOutcomes[idxNdEx].SerializeToDimensionedBuffer(dAtA[:i])
+				extent, err := m.TransferOutcomes[idxNdExc].SerializeTowardDimensionedReserve(deltaLocatedAN[:i])
 				if err != nil {
 					return 0, err
 				}
-				i -= volume
-				i = formatVariableintKinds(dAtA, i, uint64(volume))
+				i -= extent
+				i = serializeVariableintKinds(deltaLocatedAN, i, uint64(extent))
 			}
 			i--
-			dAtA[i] = 0x12
+			deltaLocatedAN[i] = 0x12
 		}
 	}
-	if len(m.Events) > 0 {
-		for idxNdEx := len(m.Events) - 1; idxNdEx >= 0; idxNdEx-- {
+	if len(m.Incidents) > 0 {
+		for idxNdExc := len(m.Incidents) - 1; idxNdExc >= 0; idxNdExc-- {
 			{
-				volume, err := m.Events[idxNdEx].SerializeToDimensionedBuffer(dAtA[:i])
+				extent, err := m.Incidents[idxNdExc].SerializeTowardDimensionedReserve(deltaLocatedAN[:i])
 				if err != nil {
 					return 0, err
 				}
-				i -= volume
-				i = formatVariableintKinds(dAtA, i, uint64(volume))
+				i -= extent
+				i = serializeVariableintKinds(deltaLocatedAN, i, uint64(extent))
 			}
 			i--
-			dAtA[i] = 0xa
+			deltaLocatedAN[i] = 0xa
 		}
 	}
-	return len(dAtA) - i, nil
+	return len(deltaLocatedAN) - i, nil
 }
 
-func (m *EndorseDetails) Serialize() (dAtA []byte, err error) {
-	volume := m.Volume()
-	dAtA = make([]byte, volume)
-	n, err := m.SerializeToDimensionedBuffer(dAtA[:volume])
+func (m *EndorseDetails) Serialize() (deltaLocatedAN []byte, err error) {
+	extent := m.Extent()
+	deltaLocatedAN = make([]byte, extent)
+	n, err := m.SerializeTowardDimensionedReserve(deltaLocatedAN[:extent])
 	if err != nil {
 		return nil, err
 	}
-	return dAtA[:n], nil
+	return deltaLocatedAN[:n], nil
 }
 
-func (m *EndorseDetails) SerializeTo(dAtA []byte) (int, error) {
-	volume := m.Volume()
-	return m.SerializeToDimensionedBuffer(dAtA[:volume])
+func (m *EndorseDetails) SerializeToward(deltaLocatedAN []byte) (int, error) {
+	extent := m.Extent()
+	return m.SerializeTowardDimensionedReserve(deltaLocatedAN[:extent])
 }
 
-func (m *EndorseDetails) SerializeToDimensionedBuffer(dAtA []byte) (int, error) {
-	i := len(dAtA)
+func (m *EndorseDetails) SerializeTowardDimensionedReserve(deltaLocatedAN []byte) (int, error) {
+	i := len(deltaLocatedAN)
 	_ = i
 	var l int
 	_ = l
 	if len(m.Ballots) > 0 {
-		for idxNdEx := len(m.Ballots) - 1; idxNdEx >= 0; idxNdEx-- {
+		for idxNdExc := len(m.Ballots) - 1; idxNdExc >= 0; idxNdExc-- {
 			{
-				volume, err := m.Ballots[idxNdEx].SerializeToDimensionedBuffer(dAtA[:i])
+				extent, err := m.Ballots[idxNdExc].SerializeTowardDimensionedReserve(deltaLocatedAN[:i])
 				if err != nil {
 					return 0, err
 				}
-				i -= volume
-				i = formatVariableintKinds(dAtA, i, uint64(volume))
+				i -= extent
+				i = serializeVariableintKinds(deltaLocatedAN, i, uint64(extent))
 			}
 			i--
-			dAtA[i] = 0x12
+			deltaLocatedAN[i] = 0x12
 		}
 	}
-	if m.Cycle != 0 {
-		i = formatVariableintKinds(dAtA, i, uint64(m.Cycle))
+	if m.Iteration != 0 {
+		i = serializeVariableintKinds(deltaLocatedAN, i, uint64(m.Iteration))
 		i--
-		dAtA[i] = 0x8
+		deltaLocatedAN[i] = 0x8
 	}
-	return len(dAtA) - i, nil
+	return len(deltaLocatedAN) - i, nil
 }
 
-func (m *ExpandedEndorseDetails) Serialize() (dAtA []byte, err error) {
-	volume := m.Volume()
-	dAtA = make([]byte, volume)
-	n, err := m.SerializeToDimensionedBuffer(dAtA[:volume])
+func (m *ExpandedEndorseDetails) Serialize() (deltaLocatedAN []byte, err error) {
+	extent := m.Extent()
+	deltaLocatedAN = make([]byte, extent)
+	n, err := m.SerializeTowardDimensionedReserve(deltaLocatedAN[:extent])
 	if err != nil {
 		return nil, err
 	}
-	return dAtA[:n], nil
+	return deltaLocatedAN[:n], nil
 }
 
-func (m *ExpandedEndorseDetails) SerializeTo(dAtA []byte) (int, error) {
-	volume := m.Volume()
-	return m.SerializeToDimensionedBuffer(dAtA[:volume])
+func (m *ExpandedEndorseDetails) SerializeToward(deltaLocatedAN []byte) (int, error) {
+	extent := m.Extent()
+	return m.SerializeTowardDimensionedReserve(deltaLocatedAN[:extent])
 }
 
-func (m *ExpandedEndorseDetails) SerializeToDimensionedBuffer(dAtA []byte) (int, error) {
-	i := len(dAtA)
+func (m *ExpandedEndorseDetails) SerializeTowardDimensionedReserve(deltaLocatedAN []byte) (int, error) {
+	i := len(deltaLocatedAN)
 	_ = i
 	var l int
 	_ = l
 	if len(m.Ballots) > 0 {
-		for idxNdEx := len(m.Ballots) - 1; idxNdEx >= 0; idxNdEx-- {
+		for idxNdExc := len(m.Ballots) - 1; idxNdExc >= 0; idxNdExc-- {
 			{
-				volume, err := m.Ballots[idxNdEx].SerializeToDimensionedBuffer(dAtA[:i])
+				extent, err := m.Ballots[idxNdExc].SerializeTowardDimensionedReserve(deltaLocatedAN[:i])
 				if err != nil {
 					return 0, err
 				}
-				i -= volume
-				i = formatVariableintKinds(dAtA, i, uint64(volume))
+				i -= extent
+				i = serializeVariableintKinds(deltaLocatedAN, i, uint64(extent))
 			}
 			i--
-			dAtA[i] = 0x12
+			deltaLocatedAN[i] = 0x12
 		}
 	}
-	if m.Cycle != 0 {
-		i = formatVariableintKinds(dAtA, i, uint64(m.Cycle))
+	if m.Iteration != 0 {
+		i = serializeVariableintKinds(deltaLocatedAN, i, uint64(m.Iteration))
 		i--
-		dAtA[i] = 0x8
+		deltaLocatedAN[i] = 0x8
 	}
-	return len(dAtA) - i, nil
+	return len(deltaLocatedAN) - i, nil
 }
 
-func (m *Event) Serialize() (dAtA []byte, err error) {
-	volume := m.Volume()
-	dAtA = make([]byte, volume)
-	n, err := m.SerializeToDimensionedBuffer(dAtA[:volume])
+func (m *Incident) Serialize() (deltaLocatedAN []byte, err error) {
+	extent := m.Extent()
+	deltaLocatedAN = make([]byte, extent)
+	n, err := m.SerializeTowardDimensionedReserve(deltaLocatedAN[:extent])
 	if err != nil {
 		return nil, err
 	}
-	return dAtA[:n], nil
+	return deltaLocatedAN[:n], nil
 }
 
-func (m *Event) SerializeTo(dAtA []byte) (int, error) {
-	volume := m.Volume()
-	return m.SerializeToDimensionedBuffer(dAtA[:volume])
+func (m *Incident) SerializeToward(deltaLocatedAN []byte) (int, error) {
+	extent := m.Extent()
+	return m.SerializeTowardDimensionedReserve(deltaLocatedAN[:extent])
 }
 
-func (m *Event) SerializeToDimensionedBuffer(dAtA []byte) (int, error) {
-	i := len(dAtA)
+func (m *Incident) SerializeTowardDimensionedReserve(deltaLocatedAN []byte) (int, error) {
+	i := len(deltaLocatedAN)
 	_ = i
 	var l int
 	_ = l
 	if len(m.Properties) > 0 {
-		for idxNdEx := len(m.Properties) - 1; idxNdEx >= 0; idxNdEx-- {
+		for idxNdExc := len(m.Properties) - 1; idxNdExc >= 0; idxNdExc-- {
 			{
-				volume, err := m.Properties[idxNdEx].SerializeToDimensionedBuffer(dAtA[:i])
+				extent, err := m.Properties[idxNdExc].SerializeTowardDimensionedReserve(deltaLocatedAN[:i])
 				if err != nil {
 					return 0, err
 				}
-				i -= volume
-				i = formatVariableintKinds(dAtA, i, uint64(volume))
+				i -= extent
+				i = serializeVariableintKinds(deltaLocatedAN, i, uint64(extent))
 			}
 			i--
-			dAtA[i] = 0x12
+			deltaLocatedAN[i] = 0x12
 		}
 	}
 	if len(m.Kind) > 0 {
 		i -= len(m.Kind)
-		copy(dAtA[i:], m.Kind)
-		i = formatVariableintKinds(dAtA, i, uint64(len(m.Kind)))
+		copy(deltaLocatedAN[i:], m.Kind)
+		i = serializeVariableintKinds(deltaLocatedAN, i, uint64(len(m.Kind)))
 		i--
-		dAtA[i] = 0xa
+		deltaLocatedAN[i] = 0xa
 	}
-	return len(dAtA) - i, nil
+	return len(deltaLocatedAN) - i, nil
 }
 
-func (m *EventProperty) Serialize() (dAtA []byte, err error) {
-	volume := m.Volume()
-	dAtA = make([]byte, volume)
-	n, err := m.SerializeToDimensionedBuffer(dAtA[:volume])
+func (m *IncidentProperty) Serialize() (deltaLocatedAN []byte, err error) {
+	extent := m.Extent()
+	deltaLocatedAN = make([]byte, extent)
+	n, err := m.SerializeTowardDimensionedReserve(deltaLocatedAN[:extent])
 	if err != nil {
 		return nil, err
 	}
-	return dAtA[:n], nil
+	return deltaLocatedAN[:n], nil
 }
 
-func (m *EventProperty) SerializeTo(dAtA []byte) (int, error) {
-	volume := m.Volume()
-	return m.SerializeToDimensionedBuffer(dAtA[:volume])
+func (m *IncidentProperty) SerializeToward(deltaLocatedAN []byte) (int, error) {
+	extent := m.Extent()
+	return m.SerializeTowardDimensionedReserve(deltaLocatedAN[:extent])
 }
 
-func (m *EventProperty) SerializeToDimensionedBuffer(dAtA []byte) (int, error) {
-	i := len(dAtA)
+func (m *IncidentProperty) SerializeTowardDimensionedReserve(deltaLocatedAN []byte) (int, error) {
+	i := len(deltaLocatedAN)
 	_ = i
 	var l int
 	_ = l
 	if m.Ordinal {
 		i--
 		if m.Ordinal {
-			dAtA[i] = 1
+			deltaLocatedAN[i] = 1
 		} else {
-			dAtA[i] = 0
+			deltaLocatedAN[i] = 0
 		}
 		i--
-		dAtA[i] = 0x18
+		deltaLocatedAN[i] = 0x18
 	}
-	if len(m.Item) > 0 {
-		i -= len(m.Item)
-		copy(dAtA[i:], m.Item)
-		i = formatVariableintKinds(dAtA, i, uint64(len(m.Item)))
+	if len(m.Datum) > 0 {
+		i -= len(m.Datum)
+		copy(deltaLocatedAN[i:], m.Datum)
+		i = serializeVariableintKinds(deltaLocatedAN, i, uint64(len(m.Datum)))
 		i--
-		dAtA[i] = 0x12
+		deltaLocatedAN[i] = 0x12
 	}
 	if len(m.Key) > 0 {
 		i -= len(m.Key)
-		copy(dAtA[i:], m.Key)
-		i = formatVariableintKinds(dAtA, i, uint64(len(m.Key)))
+		copy(deltaLocatedAN[i:], m.Key)
+		i = serializeVariableintKinds(deltaLocatedAN, i, uint64(len(m.Key)))
 		i--
-		dAtA[i] = 0xa
+		deltaLocatedAN[i] = 0xa
 	}
-	return len(dAtA) - i, nil
+	return len(deltaLocatedAN) - i, nil
 }
 
-func (m *InvokeTransferOutcome) Serialize() (dAtA []byte, err error) {
-	volume := m.Volume()
-	dAtA = make([]byte, volume)
-	n, err := m.SerializeToDimensionedBuffer(dAtA[:volume])
+func (m *InvokeTransferOutcome) Serialize() (deltaLocatedAN []byte, err error) {
+	extent := m.Extent()
+	deltaLocatedAN = make([]byte, extent)
+	n, err := m.SerializeTowardDimensionedReserve(deltaLocatedAN[:extent])
 	if err != nil {
 		return nil, err
 	}
-	return dAtA[:n], nil
+	return deltaLocatedAN[:n], nil
 }
 
-func (m *InvokeTransferOutcome) SerializeTo(dAtA []byte) (int, error) {
-	volume := m.Volume()
-	return m.SerializeToDimensionedBuffer(dAtA[:volume])
+func (m *InvokeTransferOutcome) SerializeToward(deltaLocatedAN []byte) (int, error) {
+	extent := m.Extent()
+	return m.SerializeTowardDimensionedReserve(deltaLocatedAN[:extent])
 }
 
-func (m *InvokeTransferOutcome) SerializeToDimensionedBuffer(dAtA []byte) (int, error) {
-	i := len(dAtA)
+func (m *InvokeTransferOutcome) SerializeTowardDimensionedReserve(deltaLocatedAN []byte) (int, error) {
+	i := len(deltaLocatedAN)
 	_ = i
 	var l int
 	_ = l
-	if len(m.Codex) > 0 {
-		i -= len(m.Codex)
-		copy(dAtA[i:], m.Codex)
-		i = formatVariableintKinds(dAtA, i, uint64(len(m.Codex)))
+	if len(m.Codeset) > 0 {
+		i -= len(m.Codeset)
+		copy(deltaLocatedAN[i:], m.Codeset)
+		i = serializeVariableintKinds(deltaLocatedAN, i, uint64(len(m.Codeset)))
 		i--
-		dAtA[i] = 0x42
+		deltaLocatedAN[i] = 0x42
 	}
-	if len(m.Events) > 0 {
-		for idxNdEx := len(m.Events) - 1; idxNdEx >= 0; idxNdEx-- {
+	if len(m.Incidents) > 0 {
+		for idxNdExc := len(m.Incidents) - 1; idxNdExc >= 0; idxNdExc-- {
 			{
-				volume, err := m.Events[idxNdEx].SerializeToDimensionedBuffer(dAtA[:i])
+				extent, err := m.Incidents[idxNdExc].SerializeTowardDimensionedReserve(deltaLocatedAN[:i])
 				if err != nil {
 					return 0, err
 				}
-				i -= volume
-				i = formatVariableintKinds(dAtA, i, uint64(volume))
+				i -= extent
+				i = serializeVariableintKinds(deltaLocatedAN, i, uint64(extent))
 			}
 			i--
-			dAtA[i] = 0x3a
+			deltaLocatedAN[i] = 0x3a
 		}
 	}
-	if m.FuelApplied != 0 {
-		i = formatVariableintKinds(dAtA, i, uint64(m.FuelApplied))
+	if m.FuelUtilized != 0 {
+		i = serializeVariableintKinds(deltaLocatedAN, i, uint64(m.FuelUtilized))
 		i--
-		dAtA[i] = 0x30
+		deltaLocatedAN[i] = 0x30
 	}
 	if m.FuelDesired != 0 {
-		i = formatVariableintKinds(dAtA, i, uint64(m.FuelDesired))
+		i = serializeVariableintKinds(deltaLocatedAN, i, uint64(m.FuelDesired))
 		i--
-		dAtA[i] = 0x28
+		deltaLocatedAN[i] = 0x28
 	}
 	if len(m.Details) > 0 {
 		i -= len(m.Details)
-		copy(dAtA[i:], m.Details)
-		i = formatVariableintKinds(dAtA, i, uint64(len(m.Details)))
+		copy(deltaLocatedAN[i:], m.Details)
+		i = serializeVariableintKinds(deltaLocatedAN, i, uint64(len(m.Details)))
 		i--
-		dAtA[i] = 0x22
+		deltaLocatedAN[i] = 0x22
 	}
 	if len(m.Log) > 0 {
 		i -= len(m.Log)
-		copy(dAtA[i:], m.Log)
-		i = formatVariableintKinds(dAtA, i, uint64(len(m.Log)))
+		copy(deltaLocatedAN[i:], m.Log)
+		i = serializeVariableintKinds(deltaLocatedAN, i, uint64(len(m.Log)))
 		i--
-		dAtA[i] = 0x1a
+		deltaLocatedAN[i] = 0x1a
 	}
 	if len(m.Data) > 0 {
 		i -= len(m.Data)
-		copy(dAtA[i:], m.Data)
-		i = formatVariableintKinds(dAtA, i, uint64(len(m.Data)))
+		copy(deltaLocatedAN[i:], m.Data)
+		i = serializeVariableintKinds(deltaLocatedAN, i, uint64(len(m.Data)))
 		i--
-		dAtA[i] = 0x12
+		deltaLocatedAN[i] = 0x12
 	}
-	if m.Code != 0 {
-		i = formatVariableintKinds(dAtA, i, uint64(m.Code))
+	if m.Cipher != 0 {
+		i = serializeVariableintKinds(deltaLocatedAN, i, uint64(m.Cipher))
 		i--
-		dAtA[i] = 0x8
+		deltaLocatedAN[i] = 0x8
 	}
-	return len(dAtA) - i, nil
+	return len(deltaLocatedAN) - i, nil
 }
 
-func (m *TransOutcome) Serialize() (dAtA []byte, err error) {
-	volume := m.Volume()
-	dAtA = make([]byte, volume)
-	n, err := m.SerializeToDimensionedBuffer(dAtA[:volume])
+func (m *TransferOutcome) Serialize() (deltaLocatedAN []byte, err error) {
+	extent := m.Extent()
+	deltaLocatedAN = make([]byte, extent)
+	n, err := m.SerializeTowardDimensionedReserve(deltaLocatedAN[:extent])
 	if err != nil {
 		return nil, err
 	}
-	return dAtA[:n], nil
+	return deltaLocatedAN[:n], nil
 }
 
-func (m *TransOutcome) SerializeTo(dAtA []byte) (int, error) {
-	volume := m.Volume()
-	return m.SerializeToDimensionedBuffer(dAtA[:volume])
+func (m *TransferOutcome) SerializeToward(deltaLocatedAN []byte) (int, error) {
+	extent := m.Extent()
+	return m.SerializeTowardDimensionedReserve(deltaLocatedAN[:extent])
 }
 
-func (m *TransOutcome) SerializeToDimensionedBuffer(dAtA []byte) (int, error) {
-	i := len(dAtA)
+func (m *TransferOutcome) SerializeTowardDimensionedReserve(deltaLocatedAN []byte) (int, error) {
+	i := len(deltaLocatedAN)
 	_ = i
 	var l int
 	_ = l
 	{
-		volume, err := m.Outcome.SerializeToDimensionedBuffer(dAtA[:i])
+		extent, err := m.Outcome.SerializeTowardDimensionedReserve(deltaLocatedAN[:i])
 		if err != nil {
 			return 0, err
 		}
-		i -= volume
-		i = formatVariableintKinds(dAtA, i, uint64(volume))
+		i -= extent
+		i = serializeVariableintKinds(deltaLocatedAN, i, uint64(extent))
 	}
 	i--
-	dAtA[i] = 0x22
+	deltaLocatedAN[i] = 0x22
 	if len(m.Tx) > 0 {
 		i -= len(m.Tx)
-		copy(dAtA[i:], m.Tx)
-		i = formatVariableintKinds(dAtA, i, uint64(len(m.Tx)))
+		copy(deltaLocatedAN[i:], m.Tx)
+		i = serializeVariableintKinds(deltaLocatedAN, i, uint64(len(m.Tx)))
 		i--
-		dAtA[i] = 0x1a
+		deltaLocatedAN[i] = 0x1a
 	}
 	if m.Ordinal != 0 {
-		i = formatVariableintKinds(dAtA, i, uint64(m.Ordinal))
+		i = serializeVariableintKinds(deltaLocatedAN, i, uint64(m.Ordinal))
 		i--
-		dAtA[i] = 0x10
+		deltaLocatedAN[i] = 0x10
 	}
-	if m.Level != 0 {
-		i = formatVariableintKinds(dAtA, i, uint64(m.Level))
+	if m.Altitude != 0 {
+		i = serializeVariableintKinds(deltaLocatedAN, i, uint64(m.Altitude))
 		i--
-		dAtA[i] = 0x8
+		deltaLocatedAN[i] = 0x8
 	}
-	return len(dAtA) - i, nil
+	return len(deltaLocatedAN) - i, nil
 }
 
-func (m *Ratifier) Serialize() (dAtA []byte, err error) {
-	volume := m.Volume()
-	dAtA = make([]byte, volume)
-	n, err := m.SerializeToDimensionedBuffer(dAtA[:volume])
+func (m *Assessor) Serialize() (deltaLocatedAN []byte, err error) {
+	extent := m.Extent()
+	deltaLocatedAN = make([]byte, extent)
+	n, err := m.SerializeTowardDimensionedReserve(deltaLocatedAN[:extent])
 	if err != nil {
 		return nil, err
 	}
-	return dAtA[:n], nil
+	return deltaLocatedAN[:n], nil
 }
 
-func (m *Ratifier) SerializeTo(dAtA []byte) (int, error) {
-	volume := m.Volume()
-	return m.SerializeToDimensionedBuffer(dAtA[:volume])
+func (m *Assessor) SerializeToward(deltaLocatedAN []byte) (int, error) {
+	extent := m.Extent()
+	return m.SerializeTowardDimensionedReserve(deltaLocatedAN[:extent])
 }
 
-func (m *Ratifier) SerializeToDimensionedBuffer(dAtA []byte) (int, error) {
-	i := len(dAtA)
+func (m *Assessor) SerializeTowardDimensionedReserve(deltaLocatedAN []byte) (int, error) {
+	i := len(deltaLocatedAN)
 	_ = i
 	var l int
 	_ = l
-	if m.Energy != 0 {
-		i = formatVariableintKinds(dAtA, i, uint64(m.Energy))
+	if m.Potency != 0 {
+		i = serializeVariableintKinds(deltaLocatedAN, i, uint64(m.Potency))
 		i--
-		dAtA[i] = 0x18
+		deltaLocatedAN[i] = 0x18
 	}
 	if len(m.Location) > 0 {
 		i -= len(m.Location)
-		copy(dAtA[i:], m.Location)
-		i = formatVariableintKinds(dAtA, i, uint64(len(m.Location)))
+		copy(deltaLocatedAN[i:], m.Location)
+		i = serializeVariableintKinds(deltaLocatedAN, i, uint64(len(m.Location)))
 		i--
-		dAtA[i] = 0xa
+		deltaLocatedAN[i] = 0xa
 	}
-	return len(dAtA) - i, nil
+	return len(deltaLocatedAN) - i, nil
 }
 
-func (m *RatifierModify) Serialize() (dAtA []byte, err error) {
-	volume := m.Volume()
-	dAtA = make([]byte, volume)
-	n, err := m.SerializeToDimensionedBuffer(dAtA[:volume])
+func (m *AssessorRevise) Serialize() (deltaLocatedAN []byte, err error) {
+	extent := m.Extent()
+	deltaLocatedAN = make([]byte, extent)
+	n, err := m.SerializeTowardDimensionedReserve(deltaLocatedAN[:extent])
 	if err != nil {
 		return nil, err
 	}
-	return dAtA[:n], nil
+	return deltaLocatedAN[:n], nil
 }
 
-func (m *RatifierModify) SerializeTo(dAtA []byte) (int, error) {
-	volume := m.Volume()
-	return m.SerializeToDimensionedBuffer(dAtA[:volume])
+func (m *AssessorRevise) SerializeToward(deltaLocatedAN []byte) (int, error) {
+	extent := m.Extent()
+	return m.SerializeTowardDimensionedReserve(deltaLocatedAN[:extent])
 }
 
-func (m *RatifierModify) SerializeToDimensionedBuffer(dAtA []byte) (int, error) {
-	i := len(dAtA)
+func (m *AssessorRevise) SerializeTowardDimensionedReserve(deltaLocatedAN []byte) (int, error) {
+	i := len(deltaLocatedAN)
 	_ = i
 	var l int
 	_ = l
-	if m.Energy != 0 {
-		i = formatVariableintKinds(dAtA, i, uint64(m.Energy))
+	if m.Potency != 0 {
+		i = serializeVariableintKinds(deltaLocatedAN, i, uint64(m.Potency))
 		i--
-		dAtA[i] = 0x10
+		deltaLocatedAN[i] = 0x10
 	}
 	{
-		volume, err := m.PublicKey.SerializeToDimensionedBuffer(dAtA[:i])
+		extent, err := m.PublicToken.SerializeTowardDimensionedReserve(deltaLocatedAN[:i])
 		if err != nil {
 			return 0, err
 		}
-		i -= volume
-		i = formatVariableintKinds(dAtA, i, uint64(volume))
+		i -= extent
+		i = serializeVariableintKinds(deltaLocatedAN, i, uint64(extent))
 	}
 	i--
-	dAtA[i] = 0xa
-	return len(dAtA) - i, nil
+	deltaLocatedAN[i] = 0xa
+	return len(deltaLocatedAN) - i, nil
 }
 
-func (m *BallotDetails) Serialize() (dAtA []byte, err error) {
-	volume := m.Volume()
-	dAtA = make([]byte, volume)
-	n, err := m.SerializeToDimensionedBuffer(dAtA[:volume])
+func (m *BallotDetails) Serialize() (deltaLocatedAN []byte, err error) {
+	extent := m.Extent()
+	deltaLocatedAN = make([]byte, extent)
+	n, err := m.SerializeTowardDimensionedReserve(deltaLocatedAN[:extent])
 	if err != nil {
 		return nil, err
 	}
-	return dAtA[:n], nil
+	return deltaLocatedAN[:n], nil
 }
 
-func (m *BallotDetails) SerializeTo(dAtA []byte) (int, error) {
-	volume := m.Volume()
-	return m.SerializeToDimensionedBuffer(dAtA[:volume])
+func (m *BallotDetails) SerializeToward(deltaLocatedAN []byte) (int, error) {
+	extent := m.Extent()
+	return m.SerializeTowardDimensionedReserve(deltaLocatedAN[:extent])
 }
 
-func (m *BallotDetails) SerializeToDimensionedBuffer(dAtA []byte) (int, error) {
-	i := len(dAtA)
+func (m *BallotDetails) SerializeTowardDimensionedReserve(deltaLocatedAN []byte) (int, error) {
+	i := len(deltaLocatedAN)
 	_ = i
 	var l int
 	_ = l
-	if m.LedgerUidMark != 0 {
-		i = formatVariableintKinds(dAtA, i, uint64(m.LedgerUidMark))
+	if m.LedgerUuidMarker != 0 {
+		i = serializeVariableintKinds(deltaLocatedAN, i, uint64(m.LedgerUuidMarker))
 		i--
-		dAtA[i] = 0x18
+		deltaLocatedAN[i] = 0x18
 	}
 	{
-		volume, err := m.Ratifier.SerializeToDimensionedBuffer(dAtA[:i])
+		extent, err := m.Assessor.SerializeTowardDimensionedReserve(deltaLocatedAN[:i])
 		if err != nil {
 			return 0, err
 		}
-		i -= volume
-		i = formatVariableintKinds(dAtA, i, uint64(volume))
+		i -= extent
+		i = serializeVariableintKinds(deltaLocatedAN, i, uint64(extent))
 	}
 	i--
-	dAtA[i] = 0xa
-	return len(dAtA) - i, nil
+	deltaLocatedAN[i] = 0xa
+	return len(deltaLocatedAN) - i, nil
 }
 
-func (m *ExpandedBallotDetails) Serialize() (dAtA []byte, err error) {
-	volume := m.Volume()
-	dAtA = make([]byte, volume)
-	n, err := m.SerializeToDimensionedBuffer(dAtA[:volume])
+func (m *ExpandedBallotDetails) Serialize() (deltaLocatedAN []byte, err error) {
+	extent := m.Extent()
+	deltaLocatedAN = make([]byte, extent)
+	n, err := m.SerializeTowardDimensionedReserve(deltaLocatedAN[:extent])
 	if err != nil {
 		return nil, err
 	}
-	return dAtA[:n], nil
+	return deltaLocatedAN[:n], nil
 }
 
-func (m *ExpandedBallotDetails) SerializeTo(dAtA []byte) (int, error) {
-	volume := m.Volume()
-	return m.SerializeToDimensionedBuffer(dAtA[:volume])
+func (m *ExpandedBallotDetails) SerializeToward(deltaLocatedAN []byte) (int, error) {
+	extent := m.Extent()
+	return m.SerializeTowardDimensionedReserve(deltaLocatedAN[:extent])
 }
 
-func (m *ExpandedBallotDetails) SerializeToDimensionedBuffer(dAtA []byte) (int, error) {
-	i := len(dAtA)
+func (m *ExpandedBallotDetails) SerializeTowardDimensionedReserve(deltaLocatedAN []byte) (int, error) {
+	i := len(deltaLocatedAN)
 	_ = i
 	var l int
 	_ = l
-	if m.LedgerUidMark != 0 {
-		i = formatVariableintKinds(dAtA, i, uint64(m.LedgerUidMark))
+	if m.LedgerUuidMarker != 0 {
+		i = serializeVariableintKinds(deltaLocatedAN, i, uint64(m.LedgerUuidMarker))
 		i--
-		dAtA[i] = 0x28
+		deltaLocatedAN[i] = 0x28
 	}
-	if len(m.AdditionAutograph) > 0 {
-		i -= len(m.AdditionAutograph)
-		copy(dAtA[i:], m.AdditionAutograph)
-		i = formatVariableintKinds(dAtA, i, uint64(len(m.AdditionAutograph)))
+	if len(m.AdditionNotation) > 0 {
+		i -= len(m.AdditionNotation)
+		copy(deltaLocatedAN[i:], m.AdditionNotation)
+		i = serializeVariableintKinds(deltaLocatedAN, i, uint64(len(m.AdditionNotation)))
 		i--
-		dAtA[i] = 0x22
+		deltaLocatedAN[i] = 0x22
 	}
 	if len(m.BallotAddition) > 0 {
 		i -= len(m.BallotAddition)
-		copy(dAtA[i:], m.BallotAddition)
-		i = formatVariableintKinds(dAtA, i, uint64(len(m.BallotAddition)))
+		copy(deltaLocatedAN[i:], m.BallotAddition)
+		i = serializeVariableintKinds(deltaLocatedAN, i, uint64(len(m.BallotAddition)))
 		i--
-		dAtA[i] = 0x1a
+		deltaLocatedAN[i] = 0x1a
 	}
 	{
-		volume, err := m.Ratifier.SerializeToDimensionedBuffer(dAtA[:i])
+		extent, err := m.Assessor.SerializeTowardDimensionedReserve(deltaLocatedAN[:i])
 		if err != nil {
 			return 0, err
 		}
-		i -= volume
-		i = formatVariableintKinds(dAtA, i, uint64(volume))
+		i -= extent
+		i = serializeVariableintKinds(deltaLocatedAN, i, uint64(extent))
 	}
 	i--
-	dAtA[i] = 0xa
-	return len(dAtA) - i, nil
+	deltaLocatedAN[i] = 0xa
+	return len(deltaLocatedAN) - i, nil
 }
 
-func (m *Malpractice) Serialize() (dAtA []byte, err error) {
-	volume := m.Volume()
-	dAtA = make([]byte, volume)
-	n, err := m.SerializeToDimensionedBuffer(dAtA[:volume])
+func (m *Malpractice) Serialize() (deltaLocatedAN []byte, err error) {
+	extent := m.Extent()
+	deltaLocatedAN = make([]byte, extent)
+	n, err := m.SerializeTowardDimensionedReserve(deltaLocatedAN[:extent])
 	if err != nil {
 		return nil, err
 	}
-	return dAtA[:n], nil
+	return deltaLocatedAN[:n], nil
 }
 
-func (m *Malpractice) SerializeTo(dAtA []byte) (int, error) {
-	volume := m.Volume()
-	return m.SerializeToDimensionedBuffer(dAtA[:volume])
+func (m *Malpractice) SerializeToward(deltaLocatedAN []byte) (int, error) {
+	extent := m.Extent()
+	return m.SerializeTowardDimensionedReserve(deltaLocatedAN[:extent])
 }
 
-func (m *Malpractice) SerializeToDimensionedBuffer(dAtA []byte) (int, error) {
-	i := len(dAtA)
+func (m *Malpractice) SerializeTowardDimensionedReserve(deltaLocatedAN []byte) (int, error) {
+	i := len(deltaLocatedAN)
 	_ = i
 	var l int
 	_ = l
-	if m.SumPollingEnergy != 0 {
-		i = formatVariableintKinds(dAtA, i, uint64(m.SumPollingEnergy))
+	if m.SumBallotingPotency != 0 {
+		i = serializeVariableintKinds(deltaLocatedAN, i, uint64(m.SumBallotingPotency))
 		i--
-		dAtA[i] = 0x28
+		deltaLocatedAN[i] = 0x28
 	}
-	n58, fault58 := github_com_cosmos_gogoproto_types.StdTimeMarshalTo(m.Time, dAtA[i-github_com_cosmos_gogoproto_types.SizeOfStdTime(m.Time):])
+	n58, fault58 := github_com_cosmos_gogoproto_types.StdTimeMarshalTo(m.Moment, deltaLocatedAN[i-github_com_cosmos_gogoproto_types.SizeOfStdTime(m.Moment):])
 	if fault58 != nil {
 		return 0, fault58
 	}
 	i -= n58
-	i = formatVariableintKinds(dAtA, i, uint64(n58))
+	i = serializeVariableintKinds(deltaLocatedAN, i, uint64(n58))
 	i--
-	dAtA[i] = 0x22
-	if m.Level != 0 {
-		i = formatVariableintKinds(dAtA, i, uint64(m.Level))
+	deltaLocatedAN[i] = 0x22
+	if m.Altitude != 0 {
+		i = serializeVariableintKinds(deltaLocatedAN, i, uint64(m.Altitude))
 		i--
-		dAtA[i] = 0x18
+		deltaLocatedAN[i] = 0x18
 	}
 	{
-		volume, err := m.Ratifier.SerializeToDimensionedBuffer(dAtA[:i])
+		extent, err := m.Assessor.SerializeTowardDimensionedReserve(deltaLocatedAN[:i])
 		if err != nil {
 			return 0, err
 		}
-		i -= volume
-		i = formatVariableintKinds(dAtA, i, uint64(volume))
+		i -= extent
+		i = serializeVariableintKinds(deltaLocatedAN, i, uint64(extent))
 	}
 	i--
-	dAtA[i] = 0x12
+	deltaLocatedAN[i] = 0x12
 	if m.Kind != 0 {
-		i = formatVariableintKinds(dAtA, i, uint64(m.Kind))
+		i = serializeVariableintKinds(deltaLocatedAN, i, uint64(m.Kind))
 		i--
-		dAtA[i] = 0x8
+		deltaLocatedAN[i] = 0x8
 	}
-	return len(dAtA) - i, nil
+	return len(deltaLocatedAN) - i, nil
 }
 
-func (m *Mirror) Serialize() (dAtA []byte, err error) {
-	volume := m.Volume()
-	dAtA = make([]byte, volume)
-	n, err := m.SerializeToDimensionedBuffer(dAtA[:volume])
+func (m *Image) Serialize() (deltaLocatedAN []byte, err error) {
+	extent := m.Extent()
+	deltaLocatedAN = make([]byte, extent)
+	n, err := m.SerializeTowardDimensionedReserve(deltaLocatedAN[:extent])
 	if err != nil {
 		return nil, err
 	}
-	return dAtA[:n], nil
+	return deltaLocatedAN[:n], nil
 }
 
-func (m *Mirror) SerializeTo(dAtA []byte) (int, error) {
-	volume := m.Volume()
-	return m.SerializeToDimensionedBuffer(dAtA[:volume])
+func (m *Image) SerializeToward(deltaLocatedAN []byte) (int, error) {
+	extent := m.Extent()
+	return m.SerializeTowardDimensionedReserve(deltaLocatedAN[:extent])
 }
 
-func (m *Mirror) SerializeToDimensionedBuffer(dAtA []byte) (int, error) {
-	i := len(dAtA)
+func (m *Image) SerializeTowardDimensionedReserve(deltaLocatedAN []byte) (int, error) {
+	i := len(deltaLocatedAN)
 	_ = i
 	var l int
 	_ = l
-	if len(m.Metainfo) > 0 {
-		i -= len(m.Metainfo)
-		copy(dAtA[i:], m.Metainfo)
-		i = formatVariableintKinds(dAtA, i, uint64(len(m.Metainfo)))
+	if len(m.Attributes) > 0 {
+		i -= len(m.Attributes)
+		copy(deltaLocatedAN[i:], m.Attributes)
+		i = serializeVariableintKinds(deltaLocatedAN, i, uint64(len(m.Attributes)))
 		i--
-		dAtA[i] = 0x2a
+		deltaLocatedAN[i] = 0x2a
 	}
 	if len(m.Digest) > 0 {
 		i -= len(m.Digest)
-		copy(dAtA[i:], m.Digest)
-		i = formatVariableintKinds(dAtA, i, uint64(len(m.Digest)))
+		copy(deltaLocatedAN[i:], m.Digest)
+		i = serializeVariableintKinds(deltaLocatedAN, i, uint64(len(m.Digest)))
 		i--
-		dAtA[i] = 0x22
+		deltaLocatedAN[i] = 0x22
 	}
 	if m.Segments != 0 {
-		i = formatVariableintKinds(dAtA, i, uint64(m.Segments))
+		i = serializeVariableintKinds(deltaLocatedAN, i, uint64(m.Segments))
 		i--
-		dAtA[i] = 0x18
+		deltaLocatedAN[i] = 0x18
 	}
 	if m.Layout != 0 {
-		i = formatVariableintKinds(dAtA, i, uint64(m.Layout))
+		i = serializeVariableintKinds(deltaLocatedAN, i, uint64(m.Layout))
 		i--
-		dAtA[i] = 0x10
+		deltaLocatedAN[i] = 0x10
 	}
-	if m.Level != 0 {
-		i = formatVariableintKinds(dAtA, i, uint64(m.Level))
+	if m.Altitude != 0 {
+		i = serializeVariableintKinds(deltaLocatedAN, i, uint64(m.Altitude))
 		i--
-		dAtA[i] = 0x8
+		deltaLocatedAN[i] = 0x8
 	}
-	return len(dAtA) - i, nil
+	return len(deltaLocatedAN) - i, nil
 }
 
-func formatVariableintKinds(dAtA []byte, displacement int, v uint64) int {
+func serializeVariableintKinds(deltaLocatedAN []byte, displacement int, v uint64) int {
 	displacement -= sovKinds(v)
-	root := displacement
+	foundation := displacement
 	for v >= 1<<7 {
-		dAtA[displacement] = uint8(v&0x7f | 0x80)
+		deltaLocatedAN[displacement] = uint8(v&0x7f | 0x80)
 		v >>= 7
 		displacement++
 	}
-	dAtA[displacement] = uint8(v)
-	return root
+	deltaLocatedAN[displacement] = uint8(v)
+	return foundation
 }
-func (m *Query) Volume() (n int) {
+func (m *Solicit) Extent() (n int) {
 	if m == nil {
 		return 0
 	}
 	var l int
 	_ = l
-	if m.Item != nil {
-		n += m.Item.Volume()
+	if m.Datum != nil {
+		n += m.Datum.Extent()
 	}
 	return n
 }
 
-func (m *Query_Reverberate) Volume() (n int) {
+func (m *Solicit_Reverberate) Extent() (n int) {
 	if m == nil {
 		return 0
 	}
 	var l int
 	_ = l
-	if m.Replicate != nil {
-		l = m.Replicate.Volume()
+	if m.Reverberate != nil {
+		l = m.Reverberate.Extent()
 		n += 1 + l + sovKinds(uint64(l))
 	}
 	return n
 }
-func (m *Query_Purge) Volume() (n int) {
+func (m *Solicit_Purge) Extent() (n int) {
 	if m == nil {
 		return 0
 	}
 	var l int
 	_ = l
 	if m.Purge != nil {
-		l = m.Purge.Volume()
+		l = m.Purge.Extent()
 		n += 1 + l + sovKinds(uint64(l))
 	}
 	return n
 }
-func (m *Query_Details) Volume() (n int) {
+func (m *Solicit_Details) Extent() (n int) {
 	if m == nil {
 		return 0
 	}
 	var l int
 	_ = l
 	if m.Details != nil {
-		l = m.Details.Volume()
+		l = m.Details.Extent()
 		n += 1 + l + sovKinds(uint64(l))
 	}
 	return n
 }
-func (m *Query_Initiatechain) Volume() (n int) {
+func (m *Solicit_Initiatechain) Extent() (n int) {
 	if m == nil {
 		return 0
 	}
 	var l int
 	_ = l
-	if m.InitSeries != nil {
-		l = m.InitSeries.Volume()
+	if m.InitializeSuccession != nil {
+		l = m.InitializeSuccession.Extent()
 		n += 1 + l + sovKinds(uint64(l))
 	}
 	return n
 }
-func (m *Query_Inquire) Volume() (n int) {
+func (m *Solicit_Inquire) Extent() (n int) {
 	if m == nil {
 		return 0
 	}
 	var l int
 	_ = l
 	if m.Inquire != nil {
-		l = m.Inquire.Volume()
+		l = m.Inquire.Extent()
 		n += 1 + l + sovKinds(uint64(l))
 	}
 	return n
 }
-func (m *Query_Transfercheck) Volume() (n int) {
+func (m *Solicit_Inspecttrans) Extent() (n int) {
 	if m == nil {
 		return 0
 	}
 	var l int
 	_ = l
 	if m.InspectTransfer != nil {
-		l = m.InspectTransfer.Volume()
+		l = m.InspectTransfer.Extent()
 		n += 1 + l + sovKinds(uint64(l))
 	}
 	return n
 }
-func (m *Query_Endorse) Volume() (n int) {
+func (m *Solicit_Endorse) Extent() (n int) {
 	if m == nil {
 		return 0
 	}
 	var l int
 	_ = l
 	if m.Endorse != nil {
-		l = m.Endorse.Volume()
+		l = m.Endorse.Extent()
 		n += 1 + l + sovKinds(uint64(l))
 	}
 	return n
 }
-func (m *Query_Catalogmirrors) Volume() (n int) {
+func (m *Solicit_Catalogimages) Extent() (n int) {
 	if m == nil {
 		return 0
 	}
 	var l int
 	_ = l
-	if m.CatalogMirrors != nil {
-		l = m.CatalogMirrors.Volume()
+	if m.CollectionImages != nil {
+		l = m.CollectionImages.Extent()
 		n += 1 + l + sovKinds(uint64(l))
 	}
 	return n
 }
-func (m *Query_Mirrorsnapshot) Volume() (n int) {
+func (m *Solicit_Extendimage) Extent() (n int) {
 	if m == nil {
 		return 0
 	}
 	var l int
 	_ = l
-	if m.ProposalMirror != nil {
-		l = m.ProposalMirror.Volume()
+	if m.ExtendImage != nil {
+		l = m.ExtendImage.Extent()
 		n += 1 + l + sovKinds(uint64(l))
 	}
 	return n
 }
-func (m *Query_Loadmirrorsegment) Volume() (n int) {
+func (m *Solicit_Loadimagefragment) Extent() (n int) {
 	if m == nil {
 		return 0
 	}
 	var l int
 	_ = l
-	if m.ImportMirrorSegment != nil {
-		l = m.ImportMirrorSegment.Volume()
+	if m.FetchImageSegment != nil {
+		l = m.FetchImageSegment.Extent()
 		n += 1 + l + sovKinds(uint64(l))
 	}
 	return n
 }
-func (m *Query_Executemirrorsegment) Volume() (n int) {
+func (m *Solicit_Executeimagefragment) Extent() (n int) {
 	if m == nil {
 		return 0
 	}
 	var l int
 	_ = l
-	if m.ExecuteMirrorSegment != nil {
-		l = m.ExecuteMirrorSegment.Volume()
+	if m.ExecuteImageSegment != nil {
+		l = m.ExecuteImageSegment.Extent()
 		n += 1 + l + sovKinds(uint64(l))
 	}
 	return n
 }
-func (m *Query_Arrangenomination) Volume() (n int) {
+func (m *Solicit_Prepareitem) Extent() (n int) {
 	if m == nil {
 		return 0
 	}
 	var l int
 	_ = l
 	if m.ArrangeNomination != nil {
-		l = m.ArrangeNomination.Volume()
+		l = m.ArrangeNomination.Extent()
 		n += 2 + l + sovKinds(uint64(l))
 	}
 	return n
 }
-func (m *Query_Processnomination) Volume() (n int) {
+func (m *Solicit_Executeitem) Extent() (n int) {
 	if m == nil {
 		return 0
 	}
 	var l int
 	_ = l
 	if m.HandleNomination != nil {
-		l = m.HandleNomination.Volume()
+		l = m.HandleNomination.Extent()
 		n += 2 + l + sovKinds(uint64(l))
 	}
 	return n
 }
-func (m *Query_Ballotextend) Volume() (n int) {
+func (m *Solicit_Extendballot) Extent() (n int) {
 	if m == nil {
 		return 0
 	}
 	var l int
 	_ = l
-	if m.ExpandBallot != nil {
-		l = m.ExpandBallot.Volume()
+	if m.BroadenBallot != nil {
+		l = m.BroadenBallot.Extent()
 		n += 2 + l + sovKinds(uint64(l))
 	}
 	return n
 }
-func (m *Query_Validateballotextension) Volume() (n int) {
+func (m *Solicit_Verifyballotaddition) Extent() (n int) {
 	if m == nil {
 		return 0
 	}
 	var l int
 	_ = l
 	if m.ValidateBallotAddition != nil {
-		l = m.ValidateBallotAddition.Volume()
+		l = m.ValidateBallotAddition.Extent()
 		n += 2 + l + sovKinds(uint64(l))
 	}
 	return n
 }
-func (m *Query_Terminateblock) Volume() (n int) {
+func (m *Solicit_Finalizeledger) Extent() (n int) {
 	if m == nil {
 		return 0
 	}
 	var l int
 	_ = l
-	if m.CompleteLedger != nil {
-		l = m.CompleteLedger.Volume()
+	if m.CulminateLedger != nil {
+		l = m.CulminateLedger.Extent()
 		n += 2 + l + sovKinds(uint64(l))
 	}
 	return n
 }
-func (m *Query_Transferinsert) Volume() (n int) {
+func (m *Solicit_Appendtrans) Extent() (n int) {
 	if m == nil {
 		return 0
 	}
 	var l int
 	_ = l
-	if m.EmbedTransfer != nil {
-		l = m.EmbedTransfer.Volume()
+	if m.AppendTransfer != nil {
+		l = m.AppendTransfer.Extent()
 		n += 2 + l + sovKinds(uint64(l))
 	}
 	return n
 }
-func (m *Query_Reaptransfers) Volume() (n int) {
+func (m *Solicit_Harvesttrans) Extent() (n int) {
 	if m == nil {
 		return 0
 	}
 	var l int
 	_ = l
 	if m.HarvestTrans != nil {
-		l = m.HarvestTrans.Volume()
+		l = m.HarvestTrans.Extent()
 		n += 2 + l + sovKinds(uint64(l))
 	}
 	return n
 }
-func (m *QueryReverberate) Volume() (n int) {
+func (m *SolicitReverberate) Extent() (n int) {
 	if m == nil {
 		return 0
 	}
@@ -8206,7 +8206,7 @@ func (m *QueryReverberate) Volume() (n int) {
 	return n
 }
 
-func (m *QueryPurge) Volume() (n int) {
+func (m *SolicitPurge) Extent() (n int) {
 	if m == nil {
 		return 0
 	}
@@ -8215,48 +8215,48 @@ func (m *QueryPurge) Volume() (n int) {
 	return n
 }
 
-func (m *QueryDetails) Volume() (n int) {
+func (m *SolicitDetails) Extent() (n int) {
 	if m == nil {
 		return 0
 	}
 	var l int
 	_ = l
-	l = len(m.Release)
+	l = len(m.Edition)
 	if l > 0 {
 		n += 1 + l + sovKinds(uint64(l))
 	}
-	if m.LedgerRelease != 0 {
-		n += 1 + sovKinds(uint64(m.LedgerRelease))
+	if m.LedgerEdition != 0 {
+		n += 1 + sovKinds(uint64(m.LedgerEdition))
 	}
-	if m.P2PRelease != 0 {
-		n += 1 + sovKinds(uint64(m.P2PRelease))
+	if m.Peer2peerEdition != 0 {
+		n += 1 + sovKinds(uint64(m.Peer2peerEdition))
 	}
-	l = len(m.IfaceRelease)
+	l = len(m.IfaceEdition)
 	if l > 0 {
 		n += 1 + l + sovKinds(uint64(l))
 	}
 	return n
 }
 
-func (m *QueryInitSeries) Volume() (n int) {
+func (m *SolicitInitializeSuccession) Extent() (n int) {
 	if m == nil {
 		return 0
 	}
 	var l int
 	_ = l
-	l = github_com_cosmos_gogoproto_types.SizeOfStdTime(m.Time)
+	l = github_com_cosmos_gogoproto_types.SizeOfStdTime(m.Moment)
 	n += 1 + l + sovKinds(uint64(l))
-	l = len(m.SeriesUid)
+	l = len(m.SuccessionUuid)
 	if l > 0 {
 		n += 1 + l + sovKinds(uint64(l))
 	}
-	if m.AgreementOptions != nil {
-		l = m.AgreementOptions.Volume()
+	if m.AgreementSettings != nil {
+		l = m.AgreementSettings.Extent()
 		n += 1 + l + sovKinds(uint64(l))
 	}
-	if len(m.Ratifiers) > 0 {
-		for _, e := range m.Ratifiers {
-			l = e.Volume()
+	if len(m.Assessors) > 0 {
+		for _, e := range m.Assessors {
+			l = e.Extent()
 			n += 1 + l + sovKinds(uint64(l))
 		}
 	}
@@ -8264,13 +8264,13 @@ func (m *QueryInitSeries) Volume() (n int) {
 	if l > 0 {
 		n += 1 + l + sovKinds(uint64(l))
 	}
-	if m.PrimaryLevel != 0 {
-		n += 1 + sovKinds(uint64(m.PrimaryLevel))
+	if m.PrimaryAltitude != 0 {
+		n += 1 + sovKinds(uint64(m.PrimaryAltitude))
 	}
 	return n
 }
 
-func (m *QueryInquire) Volume() (n int) {
+func (m *SolicitInquire) Extent() (n int) {
 	if m == nil {
 		return 0
 	}
@@ -8284,16 +8284,16 @@ func (m *QueryInquire) Volume() (n int) {
 	if l > 0 {
 		n += 1 + l + sovKinds(uint64(l))
 	}
-	if m.Level != 0 {
-		n += 1 + sovKinds(uint64(m.Level))
+	if m.Altitude != 0 {
+		n += 1 + sovKinds(uint64(m.Altitude))
 	}
-	if m.Demonstrate {
+	if m.Validate {
 		n += 2
 	}
 	return n
 }
 
-func (m *QueryInspectTransfer) Volume() (n int) {
+func (m *SolicitInspectTransfer) Extent() (n int) {
 	if m == nil {
 		return 0
 	}
@@ -8309,7 +8309,7 @@ func (m *QueryInspectTransfer) Volume() (n int) {
 	return n
 }
 
-func (m *QueryEmbedTransfer) Volume() (n int) {
+func (m *SolicitAppendTransfer) Extent() (n int) {
 	if m == nil {
 		return 0
 	}
@@ -8322,7 +8322,7 @@ func (m *QueryEmbedTransfer) Volume() (n int) {
 	return n
 }
 
-func (m *QueryHarvestTrans) Volume() (n int) {
+func (m *SolicitHarvestTrans) Extent() (n int) {
 	if m == nil {
 		return 0
 	}
@@ -8337,7 +8337,7 @@ func (m *QueryHarvestTrans) Volume() (n int) {
 	return n
 }
 
-func (m *QueryEndorse) Volume() (n int) {
+func (m *SolicitEndorse) Extent() (n int) {
 	if m == nil {
 		return 0
 	}
@@ -8346,7 +8346,7 @@ func (m *QueryEndorse) Volume() (n int) {
 	return n
 }
 
-func (m *QueryCatalogMirrors) Volume() (n int) {
+func (m *SolicitCollectionImages) Extent() (n int) {
 	if m == nil {
 		return 0
 	}
@@ -8355,31 +8355,31 @@ func (m *QueryCatalogMirrors) Volume() (n int) {
 	return n
 }
 
-func (m *QueryProposalMirror) Volume() (n int) {
+func (m *SolicitExtendImage) Extent() (n int) {
 	if m == nil {
 		return 0
 	}
 	var l int
 	_ = l
-	if m.Mirror != nil {
-		l = m.Mirror.Volume()
+	if m.Image != nil {
+		l = m.Image.Extent()
 		n += 1 + l + sovKinds(uint64(l))
 	}
-	l = len(m.ApplicationDigest)
+	l = len(m.PlatformDigest)
 	if l > 0 {
 		n += 1 + l + sovKinds(uint64(l))
 	}
 	return n
 }
 
-func (m *QueryImportMirrorSegment) Volume() (n int) {
+func (m *SolicitFetchImageSegment) Extent() (n int) {
 	if m == nil {
 		return 0
 	}
 	var l int
 	_ = l
-	if m.Level != 0 {
-		n += 1 + sovKinds(uint64(m.Level))
+	if m.Altitude != 0 {
+		n += 1 + sovKinds(uint64(m.Altitude))
 	}
 	if m.Layout != 0 {
 		n += 1 + sovKinds(uint64(m.Layout))
@@ -8390,7 +8390,7 @@ func (m *QueryImportMirrorSegment) Volume() (n int) {
 	return n
 }
 
-func (m *QueryExecuteMirrorSegment) Volume() (n int) {
+func (m *SolicitExecuteImageSegment) Extent() (n int) {
 	if m == nil {
 		return 0
 	}
@@ -8403,14 +8403,14 @@ func (m *QueryExecuteMirrorSegment) Volume() (n int) {
 	if l > 0 {
 		n += 1 + l + sovKinds(uint64(l))
 	}
-	l = len(m.Emitter)
+	l = len(m.Originator)
 	if l > 0 {
 		n += 1 + l + sovKinds(uint64(l))
 	}
 	return n
 }
 
-func (m *QueryArrangeNomination) Volume() (n int) {
+func (m *SolicitArrangeNomination) Extent() (n int) {
 	if m == nil {
 		return 0
 	}
@@ -8425,31 +8425,31 @@ func (m *QueryArrangeNomination) Volume() (n int) {
 			n += 1 + l + sovKinds(uint64(l))
 		}
 	}
-	l = m.NativeFinalEndorse.Volume()
+	l = m.RegionalFinalEndorse.Extent()
 	n += 1 + l + sovKinds(uint64(l))
 	if len(m.Malpractice) > 0 {
 		for _, e := range m.Malpractice {
-			l = e.Volume()
+			l = e.Extent()
 			n += 1 + l + sovKinds(uint64(l))
 		}
 	}
-	if m.Level != 0 {
-		n += 1 + sovKinds(uint64(m.Level))
+	if m.Altitude != 0 {
+		n += 1 + sovKinds(uint64(m.Altitude))
 	}
-	l = github_com_cosmos_gogoproto_types.SizeOfStdTime(m.Time)
+	l = github_com_cosmos_gogoproto_types.SizeOfStdTime(m.Moment)
 	n += 1 + l + sovKinds(uint64(l))
-	l = len(m.FollowingRatifiersDigest)
+	l = len(m.FollowingAssessorsDigest)
 	if l > 0 {
 		n += 1 + l + sovKinds(uint64(l))
 	}
-	l = len(m.RecommenderLocation)
+	l = len(m.NominatorLocation)
 	if l > 0 {
 		n += 1 + l + sovKinds(uint64(l))
 	}
 	return n
 }
 
-func (m *QueryHandleNomination) Volume() (n int) {
+func (m *SolicitHandleNomination) Extent() (n int) {
 	if m == nil {
 		return 0
 	}
@@ -8461,11 +8461,11 @@ func (m *QueryHandleNomination) Volume() (n int) {
 			n += 1 + l + sovKinds(uint64(l))
 		}
 	}
-	l = m.NominatedFinalEndorse.Volume()
+	l = m.ItemizedFinalEndorse.Extent()
 	n += 1 + l + sovKinds(uint64(l))
 	if len(m.Malpractice) > 0 {
 		for _, e := range m.Malpractice {
-			l = e.Volume()
+			l = e.Extent()
 			n += 1 + l + sovKinds(uint64(l))
 		}
 	}
@@ -8473,23 +8473,23 @@ func (m *QueryHandleNomination) Volume() (n int) {
 	if l > 0 {
 		n += 1 + l + sovKinds(uint64(l))
 	}
-	if m.Level != 0 {
-		n += 1 + sovKinds(uint64(m.Level))
+	if m.Altitude != 0 {
+		n += 1 + sovKinds(uint64(m.Altitude))
 	}
-	l = github_com_cosmos_gogoproto_types.SizeOfStdTime(m.Time)
+	l = github_com_cosmos_gogoproto_types.SizeOfStdTime(m.Moment)
 	n += 1 + l + sovKinds(uint64(l))
-	l = len(m.FollowingRatifiersDigest)
+	l = len(m.FollowingAssessorsDigest)
 	if l > 0 {
 		n += 1 + l + sovKinds(uint64(l))
 	}
-	l = len(m.RecommenderLocation)
+	l = len(m.NominatorLocation)
 	if l > 0 {
 		n += 1 + l + sovKinds(uint64(l))
 	}
 	return n
 }
 
-func (m *QueryExpandBallot) Volume() (n int) {
+func (m *SolicitBroadenBallot) Extent() (n int) {
 	if m == nil {
 		return 0
 	}
@@ -8499,10 +8499,10 @@ func (m *QueryExpandBallot) Volume() (n int) {
 	if l > 0 {
 		n += 1 + l + sovKinds(uint64(l))
 	}
-	if m.Level != 0 {
-		n += 1 + sovKinds(uint64(m.Level))
+	if m.Altitude != 0 {
+		n += 1 + sovKinds(uint64(m.Altitude))
 	}
-	l = github_com_cosmos_gogoproto_types.SizeOfStdTime(m.Time)
+	l = github_com_cosmos_gogoproto_types.SizeOfStdTime(m.Moment)
 	n += 1 + l + sovKinds(uint64(l))
 	if len(m.Txs) > 0 {
 		for _, b := range m.Txs {
@@ -8510,26 +8510,26 @@ func (m *QueryExpandBallot) Volume() (n int) {
 			n += 1 + l + sovKinds(uint64(l))
 		}
 	}
-	l = m.NominatedFinalEndorse.Volume()
+	l = m.ItemizedFinalEndorse.Extent()
 	n += 1 + l + sovKinds(uint64(l))
 	if len(m.Malpractice) > 0 {
 		for _, e := range m.Malpractice {
-			l = e.Volume()
+			l = e.Extent()
 			n += 1 + l + sovKinds(uint64(l))
 		}
 	}
-	l = len(m.FollowingRatifiersDigest)
+	l = len(m.FollowingAssessorsDigest)
 	if l > 0 {
 		n += 1 + l + sovKinds(uint64(l))
 	}
-	l = len(m.RecommenderLocation)
+	l = len(m.NominatorLocation)
 	if l > 0 {
 		n += 1 + l + sovKinds(uint64(l))
 	}
 	return n
 }
 
-func (m *QueryValidateBallotAddition) Volume() (n int) {
+func (m *SolicitValidateBallotAddition) Extent() (n int) {
 	if m == nil {
 		return 0
 	}
@@ -8539,12 +8539,12 @@ func (m *QueryValidateBallotAddition) Volume() (n int) {
 	if l > 0 {
 		n += 1 + l + sovKinds(uint64(l))
 	}
-	l = len(m.RatifierLocation)
+	l = len(m.AssessorLocation)
 	if l > 0 {
 		n += 1 + l + sovKinds(uint64(l))
 	}
-	if m.Level != 0 {
-		n += 1 + sovKinds(uint64(m.Level))
+	if m.Altitude != 0 {
+		n += 1 + sovKinds(uint64(m.Altitude))
 	}
 	l = len(m.BallotAddition)
 	if l > 0 {
@@ -8553,7 +8553,7 @@ func (m *QueryValidateBallotAddition) Volume() (n int) {
 	return n
 }
 
-func (m *QueryCompleteLedger) Volume() (n int) {
+func (m *SolicitCulminateLedger) Extent() (n int) {
 	if m == nil {
 		return 0
 	}
@@ -8565,11 +8565,11 @@ func (m *QueryCompleteLedger) Volume() (n int) {
 			n += 1 + l + sovKinds(uint64(l))
 		}
 	}
-	l = m.ResolvedFinalEndorse.Volume()
+	l = m.ResolvedFinalEndorse.Extent()
 	n += 1 + l + sovKinds(uint64(l))
 	if len(m.Malpractice) > 0 {
 		for _, e := range m.Malpractice {
-			l = e.Volume()
+			l = e.Extent()
 			n += 1 + l + sovKinds(uint64(l))
 		}
 	}
@@ -8577,276 +8577,276 @@ func (m *QueryCompleteLedger) Volume() (n int) {
 	if l > 0 {
 		n += 1 + l + sovKinds(uint64(l))
 	}
-	if m.Level != 0 {
-		n += 1 + sovKinds(uint64(m.Level))
+	if m.Altitude != 0 {
+		n += 1 + sovKinds(uint64(m.Altitude))
 	}
-	l = github_com_cosmos_gogoproto_types.SizeOfStdTime(m.Time)
+	l = github_com_cosmos_gogoproto_types.SizeOfStdTime(m.Moment)
 	n += 1 + l + sovKinds(uint64(l))
-	l = len(m.FollowingRatifiersDigest)
+	l = len(m.FollowingAssessorsDigest)
 	if l > 0 {
 		n += 1 + l + sovKinds(uint64(l))
 	}
-	l = len(m.RecommenderLocation)
+	l = len(m.NominatorLocation)
 	if l > 0 {
 		n += 1 + l + sovKinds(uint64(l))
 	}
 	return n
 }
 
-func (m *Reply) Volume() (n int) {
+func (m *Reply) Extent() (n int) {
 	if m == nil {
 		return 0
 	}
 	var l int
 	_ = l
-	if m.Item != nil {
-		n += m.Item.Volume()
+	if m.Datum != nil {
+		n += m.Datum.Extent()
 	}
 	return n
 }
 
-func (m *Reply_Exemption) Volume() (n int) {
+func (m *Reply_Exemption) Extent() (n int) {
 	if m == nil {
 		return 0
 	}
 	var l int
 	_ = l
 	if m.Exemption != nil {
-		l = m.Exemption.Volume()
+		l = m.Exemption.Extent()
 		n += 1 + l + sovKinds(uint64(l))
 	}
 	return n
 }
-func (m *Reply_Reverberate) Volume() (n int) {
+func (m *Reply_Reverberate) Extent() (n int) {
 	if m == nil {
 		return 0
 	}
 	var l int
 	_ = l
-	if m.Replicate != nil {
-		l = m.Replicate.Volume()
+	if m.Reverberate != nil {
+		l = m.Reverberate.Extent()
 		n += 1 + l + sovKinds(uint64(l))
 	}
 	return n
 }
-func (m *Reply_Purge) Volume() (n int) {
+func (m *Reply_Purge) Extent() (n int) {
 	if m == nil {
 		return 0
 	}
 	var l int
 	_ = l
 	if m.Purge != nil {
-		l = m.Purge.Volume()
+		l = m.Purge.Extent()
 		n += 1 + l + sovKinds(uint64(l))
 	}
 	return n
 }
-func (m *Reply_Details) Volume() (n int) {
+func (m *Reply_Details) Extent() (n int) {
 	if m == nil {
 		return 0
 	}
 	var l int
 	_ = l
 	if m.Details != nil {
-		l = m.Details.Volume()
+		l = m.Details.Extent()
 		n += 1 + l + sovKinds(uint64(l))
 	}
 	return n
 }
-func (m *Reply_Initiatechain) Volume() (n int) {
+func (m *Reply_Initiatechain) Extent() (n int) {
 	if m == nil {
 		return 0
 	}
 	var l int
 	_ = l
-	if m.InitSeries != nil {
-		l = m.InitSeries.Volume()
+	if m.InitializeSuccession != nil {
+		l = m.InitializeSuccession.Extent()
 		n += 1 + l + sovKinds(uint64(l))
 	}
 	return n
 }
-func (m *Reply_Inquire) Volume() (n int) {
+func (m *Reply_Inquire) Extent() (n int) {
 	if m == nil {
 		return 0
 	}
 	var l int
 	_ = l
 	if m.Inquire != nil {
-		l = m.Inquire.Volume()
+		l = m.Inquire.Extent()
 		n += 1 + l + sovKinds(uint64(l))
 	}
 	return n
 }
-func (m *Reply_Transfercheck) Volume() (n int) {
+func (m *Reply_Inspecttrans) Extent() (n int) {
 	if m == nil {
 		return 0
 	}
 	var l int
 	_ = l
 	if m.InspectTransfer != nil {
-		l = m.InspectTransfer.Volume()
+		l = m.InspectTransfer.Extent()
 		n += 1 + l + sovKinds(uint64(l))
 	}
 	return n
 }
-func (m *Reply_Endorse) Volume() (n int) {
+func (m *Reply_Endorse) Extent() (n int) {
 	if m == nil {
 		return 0
 	}
 	var l int
 	_ = l
 	if m.Endorse != nil {
-		l = m.Endorse.Volume()
+		l = m.Endorse.Extent()
 		n += 1 + l + sovKinds(uint64(l))
 	}
 	return n
 }
-func (m *Reply_Catalogmirrors) Volume() (n int) {
+func (m *Reply_Catalogimages) Extent() (n int) {
 	if m == nil {
 		return 0
 	}
 	var l int
 	_ = l
-	if m.CatalogMirrors != nil {
-		l = m.CatalogMirrors.Volume()
+	if m.CollectionImages != nil {
+		l = m.CollectionImages.Extent()
 		n += 1 + l + sovKinds(uint64(l))
 	}
 	return n
 }
-func (m *Reply_Mirrorsnapshot) Volume() (n int) {
+func (m *Reply_Extendimage) Extent() (n int) {
 	if m == nil {
 		return 0
 	}
 	var l int
 	_ = l
-	if m.ProposalMirror != nil {
-		l = m.ProposalMirror.Volume()
+	if m.ExtendImage != nil {
+		l = m.ExtendImage.Extent()
 		n += 1 + l + sovKinds(uint64(l))
 	}
 	return n
 }
-func (m *Reply_Loadmirrorsegment) Volume() (n int) {
+func (m *Reply_Loadimagefragment) Extent() (n int) {
 	if m == nil {
 		return 0
 	}
 	var l int
 	_ = l
-	if m.ImportMirrorSegment != nil {
-		l = m.ImportMirrorSegment.Volume()
+	if m.FetchImageSegment != nil {
+		l = m.FetchImageSegment.Extent()
 		n += 1 + l + sovKinds(uint64(l))
 	}
 	return n
 }
-func (m *Reply_Executemirrorsegment) Volume() (n int) {
+func (m *Reply_Executeimagefragment) Extent() (n int) {
 	if m == nil {
 		return 0
 	}
 	var l int
 	_ = l
-	if m.ExecuteMirrorSegment != nil {
-		l = m.ExecuteMirrorSegment.Volume()
+	if m.ExecuteImageSegment != nil {
+		l = m.ExecuteImageSegment.Extent()
 		n += 2 + l + sovKinds(uint64(l))
 	}
 	return n
 }
-func (m *Reply_Arrangenomination) Volume() (n int) {
+func (m *Reply_Prepareitem) Extent() (n int) {
 	if m == nil {
 		return 0
 	}
 	var l int
 	_ = l
 	if m.ArrangeNomination != nil {
-		l = m.ArrangeNomination.Volume()
+		l = m.ArrangeNomination.Extent()
 		n += 2 + l + sovKinds(uint64(l))
 	}
 	return n
 }
-func (m *Reply_Processnomination) Volume() (n int) {
+func (m *Reply_Executeitem) Extent() (n int) {
 	if m == nil {
 		return 0
 	}
 	var l int
 	_ = l
 	if m.HandleNomination != nil {
-		l = m.HandleNomination.Volume()
+		l = m.HandleNomination.Extent()
 		n += 2 + l + sovKinds(uint64(l))
 	}
 	return n
 }
-func (m *Reply_Ballotextend) Volume() (n int) {
+func (m *Reply_Extendballot) Extent() (n int) {
 	if m == nil {
 		return 0
 	}
 	var l int
 	_ = l
-	if m.ExpandBallot != nil {
-		l = m.ExpandBallot.Volume()
+	if m.BroadenBallot != nil {
+		l = m.BroadenBallot.Extent()
 		n += 2 + l + sovKinds(uint64(l))
 	}
 	return n
 }
-func (m *Reply_Validateballotextension) Volume() (n int) {
+func (m *Reply_Verifyballotaddition) Extent() (n int) {
 	if m == nil {
 		return 0
 	}
 	var l int
 	_ = l
 	if m.ValidateBallotAddition != nil {
-		l = m.ValidateBallotAddition.Volume()
+		l = m.ValidateBallotAddition.Extent()
 		n += 2 + l + sovKinds(uint64(l))
 	}
 	return n
 }
-func (m *Reply_Terminateblock) Volume() (n int) {
+func (m *Reply_Finalizeledger) Extent() (n int) {
 	if m == nil {
 		return 0
 	}
 	var l int
 	_ = l
-	if m.CompleteLedger != nil {
-		l = m.CompleteLedger.Volume()
+	if m.CulminateLedger != nil {
+		l = m.CulminateLedger.Extent()
 		n += 2 + l + sovKinds(uint64(l))
 	}
 	return n
 }
-func (m *Reply_Transferinsert) Volume() (n int) {
+func (m *Reply_Appendtrans) Extent() (n int) {
 	if m == nil {
 		return 0
 	}
 	var l int
 	_ = l
-	if m.EmbedTransfer != nil {
-		l = m.EmbedTransfer.Volume()
+	if m.AppendTransfer != nil {
+		l = m.AppendTransfer.Extent()
 		n += 2 + l + sovKinds(uint64(l))
 	}
 	return n
 }
-func (m *Reply_Reaptransfers) Volume() (n int) {
+func (m *Reply_Harvesttrans) Extent() (n int) {
 	if m == nil {
 		return 0
 	}
 	var l int
 	_ = l
 	if m.HarvestTrans != nil {
-		l = m.HarvestTrans.Volume()
+		l = m.HarvestTrans.Extent()
 		n += 2 + l + sovKinds(uint64(l))
 	}
 	return n
 }
-func (m *ReplyExemption) Volume() (n int) {
+func (m *ReplyExemption) Extent() (n int) {
 	if m == nil {
 		return 0
 	}
 	var l int
 	_ = l
-	l = len(m.Fault)
+	l = len(m.Failure)
 	if l > 0 {
 		n += 1 + l + sovKinds(uint64(l))
 	}
 	return n
 }
 
-func (m *ReplyReverberate) Volume() (n int) {
+func (m *ReplyReverberate) Extent() (n int) {
 	if m == nil {
 		return 0
 	}
@@ -8859,7 +8859,7 @@ func (m *ReplyReverberate) Volume() (n int) {
 	return n
 }
 
-func (m *ReplyPurge) Volume() (n int) {
+func (m *ReplyPurge) Extent() (n int) {
 	if m == nil {
 		return 0
 	}
@@ -8868,7 +8868,7 @@ func (m *ReplyPurge) Volume() (n int) {
 	return n
 }
 
-func (m *ReplyDetails) Volume() (n int) {
+func (m *ReplyDetails) Extent() (n int) {
 	if m == nil {
 		return 0
 	}
@@ -8878,54 +8878,54 @@ func (m *ReplyDetails) Volume() (n int) {
 	if l > 0 {
 		n += 1 + l + sovKinds(uint64(l))
 	}
-	l = len(m.Release)
+	l = len(m.Edition)
 	if l > 0 {
 		n += 1 + l + sovKinds(uint64(l))
 	}
-	if m.ApplicationRelease != 0 {
-		n += 1 + sovKinds(uint64(m.ApplicationRelease))
+	if m.PlatformEdition != 0 {
+		n += 1 + sovKinds(uint64(m.PlatformEdition))
 	}
-	if m.FinalLedgerLevel != 0 {
-		n += 1 + sovKinds(uint64(m.FinalLedgerLevel))
+	if m.FinalLedgerAltitude != 0 {
+		n += 1 + sovKinds(uint64(m.FinalLedgerAltitude))
 	}
-	l = len(m.FinalLedgerApplicationDigest)
+	l = len(m.FinalLedgerPlatformDigest)
 	if l > 0 {
 		n += 1 + l + sovKinds(uint64(l))
 	}
 	return n
 }
 
-func (m *ReplyInitSeries) Volume() (n int) {
+func (m *ReplyInitializeSuccession) Extent() (n int) {
 	if m == nil {
 		return 0
 	}
 	var l int
 	_ = l
-	if m.AgreementOptions != nil {
-		l = m.AgreementOptions.Volume()
+	if m.AgreementSettings != nil {
+		l = m.AgreementSettings.Extent()
 		n += 1 + l + sovKinds(uint64(l))
 	}
-	if len(m.Ratifiers) > 0 {
-		for _, e := range m.Ratifiers {
-			l = e.Volume()
+	if len(m.Assessors) > 0 {
+		for _, e := range m.Assessors {
+			l = e.Extent()
 			n += 1 + l + sovKinds(uint64(l))
 		}
 	}
-	l = len(m.ApplicationDigest)
+	l = len(m.PlatformDigest)
 	if l > 0 {
 		n += 1 + l + sovKinds(uint64(l))
 	}
 	return n
 }
 
-func (m *ReplyInquire) Volume() (n int) {
+func (m *ReplyInquire) Extent() (n int) {
 	if m == nil {
 		return 0
 	}
 	var l int
 	_ = l
-	if m.Code != 0 {
-		n += 1 + sovKinds(uint64(m.Code))
+	if m.Cipher != 0 {
+		n += 1 + sovKinds(uint64(m.Cipher))
 	}
 	l = len(m.Log)
 	if l > 0 {
@@ -8942,32 +8942,32 @@ func (m *ReplyInquire) Volume() (n int) {
 	if l > 0 {
 		n += 1 + l + sovKinds(uint64(l))
 	}
-	l = len(m.Item)
+	l = len(m.Datum)
 	if l > 0 {
 		n += 1 + l + sovKinds(uint64(l))
 	}
-	if m.EvidenceActions != nil {
-		l = m.EvidenceActions.Volume()
+	if m.AttestationActions != nil {
+		l = m.AttestationActions.Extent()
 		n += 1 + l + sovKinds(uint64(l))
 	}
-	if m.Level != 0 {
-		n += 1 + sovKinds(uint64(m.Level))
+	if m.Altitude != 0 {
+		n += 1 + sovKinds(uint64(m.Altitude))
 	}
-	l = len(m.Codex)
+	l = len(m.Codeset)
 	if l > 0 {
 		n += 1 + l + sovKinds(uint64(l))
 	}
 	return n
 }
 
-func (m *ReplyInspectTransfer) Volume() (n int) {
+func (m *ReplyInspectTransfer) Extent() (n int) {
 	if m == nil {
 		return 0
 	}
 	var l int
 	_ = l
-	if m.Code != 0 {
-		n += 1 + sovKinds(uint64(m.Code))
+	if m.Cipher != 0 {
+		n += 1 + sovKinds(uint64(m.Cipher))
 	}
 	l = len(m.Data)
 	if l > 0 {
@@ -8984,35 +8984,35 @@ func (m *ReplyInspectTransfer) Volume() (n int) {
 	if m.FuelDesired != 0 {
 		n += 1 + sovKinds(uint64(m.FuelDesired))
 	}
-	if m.FuelApplied != 0 {
-		n += 1 + sovKinds(uint64(m.FuelApplied))
+	if m.FuelUtilized != 0 {
+		n += 1 + sovKinds(uint64(m.FuelUtilized))
 	}
-	if len(m.Events) > 0 {
-		for _, e := range m.Events {
-			l = e.Volume()
+	if len(m.Incidents) > 0 {
+		for _, e := range m.Incidents {
+			l = e.Extent()
 			n += 1 + l + sovKinds(uint64(l))
 		}
 	}
-	l = len(m.Codex)
+	l = len(m.Codeset)
 	if l > 0 {
 		n += 1 + l + sovKinds(uint64(l))
 	}
 	return n
 }
 
-func (m *ReplyEmbedTransfer) Volume() (n int) {
+func (m *ReplyAppendTransfer) Extent() (n int) {
 	if m == nil {
 		return 0
 	}
 	var l int
 	_ = l
-	if m.Code != 0 {
-		n += 1 + sovKinds(uint64(m.Code))
+	if m.Cipher != 0 {
+		n += 1 + sovKinds(uint64(m.Cipher))
 	}
 	return n
 }
 
-func (m *ReplyHarvestTrans) Volume() (n int) {
+func (m *ReplyHarvestTrans) Extent() (n int) {
 	if m == nil {
 		return 0
 	}
@@ -9027,34 +9027,34 @@ func (m *ReplyHarvestTrans) Volume() (n int) {
 	return n
 }
 
-func (m *ReplyEndorse) Volume() (n int) {
+func (m *ReplyEndorse) Extent() (n int) {
 	if m == nil {
 		return 0
 	}
 	var l int
 	_ = l
-	if m.PreserveLevel != 0 {
-		n += 1 + sovKinds(uint64(m.PreserveLevel))
+	if m.PreserveAltitude != 0 {
+		n += 1 + sovKinds(uint64(m.PreserveAltitude))
 	}
 	return n
 }
 
-func (m *ReplyCatalogMirrors) Volume() (n int) {
+func (m *ReplyCatalogImages) Extent() (n int) {
 	if m == nil {
 		return 0
 	}
 	var l int
 	_ = l
-	if len(m.Mirrors) > 0 {
-		for _, e := range m.Mirrors {
-			l = e.Volume()
+	if len(m.Images) > 0 {
+		for _, e := range m.Images {
+			l = e.Extent()
 			n += 1 + l + sovKinds(uint64(l))
 		}
 	}
 	return n
 }
 
-func (m *ReplyProposalMirror) Volume() (n int) {
+func (m *ReplyExtendImage) Extent() (n int) {
 	if m == nil {
 		return 0
 	}
@@ -9066,7 +9066,7 @@ func (m *ReplyProposalMirror) Volume() (n int) {
 	return n
 }
 
-func (m *ReplyImportMirrorSegment) Volume() (n int) {
+func (m *ReplyFetchImageSegment) Extent() (n int) {
 	if m == nil {
 		return 0
 	}
@@ -9079,7 +9079,7 @@ func (m *ReplyImportMirrorSegment) Volume() (n int) {
 	return n
 }
 
-func (m *ReplyExecuteMirrorSegment) Volume() (n int) {
+func (m *ReplyExecuteImageSegment) Extent() (n int) {
 	if m == nil {
 		return 0
 	}
@@ -9088,15 +9088,15 @@ func (m *ReplyExecuteMirrorSegment) Volume() (n int) {
 	if m.Outcome != 0 {
 		n += 1 + sovKinds(uint64(m.Outcome))
 	}
-	if len(m.ReacquireSegments) > 0 {
+	if len(m.RetrieveSegments) > 0 {
 		l = 0
-		for _, e := range m.ReacquireSegments {
+		for _, e := range m.RetrieveSegments {
 			l += sovKinds(uint64(e))
 		}
 		n += 1 + sovKinds(uint64(l)) + l
 	}
-	if len(m.DeclineEmitters) > 0 {
-		for _, s := range m.DeclineEmitters {
+	if len(m.DeclineOriginators) > 0 {
+		for _, s := range m.DeclineOriginators {
 			l = len(s)
 			n += 1 + l + sovKinds(uint64(l))
 		}
@@ -9104,7 +9104,7 @@ func (m *ReplyExecuteMirrorSegment) Volume() (n int) {
 	return n
 }
 
-func (m *ReplyArrangeNomination) Volume() (n int) {
+func (m *ReplyArrangeNomination) Extent() (n int) {
 	if m == nil {
 		return 0
 	}
@@ -9119,19 +9119,19 @@ func (m *ReplyArrangeNomination) Volume() (n int) {
 	return n
 }
 
-func (m *ReplyHandleNomination) Volume() (n int) {
+func (m *ReplyHandleNomination) Extent() (n int) {
 	if m == nil {
 		return 0
 	}
 	var l int
 	_ = l
-	if m.Status != 0 {
-		n += 1 + sovKinds(uint64(m.Status))
+	if m.Condition != 0 {
+		n += 1 + sovKinds(uint64(m.Condition))
 	}
 	return n
 }
 
-func (m *ReplyExpandBallot) Volume() (n int) {
+func (m *ReplyBroadenBallot) Extent() (n int) {
 	if m == nil {
 		return 0
 	}
@@ -9144,90 +9144,90 @@ func (m *ReplyExpandBallot) Volume() (n int) {
 	return n
 }
 
-func (m *ReplyValidateBallotAddition) Volume() (n int) {
+func (m *ReplyValidateBallotAddition) Extent() (n int) {
 	if m == nil {
 		return 0
 	}
 	var l int
 	_ = l
-	if m.Status != 0 {
-		n += 1 + sovKinds(uint64(m.Status))
+	if m.Condition != 0 {
+		n += 1 + sovKinds(uint64(m.Condition))
 	}
 	return n
 }
 
-func (m *ReplyCompleteLedger) Volume() (n int) {
+func (m *ReplyCulminateLedger) Extent() (n int) {
 	if m == nil {
 		return 0
 	}
 	var l int
 	_ = l
-	if len(m.Events) > 0 {
-		for _, e := range m.Events {
-			l = e.Volume()
+	if len(m.Incidents) > 0 {
+		for _, e := range m.Incidents {
+			l = e.Extent()
 			n += 1 + l + sovKinds(uint64(l))
 		}
 	}
-	if len(m.TransOutcomes) > 0 {
-		for _, e := range m.TransOutcomes {
-			l = e.Volume()
+	if len(m.TransferOutcomes) > 0 {
+		for _, e := range m.TransferOutcomes {
+			l = e.Extent()
 			n += 1 + l + sovKinds(uint64(l))
 		}
 	}
-	if len(m.RatifierRefreshes) > 0 {
-		for _, e := range m.RatifierRefreshes {
-			l = e.Volume()
+	if len(m.AssessorRevisions) > 0 {
+		for _, e := range m.AssessorRevisions {
+			l = e.Extent()
 			n += 1 + l + sovKinds(uint64(l))
 		}
 	}
-	if m.AgreementArgumentRefreshes != nil {
-		l = m.AgreementArgumentRefreshes.Volume()
+	if m.AgreementArgumentRevisions != nil {
+		l = m.AgreementArgumentRevisions.Extent()
 		n += 1 + l + sovKinds(uint64(l))
 	}
-	l = len(m.ApplicationDigest)
+	l = len(m.PlatformDigest)
 	if l > 0 {
 		n += 1 + l + sovKinds(uint64(l))
 	}
 	return n
 }
 
-func (m *EndorseDetails) Volume() (n int) {
+func (m *EndorseDetails) Extent() (n int) {
 	if m == nil {
 		return 0
 	}
 	var l int
 	_ = l
-	if m.Cycle != 0 {
-		n += 1 + sovKinds(uint64(m.Cycle))
+	if m.Iteration != 0 {
+		n += 1 + sovKinds(uint64(m.Iteration))
 	}
 	if len(m.Ballots) > 0 {
 		for _, e := range m.Ballots {
-			l = e.Volume()
+			l = e.Extent()
 			n += 1 + l + sovKinds(uint64(l))
 		}
 	}
 	return n
 }
 
-func (m *ExpandedEndorseDetails) Volume() (n int) {
+func (m *ExpandedEndorseDetails) Extent() (n int) {
 	if m == nil {
 		return 0
 	}
 	var l int
 	_ = l
-	if m.Cycle != 0 {
-		n += 1 + sovKinds(uint64(m.Cycle))
+	if m.Iteration != 0 {
+		n += 1 + sovKinds(uint64(m.Iteration))
 	}
 	if len(m.Ballots) > 0 {
 		for _, e := range m.Ballots {
-			l = e.Volume()
+			l = e.Extent()
 			n += 1 + l + sovKinds(uint64(l))
 		}
 	}
 	return n
 }
 
-func (m *Event) Volume() (n int) {
+func (m *Incident) Extent() (n int) {
 	if m == nil {
 		return 0
 	}
@@ -9239,14 +9239,14 @@ func (m *Event) Volume() (n int) {
 	}
 	if len(m.Properties) > 0 {
 		for _, e := range m.Properties {
-			l = e.Volume()
+			l = e.Extent()
 			n += 1 + l + sovKinds(uint64(l))
 		}
 	}
 	return n
 }
 
-func (m *EventProperty) Volume() (n int) {
+func (m *IncidentProperty) Extent() (n int) {
 	if m == nil {
 		return 0
 	}
@@ -9256,7 +9256,7 @@ func (m *EventProperty) Volume() (n int) {
 	if l > 0 {
 		n += 1 + l + sovKinds(uint64(l))
 	}
-	l = len(m.Item)
+	l = len(m.Datum)
 	if l > 0 {
 		n += 1 + l + sovKinds(uint64(l))
 	}
@@ -9266,14 +9266,14 @@ func (m *EventProperty) Volume() (n int) {
 	return n
 }
 
-func (m *InvokeTransferOutcome) Volume() (n int) {
+func (m *InvokeTransferOutcome) Extent() (n int) {
 	if m == nil {
 		return 0
 	}
 	var l int
 	_ = l
-	if m.Code != 0 {
-		n += 1 + sovKinds(uint64(m.Code))
+	if m.Cipher != 0 {
+		n += 1 + sovKinds(uint64(m.Cipher))
 	}
 	l = len(m.Data)
 	if l > 0 {
@@ -9290,30 +9290,30 @@ func (m *InvokeTransferOutcome) Volume() (n int) {
 	if m.FuelDesired != 0 {
 		n += 1 + sovKinds(uint64(m.FuelDesired))
 	}
-	if m.FuelApplied != 0 {
-		n += 1 + sovKinds(uint64(m.FuelApplied))
+	if m.FuelUtilized != 0 {
+		n += 1 + sovKinds(uint64(m.FuelUtilized))
 	}
-	if len(m.Events) > 0 {
-		for _, e := range m.Events {
-			l = e.Volume()
+	if len(m.Incidents) > 0 {
+		for _, e := range m.Incidents {
+			l = e.Extent()
 			n += 1 + l + sovKinds(uint64(l))
 		}
 	}
-	l = len(m.Codex)
+	l = len(m.Codeset)
 	if l > 0 {
 		n += 1 + l + sovKinds(uint64(l))
 	}
 	return n
 }
 
-func (m *TransOutcome) Volume() (n int) {
+func (m *TransferOutcome) Extent() (n int) {
 	if m == nil {
 		return 0
 	}
 	var l int
 	_ = l
-	if m.Level != 0 {
-		n += 1 + sovKinds(uint64(m.Level))
+	if m.Altitude != 0 {
+		n += 1 + sovKinds(uint64(m.Altitude))
 	}
 	if m.Ordinal != 0 {
 		n += 1 + sovKinds(uint64(m.Ordinal))
@@ -9322,12 +9322,12 @@ func (m *TransOutcome) Volume() (n int) {
 	if l > 0 {
 		n += 1 + l + sovKinds(uint64(l))
 	}
-	l = m.Outcome.Volume()
+	l = m.Outcome.Extent()
 	n += 1 + l + sovKinds(uint64(l))
 	return n
 }
 
-func (m *Ratifier) Volume() (n int) {
+func (m *Assessor) Extent() (n int) {
 	if m == nil {
 		return 0
 	}
@@ -9337,63 +9337,63 @@ func (m *Ratifier) Volume() (n int) {
 	if l > 0 {
 		n += 1 + l + sovKinds(uint64(l))
 	}
-	if m.Energy != 0 {
-		n += 1 + sovKinds(uint64(m.Energy))
+	if m.Potency != 0 {
+		n += 1 + sovKinds(uint64(m.Potency))
 	}
 	return n
 }
 
-func (m *RatifierModify) Volume() (n int) {
+func (m *AssessorRevise) Extent() (n int) {
 	if m == nil {
 		return 0
 	}
 	var l int
 	_ = l
-	l = m.PublicKey.Volume()
+	l = m.PublicToken.Extent()
 	n += 1 + l + sovKinds(uint64(l))
-	if m.Energy != 0 {
-		n += 1 + sovKinds(uint64(m.Energy))
+	if m.Potency != 0 {
+		n += 1 + sovKinds(uint64(m.Potency))
 	}
 	return n
 }
 
-func (m *BallotDetails) Volume() (n int) {
+func (m *BallotDetails) Extent() (n int) {
 	if m == nil {
 		return 0
 	}
 	var l int
 	_ = l
-	l = m.Ratifier.Volume()
+	l = m.Assessor.Extent()
 	n += 1 + l + sovKinds(uint64(l))
-	if m.LedgerUidMark != 0 {
-		n += 1 + sovKinds(uint64(m.LedgerUidMark))
+	if m.LedgerUuidMarker != 0 {
+		n += 1 + sovKinds(uint64(m.LedgerUuidMarker))
 	}
 	return n
 }
 
-func (m *ExpandedBallotDetails) Volume() (n int) {
+func (m *ExpandedBallotDetails) Extent() (n int) {
 	if m == nil {
 		return 0
 	}
 	var l int
 	_ = l
-	l = m.Ratifier.Volume()
+	l = m.Assessor.Extent()
 	n += 1 + l + sovKinds(uint64(l))
 	l = len(m.BallotAddition)
 	if l > 0 {
 		n += 1 + l + sovKinds(uint64(l))
 	}
-	l = len(m.AdditionAutograph)
+	l = len(m.AdditionNotation)
 	if l > 0 {
 		n += 1 + l + sovKinds(uint64(l))
 	}
-	if m.LedgerUidMark != 0 {
-		n += 1 + sovKinds(uint64(m.LedgerUidMark))
+	if m.LedgerUuidMarker != 0 {
+		n += 1 + sovKinds(uint64(m.LedgerUuidMarker))
 	}
 	return n
 }
 
-func (m *Malpractice) Volume() (n int) {
+func (m *Malpractice) Extent() (n int) {
 	if m == nil {
 		return 0
 	}
@@ -9402,27 +9402,27 @@ func (m *Malpractice) Volume() (n int) {
 	if m.Kind != 0 {
 		n += 1 + sovKinds(uint64(m.Kind))
 	}
-	l = m.Ratifier.Volume()
+	l = m.Assessor.Extent()
 	n += 1 + l + sovKinds(uint64(l))
-	if m.Level != 0 {
-		n += 1 + sovKinds(uint64(m.Level))
+	if m.Altitude != 0 {
+		n += 1 + sovKinds(uint64(m.Altitude))
 	}
-	l = github_com_cosmos_gogoproto_types.SizeOfStdTime(m.Time)
+	l = github_com_cosmos_gogoproto_types.SizeOfStdTime(m.Moment)
 	n += 1 + l + sovKinds(uint64(l))
-	if m.SumPollingEnergy != 0 {
-		n += 1 + sovKinds(uint64(m.SumPollingEnergy))
+	if m.SumBallotingPotency != 0 {
+		n += 1 + sovKinds(uint64(m.SumBallotingPotency))
 	}
 	return n
 }
 
-func (m *Mirror) Volume() (n int) {
+func (m *Image) Extent() (n int) {
 	if m == nil {
 		return 0
 	}
 	var l int
 	_ = l
-	if m.Level != 0 {
-		n += 1 + sovKinds(uint64(m.Level))
+	if m.Altitude != 0 {
+		n += 1 + sovKinds(uint64(m.Altitude))
 	}
 	if m.Layout != 0 {
 		n += 1 + sovKinds(uint64(m.Layout))
@@ -9434,7 +9434,7 @@ func (m *Mirror) Volume() (n int) {
 	if l > 0 {
 		n += 1 + l + sovKinds(uint64(l))
 	}
-	l = len(m.Metainfo)
+	l = len(m.Attributes)
 	if l > 0 {
 		n += 1 + l + sovKinds(uint64(l))
 	}
@@ -9447,894 +9447,894 @@ func sovKinds(x uint64) (n int) {
 func sozKinds(x uint64) (n int) {
 	return sovKinds(uint64((x << 1) ^ uint64((int64(x) >> 63))))
 }
-func (m *Query) Unserialize(dAtA []byte) error {
-	l := len(dAtA)
-	idxNdEx := 0
-	for idxNdEx < l {
-		preOrdinal := idxNdEx
+func (m *Solicit) Decode(deltaLocatedAN []byte) error {
+	l := len(deltaLocatedAN)
+	idxNdExc := 0
+	for idxNdExc < l {
+		priorOrdinal := idxNdExc
 		var cable uint64
-		for displace := uint(0); ; displace += 7 {
-			if displace >= 64 {
-				return ErrIntegerOverloadKinds
+		for relocate := uint(0); ; relocate += 7 {
+			if relocate >= 64 {
+				return FaultIntegerOverrunKinds
 			}
-			if idxNdEx >= l {
+			if idxNdExc >= l {
 				return io.ErrUnexpectedEOF
 			}
-			b := dAtA[idxNdEx]
-			idxNdEx++
-			cable |= uint64(b&0x7F) << displace
+			b := deltaLocatedAN[idxNdExc]
+			idxNdExc++
+			cable |= uint64(b&0x7F) << relocate
 			if b < 0x80 {
 				break
 			}
 		}
-		fieldCount := int32(cable >> 3)
+		attributeCount := int32(cable >> 3)
 		cableKind := int(cable & 0x7)
 		if cableKind == 4 {
 			return fmt.Errorf("REDACTED")
 		}
-		if fieldCount <= 0 {
-			return fmt.Errorf("REDACTED", fieldCount, cable)
+		if attributeCount <= 0 {
+			return fmt.Errorf("REDACTED", attributeCount, cable)
 		}
-		switch fieldCount {
+		switch attributeCount {
 		case 1:
 			if cableKind != 2 {
 				return fmt.Errorf("REDACTED", cableKind)
 			}
-			var messagesize int
-			for displace := uint(0); ; displace += 7 {
-				if displace >= 64 {
-					return ErrIntegerOverloadKinds
+			var signallength int
+			for relocate := uint(0); ; relocate += 7 {
+				if relocate >= 64 {
+					return FaultIntegerOverrunKinds
 				}
-				if idxNdEx >= l {
+				if idxNdExc >= l {
 					return io.ErrUnexpectedEOF
 				}
-				b := dAtA[idxNdEx]
-				idxNdEx++
-				messagesize |= int(b&0x7F) << displace
+				b := deltaLocatedAN[idxNdExc]
+				idxNdExc++
+				signallength |= int(b&0x7F) << relocate
 				if b < 0x80 {
 					break
 				}
 			}
-			if messagesize < 0 {
-				return ErrCorruptExtentKinds
+			if signallength < 0 {
+				return FaultUnfitMagnitudeKinds
 			}
-			submitOrdinal := idxNdEx + messagesize
+			submitOrdinal := idxNdExc + signallength
 			if submitOrdinal < 0 {
-				return ErrCorruptExtentKinds
+				return FaultUnfitMagnitudeKinds
 			}
 			if submitOrdinal > l {
 				return io.ErrUnexpectedEOF
 			}
-			v := &QueryReverberate{}
-			if err := v.Unserialize(dAtA[idxNdEx:submitOrdinal]); err != nil {
+			v := &SolicitReverberate{}
+			if err := v.Decode(deltaLocatedAN[idxNdExc:submitOrdinal]); err != nil {
 				return err
 			}
-			m.Item = &Query_Reverberate{v}
-			idxNdEx = submitOrdinal
+			m.Datum = &Solicit_Reverberate{v}
+			idxNdExc = submitOrdinal
 		case 2:
 			if cableKind != 2 {
 				return fmt.Errorf("REDACTED", cableKind)
 			}
-			var messagesize int
-			for displace := uint(0); ; displace += 7 {
-				if displace >= 64 {
-					return ErrIntegerOverloadKinds
+			var signallength int
+			for relocate := uint(0); ; relocate += 7 {
+				if relocate >= 64 {
+					return FaultIntegerOverrunKinds
 				}
-				if idxNdEx >= l {
+				if idxNdExc >= l {
 					return io.ErrUnexpectedEOF
 				}
-				b := dAtA[idxNdEx]
-				idxNdEx++
-				messagesize |= int(b&0x7F) << displace
+				b := deltaLocatedAN[idxNdExc]
+				idxNdExc++
+				signallength |= int(b&0x7F) << relocate
 				if b < 0x80 {
 					break
 				}
 			}
-			if messagesize < 0 {
-				return ErrCorruptExtentKinds
+			if signallength < 0 {
+				return FaultUnfitMagnitudeKinds
 			}
-			submitOrdinal := idxNdEx + messagesize
+			submitOrdinal := idxNdExc + signallength
 			if submitOrdinal < 0 {
-				return ErrCorruptExtentKinds
+				return FaultUnfitMagnitudeKinds
 			}
 			if submitOrdinal > l {
 				return io.ErrUnexpectedEOF
 			}
-			v := &QueryPurge{}
-			if err := v.Unserialize(dAtA[idxNdEx:submitOrdinal]); err != nil {
+			v := &SolicitPurge{}
+			if err := v.Decode(deltaLocatedAN[idxNdExc:submitOrdinal]); err != nil {
 				return err
 			}
-			m.Item = &Query_Purge{v}
-			idxNdEx = submitOrdinal
+			m.Datum = &Solicit_Purge{v}
+			idxNdExc = submitOrdinal
 		case 3:
 			if cableKind != 2 {
 				return fmt.Errorf("REDACTED", cableKind)
 			}
-			var messagesize int
-			for displace := uint(0); ; displace += 7 {
-				if displace >= 64 {
-					return ErrIntegerOverloadKinds
+			var signallength int
+			for relocate := uint(0); ; relocate += 7 {
+				if relocate >= 64 {
+					return FaultIntegerOverrunKinds
 				}
-				if idxNdEx >= l {
+				if idxNdExc >= l {
 					return io.ErrUnexpectedEOF
 				}
-				b := dAtA[idxNdEx]
-				idxNdEx++
-				messagesize |= int(b&0x7F) << displace
+				b := deltaLocatedAN[idxNdExc]
+				idxNdExc++
+				signallength |= int(b&0x7F) << relocate
 				if b < 0x80 {
 					break
 				}
 			}
-			if messagesize < 0 {
-				return ErrCorruptExtentKinds
+			if signallength < 0 {
+				return FaultUnfitMagnitudeKinds
 			}
-			submitOrdinal := idxNdEx + messagesize
+			submitOrdinal := idxNdExc + signallength
 			if submitOrdinal < 0 {
-				return ErrCorruptExtentKinds
+				return FaultUnfitMagnitudeKinds
 			}
 			if submitOrdinal > l {
 				return io.ErrUnexpectedEOF
 			}
-			v := &QueryDetails{}
-			if err := v.Unserialize(dAtA[idxNdEx:submitOrdinal]); err != nil {
+			v := &SolicitDetails{}
+			if err := v.Decode(deltaLocatedAN[idxNdExc:submitOrdinal]); err != nil {
 				return err
 			}
-			m.Item = &Query_Details{v}
-			idxNdEx = submitOrdinal
+			m.Datum = &Solicit_Details{v}
+			idxNdExc = submitOrdinal
 		case 5:
 			if cableKind != 2 {
 				return fmt.Errorf("REDACTED", cableKind)
 			}
-			var messagesize int
-			for displace := uint(0); ; displace += 7 {
-				if displace >= 64 {
-					return ErrIntegerOverloadKinds
+			var signallength int
+			for relocate := uint(0); ; relocate += 7 {
+				if relocate >= 64 {
+					return FaultIntegerOverrunKinds
 				}
-				if idxNdEx >= l {
+				if idxNdExc >= l {
 					return io.ErrUnexpectedEOF
 				}
-				b := dAtA[idxNdEx]
-				idxNdEx++
-				messagesize |= int(b&0x7F) << displace
+				b := deltaLocatedAN[idxNdExc]
+				idxNdExc++
+				signallength |= int(b&0x7F) << relocate
 				if b < 0x80 {
 					break
 				}
 			}
-			if messagesize < 0 {
-				return ErrCorruptExtentKinds
+			if signallength < 0 {
+				return FaultUnfitMagnitudeKinds
 			}
-			submitOrdinal := idxNdEx + messagesize
+			submitOrdinal := idxNdExc + signallength
 			if submitOrdinal < 0 {
-				return ErrCorruptExtentKinds
+				return FaultUnfitMagnitudeKinds
 			}
 			if submitOrdinal > l {
 				return io.ErrUnexpectedEOF
 			}
-			v := &QueryInitSeries{}
-			if err := v.Unserialize(dAtA[idxNdEx:submitOrdinal]); err != nil {
+			v := &SolicitInitializeSuccession{}
+			if err := v.Decode(deltaLocatedAN[idxNdExc:submitOrdinal]); err != nil {
 				return err
 			}
-			m.Item = &Query_Initiatechain{v}
-			idxNdEx = submitOrdinal
+			m.Datum = &Solicit_Initiatechain{v}
+			idxNdExc = submitOrdinal
 		case 6:
 			if cableKind != 2 {
 				return fmt.Errorf("REDACTED", cableKind)
 			}
-			var messagesize int
-			for displace := uint(0); ; displace += 7 {
-				if displace >= 64 {
-					return ErrIntegerOverloadKinds
+			var signallength int
+			for relocate := uint(0); ; relocate += 7 {
+				if relocate >= 64 {
+					return FaultIntegerOverrunKinds
 				}
-				if idxNdEx >= l {
+				if idxNdExc >= l {
 					return io.ErrUnexpectedEOF
 				}
-				b := dAtA[idxNdEx]
-				idxNdEx++
-				messagesize |= int(b&0x7F) << displace
+				b := deltaLocatedAN[idxNdExc]
+				idxNdExc++
+				signallength |= int(b&0x7F) << relocate
 				if b < 0x80 {
 					break
 				}
 			}
-			if messagesize < 0 {
-				return ErrCorruptExtentKinds
+			if signallength < 0 {
+				return FaultUnfitMagnitudeKinds
 			}
-			submitOrdinal := idxNdEx + messagesize
+			submitOrdinal := idxNdExc + signallength
 			if submitOrdinal < 0 {
-				return ErrCorruptExtentKinds
+				return FaultUnfitMagnitudeKinds
 			}
 			if submitOrdinal > l {
 				return io.ErrUnexpectedEOF
 			}
-			v := &QueryInquire{}
-			if err := v.Unserialize(dAtA[idxNdEx:submitOrdinal]); err != nil {
+			v := &SolicitInquire{}
+			if err := v.Decode(deltaLocatedAN[idxNdExc:submitOrdinal]); err != nil {
 				return err
 			}
-			m.Item = &Query_Inquire{v}
-			idxNdEx = submitOrdinal
+			m.Datum = &Solicit_Inquire{v}
+			idxNdExc = submitOrdinal
 		case 8:
 			if cableKind != 2 {
 				return fmt.Errorf("REDACTED", cableKind)
 			}
-			var messagesize int
-			for displace := uint(0); ; displace += 7 {
-				if displace >= 64 {
-					return ErrIntegerOverloadKinds
+			var signallength int
+			for relocate := uint(0); ; relocate += 7 {
+				if relocate >= 64 {
+					return FaultIntegerOverrunKinds
 				}
-				if idxNdEx >= l {
+				if idxNdExc >= l {
 					return io.ErrUnexpectedEOF
 				}
-				b := dAtA[idxNdEx]
-				idxNdEx++
-				messagesize |= int(b&0x7F) << displace
+				b := deltaLocatedAN[idxNdExc]
+				idxNdExc++
+				signallength |= int(b&0x7F) << relocate
 				if b < 0x80 {
 					break
 				}
 			}
-			if messagesize < 0 {
-				return ErrCorruptExtentKinds
+			if signallength < 0 {
+				return FaultUnfitMagnitudeKinds
 			}
-			submitOrdinal := idxNdEx + messagesize
+			submitOrdinal := idxNdExc + signallength
 			if submitOrdinal < 0 {
-				return ErrCorruptExtentKinds
+				return FaultUnfitMagnitudeKinds
 			}
 			if submitOrdinal > l {
 				return io.ErrUnexpectedEOF
 			}
-			v := &QueryInspectTransfer{}
-			if err := v.Unserialize(dAtA[idxNdEx:submitOrdinal]); err != nil {
+			v := &SolicitInspectTransfer{}
+			if err := v.Decode(deltaLocatedAN[idxNdExc:submitOrdinal]); err != nil {
 				return err
 			}
-			m.Item = &Query_Transfercheck{v}
-			idxNdEx = submitOrdinal
+			m.Datum = &Solicit_Inspecttrans{v}
+			idxNdExc = submitOrdinal
 		case 11:
 			if cableKind != 2 {
 				return fmt.Errorf("REDACTED", cableKind)
 			}
-			var messagesize int
-			for displace := uint(0); ; displace += 7 {
-				if displace >= 64 {
-					return ErrIntegerOverloadKinds
+			var signallength int
+			for relocate := uint(0); ; relocate += 7 {
+				if relocate >= 64 {
+					return FaultIntegerOverrunKinds
 				}
-				if idxNdEx >= l {
+				if idxNdExc >= l {
 					return io.ErrUnexpectedEOF
 				}
-				b := dAtA[idxNdEx]
-				idxNdEx++
-				messagesize |= int(b&0x7F) << displace
+				b := deltaLocatedAN[idxNdExc]
+				idxNdExc++
+				signallength |= int(b&0x7F) << relocate
 				if b < 0x80 {
 					break
 				}
 			}
-			if messagesize < 0 {
-				return ErrCorruptExtentKinds
+			if signallength < 0 {
+				return FaultUnfitMagnitudeKinds
 			}
-			submitOrdinal := idxNdEx + messagesize
+			submitOrdinal := idxNdExc + signallength
 			if submitOrdinal < 0 {
-				return ErrCorruptExtentKinds
+				return FaultUnfitMagnitudeKinds
 			}
 			if submitOrdinal > l {
 				return io.ErrUnexpectedEOF
 			}
-			v := &QueryEndorse{}
-			if err := v.Unserialize(dAtA[idxNdEx:submitOrdinal]); err != nil {
+			v := &SolicitEndorse{}
+			if err := v.Decode(deltaLocatedAN[idxNdExc:submitOrdinal]); err != nil {
 				return err
 			}
-			m.Item = &Query_Endorse{v}
-			idxNdEx = submitOrdinal
+			m.Datum = &Solicit_Endorse{v}
+			idxNdExc = submitOrdinal
 		case 12:
 			if cableKind != 2 {
 				return fmt.Errorf("REDACTED", cableKind)
 			}
-			var messagesize int
-			for displace := uint(0); ; displace += 7 {
-				if displace >= 64 {
-					return ErrIntegerOverloadKinds
+			var signallength int
+			for relocate := uint(0); ; relocate += 7 {
+				if relocate >= 64 {
+					return FaultIntegerOverrunKinds
 				}
-				if idxNdEx >= l {
+				if idxNdExc >= l {
 					return io.ErrUnexpectedEOF
 				}
-				b := dAtA[idxNdEx]
-				idxNdEx++
-				messagesize |= int(b&0x7F) << displace
+				b := deltaLocatedAN[idxNdExc]
+				idxNdExc++
+				signallength |= int(b&0x7F) << relocate
 				if b < 0x80 {
 					break
 				}
 			}
-			if messagesize < 0 {
-				return ErrCorruptExtentKinds
+			if signallength < 0 {
+				return FaultUnfitMagnitudeKinds
 			}
-			submitOrdinal := idxNdEx + messagesize
+			submitOrdinal := idxNdExc + signallength
 			if submitOrdinal < 0 {
-				return ErrCorruptExtentKinds
+				return FaultUnfitMagnitudeKinds
 			}
 			if submitOrdinal > l {
 				return io.ErrUnexpectedEOF
 			}
-			v := &QueryCatalogMirrors{}
-			if err := v.Unserialize(dAtA[idxNdEx:submitOrdinal]); err != nil {
+			v := &SolicitCollectionImages{}
+			if err := v.Decode(deltaLocatedAN[idxNdExc:submitOrdinal]); err != nil {
 				return err
 			}
-			m.Item = &Query_Catalogmirrors{v}
-			idxNdEx = submitOrdinal
+			m.Datum = &Solicit_Catalogimages{v}
+			idxNdExc = submitOrdinal
 		case 13:
 			if cableKind != 2 {
 				return fmt.Errorf("REDACTED", cableKind)
 			}
-			var messagesize int
-			for displace := uint(0); ; displace += 7 {
-				if displace >= 64 {
-					return ErrIntegerOverloadKinds
+			var signallength int
+			for relocate := uint(0); ; relocate += 7 {
+				if relocate >= 64 {
+					return FaultIntegerOverrunKinds
 				}
-				if idxNdEx >= l {
+				if idxNdExc >= l {
 					return io.ErrUnexpectedEOF
 				}
-				b := dAtA[idxNdEx]
-				idxNdEx++
-				messagesize |= int(b&0x7F) << displace
+				b := deltaLocatedAN[idxNdExc]
+				idxNdExc++
+				signallength |= int(b&0x7F) << relocate
 				if b < 0x80 {
 					break
 				}
 			}
-			if messagesize < 0 {
-				return ErrCorruptExtentKinds
+			if signallength < 0 {
+				return FaultUnfitMagnitudeKinds
 			}
-			submitOrdinal := idxNdEx + messagesize
+			submitOrdinal := idxNdExc + signallength
 			if submitOrdinal < 0 {
-				return ErrCorruptExtentKinds
+				return FaultUnfitMagnitudeKinds
 			}
 			if submitOrdinal > l {
 				return io.ErrUnexpectedEOF
 			}
-			v := &QueryProposalMirror{}
-			if err := v.Unserialize(dAtA[idxNdEx:submitOrdinal]); err != nil {
+			v := &SolicitExtendImage{}
+			if err := v.Decode(deltaLocatedAN[idxNdExc:submitOrdinal]); err != nil {
 				return err
 			}
-			m.Item = &Query_Mirrorsnapshot{v}
-			idxNdEx = submitOrdinal
+			m.Datum = &Solicit_Extendimage{v}
+			idxNdExc = submitOrdinal
 		case 14:
 			if cableKind != 2 {
 				return fmt.Errorf("REDACTED", cableKind)
 			}
-			var messagesize int
-			for displace := uint(0); ; displace += 7 {
-				if displace >= 64 {
-					return ErrIntegerOverloadKinds
+			var signallength int
+			for relocate := uint(0); ; relocate += 7 {
+				if relocate >= 64 {
+					return FaultIntegerOverrunKinds
 				}
-				if idxNdEx >= l {
+				if idxNdExc >= l {
 					return io.ErrUnexpectedEOF
 				}
-				b := dAtA[idxNdEx]
-				idxNdEx++
-				messagesize |= int(b&0x7F) << displace
+				b := deltaLocatedAN[idxNdExc]
+				idxNdExc++
+				signallength |= int(b&0x7F) << relocate
 				if b < 0x80 {
 					break
 				}
 			}
-			if messagesize < 0 {
-				return ErrCorruptExtentKinds
+			if signallength < 0 {
+				return FaultUnfitMagnitudeKinds
 			}
-			submitOrdinal := idxNdEx + messagesize
+			submitOrdinal := idxNdExc + signallength
 			if submitOrdinal < 0 {
-				return ErrCorruptExtentKinds
+				return FaultUnfitMagnitudeKinds
 			}
 			if submitOrdinal > l {
 				return io.ErrUnexpectedEOF
 			}
-			v := &QueryImportMirrorSegment{}
-			if err := v.Unserialize(dAtA[idxNdEx:submitOrdinal]); err != nil {
+			v := &SolicitFetchImageSegment{}
+			if err := v.Decode(deltaLocatedAN[idxNdExc:submitOrdinal]); err != nil {
 				return err
 			}
-			m.Item = &Query_Loadmirrorsegment{v}
-			idxNdEx = submitOrdinal
+			m.Datum = &Solicit_Loadimagefragment{v}
+			idxNdExc = submitOrdinal
 		case 15:
 			if cableKind != 2 {
 				return fmt.Errorf("REDACTED", cableKind)
 			}
-			var messagesize int
-			for displace := uint(0); ; displace += 7 {
-				if displace >= 64 {
-					return ErrIntegerOverloadKinds
+			var signallength int
+			for relocate := uint(0); ; relocate += 7 {
+				if relocate >= 64 {
+					return FaultIntegerOverrunKinds
 				}
-				if idxNdEx >= l {
+				if idxNdExc >= l {
 					return io.ErrUnexpectedEOF
 				}
-				b := dAtA[idxNdEx]
-				idxNdEx++
-				messagesize |= int(b&0x7F) << displace
+				b := deltaLocatedAN[idxNdExc]
+				idxNdExc++
+				signallength |= int(b&0x7F) << relocate
 				if b < 0x80 {
 					break
 				}
 			}
-			if messagesize < 0 {
-				return ErrCorruptExtentKinds
+			if signallength < 0 {
+				return FaultUnfitMagnitudeKinds
 			}
-			submitOrdinal := idxNdEx + messagesize
+			submitOrdinal := idxNdExc + signallength
 			if submitOrdinal < 0 {
-				return ErrCorruptExtentKinds
+				return FaultUnfitMagnitudeKinds
 			}
 			if submitOrdinal > l {
 				return io.ErrUnexpectedEOF
 			}
-			v := &QueryExecuteMirrorSegment{}
-			if err := v.Unserialize(dAtA[idxNdEx:submitOrdinal]); err != nil {
+			v := &SolicitExecuteImageSegment{}
+			if err := v.Decode(deltaLocatedAN[idxNdExc:submitOrdinal]); err != nil {
 				return err
 			}
-			m.Item = &Query_Executemirrorsegment{v}
-			idxNdEx = submitOrdinal
+			m.Datum = &Solicit_Executeimagefragment{v}
+			idxNdExc = submitOrdinal
 		case 16:
 			if cableKind != 2 {
 				return fmt.Errorf("REDACTED", cableKind)
 			}
-			var messagesize int
-			for displace := uint(0); ; displace += 7 {
-				if displace >= 64 {
-					return ErrIntegerOverloadKinds
+			var signallength int
+			for relocate := uint(0); ; relocate += 7 {
+				if relocate >= 64 {
+					return FaultIntegerOverrunKinds
 				}
-				if idxNdEx >= l {
+				if idxNdExc >= l {
 					return io.ErrUnexpectedEOF
 				}
-				b := dAtA[idxNdEx]
-				idxNdEx++
-				messagesize |= int(b&0x7F) << displace
+				b := deltaLocatedAN[idxNdExc]
+				idxNdExc++
+				signallength |= int(b&0x7F) << relocate
 				if b < 0x80 {
 					break
 				}
 			}
-			if messagesize < 0 {
-				return ErrCorruptExtentKinds
+			if signallength < 0 {
+				return FaultUnfitMagnitudeKinds
 			}
-			submitOrdinal := idxNdEx + messagesize
+			submitOrdinal := idxNdExc + signallength
 			if submitOrdinal < 0 {
-				return ErrCorruptExtentKinds
+				return FaultUnfitMagnitudeKinds
 			}
 			if submitOrdinal > l {
 				return io.ErrUnexpectedEOF
 			}
-			v := &QueryArrangeNomination{}
-			if err := v.Unserialize(dAtA[idxNdEx:submitOrdinal]); err != nil {
+			v := &SolicitArrangeNomination{}
+			if err := v.Decode(deltaLocatedAN[idxNdExc:submitOrdinal]); err != nil {
 				return err
 			}
-			m.Item = &Query_Arrangenomination{v}
-			idxNdEx = submitOrdinal
+			m.Datum = &Solicit_Prepareitem{v}
+			idxNdExc = submitOrdinal
 		case 17:
 			if cableKind != 2 {
 				return fmt.Errorf("REDACTED", cableKind)
 			}
-			var messagesize int
-			for displace := uint(0); ; displace += 7 {
-				if displace >= 64 {
-					return ErrIntegerOverloadKinds
+			var signallength int
+			for relocate := uint(0); ; relocate += 7 {
+				if relocate >= 64 {
+					return FaultIntegerOverrunKinds
 				}
-				if idxNdEx >= l {
+				if idxNdExc >= l {
 					return io.ErrUnexpectedEOF
 				}
-				b := dAtA[idxNdEx]
-				idxNdEx++
-				messagesize |= int(b&0x7F) << displace
+				b := deltaLocatedAN[idxNdExc]
+				idxNdExc++
+				signallength |= int(b&0x7F) << relocate
 				if b < 0x80 {
 					break
 				}
 			}
-			if messagesize < 0 {
-				return ErrCorruptExtentKinds
+			if signallength < 0 {
+				return FaultUnfitMagnitudeKinds
 			}
-			submitOrdinal := idxNdEx + messagesize
+			submitOrdinal := idxNdExc + signallength
 			if submitOrdinal < 0 {
-				return ErrCorruptExtentKinds
+				return FaultUnfitMagnitudeKinds
 			}
 			if submitOrdinal > l {
 				return io.ErrUnexpectedEOF
 			}
-			v := &QueryHandleNomination{}
-			if err := v.Unserialize(dAtA[idxNdEx:submitOrdinal]); err != nil {
+			v := &SolicitHandleNomination{}
+			if err := v.Decode(deltaLocatedAN[idxNdExc:submitOrdinal]); err != nil {
 				return err
 			}
-			m.Item = &Query_Processnomination{v}
-			idxNdEx = submitOrdinal
+			m.Datum = &Solicit_Executeitem{v}
+			idxNdExc = submitOrdinal
 		case 18:
 			if cableKind != 2 {
 				return fmt.Errorf("REDACTED", cableKind)
 			}
-			var messagesize int
-			for displace := uint(0); ; displace += 7 {
-				if displace >= 64 {
-					return ErrIntegerOverloadKinds
+			var signallength int
+			for relocate := uint(0); ; relocate += 7 {
+				if relocate >= 64 {
+					return FaultIntegerOverrunKinds
 				}
-				if idxNdEx >= l {
+				if idxNdExc >= l {
 					return io.ErrUnexpectedEOF
 				}
-				b := dAtA[idxNdEx]
-				idxNdEx++
-				messagesize |= int(b&0x7F) << displace
+				b := deltaLocatedAN[idxNdExc]
+				idxNdExc++
+				signallength |= int(b&0x7F) << relocate
 				if b < 0x80 {
 					break
 				}
 			}
-			if messagesize < 0 {
-				return ErrCorruptExtentKinds
+			if signallength < 0 {
+				return FaultUnfitMagnitudeKinds
 			}
-			submitOrdinal := idxNdEx + messagesize
+			submitOrdinal := idxNdExc + signallength
 			if submitOrdinal < 0 {
-				return ErrCorruptExtentKinds
+				return FaultUnfitMagnitudeKinds
 			}
 			if submitOrdinal > l {
 				return io.ErrUnexpectedEOF
 			}
-			v := &QueryExpandBallot{}
-			if err := v.Unserialize(dAtA[idxNdEx:submitOrdinal]); err != nil {
+			v := &SolicitBroadenBallot{}
+			if err := v.Decode(deltaLocatedAN[idxNdExc:submitOrdinal]); err != nil {
 				return err
 			}
-			m.Item = &Query_Ballotextend{v}
-			idxNdEx = submitOrdinal
+			m.Datum = &Solicit_Extendballot{v}
+			idxNdExc = submitOrdinal
 		case 19:
 			if cableKind != 2 {
 				return fmt.Errorf("REDACTED", cableKind)
 			}
-			var messagesize int
-			for displace := uint(0); ; displace += 7 {
-				if displace >= 64 {
-					return ErrIntegerOverloadKinds
+			var signallength int
+			for relocate := uint(0); ; relocate += 7 {
+				if relocate >= 64 {
+					return FaultIntegerOverrunKinds
 				}
-				if idxNdEx >= l {
+				if idxNdExc >= l {
 					return io.ErrUnexpectedEOF
 				}
-				b := dAtA[idxNdEx]
-				idxNdEx++
-				messagesize |= int(b&0x7F) << displace
+				b := deltaLocatedAN[idxNdExc]
+				idxNdExc++
+				signallength |= int(b&0x7F) << relocate
 				if b < 0x80 {
 					break
 				}
 			}
-			if messagesize < 0 {
-				return ErrCorruptExtentKinds
+			if signallength < 0 {
+				return FaultUnfitMagnitudeKinds
 			}
-			submitOrdinal := idxNdEx + messagesize
+			submitOrdinal := idxNdExc + signallength
 			if submitOrdinal < 0 {
-				return ErrCorruptExtentKinds
+				return FaultUnfitMagnitudeKinds
 			}
 			if submitOrdinal > l {
 				return io.ErrUnexpectedEOF
 			}
-			v := &QueryValidateBallotAddition{}
-			if err := v.Unserialize(dAtA[idxNdEx:submitOrdinal]); err != nil {
+			v := &SolicitValidateBallotAddition{}
+			if err := v.Decode(deltaLocatedAN[idxNdExc:submitOrdinal]); err != nil {
 				return err
 			}
-			m.Item = &Query_Validateballotextension{v}
-			idxNdEx = submitOrdinal
+			m.Datum = &Solicit_Verifyballotaddition{v}
+			idxNdExc = submitOrdinal
 		case 20:
 			if cableKind != 2 {
 				return fmt.Errorf("REDACTED", cableKind)
 			}
-			var messagesize int
-			for displace := uint(0); ; displace += 7 {
-				if displace >= 64 {
-					return ErrIntegerOverloadKinds
+			var signallength int
+			for relocate := uint(0); ; relocate += 7 {
+				if relocate >= 64 {
+					return FaultIntegerOverrunKinds
 				}
-				if idxNdEx >= l {
+				if idxNdExc >= l {
 					return io.ErrUnexpectedEOF
 				}
-				b := dAtA[idxNdEx]
-				idxNdEx++
-				messagesize |= int(b&0x7F) << displace
+				b := deltaLocatedAN[idxNdExc]
+				idxNdExc++
+				signallength |= int(b&0x7F) << relocate
 				if b < 0x80 {
 					break
 				}
 			}
-			if messagesize < 0 {
-				return ErrCorruptExtentKinds
+			if signallength < 0 {
+				return FaultUnfitMagnitudeKinds
 			}
-			submitOrdinal := idxNdEx + messagesize
+			submitOrdinal := idxNdExc + signallength
 			if submitOrdinal < 0 {
-				return ErrCorruptExtentKinds
+				return FaultUnfitMagnitudeKinds
 			}
 			if submitOrdinal > l {
 				return io.ErrUnexpectedEOF
 			}
-			v := &QueryCompleteLedger{}
-			if err := v.Unserialize(dAtA[idxNdEx:submitOrdinal]); err != nil {
+			v := &SolicitCulminateLedger{}
+			if err := v.Decode(deltaLocatedAN[idxNdExc:submitOrdinal]); err != nil {
 				return err
 			}
-			m.Item = &Query_Terminateblock{v}
-			idxNdEx = submitOrdinal
+			m.Datum = &Solicit_Finalizeledger{v}
+			idxNdExc = submitOrdinal
 		case 21:
 			if cableKind != 2 {
 				return fmt.Errorf("REDACTED", cableKind)
 			}
-			var messagesize int
-			for displace := uint(0); ; displace += 7 {
-				if displace >= 64 {
-					return ErrIntegerOverloadKinds
+			var signallength int
+			for relocate := uint(0); ; relocate += 7 {
+				if relocate >= 64 {
+					return FaultIntegerOverrunKinds
 				}
-				if idxNdEx >= l {
+				if idxNdExc >= l {
 					return io.ErrUnexpectedEOF
 				}
-				b := dAtA[idxNdEx]
-				idxNdEx++
-				messagesize |= int(b&0x7F) << displace
+				b := deltaLocatedAN[idxNdExc]
+				idxNdExc++
+				signallength |= int(b&0x7F) << relocate
 				if b < 0x80 {
 					break
 				}
 			}
-			if messagesize < 0 {
-				return ErrCorruptExtentKinds
+			if signallength < 0 {
+				return FaultUnfitMagnitudeKinds
 			}
-			submitOrdinal := idxNdEx + messagesize
+			submitOrdinal := idxNdExc + signallength
 			if submitOrdinal < 0 {
-				return ErrCorruptExtentKinds
+				return FaultUnfitMagnitudeKinds
 			}
 			if submitOrdinal > l {
 				return io.ErrUnexpectedEOF
 			}
-			v := &QueryEmbedTransfer{}
-			if err := v.Unserialize(dAtA[idxNdEx:submitOrdinal]); err != nil {
+			v := &SolicitAppendTransfer{}
+			if err := v.Decode(deltaLocatedAN[idxNdExc:submitOrdinal]); err != nil {
 				return err
 			}
-			m.Item = &Query_Transferinsert{v}
-			idxNdEx = submitOrdinal
+			m.Datum = &Solicit_Appendtrans{v}
+			idxNdExc = submitOrdinal
 		case 22:
 			if cableKind != 2 {
 				return fmt.Errorf("REDACTED", cableKind)
 			}
-			var messagesize int
-			for displace := uint(0); ; displace += 7 {
-				if displace >= 64 {
-					return ErrIntegerOverloadKinds
+			var signallength int
+			for relocate := uint(0); ; relocate += 7 {
+				if relocate >= 64 {
+					return FaultIntegerOverrunKinds
 				}
-				if idxNdEx >= l {
+				if idxNdExc >= l {
 					return io.ErrUnexpectedEOF
 				}
-				b := dAtA[idxNdEx]
-				idxNdEx++
-				messagesize |= int(b&0x7F) << displace
+				b := deltaLocatedAN[idxNdExc]
+				idxNdExc++
+				signallength |= int(b&0x7F) << relocate
 				if b < 0x80 {
 					break
 				}
 			}
-			if messagesize < 0 {
-				return ErrCorruptExtentKinds
+			if signallength < 0 {
+				return FaultUnfitMagnitudeKinds
 			}
-			submitOrdinal := idxNdEx + messagesize
+			submitOrdinal := idxNdExc + signallength
 			if submitOrdinal < 0 {
-				return ErrCorruptExtentKinds
+				return FaultUnfitMagnitudeKinds
 			}
 			if submitOrdinal > l {
 				return io.ErrUnexpectedEOF
 			}
-			v := &QueryHarvestTrans{}
-			if err := v.Unserialize(dAtA[idxNdEx:submitOrdinal]); err != nil {
+			v := &SolicitHarvestTrans{}
+			if err := v.Decode(deltaLocatedAN[idxNdExc:submitOrdinal]); err != nil {
 				return err
 			}
-			m.Item = &Query_Reaptransfers{v}
-			idxNdEx = submitOrdinal
+			m.Datum = &Solicit_Harvesttrans{v}
+			idxNdExc = submitOrdinal
 		default:
-			idxNdEx = preOrdinal
-			skippy, err := omitKinds(dAtA[idxNdEx:])
+			idxNdExc = priorOrdinal
+			omitted, err := omitKinds(deltaLocatedAN[idxNdExc:])
 			if err != nil {
 				return err
 			}
-			if (skippy < 0) || (idxNdEx+skippy) < 0 {
-				return ErrCorruptExtentKinds
+			if (omitted < 0) || (idxNdExc+omitted) < 0 {
+				return FaultUnfitMagnitudeKinds
 			}
-			if (idxNdEx + skippy) > l {
+			if (idxNdExc + omitted) > l {
 				return io.ErrUnexpectedEOF
 			}
-			idxNdEx += skippy
+			idxNdExc += omitted
 		}
 	}
 
-	if idxNdEx > l {
+	if idxNdExc > l {
 		return io.ErrUnexpectedEOF
 	}
 	return nil
 }
-func (m *QueryReverberate) Unserialize(dAtA []byte) error {
-	l := len(dAtA)
-	idxNdEx := 0
-	for idxNdEx < l {
-		preOrdinal := idxNdEx
+func (m *SolicitReverberate) Decode(deltaLocatedAN []byte) error {
+	l := len(deltaLocatedAN)
+	idxNdExc := 0
+	for idxNdExc < l {
+		priorOrdinal := idxNdExc
 		var cable uint64
-		for displace := uint(0); ; displace += 7 {
-			if displace >= 64 {
-				return ErrIntegerOverloadKinds
+		for relocate := uint(0); ; relocate += 7 {
+			if relocate >= 64 {
+				return FaultIntegerOverrunKinds
 			}
-			if idxNdEx >= l {
+			if idxNdExc >= l {
 				return io.ErrUnexpectedEOF
 			}
-			b := dAtA[idxNdEx]
-			idxNdEx++
-			cable |= uint64(b&0x7F) << displace
+			b := deltaLocatedAN[idxNdExc]
+			idxNdExc++
+			cable |= uint64(b&0x7F) << relocate
 			if b < 0x80 {
 				break
 			}
 		}
-		fieldCount := int32(cable >> 3)
+		attributeCount := int32(cable >> 3)
 		cableKind := int(cable & 0x7)
 		if cableKind == 4 {
 			return fmt.Errorf("REDACTED")
 		}
-		if fieldCount <= 0 {
-			return fmt.Errorf("REDACTED", fieldCount, cable)
+		if attributeCount <= 0 {
+			return fmt.Errorf("REDACTED", attributeCount, cable)
 		}
-		switch fieldCount {
+		switch attributeCount {
 		case 1:
 			if cableKind != 2 {
 				return fmt.Errorf("REDACTED", cableKind)
 			}
-			var stringSize uint64
-			for displace := uint(0); ; displace += 7 {
-				if displace >= 64 {
-					return ErrIntegerOverloadKinds
+			var textSize uint64
+			for relocate := uint(0); ; relocate += 7 {
+				if relocate >= 64 {
+					return FaultIntegerOverrunKinds
 				}
-				if idxNdEx >= l {
+				if idxNdExc >= l {
 					return io.ErrUnexpectedEOF
 				}
-				b := dAtA[idxNdEx]
-				idxNdEx++
-				stringSize |= uint64(b&0x7F) << displace
+				b := deltaLocatedAN[idxNdExc]
+				idxNdExc++
+				textSize |= uint64(b&0x7F) << relocate
 				if b < 0x80 {
 					break
 				}
 			}
-			integerStringSize := int(stringSize)
-			if integerStringSize < 0 {
-				return ErrCorruptExtentKinds
+			integerTextSize := int(textSize)
+			if integerTextSize < 0 {
+				return FaultUnfitMagnitudeKinds
 			}
-			submitOrdinal := idxNdEx + integerStringSize
+			submitOrdinal := idxNdExc + integerTextSize
 			if submitOrdinal < 0 {
-				return ErrCorruptExtentKinds
+				return FaultUnfitMagnitudeKinds
 			}
 			if submitOrdinal > l {
 				return io.ErrUnexpectedEOF
 			}
-			m.Signal = string(dAtA[idxNdEx:submitOrdinal])
-			idxNdEx = submitOrdinal
+			m.Signal = string(deltaLocatedAN[idxNdExc:submitOrdinal])
+			idxNdExc = submitOrdinal
 		default:
-			idxNdEx = preOrdinal
-			skippy, err := omitKinds(dAtA[idxNdEx:])
+			idxNdExc = priorOrdinal
+			omitted, err := omitKinds(deltaLocatedAN[idxNdExc:])
 			if err != nil {
 				return err
 			}
-			if (skippy < 0) || (idxNdEx+skippy) < 0 {
-				return ErrCorruptExtentKinds
+			if (omitted < 0) || (idxNdExc+omitted) < 0 {
+				return FaultUnfitMagnitudeKinds
 			}
-			if (idxNdEx + skippy) > l {
+			if (idxNdExc + omitted) > l {
 				return io.ErrUnexpectedEOF
 			}
-			idxNdEx += skippy
+			idxNdExc += omitted
 		}
 	}
 
-	if idxNdEx > l {
+	if idxNdExc > l {
 		return io.ErrUnexpectedEOF
 	}
 	return nil
 }
-func (m *QueryPurge) Unserialize(dAtA []byte) error {
-	l := len(dAtA)
-	idxNdEx := 0
-	for idxNdEx < l {
-		preOrdinal := idxNdEx
+func (m *SolicitPurge) Decode(deltaLocatedAN []byte) error {
+	l := len(deltaLocatedAN)
+	idxNdExc := 0
+	for idxNdExc < l {
+		priorOrdinal := idxNdExc
 		var cable uint64
-		for displace := uint(0); ; displace += 7 {
-			if displace >= 64 {
-				return ErrIntegerOverloadKinds
+		for relocate := uint(0); ; relocate += 7 {
+			if relocate >= 64 {
+				return FaultIntegerOverrunKinds
 			}
-			if idxNdEx >= l {
+			if idxNdExc >= l {
 				return io.ErrUnexpectedEOF
 			}
-			b := dAtA[idxNdEx]
-			idxNdEx++
-			cable |= uint64(b&0x7F) << displace
+			b := deltaLocatedAN[idxNdExc]
+			idxNdExc++
+			cable |= uint64(b&0x7F) << relocate
 			if b < 0x80 {
 				break
 			}
 		}
-		fieldCount := int32(cable >> 3)
+		attributeCount := int32(cable >> 3)
 		cableKind := int(cable & 0x7)
 		if cableKind == 4 {
 			return fmt.Errorf("REDACTED")
 		}
-		if fieldCount <= 0 {
-			return fmt.Errorf("REDACTED", fieldCount, cable)
+		if attributeCount <= 0 {
+			return fmt.Errorf("REDACTED", attributeCount, cable)
 		}
-		switch fieldCount {
+		switch attributeCount {
 		default:
-			idxNdEx = preOrdinal
-			skippy, err := omitKinds(dAtA[idxNdEx:])
+			idxNdExc = priorOrdinal
+			omitted, err := omitKinds(deltaLocatedAN[idxNdExc:])
 			if err != nil {
 				return err
 			}
-			if (skippy < 0) || (idxNdEx+skippy) < 0 {
-				return ErrCorruptExtentKinds
+			if (omitted < 0) || (idxNdExc+omitted) < 0 {
+				return FaultUnfitMagnitudeKinds
 			}
-			if (idxNdEx + skippy) > l {
+			if (idxNdExc + omitted) > l {
 				return io.ErrUnexpectedEOF
 			}
-			idxNdEx += skippy
+			idxNdExc += omitted
 		}
 	}
 
-	if idxNdEx > l {
+	if idxNdExc > l {
 		return io.ErrUnexpectedEOF
 	}
 	return nil
 }
-func (m *QueryDetails) Unserialize(dAtA []byte) error {
-	l := len(dAtA)
-	idxNdEx := 0
-	for idxNdEx < l {
-		preOrdinal := idxNdEx
+func (m *SolicitDetails) Decode(deltaLocatedAN []byte) error {
+	l := len(deltaLocatedAN)
+	idxNdExc := 0
+	for idxNdExc < l {
+		priorOrdinal := idxNdExc
 		var cable uint64
-		for displace := uint(0); ; displace += 7 {
-			if displace >= 64 {
-				return ErrIntegerOverloadKinds
+		for relocate := uint(0); ; relocate += 7 {
+			if relocate >= 64 {
+				return FaultIntegerOverrunKinds
 			}
-			if idxNdEx >= l {
+			if idxNdExc >= l {
 				return io.ErrUnexpectedEOF
 			}
-			b := dAtA[idxNdEx]
-			idxNdEx++
-			cable |= uint64(b&0x7F) << displace
+			b := deltaLocatedAN[idxNdExc]
+			idxNdExc++
+			cable |= uint64(b&0x7F) << relocate
 			if b < 0x80 {
 				break
 			}
 		}
-		fieldCount := int32(cable >> 3)
+		attributeCount := int32(cable >> 3)
 		cableKind := int(cable & 0x7)
 		if cableKind == 4 {
 			return fmt.Errorf("REDACTED")
 		}
-		if fieldCount <= 0 {
-			return fmt.Errorf("REDACTED", fieldCount, cable)
+		if attributeCount <= 0 {
+			return fmt.Errorf("REDACTED", attributeCount, cable)
 		}
-		switch fieldCount {
+		switch attributeCount {
 		case 1:
 			if cableKind != 2 {
 				return fmt.Errorf("REDACTED", cableKind)
 			}
-			var stringSize uint64
-			for displace := uint(0); ; displace += 7 {
-				if displace >= 64 {
-					return ErrIntegerOverloadKinds
+			var textSize uint64
+			for relocate := uint(0); ; relocate += 7 {
+				if relocate >= 64 {
+					return FaultIntegerOverrunKinds
 				}
-				if idxNdEx >= l {
+				if idxNdExc >= l {
 					return io.ErrUnexpectedEOF
 				}
-				b := dAtA[idxNdEx]
-				idxNdEx++
-				stringSize |= uint64(b&0x7F) << displace
+				b := deltaLocatedAN[idxNdExc]
+				idxNdExc++
+				textSize |= uint64(b&0x7F) << relocate
 				if b < 0x80 {
 					break
 				}
 			}
-			integerStringSize := int(stringSize)
-			if integerStringSize < 0 {
-				return ErrCorruptExtentKinds
+			integerTextSize := int(textSize)
+			if integerTextSize < 0 {
+				return FaultUnfitMagnitudeKinds
 			}
-			submitOrdinal := idxNdEx + integerStringSize
+			submitOrdinal := idxNdExc + integerTextSize
 			if submitOrdinal < 0 {
-				return ErrCorruptExtentKinds
+				return FaultUnfitMagnitudeKinds
 			}
 			if submitOrdinal > l {
 				return io.ErrUnexpectedEOF
 			}
-			m.Release = string(dAtA[idxNdEx:submitOrdinal])
-			idxNdEx = submitOrdinal
+			m.Edition = string(deltaLocatedAN[idxNdExc:submitOrdinal])
+			idxNdExc = submitOrdinal
 		case 2:
 			if cableKind != 0 {
 				return fmt.Errorf("REDACTED", cableKind)
 			}
-			m.LedgerRelease = 0
-			for displace := uint(0); ; displace += 7 {
-				if displace >= 64 {
-					return ErrIntegerOverloadKinds
+			m.LedgerEdition = 0
+			for relocate := uint(0); ; relocate += 7 {
+				if relocate >= 64 {
+					return FaultIntegerOverrunKinds
 				}
-				if idxNdEx >= l {
+				if idxNdExc >= l {
 					return io.ErrUnexpectedEOF
 				}
-				b := dAtA[idxNdEx]
-				idxNdEx++
-				m.LedgerRelease |= uint64(b&0x7F) << displace
+				b := deltaLocatedAN[idxNdExc]
+				idxNdExc++
+				m.LedgerEdition |= uint64(b&0x7F) << relocate
 				if b < 0x80 {
 					break
 				}
@@ -10343,17 +10343,17 @@ func (m *QueryDetails) Unserialize(dAtA []byte) error {
 			if cableKind != 0 {
 				return fmt.Errorf("REDACTED", cableKind)
 			}
-			m.P2PRelease = 0
-			for displace := uint(0); ; displace += 7 {
-				if displace >= 64 {
-					return ErrIntegerOverloadKinds
+			m.Peer2peerEdition = 0
+			for relocate := uint(0); ; relocate += 7 {
+				if relocate >= 64 {
+					return FaultIntegerOverrunKinds
 				}
-				if idxNdEx >= l {
+				if idxNdExc >= l {
 					return io.ErrUnexpectedEOF
 				}
-				b := dAtA[idxNdEx]
-				idxNdEx++
-				m.P2PRelease |= uint64(b&0x7F) << displace
+				b := deltaLocatedAN[idxNdExc]
+				idxNdExc++
+				m.Peer2peerEdition |= uint64(b&0x7F) << relocate
 				if b < 0x80 {
 					break
 				}
@@ -10362,403 +10362,403 @@ func (m *QueryDetails) Unserialize(dAtA []byte) error {
 			if cableKind != 2 {
 				return fmt.Errorf("REDACTED", cableKind)
 			}
-			var stringSize uint64
-			for displace := uint(0); ; displace += 7 {
-				if displace >= 64 {
-					return ErrIntegerOverloadKinds
+			var textSize uint64
+			for relocate := uint(0); ; relocate += 7 {
+				if relocate >= 64 {
+					return FaultIntegerOverrunKinds
 				}
-				if idxNdEx >= l {
+				if idxNdExc >= l {
 					return io.ErrUnexpectedEOF
 				}
-				b := dAtA[idxNdEx]
-				idxNdEx++
-				stringSize |= uint64(b&0x7F) << displace
+				b := deltaLocatedAN[idxNdExc]
+				idxNdExc++
+				textSize |= uint64(b&0x7F) << relocate
 				if b < 0x80 {
 					break
 				}
 			}
-			integerStringSize := int(stringSize)
-			if integerStringSize < 0 {
-				return ErrCorruptExtentKinds
+			integerTextSize := int(textSize)
+			if integerTextSize < 0 {
+				return FaultUnfitMagnitudeKinds
 			}
-			submitOrdinal := idxNdEx + integerStringSize
+			submitOrdinal := idxNdExc + integerTextSize
 			if submitOrdinal < 0 {
-				return ErrCorruptExtentKinds
+				return FaultUnfitMagnitudeKinds
 			}
 			if submitOrdinal > l {
 				return io.ErrUnexpectedEOF
 			}
-			m.IfaceRelease = string(dAtA[idxNdEx:submitOrdinal])
-			idxNdEx = submitOrdinal
+			m.IfaceEdition = string(deltaLocatedAN[idxNdExc:submitOrdinal])
+			idxNdExc = submitOrdinal
 		default:
-			idxNdEx = preOrdinal
-			skippy, err := omitKinds(dAtA[idxNdEx:])
+			idxNdExc = priorOrdinal
+			omitted, err := omitKinds(deltaLocatedAN[idxNdExc:])
 			if err != nil {
 				return err
 			}
-			if (skippy < 0) || (idxNdEx+skippy) < 0 {
-				return ErrCorruptExtentKinds
+			if (omitted < 0) || (idxNdExc+omitted) < 0 {
+				return FaultUnfitMagnitudeKinds
 			}
-			if (idxNdEx + skippy) > l {
+			if (idxNdExc + omitted) > l {
 				return io.ErrUnexpectedEOF
 			}
-			idxNdEx += skippy
+			idxNdExc += omitted
 		}
 	}
 
-	if idxNdEx > l {
+	if idxNdExc > l {
 		return io.ErrUnexpectedEOF
 	}
 	return nil
 }
-func (m *QueryInitSeries) Unserialize(dAtA []byte) error {
-	l := len(dAtA)
-	idxNdEx := 0
-	for idxNdEx < l {
-		preOrdinal := idxNdEx
+func (m *SolicitInitializeSuccession) Decode(deltaLocatedAN []byte) error {
+	l := len(deltaLocatedAN)
+	idxNdExc := 0
+	for idxNdExc < l {
+		priorOrdinal := idxNdExc
 		var cable uint64
-		for displace := uint(0); ; displace += 7 {
-			if displace >= 64 {
-				return ErrIntegerOverloadKinds
+		for relocate := uint(0); ; relocate += 7 {
+			if relocate >= 64 {
+				return FaultIntegerOverrunKinds
 			}
-			if idxNdEx >= l {
+			if idxNdExc >= l {
 				return io.ErrUnexpectedEOF
 			}
-			b := dAtA[idxNdEx]
-			idxNdEx++
-			cable |= uint64(b&0x7F) << displace
+			b := deltaLocatedAN[idxNdExc]
+			idxNdExc++
+			cable |= uint64(b&0x7F) << relocate
 			if b < 0x80 {
 				break
 			}
 		}
-		fieldCount := int32(cable >> 3)
+		attributeCount := int32(cable >> 3)
 		cableKind := int(cable & 0x7)
 		if cableKind == 4 {
 			return fmt.Errorf("REDACTED")
 		}
-		if fieldCount <= 0 {
-			return fmt.Errorf("REDACTED", fieldCount, cable)
+		if attributeCount <= 0 {
+			return fmt.Errorf("REDACTED", attributeCount, cable)
 		}
-		switch fieldCount {
+		switch attributeCount {
 		case 1:
 			if cableKind != 2 {
 				return fmt.Errorf("REDACTED", cableKind)
 			}
-			var messagesize int
-			for displace := uint(0); ; displace += 7 {
-				if displace >= 64 {
-					return ErrIntegerOverloadKinds
+			var signallength int
+			for relocate := uint(0); ; relocate += 7 {
+				if relocate >= 64 {
+					return FaultIntegerOverrunKinds
 				}
-				if idxNdEx >= l {
+				if idxNdExc >= l {
 					return io.ErrUnexpectedEOF
 				}
-				b := dAtA[idxNdEx]
-				idxNdEx++
-				messagesize |= int(b&0x7F) << displace
+				b := deltaLocatedAN[idxNdExc]
+				idxNdExc++
+				signallength |= int(b&0x7F) << relocate
 				if b < 0x80 {
 					break
 				}
 			}
-			if messagesize < 0 {
-				return ErrCorruptExtentKinds
+			if signallength < 0 {
+				return FaultUnfitMagnitudeKinds
 			}
-			submitOrdinal := idxNdEx + messagesize
+			submitOrdinal := idxNdExc + signallength
 			if submitOrdinal < 0 {
-				return ErrCorruptExtentKinds
+				return FaultUnfitMagnitudeKinds
 			}
 			if submitOrdinal > l {
 				return io.ErrUnexpectedEOF
 			}
-			if err := github_com_cosmos_gogoproto_types.StdTimeUnmarshal(&m.Time, dAtA[idxNdEx:submitOrdinal]); err != nil {
+			if err := github_com_cosmos_gogoproto_types.StdTimeUnmarshal(&m.Moment, deltaLocatedAN[idxNdExc:submitOrdinal]); err != nil {
 				return err
 			}
-			idxNdEx = submitOrdinal
+			idxNdExc = submitOrdinal
 		case 2:
 			if cableKind != 2 {
 				return fmt.Errorf("REDACTED", cableKind)
 			}
-			var stringSize uint64
-			for displace := uint(0); ; displace += 7 {
-				if displace >= 64 {
-					return ErrIntegerOverloadKinds
+			var textSize uint64
+			for relocate := uint(0); ; relocate += 7 {
+				if relocate >= 64 {
+					return FaultIntegerOverrunKinds
 				}
-				if idxNdEx >= l {
+				if idxNdExc >= l {
 					return io.ErrUnexpectedEOF
 				}
-				b := dAtA[idxNdEx]
-				idxNdEx++
-				stringSize |= uint64(b&0x7F) << displace
+				b := deltaLocatedAN[idxNdExc]
+				idxNdExc++
+				textSize |= uint64(b&0x7F) << relocate
 				if b < 0x80 {
 					break
 				}
 			}
-			integerStringSize := int(stringSize)
-			if integerStringSize < 0 {
-				return ErrCorruptExtentKinds
+			integerTextSize := int(textSize)
+			if integerTextSize < 0 {
+				return FaultUnfitMagnitudeKinds
 			}
-			submitOrdinal := idxNdEx + integerStringSize
+			submitOrdinal := idxNdExc + integerTextSize
 			if submitOrdinal < 0 {
-				return ErrCorruptExtentKinds
+				return FaultUnfitMagnitudeKinds
 			}
 			if submitOrdinal > l {
 				return io.ErrUnexpectedEOF
 			}
-			m.SeriesUid = string(dAtA[idxNdEx:submitOrdinal])
-			idxNdEx = submitOrdinal
+			m.SuccessionUuid = string(deltaLocatedAN[idxNdExc:submitOrdinal])
+			idxNdExc = submitOrdinal
 		case 3:
 			if cableKind != 2 {
 				return fmt.Errorf("REDACTED", cableKind)
 			}
-			var messagesize int
-			for displace := uint(0); ; displace += 7 {
-				if displace >= 64 {
-					return ErrIntegerOverloadKinds
+			var signallength int
+			for relocate := uint(0); ; relocate += 7 {
+				if relocate >= 64 {
+					return FaultIntegerOverrunKinds
 				}
-				if idxNdEx >= l {
+				if idxNdExc >= l {
 					return io.ErrUnexpectedEOF
 				}
-				b := dAtA[idxNdEx]
-				idxNdEx++
-				messagesize |= int(b&0x7F) << displace
+				b := deltaLocatedAN[idxNdExc]
+				idxNdExc++
+				signallength |= int(b&0x7F) << relocate
 				if b < 0x80 {
 					break
 				}
 			}
-			if messagesize < 0 {
-				return ErrCorruptExtentKinds
+			if signallength < 0 {
+				return FaultUnfitMagnitudeKinds
 			}
-			submitOrdinal := idxNdEx + messagesize
+			submitOrdinal := idxNdExc + signallength
 			if submitOrdinal < 0 {
-				return ErrCorruptExtentKinds
+				return FaultUnfitMagnitudeKinds
 			}
 			if submitOrdinal > l {
 				return io.ErrUnexpectedEOF
 			}
-			if m.AgreementOptions == nil {
-				m.AgreementOptions = &kinds1.AgreementOptions{}
+			if m.AgreementSettings == nil {
+				m.AgreementSettings = &kinds1.AgreementSettings{}
 			}
-			if err := m.AgreementOptions.Unserialize(dAtA[idxNdEx:submitOrdinal]); err != nil {
+			if err := m.AgreementSettings.Decode(deltaLocatedAN[idxNdExc:submitOrdinal]); err != nil {
 				return err
 			}
-			idxNdEx = submitOrdinal
+			idxNdExc = submitOrdinal
 		case 4:
 			if cableKind != 2 {
 				return fmt.Errorf("REDACTED", cableKind)
 			}
-			var messagesize int
-			for displace := uint(0); ; displace += 7 {
-				if displace >= 64 {
-					return ErrIntegerOverloadKinds
+			var signallength int
+			for relocate := uint(0); ; relocate += 7 {
+				if relocate >= 64 {
+					return FaultIntegerOverrunKinds
 				}
-				if idxNdEx >= l {
+				if idxNdExc >= l {
 					return io.ErrUnexpectedEOF
 				}
-				b := dAtA[idxNdEx]
-				idxNdEx++
-				messagesize |= int(b&0x7F) << displace
+				b := deltaLocatedAN[idxNdExc]
+				idxNdExc++
+				signallength |= int(b&0x7F) << relocate
 				if b < 0x80 {
 					break
 				}
 			}
-			if messagesize < 0 {
-				return ErrCorruptExtentKinds
+			if signallength < 0 {
+				return FaultUnfitMagnitudeKinds
 			}
-			submitOrdinal := idxNdEx + messagesize
+			submitOrdinal := idxNdExc + signallength
 			if submitOrdinal < 0 {
-				return ErrCorruptExtentKinds
+				return FaultUnfitMagnitudeKinds
 			}
 			if submitOrdinal > l {
 				return io.ErrUnexpectedEOF
 			}
-			m.Ratifiers = append(m.Ratifiers, RatifierModify{})
-			if err := m.Ratifiers[len(m.Ratifiers)-1].Unserialize(dAtA[idxNdEx:submitOrdinal]); err != nil {
+			m.Assessors = append(m.Assessors, AssessorRevise{})
+			if err := m.Assessors[len(m.Assessors)-1].Decode(deltaLocatedAN[idxNdExc:submitOrdinal]); err != nil {
 				return err
 			}
-			idxNdEx = submitOrdinal
+			idxNdExc = submitOrdinal
 		case 5:
 			if cableKind != 2 {
 				return fmt.Errorf("REDACTED", cableKind)
 			}
 			var octetSize int
-			for displace := uint(0); ; displace += 7 {
-				if displace >= 64 {
-					return ErrIntegerOverloadKinds
+			for relocate := uint(0); ; relocate += 7 {
+				if relocate >= 64 {
+					return FaultIntegerOverrunKinds
 				}
-				if idxNdEx >= l {
+				if idxNdExc >= l {
 					return io.ErrUnexpectedEOF
 				}
-				b := dAtA[idxNdEx]
-				idxNdEx++
-				octetSize |= int(b&0x7F) << displace
+				b := deltaLocatedAN[idxNdExc]
+				idxNdExc++
+				octetSize |= int(b&0x7F) << relocate
 				if b < 0x80 {
 					break
 				}
 			}
 			if octetSize < 0 {
-				return ErrCorruptExtentKinds
+				return FaultUnfitMagnitudeKinds
 			}
-			submitOrdinal := idxNdEx + octetSize
+			submitOrdinal := idxNdExc + octetSize
 			if submitOrdinal < 0 {
-				return ErrCorruptExtentKinds
+				return FaultUnfitMagnitudeKinds
 			}
 			if submitOrdinal > l {
 				return io.ErrUnexpectedEOF
 			}
-			m.ApplicationStatusOctets = append(m.ApplicationStatusOctets[:0], dAtA[idxNdEx:submitOrdinal]...)
+			m.ApplicationStatusOctets = append(m.ApplicationStatusOctets[:0], deltaLocatedAN[idxNdExc:submitOrdinal]...)
 			if m.ApplicationStatusOctets == nil {
 				m.ApplicationStatusOctets = []byte{}
 			}
-			idxNdEx = submitOrdinal
+			idxNdExc = submitOrdinal
 		case 6:
 			if cableKind != 0 {
 				return fmt.Errorf("REDACTED", cableKind)
 			}
-			m.PrimaryLevel = 0
-			for displace := uint(0); ; displace += 7 {
-				if displace >= 64 {
-					return ErrIntegerOverloadKinds
+			m.PrimaryAltitude = 0
+			for relocate := uint(0); ; relocate += 7 {
+				if relocate >= 64 {
+					return FaultIntegerOverrunKinds
 				}
-				if idxNdEx >= l {
+				if idxNdExc >= l {
 					return io.ErrUnexpectedEOF
 				}
-				b := dAtA[idxNdEx]
-				idxNdEx++
-				m.PrimaryLevel |= int64(b&0x7F) << displace
+				b := deltaLocatedAN[idxNdExc]
+				idxNdExc++
+				m.PrimaryAltitude |= int64(b&0x7F) << relocate
 				if b < 0x80 {
 					break
 				}
 			}
 		default:
-			idxNdEx = preOrdinal
-			skippy, err := omitKinds(dAtA[idxNdEx:])
+			idxNdExc = priorOrdinal
+			omitted, err := omitKinds(deltaLocatedAN[idxNdExc:])
 			if err != nil {
 				return err
 			}
-			if (skippy < 0) || (idxNdEx+skippy) < 0 {
-				return ErrCorruptExtentKinds
+			if (omitted < 0) || (idxNdExc+omitted) < 0 {
+				return FaultUnfitMagnitudeKinds
 			}
-			if (idxNdEx + skippy) > l {
+			if (idxNdExc + omitted) > l {
 				return io.ErrUnexpectedEOF
 			}
-			idxNdEx += skippy
+			idxNdExc += omitted
 		}
 	}
 
-	if idxNdEx > l {
+	if idxNdExc > l {
 		return io.ErrUnexpectedEOF
 	}
 	return nil
 }
-func (m *QueryInquire) Unserialize(dAtA []byte) error {
-	l := len(dAtA)
-	idxNdEx := 0
-	for idxNdEx < l {
-		preOrdinal := idxNdEx
+func (m *SolicitInquire) Decode(deltaLocatedAN []byte) error {
+	l := len(deltaLocatedAN)
+	idxNdExc := 0
+	for idxNdExc < l {
+		priorOrdinal := idxNdExc
 		var cable uint64
-		for displace := uint(0); ; displace += 7 {
-			if displace >= 64 {
-				return ErrIntegerOverloadKinds
+		for relocate := uint(0); ; relocate += 7 {
+			if relocate >= 64 {
+				return FaultIntegerOverrunKinds
 			}
-			if idxNdEx >= l {
+			if idxNdExc >= l {
 				return io.ErrUnexpectedEOF
 			}
-			b := dAtA[idxNdEx]
-			idxNdEx++
-			cable |= uint64(b&0x7F) << displace
+			b := deltaLocatedAN[idxNdExc]
+			idxNdExc++
+			cable |= uint64(b&0x7F) << relocate
 			if b < 0x80 {
 				break
 			}
 		}
-		fieldCount := int32(cable >> 3)
+		attributeCount := int32(cable >> 3)
 		cableKind := int(cable & 0x7)
 		if cableKind == 4 {
 			return fmt.Errorf("REDACTED")
 		}
-		if fieldCount <= 0 {
-			return fmt.Errorf("REDACTED", fieldCount, cable)
+		if attributeCount <= 0 {
+			return fmt.Errorf("REDACTED", attributeCount, cable)
 		}
-		switch fieldCount {
+		switch attributeCount {
 		case 1:
 			if cableKind != 2 {
 				return fmt.Errorf("REDACTED", cableKind)
 			}
 			var octetSize int
-			for displace := uint(0); ; displace += 7 {
-				if displace >= 64 {
-					return ErrIntegerOverloadKinds
+			for relocate := uint(0); ; relocate += 7 {
+				if relocate >= 64 {
+					return FaultIntegerOverrunKinds
 				}
-				if idxNdEx >= l {
+				if idxNdExc >= l {
 					return io.ErrUnexpectedEOF
 				}
-				b := dAtA[idxNdEx]
-				idxNdEx++
-				octetSize |= int(b&0x7F) << displace
+				b := deltaLocatedAN[idxNdExc]
+				idxNdExc++
+				octetSize |= int(b&0x7F) << relocate
 				if b < 0x80 {
 					break
 				}
 			}
 			if octetSize < 0 {
-				return ErrCorruptExtentKinds
+				return FaultUnfitMagnitudeKinds
 			}
-			submitOrdinal := idxNdEx + octetSize
+			submitOrdinal := idxNdExc + octetSize
 			if submitOrdinal < 0 {
-				return ErrCorruptExtentKinds
+				return FaultUnfitMagnitudeKinds
 			}
 			if submitOrdinal > l {
 				return io.ErrUnexpectedEOF
 			}
-			m.Data = append(m.Data[:0], dAtA[idxNdEx:submitOrdinal]...)
+			m.Data = append(m.Data[:0], deltaLocatedAN[idxNdExc:submitOrdinal]...)
 			if m.Data == nil {
 				m.Data = []byte{}
 			}
-			idxNdEx = submitOrdinal
+			idxNdExc = submitOrdinal
 		case 2:
 			if cableKind != 2 {
 				return fmt.Errorf("REDACTED", cableKind)
 			}
-			var stringSize uint64
-			for displace := uint(0); ; displace += 7 {
-				if displace >= 64 {
-					return ErrIntegerOverloadKinds
+			var textSize uint64
+			for relocate := uint(0); ; relocate += 7 {
+				if relocate >= 64 {
+					return FaultIntegerOverrunKinds
 				}
-				if idxNdEx >= l {
+				if idxNdExc >= l {
 					return io.ErrUnexpectedEOF
 				}
-				b := dAtA[idxNdEx]
-				idxNdEx++
-				stringSize |= uint64(b&0x7F) << displace
+				b := deltaLocatedAN[idxNdExc]
+				idxNdExc++
+				textSize |= uint64(b&0x7F) << relocate
 				if b < 0x80 {
 					break
 				}
 			}
-			integerStringSize := int(stringSize)
-			if integerStringSize < 0 {
-				return ErrCorruptExtentKinds
+			integerTextSize := int(textSize)
+			if integerTextSize < 0 {
+				return FaultUnfitMagnitudeKinds
 			}
-			submitOrdinal := idxNdEx + integerStringSize
+			submitOrdinal := idxNdExc + integerTextSize
 			if submitOrdinal < 0 {
-				return ErrCorruptExtentKinds
+				return FaultUnfitMagnitudeKinds
 			}
 			if submitOrdinal > l {
 				return io.ErrUnexpectedEOF
 			}
-			m.Route = string(dAtA[idxNdEx:submitOrdinal])
-			idxNdEx = submitOrdinal
+			m.Route = string(deltaLocatedAN[idxNdExc:submitOrdinal])
+			idxNdExc = submitOrdinal
 		case 3:
 			if cableKind != 0 {
 				return fmt.Errorf("REDACTED", cableKind)
 			}
-			m.Level = 0
-			for displace := uint(0); ; displace += 7 {
-				if displace >= 64 {
-					return ErrIntegerOverloadKinds
+			m.Altitude = 0
+			for relocate := uint(0); ; relocate += 7 {
+				if relocate >= 64 {
+					return FaultIntegerOverrunKinds
 				}
-				if idxNdEx >= l {
+				if idxNdExc >= l {
 					return io.ErrUnexpectedEOF
 				}
-				b := dAtA[idxNdEx]
-				idxNdEx++
-				m.Level |= int64(b&0x7F) << displace
+				b := deltaLocatedAN[idxNdExc]
+				idxNdExc++
+				m.Altitude |= int64(b&0x7F) << relocate
 				if b < 0x80 {
 					break
 				}
@@ -10768,273 +10768,273 @@ func (m *QueryInquire) Unserialize(dAtA []byte) error {
 				return fmt.Errorf("REDACTED", cableKind)
 			}
 			var v int
-			for displace := uint(0); ; displace += 7 {
-				if displace >= 64 {
-					return ErrIntegerOverloadKinds
+			for relocate := uint(0); ; relocate += 7 {
+				if relocate >= 64 {
+					return FaultIntegerOverrunKinds
 				}
-				if idxNdEx >= l {
+				if idxNdExc >= l {
 					return io.ErrUnexpectedEOF
 				}
-				b := dAtA[idxNdEx]
-				idxNdEx++
-				v |= int(b&0x7F) << displace
+				b := deltaLocatedAN[idxNdExc]
+				idxNdExc++
+				v |= int(b&0x7F) << relocate
 				if b < 0x80 {
 					break
 				}
 			}
-			m.Demonstrate = bool(v != 0)
+			m.Validate = bool(v != 0)
 		default:
-			idxNdEx = preOrdinal
-			skippy, err := omitKinds(dAtA[idxNdEx:])
+			idxNdExc = priorOrdinal
+			omitted, err := omitKinds(deltaLocatedAN[idxNdExc:])
 			if err != nil {
 				return err
 			}
-			if (skippy < 0) || (idxNdEx+skippy) < 0 {
-				return ErrCorruptExtentKinds
+			if (omitted < 0) || (idxNdExc+omitted) < 0 {
+				return FaultUnfitMagnitudeKinds
 			}
-			if (idxNdEx + skippy) > l {
+			if (idxNdExc + omitted) > l {
 				return io.ErrUnexpectedEOF
 			}
-			idxNdEx += skippy
+			idxNdExc += omitted
 		}
 	}
 
-	if idxNdEx > l {
+	if idxNdExc > l {
 		return io.ErrUnexpectedEOF
 	}
 	return nil
 }
-func (m *QueryInspectTransfer) Unserialize(dAtA []byte) error {
-	l := len(dAtA)
-	idxNdEx := 0
-	for idxNdEx < l {
-		preOrdinal := idxNdEx
+func (m *SolicitInspectTransfer) Decode(deltaLocatedAN []byte) error {
+	l := len(deltaLocatedAN)
+	idxNdExc := 0
+	for idxNdExc < l {
+		priorOrdinal := idxNdExc
 		var cable uint64
-		for displace := uint(0); ; displace += 7 {
-			if displace >= 64 {
-				return ErrIntegerOverloadKinds
+		for relocate := uint(0); ; relocate += 7 {
+			if relocate >= 64 {
+				return FaultIntegerOverrunKinds
 			}
-			if idxNdEx >= l {
+			if idxNdExc >= l {
 				return io.ErrUnexpectedEOF
 			}
-			b := dAtA[idxNdEx]
-			idxNdEx++
-			cable |= uint64(b&0x7F) << displace
+			b := deltaLocatedAN[idxNdExc]
+			idxNdExc++
+			cable |= uint64(b&0x7F) << relocate
 			if b < 0x80 {
 				break
 			}
 		}
-		fieldCount := int32(cable >> 3)
+		attributeCount := int32(cable >> 3)
 		cableKind := int(cable & 0x7)
 		if cableKind == 4 {
 			return fmt.Errorf("REDACTED")
 		}
-		if fieldCount <= 0 {
-			return fmt.Errorf("REDACTED", fieldCount, cable)
+		if attributeCount <= 0 {
+			return fmt.Errorf("REDACTED", attributeCount, cable)
 		}
-		switch fieldCount {
+		switch attributeCount {
 		case 1:
 			if cableKind != 2 {
 				return fmt.Errorf("REDACTED", cableKind)
 			}
 			var octetSize int
-			for displace := uint(0); ; displace += 7 {
-				if displace >= 64 {
-					return ErrIntegerOverloadKinds
+			for relocate := uint(0); ; relocate += 7 {
+				if relocate >= 64 {
+					return FaultIntegerOverrunKinds
 				}
-				if idxNdEx >= l {
+				if idxNdExc >= l {
 					return io.ErrUnexpectedEOF
 				}
-				b := dAtA[idxNdEx]
-				idxNdEx++
-				octetSize |= int(b&0x7F) << displace
+				b := deltaLocatedAN[idxNdExc]
+				idxNdExc++
+				octetSize |= int(b&0x7F) << relocate
 				if b < 0x80 {
 					break
 				}
 			}
 			if octetSize < 0 {
-				return ErrCorruptExtentKinds
+				return FaultUnfitMagnitudeKinds
 			}
-			submitOrdinal := idxNdEx + octetSize
+			submitOrdinal := idxNdExc + octetSize
 			if submitOrdinal < 0 {
-				return ErrCorruptExtentKinds
+				return FaultUnfitMagnitudeKinds
 			}
 			if submitOrdinal > l {
 				return io.ErrUnexpectedEOF
 			}
-			m.Tx = append(m.Tx[:0], dAtA[idxNdEx:submitOrdinal]...)
+			m.Tx = append(m.Tx[:0], deltaLocatedAN[idxNdExc:submitOrdinal]...)
 			if m.Tx == nil {
 				m.Tx = []byte{}
 			}
-			idxNdEx = submitOrdinal
+			idxNdExc = submitOrdinal
 		case 2:
 			if cableKind != 0 {
 				return fmt.Errorf("REDACTED", cableKind)
 			}
 			m.Kind = 0
-			for displace := uint(0); ; displace += 7 {
-				if displace >= 64 {
-					return ErrIntegerOverloadKinds
+			for relocate := uint(0); ; relocate += 7 {
+				if relocate >= 64 {
+					return FaultIntegerOverrunKinds
 				}
-				if idxNdEx >= l {
+				if idxNdExc >= l {
 					return io.ErrUnexpectedEOF
 				}
-				b := dAtA[idxNdEx]
-				idxNdEx++
-				m.Kind |= InspectTransferKind(b&0x7F) << displace
+				b := deltaLocatedAN[idxNdExc]
+				idxNdExc++
+				m.Kind |= InspectTransferKind(b&0x7F) << relocate
 				if b < 0x80 {
 					break
 				}
 			}
 		default:
-			idxNdEx = preOrdinal
-			skippy, err := omitKinds(dAtA[idxNdEx:])
+			idxNdExc = priorOrdinal
+			omitted, err := omitKinds(deltaLocatedAN[idxNdExc:])
 			if err != nil {
 				return err
 			}
-			if (skippy < 0) || (idxNdEx+skippy) < 0 {
-				return ErrCorruptExtentKinds
+			if (omitted < 0) || (idxNdExc+omitted) < 0 {
+				return FaultUnfitMagnitudeKinds
 			}
-			if (idxNdEx + skippy) > l {
+			if (idxNdExc + omitted) > l {
 				return io.ErrUnexpectedEOF
 			}
-			idxNdEx += skippy
+			idxNdExc += omitted
 		}
 	}
 
-	if idxNdEx > l {
+	if idxNdExc > l {
 		return io.ErrUnexpectedEOF
 	}
 	return nil
 }
-func (m *QueryEmbedTransfer) Unserialize(dAtA []byte) error {
-	l := len(dAtA)
-	idxNdEx := 0
-	for idxNdEx < l {
-		preOrdinal := idxNdEx
+func (m *SolicitAppendTransfer) Decode(deltaLocatedAN []byte) error {
+	l := len(deltaLocatedAN)
+	idxNdExc := 0
+	for idxNdExc < l {
+		priorOrdinal := idxNdExc
 		var cable uint64
-		for displace := uint(0); ; displace += 7 {
-			if displace >= 64 {
-				return ErrIntegerOverloadKinds
+		for relocate := uint(0); ; relocate += 7 {
+			if relocate >= 64 {
+				return FaultIntegerOverrunKinds
 			}
-			if idxNdEx >= l {
+			if idxNdExc >= l {
 				return io.ErrUnexpectedEOF
 			}
-			b := dAtA[idxNdEx]
-			idxNdEx++
-			cable |= uint64(b&0x7F) << displace
+			b := deltaLocatedAN[idxNdExc]
+			idxNdExc++
+			cable |= uint64(b&0x7F) << relocate
 			if b < 0x80 {
 				break
 			}
 		}
-		fieldCount := int32(cable >> 3)
+		attributeCount := int32(cable >> 3)
 		cableKind := int(cable & 0x7)
 		if cableKind == 4 {
 			return fmt.Errorf("REDACTED")
 		}
-		if fieldCount <= 0 {
-			return fmt.Errorf("REDACTED", fieldCount, cable)
+		if attributeCount <= 0 {
+			return fmt.Errorf("REDACTED", attributeCount, cable)
 		}
-		switch fieldCount {
+		switch attributeCount {
 		case 1:
 			if cableKind != 2 {
 				return fmt.Errorf("REDACTED", cableKind)
 			}
 			var octetSize int
-			for displace := uint(0); ; displace += 7 {
-				if displace >= 64 {
-					return ErrIntegerOverloadKinds
+			for relocate := uint(0); ; relocate += 7 {
+				if relocate >= 64 {
+					return FaultIntegerOverrunKinds
 				}
-				if idxNdEx >= l {
+				if idxNdExc >= l {
 					return io.ErrUnexpectedEOF
 				}
-				b := dAtA[idxNdEx]
-				idxNdEx++
-				octetSize |= int(b&0x7F) << displace
+				b := deltaLocatedAN[idxNdExc]
+				idxNdExc++
+				octetSize |= int(b&0x7F) << relocate
 				if b < 0x80 {
 					break
 				}
 			}
 			if octetSize < 0 {
-				return ErrCorruptExtentKinds
+				return FaultUnfitMagnitudeKinds
 			}
-			submitOrdinal := idxNdEx + octetSize
+			submitOrdinal := idxNdExc + octetSize
 			if submitOrdinal < 0 {
-				return ErrCorruptExtentKinds
+				return FaultUnfitMagnitudeKinds
 			}
 			if submitOrdinal > l {
 				return io.ErrUnexpectedEOF
 			}
-			m.Tx = append(m.Tx[:0], dAtA[idxNdEx:submitOrdinal]...)
+			m.Tx = append(m.Tx[:0], deltaLocatedAN[idxNdExc:submitOrdinal]...)
 			if m.Tx == nil {
 				m.Tx = []byte{}
 			}
-			idxNdEx = submitOrdinal
+			idxNdExc = submitOrdinal
 		default:
-			idxNdEx = preOrdinal
-			skippy, err := omitKinds(dAtA[idxNdEx:])
+			idxNdExc = priorOrdinal
+			omitted, err := omitKinds(deltaLocatedAN[idxNdExc:])
 			if err != nil {
 				return err
 			}
-			if (skippy < 0) || (idxNdEx+skippy) < 0 {
-				return ErrCorruptExtentKinds
+			if (omitted < 0) || (idxNdExc+omitted) < 0 {
+				return FaultUnfitMagnitudeKinds
 			}
-			if (idxNdEx + skippy) > l {
+			if (idxNdExc + omitted) > l {
 				return io.ErrUnexpectedEOF
 			}
-			idxNdEx += skippy
+			idxNdExc += omitted
 		}
 	}
 
-	if idxNdEx > l {
+	if idxNdExc > l {
 		return io.ErrUnexpectedEOF
 	}
 	return nil
 }
-func (m *QueryHarvestTrans) Unserialize(dAtA []byte) error {
-	l := len(dAtA)
-	idxNdEx := 0
-	for idxNdEx < l {
-		preOrdinal := idxNdEx
+func (m *SolicitHarvestTrans) Decode(deltaLocatedAN []byte) error {
+	l := len(deltaLocatedAN)
+	idxNdExc := 0
+	for idxNdExc < l {
+		priorOrdinal := idxNdExc
 		var cable uint64
-		for displace := uint(0); ; displace += 7 {
-			if displace >= 64 {
-				return ErrIntegerOverloadKinds
+		for relocate := uint(0); ; relocate += 7 {
+			if relocate >= 64 {
+				return FaultIntegerOverrunKinds
 			}
-			if idxNdEx >= l {
+			if idxNdExc >= l {
 				return io.ErrUnexpectedEOF
 			}
-			b := dAtA[idxNdEx]
-			idxNdEx++
-			cable |= uint64(b&0x7F) << displace
+			b := deltaLocatedAN[idxNdExc]
+			idxNdExc++
+			cable |= uint64(b&0x7F) << relocate
 			if b < 0x80 {
 				break
 			}
 		}
-		fieldCount := int32(cable >> 3)
+		attributeCount := int32(cable >> 3)
 		cableKind := int(cable & 0x7)
 		if cableKind == 4 {
 			return fmt.Errorf("REDACTED")
 		}
-		if fieldCount <= 0 {
-			return fmt.Errorf("REDACTED", fieldCount, cable)
+		if attributeCount <= 0 {
+			return fmt.Errorf("REDACTED", attributeCount, cable)
 		}
-		switch fieldCount {
+		switch attributeCount {
 		case 1:
 			if cableKind != 0 {
 				return fmt.Errorf("REDACTED", cableKind)
 			}
 			m.MaximumOctets = 0
-			for displace := uint(0); ; displace += 7 {
-				if displace >= 64 {
-					return ErrIntegerOverloadKinds
+			for relocate := uint(0); ; relocate += 7 {
+				if relocate >= 64 {
+					return FaultIntegerOverrunKinds
 				}
-				if idxNdEx >= l {
+				if idxNdExc >= l {
 					return io.ErrUnexpectedEOF
 				}
-				b := dAtA[idxNdEx]
-				idxNdEx++
-				m.MaximumOctets |= uint64(b&0x7F) << displace
+				b := deltaLocatedAN[idxNdExc]
+				idxNdExc++
+				m.MaximumOctets |= uint64(b&0x7F) << relocate
 				if b < 0x80 {
 					break
 				}
@@ -11044,305 +11044,305 @@ func (m *QueryHarvestTrans) Unserialize(dAtA []byte) error {
 				return fmt.Errorf("REDACTED", cableKind)
 			}
 			m.MaximumFuel = 0
-			for displace := uint(0); ; displace += 7 {
-				if displace >= 64 {
-					return ErrIntegerOverloadKinds
+			for relocate := uint(0); ; relocate += 7 {
+				if relocate >= 64 {
+					return FaultIntegerOverrunKinds
 				}
-				if idxNdEx >= l {
+				if idxNdExc >= l {
 					return io.ErrUnexpectedEOF
 				}
-				b := dAtA[idxNdEx]
-				idxNdEx++
-				m.MaximumFuel |= uint64(b&0x7F) << displace
+				b := deltaLocatedAN[idxNdExc]
+				idxNdExc++
+				m.MaximumFuel |= uint64(b&0x7F) << relocate
 				if b < 0x80 {
 					break
 				}
 			}
 		default:
-			idxNdEx = preOrdinal
-			skippy, err := omitKinds(dAtA[idxNdEx:])
+			idxNdExc = priorOrdinal
+			omitted, err := omitKinds(deltaLocatedAN[idxNdExc:])
 			if err != nil {
 				return err
 			}
-			if (skippy < 0) || (idxNdEx+skippy) < 0 {
-				return ErrCorruptExtentKinds
+			if (omitted < 0) || (idxNdExc+omitted) < 0 {
+				return FaultUnfitMagnitudeKinds
 			}
-			if (idxNdEx + skippy) > l {
+			if (idxNdExc + omitted) > l {
 				return io.ErrUnexpectedEOF
 			}
-			idxNdEx += skippy
+			idxNdExc += omitted
 		}
 	}
 
-	if idxNdEx > l {
+	if idxNdExc > l {
 		return io.ErrUnexpectedEOF
 	}
 	return nil
 }
-func (m *QueryEndorse) Unserialize(dAtA []byte) error {
-	l := len(dAtA)
-	idxNdEx := 0
-	for idxNdEx < l {
-		preOrdinal := idxNdEx
+func (m *SolicitEndorse) Decode(deltaLocatedAN []byte) error {
+	l := len(deltaLocatedAN)
+	idxNdExc := 0
+	for idxNdExc < l {
+		priorOrdinal := idxNdExc
 		var cable uint64
-		for displace := uint(0); ; displace += 7 {
-			if displace >= 64 {
-				return ErrIntegerOverloadKinds
+		for relocate := uint(0); ; relocate += 7 {
+			if relocate >= 64 {
+				return FaultIntegerOverrunKinds
 			}
-			if idxNdEx >= l {
+			if idxNdExc >= l {
 				return io.ErrUnexpectedEOF
 			}
-			b := dAtA[idxNdEx]
-			idxNdEx++
-			cable |= uint64(b&0x7F) << displace
+			b := deltaLocatedAN[idxNdExc]
+			idxNdExc++
+			cable |= uint64(b&0x7F) << relocate
 			if b < 0x80 {
 				break
 			}
 		}
-		fieldCount := int32(cable >> 3)
+		attributeCount := int32(cable >> 3)
 		cableKind := int(cable & 0x7)
 		if cableKind == 4 {
 			return fmt.Errorf("REDACTED")
 		}
-		if fieldCount <= 0 {
-			return fmt.Errorf("REDACTED", fieldCount, cable)
+		if attributeCount <= 0 {
+			return fmt.Errorf("REDACTED", attributeCount, cable)
 		}
-		switch fieldCount {
+		switch attributeCount {
 		default:
-			idxNdEx = preOrdinal
-			skippy, err := omitKinds(dAtA[idxNdEx:])
+			idxNdExc = priorOrdinal
+			omitted, err := omitKinds(deltaLocatedAN[idxNdExc:])
 			if err != nil {
 				return err
 			}
-			if (skippy < 0) || (idxNdEx+skippy) < 0 {
-				return ErrCorruptExtentKinds
+			if (omitted < 0) || (idxNdExc+omitted) < 0 {
+				return FaultUnfitMagnitudeKinds
 			}
-			if (idxNdEx + skippy) > l {
+			if (idxNdExc + omitted) > l {
 				return io.ErrUnexpectedEOF
 			}
-			idxNdEx += skippy
+			idxNdExc += omitted
 		}
 	}
 
-	if idxNdEx > l {
+	if idxNdExc > l {
 		return io.ErrUnexpectedEOF
 	}
 	return nil
 }
-func (m *QueryCatalogMirrors) Unserialize(dAtA []byte) error {
-	l := len(dAtA)
-	idxNdEx := 0
-	for idxNdEx < l {
-		preOrdinal := idxNdEx
+func (m *SolicitCollectionImages) Decode(deltaLocatedAN []byte) error {
+	l := len(deltaLocatedAN)
+	idxNdExc := 0
+	for idxNdExc < l {
+		priorOrdinal := idxNdExc
 		var cable uint64
-		for displace := uint(0); ; displace += 7 {
-			if displace >= 64 {
-				return ErrIntegerOverloadKinds
+		for relocate := uint(0); ; relocate += 7 {
+			if relocate >= 64 {
+				return FaultIntegerOverrunKinds
 			}
-			if idxNdEx >= l {
+			if idxNdExc >= l {
 				return io.ErrUnexpectedEOF
 			}
-			b := dAtA[idxNdEx]
-			idxNdEx++
-			cable |= uint64(b&0x7F) << displace
+			b := deltaLocatedAN[idxNdExc]
+			idxNdExc++
+			cable |= uint64(b&0x7F) << relocate
 			if b < 0x80 {
 				break
 			}
 		}
-		fieldCount := int32(cable >> 3)
+		attributeCount := int32(cable >> 3)
 		cableKind := int(cable & 0x7)
 		if cableKind == 4 {
 			return fmt.Errorf("REDACTED")
 		}
-		if fieldCount <= 0 {
-			return fmt.Errorf("REDACTED", fieldCount, cable)
+		if attributeCount <= 0 {
+			return fmt.Errorf("REDACTED", attributeCount, cable)
 		}
-		switch fieldCount {
+		switch attributeCount {
 		default:
-			idxNdEx = preOrdinal
-			skippy, err := omitKinds(dAtA[idxNdEx:])
+			idxNdExc = priorOrdinal
+			omitted, err := omitKinds(deltaLocatedAN[idxNdExc:])
 			if err != nil {
 				return err
 			}
-			if (skippy < 0) || (idxNdEx+skippy) < 0 {
-				return ErrCorruptExtentKinds
+			if (omitted < 0) || (idxNdExc+omitted) < 0 {
+				return FaultUnfitMagnitudeKinds
 			}
-			if (idxNdEx + skippy) > l {
+			if (idxNdExc + omitted) > l {
 				return io.ErrUnexpectedEOF
 			}
-			idxNdEx += skippy
+			idxNdExc += omitted
 		}
 	}
 
-	if idxNdEx > l {
+	if idxNdExc > l {
 		return io.ErrUnexpectedEOF
 	}
 	return nil
 }
-func (m *QueryProposalMirror) Unserialize(dAtA []byte) error {
-	l := len(dAtA)
-	idxNdEx := 0
-	for idxNdEx < l {
-		preOrdinal := idxNdEx
+func (m *SolicitExtendImage) Decode(deltaLocatedAN []byte) error {
+	l := len(deltaLocatedAN)
+	idxNdExc := 0
+	for idxNdExc < l {
+		priorOrdinal := idxNdExc
 		var cable uint64
-		for displace := uint(0); ; displace += 7 {
-			if displace >= 64 {
-				return ErrIntegerOverloadKinds
+		for relocate := uint(0); ; relocate += 7 {
+			if relocate >= 64 {
+				return FaultIntegerOverrunKinds
 			}
-			if idxNdEx >= l {
+			if idxNdExc >= l {
 				return io.ErrUnexpectedEOF
 			}
-			b := dAtA[idxNdEx]
-			idxNdEx++
-			cable |= uint64(b&0x7F) << displace
+			b := deltaLocatedAN[idxNdExc]
+			idxNdExc++
+			cable |= uint64(b&0x7F) << relocate
 			if b < 0x80 {
 				break
 			}
 		}
-		fieldCount := int32(cable >> 3)
+		attributeCount := int32(cable >> 3)
 		cableKind := int(cable & 0x7)
 		if cableKind == 4 {
 			return fmt.Errorf("REDACTED")
 		}
-		if fieldCount <= 0 {
-			return fmt.Errorf("REDACTED", fieldCount, cable)
+		if attributeCount <= 0 {
+			return fmt.Errorf("REDACTED", attributeCount, cable)
 		}
-		switch fieldCount {
+		switch attributeCount {
 		case 1:
 			if cableKind != 2 {
 				return fmt.Errorf("REDACTED", cableKind)
 			}
-			var messagesize int
-			for displace := uint(0); ; displace += 7 {
-				if displace >= 64 {
-					return ErrIntegerOverloadKinds
+			var signallength int
+			for relocate := uint(0); ; relocate += 7 {
+				if relocate >= 64 {
+					return FaultIntegerOverrunKinds
 				}
-				if idxNdEx >= l {
+				if idxNdExc >= l {
 					return io.ErrUnexpectedEOF
 				}
-				b := dAtA[idxNdEx]
-				idxNdEx++
-				messagesize |= int(b&0x7F) << displace
+				b := deltaLocatedAN[idxNdExc]
+				idxNdExc++
+				signallength |= int(b&0x7F) << relocate
 				if b < 0x80 {
 					break
 				}
 			}
-			if messagesize < 0 {
-				return ErrCorruptExtentKinds
+			if signallength < 0 {
+				return FaultUnfitMagnitudeKinds
 			}
-			submitOrdinal := idxNdEx + messagesize
+			submitOrdinal := idxNdExc + signallength
 			if submitOrdinal < 0 {
-				return ErrCorruptExtentKinds
+				return FaultUnfitMagnitudeKinds
 			}
 			if submitOrdinal > l {
 				return io.ErrUnexpectedEOF
 			}
-			if m.Mirror == nil {
-				m.Mirror = &Mirror{}
+			if m.Image == nil {
+				m.Image = &Image{}
 			}
-			if err := m.Mirror.Unserialize(dAtA[idxNdEx:submitOrdinal]); err != nil {
+			if err := m.Image.Decode(deltaLocatedAN[idxNdExc:submitOrdinal]); err != nil {
 				return err
 			}
-			idxNdEx = submitOrdinal
+			idxNdExc = submitOrdinal
 		case 2:
 			if cableKind != 2 {
 				return fmt.Errorf("REDACTED", cableKind)
 			}
 			var octetSize int
-			for displace := uint(0); ; displace += 7 {
-				if displace >= 64 {
-					return ErrIntegerOverloadKinds
+			for relocate := uint(0); ; relocate += 7 {
+				if relocate >= 64 {
+					return FaultIntegerOverrunKinds
 				}
-				if idxNdEx >= l {
+				if idxNdExc >= l {
 					return io.ErrUnexpectedEOF
 				}
-				b := dAtA[idxNdEx]
-				idxNdEx++
-				octetSize |= int(b&0x7F) << displace
+				b := deltaLocatedAN[idxNdExc]
+				idxNdExc++
+				octetSize |= int(b&0x7F) << relocate
 				if b < 0x80 {
 					break
 				}
 			}
 			if octetSize < 0 {
-				return ErrCorruptExtentKinds
+				return FaultUnfitMagnitudeKinds
 			}
-			submitOrdinal := idxNdEx + octetSize
+			submitOrdinal := idxNdExc + octetSize
 			if submitOrdinal < 0 {
-				return ErrCorruptExtentKinds
+				return FaultUnfitMagnitudeKinds
 			}
 			if submitOrdinal > l {
 				return io.ErrUnexpectedEOF
 			}
-			m.ApplicationDigest = append(m.ApplicationDigest[:0], dAtA[idxNdEx:submitOrdinal]...)
-			if m.ApplicationDigest == nil {
-				m.ApplicationDigest = []byte{}
+			m.PlatformDigest = append(m.PlatformDigest[:0], deltaLocatedAN[idxNdExc:submitOrdinal]...)
+			if m.PlatformDigest == nil {
+				m.PlatformDigest = []byte{}
 			}
-			idxNdEx = submitOrdinal
+			idxNdExc = submitOrdinal
 		default:
-			idxNdEx = preOrdinal
-			skippy, err := omitKinds(dAtA[idxNdEx:])
+			idxNdExc = priorOrdinal
+			omitted, err := omitKinds(deltaLocatedAN[idxNdExc:])
 			if err != nil {
 				return err
 			}
-			if (skippy < 0) || (idxNdEx+skippy) < 0 {
-				return ErrCorruptExtentKinds
+			if (omitted < 0) || (idxNdExc+omitted) < 0 {
+				return FaultUnfitMagnitudeKinds
 			}
-			if (idxNdEx + skippy) > l {
+			if (idxNdExc + omitted) > l {
 				return io.ErrUnexpectedEOF
 			}
-			idxNdEx += skippy
+			idxNdExc += omitted
 		}
 	}
 
-	if idxNdEx > l {
+	if idxNdExc > l {
 		return io.ErrUnexpectedEOF
 	}
 	return nil
 }
-func (m *QueryImportMirrorSegment) Unserialize(dAtA []byte) error {
-	l := len(dAtA)
-	idxNdEx := 0
-	for idxNdEx < l {
-		preOrdinal := idxNdEx
+func (m *SolicitFetchImageSegment) Decode(deltaLocatedAN []byte) error {
+	l := len(deltaLocatedAN)
+	idxNdExc := 0
+	for idxNdExc < l {
+		priorOrdinal := idxNdExc
 		var cable uint64
-		for displace := uint(0); ; displace += 7 {
-			if displace >= 64 {
-				return ErrIntegerOverloadKinds
+		for relocate := uint(0); ; relocate += 7 {
+			if relocate >= 64 {
+				return FaultIntegerOverrunKinds
 			}
-			if idxNdEx >= l {
+			if idxNdExc >= l {
 				return io.ErrUnexpectedEOF
 			}
-			b := dAtA[idxNdEx]
-			idxNdEx++
-			cable |= uint64(b&0x7F) << displace
+			b := deltaLocatedAN[idxNdExc]
+			idxNdExc++
+			cable |= uint64(b&0x7F) << relocate
 			if b < 0x80 {
 				break
 			}
 		}
-		fieldCount := int32(cable >> 3)
+		attributeCount := int32(cable >> 3)
 		cableKind := int(cable & 0x7)
 		if cableKind == 4 {
 			return fmt.Errorf("REDACTED")
 		}
-		if fieldCount <= 0 {
-			return fmt.Errorf("REDACTED", fieldCount, cable)
+		if attributeCount <= 0 {
+			return fmt.Errorf("REDACTED", attributeCount, cable)
 		}
-		switch fieldCount {
+		switch attributeCount {
 		case 1:
 			if cableKind != 0 {
 				return fmt.Errorf("REDACTED", cableKind)
 			}
-			m.Level = 0
-			for displace := uint(0); ; displace += 7 {
-				if displace >= 64 {
-					return ErrIntegerOverloadKinds
+			m.Altitude = 0
+			for relocate := uint(0); ; relocate += 7 {
+				if relocate >= 64 {
+					return FaultIntegerOverrunKinds
 				}
-				if idxNdEx >= l {
+				if idxNdExc >= l {
 					return io.ErrUnexpectedEOF
 				}
-				b := dAtA[idxNdEx]
-				idxNdEx++
-				m.Level |= uint64(b&0x7F) << displace
+				b := deltaLocatedAN[idxNdExc]
+				idxNdExc++
+				m.Altitude |= uint64(b&0x7F) << relocate
 				if b < 0x80 {
 					break
 				}
@@ -11352,16 +11352,16 @@ func (m *QueryImportMirrorSegment) Unserialize(dAtA []byte) error {
 				return fmt.Errorf("REDACTED", cableKind)
 			}
 			m.Layout = 0
-			for displace := uint(0); ; displace += 7 {
-				if displace >= 64 {
-					return ErrIntegerOverloadKinds
+			for relocate := uint(0); ; relocate += 7 {
+				if relocate >= 64 {
+					return FaultIntegerOverrunKinds
 				}
-				if idxNdEx >= l {
+				if idxNdExc >= l {
 					return io.ErrUnexpectedEOF
 				}
-				b := dAtA[idxNdEx]
-				idxNdEx++
-				m.Layout |= uint32(b&0x7F) << displace
+				b := deltaLocatedAN[idxNdExc]
+				idxNdExc++
+				m.Layout |= uint32(b&0x7F) << relocate
 				if b < 0x80 {
 					break
 				}
@@ -11371,85 +11371,85 @@ func (m *QueryImportMirrorSegment) Unserialize(dAtA []byte) error {
 				return fmt.Errorf("REDACTED", cableKind)
 			}
 			m.Segment = 0
-			for displace := uint(0); ; displace += 7 {
-				if displace >= 64 {
-					return ErrIntegerOverloadKinds
+			for relocate := uint(0); ; relocate += 7 {
+				if relocate >= 64 {
+					return FaultIntegerOverrunKinds
 				}
-				if idxNdEx >= l {
+				if idxNdExc >= l {
 					return io.ErrUnexpectedEOF
 				}
-				b := dAtA[idxNdEx]
-				idxNdEx++
-				m.Segment |= uint32(b&0x7F) << displace
+				b := deltaLocatedAN[idxNdExc]
+				idxNdExc++
+				m.Segment |= uint32(b&0x7F) << relocate
 				if b < 0x80 {
 					break
 				}
 			}
 		default:
-			idxNdEx = preOrdinal
-			skippy, err := omitKinds(dAtA[idxNdEx:])
+			idxNdExc = priorOrdinal
+			omitted, err := omitKinds(deltaLocatedAN[idxNdExc:])
 			if err != nil {
 				return err
 			}
-			if (skippy < 0) || (idxNdEx+skippy) < 0 {
-				return ErrCorruptExtentKinds
+			if (omitted < 0) || (idxNdExc+omitted) < 0 {
+				return FaultUnfitMagnitudeKinds
 			}
-			if (idxNdEx + skippy) > l {
+			if (idxNdExc + omitted) > l {
 				return io.ErrUnexpectedEOF
 			}
-			idxNdEx += skippy
+			idxNdExc += omitted
 		}
 	}
 
-	if idxNdEx > l {
+	if idxNdExc > l {
 		return io.ErrUnexpectedEOF
 	}
 	return nil
 }
-func (m *QueryExecuteMirrorSegment) Unserialize(dAtA []byte) error {
-	l := len(dAtA)
-	idxNdEx := 0
-	for idxNdEx < l {
-		preOrdinal := idxNdEx
+func (m *SolicitExecuteImageSegment) Decode(deltaLocatedAN []byte) error {
+	l := len(deltaLocatedAN)
+	idxNdExc := 0
+	for idxNdExc < l {
+		priorOrdinal := idxNdExc
 		var cable uint64
-		for displace := uint(0); ; displace += 7 {
-			if displace >= 64 {
-				return ErrIntegerOverloadKinds
+		for relocate := uint(0); ; relocate += 7 {
+			if relocate >= 64 {
+				return FaultIntegerOverrunKinds
 			}
-			if idxNdEx >= l {
+			if idxNdExc >= l {
 				return io.ErrUnexpectedEOF
 			}
-			b := dAtA[idxNdEx]
-			idxNdEx++
-			cable |= uint64(b&0x7F) << displace
+			b := deltaLocatedAN[idxNdExc]
+			idxNdExc++
+			cable |= uint64(b&0x7F) << relocate
 			if b < 0x80 {
 				break
 			}
 		}
-		fieldCount := int32(cable >> 3)
+		attributeCount := int32(cable >> 3)
 		cableKind := int(cable & 0x7)
 		if cableKind == 4 {
 			return fmt.Errorf("REDACTED")
 		}
-		if fieldCount <= 0 {
-			return fmt.Errorf("REDACTED", fieldCount, cable)
+		if attributeCount <= 0 {
+			return fmt.Errorf("REDACTED", attributeCount, cable)
 		}
-		switch fieldCount {
+		switch attributeCount {
 		case 1:
 			if cableKind != 0 {
 				return fmt.Errorf("REDACTED", cableKind)
 			}
 			m.Ordinal = 0
-			for displace := uint(0); ; displace += 7 {
-				if displace >= 64 {
-					return ErrIntegerOverloadKinds
+			for relocate := uint(0); ; relocate += 7 {
+				if relocate >= 64 {
+					return FaultIntegerOverrunKinds
 				}
-				if idxNdEx >= l {
+				if idxNdExc >= l {
 					return io.ErrUnexpectedEOF
 				}
-				b := dAtA[idxNdEx]
-				idxNdEx++
-				m.Ordinal |= uint32(b&0x7F) << displace
+				b := deltaLocatedAN[idxNdExc]
+				idxNdExc++
+				m.Ordinal |= uint32(b&0x7F) << relocate
 				if b < 0x80 {
 					break
 				}
@@ -11459,132 +11459,132 @@ func (m *QueryExecuteMirrorSegment) Unserialize(dAtA []byte) error {
 				return fmt.Errorf("REDACTED", cableKind)
 			}
 			var octetSize int
-			for displace := uint(0); ; displace += 7 {
-				if displace >= 64 {
-					return ErrIntegerOverloadKinds
+			for relocate := uint(0); ; relocate += 7 {
+				if relocate >= 64 {
+					return FaultIntegerOverrunKinds
 				}
-				if idxNdEx >= l {
+				if idxNdExc >= l {
 					return io.ErrUnexpectedEOF
 				}
-				b := dAtA[idxNdEx]
-				idxNdEx++
-				octetSize |= int(b&0x7F) << displace
+				b := deltaLocatedAN[idxNdExc]
+				idxNdExc++
+				octetSize |= int(b&0x7F) << relocate
 				if b < 0x80 {
 					break
 				}
 			}
 			if octetSize < 0 {
-				return ErrCorruptExtentKinds
+				return FaultUnfitMagnitudeKinds
 			}
-			submitOrdinal := idxNdEx + octetSize
+			submitOrdinal := idxNdExc + octetSize
 			if submitOrdinal < 0 {
-				return ErrCorruptExtentKinds
+				return FaultUnfitMagnitudeKinds
 			}
 			if submitOrdinal > l {
 				return io.ErrUnexpectedEOF
 			}
-			m.Segment = append(m.Segment[:0], dAtA[idxNdEx:submitOrdinal]...)
+			m.Segment = append(m.Segment[:0], deltaLocatedAN[idxNdExc:submitOrdinal]...)
 			if m.Segment == nil {
 				m.Segment = []byte{}
 			}
-			idxNdEx = submitOrdinal
+			idxNdExc = submitOrdinal
 		case 3:
 			if cableKind != 2 {
 				return fmt.Errorf("REDACTED", cableKind)
 			}
-			var stringSize uint64
-			for displace := uint(0); ; displace += 7 {
-				if displace >= 64 {
-					return ErrIntegerOverloadKinds
+			var textSize uint64
+			for relocate := uint(0); ; relocate += 7 {
+				if relocate >= 64 {
+					return FaultIntegerOverrunKinds
 				}
-				if idxNdEx >= l {
+				if idxNdExc >= l {
 					return io.ErrUnexpectedEOF
 				}
-				b := dAtA[idxNdEx]
-				idxNdEx++
-				stringSize |= uint64(b&0x7F) << displace
+				b := deltaLocatedAN[idxNdExc]
+				idxNdExc++
+				textSize |= uint64(b&0x7F) << relocate
 				if b < 0x80 {
 					break
 				}
 			}
-			integerStringSize := int(stringSize)
-			if integerStringSize < 0 {
-				return ErrCorruptExtentKinds
+			integerTextSize := int(textSize)
+			if integerTextSize < 0 {
+				return FaultUnfitMagnitudeKinds
 			}
-			submitOrdinal := idxNdEx + integerStringSize
+			submitOrdinal := idxNdExc + integerTextSize
 			if submitOrdinal < 0 {
-				return ErrCorruptExtentKinds
+				return FaultUnfitMagnitudeKinds
 			}
 			if submitOrdinal > l {
 				return io.ErrUnexpectedEOF
 			}
-			m.Emitter = string(dAtA[idxNdEx:submitOrdinal])
-			idxNdEx = submitOrdinal
+			m.Originator = string(deltaLocatedAN[idxNdExc:submitOrdinal])
+			idxNdExc = submitOrdinal
 		default:
-			idxNdEx = preOrdinal
-			skippy, err := omitKinds(dAtA[idxNdEx:])
+			idxNdExc = priorOrdinal
+			omitted, err := omitKinds(deltaLocatedAN[idxNdExc:])
 			if err != nil {
 				return err
 			}
-			if (skippy < 0) || (idxNdEx+skippy) < 0 {
-				return ErrCorruptExtentKinds
+			if (omitted < 0) || (idxNdExc+omitted) < 0 {
+				return FaultUnfitMagnitudeKinds
 			}
-			if (idxNdEx + skippy) > l {
+			if (idxNdExc + omitted) > l {
 				return io.ErrUnexpectedEOF
 			}
-			idxNdEx += skippy
+			idxNdExc += omitted
 		}
 	}
 
-	if idxNdEx > l {
+	if idxNdExc > l {
 		return io.ErrUnexpectedEOF
 	}
 	return nil
 }
-func (m *QueryArrangeNomination) Unserialize(dAtA []byte) error {
-	l := len(dAtA)
-	idxNdEx := 0
-	for idxNdEx < l {
-		preOrdinal := idxNdEx
+func (m *SolicitArrangeNomination) Decode(deltaLocatedAN []byte) error {
+	l := len(deltaLocatedAN)
+	idxNdExc := 0
+	for idxNdExc < l {
+		priorOrdinal := idxNdExc
 		var cable uint64
-		for displace := uint(0); ; displace += 7 {
-			if displace >= 64 {
-				return ErrIntegerOverloadKinds
+		for relocate := uint(0); ; relocate += 7 {
+			if relocate >= 64 {
+				return FaultIntegerOverrunKinds
 			}
-			if idxNdEx >= l {
+			if idxNdExc >= l {
 				return io.ErrUnexpectedEOF
 			}
-			b := dAtA[idxNdEx]
-			idxNdEx++
-			cable |= uint64(b&0x7F) << displace
+			b := deltaLocatedAN[idxNdExc]
+			idxNdExc++
+			cable |= uint64(b&0x7F) << relocate
 			if b < 0x80 {
 				break
 			}
 		}
-		fieldCount := int32(cable >> 3)
+		attributeCount := int32(cable >> 3)
 		cableKind := int(cable & 0x7)
 		if cableKind == 4 {
 			return fmt.Errorf("REDACTED")
 		}
-		if fieldCount <= 0 {
-			return fmt.Errorf("REDACTED", fieldCount, cable)
+		if attributeCount <= 0 {
+			return fmt.Errorf("REDACTED", attributeCount, cable)
 		}
-		switch fieldCount {
+		switch attributeCount {
 		case 1:
 			if cableKind != 0 {
 				return fmt.Errorf("REDACTED", cableKind)
 			}
 			m.MaximumTransferOctets = 0
-			for displace := uint(0); ; displace += 7 {
-				if displace >= 64 {
-					return ErrIntegerOverloadKinds
+			for relocate := uint(0); ; relocate += 7 {
+				if relocate >= 64 {
+					return FaultIntegerOverrunKinds
 				}
-				if idxNdEx >= l {
+				if idxNdExc >= l {
 					return io.ErrUnexpectedEOF
 				}
-				b := dAtA[idxNdEx]
-				idxNdEx++
-				m.MaximumTransferOctets |= int64(b&0x7F) << displace
+				b := deltaLocatedAN[idxNdExc]
+				idxNdExc++
+				m.MaximumTransferOctets |= int64(b&0x7F) << relocate
 				if b < 0x80 {
 					break
 				}
@@ -11594,115 +11594,115 @@ func (m *QueryArrangeNomination) Unserialize(dAtA []byte) error {
 				return fmt.Errorf("REDACTED", cableKind)
 			}
 			var octetSize int
-			for displace := uint(0); ; displace += 7 {
-				if displace >= 64 {
-					return ErrIntegerOverloadKinds
+			for relocate := uint(0); ; relocate += 7 {
+				if relocate >= 64 {
+					return FaultIntegerOverrunKinds
 				}
-				if idxNdEx >= l {
+				if idxNdExc >= l {
 					return io.ErrUnexpectedEOF
 				}
-				b := dAtA[idxNdEx]
-				idxNdEx++
-				octetSize |= int(b&0x7F) << displace
+				b := deltaLocatedAN[idxNdExc]
+				idxNdExc++
+				octetSize |= int(b&0x7F) << relocate
 				if b < 0x80 {
 					break
 				}
 			}
 			if octetSize < 0 {
-				return ErrCorruptExtentKinds
+				return FaultUnfitMagnitudeKinds
 			}
-			submitOrdinal := idxNdEx + octetSize
+			submitOrdinal := idxNdExc + octetSize
 			if submitOrdinal < 0 {
-				return ErrCorruptExtentKinds
+				return FaultUnfitMagnitudeKinds
 			}
 			if submitOrdinal > l {
 				return io.ErrUnexpectedEOF
 			}
-			m.Txs = append(m.Txs, make([]byte, submitOrdinal-idxNdEx))
-			copy(m.Txs[len(m.Txs)-1], dAtA[idxNdEx:submitOrdinal])
-			idxNdEx = submitOrdinal
+			m.Txs = append(m.Txs, make([]byte, submitOrdinal-idxNdExc))
+			copy(m.Txs[len(m.Txs)-1], deltaLocatedAN[idxNdExc:submitOrdinal])
+			idxNdExc = submitOrdinal
 		case 3:
 			if cableKind != 2 {
 				return fmt.Errorf("REDACTED", cableKind)
 			}
-			var messagesize int
-			for displace := uint(0); ; displace += 7 {
-				if displace >= 64 {
-					return ErrIntegerOverloadKinds
+			var signallength int
+			for relocate := uint(0); ; relocate += 7 {
+				if relocate >= 64 {
+					return FaultIntegerOverrunKinds
 				}
-				if idxNdEx >= l {
+				if idxNdExc >= l {
 					return io.ErrUnexpectedEOF
 				}
-				b := dAtA[idxNdEx]
-				idxNdEx++
-				messagesize |= int(b&0x7F) << displace
+				b := deltaLocatedAN[idxNdExc]
+				idxNdExc++
+				signallength |= int(b&0x7F) << relocate
 				if b < 0x80 {
 					break
 				}
 			}
-			if messagesize < 0 {
-				return ErrCorruptExtentKinds
+			if signallength < 0 {
+				return FaultUnfitMagnitudeKinds
 			}
-			submitOrdinal := idxNdEx + messagesize
+			submitOrdinal := idxNdExc + signallength
 			if submitOrdinal < 0 {
-				return ErrCorruptExtentKinds
+				return FaultUnfitMagnitudeKinds
 			}
 			if submitOrdinal > l {
 				return io.ErrUnexpectedEOF
 			}
-			if err := m.NativeFinalEndorse.Unserialize(dAtA[idxNdEx:submitOrdinal]); err != nil {
+			if err := m.RegionalFinalEndorse.Decode(deltaLocatedAN[idxNdExc:submitOrdinal]); err != nil {
 				return err
 			}
-			idxNdEx = submitOrdinal
+			idxNdExc = submitOrdinal
 		case 4:
 			if cableKind != 2 {
 				return fmt.Errorf("REDACTED", cableKind)
 			}
-			var messagesize int
-			for displace := uint(0); ; displace += 7 {
-				if displace >= 64 {
-					return ErrIntegerOverloadKinds
+			var signallength int
+			for relocate := uint(0); ; relocate += 7 {
+				if relocate >= 64 {
+					return FaultIntegerOverrunKinds
 				}
-				if idxNdEx >= l {
+				if idxNdExc >= l {
 					return io.ErrUnexpectedEOF
 				}
-				b := dAtA[idxNdEx]
-				idxNdEx++
-				messagesize |= int(b&0x7F) << displace
+				b := deltaLocatedAN[idxNdExc]
+				idxNdExc++
+				signallength |= int(b&0x7F) << relocate
 				if b < 0x80 {
 					break
 				}
 			}
-			if messagesize < 0 {
-				return ErrCorruptExtentKinds
+			if signallength < 0 {
+				return FaultUnfitMagnitudeKinds
 			}
-			submitOrdinal := idxNdEx + messagesize
+			submitOrdinal := idxNdExc + signallength
 			if submitOrdinal < 0 {
-				return ErrCorruptExtentKinds
+				return FaultUnfitMagnitudeKinds
 			}
 			if submitOrdinal > l {
 				return io.ErrUnexpectedEOF
 			}
 			m.Malpractice = append(m.Malpractice, Malpractice{})
-			if err := m.Malpractice[len(m.Malpractice)-1].Unserialize(dAtA[idxNdEx:submitOrdinal]); err != nil {
+			if err := m.Malpractice[len(m.Malpractice)-1].Decode(deltaLocatedAN[idxNdExc:submitOrdinal]); err != nil {
 				return err
 			}
-			idxNdEx = submitOrdinal
+			idxNdExc = submitOrdinal
 		case 5:
 			if cableKind != 0 {
 				return fmt.Errorf("REDACTED", cableKind)
 			}
-			m.Level = 0
-			for displace := uint(0); ; displace += 7 {
-				if displace >= 64 {
-					return ErrIntegerOverloadKinds
+			m.Altitude = 0
+			for relocate := uint(0); ; relocate += 7 {
+				if relocate >= 64 {
+					return FaultIntegerOverrunKinds
 				}
-				if idxNdEx >= l {
+				if idxNdExc >= l {
 					return io.ErrUnexpectedEOF
 				}
-				b := dAtA[idxNdEx]
-				idxNdEx++
-				m.Level |= int64(b&0x7F) << displace
+				b := deltaLocatedAN[idxNdExc]
+				idxNdExc++
+				m.Altitude |= int64(b&0x7F) << relocate
 				if b < 0x80 {
 					break
 				}
@@ -11711,301 +11711,301 @@ func (m *QueryArrangeNomination) Unserialize(dAtA []byte) error {
 			if cableKind != 2 {
 				return fmt.Errorf("REDACTED", cableKind)
 			}
-			var messagesize int
-			for displace := uint(0); ; displace += 7 {
-				if displace >= 64 {
-					return ErrIntegerOverloadKinds
+			var signallength int
+			for relocate := uint(0); ; relocate += 7 {
+				if relocate >= 64 {
+					return FaultIntegerOverrunKinds
 				}
-				if idxNdEx >= l {
+				if idxNdExc >= l {
 					return io.ErrUnexpectedEOF
 				}
-				b := dAtA[idxNdEx]
-				idxNdEx++
-				messagesize |= int(b&0x7F) << displace
+				b := deltaLocatedAN[idxNdExc]
+				idxNdExc++
+				signallength |= int(b&0x7F) << relocate
 				if b < 0x80 {
 					break
 				}
 			}
-			if messagesize < 0 {
-				return ErrCorruptExtentKinds
+			if signallength < 0 {
+				return FaultUnfitMagnitudeKinds
 			}
-			submitOrdinal := idxNdEx + messagesize
+			submitOrdinal := idxNdExc + signallength
 			if submitOrdinal < 0 {
-				return ErrCorruptExtentKinds
+				return FaultUnfitMagnitudeKinds
 			}
 			if submitOrdinal > l {
 				return io.ErrUnexpectedEOF
 			}
-			if err := github_com_cosmos_gogoproto_types.StdTimeUnmarshal(&m.Time, dAtA[idxNdEx:submitOrdinal]); err != nil {
+			if err := github_com_cosmos_gogoproto_types.StdTimeUnmarshal(&m.Moment, deltaLocatedAN[idxNdExc:submitOrdinal]); err != nil {
 				return err
 			}
-			idxNdEx = submitOrdinal
+			idxNdExc = submitOrdinal
 		case 7:
 			if cableKind != 2 {
 				return fmt.Errorf("REDACTED", cableKind)
 			}
 			var octetSize int
-			for displace := uint(0); ; displace += 7 {
-				if displace >= 64 {
-					return ErrIntegerOverloadKinds
+			for relocate := uint(0); ; relocate += 7 {
+				if relocate >= 64 {
+					return FaultIntegerOverrunKinds
 				}
-				if idxNdEx >= l {
+				if idxNdExc >= l {
 					return io.ErrUnexpectedEOF
 				}
-				b := dAtA[idxNdEx]
-				idxNdEx++
-				octetSize |= int(b&0x7F) << displace
+				b := deltaLocatedAN[idxNdExc]
+				idxNdExc++
+				octetSize |= int(b&0x7F) << relocate
 				if b < 0x80 {
 					break
 				}
 			}
 			if octetSize < 0 {
-				return ErrCorruptExtentKinds
+				return FaultUnfitMagnitudeKinds
 			}
-			submitOrdinal := idxNdEx + octetSize
+			submitOrdinal := idxNdExc + octetSize
 			if submitOrdinal < 0 {
-				return ErrCorruptExtentKinds
+				return FaultUnfitMagnitudeKinds
 			}
 			if submitOrdinal > l {
 				return io.ErrUnexpectedEOF
 			}
-			m.FollowingRatifiersDigest = append(m.FollowingRatifiersDigest[:0], dAtA[idxNdEx:submitOrdinal]...)
-			if m.FollowingRatifiersDigest == nil {
-				m.FollowingRatifiersDigest = []byte{}
+			m.FollowingAssessorsDigest = append(m.FollowingAssessorsDigest[:0], deltaLocatedAN[idxNdExc:submitOrdinal]...)
+			if m.FollowingAssessorsDigest == nil {
+				m.FollowingAssessorsDigest = []byte{}
 			}
-			idxNdEx = submitOrdinal
+			idxNdExc = submitOrdinal
 		case 8:
 			if cableKind != 2 {
 				return fmt.Errorf("REDACTED", cableKind)
 			}
 			var octetSize int
-			for displace := uint(0); ; displace += 7 {
-				if displace >= 64 {
-					return ErrIntegerOverloadKinds
+			for relocate := uint(0); ; relocate += 7 {
+				if relocate >= 64 {
+					return FaultIntegerOverrunKinds
 				}
-				if idxNdEx >= l {
+				if idxNdExc >= l {
 					return io.ErrUnexpectedEOF
 				}
-				b := dAtA[idxNdEx]
-				idxNdEx++
-				octetSize |= int(b&0x7F) << displace
+				b := deltaLocatedAN[idxNdExc]
+				idxNdExc++
+				octetSize |= int(b&0x7F) << relocate
 				if b < 0x80 {
 					break
 				}
 			}
 			if octetSize < 0 {
-				return ErrCorruptExtentKinds
+				return FaultUnfitMagnitudeKinds
 			}
-			submitOrdinal := idxNdEx + octetSize
+			submitOrdinal := idxNdExc + octetSize
 			if submitOrdinal < 0 {
-				return ErrCorruptExtentKinds
+				return FaultUnfitMagnitudeKinds
 			}
 			if submitOrdinal > l {
 				return io.ErrUnexpectedEOF
 			}
-			m.RecommenderLocation = append(m.RecommenderLocation[:0], dAtA[idxNdEx:submitOrdinal]...)
-			if m.RecommenderLocation == nil {
-				m.RecommenderLocation = []byte{}
+			m.NominatorLocation = append(m.NominatorLocation[:0], deltaLocatedAN[idxNdExc:submitOrdinal]...)
+			if m.NominatorLocation == nil {
+				m.NominatorLocation = []byte{}
 			}
-			idxNdEx = submitOrdinal
+			idxNdExc = submitOrdinal
 		default:
-			idxNdEx = preOrdinal
-			skippy, err := omitKinds(dAtA[idxNdEx:])
+			idxNdExc = priorOrdinal
+			omitted, err := omitKinds(deltaLocatedAN[idxNdExc:])
 			if err != nil {
 				return err
 			}
-			if (skippy < 0) || (idxNdEx+skippy) < 0 {
-				return ErrCorruptExtentKinds
+			if (omitted < 0) || (idxNdExc+omitted) < 0 {
+				return FaultUnfitMagnitudeKinds
 			}
-			if (idxNdEx + skippy) > l {
+			if (idxNdExc + omitted) > l {
 				return io.ErrUnexpectedEOF
 			}
-			idxNdEx += skippy
+			idxNdExc += omitted
 		}
 	}
 
-	if idxNdEx > l {
+	if idxNdExc > l {
 		return io.ErrUnexpectedEOF
 	}
 	return nil
 }
-func (m *QueryHandleNomination) Unserialize(dAtA []byte) error {
-	l := len(dAtA)
-	idxNdEx := 0
-	for idxNdEx < l {
-		preOrdinal := idxNdEx
+func (m *SolicitHandleNomination) Decode(deltaLocatedAN []byte) error {
+	l := len(deltaLocatedAN)
+	idxNdExc := 0
+	for idxNdExc < l {
+		priorOrdinal := idxNdExc
 		var cable uint64
-		for displace := uint(0); ; displace += 7 {
-			if displace >= 64 {
-				return ErrIntegerOverloadKinds
+		for relocate := uint(0); ; relocate += 7 {
+			if relocate >= 64 {
+				return FaultIntegerOverrunKinds
 			}
-			if idxNdEx >= l {
+			if idxNdExc >= l {
 				return io.ErrUnexpectedEOF
 			}
-			b := dAtA[idxNdEx]
-			idxNdEx++
-			cable |= uint64(b&0x7F) << displace
+			b := deltaLocatedAN[idxNdExc]
+			idxNdExc++
+			cable |= uint64(b&0x7F) << relocate
 			if b < 0x80 {
 				break
 			}
 		}
-		fieldCount := int32(cable >> 3)
+		attributeCount := int32(cable >> 3)
 		cableKind := int(cable & 0x7)
 		if cableKind == 4 {
 			return fmt.Errorf("REDACTED")
 		}
-		if fieldCount <= 0 {
-			return fmt.Errorf("REDACTED", fieldCount, cable)
+		if attributeCount <= 0 {
+			return fmt.Errorf("REDACTED", attributeCount, cable)
 		}
-		switch fieldCount {
+		switch attributeCount {
 		case 1:
 			if cableKind != 2 {
 				return fmt.Errorf("REDACTED", cableKind)
 			}
 			var octetSize int
-			for displace := uint(0); ; displace += 7 {
-				if displace >= 64 {
-					return ErrIntegerOverloadKinds
+			for relocate := uint(0); ; relocate += 7 {
+				if relocate >= 64 {
+					return FaultIntegerOverrunKinds
 				}
-				if idxNdEx >= l {
+				if idxNdExc >= l {
 					return io.ErrUnexpectedEOF
 				}
-				b := dAtA[idxNdEx]
-				idxNdEx++
-				octetSize |= int(b&0x7F) << displace
+				b := deltaLocatedAN[idxNdExc]
+				idxNdExc++
+				octetSize |= int(b&0x7F) << relocate
 				if b < 0x80 {
 					break
 				}
 			}
 			if octetSize < 0 {
-				return ErrCorruptExtentKinds
+				return FaultUnfitMagnitudeKinds
 			}
-			submitOrdinal := idxNdEx + octetSize
+			submitOrdinal := idxNdExc + octetSize
 			if submitOrdinal < 0 {
-				return ErrCorruptExtentKinds
+				return FaultUnfitMagnitudeKinds
 			}
 			if submitOrdinal > l {
 				return io.ErrUnexpectedEOF
 			}
-			m.Txs = append(m.Txs, make([]byte, submitOrdinal-idxNdEx))
-			copy(m.Txs[len(m.Txs)-1], dAtA[idxNdEx:submitOrdinal])
-			idxNdEx = submitOrdinal
+			m.Txs = append(m.Txs, make([]byte, submitOrdinal-idxNdExc))
+			copy(m.Txs[len(m.Txs)-1], deltaLocatedAN[idxNdExc:submitOrdinal])
+			idxNdExc = submitOrdinal
 		case 2:
 			if cableKind != 2 {
 				return fmt.Errorf("REDACTED", cableKind)
 			}
-			var messagesize int
-			for displace := uint(0); ; displace += 7 {
-				if displace >= 64 {
-					return ErrIntegerOverloadKinds
+			var signallength int
+			for relocate := uint(0); ; relocate += 7 {
+				if relocate >= 64 {
+					return FaultIntegerOverrunKinds
 				}
-				if idxNdEx >= l {
+				if idxNdExc >= l {
 					return io.ErrUnexpectedEOF
 				}
-				b := dAtA[idxNdEx]
-				idxNdEx++
-				messagesize |= int(b&0x7F) << displace
+				b := deltaLocatedAN[idxNdExc]
+				idxNdExc++
+				signallength |= int(b&0x7F) << relocate
 				if b < 0x80 {
 					break
 				}
 			}
-			if messagesize < 0 {
-				return ErrCorruptExtentKinds
+			if signallength < 0 {
+				return FaultUnfitMagnitudeKinds
 			}
-			submitOrdinal := idxNdEx + messagesize
+			submitOrdinal := idxNdExc + signallength
 			if submitOrdinal < 0 {
-				return ErrCorruptExtentKinds
+				return FaultUnfitMagnitudeKinds
 			}
 			if submitOrdinal > l {
 				return io.ErrUnexpectedEOF
 			}
-			if err := m.NominatedFinalEndorse.Unserialize(dAtA[idxNdEx:submitOrdinal]); err != nil {
+			if err := m.ItemizedFinalEndorse.Decode(deltaLocatedAN[idxNdExc:submitOrdinal]); err != nil {
 				return err
 			}
-			idxNdEx = submitOrdinal
+			idxNdExc = submitOrdinal
 		case 3:
 			if cableKind != 2 {
 				return fmt.Errorf("REDACTED", cableKind)
 			}
-			var messagesize int
-			for displace := uint(0); ; displace += 7 {
-				if displace >= 64 {
-					return ErrIntegerOverloadKinds
+			var signallength int
+			for relocate := uint(0); ; relocate += 7 {
+				if relocate >= 64 {
+					return FaultIntegerOverrunKinds
 				}
-				if idxNdEx >= l {
+				if idxNdExc >= l {
 					return io.ErrUnexpectedEOF
 				}
-				b := dAtA[idxNdEx]
-				idxNdEx++
-				messagesize |= int(b&0x7F) << displace
+				b := deltaLocatedAN[idxNdExc]
+				idxNdExc++
+				signallength |= int(b&0x7F) << relocate
 				if b < 0x80 {
 					break
 				}
 			}
-			if messagesize < 0 {
-				return ErrCorruptExtentKinds
+			if signallength < 0 {
+				return FaultUnfitMagnitudeKinds
 			}
-			submitOrdinal := idxNdEx + messagesize
+			submitOrdinal := idxNdExc + signallength
 			if submitOrdinal < 0 {
-				return ErrCorruptExtentKinds
+				return FaultUnfitMagnitudeKinds
 			}
 			if submitOrdinal > l {
 				return io.ErrUnexpectedEOF
 			}
 			m.Malpractice = append(m.Malpractice, Malpractice{})
-			if err := m.Malpractice[len(m.Malpractice)-1].Unserialize(dAtA[idxNdEx:submitOrdinal]); err != nil {
+			if err := m.Malpractice[len(m.Malpractice)-1].Decode(deltaLocatedAN[idxNdExc:submitOrdinal]); err != nil {
 				return err
 			}
-			idxNdEx = submitOrdinal
+			idxNdExc = submitOrdinal
 		case 4:
 			if cableKind != 2 {
 				return fmt.Errorf("REDACTED", cableKind)
 			}
 			var octetSize int
-			for displace := uint(0); ; displace += 7 {
-				if displace >= 64 {
-					return ErrIntegerOverloadKinds
+			for relocate := uint(0); ; relocate += 7 {
+				if relocate >= 64 {
+					return FaultIntegerOverrunKinds
 				}
-				if idxNdEx >= l {
+				if idxNdExc >= l {
 					return io.ErrUnexpectedEOF
 				}
-				b := dAtA[idxNdEx]
-				idxNdEx++
-				octetSize |= int(b&0x7F) << displace
+				b := deltaLocatedAN[idxNdExc]
+				idxNdExc++
+				octetSize |= int(b&0x7F) << relocate
 				if b < 0x80 {
 					break
 				}
 			}
 			if octetSize < 0 {
-				return ErrCorruptExtentKinds
+				return FaultUnfitMagnitudeKinds
 			}
-			submitOrdinal := idxNdEx + octetSize
+			submitOrdinal := idxNdExc + octetSize
 			if submitOrdinal < 0 {
-				return ErrCorruptExtentKinds
+				return FaultUnfitMagnitudeKinds
 			}
 			if submitOrdinal > l {
 				return io.ErrUnexpectedEOF
 			}
-			m.Digest = append(m.Digest[:0], dAtA[idxNdEx:submitOrdinal]...)
+			m.Digest = append(m.Digest[:0], deltaLocatedAN[idxNdExc:submitOrdinal]...)
 			if m.Digest == nil {
 				m.Digest = []byte{}
 			}
-			idxNdEx = submitOrdinal
+			idxNdExc = submitOrdinal
 		case 5:
 			if cableKind != 0 {
 				return fmt.Errorf("REDACTED", cableKind)
 			}
-			m.Level = 0
-			for displace := uint(0); ; displace += 7 {
-				if displace >= 64 {
-					return ErrIntegerOverloadKinds
+			m.Altitude = 0
+			for relocate := uint(0); ; relocate += 7 {
+				if relocate >= 64 {
+					return FaultIntegerOverrunKinds
 				}
-				if idxNdEx >= l {
+				if idxNdExc >= l {
 					return io.ErrUnexpectedEOF
 				}
-				b := dAtA[idxNdEx]
-				idxNdEx++
-				m.Level |= int64(b&0x7F) << displace
+				b := deltaLocatedAN[idxNdExc]
+				idxNdExc++
+				m.Altitude |= int64(b&0x7F) << relocate
 				if b < 0x80 {
 					break
 				}
@@ -12014,202 +12014,202 @@ func (m *QueryHandleNomination) Unserialize(dAtA []byte) error {
 			if cableKind != 2 {
 				return fmt.Errorf("REDACTED", cableKind)
 			}
-			var messagesize int
-			for displace := uint(0); ; displace += 7 {
-				if displace >= 64 {
-					return ErrIntegerOverloadKinds
+			var signallength int
+			for relocate := uint(0); ; relocate += 7 {
+				if relocate >= 64 {
+					return FaultIntegerOverrunKinds
 				}
-				if idxNdEx >= l {
+				if idxNdExc >= l {
 					return io.ErrUnexpectedEOF
 				}
-				b := dAtA[idxNdEx]
-				idxNdEx++
-				messagesize |= int(b&0x7F) << displace
+				b := deltaLocatedAN[idxNdExc]
+				idxNdExc++
+				signallength |= int(b&0x7F) << relocate
 				if b < 0x80 {
 					break
 				}
 			}
-			if messagesize < 0 {
-				return ErrCorruptExtentKinds
+			if signallength < 0 {
+				return FaultUnfitMagnitudeKinds
 			}
-			submitOrdinal := idxNdEx + messagesize
+			submitOrdinal := idxNdExc + signallength
 			if submitOrdinal < 0 {
-				return ErrCorruptExtentKinds
+				return FaultUnfitMagnitudeKinds
 			}
 			if submitOrdinal > l {
 				return io.ErrUnexpectedEOF
 			}
-			if err := github_com_cosmos_gogoproto_types.StdTimeUnmarshal(&m.Time, dAtA[idxNdEx:submitOrdinal]); err != nil {
+			if err := github_com_cosmos_gogoproto_types.StdTimeUnmarshal(&m.Moment, deltaLocatedAN[idxNdExc:submitOrdinal]); err != nil {
 				return err
 			}
-			idxNdEx = submitOrdinal
+			idxNdExc = submitOrdinal
 		case 7:
 			if cableKind != 2 {
 				return fmt.Errorf("REDACTED", cableKind)
 			}
 			var octetSize int
-			for displace := uint(0); ; displace += 7 {
-				if displace >= 64 {
-					return ErrIntegerOverloadKinds
+			for relocate := uint(0); ; relocate += 7 {
+				if relocate >= 64 {
+					return FaultIntegerOverrunKinds
 				}
-				if idxNdEx >= l {
+				if idxNdExc >= l {
 					return io.ErrUnexpectedEOF
 				}
-				b := dAtA[idxNdEx]
-				idxNdEx++
-				octetSize |= int(b&0x7F) << displace
+				b := deltaLocatedAN[idxNdExc]
+				idxNdExc++
+				octetSize |= int(b&0x7F) << relocate
 				if b < 0x80 {
 					break
 				}
 			}
 			if octetSize < 0 {
-				return ErrCorruptExtentKinds
+				return FaultUnfitMagnitudeKinds
 			}
-			submitOrdinal := idxNdEx + octetSize
+			submitOrdinal := idxNdExc + octetSize
 			if submitOrdinal < 0 {
-				return ErrCorruptExtentKinds
+				return FaultUnfitMagnitudeKinds
 			}
 			if submitOrdinal > l {
 				return io.ErrUnexpectedEOF
 			}
-			m.FollowingRatifiersDigest = append(m.FollowingRatifiersDigest[:0], dAtA[idxNdEx:submitOrdinal]...)
-			if m.FollowingRatifiersDigest == nil {
-				m.FollowingRatifiersDigest = []byte{}
+			m.FollowingAssessorsDigest = append(m.FollowingAssessorsDigest[:0], deltaLocatedAN[idxNdExc:submitOrdinal]...)
+			if m.FollowingAssessorsDigest == nil {
+				m.FollowingAssessorsDigest = []byte{}
 			}
-			idxNdEx = submitOrdinal
+			idxNdExc = submitOrdinal
 		case 8:
 			if cableKind != 2 {
 				return fmt.Errorf("REDACTED", cableKind)
 			}
 			var octetSize int
-			for displace := uint(0); ; displace += 7 {
-				if displace >= 64 {
-					return ErrIntegerOverloadKinds
+			for relocate := uint(0); ; relocate += 7 {
+				if relocate >= 64 {
+					return FaultIntegerOverrunKinds
 				}
-				if idxNdEx >= l {
+				if idxNdExc >= l {
 					return io.ErrUnexpectedEOF
 				}
-				b := dAtA[idxNdEx]
-				idxNdEx++
-				octetSize |= int(b&0x7F) << displace
+				b := deltaLocatedAN[idxNdExc]
+				idxNdExc++
+				octetSize |= int(b&0x7F) << relocate
 				if b < 0x80 {
 					break
 				}
 			}
 			if octetSize < 0 {
-				return ErrCorruptExtentKinds
+				return FaultUnfitMagnitudeKinds
 			}
-			submitOrdinal := idxNdEx + octetSize
+			submitOrdinal := idxNdExc + octetSize
 			if submitOrdinal < 0 {
-				return ErrCorruptExtentKinds
+				return FaultUnfitMagnitudeKinds
 			}
 			if submitOrdinal > l {
 				return io.ErrUnexpectedEOF
 			}
-			m.RecommenderLocation = append(m.RecommenderLocation[:0], dAtA[idxNdEx:submitOrdinal]...)
-			if m.RecommenderLocation == nil {
-				m.RecommenderLocation = []byte{}
+			m.NominatorLocation = append(m.NominatorLocation[:0], deltaLocatedAN[idxNdExc:submitOrdinal]...)
+			if m.NominatorLocation == nil {
+				m.NominatorLocation = []byte{}
 			}
-			idxNdEx = submitOrdinal
+			idxNdExc = submitOrdinal
 		default:
-			idxNdEx = preOrdinal
-			skippy, err := omitKinds(dAtA[idxNdEx:])
+			idxNdExc = priorOrdinal
+			omitted, err := omitKinds(deltaLocatedAN[idxNdExc:])
 			if err != nil {
 				return err
 			}
-			if (skippy < 0) || (idxNdEx+skippy) < 0 {
-				return ErrCorruptExtentKinds
+			if (omitted < 0) || (idxNdExc+omitted) < 0 {
+				return FaultUnfitMagnitudeKinds
 			}
-			if (idxNdEx + skippy) > l {
+			if (idxNdExc + omitted) > l {
 				return io.ErrUnexpectedEOF
 			}
-			idxNdEx += skippy
+			idxNdExc += omitted
 		}
 	}
 
-	if idxNdEx > l {
+	if idxNdExc > l {
 		return io.ErrUnexpectedEOF
 	}
 	return nil
 }
-func (m *QueryExpandBallot) Unserialize(dAtA []byte) error {
-	l := len(dAtA)
-	idxNdEx := 0
-	for idxNdEx < l {
-		preOrdinal := idxNdEx
+func (m *SolicitBroadenBallot) Decode(deltaLocatedAN []byte) error {
+	l := len(deltaLocatedAN)
+	idxNdExc := 0
+	for idxNdExc < l {
+		priorOrdinal := idxNdExc
 		var cable uint64
-		for displace := uint(0); ; displace += 7 {
-			if displace >= 64 {
-				return ErrIntegerOverloadKinds
+		for relocate := uint(0); ; relocate += 7 {
+			if relocate >= 64 {
+				return FaultIntegerOverrunKinds
 			}
-			if idxNdEx >= l {
+			if idxNdExc >= l {
 				return io.ErrUnexpectedEOF
 			}
-			b := dAtA[idxNdEx]
-			idxNdEx++
-			cable |= uint64(b&0x7F) << displace
+			b := deltaLocatedAN[idxNdExc]
+			idxNdExc++
+			cable |= uint64(b&0x7F) << relocate
 			if b < 0x80 {
 				break
 			}
 		}
-		fieldCount := int32(cable >> 3)
+		attributeCount := int32(cable >> 3)
 		cableKind := int(cable & 0x7)
 		if cableKind == 4 {
 			return fmt.Errorf("REDACTED")
 		}
-		if fieldCount <= 0 {
-			return fmt.Errorf("REDACTED", fieldCount, cable)
+		if attributeCount <= 0 {
+			return fmt.Errorf("REDACTED", attributeCount, cable)
 		}
-		switch fieldCount {
+		switch attributeCount {
 		case 1:
 			if cableKind != 2 {
 				return fmt.Errorf("REDACTED", cableKind)
 			}
 			var octetSize int
-			for displace := uint(0); ; displace += 7 {
-				if displace >= 64 {
-					return ErrIntegerOverloadKinds
+			for relocate := uint(0); ; relocate += 7 {
+				if relocate >= 64 {
+					return FaultIntegerOverrunKinds
 				}
-				if idxNdEx >= l {
+				if idxNdExc >= l {
 					return io.ErrUnexpectedEOF
 				}
-				b := dAtA[idxNdEx]
-				idxNdEx++
-				octetSize |= int(b&0x7F) << displace
+				b := deltaLocatedAN[idxNdExc]
+				idxNdExc++
+				octetSize |= int(b&0x7F) << relocate
 				if b < 0x80 {
 					break
 				}
 			}
 			if octetSize < 0 {
-				return ErrCorruptExtentKinds
+				return FaultUnfitMagnitudeKinds
 			}
-			submitOrdinal := idxNdEx + octetSize
+			submitOrdinal := idxNdExc + octetSize
 			if submitOrdinal < 0 {
-				return ErrCorruptExtentKinds
+				return FaultUnfitMagnitudeKinds
 			}
 			if submitOrdinal > l {
 				return io.ErrUnexpectedEOF
 			}
-			m.Digest = append(m.Digest[:0], dAtA[idxNdEx:submitOrdinal]...)
+			m.Digest = append(m.Digest[:0], deltaLocatedAN[idxNdExc:submitOrdinal]...)
 			if m.Digest == nil {
 				m.Digest = []byte{}
 			}
-			idxNdEx = submitOrdinal
+			idxNdExc = submitOrdinal
 		case 2:
 			if cableKind != 0 {
 				return fmt.Errorf("REDACTED", cableKind)
 			}
-			m.Level = 0
-			for displace := uint(0); ; displace += 7 {
-				if displace >= 64 {
-					return ErrIntegerOverloadKinds
+			m.Altitude = 0
+			for relocate := uint(0); ; relocate += 7 {
+				if relocate >= 64 {
+					return FaultIntegerOverrunKinds
 				}
-				if idxNdEx >= l {
+				if idxNdExc >= l {
 					return io.ErrUnexpectedEOF
 				}
-				b := dAtA[idxNdEx]
-				idxNdEx++
-				m.Level |= int64(b&0x7F) << displace
+				b := deltaLocatedAN[idxNdExc]
+				idxNdExc++
+				m.Altitude |= int64(b&0x7F) << relocate
 				if b < 0x80 {
 					break
 				}
@@ -12218,335 +12218,335 @@ func (m *QueryExpandBallot) Unserialize(dAtA []byte) error {
 			if cableKind != 2 {
 				return fmt.Errorf("REDACTED", cableKind)
 			}
-			var messagesize int
-			for displace := uint(0); ; displace += 7 {
-				if displace >= 64 {
-					return ErrIntegerOverloadKinds
+			var signallength int
+			for relocate := uint(0); ; relocate += 7 {
+				if relocate >= 64 {
+					return FaultIntegerOverrunKinds
 				}
-				if idxNdEx >= l {
+				if idxNdExc >= l {
 					return io.ErrUnexpectedEOF
 				}
-				b := dAtA[idxNdEx]
-				idxNdEx++
-				messagesize |= int(b&0x7F) << displace
+				b := deltaLocatedAN[idxNdExc]
+				idxNdExc++
+				signallength |= int(b&0x7F) << relocate
 				if b < 0x80 {
 					break
 				}
 			}
-			if messagesize < 0 {
-				return ErrCorruptExtentKinds
+			if signallength < 0 {
+				return FaultUnfitMagnitudeKinds
 			}
-			submitOrdinal := idxNdEx + messagesize
+			submitOrdinal := idxNdExc + signallength
 			if submitOrdinal < 0 {
-				return ErrCorruptExtentKinds
+				return FaultUnfitMagnitudeKinds
 			}
 			if submitOrdinal > l {
 				return io.ErrUnexpectedEOF
 			}
-			if err := github_com_cosmos_gogoproto_types.StdTimeUnmarshal(&m.Time, dAtA[idxNdEx:submitOrdinal]); err != nil {
+			if err := github_com_cosmos_gogoproto_types.StdTimeUnmarshal(&m.Moment, deltaLocatedAN[idxNdExc:submitOrdinal]); err != nil {
 				return err
 			}
-			idxNdEx = submitOrdinal
+			idxNdExc = submitOrdinal
 		case 4:
 			if cableKind != 2 {
 				return fmt.Errorf("REDACTED", cableKind)
 			}
 			var octetSize int
-			for displace := uint(0); ; displace += 7 {
-				if displace >= 64 {
-					return ErrIntegerOverloadKinds
+			for relocate := uint(0); ; relocate += 7 {
+				if relocate >= 64 {
+					return FaultIntegerOverrunKinds
 				}
-				if idxNdEx >= l {
+				if idxNdExc >= l {
 					return io.ErrUnexpectedEOF
 				}
-				b := dAtA[idxNdEx]
-				idxNdEx++
-				octetSize |= int(b&0x7F) << displace
+				b := deltaLocatedAN[idxNdExc]
+				idxNdExc++
+				octetSize |= int(b&0x7F) << relocate
 				if b < 0x80 {
 					break
 				}
 			}
 			if octetSize < 0 {
-				return ErrCorruptExtentKinds
+				return FaultUnfitMagnitudeKinds
 			}
-			submitOrdinal := idxNdEx + octetSize
+			submitOrdinal := idxNdExc + octetSize
 			if submitOrdinal < 0 {
-				return ErrCorruptExtentKinds
+				return FaultUnfitMagnitudeKinds
 			}
 			if submitOrdinal > l {
 				return io.ErrUnexpectedEOF
 			}
-			m.Txs = append(m.Txs, make([]byte, submitOrdinal-idxNdEx))
-			copy(m.Txs[len(m.Txs)-1], dAtA[idxNdEx:submitOrdinal])
-			idxNdEx = submitOrdinal
+			m.Txs = append(m.Txs, make([]byte, submitOrdinal-idxNdExc))
+			copy(m.Txs[len(m.Txs)-1], deltaLocatedAN[idxNdExc:submitOrdinal])
+			idxNdExc = submitOrdinal
 		case 5:
 			if cableKind != 2 {
 				return fmt.Errorf("REDACTED", cableKind)
 			}
-			var messagesize int
-			for displace := uint(0); ; displace += 7 {
-				if displace >= 64 {
-					return ErrIntegerOverloadKinds
+			var signallength int
+			for relocate := uint(0); ; relocate += 7 {
+				if relocate >= 64 {
+					return FaultIntegerOverrunKinds
 				}
-				if idxNdEx >= l {
+				if idxNdExc >= l {
 					return io.ErrUnexpectedEOF
 				}
-				b := dAtA[idxNdEx]
-				idxNdEx++
-				messagesize |= int(b&0x7F) << displace
+				b := deltaLocatedAN[idxNdExc]
+				idxNdExc++
+				signallength |= int(b&0x7F) << relocate
 				if b < 0x80 {
 					break
 				}
 			}
-			if messagesize < 0 {
-				return ErrCorruptExtentKinds
+			if signallength < 0 {
+				return FaultUnfitMagnitudeKinds
 			}
-			submitOrdinal := idxNdEx + messagesize
+			submitOrdinal := idxNdExc + signallength
 			if submitOrdinal < 0 {
-				return ErrCorruptExtentKinds
+				return FaultUnfitMagnitudeKinds
 			}
 			if submitOrdinal > l {
 				return io.ErrUnexpectedEOF
 			}
-			if err := m.NominatedFinalEndorse.Unserialize(dAtA[idxNdEx:submitOrdinal]); err != nil {
+			if err := m.ItemizedFinalEndorse.Decode(deltaLocatedAN[idxNdExc:submitOrdinal]); err != nil {
 				return err
 			}
-			idxNdEx = submitOrdinal
+			idxNdExc = submitOrdinal
 		case 6:
 			if cableKind != 2 {
 				return fmt.Errorf("REDACTED", cableKind)
 			}
-			var messagesize int
-			for displace := uint(0); ; displace += 7 {
-				if displace >= 64 {
-					return ErrIntegerOverloadKinds
+			var signallength int
+			for relocate := uint(0); ; relocate += 7 {
+				if relocate >= 64 {
+					return FaultIntegerOverrunKinds
 				}
-				if idxNdEx >= l {
+				if idxNdExc >= l {
 					return io.ErrUnexpectedEOF
 				}
-				b := dAtA[idxNdEx]
-				idxNdEx++
-				messagesize |= int(b&0x7F) << displace
+				b := deltaLocatedAN[idxNdExc]
+				idxNdExc++
+				signallength |= int(b&0x7F) << relocate
 				if b < 0x80 {
 					break
 				}
 			}
-			if messagesize < 0 {
-				return ErrCorruptExtentKinds
+			if signallength < 0 {
+				return FaultUnfitMagnitudeKinds
 			}
-			submitOrdinal := idxNdEx + messagesize
+			submitOrdinal := idxNdExc + signallength
 			if submitOrdinal < 0 {
-				return ErrCorruptExtentKinds
+				return FaultUnfitMagnitudeKinds
 			}
 			if submitOrdinal > l {
 				return io.ErrUnexpectedEOF
 			}
 			m.Malpractice = append(m.Malpractice, Malpractice{})
-			if err := m.Malpractice[len(m.Malpractice)-1].Unserialize(dAtA[idxNdEx:submitOrdinal]); err != nil {
+			if err := m.Malpractice[len(m.Malpractice)-1].Decode(deltaLocatedAN[idxNdExc:submitOrdinal]); err != nil {
 				return err
 			}
-			idxNdEx = submitOrdinal
+			idxNdExc = submitOrdinal
 		case 7:
 			if cableKind != 2 {
 				return fmt.Errorf("REDACTED", cableKind)
 			}
 			var octetSize int
-			for displace := uint(0); ; displace += 7 {
-				if displace >= 64 {
-					return ErrIntegerOverloadKinds
+			for relocate := uint(0); ; relocate += 7 {
+				if relocate >= 64 {
+					return FaultIntegerOverrunKinds
 				}
-				if idxNdEx >= l {
+				if idxNdExc >= l {
 					return io.ErrUnexpectedEOF
 				}
-				b := dAtA[idxNdEx]
-				idxNdEx++
-				octetSize |= int(b&0x7F) << displace
+				b := deltaLocatedAN[idxNdExc]
+				idxNdExc++
+				octetSize |= int(b&0x7F) << relocate
 				if b < 0x80 {
 					break
 				}
 			}
 			if octetSize < 0 {
-				return ErrCorruptExtentKinds
+				return FaultUnfitMagnitudeKinds
 			}
-			submitOrdinal := idxNdEx + octetSize
+			submitOrdinal := idxNdExc + octetSize
 			if submitOrdinal < 0 {
-				return ErrCorruptExtentKinds
+				return FaultUnfitMagnitudeKinds
 			}
 			if submitOrdinal > l {
 				return io.ErrUnexpectedEOF
 			}
-			m.FollowingRatifiersDigest = append(m.FollowingRatifiersDigest[:0], dAtA[idxNdEx:submitOrdinal]...)
-			if m.FollowingRatifiersDigest == nil {
-				m.FollowingRatifiersDigest = []byte{}
+			m.FollowingAssessorsDigest = append(m.FollowingAssessorsDigest[:0], deltaLocatedAN[idxNdExc:submitOrdinal]...)
+			if m.FollowingAssessorsDigest == nil {
+				m.FollowingAssessorsDigest = []byte{}
 			}
-			idxNdEx = submitOrdinal
+			idxNdExc = submitOrdinal
 		case 8:
 			if cableKind != 2 {
 				return fmt.Errorf("REDACTED", cableKind)
 			}
 			var octetSize int
-			for displace := uint(0); ; displace += 7 {
-				if displace >= 64 {
-					return ErrIntegerOverloadKinds
+			for relocate := uint(0); ; relocate += 7 {
+				if relocate >= 64 {
+					return FaultIntegerOverrunKinds
 				}
-				if idxNdEx >= l {
+				if idxNdExc >= l {
 					return io.ErrUnexpectedEOF
 				}
-				b := dAtA[idxNdEx]
-				idxNdEx++
-				octetSize |= int(b&0x7F) << displace
+				b := deltaLocatedAN[idxNdExc]
+				idxNdExc++
+				octetSize |= int(b&0x7F) << relocate
 				if b < 0x80 {
 					break
 				}
 			}
 			if octetSize < 0 {
-				return ErrCorruptExtentKinds
+				return FaultUnfitMagnitudeKinds
 			}
-			submitOrdinal := idxNdEx + octetSize
+			submitOrdinal := idxNdExc + octetSize
 			if submitOrdinal < 0 {
-				return ErrCorruptExtentKinds
+				return FaultUnfitMagnitudeKinds
 			}
 			if submitOrdinal > l {
 				return io.ErrUnexpectedEOF
 			}
-			m.RecommenderLocation = append(m.RecommenderLocation[:0], dAtA[idxNdEx:submitOrdinal]...)
-			if m.RecommenderLocation == nil {
-				m.RecommenderLocation = []byte{}
+			m.NominatorLocation = append(m.NominatorLocation[:0], deltaLocatedAN[idxNdExc:submitOrdinal]...)
+			if m.NominatorLocation == nil {
+				m.NominatorLocation = []byte{}
 			}
-			idxNdEx = submitOrdinal
+			idxNdExc = submitOrdinal
 		default:
-			idxNdEx = preOrdinal
-			skippy, err := omitKinds(dAtA[idxNdEx:])
+			idxNdExc = priorOrdinal
+			omitted, err := omitKinds(deltaLocatedAN[idxNdExc:])
 			if err != nil {
 				return err
 			}
-			if (skippy < 0) || (idxNdEx+skippy) < 0 {
-				return ErrCorruptExtentKinds
+			if (omitted < 0) || (idxNdExc+omitted) < 0 {
+				return FaultUnfitMagnitudeKinds
 			}
-			if (idxNdEx + skippy) > l {
+			if (idxNdExc + omitted) > l {
 				return io.ErrUnexpectedEOF
 			}
-			idxNdEx += skippy
+			idxNdExc += omitted
 		}
 	}
 
-	if idxNdEx > l {
+	if idxNdExc > l {
 		return io.ErrUnexpectedEOF
 	}
 	return nil
 }
-func (m *QueryValidateBallotAddition) Unserialize(dAtA []byte) error {
-	l := len(dAtA)
-	idxNdEx := 0
-	for idxNdEx < l {
-		preOrdinal := idxNdEx
+func (m *SolicitValidateBallotAddition) Decode(deltaLocatedAN []byte) error {
+	l := len(deltaLocatedAN)
+	idxNdExc := 0
+	for idxNdExc < l {
+		priorOrdinal := idxNdExc
 		var cable uint64
-		for displace := uint(0); ; displace += 7 {
-			if displace >= 64 {
-				return ErrIntegerOverloadKinds
+		for relocate := uint(0); ; relocate += 7 {
+			if relocate >= 64 {
+				return FaultIntegerOverrunKinds
 			}
-			if idxNdEx >= l {
+			if idxNdExc >= l {
 				return io.ErrUnexpectedEOF
 			}
-			b := dAtA[idxNdEx]
-			idxNdEx++
-			cable |= uint64(b&0x7F) << displace
+			b := deltaLocatedAN[idxNdExc]
+			idxNdExc++
+			cable |= uint64(b&0x7F) << relocate
 			if b < 0x80 {
 				break
 			}
 		}
-		fieldCount := int32(cable >> 3)
+		attributeCount := int32(cable >> 3)
 		cableKind := int(cable & 0x7)
 		if cableKind == 4 {
 			return fmt.Errorf("REDACTED")
 		}
-		if fieldCount <= 0 {
-			return fmt.Errorf("REDACTED", fieldCount, cable)
+		if attributeCount <= 0 {
+			return fmt.Errorf("REDACTED", attributeCount, cable)
 		}
-		switch fieldCount {
+		switch attributeCount {
 		case 1:
 			if cableKind != 2 {
 				return fmt.Errorf("REDACTED", cableKind)
 			}
 			var octetSize int
-			for displace := uint(0); ; displace += 7 {
-				if displace >= 64 {
-					return ErrIntegerOverloadKinds
+			for relocate := uint(0); ; relocate += 7 {
+				if relocate >= 64 {
+					return FaultIntegerOverrunKinds
 				}
-				if idxNdEx >= l {
+				if idxNdExc >= l {
 					return io.ErrUnexpectedEOF
 				}
-				b := dAtA[idxNdEx]
-				idxNdEx++
-				octetSize |= int(b&0x7F) << displace
+				b := deltaLocatedAN[idxNdExc]
+				idxNdExc++
+				octetSize |= int(b&0x7F) << relocate
 				if b < 0x80 {
 					break
 				}
 			}
 			if octetSize < 0 {
-				return ErrCorruptExtentKinds
+				return FaultUnfitMagnitudeKinds
 			}
-			submitOrdinal := idxNdEx + octetSize
+			submitOrdinal := idxNdExc + octetSize
 			if submitOrdinal < 0 {
-				return ErrCorruptExtentKinds
+				return FaultUnfitMagnitudeKinds
 			}
 			if submitOrdinal > l {
 				return io.ErrUnexpectedEOF
 			}
-			m.Digest = append(m.Digest[:0], dAtA[idxNdEx:submitOrdinal]...)
+			m.Digest = append(m.Digest[:0], deltaLocatedAN[idxNdExc:submitOrdinal]...)
 			if m.Digest == nil {
 				m.Digest = []byte{}
 			}
-			idxNdEx = submitOrdinal
+			idxNdExc = submitOrdinal
 		case 2:
 			if cableKind != 2 {
 				return fmt.Errorf("REDACTED", cableKind)
 			}
 			var octetSize int
-			for displace := uint(0); ; displace += 7 {
-				if displace >= 64 {
-					return ErrIntegerOverloadKinds
+			for relocate := uint(0); ; relocate += 7 {
+				if relocate >= 64 {
+					return FaultIntegerOverrunKinds
 				}
-				if idxNdEx >= l {
+				if idxNdExc >= l {
 					return io.ErrUnexpectedEOF
 				}
-				b := dAtA[idxNdEx]
-				idxNdEx++
-				octetSize |= int(b&0x7F) << displace
+				b := deltaLocatedAN[idxNdExc]
+				idxNdExc++
+				octetSize |= int(b&0x7F) << relocate
 				if b < 0x80 {
 					break
 				}
 			}
 			if octetSize < 0 {
-				return ErrCorruptExtentKinds
+				return FaultUnfitMagnitudeKinds
 			}
-			submitOrdinal := idxNdEx + octetSize
+			submitOrdinal := idxNdExc + octetSize
 			if submitOrdinal < 0 {
-				return ErrCorruptExtentKinds
+				return FaultUnfitMagnitudeKinds
 			}
 			if submitOrdinal > l {
 				return io.ErrUnexpectedEOF
 			}
-			m.RatifierLocation = append(m.RatifierLocation[:0], dAtA[idxNdEx:submitOrdinal]...)
-			if m.RatifierLocation == nil {
-				m.RatifierLocation = []byte{}
+			m.AssessorLocation = append(m.AssessorLocation[:0], deltaLocatedAN[idxNdExc:submitOrdinal]...)
+			if m.AssessorLocation == nil {
+				m.AssessorLocation = []byte{}
 			}
-			idxNdEx = submitOrdinal
+			idxNdExc = submitOrdinal
 		case 3:
 			if cableKind != 0 {
 				return fmt.Errorf("REDACTED", cableKind)
 			}
-			m.Level = 0
-			for displace := uint(0); ; displace += 7 {
-				if displace >= 64 {
-					return ErrIntegerOverloadKinds
+			m.Altitude = 0
+			for relocate := uint(0); ; relocate += 7 {
+				if relocate >= 64 {
+					return FaultIntegerOverrunKinds
 				}
-				if idxNdEx >= l {
+				if idxNdExc >= l {
 					return io.ErrUnexpectedEOF
 				}
-				b := dAtA[idxNdEx]
-				idxNdEx++
-				m.Level |= int64(b&0x7F) << displace
+				b := deltaLocatedAN[idxNdExc]
+				idxNdExc++
+				m.Altitude |= int64(b&0x7F) << relocate
 				if b < 0x80 {
 					break
 				}
@@ -12556,233 +12556,233 @@ func (m *QueryValidateBallotAddition) Unserialize(dAtA []byte) error {
 				return fmt.Errorf("REDACTED", cableKind)
 			}
 			var octetSize int
-			for displace := uint(0); ; displace += 7 {
-				if displace >= 64 {
-					return ErrIntegerOverloadKinds
+			for relocate := uint(0); ; relocate += 7 {
+				if relocate >= 64 {
+					return FaultIntegerOverrunKinds
 				}
-				if idxNdEx >= l {
+				if idxNdExc >= l {
 					return io.ErrUnexpectedEOF
 				}
-				b := dAtA[idxNdEx]
-				idxNdEx++
-				octetSize |= int(b&0x7F) << displace
+				b := deltaLocatedAN[idxNdExc]
+				idxNdExc++
+				octetSize |= int(b&0x7F) << relocate
 				if b < 0x80 {
 					break
 				}
 			}
 			if octetSize < 0 {
-				return ErrCorruptExtentKinds
+				return FaultUnfitMagnitudeKinds
 			}
-			submitOrdinal := idxNdEx + octetSize
+			submitOrdinal := idxNdExc + octetSize
 			if submitOrdinal < 0 {
-				return ErrCorruptExtentKinds
+				return FaultUnfitMagnitudeKinds
 			}
 			if submitOrdinal > l {
 				return io.ErrUnexpectedEOF
 			}
-			m.BallotAddition = append(m.BallotAddition[:0], dAtA[idxNdEx:submitOrdinal]...)
+			m.BallotAddition = append(m.BallotAddition[:0], deltaLocatedAN[idxNdExc:submitOrdinal]...)
 			if m.BallotAddition == nil {
 				m.BallotAddition = []byte{}
 			}
-			idxNdEx = submitOrdinal
+			idxNdExc = submitOrdinal
 		default:
-			idxNdEx = preOrdinal
-			skippy, err := omitKinds(dAtA[idxNdEx:])
+			idxNdExc = priorOrdinal
+			omitted, err := omitKinds(deltaLocatedAN[idxNdExc:])
 			if err != nil {
 				return err
 			}
-			if (skippy < 0) || (idxNdEx+skippy) < 0 {
-				return ErrCorruptExtentKinds
+			if (omitted < 0) || (idxNdExc+omitted) < 0 {
+				return FaultUnfitMagnitudeKinds
 			}
-			if (idxNdEx + skippy) > l {
+			if (idxNdExc + omitted) > l {
 				return io.ErrUnexpectedEOF
 			}
-			idxNdEx += skippy
+			idxNdExc += omitted
 		}
 	}
 
-	if idxNdEx > l {
+	if idxNdExc > l {
 		return io.ErrUnexpectedEOF
 	}
 	return nil
 }
-func (m *QueryCompleteLedger) Unserialize(dAtA []byte) error {
-	l := len(dAtA)
-	idxNdEx := 0
-	for idxNdEx < l {
-		preOrdinal := idxNdEx
+func (m *SolicitCulminateLedger) Decode(deltaLocatedAN []byte) error {
+	l := len(deltaLocatedAN)
+	idxNdExc := 0
+	for idxNdExc < l {
+		priorOrdinal := idxNdExc
 		var cable uint64
-		for displace := uint(0); ; displace += 7 {
-			if displace >= 64 {
-				return ErrIntegerOverloadKinds
+		for relocate := uint(0); ; relocate += 7 {
+			if relocate >= 64 {
+				return FaultIntegerOverrunKinds
 			}
-			if idxNdEx >= l {
+			if idxNdExc >= l {
 				return io.ErrUnexpectedEOF
 			}
-			b := dAtA[idxNdEx]
-			idxNdEx++
-			cable |= uint64(b&0x7F) << displace
+			b := deltaLocatedAN[idxNdExc]
+			idxNdExc++
+			cable |= uint64(b&0x7F) << relocate
 			if b < 0x80 {
 				break
 			}
 		}
-		fieldCount := int32(cable >> 3)
+		attributeCount := int32(cable >> 3)
 		cableKind := int(cable & 0x7)
 		if cableKind == 4 {
 			return fmt.Errorf("REDACTED")
 		}
-		if fieldCount <= 0 {
-			return fmt.Errorf("REDACTED", fieldCount, cable)
+		if attributeCount <= 0 {
+			return fmt.Errorf("REDACTED", attributeCount, cable)
 		}
-		switch fieldCount {
+		switch attributeCount {
 		case 1:
 			if cableKind != 2 {
 				return fmt.Errorf("REDACTED", cableKind)
 			}
 			var octetSize int
-			for displace := uint(0); ; displace += 7 {
-				if displace >= 64 {
-					return ErrIntegerOverloadKinds
+			for relocate := uint(0); ; relocate += 7 {
+				if relocate >= 64 {
+					return FaultIntegerOverrunKinds
 				}
-				if idxNdEx >= l {
+				if idxNdExc >= l {
 					return io.ErrUnexpectedEOF
 				}
-				b := dAtA[idxNdEx]
-				idxNdEx++
-				octetSize |= int(b&0x7F) << displace
+				b := deltaLocatedAN[idxNdExc]
+				idxNdExc++
+				octetSize |= int(b&0x7F) << relocate
 				if b < 0x80 {
 					break
 				}
 			}
 			if octetSize < 0 {
-				return ErrCorruptExtentKinds
+				return FaultUnfitMagnitudeKinds
 			}
-			submitOrdinal := idxNdEx + octetSize
+			submitOrdinal := idxNdExc + octetSize
 			if submitOrdinal < 0 {
-				return ErrCorruptExtentKinds
+				return FaultUnfitMagnitudeKinds
 			}
 			if submitOrdinal > l {
 				return io.ErrUnexpectedEOF
 			}
-			m.Txs = append(m.Txs, make([]byte, submitOrdinal-idxNdEx))
-			copy(m.Txs[len(m.Txs)-1], dAtA[idxNdEx:submitOrdinal])
-			idxNdEx = submitOrdinal
+			m.Txs = append(m.Txs, make([]byte, submitOrdinal-idxNdExc))
+			copy(m.Txs[len(m.Txs)-1], deltaLocatedAN[idxNdExc:submitOrdinal])
+			idxNdExc = submitOrdinal
 		case 2:
 			if cableKind != 2 {
 				return fmt.Errorf("REDACTED", cableKind)
 			}
-			var messagesize int
-			for displace := uint(0); ; displace += 7 {
-				if displace >= 64 {
-					return ErrIntegerOverloadKinds
+			var signallength int
+			for relocate := uint(0); ; relocate += 7 {
+				if relocate >= 64 {
+					return FaultIntegerOverrunKinds
 				}
-				if idxNdEx >= l {
+				if idxNdExc >= l {
 					return io.ErrUnexpectedEOF
 				}
-				b := dAtA[idxNdEx]
-				idxNdEx++
-				messagesize |= int(b&0x7F) << displace
+				b := deltaLocatedAN[idxNdExc]
+				idxNdExc++
+				signallength |= int(b&0x7F) << relocate
 				if b < 0x80 {
 					break
 				}
 			}
-			if messagesize < 0 {
-				return ErrCorruptExtentKinds
+			if signallength < 0 {
+				return FaultUnfitMagnitudeKinds
 			}
-			submitOrdinal := idxNdEx + messagesize
+			submitOrdinal := idxNdExc + signallength
 			if submitOrdinal < 0 {
-				return ErrCorruptExtentKinds
+				return FaultUnfitMagnitudeKinds
 			}
 			if submitOrdinal > l {
 				return io.ErrUnexpectedEOF
 			}
-			if err := m.ResolvedFinalEndorse.Unserialize(dAtA[idxNdEx:submitOrdinal]); err != nil {
+			if err := m.ResolvedFinalEndorse.Decode(deltaLocatedAN[idxNdExc:submitOrdinal]); err != nil {
 				return err
 			}
-			idxNdEx = submitOrdinal
+			idxNdExc = submitOrdinal
 		case 3:
 			if cableKind != 2 {
 				return fmt.Errorf("REDACTED", cableKind)
 			}
-			var messagesize int
-			for displace := uint(0); ; displace += 7 {
-				if displace >= 64 {
-					return ErrIntegerOverloadKinds
+			var signallength int
+			for relocate := uint(0); ; relocate += 7 {
+				if relocate >= 64 {
+					return FaultIntegerOverrunKinds
 				}
-				if idxNdEx >= l {
+				if idxNdExc >= l {
 					return io.ErrUnexpectedEOF
 				}
-				b := dAtA[idxNdEx]
-				idxNdEx++
-				messagesize |= int(b&0x7F) << displace
+				b := deltaLocatedAN[idxNdExc]
+				idxNdExc++
+				signallength |= int(b&0x7F) << relocate
 				if b < 0x80 {
 					break
 				}
 			}
-			if messagesize < 0 {
-				return ErrCorruptExtentKinds
+			if signallength < 0 {
+				return FaultUnfitMagnitudeKinds
 			}
-			submitOrdinal := idxNdEx + messagesize
+			submitOrdinal := idxNdExc + signallength
 			if submitOrdinal < 0 {
-				return ErrCorruptExtentKinds
+				return FaultUnfitMagnitudeKinds
 			}
 			if submitOrdinal > l {
 				return io.ErrUnexpectedEOF
 			}
 			m.Malpractice = append(m.Malpractice, Malpractice{})
-			if err := m.Malpractice[len(m.Malpractice)-1].Unserialize(dAtA[idxNdEx:submitOrdinal]); err != nil {
+			if err := m.Malpractice[len(m.Malpractice)-1].Decode(deltaLocatedAN[idxNdExc:submitOrdinal]); err != nil {
 				return err
 			}
-			idxNdEx = submitOrdinal
+			idxNdExc = submitOrdinal
 		case 4:
 			if cableKind != 2 {
 				return fmt.Errorf("REDACTED", cableKind)
 			}
 			var octetSize int
-			for displace := uint(0); ; displace += 7 {
-				if displace >= 64 {
-					return ErrIntegerOverloadKinds
+			for relocate := uint(0); ; relocate += 7 {
+				if relocate >= 64 {
+					return FaultIntegerOverrunKinds
 				}
-				if idxNdEx >= l {
+				if idxNdExc >= l {
 					return io.ErrUnexpectedEOF
 				}
-				b := dAtA[idxNdEx]
-				idxNdEx++
-				octetSize |= int(b&0x7F) << displace
+				b := deltaLocatedAN[idxNdExc]
+				idxNdExc++
+				octetSize |= int(b&0x7F) << relocate
 				if b < 0x80 {
 					break
 				}
 			}
 			if octetSize < 0 {
-				return ErrCorruptExtentKinds
+				return FaultUnfitMagnitudeKinds
 			}
-			submitOrdinal := idxNdEx + octetSize
+			submitOrdinal := idxNdExc + octetSize
 			if submitOrdinal < 0 {
-				return ErrCorruptExtentKinds
+				return FaultUnfitMagnitudeKinds
 			}
 			if submitOrdinal > l {
 				return io.ErrUnexpectedEOF
 			}
-			m.Digest = append(m.Digest[:0], dAtA[idxNdEx:submitOrdinal]...)
+			m.Digest = append(m.Digest[:0], deltaLocatedAN[idxNdExc:submitOrdinal]...)
 			if m.Digest == nil {
 				m.Digest = []byte{}
 			}
-			idxNdEx = submitOrdinal
+			idxNdExc = submitOrdinal
 		case 5:
 			if cableKind != 0 {
 				return fmt.Errorf("REDACTED", cableKind)
 			}
-			m.Level = 0
-			for displace := uint(0); ; displace += 7 {
-				if displace >= 64 {
-					return ErrIntegerOverloadKinds
+			m.Altitude = 0
+			for relocate := uint(0); ; relocate += 7 {
+				if relocate >= 64 {
+					return FaultIntegerOverrunKinds
 				}
-				if idxNdEx >= l {
+				if idxNdExc >= l {
 					return io.ErrUnexpectedEOF
 				}
-				b := dAtA[idxNdEx]
-				idxNdEx++
-				m.Level |= int64(b&0x7F) << displace
+				b := deltaLocatedAN[idxNdExc]
+				idxNdExc++
+				m.Altitude |= int64(b&0x7F) << relocate
 				if b < 0x80 {
 					break
 				}
@@ -12791,1161 +12791,1161 @@ func (m *QueryCompleteLedger) Unserialize(dAtA []byte) error {
 			if cableKind != 2 {
 				return fmt.Errorf("REDACTED", cableKind)
 			}
-			var messagesize int
-			for displace := uint(0); ; displace += 7 {
-				if displace >= 64 {
-					return ErrIntegerOverloadKinds
+			var signallength int
+			for relocate := uint(0); ; relocate += 7 {
+				if relocate >= 64 {
+					return FaultIntegerOverrunKinds
 				}
-				if idxNdEx >= l {
+				if idxNdExc >= l {
 					return io.ErrUnexpectedEOF
 				}
-				b := dAtA[idxNdEx]
-				idxNdEx++
-				messagesize |= int(b&0x7F) << displace
+				b := deltaLocatedAN[idxNdExc]
+				idxNdExc++
+				signallength |= int(b&0x7F) << relocate
 				if b < 0x80 {
 					break
 				}
 			}
-			if messagesize < 0 {
-				return ErrCorruptExtentKinds
+			if signallength < 0 {
+				return FaultUnfitMagnitudeKinds
 			}
-			submitOrdinal := idxNdEx + messagesize
+			submitOrdinal := idxNdExc + signallength
 			if submitOrdinal < 0 {
-				return ErrCorruptExtentKinds
+				return FaultUnfitMagnitudeKinds
 			}
 			if submitOrdinal > l {
 				return io.ErrUnexpectedEOF
 			}
-			if err := github_com_cosmos_gogoproto_types.StdTimeUnmarshal(&m.Time, dAtA[idxNdEx:submitOrdinal]); err != nil {
+			if err := github_com_cosmos_gogoproto_types.StdTimeUnmarshal(&m.Moment, deltaLocatedAN[idxNdExc:submitOrdinal]); err != nil {
 				return err
 			}
-			idxNdEx = submitOrdinal
+			idxNdExc = submitOrdinal
 		case 7:
 			if cableKind != 2 {
 				return fmt.Errorf("REDACTED", cableKind)
 			}
 			var octetSize int
-			for displace := uint(0); ; displace += 7 {
-				if displace >= 64 {
-					return ErrIntegerOverloadKinds
+			for relocate := uint(0); ; relocate += 7 {
+				if relocate >= 64 {
+					return FaultIntegerOverrunKinds
 				}
-				if idxNdEx >= l {
+				if idxNdExc >= l {
 					return io.ErrUnexpectedEOF
 				}
-				b := dAtA[idxNdEx]
-				idxNdEx++
-				octetSize |= int(b&0x7F) << displace
+				b := deltaLocatedAN[idxNdExc]
+				idxNdExc++
+				octetSize |= int(b&0x7F) << relocate
 				if b < 0x80 {
 					break
 				}
 			}
 			if octetSize < 0 {
-				return ErrCorruptExtentKinds
+				return FaultUnfitMagnitudeKinds
 			}
-			submitOrdinal := idxNdEx + octetSize
+			submitOrdinal := idxNdExc + octetSize
 			if submitOrdinal < 0 {
-				return ErrCorruptExtentKinds
+				return FaultUnfitMagnitudeKinds
 			}
 			if submitOrdinal > l {
 				return io.ErrUnexpectedEOF
 			}
-			m.FollowingRatifiersDigest = append(m.FollowingRatifiersDigest[:0], dAtA[idxNdEx:submitOrdinal]...)
-			if m.FollowingRatifiersDigest == nil {
-				m.FollowingRatifiersDigest = []byte{}
+			m.FollowingAssessorsDigest = append(m.FollowingAssessorsDigest[:0], deltaLocatedAN[idxNdExc:submitOrdinal]...)
+			if m.FollowingAssessorsDigest == nil {
+				m.FollowingAssessorsDigest = []byte{}
 			}
-			idxNdEx = submitOrdinal
+			idxNdExc = submitOrdinal
 		case 8:
 			if cableKind != 2 {
 				return fmt.Errorf("REDACTED", cableKind)
 			}
 			var octetSize int
-			for displace := uint(0); ; displace += 7 {
-				if displace >= 64 {
-					return ErrIntegerOverloadKinds
+			for relocate := uint(0); ; relocate += 7 {
+				if relocate >= 64 {
+					return FaultIntegerOverrunKinds
 				}
-				if idxNdEx >= l {
+				if idxNdExc >= l {
 					return io.ErrUnexpectedEOF
 				}
-				b := dAtA[idxNdEx]
-				idxNdEx++
-				octetSize |= int(b&0x7F) << displace
+				b := deltaLocatedAN[idxNdExc]
+				idxNdExc++
+				octetSize |= int(b&0x7F) << relocate
 				if b < 0x80 {
 					break
 				}
 			}
 			if octetSize < 0 {
-				return ErrCorruptExtentKinds
+				return FaultUnfitMagnitudeKinds
 			}
-			submitOrdinal := idxNdEx + octetSize
+			submitOrdinal := idxNdExc + octetSize
 			if submitOrdinal < 0 {
-				return ErrCorruptExtentKinds
+				return FaultUnfitMagnitudeKinds
 			}
 			if submitOrdinal > l {
 				return io.ErrUnexpectedEOF
 			}
-			m.RecommenderLocation = append(m.RecommenderLocation[:0], dAtA[idxNdEx:submitOrdinal]...)
-			if m.RecommenderLocation == nil {
-				m.RecommenderLocation = []byte{}
+			m.NominatorLocation = append(m.NominatorLocation[:0], deltaLocatedAN[idxNdExc:submitOrdinal]...)
+			if m.NominatorLocation == nil {
+				m.NominatorLocation = []byte{}
 			}
-			idxNdEx = submitOrdinal
+			idxNdExc = submitOrdinal
 		default:
-			idxNdEx = preOrdinal
-			skippy, err := omitKinds(dAtA[idxNdEx:])
+			idxNdExc = priorOrdinal
+			omitted, err := omitKinds(deltaLocatedAN[idxNdExc:])
 			if err != nil {
 				return err
 			}
-			if (skippy < 0) || (idxNdEx+skippy) < 0 {
-				return ErrCorruptExtentKinds
+			if (omitted < 0) || (idxNdExc+omitted) < 0 {
+				return FaultUnfitMagnitudeKinds
 			}
-			if (idxNdEx + skippy) > l {
+			if (idxNdExc + omitted) > l {
 				return io.ErrUnexpectedEOF
 			}
-			idxNdEx += skippy
+			idxNdExc += omitted
 		}
 	}
 
-	if idxNdEx > l {
+	if idxNdExc > l {
 		return io.ErrUnexpectedEOF
 	}
 	return nil
 }
-func (m *Reply) Unserialize(dAtA []byte) error {
-	l := len(dAtA)
-	idxNdEx := 0
-	for idxNdEx < l {
-		preOrdinal := idxNdEx
+func (m *Reply) Decode(deltaLocatedAN []byte) error {
+	l := len(deltaLocatedAN)
+	idxNdExc := 0
+	for idxNdExc < l {
+		priorOrdinal := idxNdExc
 		var cable uint64
-		for displace := uint(0); ; displace += 7 {
-			if displace >= 64 {
-				return ErrIntegerOverloadKinds
+		for relocate := uint(0); ; relocate += 7 {
+			if relocate >= 64 {
+				return FaultIntegerOverrunKinds
 			}
-			if idxNdEx >= l {
+			if idxNdExc >= l {
 				return io.ErrUnexpectedEOF
 			}
-			b := dAtA[idxNdEx]
-			idxNdEx++
-			cable |= uint64(b&0x7F) << displace
+			b := deltaLocatedAN[idxNdExc]
+			idxNdExc++
+			cable |= uint64(b&0x7F) << relocate
 			if b < 0x80 {
 				break
 			}
 		}
-		fieldCount := int32(cable >> 3)
+		attributeCount := int32(cable >> 3)
 		cableKind := int(cable & 0x7)
 		if cableKind == 4 {
 			return fmt.Errorf("REDACTED")
 		}
-		if fieldCount <= 0 {
-			return fmt.Errorf("REDACTED", fieldCount, cable)
+		if attributeCount <= 0 {
+			return fmt.Errorf("REDACTED", attributeCount, cable)
 		}
-		switch fieldCount {
+		switch attributeCount {
 		case 1:
 			if cableKind != 2 {
 				return fmt.Errorf("REDACTED", cableKind)
 			}
-			var messagesize int
-			for displace := uint(0); ; displace += 7 {
-				if displace >= 64 {
-					return ErrIntegerOverloadKinds
+			var signallength int
+			for relocate := uint(0); ; relocate += 7 {
+				if relocate >= 64 {
+					return FaultIntegerOverrunKinds
 				}
-				if idxNdEx >= l {
+				if idxNdExc >= l {
 					return io.ErrUnexpectedEOF
 				}
-				b := dAtA[idxNdEx]
-				idxNdEx++
-				messagesize |= int(b&0x7F) << displace
+				b := deltaLocatedAN[idxNdExc]
+				idxNdExc++
+				signallength |= int(b&0x7F) << relocate
 				if b < 0x80 {
 					break
 				}
 			}
-			if messagesize < 0 {
-				return ErrCorruptExtentKinds
+			if signallength < 0 {
+				return FaultUnfitMagnitudeKinds
 			}
-			submitOrdinal := idxNdEx + messagesize
+			submitOrdinal := idxNdExc + signallength
 			if submitOrdinal < 0 {
-				return ErrCorruptExtentKinds
+				return FaultUnfitMagnitudeKinds
 			}
 			if submitOrdinal > l {
 				return io.ErrUnexpectedEOF
 			}
 			v := &ReplyExemption{}
-			if err := v.Unserialize(dAtA[idxNdEx:submitOrdinal]); err != nil {
+			if err := v.Decode(deltaLocatedAN[idxNdExc:submitOrdinal]); err != nil {
 				return err
 			}
-			m.Item = &Reply_Exemption{v}
-			idxNdEx = submitOrdinal
+			m.Datum = &Reply_Exemption{v}
+			idxNdExc = submitOrdinal
 		case 2:
 			if cableKind != 2 {
 				return fmt.Errorf("REDACTED", cableKind)
 			}
-			var messagesize int
-			for displace := uint(0); ; displace += 7 {
-				if displace >= 64 {
-					return ErrIntegerOverloadKinds
+			var signallength int
+			for relocate := uint(0); ; relocate += 7 {
+				if relocate >= 64 {
+					return FaultIntegerOverrunKinds
 				}
-				if idxNdEx >= l {
+				if idxNdExc >= l {
 					return io.ErrUnexpectedEOF
 				}
-				b := dAtA[idxNdEx]
-				idxNdEx++
-				messagesize |= int(b&0x7F) << displace
+				b := deltaLocatedAN[idxNdExc]
+				idxNdExc++
+				signallength |= int(b&0x7F) << relocate
 				if b < 0x80 {
 					break
 				}
 			}
-			if messagesize < 0 {
-				return ErrCorruptExtentKinds
+			if signallength < 0 {
+				return FaultUnfitMagnitudeKinds
 			}
-			submitOrdinal := idxNdEx + messagesize
+			submitOrdinal := idxNdExc + signallength
 			if submitOrdinal < 0 {
-				return ErrCorruptExtentKinds
+				return FaultUnfitMagnitudeKinds
 			}
 			if submitOrdinal > l {
 				return io.ErrUnexpectedEOF
 			}
 			v := &ReplyReverberate{}
-			if err := v.Unserialize(dAtA[idxNdEx:submitOrdinal]); err != nil {
+			if err := v.Decode(deltaLocatedAN[idxNdExc:submitOrdinal]); err != nil {
 				return err
 			}
-			m.Item = &Reply_Reverberate{v}
-			idxNdEx = submitOrdinal
+			m.Datum = &Reply_Reverberate{v}
+			idxNdExc = submitOrdinal
 		case 3:
 			if cableKind != 2 {
 				return fmt.Errorf("REDACTED", cableKind)
 			}
-			var messagesize int
-			for displace := uint(0); ; displace += 7 {
-				if displace >= 64 {
-					return ErrIntegerOverloadKinds
+			var signallength int
+			for relocate := uint(0); ; relocate += 7 {
+				if relocate >= 64 {
+					return FaultIntegerOverrunKinds
 				}
-				if idxNdEx >= l {
+				if idxNdExc >= l {
 					return io.ErrUnexpectedEOF
 				}
-				b := dAtA[idxNdEx]
-				idxNdEx++
-				messagesize |= int(b&0x7F) << displace
+				b := deltaLocatedAN[idxNdExc]
+				idxNdExc++
+				signallength |= int(b&0x7F) << relocate
 				if b < 0x80 {
 					break
 				}
 			}
-			if messagesize < 0 {
-				return ErrCorruptExtentKinds
+			if signallength < 0 {
+				return FaultUnfitMagnitudeKinds
 			}
-			submitOrdinal := idxNdEx + messagesize
+			submitOrdinal := idxNdExc + signallength
 			if submitOrdinal < 0 {
-				return ErrCorruptExtentKinds
+				return FaultUnfitMagnitudeKinds
 			}
 			if submitOrdinal > l {
 				return io.ErrUnexpectedEOF
 			}
 			v := &ReplyPurge{}
-			if err := v.Unserialize(dAtA[idxNdEx:submitOrdinal]); err != nil {
+			if err := v.Decode(deltaLocatedAN[idxNdExc:submitOrdinal]); err != nil {
 				return err
 			}
-			m.Item = &Reply_Purge{v}
-			idxNdEx = submitOrdinal
+			m.Datum = &Reply_Purge{v}
+			idxNdExc = submitOrdinal
 		case 4:
 			if cableKind != 2 {
 				return fmt.Errorf("REDACTED", cableKind)
 			}
-			var messagesize int
-			for displace := uint(0); ; displace += 7 {
-				if displace >= 64 {
-					return ErrIntegerOverloadKinds
+			var signallength int
+			for relocate := uint(0); ; relocate += 7 {
+				if relocate >= 64 {
+					return FaultIntegerOverrunKinds
 				}
-				if idxNdEx >= l {
+				if idxNdExc >= l {
 					return io.ErrUnexpectedEOF
 				}
-				b := dAtA[idxNdEx]
-				idxNdEx++
-				messagesize |= int(b&0x7F) << displace
+				b := deltaLocatedAN[idxNdExc]
+				idxNdExc++
+				signallength |= int(b&0x7F) << relocate
 				if b < 0x80 {
 					break
 				}
 			}
-			if messagesize < 0 {
-				return ErrCorruptExtentKinds
+			if signallength < 0 {
+				return FaultUnfitMagnitudeKinds
 			}
-			submitOrdinal := idxNdEx + messagesize
+			submitOrdinal := idxNdExc + signallength
 			if submitOrdinal < 0 {
-				return ErrCorruptExtentKinds
+				return FaultUnfitMagnitudeKinds
 			}
 			if submitOrdinal > l {
 				return io.ErrUnexpectedEOF
 			}
 			v := &ReplyDetails{}
-			if err := v.Unserialize(dAtA[idxNdEx:submitOrdinal]); err != nil {
+			if err := v.Decode(deltaLocatedAN[idxNdExc:submitOrdinal]); err != nil {
 				return err
 			}
-			m.Item = &Reply_Details{v}
-			idxNdEx = submitOrdinal
+			m.Datum = &Reply_Details{v}
+			idxNdExc = submitOrdinal
 		case 6:
 			if cableKind != 2 {
 				return fmt.Errorf("REDACTED", cableKind)
 			}
-			var messagesize int
-			for displace := uint(0); ; displace += 7 {
-				if displace >= 64 {
-					return ErrIntegerOverloadKinds
+			var signallength int
+			for relocate := uint(0); ; relocate += 7 {
+				if relocate >= 64 {
+					return FaultIntegerOverrunKinds
 				}
-				if idxNdEx >= l {
+				if idxNdExc >= l {
 					return io.ErrUnexpectedEOF
 				}
-				b := dAtA[idxNdEx]
-				idxNdEx++
-				messagesize |= int(b&0x7F) << displace
+				b := deltaLocatedAN[idxNdExc]
+				idxNdExc++
+				signallength |= int(b&0x7F) << relocate
 				if b < 0x80 {
 					break
 				}
 			}
-			if messagesize < 0 {
-				return ErrCorruptExtentKinds
+			if signallength < 0 {
+				return FaultUnfitMagnitudeKinds
 			}
-			submitOrdinal := idxNdEx + messagesize
+			submitOrdinal := idxNdExc + signallength
 			if submitOrdinal < 0 {
-				return ErrCorruptExtentKinds
+				return FaultUnfitMagnitudeKinds
 			}
 			if submitOrdinal > l {
 				return io.ErrUnexpectedEOF
 			}
-			v := &ReplyInitSeries{}
-			if err := v.Unserialize(dAtA[idxNdEx:submitOrdinal]); err != nil {
+			v := &ReplyInitializeSuccession{}
+			if err := v.Decode(deltaLocatedAN[idxNdExc:submitOrdinal]); err != nil {
 				return err
 			}
-			m.Item = &Reply_Initiatechain{v}
-			idxNdEx = submitOrdinal
+			m.Datum = &Reply_Initiatechain{v}
+			idxNdExc = submitOrdinal
 		case 7:
 			if cableKind != 2 {
 				return fmt.Errorf("REDACTED", cableKind)
 			}
-			var messagesize int
-			for displace := uint(0); ; displace += 7 {
-				if displace >= 64 {
-					return ErrIntegerOverloadKinds
+			var signallength int
+			for relocate := uint(0); ; relocate += 7 {
+				if relocate >= 64 {
+					return FaultIntegerOverrunKinds
 				}
-				if idxNdEx >= l {
+				if idxNdExc >= l {
 					return io.ErrUnexpectedEOF
 				}
-				b := dAtA[idxNdEx]
-				idxNdEx++
-				messagesize |= int(b&0x7F) << displace
+				b := deltaLocatedAN[idxNdExc]
+				idxNdExc++
+				signallength |= int(b&0x7F) << relocate
 				if b < 0x80 {
 					break
 				}
 			}
-			if messagesize < 0 {
-				return ErrCorruptExtentKinds
+			if signallength < 0 {
+				return FaultUnfitMagnitudeKinds
 			}
-			submitOrdinal := idxNdEx + messagesize
+			submitOrdinal := idxNdExc + signallength
 			if submitOrdinal < 0 {
-				return ErrCorruptExtentKinds
+				return FaultUnfitMagnitudeKinds
 			}
 			if submitOrdinal > l {
 				return io.ErrUnexpectedEOF
 			}
 			v := &ReplyInquire{}
-			if err := v.Unserialize(dAtA[idxNdEx:submitOrdinal]); err != nil {
+			if err := v.Decode(deltaLocatedAN[idxNdExc:submitOrdinal]); err != nil {
 				return err
 			}
-			m.Item = &Reply_Inquire{v}
-			idxNdEx = submitOrdinal
+			m.Datum = &Reply_Inquire{v}
+			idxNdExc = submitOrdinal
 		case 9:
 			if cableKind != 2 {
 				return fmt.Errorf("REDACTED", cableKind)
 			}
-			var messagesize int
-			for displace := uint(0); ; displace += 7 {
-				if displace >= 64 {
-					return ErrIntegerOverloadKinds
+			var signallength int
+			for relocate := uint(0); ; relocate += 7 {
+				if relocate >= 64 {
+					return FaultIntegerOverrunKinds
 				}
-				if idxNdEx >= l {
+				if idxNdExc >= l {
 					return io.ErrUnexpectedEOF
 				}
-				b := dAtA[idxNdEx]
-				idxNdEx++
-				messagesize |= int(b&0x7F) << displace
+				b := deltaLocatedAN[idxNdExc]
+				idxNdExc++
+				signallength |= int(b&0x7F) << relocate
 				if b < 0x80 {
 					break
 				}
 			}
-			if messagesize < 0 {
-				return ErrCorruptExtentKinds
+			if signallength < 0 {
+				return FaultUnfitMagnitudeKinds
 			}
-			submitOrdinal := idxNdEx + messagesize
+			submitOrdinal := idxNdExc + signallength
 			if submitOrdinal < 0 {
-				return ErrCorruptExtentKinds
+				return FaultUnfitMagnitudeKinds
 			}
 			if submitOrdinal > l {
 				return io.ErrUnexpectedEOF
 			}
 			v := &ReplyInspectTransfer{}
-			if err := v.Unserialize(dAtA[idxNdEx:submitOrdinal]); err != nil {
+			if err := v.Decode(deltaLocatedAN[idxNdExc:submitOrdinal]); err != nil {
 				return err
 			}
-			m.Item = &Reply_Transfercheck{v}
-			idxNdEx = submitOrdinal
+			m.Datum = &Reply_Inspecttrans{v}
+			idxNdExc = submitOrdinal
 		case 12:
 			if cableKind != 2 {
 				return fmt.Errorf("REDACTED", cableKind)
 			}
-			var messagesize int
-			for displace := uint(0); ; displace += 7 {
-				if displace >= 64 {
-					return ErrIntegerOverloadKinds
+			var signallength int
+			for relocate := uint(0); ; relocate += 7 {
+				if relocate >= 64 {
+					return FaultIntegerOverrunKinds
 				}
-				if idxNdEx >= l {
+				if idxNdExc >= l {
 					return io.ErrUnexpectedEOF
 				}
-				b := dAtA[idxNdEx]
-				idxNdEx++
-				messagesize |= int(b&0x7F) << displace
+				b := deltaLocatedAN[idxNdExc]
+				idxNdExc++
+				signallength |= int(b&0x7F) << relocate
 				if b < 0x80 {
 					break
 				}
 			}
-			if messagesize < 0 {
-				return ErrCorruptExtentKinds
+			if signallength < 0 {
+				return FaultUnfitMagnitudeKinds
 			}
-			submitOrdinal := idxNdEx + messagesize
+			submitOrdinal := idxNdExc + signallength
 			if submitOrdinal < 0 {
-				return ErrCorruptExtentKinds
+				return FaultUnfitMagnitudeKinds
 			}
 			if submitOrdinal > l {
 				return io.ErrUnexpectedEOF
 			}
 			v := &ReplyEndorse{}
-			if err := v.Unserialize(dAtA[idxNdEx:submitOrdinal]); err != nil {
+			if err := v.Decode(deltaLocatedAN[idxNdExc:submitOrdinal]); err != nil {
 				return err
 			}
-			m.Item = &Reply_Endorse{v}
-			idxNdEx = submitOrdinal
+			m.Datum = &Reply_Endorse{v}
+			idxNdExc = submitOrdinal
 		case 13:
 			if cableKind != 2 {
 				return fmt.Errorf("REDACTED", cableKind)
 			}
-			var messagesize int
-			for displace := uint(0); ; displace += 7 {
-				if displace >= 64 {
-					return ErrIntegerOverloadKinds
+			var signallength int
+			for relocate := uint(0); ; relocate += 7 {
+				if relocate >= 64 {
+					return FaultIntegerOverrunKinds
 				}
-				if idxNdEx >= l {
+				if idxNdExc >= l {
 					return io.ErrUnexpectedEOF
 				}
-				b := dAtA[idxNdEx]
-				idxNdEx++
-				messagesize |= int(b&0x7F) << displace
+				b := deltaLocatedAN[idxNdExc]
+				idxNdExc++
+				signallength |= int(b&0x7F) << relocate
 				if b < 0x80 {
 					break
 				}
 			}
-			if messagesize < 0 {
-				return ErrCorruptExtentKinds
+			if signallength < 0 {
+				return FaultUnfitMagnitudeKinds
 			}
-			submitOrdinal := idxNdEx + messagesize
+			submitOrdinal := idxNdExc + signallength
 			if submitOrdinal < 0 {
-				return ErrCorruptExtentKinds
+				return FaultUnfitMagnitudeKinds
 			}
 			if submitOrdinal > l {
 				return io.ErrUnexpectedEOF
 			}
-			v := &ReplyCatalogMirrors{}
-			if err := v.Unserialize(dAtA[idxNdEx:submitOrdinal]); err != nil {
+			v := &ReplyCatalogImages{}
+			if err := v.Decode(deltaLocatedAN[idxNdExc:submitOrdinal]); err != nil {
 				return err
 			}
-			m.Item = &Reply_Catalogmirrors{v}
-			idxNdEx = submitOrdinal
+			m.Datum = &Reply_Catalogimages{v}
+			idxNdExc = submitOrdinal
 		case 14:
 			if cableKind != 2 {
 				return fmt.Errorf("REDACTED", cableKind)
 			}
-			var messagesize int
-			for displace := uint(0); ; displace += 7 {
-				if displace >= 64 {
-					return ErrIntegerOverloadKinds
+			var signallength int
+			for relocate := uint(0); ; relocate += 7 {
+				if relocate >= 64 {
+					return FaultIntegerOverrunKinds
 				}
-				if idxNdEx >= l {
+				if idxNdExc >= l {
 					return io.ErrUnexpectedEOF
 				}
-				b := dAtA[idxNdEx]
-				idxNdEx++
-				messagesize |= int(b&0x7F) << displace
+				b := deltaLocatedAN[idxNdExc]
+				idxNdExc++
+				signallength |= int(b&0x7F) << relocate
 				if b < 0x80 {
 					break
 				}
 			}
-			if messagesize < 0 {
-				return ErrCorruptExtentKinds
+			if signallength < 0 {
+				return FaultUnfitMagnitudeKinds
 			}
-			submitOrdinal := idxNdEx + messagesize
+			submitOrdinal := idxNdExc + signallength
 			if submitOrdinal < 0 {
-				return ErrCorruptExtentKinds
+				return FaultUnfitMagnitudeKinds
 			}
 			if submitOrdinal > l {
 				return io.ErrUnexpectedEOF
 			}
-			v := &ReplyProposalMirror{}
-			if err := v.Unserialize(dAtA[idxNdEx:submitOrdinal]); err != nil {
+			v := &ReplyExtendImage{}
+			if err := v.Decode(deltaLocatedAN[idxNdExc:submitOrdinal]); err != nil {
 				return err
 			}
-			m.Item = &Reply_Mirrorsnapshot{v}
-			idxNdEx = submitOrdinal
+			m.Datum = &Reply_Extendimage{v}
+			idxNdExc = submitOrdinal
 		case 15:
 			if cableKind != 2 {
 				return fmt.Errorf("REDACTED", cableKind)
 			}
-			var messagesize int
-			for displace := uint(0); ; displace += 7 {
-				if displace >= 64 {
-					return ErrIntegerOverloadKinds
+			var signallength int
+			for relocate := uint(0); ; relocate += 7 {
+				if relocate >= 64 {
+					return FaultIntegerOverrunKinds
 				}
-				if idxNdEx >= l {
+				if idxNdExc >= l {
 					return io.ErrUnexpectedEOF
 				}
-				b := dAtA[idxNdEx]
-				idxNdEx++
-				messagesize |= int(b&0x7F) << displace
+				b := deltaLocatedAN[idxNdExc]
+				idxNdExc++
+				signallength |= int(b&0x7F) << relocate
 				if b < 0x80 {
 					break
 				}
 			}
-			if messagesize < 0 {
-				return ErrCorruptExtentKinds
+			if signallength < 0 {
+				return FaultUnfitMagnitudeKinds
 			}
-			submitOrdinal := idxNdEx + messagesize
+			submitOrdinal := idxNdExc + signallength
 			if submitOrdinal < 0 {
-				return ErrCorruptExtentKinds
+				return FaultUnfitMagnitudeKinds
 			}
 			if submitOrdinal > l {
 				return io.ErrUnexpectedEOF
 			}
-			v := &ReplyImportMirrorSegment{}
-			if err := v.Unserialize(dAtA[idxNdEx:submitOrdinal]); err != nil {
+			v := &ReplyFetchImageSegment{}
+			if err := v.Decode(deltaLocatedAN[idxNdExc:submitOrdinal]); err != nil {
 				return err
 			}
-			m.Item = &Reply_Loadmirrorsegment{v}
-			idxNdEx = submitOrdinal
+			m.Datum = &Reply_Loadimagefragment{v}
+			idxNdExc = submitOrdinal
 		case 16:
 			if cableKind != 2 {
 				return fmt.Errorf("REDACTED", cableKind)
 			}
-			var messagesize int
-			for displace := uint(0); ; displace += 7 {
-				if displace >= 64 {
-					return ErrIntegerOverloadKinds
+			var signallength int
+			for relocate := uint(0); ; relocate += 7 {
+				if relocate >= 64 {
+					return FaultIntegerOverrunKinds
 				}
-				if idxNdEx >= l {
+				if idxNdExc >= l {
 					return io.ErrUnexpectedEOF
 				}
-				b := dAtA[idxNdEx]
-				idxNdEx++
-				messagesize |= int(b&0x7F) << displace
+				b := deltaLocatedAN[idxNdExc]
+				idxNdExc++
+				signallength |= int(b&0x7F) << relocate
 				if b < 0x80 {
 					break
 				}
 			}
-			if messagesize < 0 {
-				return ErrCorruptExtentKinds
+			if signallength < 0 {
+				return FaultUnfitMagnitudeKinds
 			}
-			submitOrdinal := idxNdEx + messagesize
+			submitOrdinal := idxNdExc + signallength
 			if submitOrdinal < 0 {
-				return ErrCorruptExtentKinds
+				return FaultUnfitMagnitudeKinds
 			}
 			if submitOrdinal > l {
 				return io.ErrUnexpectedEOF
 			}
-			v := &ReplyExecuteMirrorSegment{}
-			if err := v.Unserialize(dAtA[idxNdEx:submitOrdinal]); err != nil {
+			v := &ReplyExecuteImageSegment{}
+			if err := v.Decode(deltaLocatedAN[idxNdExc:submitOrdinal]); err != nil {
 				return err
 			}
-			m.Item = &Reply_Executemirrorsegment{v}
-			idxNdEx = submitOrdinal
+			m.Datum = &Reply_Executeimagefragment{v}
+			idxNdExc = submitOrdinal
 		case 17:
 			if cableKind != 2 {
 				return fmt.Errorf("REDACTED", cableKind)
 			}
-			var messagesize int
-			for displace := uint(0); ; displace += 7 {
-				if displace >= 64 {
-					return ErrIntegerOverloadKinds
+			var signallength int
+			for relocate := uint(0); ; relocate += 7 {
+				if relocate >= 64 {
+					return FaultIntegerOverrunKinds
 				}
-				if idxNdEx >= l {
+				if idxNdExc >= l {
 					return io.ErrUnexpectedEOF
 				}
-				b := dAtA[idxNdEx]
-				idxNdEx++
-				messagesize |= int(b&0x7F) << displace
+				b := deltaLocatedAN[idxNdExc]
+				idxNdExc++
+				signallength |= int(b&0x7F) << relocate
 				if b < 0x80 {
 					break
 				}
 			}
-			if messagesize < 0 {
-				return ErrCorruptExtentKinds
+			if signallength < 0 {
+				return FaultUnfitMagnitudeKinds
 			}
-			submitOrdinal := idxNdEx + messagesize
+			submitOrdinal := idxNdExc + signallength
 			if submitOrdinal < 0 {
-				return ErrCorruptExtentKinds
+				return FaultUnfitMagnitudeKinds
 			}
 			if submitOrdinal > l {
 				return io.ErrUnexpectedEOF
 			}
 			v := &ReplyArrangeNomination{}
-			if err := v.Unserialize(dAtA[idxNdEx:submitOrdinal]); err != nil {
+			if err := v.Decode(deltaLocatedAN[idxNdExc:submitOrdinal]); err != nil {
 				return err
 			}
-			m.Item = &Reply_Arrangenomination{v}
-			idxNdEx = submitOrdinal
+			m.Datum = &Reply_Prepareitem{v}
+			idxNdExc = submitOrdinal
 		case 18:
 			if cableKind != 2 {
 				return fmt.Errorf("REDACTED", cableKind)
 			}
-			var messagesize int
-			for displace := uint(0); ; displace += 7 {
-				if displace >= 64 {
-					return ErrIntegerOverloadKinds
+			var signallength int
+			for relocate := uint(0); ; relocate += 7 {
+				if relocate >= 64 {
+					return FaultIntegerOverrunKinds
 				}
-				if idxNdEx >= l {
+				if idxNdExc >= l {
 					return io.ErrUnexpectedEOF
 				}
-				b := dAtA[idxNdEx]
-				idxNdEx++
-				messagesize |= int(b&0x7F) << displace
+				b := deltaLocatedAN[idxNdExc]
+				idxNdExc++
+				signallength |= int(b&0x7F) << relocate
 				if b < 0x80 {
 					break
 				}
 			}
-			if messagesize < 0 {
-				return ErrCorruptExtentKinds
+			if signallength < 0 {
+				return FaultUnfitMagnitudeKinds
 			}
-			submitOrdinal := idxNdEx + messagesize
+			submitOrdinal := idxNdExc + signallength
 			if submitOrdinal < 0 {
-				return ErrCorruptExtentKinds
+				return FaultUnfitMagnitudeKinds
 			}
 			if submitOrdinal > l {
 				return io.ErrUnexpectedEOF
 			}
 			v := &ReplyHandleNomination{}
-			if err := v.Unserialize(dAtA[idxNdEx:submitOrdinal]); err != nil {
+			if err := v.Decode(deltaLocatedAN[idxNdExc:submitOrdinal]); err != nil {
 				return err
 			}
-			m.Item = &Reply_Processnomination{v}
-			idxNdEx = submitOrdinal
+			m.Datum = &Reply_Executeitem{v}
+			idxNdExc = submitOrdinal
 		case 19:
 			if cableKind != 2 {
 				return fmt.Errorf("REDACTED", cableKind)
 			}
-			var messagesize int
-			for displace := uint(0); ; displace += 7 {
-				if displace >= 64 {
-					return ErrIntegerOverloadKinds
+			var signallength int
+			for relocate := uint(0); ; relocate += 7 {
+				if relocate >= 64 {
+					return FaultIntegerOverrunKinds
 				}
-				if idxNdEx >= l {
+				if idxNdExc >= l {
 					return io.ErrUnexpectedEOF
 				}
-				b := dAtA[idxNdEx]
-				idxNdEx++
-				messagesize |= int(b&0x7F) << displace
+				b := deltaLocatedAN[idxNdExc]
+				idxNdExc++
+				signallength |= int(b&0x7F) << relocate
 				if b < 0x80 {
 					break
 				}
 			}
-			if messagesize < 0 {
-				return ErrCorruptExtentKinds
+			if signallength < 0 {
+				return FaultUnfitMagnitudeKinds
 			}
-			submitOrdinal := idxNdEx + messagesize
+			submitOrdinal := idxNdExc + signallength
 			if submitOrdinal < 0 {
-				return ErrCorruptExtentKinds
+				return FaultUnfitMagnitudeKinds
 			}
 			if submitOrdinal > l {
 				return io.ErrUnexpectedEOF
 			}
-			v := &ReplyExpandBallot{}
-			if err := v.Unserialize(dAtA[idxNdEx:submitOrdinal]); err != nil {
+			v := &ReplyBroadenBallot{}
+			if err := v.Decode(deltaLocatedAN[idxNdExc:submitOrdinal]); err != nil {
 				return err
 			}
-			m.Item = &Reply_Ballotextend{v}
-			idxNdEx = submitOrdinal
+			m.Datum = &Reply_Extendballot{v}
+			idxNdExc = submitOrdinal
 		case 20:
 			if cableKind != 2 {
 				return fmt.Errorf("REDACTED", cableKind)
 			}
-			var messagesize int
-			for displace := uint(0); ; displace += 7 {
-				if displace >= 64 {
-					return ErrIntegerOverloadKinds
+			var signallength int
+			for relocate := uint(0); ; relocate += 7 {
+				if relocate >= 64 {
+					return FaultIntegerOverrunKinds
 				}
-				if idxNdEx >= l {
+				if idxNdExc >= l {
 					return io.ErrUnexpectedEOF
 				}
-				b := dAtA[idxNdEx]
-				idxNdEx++
-				messagesize |= int(b&0x7F) << displace
+				b := deltaLocatedAN[idxNdExc]
+				idxNdExc++
+				signallength |= int(b&0x7F) << relocate
 				if b < 0x80 {
 					break
 				}
 			}
-			if messagesize < 0 {
-				return ErrCorruptExtentKinds
+			if signallength < 0 {
+				return FaultUnfitMagnitudeKinds
 			}
-			submitOrdinal := idxNdEx + messagesize
+			submitOrdinal := idxNdExc + signallength
 			if submitOrdinal < 0 {
-				return ErrCorruptExtentKinds
+				return FaultUnfitMagnitudeKinds
 			}
 			if submitOrdinal > l {
 				return io.ErrUnexpectedEOF
 			}
 			v := &ReplyValidateBallotAddition{}
-			if err := v.Unserialize(dAtA[idxNdEx:submitOrdinal]); err != nil {
+			if err := v.Decode(deltaLocatedAN[idxNdExc:submitOrdinal]); err != nil {
 				return err
 			}
-			m.Item = &Reply_Validateballotextension{v}
-			idxNdEx = submitOrdinal
+			m.Datum = &Reply_Verifyballotaddition{v}
+			idxNdExc = submitOrdinal
 		case 21:
 			if cableKind != 2 {
 				return fmt.Errorf("REDACTED", cableKind)
 			}
-			var messagesize int
-			for displace := uint(0); ; displace += 7 {
-				if displace >= 64 {
-					return ErrIntegerOverloadKinds
+			var signallength int
+			for relocate := uint(0); ; relocate += 7 {
+				if relocate >= 64 {
+					return FaultIntegerOverrunKinds
 				}
-				if idxNdEx >= l {
+				if idxNdExc >= l {
 					return io.ErrUnexpectedEOF
 				}
-				b := dAtA[idxNdEx]
-				idxNdEx++
-				messagesize |= int(b&0x7F) << displace
+				b := deltaLocatedAN[idxNdExc]
+				idxNdExc++
+				signallength |= int(b&0x7F) << relocate
 				if b < 0x80 {
 					break
 				}
 			}
-			if messagesize < 0 {
-				return ErrCorruptExtentKinds
+			if signallength < 0 {
+				return FaultUnfitMagnitudeKinds
 			}
-			submitOrdinal := idxNdEx + messagesize
+			submitOrdinal := idxNdExc + signallength
 			if submitOrdinal < 0 {
-				return ErrCorruptExtentKinds
+				return FaultUnfitMagnitudeKinds
 			}
 			if submitOrdinal > l {
 				return io.ErrUnexpectedEOF
 			}
-			v := &ReplyCompleteLedger{}
-			if err := v.Unserialize(dAtA[idxNdEx:submitOrdinal]); err != nil {
+			v := &ReplyCulminateLedger{}
+			if err := v.Decode(deltaLocatedAN[idxNdExc:submitOrdinal]); err != nil {
 				return err
 			}
-			m.Item = &Reply_Terminateblock{v}
-			idxNdEx = submitOrdinal
+			m.Datum = &Reply_Finalizeledger{v}
+			idxNdExc = submitOrdinal
 		case 22:
 			if cableKind != 2 {
 				return fmt.Errorf("REDACTED", cableKind)
 			}
-			var messagesize int
-			for displace := uint(0); ; displace += 7 {
-				if displace >= 64 {
-					return ErrIntegerOverloadKinds
+			var signallength int
+			for relocate := uint(0); ; relocate += 7 {
+				if relocate >= 64 {
+					return FaultIntegerOverrunKinds
 				}
-				if idxNdEx >= l {
+				if idxNdExc >= l {
 					return io.ErrUnexpectedEOF
 				}
-				b := dAtA[idxNdEx]
-				idxNdEx++
-				messagesize |= int(b&0x7F) << displace
+				b := deltaLocatedAN[idxNdExc]
+				idxNdExc++
+				signallength |= int(b&0x7F) << relocate
 				if b < 0x80 {
 					break
 				}
 			}
-			if messagesize < 0 {
-				return ErrCorruptExtentKinds
+			if signallength < 0 {
+				return FaultUnfitMagnitudeKinds
 			}
-			submitOrdinal := idxNdEx + messagesize
+			submitOrdinal := idxNdExc + signallength
 			if submitOrdinal < 0 {
-				return ErrCorruptExtentKinds
+				return FaultUnfitMagnitudeKinds
 			}
 			if submitOrdinal > l {
 				return io.ErrUnexpectedEOF
 			}
-			v := &ReplyEmbedTransfer{}
-			if err := v.Unserialize(dAtA[idxNdEx:submitOrdinal]); err != nil {
+			v := &ReplyAppendTransfer{}
+			if err := v.Decode(deltaLocatedAN[idxNdExc:submitOrdinal]); err != nil {
 				return err
 			}
-			m.Item = &Reply_Transferinsert{v}
-			idxNdEx = submitOrdinal
+			m.Datum = &Reply_Appendtrans{v}
+			idxNdExc = submitOrdinal
 		case 23:
 			if cableKind != 2 {
 				return fmt.Errorf("REDACTED", cableKind)
 			}
-			var messagesize int
-			for displace := uint(0); ; displace += 7 {
-				if displace >= 64 {
-					return ErrIntegerOverloadKinds
+			var signallength int
+			for relocate := uint(0); ; relocate += 7 {
+				if relocate >= 64 {
+					return FaultIntegerOverrunKinds
 				}
-				if idxNdEx >= l {
+				if idxNdExc >= l {
 					return io.ErrUnexpectedEOF
 				}
-				b := dAtA[idxNdEx]
-				idxNdEx++
-				messagesize |= int(b&0x7F) << displace
+				b := deltaLocatedAN[idxNdExc]
+				idxNdExc++
+				signallength |= int(b&0x7F) << relocate
 				if b < 0x80 {
 					break
 				}
 			}
-			if messagesize < 0 {
-				return ErrCorruptExtentKinds
+			if signallength < 0 {
+				return FaultUnfitMagnitudeKinds
 			}
-			submitOrdinal := idxNdEx + messagesize
+			submitOrdinal := idxNdExc + signallength
 			if submitOrdinal < 0 {
-				return ErrCorruptExtentKinds
+				return FaultUnfitMagnitudeKinds
 			}
 			if submitOrdinal > l {
 				return io.ErrUnexpectedEOF
 			}
 			v := &ReplyHarvestTrans{}
-			if err := v.Unserialize(dAtA[idxNdEx:submitOrdinal]); err != nil {
+			if err := v.Decode(deltaLocatedAN[idxNdExc:submitOrdinal]); err != nil {
 				return err
 			}
-			m.Item = &Reply_Reaptransfers{v}
-			idxNdEx = submitOrdinal
+			m.Datum = &Reply_Harvesttrans{v}
+			idxNdExc = submitOrdinal
 		default:
-			idxNdEx = preOrdinal
-			skippy, err := omitKinds(dAtA[idxNdEx:])
+			idxNdExc = priorOrdinal
+			omitted, err := omitKinds(deltaLocatedAN[idxNdExc:])
 			if err != nil {
 				return err
 			}
-			if (skippy < 0) || (idxNdEx+skippy) < 0 {
-				return ErrCorruptExtentKinds
+			if (omitted < 0) || (idxNdExc+omitted) < 0 {
+				return FaultUnfitMagnitudeKinds
 			}
-			if (idxNdEx + skippy) > l {
+			if (idxNdExc + omitted) > l {
 				return io.ErrUnexpectedEOF
 			}
-			idxNdEx += skippy
+			idxNdExc += omitted
 		}
 	}
 
-	if idxNdEx > l {
+	if idxNdExc > l {
 		return io.ErrUnexpectedEOF
 	}
 	return nil
 }
-func (m *ReplyExemption) Unserialize(dAtA []byte) error {
-	l := len(dAtA)
-	idxNdEx := 0
-	for idxNdEx < l {
-		preOrdinal := idxNdEx
+func (m *ReplyExemption) Decode(deltaLocatedAN []byte) error {
+	l := len(deltaLocatedAN)
+	idxNdExc := 0
+	for idxNdExc < l {
+		priorOrdinal := idxNdExc
 		var cable uint64
-		for displace := uint(0); ; displace += 7 {
-			if displace >= 64 {
-				return ErrIntegerOverloadKinds
+		for relocate := uint(0); ; relocate += 7 {
+			if relocate >= 64 {
+				return FaultIntegerOverrunKinds
 			}
-			if idxNdEx >= l {
+			if idxNdExc >= l {
 				return io.ErrUnexpectedEOF
 			}
-			b := dAtA[idxNdEx]
-			idxNdEx++
-			cable |= uint64(b&0x7F) << displace
+			b := deltaLocatedAN[idxNdExc]
+			idxNdExc++
+			cable |= uint64(b&0x7F) << relocate
 			if b < 0x80 {
 				break
 			}
 		}
-		fieldCount := int32(cable >> 3)
+		attributeCount := int32(cable >> 3)
 		cableKind := int(cable & 0x7)
 		if cableKind == 4 {
 			return fmt.Errorf("REDACTED")
 		}
-		if fieldCount <= 0 {
-			return fmt.Errorf("REDACTED", fieldCount, cable)
+		if attributeCount <= 0 {
+			return fmt.Errorf("REDACTED", attributeCount, cable)
 		}
-		switch fieldCount {
+		switch attributeCount {
 		case 1:
 			if cableKind != 2 {
 				return fmt.Errorf("REDACTED", cableKind)
 			}
-			var stringSize uint64
-			for displace := uint(0); ; displace += 7 {
-				if displace >= 64 {
-					return ErrIntegerOverloadKinds
+			var textSize uint64
+			for relocate := uint(0); ; relocate += 7 {
+				if relocate >= 64 {
+					return FaultIntegerOverrunKinds
 				}
-				if idxNdEx >= l {
+				if idxNdExc >= l {
 					return io.ErrUnexpectedEOF
 				}
-				b := dAtA[idxNdEx]
-				idxNdEx++
-				stringSize |= uint64(b&0x7F) << displace
+				b := deltaLocatedAN[idxNdExc]
+				idxNdExc++
+				textSize |= uint64(b&0x7F) << relocate
 				if b < 0x80 {
 					break
 				}
 			}
-			integerStringSize := int(stringSize)
-			if integerStringSize < 0 {
-				return ErrCorruptExtentKinds
+			integerTextSize := int(textSize)
+			if integerTextSize < 0 {
+				return FaultUnfitMagnitudeKinds
 			}
-			submitOrdinal := idxNdEx + integerStringSize
+			submitOrdinal := idxNdExc + integerTextSize
 			if submitOrdinal < 0 {
-				return ErrCorruptExtentKinds
+				return FaultUnfitMagnitudeKinds
 			}
 			if submitOrdinal > l {
 				return io.ErrUnexpectedEOF
 			}
-			m.Fault = string(dAtA[idxNdEx:submitOrdinal])
-			idxNdEx = submitOrdinal
+			m.Failure = string(deltaLocatedAN[idxNdExc:submitOrdinal])
+			idxNdExc = submitOrdinal
 		default:
-			idxNdEx = preOrdinal
-			skippy, err := omitKinds(dAtA[idxNdEx:])
+			idxNdExc = priorOrdinal
+			omitted, err := omitKinds(deltaLocatedAN[idxNdExc:])
 			if err != nil {
 				return err
 			}
-			if (skippy < 0) || (idxNdEx+skippy) < 0 {
-				return ErrCorruptExtentKinds
+			if (omitted < 0) || (idxNdExc+omitted) < 0 {
+				return FaultUnfitMagnitudeKinds
 			}
-			if (idxNdEx + skippy) > l {
+			if (idxNdExc + omitted) > l {
 				return io.ErrUnexpectedEOF
 			}
-			idxNdEx += skippy
+			idxNdExc += omitted
 		}
 	}
 
-	if idxNdEx > l {
+	if idxNdExc > l {
 		return io.ErrUnexpectedEOF
 	}
 	return nil
 }
-func (m *ReplyReverberate) Unserialize(dAtA []byte) error {
-	l := len(dAtA)
-	idxNdEx := 0
-	for idxNdEx < l {
-		preOrdinal := idxNdEx
+func (m *ReplyReverberate) Decode(deltaLocatedAN []byte) error {
+	l := len(deltaLocatedAN)
+	idxNdExc := 0
+	for idxNdExc < l {
+		priorOrdinal := idxNdExc
 		var cable uint64
-		for displace := uint(0); ; displace += 7 {
-			if displace >= 64 {
-				return ErrIntegerOverloadKinds
+		for relocate := uint(0); ; relocate += 7 {
+			if relocate >= 64 {
+				return FaultIntegerOverrunKinds
 			}
-			if idxNdEx >= l {
+			if idxNdExc >= l {
 				return io.ErrUnexpectedEOF
 			}
-			b := dAtA[idxNdEx]
-			idxNdEx++
-			cable |= uint64(b&0x7F) << displace
+			b := deltaLocatedAN[idxNdExc]
+			idxNdExc++
+			cable |= uint64(b&0x7F) << relocate
 			if b < 0x80 {
 				break
 			}
 		}
-		fieldCount := int32(cable >> 3)
+		attributeCount := int32(cable >> 3)
 		cableKind := int(cable & 0x7)
 		if cableKind == 4 {
 			return fmt.Errorf("REDACTED")
 		}
-		if fieldCount <= 0 {
-			return fmt.Errorf("REDACTED", fieldCount, cable)
+		if attributeCount <= 0 {
+			return fmt.Errorf("REDACTED", attributeCount, cable)
 		}
-		switch fieldCount {
+		switch attributeCount {
 		case 1:
 			if cableKind != 2 {
 				return fmt.Errorf("REDACTED", cableKind)
 			}
-			var stringSize uint64
-			for displace := uint(0); ; displace += 7 {
-				if displace >= 64 {
-					return ErrIntegerOverloadKinds
+			var textSize uint64
+			for relocate := uint(0); ; relocate += 7 {
+				if relocate >= 64 {
+					return FaultIntegerOverrunKinds
 				}
-				if idxNdEx >= l {
+				if idxNdExc >= l {
 					return io.ErrUnexpectedEOF
 				}
-				b := dAtA[idxNdEx]
-				idxNdEx++
-				stringSize |= uint64(b&0x7F) << displace
+				b := deltaLocatedAN[idxNdExc]
+				idxNdExc++
+				textSize |= uint64(b&0x7F) << relocate
 				if b < 0x80 {
 					break
 				}
 			}
-			integerStringSize := int(stringSize)
-			if integerStringSize < 0 {
-				return ErrCorruptExtentKinds
+			integerTextSize := int(textSize)
+			if integerTextSize < 0 {
+				return FaultUnfitMagnitudeKinds
 			}
-			submitOrdinal := idxNdEx + integerStringSize
+			submitOrdinal := idxNdExc + integerTextSize
 			if submitOrdinal < 0 {
-				return ErrCorruptExtentKinds
+				return FaultUnfitMagnitudeKinds
 			}
 			if submitOrdinal > l {
 				return io.ErrUnexpectedEOF
 			}
-			m.Signal = string(dAtA[idxNdEx:submitOrdinal])
-			idxNdEx = submitOrdinal
+			m.Signal = string(deltaLocatedAN[idxNdExc:submitOrdinal])
+			idxNdExc = submitOrdinal
 		default:
-			idxNdEx = preOrdinal
-			skippy, err := omitKinds(dAtA[idxNdEx:])
+			idxNdExc = priorOrdinal
+			omitted, err := omitKinds(deltaLocatedAN[idxNdExc:])
 			if err != nil {
 				return err
 			}
-			if (skippy < 0) || (idxNdEx+skippy) < 0 {
-				return ErrCorruptExtentKinds
+			if (omitted < 0) || (idxNdExc+omitted) < 0 {
+				return FaultUnfitMagnitudeKinds
 			}
-			if (idxNdEx + skippy) > l {
+			if (idxNdExc + omitted) > l {
 				return io.ErrUnexpectedEOF
 			}
-			idxNdEx += skippy
+			idxNdExc += omitted
 		}
 	}
 
-	if idxNdEx > l {
+	if idxNdExc > l {
 		return io.ErrUnexpectedEOF
 	}
 	return nil
 }
-func (m *ReplyPurge) Unserialize(dAtA []byte) error {
-	l := len(dAtA)
-	idxNdEx := 0
-	for idxNdEx < l {
-		preOrdinal := idxNdEx
+func (m *ReplyPurge) Decode(deltaLocatedAN []byte) error {
+	l := len(deltaLocatedAN)
+	idxNdExc := 0
+	for idxNdExc < l {
+		priorOrdinal := idxNdExc
 		var cable uint64
-		for displace := uint(0); ; displace += 7 {
-			if displace >= 64 {
-				return ErrIntegerOverloadKinds
+		for relocate := uint(0); ; relocate += 7 {
+			if relocate >= 64 {
+				return FaultIntegerOverrunKinds
 			}
-			if idxNdEx >= l {
+			if idxNdExc >= l {
 				return io.ErrUnexpectedEOF
 			}
-			b := dAtA[idxNdEx]
-			idxNdEx++
-			cable |= uint64(b&0x7F) << displace
+			b := deltaLocatedAN[idxNdExc]
+			idxNdExc++
+			cable |= uint64(b&0x7F) << relocate
 			if b < 0x80 {
 				break
 			}
 		}
-		fieldCount := int32(cable >> 3)
+		attributeCount := int32(cable >> 3)
 		cableKind := int(cable & 0x7)
 		if cableKind == 4 {
 			return fmt.Errorf("REDACTED")
 		}
-		if fieldCount <= 0 {
-			return fmt.Errorf("REDACTED", fieldCount, cable)
+		if attributeCount <= 0 {
+			return fmt.Errorf("REDACTED", attributeCount, cable)
 		}
-		switch fieldCount {
+		switch attributeCount {
 		default:
-			idxNdEx = preOrdinal
-			skippy, err := omitKinds(dAtA[idxNdEx:])
+			idxNdExc = priorOrdinal
+			omitted, err := omitKinds(deltaLocatedAN[idxNdExc:])
 			if err != nil {
 				return err
 			}
-			if (skippy < 0) || (idxNdEx+skippy) < 0 {
-				return ErrCorruptExtentKinds
+			if (omitted < 0) || (idxNdExc+omitted) < 0 {
+				return FaultUnfitMagnitudeKinds
 			}
-			if (idxNdEx + skippy) > l {
+			if (idxNdExc + omitted) > l {
 				return io.ErrUnexpectedEOF
 			}
-			idxNdEx += skippy
+			idxNdExc += omitted
 		}
 	}
 
-	if idxNdEx > l {
+	if idxNdExc > l {
 		return io.ErrUnexpectedEOF
 	}
 	return nil
 }
-func (m *ReplyDetails) Unserialize(dAtA []byte) error {
-	l := len(dAtA)
-	idxNdEx := 0
-	for idxNdEx < l {
-		preOrdinal := idxNdEx
+func (m *ReplyDetails) Decode(deltaLocatedAN []byte) error {
+	l := len(deltaLocatedAN)
+	idxNdExc := 0
+	for idxNdExc < l {
+		priorOrdinal := idxNdExc
 		var cable uint64
-		for displace := uint(0); ; displace += 7 {
-			if displace >= 64 {
-				return ErrIntegerOverloadKinds
+		for relocate := uint(0); ; relocate += 7 {
+			if relocate >= 64 {
+				return FaultIntegerOverrunKinds
 			}
-			if idxNdEx >= l {
+			if idxNdExc >= l {
 				return io.ErrUnexpectedEOF
 			}
-			b := dAtA[idxNdEx]
-			idxNdEx++
-			cable |= uint64(b&0x7F) << displace
+			b := deltaLocatedAN[idxNdExc]
+			idxNdExc++
+			cable |= uint64(b&0x7F) << relocate
 			if b < 0x80 {
 				break
 			}
 		}
-		fieldCount := int32(cable >> 3)
+		attributeCount := int32(cable >> 3)
 		cableKind := int(cable & 0x7)
 		if cableKind == 4 {
 			return fmt.Errorf("REDACTED")
 		}
-		if fieldCount <= 0 {
-			return fmt.Errorf("REDACTED", fieldCount, cable)
+		if attributeCount <= 0 {
+			return fmt.Errorf("REDACTED", attributeCount, cable)
 		}
-		switch fieldCount {
+		switch attributeCount {
 		case 1:
 			if cableKind != 2 {
 				return fmt.Errorf("REDACTED", cableKind)
 			}
-			var stringSize uint64
-			for displace := uint(0); ; displace += 7 {
-				if displace >= 64 {
-					return ErrIntegerOverloadKinds
+			var textSize uint64
+			for relocate := uint(0); ; relocate += 7 {
+				if relocate >= 64 {
+					return FaultIntegerOverrunKinds
 				}
-				if idxNdEx >= l {
+				if idxNdExc >= l {
 					return io.ErrUnexpectedEOF
 				}
-				b := dAtA[idxNdEx]
-				idxNdEx++
-				stringSize |= uint64(b&0x7F) << displace
+				b := deltaLocatedAN[idxNdExc]
+				idxNdExc++
+				textSize |= uint64(b&0x7F) << relocate
 				if b < 0x80 {
 					break
 				}
 			}
-			integerStringSize := int(stringSize)
-			if integerStringSize < 0 {
-				return ErrCorruptExtentKinds
+			integerTextSize := int(textSize)
+			if integerTextSize < 0 {
+				return FaultUnfitMagnitudeKinds
 			}
-			submitOrdinal := idxNdEx + integerStringSize
+			submitOrdinal := idxNdExc + integerTextSize
 			if submitOrdinal < 0 {
-				return ErrCorruptExtentKinds
+				return FaultUnfitMagnitudeKinds
 			}
 			if submitOrdinal > l {
 				return io.ErrUnexpectedEOF
 			}
-			m.Data = string(dAtA[idxNdEx:submitOrdinal])
-			idxNdEx = submitOrdinal
+			m.Data = string(deltaLocatedAN[idxNdExc:submitOrdinal])
+			idxNdExc = submitOrdinal
 		case 2:
 			if cableKind != 2 {
 				return fmt.Errorf("REDACTED", cableKind)
 			}
-			var stringSize uint64
-			for displace := uint(0); ; displace += 7 {
-				if displace >= 64 {
-					return ErrIntegerOverloadKinds
+			var textSize uint64
+			for relocate := uint(0); ; relocate += 7 {
+				if relocate >= 64 {
+					return FaultIntegerOverrunKinds
 				}
-				if idxNdEx >= l {
+				if idxNdExc >= l {
 					return io.ErrUnexpectedEOF
 				}
-				b := dAtA[idxNdEx]
-				idxNdEx++
-				stringSize |= uint64(b&0x7F) << displace
+				b := deltaLocatedAN[idxNdExc]
+				idxNdExc++
+				textSize |= uint64(b&0x7F) << relocate
 				if b < 0x80 {
 					break
 				}
 			}
-			integerStringSize := int(stringSize)
-			if integerStringSize < 0 {
-				return ErrCorruptExtentKinds
+			integerTextSize := int(textSize)
+			if integerTextSize < 0 {
+				return FaultUnfitMagnitudeKinds
 			}
-			submitOrdinal := idxNdEx + integerStringSize
+			submitOrdinal := idxNdExc + integerTextSize
 			if submitOrdinal < 0 {
-				return ErrCorruptExtentKinds
+				return FaultUnfitMagnitudeKinds
 			}
 			if submitOrdinal > l {
 				return io.ErrUnexpectedEOF
 			}
-			m.Release = string(dAtA[idxNdEx:submitOrdinal])
-			idxNdEx = submitOrdinal
+			m.Edition = string(deltaLocatedAN[idxNdExc:submitOrdinal])
+			idxNdExc = submitOrdinal
 		case 3:
 			if cableKind != 0 {
 				return fmt.Errorf("REDACTED", cableKind)
 			}
-			m.ApplicationRelease = 0
-			for displace := uint(0); ; displace += 7 {
-				if displace >= 64 {
-					return ErrIntegerOverloadKinds
+			m.PlatformEdition = 0
+			for relocate := uint(0); ; relocate += 7 {
+				if relocate >= 64 {
+					return FaultIntegerOverrunKinds
 				}
-				if idxNdEx >= l {
+				if idxNdExc >= l {
 					return io.ErrUnexpectedEOF
 				}
-				b := dAtA[idxNdEx]
-				idxNdEx++
-				m.ApplicationRelease |= uint64(b&0x7F) << displace
+				b := deltaLocatedAN[idxNdExc]
+				idxNdExc++
+				m.PlatformEdition |= uint64(b&0x7F) << relocate
 				if b < 0x80 {
 					break
 				}
@@ -13954,17 +13954,17 @@ func (m *ReplyDetails) Unserialize(dAtA []byte) error {
 			if cableKind != 0 {
 				return fmt.Errorf("REDACTED", cableKind)
 			}
-			m.FinalLedgerLevel = 0
-			for displace := uint(0); ; displace += 7 {
-				if displace >= 64 {
-					return ErrIntegerOverloadKinds
+			m.FinalLedgerAltitude = 0
+			for relocate := uint(0); ; relocate += 7 {
+				if relocate >= 64 {
+					return FaultIntegerOverrunKinds
 				}
-				if idxNdEx >= l {
+				if idxNdExc >= l {
 					return io.ErrUnexpectedEOF
 				}
-				b := dAtA[idxNdEx]
-				idxNdEx++
-				m.FinalLedgerLevel |= int64(b&0x7F) << displace
+				b := deltaLocatedAN[idxNdExc]
+				idxNdExc++
+				m.FinalLedgerAltitude |= int64(b&0x7F) << relocate
 				if b < 0x80 {
 					break
 				}
@@ -13974,254 +13974,254 @@ func (m *ReplyDetails) Unserialize(dAtA []byte) error {
 				return fmt.Errorf("REDACTED", cableKind)
 			}
 			var octetSize int
-			for displace := uint(0); ; displace += 7 {
-				if displace >= 64 {
-					return ErrIntegerOverloadKinds
+			for relocate := uint(0); ; relocate += 7 {
+				if relocate >= 64 {
+					return FaultIntegerOverrunKinds
 				}
-				if idxNdEx >= l {
+				if idxNdExc >= l {
 					return io.ErrUnexpectedEOF
 				}
-				b := dAtA[idxNdEx]
-				idxNdEx++
-				octetSize |= int(b&0x7F) << displace
+				b := deltaLocatedAN[idxNdExc]
+				idxNdExc++
+				octetSize |= int(b&0x7F) << relocate
 				if b < 0x80 {
 					break
 				}
 			}
 			if octetSize < 0 {
-				return ErrCorruptExtentKinds
+				return FaultUnfitMagnitudeKinds
 			}
-			submitOrdinal := idxNdEx + octetSize
+			submitOrdinal := idxNdExc + octetSize
 			if submitOrdinal < 0 {
-				return ErrCorruptExtentKinds
+				return FaultUnfitMagnitudeKinds
 			}
 			if submitOrdinal > l {
 				return io.ErrUnexpectedEOF
 			}
-			m.FinalLedgerApplicationDigest = append(m.FinalLedgerApplicationDigest[:0], dAtA[idxNdEx:submitOrdinal]...)
-			if m.FinalLedgerApplicationDigest == nil {
-				m.FinalLedgerApplicationDigest = []byte{}
+			m.FinalLedgerPlatformDigest = append(m.FinalLedgerPlatformDigest[:0], deltaLocatedAN[idxNdExc:submitOrdinal]...)
+			if m.FinalLedgerPlatformDigest == nil {
+				m.FinalLedgerPlatformDigest = []byte{}
 			}
-			idxNdEx = submitOrdinal
+			idxNdExc = submitOrdinal
 		default:
-			idxNdEx = preOrdinal
-			skippy, err := omitKinds(dAtA[idxNdEx:])
+			idxNdExc = priorOrdinal
+			omitted, err := omitKinds(deltaLocatedAN[idxNdExc:])
 			if err != nil {
 				return err
 			}
-			if (skippy < 0) || (idxNdEx+skippy) < 0 {
-				return ErrCorruptExtentKinds
+			if (omitted < 0) || (idxNdExc+omitted) < 0 {
+				return FaultUnfitMagnitudeKinds
 			}
-			if (idxNdEx + skippy) > l {
+			if (idxNdExc + omitted) > l {
 				return io.ErrUnexpectedEOF
 			}
-			idxNdEx += skippy
+			idxNdExc += omitted
 		}
 	}
 
-	if idxNdEx > l {
+	if idxNdExc > l {
 		return io.ErrUnexpectedEOF
 	}
 	return nil
 }
-func (m *ReplyInitSeries) Unserialize(dAtA []byte) error {
-	l := len(dAtA)
-	idxNdEx := 0
-	for idxNdEx < l {
-		preOrdinal := idxNdEx
+func (m *ReplyInitializeSuccession) Decode(deltaLocatedAN []byte) error {
+	l := len(deltaLocatedAN)
+	idxNdExc := 0
+	for idxNdExc < l {
+		priorOrdinal := idxNdExc
 		var cable uint64
-		for displace := uint(0); ; displace += 7 {
-			if displace >= 64 {
-				return ErrIntegerOverloadKinds
+		for relocate := uint(0); ; relocate += 7 {
+			if relocate >= 64 {
+				return FaultIntegerOverrunKinds
 			}
-			if idxNdEx >= l {
+			if idxNdExc >= l {
 				return io.ErrUnexpectedEOF
 			}
-			b := dAtA[idxNdEx]
-			idxNdEx++
-			cable |= uint64(b&0x7F) << displace
+			b := deltaLocatedAN[idxNdExc]
+			idxNdExc++
+			cable |= uint64(b&0x7F) << relocate
 			if b < 0x80 {
 				break
 			}
 		}
-		fieldCount := int32(cable >> 3)
+		attributeCount := int32(cable >> 3)
 		cableKind := int(cable & 0x7)
 		if cableKind == 4 {
 			return fmt.Errorf("REDACTED")
 		}
-		if fieldCount <= 0 {
-			return fmt.Errorf("REDACTED", fieldCount, cable)
+		if attributeCount <= 0 {
+			return fmt.Errorf("REDACTED", attributeCount, cable)
 		}
-		switch fieldCount {
+		switch attributeCount {
 		case 1:
 			if cableKind != 2 {
 				return fmt.Errorf("REDACTED", cableKind)
 			}
-			var messagesize int
-			for displace := uint(0); ; displace += 7 {
-				if displace >= 64 {
-					return ErrIntegerOverloadKinds
+			var signallength int
+			for relocate := uint(0); ; relocate += 7 {
+				if relocate >= 64 {
+					return FaultIntegerOverrunKinds
 				}
-				if idxNdEx >= l {
+				if idxNdExc >= l {
 					return io.ErrUnexpectedEOF
 				}
-				b := dAtA[idxNdEx]
-				idxNdEx++
-				messagesize |= int(b&0x7F) << displace
+				b := deltaLocatedAN[idxNdExc]
+				idxNdExc++
+				signallength |= int(b&0x7F) << relocate
 				if b < 0x80 {
 					break
 				}
 			}
-			if messagesize < 0 {
-				return ErrCorruptExtentKinds
+			if signallength < 0 {
+				return FaultUnfitMagnitudeKinds
 			}
-			submitOrdinal := idxNdEx + messagesize
+			submitOrdinal := idxNdExc + signallength
 			if submitOrdinal < 0 {
-				return ErrCorruptExtentKinds
+				return FaultUnfitMagnitudeKinds
 			}
 			if submitOrdinal > l {
 				return io.ErrUnexpectedEOF
 			}
-			if m.AgreementOptions == nil {
-				m.AgreementOptions = &kinds1.AgreementOptions{}
+			if m.AgreementSettings == nil {
+				m.AgreementSettings = &kinds1.AgreementSettings{}
 			}
-			if err := m.AgreementOptions.Unserialize(dAtA[idxNdEx:submitOrdinal]); err != nil {
+			if err := m.AgreementSettings.Decode(deltaLocatedAN[idxNdExc:submitOrdinal]); err != nil {
 				return err
 			}
-			idxNdEx = submitOrdinal
+			idxNdExc = submitOrdinal
 		case 2:
 			if cableKind != 2 {
 				return fmt.Errorf("REDACTED", cableKind)
 			}
-			var messagesize int
-			for displace := uint(0); ; displace += 7 {
-				if displace >= 64 {
-					return ErrIntegerOverloadKinds
+			var signallength int
+			for relocate := uint(0); ; relocate += 7 {
+				if relocate >= 64 {
+					return FaultIntegerOverrunKinds
 				}
-				if idxNdEx >= l {
+				if idxNdExc >= l {
 					return io.ErrUnexpectedEOF
 				}
-				b := dAtA[idxNdEx]
-				idxNdEx++
-				messagesize |= int(b&0x7F) << displace
+				b := deltaLocatedAN[idxNdExc]
+				idxNdExc++
+				signallength |= int(b&0x7F) << relocate
 				if b < 0x80 {
 					break
 				}
 			}
-			if messagesize < 0 {
-				return ErrCorruptExtentKinds
+			if signallength < 0 {
+				return FaultUnfitMagnitudeKinds
 			}
-			submitOrdinal := idxNdEx + messagesize
+			submitOrdinal := idxNdExc + signallength
 			if submitOrdinal < 0 {
-				return ErrCorruptExtentKinds
+				return FaultUnfitMagnitudeKinds
 			}
 			if submitOrdinal > l {
 				return io.ErrUnexpectedEOF
 			}
-			m.Ratifiers = append(m.Ratifiers, RatifierModify{})
-			if err := m.Ratifiers[len(m.Ratifiers)-1].Unserialize(dAtA[idxNdEx:submitOrdinal]); err != nil {
+			m.Assessors = append(m.Assessors, AssessorRevise{})
+			if err := m.Assessors[len(m.Assessors)-1].Decode(deltaLocatedAN[idxNdExc:submitOrdinal]); err != nil {
 				return err
 			}
-			idxNdEx = submitOrdinal
+			idxNdExc = submitOrdinal
 		case 3:
 			if cableKind != 2 {
 				return fmt.Errorf("REDACTED", cableKind)
 			}
 			var octetSize int
-			for displace := uint(0); ; displace += 7 {
-				if displace >= 64 {
-					return ErrIntegerOverloadKinds
+			for relocate := uint(0); ; relocate += 7 {
+				if relocate >= 64 {
+					return FaultIntegerOverrunKinds
 				}
-				if idxNdEx >= l {
+				if idxNdExc >= l {
 					return io.ErrUnexpectedEOF
 				}
-				b := dAtA[idxNdEx]
-				idxNdEx++
-				octetSize |= int(b&0x7F) << displace
+				b := deltaLocatedAN[idxNdExc]
+				idxNdExc++
+				octetSize |= int(b&0x7F) << relocate
 				if b < 0x80 {
 					break
 				}
 			}
 			if octetSize < 0 {
-				return ErrCorruptExtentKinds
+				return FaultUnfitMagnitudeKinds
 			}
-			submitOrdinal := idxNdEx + octetSize
+			submitOrdinal := idxNdExc + octetSize
 			if submitOrdinal < 0 {
-				return ErrCorruptExtentKinds
+				return FaultUnfitMagnitudeKinds
 			}
 			if submitOrdinal > l {
 				return io.ErrUnexpectedEOF
 			}
-			m.ApplicationDigest = append(m.ApplicationDigest[:0], dAtA[idxNdEx:submitOrdinal]...)
-			if m.ApplicationDigest == nil {
-				m.ApplicationDigest = []byte{}
+			m.PlatformDigest = append(m.PlatformDigest[:0], deltaLocatedAN[idxNdExc:submitOrdinal]...)
+			if m.PlatformDigest == nil {
+				m.PlatformDigest = []byte{}
 			}
-			idxNdEx = submitOrdinal
+			idxNdExc = submitOrdinal
 		default:
-			idxNdEx = preOrdinal
-			skippy, err := omitKinds(dAtA[idxNdEx:])
+			idxNdExc = priorOrdinal
+			omitted, err := omitKinds(deltaLocatedAN[idxNdExc:])
 			if err != nil {
 				return err
 			}
-			if (skippy < 0) || (idxNdEx+skippy) < 0 {
-				return ErrCorruptExtentKinds
+			if (omitted < 0) || (idxNdExc+omitted) < 0 {
+				return FaultUnfitMagnitudeKinds
 			}
-			if (idxNdEx + skippy) > l {
+			if (idxNdExc + omitted) > l {
 				return io.ErrUnexpectedEOF
 			}
-			idxNdEx += skippy
+			idxNdExc += omitted
 		}
 	}
 
-	if idxNdEx > l {
+	if idxNdExc > l {
 		return io.ErrUnexpectedEOF
 	}
 	return nil
 }
-func (m *ReplyInquire) Unserialize(dAtA []byte) error {
-	l := len(dAtA)
-	idxNdEx := 0
-	for idxNdEx < l {
-		preOrdinal := idxNdEx
+func (m *ReplyInquire) Decode(deltaLocatedAN []byte) error {
+	l := len(deltaLocatedAN)
+	idxNdExc := 0
+	for idxNdExc < l {
+		priorOrdinal := idxNdExc
 		var cable uint64
-		for displace := uint(0); ; displace += 7 {
-			if displace >= 64 {
-				return ErrIntegerOverloadKinds
+		for relocate := uint(0); ; relocate += 7 {
+			if relocate >= 64 {
+				return FaultIntegerOverrunKinds
 			}
-			if idxNdEx >= l {
+			if idxNdExc >= l {
 				return io.ErrUnexpectedEOF
 			}
-			b := dAtA[idxNdEx]
-			idxNdEx++
-			cable |= uint64(b&0x7F) << displace
+			b := deltaLocatedAN[idxNdExc]
+			idxNdExc++
+			cable |= uint64(b&0x7F) << relocate
 			if b < 0x80 {
 				break
 			}
 		}
-		fieldCount := int32(cable >> 3)
+		attributeCount := int32(cable >> 3)
 		cableKind := int(cable & 0x7)
 		if cableKind == 4 {
 			return fmt.Errorf("REDACTED")
 		}
-		if fieldCount <= 0 {
-			return fmt.Errorf("REDACTED", fieldCount, cable)
+		if attributeCount <= 0 {
+			return fmt.Errorf("REDACTED", attributeCount, cable)
 		}
-		switch fieldCount {
+		switch attributeCount {
 		case 1:
 			if cableKind != 0 {
 				return fmt.Errorf("REDACTED", cableKind)
 			}
-			m.Code = 0
-			for displace := uint(0); ; displace += 7 {
-				if displace >= 64 {
-					return ErrIntegerOverloadKinds
+			m.Cipher = 0
+			for relocate := uint(0); ; relocate += 7 {
+				if relocate >= 64 {
+					return FaultIntegerOverrunKinds
 				}
-				if idxNdEx >= l {
+				if idxNdExc >= l {
 					return io.ErrUnexpectedEOF
 				}
-				b := dAtA[idxNdEx]
-				idxNdEx++
-				m.Code |= uint32(b&0x7F) << displace
+				b := deltaLocatedAN[idxNdExc]
+				idxNdExc++
+				m.Cipher |= uint32(b&0x7F) << relocate
 				if b < 0x80 {
 					break
 				}
@@ -14230,81 +14230,81 @@ func (m *ReplyInquire) Unserialize(dAtA []byte) error {
 			if cableKind != 2 {
 				return fmt.Errorf("REDACTED", cableKind)
 			}
-			var stringSize uint64
-			for displace := uint(0); ; displace += 7 {
-				if displace >= 64 {
-					return ErrIntegerOverloadKinds
+			var textSize uint64
+			for relocate := uint(0); ; relocate += 7 {
+				if relocate >= 64 {
+					return FaultIntegerOverrunKinds
 				}
-				if idxNdEx >= l {
+				if idxNdExc >= l {
 					return io.ErrUnexpectedEOF
 				}
-				b := dAtA[idxNdEx]
-				idxNdEx++
-				stringSize |= uint64(b&0x7F) << displace
+				b := deltaLocatedAN[idxNdExc]
+				idxNdExc++
+				textSize |= uint64(b&0x7F) << relocate
 				if b < 0x80 {
 					break
 				}
 			}
-			integerStringSize := int(stringSize)
-			if integerStringSize < 0 {
-				return ErrCorruptExtentKinds
+			integerTextSize := int(textSize)
+			if integerTextSize < 0 {
+				return FaultUnfitMagnitudeKinds
 			}
-			submitOrdinal := idxNdEx + integerStringSize
+			submitOrdinal := idxNdExc + integerTextSize
 			if submitOrdinal < 0 {
-				return ErrCorruptExtentKinds
+				return FaultUnfitMagnitudeKinds
 			}
 			if submitOrdinal > l {
 				return io.ErrUnexpectedEOF
 			}
-			m.Log = string(dAtA[idxNdEx:submitOrdinal])
-			idxNdEx = submitOrdinal
+			m.Log = string(deltaLocatedAN[idxNdExc:submitOrdinal])
+			idxNdExc = submitOrdinal
 		case 4:
 			if cableKind != 2 {
 				return fmt.Errorf("REDACTED", cableKind)
 			}
-			var stringSize uint64
-			for displace := uint(0); ; displace += 7 {
-				if displace >= 64 {
-					return ErrIntegerOverloadKinds
+			var textSize uint64
+			for relocate := uint(0); ; relocate += 7 {
+				if relocate >= 64 {
+					return FaultIntegerOverrunKinds
 				}
-				if idxNdEx >= l {
+				if idxNdExc >= l {
 					return io.ErrUnexpectedEOF
 				}
-				b := dAtA[idxNdEx]
-				idxNdEx++
-				stringSize |= uint64(b&0x7F) << displace
+				b := deltaLocatedAN[idxNdExc]
+				idxNdExc++
+				textSize |= uint64(b&0x7F) << relocate
 				if b < 0x80 {
 					break
 				}
 			}
-			integerStringSize := int(stringSize)
-			if integerStringSize < 0 {
-				return ErrCorruptExtentKinds
+			integerTextSize := int(textSize)
+			if integerTextSize < 0 {
+				return FaultUnfitMagnitudeKinds
 			}
-			submitOrdinal := idxNdEx + integerStringSize
+			submitOrdinal := idxNdExc + integerTextSize
 			if submitOrdinal < 0 {
-				return ErrCorruptExtentKinds
+				return FaultUnfitMagnitudeKinds
 			}
 			if submitOrdinal > l {
 				return io.ErrUnexpectedEOF
 			}
-			m.Details = string(dAtA[idxNdEx:submitOrdinal])
-			idxNdEx = submitOrdinal
+			m.Details = string(deltaLocatedAN[idxNdExc:submitOrdinal])
+			idxNdExc = submitOrdinal
 		case 5:
 			if cableKind != 0 {
 				return fmt.Errorf("REDACTED", cableKind)
 			}
 			m.Ordinal = 0
-			for displace := uint(0); ; displace += 7 {
-				if displace >= 64 {
-					return ErrIntegerOverloadKinds
+			for relocate := uint(0); ; relocate += 7 {
+				if relocate >= 64 {
+					return FaultIntegerOverrunKinds
 				}
-				if idxNdEx >= l {
+				if idxNdExc >= l {
 					return io.ErrUnexpectedEOF
 				}
-				b := dAtA[idxNdEx]
-				idxNdEx++
-				m.Ordinal |= int64(b&0x7F) << displace
+				b := deltaLocatedAN[idxNdExc]
+				idxNdExc++
+				m.Ordinal |= int64(b&0x7F) << relocate
 				if b < 0x80 {
 					break
 				}
@@ -14314,120 +14314,120 @@ func (m *ReplyInquire) Unserialize(dAtA []byte) error {
 				return fmt.Errorf("REDACTED", cableKind)
 			}
 			var octetSize int
-			for displace := uint(0); ; displace += 7 {
-				if displace >= 64 {
-					return ErrIntegerOverloadKinds
+			for relocate := uint(0); ; relocate += 7 {
+				if relocate >= 64 {
+					return FaultIntegerOverrunKinds
 				}
-				if idxNdEx >= l {
+				if idxNdExc >= l {
 					return io.ErrUnexpectedEOF
 				}
-				b := dAtA[idxNdEx]
-				idxNdEx++
-				octetSize |= int(b&0x7F) << displace
+				b := deltaLocatedAN[idxNdExc]
+				idxNdExc++
+				octetSize |= int(b&0x7F) << relocate
 				if b < 0x80 {
 					break
 				}
 			}
 			if octetSize < 0 {
-				return ErrCorruptExtentKinds
+				return FaultUnfitMagnitudeKinds
 			}
-			submitOrdinal := idxNdEx + octetSize
+			submitOrdinal := idxNdExc + octetSize
 			if submitOrdinal < 0 {
-				return ErrCorruptExtentKinds
+				return FaultUnfitMagnitudeKinds
 			}
 			if submitOrdinal > l {
 				return io.ErrUnexpectedEOF
 			}
-			m.Key = append(m.Key[:0], dAtA[idxNdEx:submitOrdinal]...)
+			m.Key = append(m.Key[:0], deltaLocatedAN[idxNdExc:submitOrdinal]...)
 			if m.Key == nil {
 				m.Key = []byte{}
 			}
-			idxNdEx = submitOrdinal
+			idxNdExc = submitOrdinal
 		case 7:
 			if cableKind != 2 {
 				return fmt.Errorf("REDACTED", cableKind)
 			}
 			var octetSize int
-			for displace := uint(0); ; displace += 7 {
-				if displace >= 64 {
-					return ErrIntegerOverloadKinds
+			for relocate := uint(0); ; relocate += 7 {
+				if relocate >= 64 {
+					return FaultIntegerOverrunKinds
 				}
-				if idxNdEx >= l {
+				if idxNdExc >= l {
 					return io.ErrUnexpectedEOF
 				}
-				b := dAtA[idxNdEx]
-				idxNdEx++
-				octetSize |= int(b&0x7F) << displace
+				b := deltaLocatedAN[idxNdExc]
+				idxNdExc++
+				octetSize |= int(b&0x7F) << relocate
 				if b < 0x80 {
 					break
 				}
 			}
 			if octetSize < 0 {
-				return ErrCorruptExtentKinds
+				return FaultUnfitMagnitudeKinds
 			}
-			submitOrdinal := idxNdEx + octetSize
+			submitOrdinal := idxNdExc + octetSize
 			if submitOrdinal < 0 {
-				return ErrCorruptExtentKinds
+				return FaultUnfitMagnitudeKinds
 			}
 			if submitOrdinal > l {
 				return io.ErrUnexpectedEOF
 			}
-			m.Item = append(m.Item[:0], dAtA[idxNdEx:submitOrdinal]...)
-			if m.Item == nil {
-				m.Item = []byte{}
+			m.Datum = append(m.Datum[:0], deltaLocatedAN[idxNdExc:submitOrdinal]...)
+			if m.Datum == nil {
+				m.Datum = []byte{}
 			}
-			idxNdEx = submitOrdinal
+			idxNdExc = submitOrdinal
 		case 8:
 			if cableKind != 2 {
 				return fmt.Errorf("REDACTED", cableKind)
 			}
-			var messagesize int
-			for displace := uint(0); ; displace += 7 {
-				if displace >= 64 {
-					return ErrIntegerOverloadKinds
+			var signallength int
+			for relocate := uint(0); ; relocate += 7 {
+				if relocate >= 64 {
+					return FaultIntegerOverrunKinds
 				}
-				if idxNdEx >= l {
+				if idxNdExc >= l {
 					return io.ErrUnexpectedEOF
 				}
-				b := dAtA[idxNdEx]
-				idxNdEx++
-				messagesize |= int(b&0x7F) << displace
+				b := deltaLocatedAN[idxNdExc]
+				idxNdExc++
+				signallength |= int(b&0x7F) << relocate
 				if b < 0x80 {
 					break
 				}
 			}
-			if messagesize < 0 {
-				return ErrCorruptExtentKinds
+			if signallength < 0 {
+				return FaultUnfitMagnitudeKinds
 			}
-			submitOrdinal := idxNdEx + messagesize
+			submitOrdinal := idxNdExc + signallength
 			if submitOrdinal < 0 {
-				return ErrCorruptExtentKinds
+				return FaultUnfitMagnitudeKinds
 			}
 			if submitOrdinal > l {
 				return io.ErrUnexpectedEOF
 			}
-			if m.EvidenceActions == nil {
-				m.EvidenceActions = &vault.EvidenceActions{}
+			if m.AttestationActions == nil {
+				m.AttestationActions = &security.AttestationActions{}
 			}
-			if err := m.EvidenceActions.Unserialize(dAtA[idxNdEx:submitOrdinal]); err != nil {
+			if err := m.AttestationActions.Decode(deltaLocatedAN[idxNdExc:submitOrdinal]); err != nil {
 				return err
 			}
-			idxNdEx = submitOrdinal
+			idxNdExc = submitOrdinal
 		case 9:
 			if cableKind != 0 {
 				return fmt.Errorf("REDACTED", cableKind)
 			}
-			m.Level = 0
-			for displace := uint(0); ; displace += 7 {
-				if displace >= 64 {
-					return ErrIntegerOverloadKinds
+			m.Altitude = 0
+			for relocate := uint(0); ; relocate += 7 {
+				if relocate >= 64 {
+					return FaultIntegerOverrunKinds
 				}
-				if idxNdEx >= l {
+				if idxNdExc >= l {
 					return io.ErrUnexpectedEOF
 				}
-				b := dAtA[idxNdEx]
-				idxNdEx++
-				m.Level |= int64(b&0x7F) << displace
+				b := deltaLocatedAN[idxNdExc]
+				idxNdExc++
+				m.Altitude |= int64(b&0x7F) << relocate
 				if b < 0x80 {
 					break
 				}
@@ -14436,99 +14436,99 @@ func (m *ReplyInquire) Unserialize(dAtA []byte) error {
 			if cableKind != 2 {
 				return fmt.Errorf("REDACTED", cableKind)
 			}
-			var stringSize uint64
-			for displace := uint(0); ; displace += 7 {
-				if displace >= 64 {
-					return ErrIntegerOverloadKinds
+			var textSize uint64
+			for relocate := uint(0); ; relocate += 7 {
+				if relocate >= 64 {
+					return FaultIntegerOverrunKinds
 				}
-				if idxNdEx >= l {
+				if idxNdExc >= l {
 					return io.ErrUnexpectedEOF
 				}
-				b := dAtA[idxNdEx]
-				idxNdEx++
-				stringSize |= uint64(b&0x7F) << displace
+				b := deltaLocatedAN[idxNdExc]
+				idxNdExc++
+				textSize |= uint64(b&0x7F) << relocate
 				if b < 0x80 {
 					break
 				}
 			}
-			integerStringSize := int(stringSize)
-			if integerStringSize < 0 {
-				return ErrCorruptExtentKinds
+			integerTextSize := int(textSize)
+			if integerTextSize < 0 {
+				return FaultUnfitMagnitudeKinds
 			}
-			submitOrdinal := idxNdEx + integerStringSize
+			submitOrdinal := idxNdExc + integerTextSize
 			if submitOrdinal < 0 {
-				return ErrCorruptExtentKinds
+				return FaultUnfitMagnitudeKinds
 			}
 			if submitOrdinal > l {
 				return io.ErrUnexpectedEOF
 			}
-			m.Codex = string(dAtA[idxNdEx:submitOrdinal])
-			idxNdEx = submitOrdinal
+			m.Codeset = string(deltaLocatedAN[idxNdExc:submitOrdinal])
+			idxNdExc = submitOrdinal
 		default:
-			idxNdEx = preOrdinal
-			skippy, err := omitKinds(dAtA[idxNdEx:])
+			idxNdExc = priorOrdinal
+			omitted, err := omitKinds(deltaLocatedAN[idxNdExc:])
 			if err != nil {
 				return err
 			}
-			if (skippy < 0) || (idxNdEx+skippy) < 0 {
-				return ErrCorruptExtentKinds
+			if (omitted < 0) || (idxNdExc+omitted) < 0 {
+				return FaultUnfitMagnitudeKinds
 			}
-			if (idxNdEx + skippy) > l {
+			if (idxNdExc + omitted) > l {
 				return io.ErrUnexpectedEOF
 			}
-			idxNdEx += skippy
+			idxNdExc += omitted
 		}
 	}
 
-	if idxNdEx > l {
+	if idxNdExc > l {
 		return io.ErrUnexpectedEOF
 	}
 	return nil
 }
-func (m *ReplyInspectTransfer) Unserialize(dAtA []byte) error {
-	l := len(dAtA)
-	idxNdEx := 0
-	for idxNdEx < l {
-		preOrdinal := idxNdEx
+func (m *ReplyInspectTransfer) Decode(deltaLocatedAN []byte) error {
+	l := len(deltaLocatedAN)
+	idxNdExc := 0
+	for idxNdExc < l {
+		priorOrdinal := idxNdExc
 		var cable uint64
-		for displace := uint(0); ; displace += 7 {
-			if displace >= 64 {
-				return ErrIntegerOverloadKinds
+		for relocate := uint(0); ; relocate += 7 {
+			if relocate >= 64 {
+				return FaultIntegerOverrunKinds
 			}
-			if idxNdEx >= l {
+			if idxNdExc >= l {
 				return io.ErrUnexpectedEOF
 			}
-			b := dAtA[idxNdEx]
-			idxNdEx++
-			cable |= uint64(b&0x7F) << displace
+			b := deltaLocatedAN[idxNdExc]
+			idxNdExc++
+			cable |= uint64(b&0x7F) << relocate
 			if b < 0x80 {
 				break
 			}
 		}
-		fieldCount := int32(cable >> 3)
+		attributeCount := int32(cable >> 3)
 		cableKind := int(cable & 0x7)
 		if cableKind == 4 {
 			return fmt.Errorf("REDACTED")
 		}
-		if fieldCount <= 0 {
-			return fmt.Errorf("REDACTED", fieldCount, cable)
+		if attributeCount <= 0 {
+			return fmt.Errorf("REDACTED", attributeCount, cable)
 		}
-		switch fieldCount {
+		switch attributeCount {
 		case 1:
 			if cableKind != 0 {
 				return fmt.Errorf("REDACTED", cableKind)
 			}
-			m.Code = 0
-			for displace := uint(0); ; displace += 7 {
-				if displace >= 64 {
-					return ErrIntegerOverloadKinds
+			m.Cipher = 0
+			for relocate := uint(0); ; relocate += 7 {
+				if relocate >= 64 {
+					return FaultIntegerOverrunKinds
 				}
-				if idxNdEx >= l {
+				if idxNdExc >= l {
 					return io.ErrUnexpectedEOF
 				}
-				b := dAtA[idxNdEx]
-				idxNdEx++
-				m.Code |= uint32(b&0x7F) << displace
+				b := deltaLocatedAN[idxNdExc]
+				idxNdExc++
+				m.Cipher |= uint32(b&0x7F) << relocate
 				if b < 0x80 {
 					break
 				}
@@ -14538,114 +14538,114 @@ func (m *ReplyInspectTransfer) Unserialize(dAtA []byte) error {
 				return fmt.Errorf("REDACTED", cableKind)
 			}
 			var octetSize int
-			for displace := uint(0); ; displace += 7 {
-				if displace >= 64 {
-					return ErrIntegerOverloadKinds
+			for relocate := uint(0); ; relocate += 7 {
+				if relocate >= 64 {
+					return FaultIntegerOverrunKinds
 				}
-				if idxNdEx >= l {
+				if idxNdExc >= l {
 					return io.ErrUnexpectedEOF
 				}
-				b := dAtA[idxNdEx]
-				idxNdEx++
-				octetSize |= int(b&0x7F) << displace
+				b := deltaLocatedAN[idxNdExc]
+				idxNdExc++
+				octetSize |= int(b&0x7F) << relocate
 				if b < 0x80 {
 					break
 				}
 			}
 			if octetSize < 0 {
-				return ErrCorruptExtentKinds
+				return FaultUnfitMagnitudeKinds
 			}
-			submitOrdinal := idxNdEx + octetSize
+			submitOrdinal := idxNdExc + octetSize
 			if submitOrdinal < 0 {
-				return ErrCorruptExtentKinds
+				return FaultUnfitMagnitudeKinds
 			}
 			if submitOrdinal > l {
 				return io.ErrUnexpectedEOF
 			}
-			m.Data = append(m.Data[:0], dAtA[idxNdEx:submitOrdinal]...)
+			m.Data = append(m.Data[:0], deltaLocatedAN[idxNdExc:submitOrdinal]...)
 			if m.Data == nil {
 				m.Data = []byte{}
 			}
-			idxNdEx = submitOrdinal
+			idxNdExc = submitOrdinal
 		case 3:
 			if cableKind != 2 {
 				return fmt.Errorf("REDACTED", cableKind)
 			}
-			var stringSize uint64
-			for displace := uint(0); ; displace += 7 {
-				if displace >= 64 {
-					return ErrIntegerOverloadKinds
+			var textSize uint64
+			for relocate := uint(0); ; relocate += 7 {
+				if relocate >= 64 {
+					return FaultIntegerOverrunKinds
 				}
-				if idxNdEx >= l {
+				if idxNdExc >= l {
 					return io.ErrUnexpectedEOF
 				}
-				b := dAtA[idxNdEx]
-				idxNdEx++
-				stringSize |= uint64(b&0x7F) << displace
+				b := deltaLocatedAN[idxNdExc]
+				idxNdExc++
+				textSize |= uint64(b&0x7F) << relocate
 				if b < 0x80 {
 					break
 				}
 			}
-			integerStringSize := int(stringSize)
-			if integerStringSize < 0 {
-				return ErrCorruptExtentKinds
+			integerTextSize := int(textSize)
+			if integerTextSize < 0 {
+				return FaultUnfitMagnitudeKinds
 			}
-			submitOrdinal := idxNdEx + integerStringSize
+			submitOrdinal := idxNdExc + integerTextSize
 			if submitOrdinal < 0 {
-				return ErrCorruptExtentKinds
+				return FaultUnfitMagnitudeKinds
 			}
 			if submitOrdinal > l {
 				return io.ErrUnexpectedEOF
 			}
-			m.Log = string(dAtA[idxNdEx:submitOrdinal])
-			idxNdEx = submitOrdinal
+			m.Log = string(deltaLocatedAN[idxNdExc:submitOrdinal])
+			idxNdExc = submitOrdinal
 		case 4:
 			if cableKind != 2 {
 				return fmt.Errorf("REDACTED", cableKind)
 			}
-			var stringSize uint64
-			for displace := uint(0); ; displace += 7 {
-				if displace >= 64 {
-					return ErrIntegerOverloadKinds
+			var textSize uint64
+			for relocate := uint(0); ; relocate += 7 {
+				if relocate >= 64 {
+					return FaultIntegerOverrunKinds
 				}
-				if idxNdEx >= l {
+				if idxNdExc >= l {
 					return io.ErrUnexpectedEOF
 				}
-				b := dAtA[idxNdEx]
-				idxNdEx++
-				stringSize |= uint64(b&0x7F) << displace
+				b := deltaLocatedAN[idxNdExc]
+				idxNdExc++
+				textSize |= uint64(b&0x7F) << relocate
 				if b < 0x80 {
 					break
 				}
 			}
-			integerStringSize := int(stringSize)
-			if integerStringSize < 0 {
-				return ErrCorruptExtentKinds
+			integerTextSize := int(textSize)
+			if integerTextSize < 0 {
+				return FaultUnfitMagnitudeKinds
 			}
-			submitOrdinal := idxNdEx + integerStringSize
+			submitOrdinal := idxNdExc + integerTextSize
 			if submitOrdinal < 0 {
-				return ErrCorruptExtentKinds
+				return FaultUnfitMagnitudeKinds
 			}
 			if submitOrdinal > l {
 				return io.ErrUnexpectedEOF
 			}
-			m.Details = string(dAtA[idxNdEx:submitOrdinal])
-			idxNdEx = submitOrdinal
+			m.Details = string(deltaLocatedAN[idxNdExc:submitOrdinal])
+			idxNdExc = submitOrdinal
 		case 5:
 			if cableKind != 0 {
 				return fmt.Errorf("REDACTED", cableKind)
 			}
 			m.FuelDesired = 0
-			for displace := uint(0); ; displace += 7 {
-				if displace >= 64 {
-					return ErrIntegerOverloadKinds
+			for relocate := uint(0); ; relocate += 7 {
+				if relocate >= 64 {
+					return FaultIntegerOverrunKinds
 				}
-				if idxNdEx >= l {
+				if idxNdExc >= l {
 					return io.ErrUnexpectedEOF
 				}
-				b := dAtA[idxNdEx]
-				idxNdEx++
-				m.FuelDesired |= int64(b&0x7F) << displace
+				b := deltaLocatedAN[idxNdExc]
+				idxNdExc++
+				m.FuelDesired |= int64(b&0x7F) << relocate
 				if b < 0x80 {
 					break
 				}
@@ -14654,17 +14654,17 @@ func (m *ReplyInspectTransfer) Unserialize(dAtA []byte) error {
 			if cableKind != 0 {
 				return fmt.Errorf("REDACTED", cableKind)
 			}
-			m.FuelApplied = 0
-			for displace := uint(0); ; displace += 7 {
-				if displace >= 64 {
-					return ErrIntegerOverloadKinds
+			m.FuelUtilized = 0
+			for relocate := uint(0); ; relocate += 7 {
+				if relocate >= 64 {
+					return FaultIntegerOverrunKinds
 				}
-				if idxNdEx >= l {
+				if idxNdExc >= l {
 					return io.ErrUnexpectedEOF
 				}
-				b := dAtA[idxNdEx]
-				idxNdEx++
-				m.FuelApplied |= int64(b&0x7F) << displace
+				b := deltaLocatedAN[idxNdExc]
+				idxNdExc++
+				m.FuelUtilized |= int64(b&0x7F) << relocate
 				if b < 0x80 {
 					break
 				}
@@ -14673,590 +14673,590 @@ func (m *ReplyInspectTransfer) Unserialize(dAtA []byte) error {
 			if cableKind != 2 {
 				return fmt.Errorf("REDACTED", cableKind)
 			}
-			var messagesize int
-			for displace := uint(0); ; displace += 7 {
-				if displace >= 64 {
-					return ErrIntegerOverloadKinds
+			var signallength int
+			for relocate := uint(0); ; relocate += 7 {
+				if relocate >= 64 {
+					return FaultIntegerOverrunKinds
 				}
-				if idxNdEx >= l {
+				if idxNdExc >= l {
 					return io.ErrUnexpectedEOF
 				}
-				b := dAtA[idxNdEx]
-				idxNdEx++
-				messagesize |= int(b&0x7F) << displace
+				b := deltaLocatedAN[idxNdExc]
+				idxNdExc++
+				signallength |= int(b&0x7F) << relocate
 				if b < 0x80 {
 					break
 				}
 			}
-			if messagesize < 0 {
-				return ErrCorruptExtentKinds
+			if signallength < 0 {
+				return FaultUnfitMagnitudeKinds
 			}
-			submitOrdinal := idxNdEx + messagesize
+			submitOrdinal := idxNdExc + signallength
 			if submitOrdinal < 0 {
-				return ErrCorruptExtentKinds
+				return FaultUnfitMagnitudeKinds
 			}
 			if submitOrdinal > l {
 				return io.ErrUnexpectedEOF
 			}
-			m.Events = append(m.Events, Event{})
-			if err := m.Events[len(m.Events)-1].Unserialize(dAtA[idxNdEx:submitOrdinal]); err != nil {
+			m.Incidents = append(m.Incidents, Incident{})
+			if err := m.Incidents[len(m.Incidents)-1].Decode(deltaLocatedAN[idxNdExc:submitOrdinal]); err != nil {
 				return err
 			}
-			idxNdEx = submitOrdinal
+			idxNdExc = submitOrdinal
 		case 8:
 			if cableKind != 2 {
 				return fmt.Errorf("REDACTED", cableKind)
 			}
-			var stringSize uint64
-			for displace := uint(0); ; displace += 7 {
-				if displace >= 64 {
-					return ErrIntegerOverloadKinds
+			var textSize uint64
+			for relocate := uint(0); ; relocate += 7 {
+				if relocate >= 64 {
+					return FaultIntegerOverrunKinds
 				}
-				if idxNdEx >= l {
+				if idxNdExc >= l {
 					return io.ErrUnexpectedEOF
 				}
-				b := dAtA[idxNdEx]
-				idxNdEx++
-				stringSize |= uint64(b&0x7F) << displace
+				b := deltaLocatedAN[idxNdExc]
+				idxNdExc++
+				textSize |= uint64(b&0x7F) << relocate
 				if b < 0x80 {
 					break
 				}
 			}
-			integerStringSize := int(stringSize)
-			if integerStringSize < 0 {
-				return ErrCorruptExtentKinds
+			integerTextSize := int(textSize)
+			if integerTextSize < 0 {
+				return FaultUnfitMagnitudeKinds
 			}
-			submitOrdinal := idxNdEx + integerStringSize
+			submitOrdinal := idxNdExc + integerTextSize
 			if submitOrdinal < 0 {
-				return ErrCorruptExtentKinds
+				return FaultUnfitMagnitudeKinds
 			}
 			if submitOrdinal > l {
 				return io.ErrUnexpectedEOF
 			}
-			m.Codex = string(dAtA[idxNdEx:submitOrdinal])
-			idxNdEx = submitOrdinal
+			m.Codeset = string(deltaLocatedAN[idxNdExc:submitOrdinal])
+			idxNdExc = submitOrdinal
 		default:
-			idxNdEx = preOrdinal
-			skippy, err := omitKinds(dAtA[idxNdEx:])
+			idxNdExc = priorOrdinal
+			omitted, err := omitKinds(deltaLocatedAN[idxNdExc:])
 			if err != nil {
 				return err
 			}
-			if (skippy < 0) || (idxNdEx+skippy) < 0 {
-				return ErrCorruptExtentKinds
+			if (omitted < 0) || (idxNdExc+omitted) < 0 {
+				return FaultUnfitMagnitudeKinds
 			}
-			if (idxNdEx + skippy) > l {
+			if (idxNdExc + omitted) > l {
 				return io.ErrUnexpectedEOF
 			}
-			idxNdEx += skippy
+			idxNdExc += omitted
 		}
 	}
 
-	if idxNdEx > l {
+	if idxNdExc > l {
 		return io.ErrUnexpectedEOF
 	}
 	return nil
 }
-func (m *ReplyEmbedTransfer) Unserialize(dAtA []byte) error {
-	l := len(dAtA)
-	idxNdEx := 0
-	for idxNdEx < l {
-		preOrdinal := idxNdEx
+func (m *ReplyAppendTransfer) Decode(deltaLocatedAN []byte) error {
+	l := len(deltaLocatedAN)
+	idxNdExc := 0
+	for idxNdExc < l {
+		priorOrdinal := idxNdExc
 		var cable uint64
-		for displace := uint(0); ; displace += 7 {
-			if displace >= 64 {
-				return ErrIntegerOverloadKinds
+		for relocate := uint(0); ; relocate += 7 {
+			if relocate >= 64 {
+				return FaultIntegerOverrunKinds
 			}
-			if idxNdEx >= l {
+			if idxNdExc >= l {
 				return io.ErrUnexpectedEOF
 			}
-			b := dAtA[idxNdEx]
-			idxNdEx++
-			cable |= uint64(b&0x7F) << displace
+			b := deltaLocatedAN[idxNdExc]
+			idxNdExc++
+			cable |= uint64(b&0x7F) << relocate
 			if b < 0x80 {
 				break
 			}
 		}
-		fieldCount := int32(cable >> 3)
+		attributeCount := int32(cable >> 3)
 		cableKind := int(cable & 0x7)
 		if cableKind == 4 {
 			return fmt.Errorf("REDACTED")
 		}
-		if fieldCount <= 0 {
-			return fmt.Errorf("REDACTED", fieldCount, cable)
+		if attributeCount <= 0 {
+			return fmt.Errorf("REDACTED", attributeCount, cable)
 		}
-		switch fieldCount {
+		switch attributeCount {
 		case 1:
 			if cableKind != 0 {
 				return fmt.Errorf("REDACTED", cableKind)
 			}
-			m.Code = 0
-			for displace := uint(0); ; displace += 7 {
-				if displace >= 64 {
-					return ErrIntegerOverloadKinds
+			m.Cipher = 0
+			for relocate := uint(0); ; relocate += 7 {
+				if relocate >= 64 {
+					return FaultIntegerOverrunKinds
 				}
-				if idxNdEx >= l {
+				if idxNdExc >= l {
 					return io.ErrUnexpectedEOF
 				}
-				b := dAtA[idxNdEx]
-				idxNdEx++
-				m.Code |= uint32(b&0x7F) << displace
+				b := deltaLocatedAN[idxNdExc]
+				idxNdExc++
+				m.Cipher |= uint32(b&0x7F) << relocate
 				if b < 0x80 {
 					break
 				}
 			}
 		default:
-			idxNdEx = preOrdinal
-			skippy, err := omitKinds(dAtA[idxNdEx:])
+			idxNdExc = priorOrdinal
+			omitted, err := omitKinds(deltaLocatedAN[idxNdExc:])
 			if err != nil {
 				return err
 			}
-			if (skippy < 0) || (idxNdEx+skippy) < 0 {
-				return ErrCorruptExtentKinds
+			if (omitted < 0) || (idxNdExc+omitted) < 0 {
+				return FaultUnfitMagnitudeKinds
 			}
-			if (idxNdEx + skippy) > l {
+			if (idxNdExc + omitted) > l {
 				return io.ErrUnexpectedEOF
 			}
-			idxNdEx += skippy
+			idxNdExc += omitted
 		}
 	}
 
-	if idxNdEx > l {
+	if idxNdExc > l {
 		return io.ErrUnexpectedEOF
 	}
 	return nil
 }
-func (m *ReplyHarvestTrans) Unserialize(dAtA []byte) error {
-	l := len(dAtA)
-	idxNdEx := 0
-	for idxNdEx < l {
-		preOrdinal := idxNdEx
+func (m *ReplyHarvestTrans) Decode(deltaLocatedAN []byte) error {
+	l := len(deltaLocatedAN)
+	idxNdExc := 0
+	for idxNdExc < l {
+		priorOrdinal := idxNdExc
 		var cable uint64
-		for displace := uint(0); ; displace += 7 {
-			if displace >= 64 {
-				return ErrIntegerOverloadKinds
+		for relocate := uint(0); ; relocate += 7 {
+			if relocate >= 64 {
+				return FaultIntegerOverrunKinds
 			}
-			if idxNdEx >= l {
+			if idxNdExc >= l {
 				return io.ErrUnexpectedEOF
 			}
-			b := dAtA[idxNdEx]
-			idxNdEx++
-			cable |= uint64(b&0x7F) << displace
+			b := deltaLocatedAN[idxNdExc]
+			idxNdExc++
+			cable |= uint64(b&0x7F) << relocate
 			if b < 0x80 {
 				break
 			}
 		}
-		fieldCount := int32(cable >> 3)
+		attributeCount := int32(cable >> 3)
 		cableKind := int(cable & 0x7)
 		if cableKind == 4 {
 			return fmt.Errorf("REDACTED")
 		}
-		if fieldCount <= 0 {
-			return fmt.Errorf("REDACTED", fieldCount, cable)
+		if attributeCount <= 0 {
+			return fmt.Errorf("REDACTED", attributeCount, cable)
 		}
-		switch fieldCount {
+		switch attributeCount {
 		case 1:
 			if cableKind != 2 {
 				return fmt.Errorf("REDACTED", cableKind)
 			}
 			var octetSize int
-			for displace := uint(0); ; displace += 7 {
-				if displace >= 64 {
-					return ErrIntegerOverloadKinds
+			for relocate := uint(0); ; relocate += 7 {
+				if relocate >= 64 {
+					return FaultIntegerOverrunKinds
 				}
-				if idxNdEx >= l {
+				if idxNdExc >= l {
 					return io.ErrUnexpectedEOF
 				}
-				b := dAtA[idxNdEx]
-				idxNdEx++
-				octetSize |= int(b&0x7F) << displace
+				b := deltaLocatedAN[idxNdExc]
+				idxNdExc++
+				octetSize |= int(b&0x7F) << relocate
 				if b < 0x80 {
 					break
 				}
 			}
 			if octetSize < 0 {
-				return ErrCorruptExtentKinds
+				return FaultUnfitMagnitudeKinds
 			}
-			submitOrdinal := idxNdEx + octetSize
+			submitOrdinal := idxNdExc + octetSize
 			if submitOrdinal < 0 {
-				return ErrCorruptExtentKinds
+				return FaultUnfitMagnitudeKinds
 			}
 			if submitOrdinal > l {
 				return io.ErrUnexpectedEOF
 			}
-			m.Txs = append(m.Txs, make([]byte, submitOrdinal-idxNdEx))
-			copy(m.Txs[len(m.Txs)-1], dAtA[idxNdEx:submitOrdinal])
-			idxNdEx = submitOrdinal
+			m.Txs = append(m.Txs, make([]byte, submitOrdinal-idxNdExc))
+			copy(m.Txs[len(m.Txs)-1], deltaLocatedAN[idxNdExc:submitOrdinal])
+			idxNdExc = submitOrdinal
 		default:
-			idxNdEx = preOrdinal
-			skippy, err := omitKinds(dAtA[idxNdEx:])
+			idxNdExc = priorOrdinal
+			omitted, err := omitKinds(deltaLocatedAN[idxNdExc:])
 			if err != nil {
 				return err
 			}
-			if (skippy < 0) || (idxNdEx+skippy) < 0 {
-				return ErrCorruptExtentKinds
+			if (omitted < 0) || (idxNdExc+omitted) < 0 {
+				return FaultUnfitMagnitudeKinds
 			}
-			if (idxNdEx + skippy) > l {
+			if (idxNdExc + omitted) > l {
 				return io.ErrUnexpectedEOF
 			}
-			idxNdEx += skippy
+			idxNdExc += omitted
 		}
 	}
 
-	if idxNdEx > l {
+	if idxNdExc > l {
 		return io.ErrUnexpectedEOF
 	}
 	return nil
 }
-func (m *ReplyEndorse) Unserialize(dAtA []byte) error {
-	l := len(dAtA)
-	idxNdEx := 0
-	for idxNdEx < l {
-		preOrdinal := idxNdEx
+func (m *ReplyEndorse) Decode(deltaLocatedAN []byte) error {
+	l := len(deltaLocatedAN)
+	idxNdExc := 0
+	for idxNdExc < l {
+		priorOrdinal := idxNdExc
 		var cable uint64
-		for displace := uint(0); ; displace += 7 {
-			if displace >= 64 {
-				return ErrIntegerOverloadKinds
+		for relocate := uint(0); ; relocate += 7 {
+			if relocate >= 64 {
+				return FaultIntegerOverrunKinds
 			}
-			if idxNdEx >= l {
+			if idxNdExc >= l {
 				return io.ErrUnexpectedEOF
 			}
-			b := dAtA[idxNdEx]
-			idxNdEx++
-			cable |= uint64(b&0x7F) << displace
+			b := deltaLocatedAN[idxNdExc]
+			idxNdExc++
+			cable |= uint64(b&0x7F) << relocate
 			if b < 0x80 {
 				break
 			}
 		}
-		fieldCount := int32(cable >> 3)
+		attributeCount := int32(cable >> 3)
 		cableKind := int(cable & 0x7)
 		if cableKind == 4 {
 			return fmt.Errorf("REDACTED")
 		}
-		if fieldCount <= 0 {
-			return fmt.Errorf("REDACTED", fieldCount, cable)
+		if attributeCount <= 0 {
+			return fmt.Errorf("REDACTED", attributeCount, cable)
 		}
-		switch fieldCount {
+		switch attributeCount {
 		case 3:
 			if cableKind != 0 {
 				return fmt.Errorf("REDACTED", cableKind)
 			}
-			m.PreserveLevel = 0
-			for displace := uint(0); ; displace += 7 {
-				if displace >= 64 {
-					return ErrIntegerOverloadKinds
+			m.PreserveAltitude = 0
+			for relocate := uint(0); ; relocate += 7 {
+				if relocate >= 64 {
+					return FaultIntegerOverrunKinds
 				}
-				if idxNdEx >= l {
+				if idxNdExc >= l {
 					return io.ErrUnexpectedEOF
 				}
-				b := dAtA[idxNdEx]
-				idxNdEx++
-				m.PreserveLevel |= int64(b&0x7F) << displace
+				b := deltaLocatedAN[idxNdExc]
+				idxNdExc++
+				m.PreserveAltitude |= int64(b&0x7F) << relocate
 				if b < 0x80 {
 					break
 				}
 			}
 		default:
-			idxNdEx = preOrdinal
-			skippy, err := omitKinds(dAtA[idxNdEx:])
+			idxNdExc = priorOrdinal
+			omitted, err := omitKinds(deltaLocatedAN[idxNdExc:])
 			if err != nil {
 				return err
 			}
-			if (skippy < 0) || (idxNdEx+skippy) < 0 {
-				return ErrCorruptExtentKinds
+			if (omitted < 0) || (idxNdExc+omitted) < 0 {
+				return FaultUnfitMagnitudeKinds
 			}
-			if (idxNdEx + skippy) > l {
+			if (idxNdExc + omitted) > l {
 				return io.ErrUnexpectedEOF
 			}
-			idxNdEx += skippy
+			idxNdExc += omitted
 		}
 	}
 
-	if idxNdEx > l {
+	if idxNdExc > l {
 		return io.ErrUnexpectedEOF
 	}
 	return nil
 }
-func (m *ReplyCatalogMirrors) Unserialize(dAtA []byte) error {
-	l := len(dAtA)
-	idxNdEx := 0
-	for idxNdEx < l {
-		preOrdinal := idxNdEx
+func (m *ReplyCatalogImages) Decode(deltaLocatedAN []byte) error {
+	l := len(deltaLocatedAN)
+	idxNdExc := 0
+	for idxNdExc < l {
+		priorOrdinal := idxNdExc
 		var cable uint64
-		for displace := uint(0); ; displace += 7 {
-			if displace >= 64 {
-				return ErrIntegerOverloadKinds
+		for relocate := uint(0); ; relocate += 7 {
+			if relocate >= 64 {
+				return FaultIntegerOverrunKinds
 			}
-			if idxNdEx >= l {
+			if idxNdExc >= l {
 				return io.ErrUnexpectedEOF
 			}
-			b := dAtA[idxNdEx]
-			idxNdEx++
-			cable |= uint64(b&0x7F) << displace
+			b := deltaLocatedAN[idxNdExc]
+			idxNdExc++
+			cable |= uint64(b&0x7F) << relocate
 			if b < 0x80 {
 				break
 			}
 		}
-		fieldCount := int32(cable >> 3)
+		attributeCount := int32(cable >> 3)
 		cableKind := int(cable & 0x7)
 		if cableKind == 4 {
 			return fmt.Errorf("REDACTED")
 		}
-		if fieldCount <= 0 {
-			return fmt.Errorf("REDACTED", fieldCount, cable)
+		if attributeCount <= 0 {
+			return fmt.Errorf("REDACTED", attributeCount, cable)
 		}
-		switch fieldCount {
+		switch attributeCount {
 		case 1:
 			if cableKind != 2 {
 				return fmt.Errorf("REDACTED", cableKind)
 			}
-			var messagesize int
-			for displace := uint(0); ; displace += 7 {
-				if displace >= 64 {
-					return ErrIntegerOverloadKinds
+			var signallength int
+			for relocate := uint(0); ; relocate += 7 {
+				if relocate >= 64 {
+					return FaultIntegerOverrunKinds
 				}
-				if idxNdEx >= l {
+				if idxNdExc >= l {
 					return io.ErrUnexpectedEOF
 				}
-				b := dAtA[idxNdEx]
-				idxNdEx++
-				messagesize |= int(b&0x7F) << displace
+				b := deltaLocatedAN[idxNdExc]
+				idxNdExc++
+				signallength |= int(b&0x7F) << relocate
 				if b < 0x80 {
 					break
 				}
 			}
-			if messagesize < 0 {
-				return ErrCorruptExtentKinds
+			if signallength < 0 {
+				return FaultUnfitMagnitudeKinds
 			}
-			submitOrdinal := idxNdEx + messagesize
+			submitOrdinal := idxNdExc + signallength
 			if submitOrdinal < 0 {
-				return ErrCorruptExtentKinds
+				return FaultUnfitMagnitudeKinds
 			}
 			if submitOrdinal > l {
 				return io.ErrUnexpectedEOF
 			}
-			m.Mirrors = append(m.Mirrors, &Mirror{})
-			if err := m.Mirrors[len(m.Mirrors)-1].Unserialize(dAtA[idxNdEx:submitOrdinal]); err != nil {
+			m.Images = append(m.Images, &Image{})
+			if err := m.Images[len(m.Images)-1].Decode(deltaLocatedAN[idxNdExc:submitOrdinal]); err != nil {
 				return err
 			}
-			idxNdEx = submitOrdinal
+			idxNdExc = submitOrdinal
 		default:
-			idxNdEx = preOrdinal
-			skippy, err := omitKinds(dAtA[idxNdEx:])
+			idxNdExc = priorOrdinal
+			omitted, err := omitKinds(deltaLocatedAN[idxNdExc:])
 			if err != nil {
 				return err
 			}
-			if (skippy < 0) || (idxNdEx+skippy) < 0 {
-				return ErrCorruptExtentKinds
+			if (omitted < 0) || (idxNdExc+omitted) < 0 {
+				return FaultUnfitMagnitudeKinds
 			}
-			if (idxNdEx + skippy) > l {
+			if (idxNdExc + omitted) > l {
 				return io.ErrUnexpectedEOF
 			}
-			idxNdEx += skippy
+			idxNdExc += omitted
 		}
 	}
 
-	if idxNdEx > l {
+	if idxNdExc > l {
 		return io.ErrUnexpectedEOF
 	}
 	return nil
 }
-func (m *ReplyProposalMirror) Unserialize(dAtA []byte) error {
-	l := len(dAtA)
-	idxNdEx := 0
-	for idxNdEx < l {
-		preOrdinal := idxNdEx
+func (m *ReplyExtendImage) Decode(deltaLocatedAN []byte) error {
+	l := len(deltaLocatedAN)
+	idxNdExc := 0
+	for idxNdExc < l {
+		priorOrdinal := idxNdExc
 		var cable uint64
-		for displace := uint(0); ; displace += 7 {
-			if displace >= 64 {
-				return ErrIntegerOverloadKinds
+		for relocate := uint(0); ; relocate += 7 {
+			if relocate >= 64 {
+				return FaultIntegerOverrunKinds
 			}
-			if idxNdEx >= l {
+			if idxNdExc >= l {
 				return io.ErrUnexpectedEOF
 			}
-			b := dAtA[idxNdEx]
-			idxNdEx++
-			cable |= uint64(b&0x7F) << displace
+			b := deltaLocatedAN[idxNdExc]
+			idxNdExc++
+			cable |= uint64(b&0x7F) << relocate
 			if b < 0x80 {
 				break
 			}
 		}
-		fieldCount := int32(cable >> 3)
+		attributeCount := int32(cable >> 3)
 		cableKind := int(cable & 0x7)
 		if cableKind == 4 {
 			return fmt.Errorf("REDACTED")
 		}
-		if fieldCount <= 0 {
-			return fmt.Errorf("REDACTED", fieldCount, cable)
+		if attributeCount <= 0 {
+			return fmt.Errorf("REDACTED", attributeCount, cable)
 		}
-		switch fieldCount {
+		switch attributeCount {
 		case 1:
 			if cableKind != 0 {
 				return fmt.Errorf("REDACTED", cableKind)
 			}
 			m.Outcome = 0
-			for displace := uint(0); ; displace += 7 {
-				if displace >= 64 {
-					return ErrIntegerOverloadKinds
+			for relocate := uint(0); ; relocate += 7 {
+				if relocate >= 64 {
+					return FaultIntegerOverrunKinds
 				}
-				if idxNdEx >= l {
+				if idxNdExc >= l {
 					return io.ErrUnexpectedEOF
 				}
-				b := dAtA[idxNdEx]
-				idxNdEx++
-				m.Outcome |= Replymirrorsnapshot_Outcome(b&0x7F) << displace
+				b := deltaLocatedAN[idxNdExc]
+				idxNdExc++
+				m.Outcome |= Replyextendimage_Outcome(b&0x7F) << relocate
 				if b < 0x80 {
 					break
 				}
 			}
 		default:
-			idxNdEx = preOrdinal
-			skippy, err := omitKinds(dAtA[idxNdEx:])
+			idxNdExc = priorOrdinal
+			omitted, err := omitKinds(deltaLocatedAN[idxNdExc:])
 			if err != nil {
 				return err
 			}
-			if (skippy < 0) || (idxNdEx+skippy) < 0 {
-				return ErrCorruptExtentKinds
+			if (omitted < 0) || (idxNdExc+omitted) < 0 {
+				return FaultUnfitMagnitudeKinds
 			}
-			if (idxNdEx + skippy) > l {
+			if (idxNdExc + omitted) > l {
 				return io.ErrUnexpectedEOF
 			}
-			idxNdEx += skippy
+			idxNdExc += omitted
 		}
 	}
 
-	if idxNdEx > l {
+	if idxNdExc > l {
 		return io.ErrUnexpectedEOF
 	}
 	return nil
 }
-func (m *ReplyImportMirrorSegment) Unserialize(dAtA []byte) error {
-	l := len(dAtA)
-	idxNdEx := 0
-	for idxNdEx < l {
-		preOrdinal := idxNdEx
+func (m *ReplyFetchImageSegment) Decode(deltaLocatedAN []byte) error {
+	l := len(deltaLocatedAN)
+	idxNdExc := 0
+	for idxNdExc < l {
+		priorOrdinal := idxNdExc
 		var cable uint64
-		for displace := uint(0); ; displace += 7 {
-			if displace >= 64 {
-				return ErrIntegerOverloadKinds
+		for relocate := uint(0); ; relocate += 7 {
+			if relocate >= 64 {
+				return FaultIntegerOverrunKinds
 			}
-			if idxNdEx >= l {
+			if idxNdExc >= l {
 				return io.ErrUnexpectedEOF
 			}
-			b := dAtA[idxNdEx]
-			idxNdEx++
-			cable |= uint64(b&0x7F) << displace
+			b := deltaLocatedAN[idxNdExc]
+			idxNdExc++
+			cable |= uint64(b&0x7F) << relocate
 			if b < 0x80 {
 				break
 			}
 		}
-		fieldCount := int32(cable >> 3)
+		attributeCount := int32(cable >> 3)
 		cableKind := int(cable & 0x7)
 		if cableKind == 4 {
 			return fmt.Errorf("REDACTED")
 		}
-		if fieldCount <= 0 {
-			return fmt.Errorf("REDACTED", fieldCount, cable)
+		if attributeCount <= 0 {
+			return fmt.Errorf("REDACTED", attributeCount, cable)
 		}
-		switch fieldCount {
+		switch attributeCount {
 		case 1:
 			if cableKind != 2 {
 				return fmt.Errorf("REDACTED", cableKind)
 			}
 			var octetSize int
-			for displace := uint(0); ; displace += 7 {
-				if displace >= 64 {
-					return ErrIntegerOverloadKinds
+			for relocate := uint(0); ; relocate += 7 {
+				if relocate >= 64 {
+					return FaultIntegerOverrunKinds
 				}
-				if idxNdEx >= l {
+				if idxNdExc >= l {
 					return io.ErrUnexpectedEOF
 				}
-				b := dAtA[idxNdEx]
-				idxNdEx++
-				octetSize |= int(b&0x7F) << displace
+				b := deltaLocatedAN[idxNdExc]
+				idxNdExc++
+				octetSize |= int(b&0x7F) << relocate
 				if b < 0x80 {
 					break
 				}
 			}
 			if octetSize < 0 {
-				return ErrCorruptExtentKinds
+				return FaultUnfitMagnitudeKinds
 			}
-			submitOrdinal := idxNdEx + octetSize
+			submitOrdinal := idxNdExc + octetSize
 			if submitOrdinal < 0 {
-				return ErrCorruptExtentKinds
+				return FaultUnfitMagnitudeKinds
 			}
 			if submitOrdinal > l {
 				return io.ErrUnexpectedEOF
 			}
-			m.Segment = append(m.Segment[:0], dAtA[idxNdEx:submitOrdinal]...)
+			m.Segment = append(m.Segment[:0], deltaLocatedAN[idxNdExc:submitOrdinal]...)
 			if m.Segment == nil {
 				m.Segment = []byte{}
 			}
-			idxNdEx = submitOrdinal
+			idxNdExc = submitOrdinal
 		default:
-			idxNdEx = preOrdinal
-			skippy, err := omitKinds(dAtA[idxNdEx:])
+			idxNdExc = priorOrdinal
+			omitted, err := omitKinds(deltaLocatedAN[idxNdExc:])
 			if err != nil {
 				return err
 			}
-			if (skippy < 0) || (idxNdEx+skippy) < 0 {
-				return ErrCorruptExtentKinds
+			if (omitted < 0) || (idxNdExc+omitted) < 0 {
+				return FaultUnfitMagnitudeKinds
 			}
-			if (idxNdEx + skippy) > l {
+			if (idxNdExc + omitted) > l {
 				return io.ErrUnexpectedEOF
 			}
-			idxNdEx += skippy
+			idxNdExc += omitted
 		}
 	}
 
-	if idxNdEx > l {
+	if idxNdExc > l {
 		return io.ErrUnexpectedEOF
 	}
 	return nil
 }
-func (m *ReplyExecuteMirrorSegment) Unserialize(dAtA []byte) error {
-	l := len(dAtA)
-	idxNdEx := 0
-	for idxNdEx < l {
-		preOrdinal := idxNdEx
+func (m *ReplyExecuteImageSegment) Decode(deltaLocatedAN []byte) error {
+	l := len(deltaLocatedAN)
+	idxNdExc := 0
+	for idxNdExc < l {
+		priorOrdinal := idxNdExc
 		var cable uint64
-		for displace := uint(0); ; displace += 7 {
-			if displace >= 64 {
-				return ErrIntegerOverloadKinds
+		for relocate := uint(0); ; relocate += 7 {
+			if relocate >= 64 {
+				return FaultIntegerOverrunKinds
 			}
-			if idxNdEx >= l {
+			if idxNdExc >= l {
 				return io.ErrUnexpectedEOF
 			}
-			b := dAtA[idxNdEx]
-			idxNdEx++
-			cable |= uint64(b&0x7F) << displace
+			b := deltaLocatedAN[idxNdExc]
+			idxNdExc++
+			cable |= uint64(b&0x7F) << relocate
 			if b < 0x80 {
 				break
 			}
 		}
-		fieldCount := int32(cable >> 3)
+		attributeCount := int32(cable >> 3)
 		cableKind := int(cable & 0x7)
 		if cableKind == 4 {
 			return fmt.Errorf("REDACTED")
 		}
-		if fieldCount <= 0 {
-			return fmt.Errorf("REDACTED", fieldCount, cable)
+		if attributeCount <= 0 {
+			return fmt.Errorf("REDACTED", attributeCount, cable)
 		}
-		switch fieldCount {
+		switch attributeCount {
 		case 1:
 			if cableKind != 0 {
 				return fmt.Errorf("REDACTED", cableKind)
 			}
 			m.Outcome = 0
-			for displace := uint(0); ; displace += 7 {
-				if displace >= 64 {
-					return ErrIntegerOverloadKinds
+			for relocate := uint(0); ; relocate += 7 {
+				if relocate >= 64 {
+					return FaultIntegerOverrunKinds
 				}
-				if idxNdEx >= l {
+				if idxNdExc >= l {
 					return io.ErrUnexpectedEOF
 				}
-				b := dAtA[idxNdEx]
-				idxNdEx++
-				m.Outcome |= Replyexecutemirrorsegment_Outcome(b&0x7F) << displace
+				b := deltaLocatedAN[idxNdExc]
+				idxNdExc++
+				m.Outcome |= Replyapplyimagefragment_Outcome(b&0x7F) << relocate
 				if b < 0x80 {
 					break
 				}
@@ -15264,75 +15264,75 @@ func (m *ReplyExecuteMirrorSegment) Unserialize(dAtA []byte) error {
 		case 2:
 			if cableKind == 0 {
 				var v uint32
-				for displace := uint(0); ; displace += 7 {
-					if displace >= 64 {
-						return ErrIntegerOverloadKinds
+				for relocate := uint(0); ; relocate += 7 {
+					if relocate >= 64 {
+						return FaultIntegerOverrunKinds
 					}
-					if idxNdEx >= l {
+					if idxNdExc >= l {
 						return io.ErrUnexpectedEOF
 					}
-					b := dAtA[idxNdEx]
-					idxNdEx++
-					v |= uint32(b&0x7F) << displace
+					b := deltaLocatedAN[idxNdExc]
+					idxNdExc++
+					v |= uint32(b&0x7F) << relocate
 					if b < 0x80 {
 						break
 					}
 				}
-				m.ReacquireSegments = append(m.ReacquireSegments, v)
+				m.RetrieveSegments = append(m.RetrieveSegments, v)
 			} else if cableKind == 2 {
 				var compressedSize int
-				for displace := uint(0); ; displace += 7 {
-					if displace >= 64 {
-						return ErrIntegerOverloadKinds
+				for relocate := uint(0); ; relocate += 7 {
+					if relocate >= 64 {
+						return FaultIntegerOverrunKinds
 					}
-					if idxNdEx >= l {
+					if idxNdExc >= l {
 						return io.ErrUnexpectedEOF
 					}
-					b := dAtA[idxNdEx]
-					idxNdEx++
-					compressedSize |= int(b&0x7F) << displace
+					b := deltaLocatedAN[idxNdExc]
+					idxNdExc++
+					compressedSize |= int(b&0x7F) << relocate
 					if b < 0x80 {
 						break
 					}
 				}
 				if compressedSize < 0 {
-					return ErrCorruptExtentKinds
+					return FaultUnfitMagnitudeKinds
 				}
-				submitOrdinal := idxNdEx + compressedSize
+				submitOrdinal := idxNdExc + compressedSize
 				if submitOrdinal < 0 {
-					return ErrCorruptExtentKinds
+					return FaultUnfitMagnitudeKinds
 				}
 				if submitOrdinal > l {
 					return io.ErrUnexpectedEOF
 				}
-				var componentCount int
+				var componentTotal int
 				var tally int
-				for _, integer := range dAtA[idxNdEx:submitOrdinal] {
-					if integer < 128 {
+				for _, number := range deltaLocatedAN[idxNdExc:submitOrdinal] {
+					if number < 128 {
 						tally++
 					}
 				}
-				componentCount = tally
-				if componentCount != 0 && len(m.ReacquireSegments) == 0 {
-					m.ReacquireSegments = make([]uint32, 0, componentCount)
+				componentTotal = tally
+				if componentTotal != 0 && len(m.RetrieveSegments) == 0 {
+					m.RetrieveSegments = make([]uint32, 0, componentTotal)
 				}
-				for idxNdEx < submitOrdinal {
+				for idxNdExc < submitOrdinal {
 					var v uint32
-					for displace := uint(0); ; displace += 7 {
-						if displace >= 64 {
-							return ErrIntegerOverloadKinds
+					for relocate := uint(0); ; relocate += 7 {
+						if relocate >= 64 {
+							return FaultIntegerOverrunKinds
 						}
-						if idxNdEx >= l {
+						if idxNdExc >= l {
 							return io.ErrUnexpectedEOF
 						}
-						b := dAtA[idxNdEx]
-						idxNdEx++
-						v |= uint32(b&0x7F) << displace
+						b := deltaLocatedAN[idxNdExc]
+						idxNdExc++
+						v |= uint32(b&0x7F) << relocate
 						if b < 0x80 {
 							break
 						}
 					}
-					m.ReacquireSegments = append(m.ReacquireSegments, v)
+					m.RetrieveSegments = append(m.RetrieveSegments, v)
 				}
 			} else {
 				return fmt.Errorf("REDACTED", cableKind)
@@ -15341,625 +15341,625 @@ func (m *ReplyExecuteMirrorSegment) Unserialize(dAtA []byte) error {
 			if cableKind != 2 {
 				return fmt.Errorf("REDACTED", cableKind)
 			}
-			var stringSize uint64
-			for displace := uint(0); ; displace += 7 {
-				if displace >= 64 {
-					return ErrIntegerOverloadKinds
+			var textSize uint64
+			for relocate := uint(0); ; relocate += 7 {
+				if relocate >= 64 {
+					return FaultIntegerOverrunKinds
 				}
-				if idxNdEx >= l {
+				if idxNdExc >= l {
 					return io.ErrUnexpectedEOF
 				}
-				b := dAtA[idxNdEx]
-				idxNdEx++
-				stringSize |= uint64(b&0x7F) << displace
+				b := deltaLocatedAN[idxNdExc]
+				idxNdExc++
+				textSize |= uint64(b&0x7F) << relocate
 				if b < 0x80 {
 					break
 				}
 			}
-			integerStringSize := int(stringSize)
-			if integerStringSize < 0 {
-				return ErrCorruptExtentKinds
+			integerTextSize := int(textSize)
+			if integerTextSize < 0 {
+				return FaultUnfitMagnitudeKinds
 			}
-			submitOrdinal := idxNdEx + integerStringSize
+			submitOrdinal := idxNdExc + integerTextSize
 			if submitOrdinal < 0 {
-				return ErrCorruptExtentKinds
+				return FaultUnfitMagnitudeKinds
 			}
 			if submitOrdinal > l {
 				return io.ErrUnexpectedEOF
 			}
-			m.DeclineEmitters = append(m.DeclineEmitters, string(dAtA[idxNdEx:submitOrdinal]))
-			idxNdEx = submitOrdinal
+			m.DeclineOriginators = append(m.DeclineOriginators, string(deltaLocatedAN[idxNdExc:submitOrdinal]))
+			idxNdExc = submitOrdinal
 		default:
-			idxNdEx = preOrdinal
-			skippy, err := omitKinds(dAtA[idxNdEx:])
+			idxNdExc = priorOrdinal
+			omitted, err := omitKinds(deltaLocatedAN[idxNdExc:])
 			if err != nil {
 				return err
 			}
-			if (skippy < 0) || (idxNdEx+skippy) < 0 {
-				return ErrCorruptExtentKinds
+			if (omitted < 0) || (idxNdExc+omitted) < 0 {
+				return FaultUnfitMagnitudeKinds
 			}
-			if (idxNdEx + skippy) > l {
+			if (idxNdExc + omitted) > l {
 				return io.ErrUnexpectedEOF
 			}
-			idxNdEx += skippy
+			idxNdExc += omitted
 		}
 	}
 
-	if idxNdEx > l {
+	if idxNdExc > l {
 		return io.ErrUnexpectedEOF
 	}
 	return nil
 }
-func (m *ReplyArrangeNomination) Unserialize(dAtA []byte) error {
-	l := len(dAtA)
-	idxNdEx := 0
-	for idxNdEx < l {
-		preOrdinal := idxNdEx
+func (m *ReplyArrangeNomination) Decode(deltaLocatedAN []byte) error {
+	l := len(deltaLocatedAN)
+	idxNdExc := 0
+	for idxNdExc < l {
+		priorOrdinal := idxNdExc
 		var cable uint64
-		for displace := uint(0); ; displace += 7 {
-			if displace >= 64 {
-				return ErrIntegerOverloadKinds
+		for relocate := uint(0); ; relocate += 7 {
+			if relocate >= 64 {
+				return FaultIntegerOverrunKinds
 			}
-			if idxNdEx >= l {
+			if idxNdExc >= l {
 				return io.ErrUnexpectedEOF
 			}
-			b := dAtA[idxNdEx]
-			idxNdEx++
-			cable |= uint64(b&0x7F) << displace
+			b := deltaLocatedAN[idxNdExc]
+			idxNdExc++
+			cable |= uint64(b&0x7F) << relocate
 			if b < 0x80 {
 				break
 			}
 		}
-		fieldCount := int32(cable >> 3)
+		attributeCount := int32(cable >> 3)
 		cableKind := int(cable & 0x7)
 		if cableKind == 4 {
 			return fmt.Errorf("REDACTED")
 		}
-		if fieldCount <= 0 {
-			return fmt.Errorf("REDACTED", fieldCount, cable)
+		if attributeCount <= 0 {
+			return fmt.Errorf("REDACTED", attributeCount, cable)
 		}
-		switch fieldCount {
+		switch attributeCount {
 		case 1:
 			if cableKind != 2 {
 				return fmt.Errorf("REDACTED", cableKind)
 			}
 			var octetSize int
-			for displace := uint(0); ; displace += 7 {
-				if displace >= 64 {
-					return ErrIntegerOverloadKinds
+			for relocate := uint(0); ; relocate += 7 {
+				if relocate >= 64 {
+					return FaultIntegerOverrunKinds
 				}
-				if idxNdEx >= l {
+				if idxNdExc >= l {
 					return io.ErrUnexpectedEOF
 				}
-				b := dAtA[idxNdEx]
-				idxNdEx++
-				octetSize |= int(b&0x7F) << displace
+				b := deltaLocatedAN[idxNdExc]
+				idxNdExc++
+				octetSize |= int(b&0x7F) << relocate
 				if b < 0x80 {
 					break
 				}
 			}
 			if octetSize < 0 {
-				return ErrCorruptExtentKinds
+				return FaultUnfitMagnitudeKinds
 			}
-			submitOrdinal := idxNdEx + octetSize
+			submitOrdinal := idxNdExc + octetSize
 			if submitOrdinal < 0 {
-				return ErrCorruptExtentKinds
+				return FaultUnfitMagnitudeKinds
 			}
 			if submitOrdinal > l {
 				return io.ErrUnexpectedEOF
 			}
-			m.Txs = append(m.Txs, make([]byte, submitOrdinal-idxNdEx))
-			copy(m.Txs[len(m.Txs)-1], dAtA[idxNdEx:submitOrdinal])
-			idxNdEx = submitOrdinal
+			m.Txs = append(m.Txs, make([]byte, submitOrdinal-idxNdExc))
+			copy(m.Txs[len(m.Txs)-1], deltaLocatedAN[idxNdExc:submitOrdinal])
+			idxNdExc = submitOrdinal
 		default:
-			idxNdEx = preOrdinal
-			skippy, err := omitKinds(dAtA[idxNdEx:])
+			idxNdExc = priorOrdinal
+			omitted, err := omitKinds(deltaLocatedAN[idxNdExc:])
 			if err != nil {
 				return err
 			}
-			if (skippy < 0) || (idxNdEx+skippy) < 0 {
-				return ErrCorruptExtentKinds
+			if (omitted < 0) || (idxNdExc+omitted) < 0 {
+				return FaultUnfitMagnitudeKinds
 			}
-			if (idxNdEx + skippy) > l {
+			if (idxNdExc + omitted) > l {
 				return io.ErrUnexpectedEOF
 			}
-			idxNdEx += skippy
+			idxNdExc += omitted
 		}
 	}
 
-	if idxNdEx > l {
+	if idxNdExc > l {
 		return io.ErrUnexpectedEOF
 	}
 	return nil
 }
-func (m *ReplyHandleNomination) Unserialize(dAtA []byte) error {
-	l := len(dAtA)
-	idxNdEx := 0
-	for idxNdEx < l {
-		preOrdinal := idxNdEx
+func (m *ReplyHandleNomination) Decode(deltaLocatedAN []byte) error {
+	l := len(deltaLocatedAN)
+	idxNdExc := 0
+	for idxNdExc < l {
+		priorOrdinal := idxNdExc
 		var cable uint64
-		for displace := uint(0); ; displace += 7 {
-			if displace >= 64 {
-				return ErrIntegerOverloadKinds
+		for relocate := uint(0); ; relocate += 7 {
+			if relocate >= 64 {
+				return FaultIntegerOverrunKinds
 			}
-			if idxNdEx >= l {
+			if idxNdExc >= l {
 				return io.ErrUnexpectedEOF
 			}
-			b := dAtA[idxNdEx]
-			idxNdEx++
-			cable |= uint64(b&0x7F) << displace
+			b := deltaLocatedAN[idxNdExc]
+			idxNdExc++
+			cable |= uint64(b&0x7F) << relocate
 			if b < 0x80 {
 				break
 			}
 		}
-		fieldCount := int32(cable >> 3)
+		attributeCount := int32(cable >> 3)
 		cableKind := int(cable & 0x7)
 		if cableKind == 4 {
 			return fmt.Errorf("REDACTED")
 		}
-		if fieldCount <= 0 {
-			return fmt.Errorf("REDACTED", fieldCount, cable)
+		if attributeCount <= 0 {
+			return fmt.Errorf("REDACTED", attributeCount, cable)
 		}
-		switch fieldCount {
+		switch attributeCount {
 		case 1:
 			if cableKind != 0 {
 				return fmt.Errorf("REDACTED", cableKind)
 			}
-			m.Status = 0
-			for displace := uint(0); ; displace += 7 {
-				if displace >= 64 {
-					return ErrIntegerOverloadKinds
+			m.Condition = 0
+			for relocate := uint(0); ; relocate += 7 {
+				if relocate >= 64 {
+					return FaultIntegerOverrunKinds
 				}
-				if idxNdEx >= l {
+				if idxNdExc >= l {
 					return io.ErrUnexpectedEOF
 				}
-				b := dAtA[idxNdEx]
-				idxNdEx++
-				m.Status |= Responseprocessnomination_Nominationstate(b&0x7F) << displace
+				b := deltaLocatedAN[idxNdExc]
+				idxNdExc++
+				m.Condition |= Responseexecuteitem_Itemstatus(b&0x7F) << relocate
 				if b < 0x80 {
 					break
 				}
 			}
 		default:
-			idxNdEx = preOrdinal
-			skippy, err := omitKinds(dAtA[idxNdEx:])
+			idxNdExc = priorOrdinal
+			omitted, err := omitKinds(deltaLocatedAN[idxNdExc:])
 			if err != nil {
 				return err
 			}
-			if (skippy < 0) || (idxNdEx+skippy) < 0 {
-				return ErrCorruptExtentKinds
+			if (omitted < 0) || (idxNdExc+omitted) < 0 {
+				return FaultUnfitMagnitudeKinds
 			}
-			if (idxNdEx + skippy) > l {
+			if (idxNdExc + omitted) > l {
 				return io.ErrUnexpectedEOF
 			}
-			idxNdEx += skippy
+			idxNdExc += omitted
 		}
 	}
 
-	if idxNdEx > l {
+	if idxNdExc > l {
 		return io.ErrUnexpectedEOF
 	}
 	return nil
 }
-func (m *ReplyExpandBallot) Unserialize(dAtA []byte) error {
-	l := len(dAtA)
-	idxNdEx := 0
-	for idxNdEx < l {
-		preOrdinal := idxNdEx
+func (m *ReplyBroadenBallot) Decode(deltaLocatedAN []byte) error {
+	l := len(deltaLocatedAN)
+	idxNdExc := 0
+	for idxNdExc < l {
+		priorOrdinal := idxNdExc
 		var cable uint64
-		for displace := uint(0); ; displace += 7 {
-			if displace >= 64 {
-				return ErrIntegerOverloadKinds
+		for relocate := uint(0); ; relocate += 7 {
+			if relocate >= 64 {
+				return FaultIntegerOverrunKinds
 			}
-			if idxNdEx >= l {
+			if idxNdExc >= l {
 				return io.ErrUnexpectedEOF
 			}
-			b := dAtA[idxNdEx]
-			idxNdEx++
-			cable |= uint64(b&0x7F) << displace
+			b := deltaLocatedAN[idxNdExc]
+			idxNdExc++
+			cable |= uint64(b&0x7F) << relocate
 			if b < 0x80 {
 				break
 			}
 		}
-		fieldCount := int32(cable >> 3)
+		attributeCount := int32(cable >> 3)
 		cableKind := int(cable & 0x7)
 		if cableKind == 4 {
 			return fmt.Errorf("REDACTED")
 		}
-		if fieldCount <= 0 {
-			return fmt.Errorf("REDACTED", fieldCount, cable)
+		if attributeCount <= 0 {
+			return fmt.Errorf("REDACTED", attributeCount, cable)
 		}
-		switch fieldCount {
+		switch attributeCount {
 		case 1:
 			if cableKind != 2 {
 				return fmt.Errorf("REDACTED", cableKind)
 			}
 			var octetSize int
-			for displace := uint(0); ; displace += 7 {
-				if displace >= 64 {
-					return ErrIntegerOverloadKinds
+			for relocate := uint(0); ; relocate += 7 {
+				if relocate >= 64 {
+					return FaultIntegerOverrunKinds
 				}
-				if idxNdEx >= l {
+				if idxNdExc >= l {
 					return io.ErrUnexpectedEOF
 				}
-				b := dAtA[idxNdEx]
-				idxNdEx++
-				octetSize |= int(b&0x7F) << displace
+				b := deltaLocatedAN[idxNdExc]
+				idxNdExc++
+				octetSize |= int(b&0x7F) << relocate
 				if b < 0x80 {
 					break
 				}
 			}
 			if octetSize < 0 {
-				return ErrCorruptExtentKinds
+				return FaultUnfitMagnitudeKinds
 			}
-			submitOrdinal := idxNdEx + octetSize
+			submitOrdinal := idxNdExc + octetSize
 			if submitOrdinal < 0 {
-				return ErrCorruptExtentKinds
+				return FaultUnfitMagnitudeKinds
 			}
 			if submitOrdinal > l {
 				return io.ErrUnexpectedEOF
 			}
-			m.BallotAddition = append(m.BallotAddition[:0], dAtA[idxNdEx:submitOrdinal]...)
+			m.BallotAddition = append(m.BallotAddition[:0], deltaLocatedAN[idxNdExc:submitOrdinal]...)
 			if m.BallotAddition == nil {
 				m.BallotAddition = []byte{}
 			}
-			idxNdEx = submitOrdinal
+			idxNdExc = submitOrdinal
 		default:
-			idxNdEx = preOrdinal
-			skippy, err := omitKinds(dAtA[idxNdEx:])
+			idxNdExc = priorOrdinal
+			omitted, err := omitKinds(deltaLocatedAN[idxNdExc:])
 			if err != nil {
 				return err
 			}
-			if (skippy < 0) || (idxNdEx+skippy) < 0 {
-				return ErrCorruptExtentKinds
+			if (omitted < 0) || (idxNdExc+omitted) < 0 {
+				return FaultUnfitMagnitudeKinds
 			}
-			if (idxNdEx + skippy) > l {
+			if (idxNdExc + omitted) > l {
 				return io.ErrUnexpectedEOF
 			}
-			idxNdEx += skippy
+			idxNdExc += omitted
 		}
 	}
 
-	if idxNdEx > l {
+	if idxNdExc > l {
 		return io.ErrUnexpectedEOF
 	}
 	return nil
 }
-func (m *ReplyValidateBallotAddition) Unserialize(dAtA []byte) error {
-	l := len(dAtA)
-	idxNdEx := 0
-	for idxNdEx < l {
-		preOrdinal := idxNdEx
+func (m *ReplyValidateBallotAddition) Decode(deltaLocatedAN []byte) error {
+	l := len(deltaLocatedAN)
+	idxNdExc := 0
+	for idxNdExc < l {
+		priorOrdinal := idxNdExc
 		var cable uint64
-		for displace := uint(0); ; displace += 7 {
-			if displace >= 64 {
-				return ErrIntegerOverloadKinds
+		for relocate := uint(0); ; relocate += 7 {
+			if relocate >= 64 {
+				return FaultIntegerOverrunKinds
 			}
-			if idxNdEx >= l {
+			if idxNdExc >= l {
 				return io.ErrUnexpectedEOF
 			}
-			b := dAtA[idxNdEx]
-			idxNdEx++
-			cable |= uint64(b&0x7F) << displace
+			b := deltaLocatedAN[idxNdExc]
+			idxNdExc++
+			cable |= uint64(b&0x7F) << relocate
 			if b < 0x80 {
 				break
 			}
 		}
-		fieldCount := int32(cable >> 3)
+		attributeCount := int32(cable >> 3)
 		cableKind := int(cable & 0x7)
 		if cableKind == 4 {
 			return fmt.Errorf("REDACTED")
 		}
-		if fieldCount <= 0 {
-			return fmt.Errorf("REDACTED", fieldCount, cable)
+		if attributeCount <= 0 {
+			return fmt.Errorf("REDACTED", attributeCount, cable)
 		}
-		switch fieldCount {
+		switch attributeCount {
 		case 1:
 			if cableKind != 0 {
 				return fmt.Errorf("REDACTED", cableKind)
 			}
-			m.Status = 0
-			for displace := uint(0); ; displace += 7 {
-				if displace >= 64 {
-					return ErrIntegerOverloadKinds
+			m.Condition = 0
+			for relocate := uint(0); ; relocate += 7 {
+				if relocate >= 64 {
+					return FaultIntegerOverrunKinds
 				}
-				if idxNdEx >= l {
+				if idxNdExc >= l {
 					return io.ErrUnexpectedEOF
 				}
-				b := dAtA[idxNdEx]
-				idxNdEx++
-				m.Status |= Responseverifyballotextension_Validatestatus(b&0x7F) << displace
+				b := deltaLocatedAN[idxNdExc]
+				idxNdExc++
+				m.Condition |= Responsecertifyballotaddition_Verifystatus(b&0x7F) << relocate
 				if b < 0x80 {
 					break
 				}
 			}
 		default:
-			idxNdEx = preOrdinal
-			skippy, err := omitKinds(dAtA[idxNdEx:])
+			idxNdExc = priorOrdinal
+			omitted, err := omitKinds(deltaLocatedAN[idxNdExc:])
 			if err != nil {
 				return err
 			}
-			if (skippy < 0) || (idxNdEx+skippy) < 0 {
-				return ErrCorruptExtentKinds
+			if (omitted < 0) || (idxNdExc+omitted) < 0 {
+				return FaultUnfitMagnitudeKinds
 			}
-			if (idxNdEx + skippy) > l {
+			if (idxNdExc + omitted) > l {
 				return io.ErrUnexpectedEOF
 			}
-			idxNdEx += skippy
+			idxNdExc += omitted
 		}
 	}
 
-	if idxNdEx > l {
+	if idxNdExc > l {
 		return io.ErrUnexpectedEOF
 	}
 	return nil
 }
-func (m *ReplyCompleteLedger) Unserialize(dAtA []byte) error {
-	l := len(dAtA)
-	idxNdEx := 0
-	for idxNdEx < l {
-		preOrdinal := idxNdEx
+func (m *ReplyCulminateLedger) Decode(deltaLocatedAN []byte) error {
+	l := len(deltaLocatedAN)
+	idxNdExc := 0
+	for idxNdExc < l {
+		priorOrdinal := idxNdExc
 		var cable uint64
-		for displace := uint(0); ; displace += 7 {
-			if displace >= 64 {
-				return ErrIntegerOverloadKinds
+		for relocate := uint(0); ; relocate += 7 {
+			if relocate >= 64 {
+				return FaultIntegerOverrunKinds
 			}
-			if idxNdEx >= l {
+			if idxNdExc >= l {
 				return io.ErrUnexpectedEOF
 			}
-			b := dAtA[idxNdEx]
-			idxNdEx++
-			cable |= uint64(b&0x7F) << displace
+			b := deltaLocatedAN[idxNdExc]
+			idxNdExc++
+			cable |= uint64(b&0x7F) << relocate
 			if b < 0x80 {
 				break
 			}
 		}
-		fieldCount := int32(cable >> 3)
+		attributeCount := int32(cable >> 3)
 		cableKind := int(cable & 0x7)
 		if cableKind == 4 {
 			return fmt.Errorf("REDACTED")
 		}
-		if fieldCount <= 0 {
-			return fmt.Errorf("REDACTED", fieldCount, cable)
+		if attributeCount <= 0 {
+			return fmt.Errorf("REDACTED", attributeCount, cable)
 		}
-		switch fieldCount {
+		switch attributeCount {
 		case 1:
 			if cableKind != 2 {
 				return fmt.Errorf("REDACTED", cableKind)
 			}
-			var messagesize int
-			for displace := uint(0); ; displace += 7 {
-				if displace >= 64 {
-					return ErrIntegerOverloadKinds
+			var signallength int
+			for relocate := uint(0); ; relocate += 7 {
+				if relocate >= 64 {
+					return FaultIntegerOverrunKinds
 				}
-				if idxNdEx >= l {
+				if idxNdExc >= l {
 					return io.ErrUnexpectedEOF
 				}
-				b := dAtA[idxNdEx]
-				idxNdEx++
-				messagesize |= int(b&0x7F) << displace
+				b := deltaLocatedAN[idxNdExc]
+				idxNdExc++
+				signallength |= int(b&0x7F) << relocate
 				if b < 0x80 {
 					break
 				}
 			}
-			if messagesize < 0 {
-				return ErrCorruptExtentKinds
+			if signallength < 0 {
+				return FaultUnfitMagnitudeKinds
 			}
-			submitOrdinal := idxNdEx + messagesize
+			submitOrdinal := idxNdExc + signallength
 			if submitOrdinal < 0 {
-				return ErrCorruptExtentKinds
+				return FaultUnfitMagnitudeKinds
 			}
 			if submitOrdinal > l {
 				return io.ErrUnexpectedEOF
 			}
-			m.Events = append(m.Events, Event{})
-			if err := m.Events[len(m.Events)-1].Unserialize(dAtA[idxNdEx:submitOrdinal]); err != nil {
+			m.Incidents = append(m.Incidents, Incident{})
+			if err := m.Incidents[len(m.Incidents)-1].Decode(deltaLocatedAN[idxNdExc:submitOrdinal]); err != nil {
 				return err
 			}
-			idxNdEx = submitOrdinal
+			idxNdExc = submitOrdinal
 		case 2:
 			if cableKind != 2 {
 				return fmt.Errorf("REDACTED", cableKind)
 			}
-			var messagesize int
-			for displace := uint(0); ; displace += 7 {
-				if displace >= 64 {
-					return ErrIntegerOverloadKinds
+			var signallength int
+			for relocate := uint(0); ; relocate += 7 {
+				if relocate >= 64 {
+					return FaultIntegerOverrunKinds
 				}
-				if idxNdEx >= l {
+				if idxNdExc >= l {
 					return io.ErrUnexpectedEOF
 				}
-				b := dAtA[idxNdEx]
-				idxNdEx++
-				messagesize |= int(b&0x7F) << displace
+				b := deltaLocatedAN[idxNdExc]
+				idxNdExc++
+				signallength |= int(b&0x7F) << relocate
 				if b < 0x80 {
 					break
 				}
 			}
-			if messagesize < 0 {
-				return ErrCorruptExtentKinds
+			if signallength < 0 {
+				return FaultUnfitMagnitudeKinds
 			}
-			submitOrdinal := idxNdEx + messagesize
+			submitOrdinal := idxNdExc + signallength
 			if submitOrdinal < 0 {
-				return ErrCorruptExtentKinds
+				return FaultUnfitMagnitudeKinds
 			}
 			if submitOrdinal > l {
 				return io.ErrUnexpectedEOF
 			}
-			m.TransOutcomes = append(m.TransOutcomes, &InvokeTransferOutcome{})
-			if err := m.TransOutcomes[len(m.TransOutcomes)-1].Unserialize(dAtA[idxNdEx:submitOrdinal]); err != nil {
+			m.TransferOutcomes = append(m.TransferOutcomes, &InvokeTransferOutcome{})
+			if err := m.TransferOutcomes[len(m.TransferOutcomes)-1].Decode(deltaLocatedAN[idxNdExc:submitOrdinal]); err != nil {
 				return err
 			}
-			idxNdEx = submitOrdinal
+			idxNdExc = submitOrdinal
 		case 3:
 			if cableKind != 2 {
 				return fmt.Errorf("REDACTED", cableKind)
 			}
-			var messagesize int
-			for displace := uint(0); ; displace += 7 {
-				if displace >= 64 {
-					return ErrIntegerOverloadKinds
+			var signallength int
+			for relocate := uint(0); ; relocate += 7 {
+				if relocate >= 64 {
+					return FaultIntegerOverrunKinds
 				}
-				if idxNdEx >= l {
+				if idxNdExc >= l {
 					return io.ErrUnexpectedEOF
 				}
-				b := dAtA[idxNdEx]
-				idxNdEx++
-				messagesize |= int(b&0x7F) << displace
+				b := deltaLocatedAN[idxNdExc]
+				idxNdExc++
+				signallength |= int(b&0x7F) << relocate
 				if b < 0x80 {
 					break
 				}
 			}
-			if messagesize < 0 {
-				return ErrCorruptExtentKinds
+			if signallength < 0 {
+				return FaultUnfitMagnitudeKinds
 			}
-			submitOrdinal := idxNdEx + messagesize
+			submitOrdinal := idxNdExc + signallength
 			if submitOrdinal < 0 {
-				return ErrCorruptExtentKinds
+				return FaultUnfitMagnitudeKinds
 			}
 			if submitOrdinal > l {
 				return io.ErrUnexpectedEOF
 			}
-			m.RatifierRefreshes = append(m.RatifierRefreshes, RatifierModify{})
-			if err := m.RatifierRefreshes[len(m.RatifierRefreshes)-1].Unserialize(dAtA[idxNdEx:submitOrdinal]); err != nil {
+			m.AssessorRevisions = append(m.AssessorRevisions, AssessorRevise{})
+			if err := m.AssessorRevisions[len(m.AssessorRevisions)-1].Decode(deltaLocatedAN[idxNdExc:submitOrdinal]); err != nil {
 				return err
 			}
-			idxNdEx = submitOrdinal
+			idxNdExc = submitOrdinal
 		case 4:
 			if cableKind != 2 {
 				return fmt.Errorf("REDACTED", cableKind)
 			}
-			var messagesize int
-			for displace := uint(0); ; displace += 7 {
-				if displace >= 64 {
-					return ErrIntegerOverloadKinds
+			var signallength int
+			for relocate := uint(0); ; relocate += 7 {
+				if relocate >= 64 {
+					return FaultIntegerOverrunKinds
 				}
-				if idxNdEx >= l {
+				if idxNdExc >= l {
 					return io.ErrUnexpectedEOF
 				}
-				b := dAtA[idxNdEx]
-				idxNdEx++
-				messagesize |= int(b&0x7F) << displace
+				b := deltaLocatedAN[idxNdExc]
+				idxNdExc++
+				signallength |= int(b&0x7F) << relocate
 				if b < 0x80 {
 					break
 				}
 			}
-			if messagesize < 0 {
-				return ErrCorruptExtentKinds
+			if signallength < 0 {
+				return FaultUnfitMagnitudeKinds
 			}
-			submitOrdinal := idxNdEx + messagesize
+			submitOrdinal := idxNdExc + signallength
 			if submitOrdinal < 0 {
-				return ErrCorruptExtentKinds
+				return FaultUnfitMagnitudeKinds
 			}
 			if submitOrdinal > l {
 				return io.ErrUnexpectedEOF
 			}
-			if m.AgreementArgumentRefreshes == nil {
-				m.AgreementArgumentRefreshes = &kinds1.AgreementOptions{}
+			if m.AgreementArgumentRevisions == nil {
+				m.AgreementArgumentRevisions = &kinds1.AgreementSettings{}
 			}
-			if err := m.AgreementArgumentRefreshes.Unserialize(dAtA[idxNdEx:submitOrdinal]); err != nil {
+			if err := m.AgreementArgumentRevisions.Decode(deltaLocatedAN[idxNdExc:submitOrdinal]); err != nil {
 				return err
 			}
-			idxNdEx = submitOrdinal
+			idxNdExc = submitOrdinal
 		case 5:
 			if cableKind != 2 {
 				return fmt.Errorf("REDACTED", cableKind)
 			}
 			var octetSize int
-			for displace := uint(0); ; displace += 7 {
-				if displace >= 64 {
-					return ErrIntegerOverloadKinds
+			for relocate := uint(0); ; relocate += 7 {
+				if relocate >= 64 {
+					return FaultIntegerOverrunKinds
 				}
-				if idxNdEx >= l {
+				if idxNdExc >= l {
 					return io.ErrUnexpectedEOF
 				}
-				b := dAtA[idxNdEx]
-				idxNdEx++
-				octetSize |= int(b&0x7F) << displace
+				b := deltaLocatedAN[idxNdExc]
+				idxNdExc++
+				octetSize |= int(b&0x7F) << relocate
 				if b < 0x80 {
 					break
 				}
 			}
 			if octetSize < 0 {
-				return ErrCorruptExtentKinds
+				return FaultUnfitMagnitudeKinds
 			}
-			submitOrdinal := idxNdEx + octetSize
+			submitOrdinal := idxNdExc + octetSize
 			if submitOrdinal < 0 {
-				return ErrCorruptExtentKinds
+				return FaultUnfitMagnitudeKinds
 			}
 			if submitOrdinal > l {
 				return io.ErrUnexpectedEOF
 			}
-			m.ApplicationDigest = append(m.ApplicationDigest[:0], dAtA[idxNdEx:submitOrdinal]...)
-			if m.ApplicationDigest == nil {
-				m.ApplicationDigest = []byte{}
+			m.PlatformDigest = append(m.PlatformDigest[:0], deltaLocatedAN[idxNdExc:submitOrdinal]...)
+			if m.PlatformDigest == nil {
+				m.PlatformDigest = []byte{}
 			}
-			idxNdEx = submitOrdinal
+			idxNdExc = submitOrdinal
 		default:
-			idxNdEx = preOrdinal
-			skippy, err := omitKinds(dAtA[idxNdEx:])
+			idxNdExc = priorOrdinal
+			omitted, err := omitKinds(deltaLocatedAN[idxNdExc:])
 			if err != nil {
 				return err
 			}
-			if (skippy < 0) || (idxNdEx+skippy) < 0 {
-				return ErrCorruptExtentKinds
+			if (omitted < 0) || (idxNdExc+omitted) < 0 {
+				return FaultUnfitMagnitudeKinds
 			}
-			if (idxNdEx + skippy) > l {
+			if (idxNdExc + omitted) > l {
 				return io.ErrUnexpectedEOF
 			}
-			idxNdEx += skippy
+			idxNdExc += omitted
 		}
 	}
 
-	if idxNdEx > l {
+	if idxNdExc > l {
 		return io.ErrUnexpectedEOF
 	}
 	return nil
 }
-func (m *EndorseDetails) Unserialize(dAtA []byte) error {
-	l := len(dAtA)
-	idxNdEx := 0
-	for idxNdEx < l {
-		preOrdinal := idxNdEx
+func (m *EndorseDetails) Decode(deltaLocatedAN []byte) error {
+	l := len(deltaLocatedAN)
+	idxNdExc := 0
+	for idxNdExc < l {
+		priorOrdinal := idxNdExc
 		var cable uint64
-		for displace := uint(0); ; displace += 7 {
-			if displace >= 64 {
-				return ErrIntegerOverloadKinds
+		for relocate := uint(0); ; relocate += 7 {
+			if relocate >= 64 {
+				return FaultIntegerOverrunKinds
 			}
-			if idxNdEx >= l {
+			if idxNdExc >= l {
 				return io.ErrUnexpectedEOF
 			}
-			b := dAtA[idxNdEx]
-			idxNdEx++
-			cable |= uint64(b&0x7F) << displace
+			b := deltaLocatedAN[idxNdExc]
+			idxNdExc++
+			cable |= uint64(b&0x7F) << relocate
 			if b < 0x80 {
 				break
 			}
 		}
-		fieldCount := int32(cable >> 3)
+		attributeCount := int32(cable >> 3)
 		cableKind := int(cable & 0x7)
 		if cableKind == 4 {
 			return fmt.Errorf("REDACTED")
 		}
-		if fieldCount <= 0 {
-			return fmt.Errorf("REDACTED", fieldCount, cable)
+		if attributeCount <= 0 {
+			return fmt.Errorf("REDACTED", attributeCount, cable)
 		}
-		switch fieldCount {
+		switch attributeCount {
 		case 1:
 			if cableKind != 0 {
 				return fmt.Errorf("REDACTED", cableKind)
 			}
-			m.Cycle = 0
-			for displace := uint(0); ; displace += 7 {
-				if displace >= 64 {
-					return ErrIntegerOverloadKinds
+			m.Iteration = 0
+			for relocate := uint(0); ; relocate += 7 {
+				if relocate >= 64 {
+					return FaultIntegerOverrunKinds
 				}
-				if idxNdEx >= l {
+				if idxNdExc >= l {
 					return io.ErrUnexpectedEOF
 				}
-				b := dAtA[idxNdEx]
-				idxNdEx++
-				m.Cycle |= int32(b&0x7F) << displace
+				b := deltaLocatedAN[idxNdExc]
+				idxNdExc++
+				m.Iteration |= int32(b&0x7F) << relocate
 				if b < 0x80 {
 					break
 				}
@@ -15968,101 +15968,101 @@ func (m *EndorseDetails) Unserialize(dAtA []byte) error {
 			if cableKind != 2 {
 				return fmt.Errorf("REDACTED", cableKind)
 			}
-			var messagesize int
-			for displace := uint(0); ; displace += 7 {
-				if displace >= 64 {
-					return ErrIntegerOverloadKinds
+			var signallength int
+			for relocate := uint(0); ; relocate += 7 {
+				if relocate >= 64 {
+					return FaultIntegerOverrunKinds
 				}
-				if idxNdEx >= l {
+				if idxNdExc >= l {
 					return io.ErrUnexpectedEOF
 				}
-				b := dAtA[idxNdEx]
-				idxNdEx++
-				messagesize |= int(b&0x7F) << displace
+				b := deltaLocatedAN[idxNdExc]
+				idxNdExc++
+				signallength |= int(b&0x7F) << relocate
 				if b < 0x80 {
 					break
 				}
 			}
-			if messagesize < 0 {
-				return ErrCorruptExtentKinds
+			if signallength < 0 {
+				return FaultUnfitMagnitudeKinds
 			}
-			submitOrdinal := idxNdEx + messagesize
+			submitOrdinal := idxNdExc + signallength
 			if submitOrdinal < 0 {
-				return ErrCorruptExtentKinds
+				return FaultUnfitMagnitudeKinds
 			}
 			if submitOrdinal > l {
 				return io.ErrUnexpectedEOF
 			}
 			m.Ballots = append(m.Ballots, BallotDetails{})
-			if err := m.Ballots[len(m.Ballots)-1].Unserialize(dAtA[idxNdEx:submitOrdinal]); err != nil {
+			if err := m.Ballots[len(m.Ballots)-1].Decode(deltaLocatedAN[idxNdExc:submitOrdinal]); err != nil {
 				return err
 			}
-			idxNdEx = submitOrdinal
+			idxNdExc = submitOrdinal
 		default:
-			idxNdEx = preOrdinal
-			skippy, err := omitKinds(dAtA[idxNdEx:])
+			idxNdExc = priorOrdinal
+			omitted, err := omitKinds(deltaLocatedAN[idxNdExc:])
 			if err != nil {
 				return err
 			}
-			if (skippy < 0) || (idxNdEx+skippy) < 0 {
-				return ErrCorruptExtentKinds
+			if (omitted < 0) || (idxNdExc+omitted) < 0 {
+				return FaultUnfitMagnitudeKinds
 			}
-			if (idxNdEx + skippy) > l {
+			if (idxNdExc + omitted) > l {
 				return io.ErrUnexpectedEOF
 			}
-			idxNdEx += skippy
+			idxNdExc += omitted
 		}
 	}
 
-	if idxNdEx > l {
+	if idxNdExc > l {
 		return io.ErrUnexpectedEOF
 	}
 	return nil
 }
-func (m *ExpandedEndorseDetails) Unserialize(dAtA []byte) error {
-	l := len(dAtA)
-	idxNdEx := 0
-	for idxNdEx < l {
-		preOrdinal := idxNdEx
+func (m *ExpandedEndorseDetails) Decode(deltaLocatedAN []byte) error {
+	l := len(deltaLocatedAN)
+	idxNdExc := 0
+	for idxNdExc < l {
+		priorOrdinal := idxNdExc
 		var cable uint64
-		for displace := uint(0); ; displace += 7 {
-			if displace >= 64 {
-				return ErrIntegerOverloadKinds
+		for relocate := uint(0); ; relocate += 7 {
+			if relocate >= 64 {
+				return FaultIntegerOverrunKinds
 			}
-			if idxNdEx >= l {
+			if idxNdExc >= l {
 				return io.ErrUnexpectedEOF
 			}
-			b := dAtA[idxNdEx]
-			idxNdEx++
-			cable |= uint64(b&0x7F) << displace
+			b := deltaLocatedAN[idxNdExc]
+			idxNdExc++
+			cable |= uint64(b&0x7F) << relocate
 			if b < 0x80 {
 				break
 			}
 		}
-		fieldCount := int32(cable >> 3)
+		attributeCount := int32(cable >> 3)
 		cableKind := int(cable & 0x7)
 		if cableKind == 4 {
 			return fmt.Errorf("REDACTED")
 		}
-		if fieldCount <= 0 {
-			return fmt.Errorf("REDACTED", fieldCount, cable)
+		if attributeCount <= 0 {
+			return fmt.Errorf("REDACTED", attributeCount, cable)
 		}
-		switch fieldCount {
+		switch attributeCount {
 		case 1:
 			if cableKind != 0 {
 				return fmt.Errorf("REDACTED", cableKind)
 			}
-			m.Cycle = 0
-			for displace := uint(0); ; displace += 7 {
-				if displace >= 64 {
-					return ErrIntegerOverloadKinds
+			m.Iteration = 0
+			for relocate := uint(0); ; relocate += 7 {
+				if relocate >= 64 {
+					return FaultIntegerOverrunKinds
 				}
-				if idxNdEx >= l {
+				if idxNdExc >= l {
 					return io.ErrUnexpectedEOF
 				}
-				b := dAtA[idxNdEx]
-				idxNdEx++
-				m.Cycle |= int32(b&0x7F) << displace
+				b := deltaLocatedAN[idxNdExc]
+				idxNdExc++
+				m.Iteration |= int32(b&0x7F) << relocate
 				if b < 0x80 {
 					break
 				}
@@ -16071,351 +16071,351 @@ func (m *ExpandedEndorseDetails) Unserialize(dAtA []byte) error {
 			if cableKind != 2 {
 				return fmt.Errorf("REDACTED", cableKind)
 			}
-			var messagesize int
-			for displace := uint(0); ; displace += 7 {
-				if displace >= 64 {
-					return ErrIntegerOverloadKinds
+			var signallength int
+			for relocate := uint(0); ; relocate += 7 {
+				if relocate >= 64 {
+					return FaultIntegerOverrunKinds
 				}
-				if idxNdEx >= l {
+				if idxNdExc >= l {
 					return io.ErrUnexpectedEOF
 				}
-				b := dAtA[idxNdEx]
-				idxNdEx++
-				messagesize |= int(b&0x7F) << displace
+				b := deltaLocatedAN[idxNdExc]
+				idxNdExc++
+				signallength |= int(b&0x7F) << relocate
 				if b < 0x80 {
 					break
 				}
 			}
-			if messagesize < 0 {
-				return ErrCorruptExtentKinds
+			if signallength < 0 {
+				return FaultUnfitMagnitudeKinds
 			}
-			submitOrdinal := idxNdEx + messagesize
+			submitOrdinal := idxNdExc + signallength
 			if submitOrdinal < 0 {
-				return ErrCorruptExtentKinds
+				return FaultUnfitMagnitudeKinds
 			}
 			if submitOrdinal > l {
 				return io.ErrUnexpectedEOF
 			}
 			m.Ballots = append(m.Ballots, ExpandedBallotDetails{})
-			if err := m.Ballots[len(m.Ballots)-1].Unserialize(dAtA[idxNdEx:submitOrdinal]); err != nil {
+			if err := m.Ballots[len(m.Ballots)-1].Decode(deltaLocatedAN[idxNdExc:submitOrdinal]); err != nil {
 				return err
 			}
-			idxNdEx = submitOrdinal
+			idxNdExc = submitOrdinal
 		default:
-			idxNdEx = preOrdinal
-			skippy, err := omitKinds(dAtA[idxNdEx:])
+			idxNdExc = priorOrdinal
+			omitted, err := omitKinds(deltaLocatedAN[idxNdExc:])
 			if err != nil {
 				return err
 			}
-			if (skippy < 0) || (idxNdEx+skippy) < 0 {
-				return ErrCorruptExtentKinds
+			if (omitted < 0) || (idxNdExc+omitted) < 0 {
+				return FaultUnfitMagnitudeKinds
 			}
-			if (idxNdEx + skippy) > l {
+			if (idxNdExc + omitted) > l {
 				return io.ErrUnexpectedEOF
 			}
-			idxNdEx += skippy
+			idxNdExc += omitted
 		}
 	}
 
-	if idxNdEx > l {
+	if idxNdExc > l {
 		return io.ErrUnexpectedEOF
 	}
 	return nil
 }
-func (m *Event) Unserialize(dAtA []byte) error {
-	l := len(dAtA)
-	idxNdEx := 0
-	for idxNdEx < l {
-		preOrdinal := idxNdEx
+func (m *Incident) Decode(deltaLocatedAN []byte) error {
+	l := len(deltaLocatedAN)
+	idxNdExc := 0
+	for idxNdExc < l {
+		priorOrdinal := idxNdExc
 		var cable uint64
-		for displace := uint(0); ; displace += 7 {
-			if displace >= 64 {
-				return ErrIntegerOverloadKinds
+		for relocate := uint(0); ; relocate += 7 {
+			if relocate >= 64 {
+				return FaultIntegerOverrunKinds
 			}
-			if idxNdEx >= l {
+			if idxNdExc >= l {
 				return io.ErrUnexpectedEOF
 			}
-			b := dAtA[idxNdEx]
-			idxNdEx++
-			cable |= uint64(b&0x7F) << displace
+			b := deltaLocatedAN[idxNdExc]
+			idxNdExc++
+			cable |= uint64(b&0x7F) << relocate
 			if b < 0x80 {
 				break
 			}
 		}
-		fieldCount := int32(cable >> 3)
+		attributeCount := int32(cable >> 3)
 		cableKind := int(cable & 0x7)
 		if cableKind == 4 {
 			return fmt.Errorf("REDACTED")
 		}
-		if fieldCount <= 0 {
-			return fmt.Errorf("REDACTED", fieldCount, cable)
+		if attributeCount <= 0 {
+			return fmt.Errorf("REDACTED", attributeCount, cable)
 		}
-		switch fieldCount {
+		switch attributeCount {
 		case 1:
 			if cableKind != 2 {
 				return fmt.Errorf("REDACTED", cableKind)
 			}
-			var stringSize uint64
-			for displace := uint(0); ; displace += 7 {
-				if displace >= 64 {
-					return ErrIntegerOverloadKinds
+			var textSize uint64
+			for relocate := uint(0); ; relocate += 7 {
+				if relocate >= 64 {
+					return FaultIntegerOverrunKinds
 				}
-				if idxNdEx >= l {
+				if idxNdExc >= l {
 					return io.ErrUnexpectedEOF
 				}
-				b := dAtA[idxNdEx]
-				idxNdEx++
-				stringSize |= uint64(b&0x7F) << displace
+				b := deltaLocatedAN[idxNdExc]
+				idxNdExc++
+				textSize |= uint64(b&0x7F) << relocate
 				if b < 0x80 {
 					break
 				}
 			}
-			integerStringSize := int(stringSize)
-			if integerStringSize < 0 {
-				return ErrCorruptExtentKinds
+			integerTextSize := int(textSize)
+			if integerTextSize < 0 {
+				return FaultUnfitMagnitudeKinds
 			}
-			submitOrdinal := idxNdEx + integerStringSize
+			submitOrdinal := idxNdExc + integerTextSize
 			if submitOrdinal < 0 {
-				return ErrCorruptExtentKinds
+				return FaultUnfitMagnitudeKinds
 			}
 			if submitOrdinal > l {
 				return io.ErrUnexpectedEOF
 			}
-			m.Kind = string(dAtA[idxNdEx:submitOrdinal])
-			idxNdEx = submitOrdinal
+			m.Kind = string(deltaLocatedAN[idxNdExc:submitOrdinal])
+			idxNdExc = submitOrdinal
 		case 2:
 			if cableKind != 2 {
 				return fmt.Errorf("REDACTED", cableKind)
 			}
-			var messagesize int
-			for displace := uint(0); ; displace += 7 {
-				if displace >= 64 {
-					return ErrIntegerOverloadKinds
+			var signallength int
+			for relocate := uint(0); ; relocate += 7 {
+				if relocate >= 64 {
+					return FaultIntegerOverrunKinds
 				}
-				if idxNdEx >= l {
+				if idxNdExc >= l {
 					return io.ErrUnexpectedEOF
 				}
-				b := dAtA[idxNdEx]
-				idxNdEx++
-				messagesize |= int(b&0x7F) << displace
+				b := deltaLocatedAN[idxNdExc]
+				idxNdExc++
+				signallength |= int(b&0x7F) << relocate
 				if b < 0x80 {
 					break
 				}
 			}
-			if messagesize < 0 {
-				return ErrCorruptExtentKinds
+			if signallength < 0 {
+				return FaultUnfitMagnitudeKinds
 			}
-			submitOrdinal := idxNdEx + messagesize
+			submitOrdinal := idxNdExc + signallength
 			if submitOrdinal < 0 {
-				return ErrCorruptExtentKinds
+				return FaultUnfitMagnitudeKinds
 			}
 			if submitOrdinal > l {
 				return io.ErrUnexpectedEOF
 			}
-			m.Properties = append(m.Properties, EventProperty{})
-			if err := m.Properties[len(m.Properties)-1].Unserialize(dAtA[idxNdEx:submitOrdinal]); err != nil {
+			m.Properties = append(m.Properties, IncidentProperty{})
+			if err := m.Properties[len(m.Properties)-1].Decode(deltaLocatedAN[idxNdExc:submitOrdinal]); err != nil {
 				return err
 			}
-			idxNdEx = submitOrdinal
+			idxNdExc = submitOrdinal
 		default:
-			idxNdEx = preOrdinal
-			skippy, err := omitKinds(dAtA[idxNdEx:])
+			idxNdExc = priorOrdinal
+			omitted, err := omitKinds(deltaLocatedAN[idxNdExc:])
 			if err != nil {
 				return err
 			}
-			if (skippy < 0) || (idxNdEx+skippy) < 0 {
-				return ErrCorruptExtentKinds
+			if (omitted < 0) || (idxNdExc+omitted) < 0 {
+				return FaultUnfitMagnitudeKinds
 			}
-			if (idxNdEx + skippy) > l {
+			if (idxNdExc + omitted) > l {
 				return io.ErrUnexpectedEOF
 			}
-			idxNdEx += skippy
+			idxNdExc += omitted
 		}
 	}
 
-	if idxNdEx > l {
+	if idxNdExc > l {
 		return io.ErrUnexpectedEOF
 	}
 	return nil
 }
-func (m *EventProperty) Unserialize(dAtA []byte) error {
-	l := len(dAtA)
-	idxNdEx := 0
-	for idxNdEx < l {
-		preOrdinal := idxNdEx
+func (m *IncidentProperty) Decode(deltaLocatedAN []byte) error {
+	l := len(deltaLocatedAN)
+	idxNdExc := 0
+	for idxNdExc < l {
+		priorOrdinal := idxNdExc
 		var cable uint64
-		for displace := uint(0); ; displace += 7 {
-			if displace >= 64 {
-				return ErrIntegerOverloadKinds
+		for relocate := uint(0); ; relocate += 7 {
+			if relocate >= 64 {
+				return FaultIntegerOverrunKinds
 			}
-			if idxNdEx >= l {
+			if idxNdExc >= l {
 				return io.ErrUnexpectedEOF
 			}
-			b := dAtA[idxNdEx]
-			idxNdEx++
-			cable |= uint64(b&0x7F) << displace
+			b := deltaLocatedAN[idxNdExc]
+			idxNdExc++
+			cable |= uint64(b&0x7F) << relocate
 			if b < 0x80 {
 				break
 			}
 		}
-		fieldCount := int32(cable >> 3)
+		attributeCount := int32(cable >> 3)
 		cableKind := int(cable & 0x7)
 		if cableKind == 4 {
 			return fmt.Errorf("REDACTED")
 		}
-		if fieldCount <= 0 {
-			return fmt.Errorf("REDACTED", fieldCount, cable)
+		if attributeCount <= 0 {
+			return fmt.Errorf("REDACTED", attributeCount, cable)
 		}
-		switch fieldCount {
+		switch attributeCount {
 		case 1:
 			if cableKind != 2 {
 				return fmt.Errorf("REDACTED", cableKind)
 			}
-			var stringSize uint64
-			for displace := uint(0); ; displace += 7 {
-				if displace >= 64 {
-					return ErrIntegerOverloadKinds
+			var textSize uint64
+			for relocate := uint(0); ; relocate += 7 {
+				if relocate >= 64 {
+					return FaultIntegerOverrunKinds
 				}
-				if idxNdEx >= l {
+				if idxNdExc >= l {
 					return io.ErrUnexpectedEOF
 				}
-				b := dAtA[idxNdEx]
-				idxNdEx++
-				stringSize |= uint64(b&0x7F) << displace
+				b := deltaLocatedAN[idxNdExc]
+				idxNdExc++
+				textSize |= uint64(b&0x7F) << relocate
 				if b < 0x80 {
 					break
 				}
 			}
-			integerStringSize := int(stringSize)
-			if integerStringSize < 0 {
-				return ErrCorruptExtentKinds
+			integerTextSize := int(textSize)
+			if integerTextSize < 0 {
+				return FaultUnfitMagnitudeKinds
 			}
-			submitOrdinal := idxNdEx + integerStringSize
+			submitOrdinal := idxNdExc + integerTextSize
 			if submitOrdinal < 0 {
-				return ErrCorruptExtentKinds
+				return FaultUnfitMagnitudeKinds
 			}
 			if submitOrdinal > l {
 				return io.ErrUnexpectedEOF
 			}
-			m.Key = string(dAtA[idxNdEx:submitOrdinal])
-			idxNdEx = submitOrdinal
+			m.Key = string(deltaLocatedAN[idxNdExc:submitOrdinal])
+			idxNdExc = submitOrdinal
 		case 2:
 			if cableKind != 2 {
 				return fmt.Errorf("REDACTED", cableKind)
 			}
-			var stringSize uint64
-			for displace := uint(0); ; displace += 7 {
-				if displace >= 64 {
-					return ErrIntegerOverloadKinds
+			var textSize uint64
+			for relocate := uint(0); ; relocate += 7 {
+				if relocate >= 64 {
+					return FaultIntegerOverrunKinds
 				}
-				if idxNdEx >= l {
+				if idxNdExc >= l {
 					return io.ErrUnexpectedEOF
 				}
-				b := dAtA[idxNdEx]
-				idxNdEx++
-				stringSize |= uint64(b&0x7F) << displace
+				b := deltaLocatedAN[idxNdExc]
+				idxNdExc++
+				textSize |= uint64(b&0x7F) << relocate
 				if b < 0x80 {
 					break
 				}
 			}
-			integerStringSize := int(stringSize)
-			if integerStringSize < 0 {
-				return ErrCorruptExtentKinds
+			integerTextSize := int(textSize)
+			if integerTextSize < 0 {
+				return FaultUnfitMagnitudeKinds
 			}
-			submitOrdinal := idxNdEx + integerStringSize
+			submitOrdinal := idxNdExc + integerTextSize
 			if submitOrdinal < 0 {
-				return ErrCorruptExtentKinds
+				return FaultUnfitMagnitudeKinds
 			}
 			if submitOrdinal > l {
 				return io.ErrUnexpectedEOF
 			}
-			m.Item = string(dAtA[idxNdEx:submitOrdinal])
-			idxNdEx = submitOrdinal
+			m.Datum = string(deltaLocatedAN[idxNdExc:submitOrdinal])
+			idxNdExc = submitOrdinal
 		case 3:
 			if cableKind != 0 {
 				return fmt.Errorf("REDACTED", cableKind)
 			}
 			var v int
-			for displace := uint(0); ; displace += 7 {
-				if displace >= 64 {
-					return ErrIntegerOverloadKinds
+			for relocate := uint(0); ; relocate += 7 {
+				if relocate >= 64 {
+					return FaultIntegerOverrunKinds
 				}
-				if idxNdEx >= l {
+				if idxNdExc >= l {
 					return io.ErrUnexpectedEOF
 				}
-				b := dAtA[idxNdEx]
-				idxNdEx++
-				v |= int(b&0x7F) << displace
+				b := deltaLocatedAN[idxNdExc]
+				idxNdExc++
+				v |= int(b&0x7F) << relocate
 				if b < 0x80 {
 					break
 				}
 			}
 			m.Ordinal = bool(v != 0)
 		default:
-			idxNdEx = preOrdinal
-			skippy, err := omitKinds(dAtA[idxNdEx:])
+			idxNdExc = priorOrdinal
+			omitted, err := omitKinds(deltaLocatedAN[idxNdExc:])
 			if err != nil {
 				return err
 			}
-			if (skippy < 0) || (idxNdEx+skippy) < 0 {
-				return ErrCorruptExtentKinds
+			if (omitted < 0) || (idxNdExc+omitted) < 0 {
+				return FaultUnfitMagnitudeKinds
 			}
-			if (idxNdEx + skippy) > l {
+			if (idxNdExc + omitted) > l {
 				return io.ErrUnexpectedEOF
 			}
-			idxNdEx += skippy
+			idxNdExc += omitted
 		}
 	}
 
-	if idxNdEx > l {
+	if idxNdExc > l {
 		return io.ErrUnexpectedEOF
 	}
 	return nil
 }
-func (m *InvokeTransferOutcome) Unserialize(dAtA []byte) error {
-	l := len(dAtA)
-	idxNdEx := 0
-	for idxNdEx < l {
-		preOrdinal := idxNdEx
+func (m *InvokeTransferOutcome) Decode(deltaLocatedAN []byte) error {
+	l := len(deltaLocatedAN)
+	idxNdExc := 0
+	for idxNdExc < l {
+		priorOrdinal := idxNdExc
 		var cable uint64
-		for displace := uint(0); ; displace += 7 {
-			if displace >= 64 {
-				return ErrIntegerOverloadKinds
+		for relocate := uint(0); ; relocate += 7 {
+			if relocate >= 64 {
+				return FaultIntegerOverrunKinds
 			}
-			if idxNdEx >= l {
+			if idxNdExc >= l {
 				return io.ErrUnexpectedEOF
 			}
-			b := dAtA[idxNdEx]
-			idxNdEx++
-			cable |= uint64(b&0x7F) << displace
+			b := deltaLocatedAN[idxNdExc]
+			idxNdExc++
+			cable |= uint64(b&0x7F) << relocate
 			if b < 0x80 {
 				break
 			}
 		}
-		fieldCount := int32(cable >> 3)
+		attributeCount := int32(cable >> 3)
 		cableKind := int(cable & 0x7)
 		if cableKind == 4 {
 			return fmt.Errorf("REDACTED")
 		}
-		if fieldCount <= 0 {
-			return fmt.Errorf("REDACTED", fieldCount, cable)
+		if attributeCount <= 0 {
+			return fmt.Errorf("REDACTED", attributeCount, cable)
 		}
-		switch fieldCount {
+		switch attributeCount {
 		case 1:
 			if cableKind != 0 {
 				return fmt.Errorf("REDACTED", cableKind)
 			}
-			m.Code = 0
-			for displace := uint(0); ; displace += 7 {
-				if displace >= 64 {
-					return ErrIntegerOverloadKinds
+			m.Cipher = 0
+			for relocate := uint(0); ; relocate += 7 {
+				if relocate >= 64 {
+					return FaultIntegerOverrunKinds
 				}
-				if idxNdEx >= l {
+				if idxNdExc >= l {
 					return io.ErrUnexpectedEOF
 				}
-				b := dAtA[idxNdEx]
-				idxNdEx++
-				m.Code |= uint32(b&0x7F) << displace
+				b := deltaLocatedAN[idxNdExc]
+				idxNdExc++
+				m.Cipher |= uint32(b&0x7F) << relocate
 				if b < 0x80 {
 					break
 				}
@@ -16425,114 +16425,114 @@ func (m *InvokeTransferOutcome) Unserialize(dAtA []byte) error {
 				return fmt.Errorf("REDACTED", cableKind)
 			}
 			var octetSize int
-			for displace := uint(0); ; displace += 7 {
-				if displace >= 64 {
-					return ErrIntegerOverloadKinds
+			for relocate := uint(0); ; relocate += 7 {
+				if relocate >= 64 {
+					return FaultIntegerOverrunKinds
 				}
-				if idxNdEx >= l {
+				if idxNdExc >= l {
 					return io.ErrUnexpectedEOF
 				}
-				b := dAtA[idxNdEx]
-				idxNdEx++
-				octetSize |= int(b&0x7F) << displace
+				b := deltaLocatedAN[idxNdExc]
+				idxNdExc++
+				octetSize |= int(b&0x7F) << relocate
 				if b < 0x80 {
 					break
 				}
 			}
 			if octetSize < 0 {
-				return ErrCorruptExtentKinds
+				return FaultUnfitMagnitudeKinds
 			}
-			submitOrdinal := idxNdEx + octetSize
+			submitOrdinal := idxNdExc + octetSize
 			if submitOrdinal < 0 {
-				return ErrCorruptExtentKinds
+				return FaultUnfitMagnitudeKinds
 			}
 			if submitOrdinal > l {
 				return io.ErrUnexpectedEOF
 			}
-			m.Data = append(m.Data[:0], dAtA[idxNdEx:submitOrdinal]...)
+			m.Data = append(m.Data[:0], deltaLocatedAN[idxNdExc:submitOrdinal]...)
 			if m.Data == nil {
 				m.Data = []byte{}
 			}
-			idxNdEx = submitOrdinal
+			idxNdExc = submitOrdinal
 		case 3:
 			if cableKind != 2 {
 				return fmt.Errorf("REDACTED", cableKind)
 			}
-			var stringSize uint64
-			for displace := uint(0); ; displace += 7 {
-				if displace >= 64 {
-					return ErrIntegerOverloadKinds
+			var textSize uint64
+			for relocate := uint(0); ; relocate += 7 {
+				if relocate >= 64 {
+					return FaultIntegerOverrunKinds
 				}
-				if idxNdEx >= l {
+				if idxNdExc >= l {
 					return io.ErrUnexpectedEOF
 				}
-				b := dAtA[idxNdEx]
-				idxNdEx++
-				stringSize |= uint64(b&0x7F) << displace
+				b := deltaLocatedAN[idxNdExc]
+				idxNdExc++
+				textSize |= uint64(b&0x7F) << relocate
 				if b < 0x80 {
 					break
 				}
 			}
-			integerStringSize := int(stringSize)
-			if integerStringSize < 0 {
-				return ErrCorruptExtentKinds
+			integerTextSize := int(textSize)
+			if integerTextSize < 0 {
+				return FaultUnfitMagnitudeKinds
 			}
-			submitOrdinal := idxNdEx + integerStringSize
+			submitOrdinal := idxNdExc + integerTextSize
 			if submitOrdinal < 0 {
-				return ErrCorruptExtentKinds
+				return FaultUnfitMagnitudeKinds
 			}
 			if submitOrdinal > l {
 				return io.ErrUnexpectedEOF
 			}
-			m.Log = string(dAtA[idxNdEx:submitOrdinal])
-			idxNdEx = submitOrdinal
+			m.Log = string(deltaLocatedAN[idxNdExc:submitOrdinal])
+			idxNdExc = submitOrdinal
 		case 4:
 			if cableKind != 2 {
 				return fmt.Errorf("REDACTED", cableKind)
 			}
-			var stringSize uint64
-			for displace := uint(0); ; displace += 7 {
-				if displace >= 64 {
-					return ErrIntegerOverloadKinds
+			var textSize uint64
+			for relocate := uint(0); ; relocate += 7 {
+				if relocate >= 64 {
+					return FaultIntegerOverrunKinds
 				}
-				if idxNdEx >= l {
+				if idxNdExc >= l {
 					return io.ErrUnexpectedEOF
 				}
-				b := dAtA[idxNdEx]
-				idxNdEx++
-				stringSize |= uint64(b&0x7F) << displace
+				b := deltaLocatedAN[idxNdExc]
+				idxNdExc++
+				textSize |= uint64(b&0x7F) << relocate
 				if b < 0x80 {
 					break
 				}
 			}
-			integerStringSize := int(stringSize)
-			if integerStringSize < 0 {
-				return ErrCorruptExtentKinds
+			integerTextSize := int(textSize)
+			if integerTextSize < 0 {
+				return FaultUnfitMagnitudeKinds
 			}
-			submitOrdinal := idxNdEx + integerStringSize
+			submitOrdinal := idxNdExc + integerTextSize
 			if submitOrdinal < 0 {
-				return ErrCorruptExtentKinds
+				return FaultUnfitMagnitudeKinds
 			}
 			if submitOrdinal > l {
 				return io.ErrUnexpectedEOF
 			}
-			m.Details = string(dAtA[idxNdEx:submitOrdinal])
-			idxNdEx = submitOrdinal
+			m.Details = string(deltaLocatedAN[idxNdExc:submitOrdinal])
+			idxNdExc = submitOrdinal
 		case 5:
 			if cableKind != 0 {
 				return fmt.Errorf("REDACTED", cableKind)
 			}
 			m.FuelDesired = 0
-			for displace := uint(0); ; displace += 7 {
-				if displace >= 64 {
-					return ErrIntegerOverloadKinds
+			for relocate := uint(0); ; relocate += 7 {
+				if relocate >= 64 {
+					return FaultIntegerOverrunKinds
 				}
-				if idxNdEx >= l {
+				if idxNdExc >= l {
 					return io.ErrUnexpectedEOF
 				}
-				b := dAtA[idxNdEx]
-				idxNdEx++
-				m.FuelDesired |= int64(b&0x7F) << displace
+				b := deltaLocatedAN[idxNdExc]
+				idxNdExc++
+				m.FuelDesired |= int64(b&0x7F) << relocate
 				if b < 0x80 {
 					break
 				}
@@ -16541,17 +16541,17 @@ func (m *InvokeTransferOutcome) Unserialize(dAtA []byte) error {
 			if cableKind != 0 {
 				return fmt.Errorf("REDACTED", cableKind)
 			}
-			m.FuelApplied = 0
-			for displace := uint(0); ; displace += 7 {
-				if displace >= 64 {
-					return ErrIntegerOverloadKinds
+			m.FuelUtilized = 0
+			for relocate := uint(0); ; relocate += 7 {
+				if relocate >= 64 {
+					return FaultIntegerOverrunKinds
 				}
-				if idxNdEx >= l {
+				if idxNdExc >= l {
 					return io.ErrUnexpectedEOF
 				}
-				b := dAtA[idxNdEx]
-				idxNdEx++
-				m.FuelApplied |= int64(b&0x7F) << displace
+				b := deltaLocatedAN[idxNdExc]
+				idxNdExc++
+				m.FuelUtilized |= int64(b&0x7F) << relocate
 				if b < 0x80 {
 					break
 				}
@@ -16560,133 +16560,133 @@ func (m *InvokeTransferOutcome) Unserialize(dAtA []byte) error {
 			if cableKind != 2 {
 				return fmt.Errorf("REDACTED", cableKind)
 			}
-			var messagesize int
-			for displace := uint(0); ; displace += 7 {
-				if displace >= 64 {
-					return ErrIntegerOverloadKinds
+			var signallength int
+			for relocate := uint(0); ; relocate += 7 {
+				if relocate >= 64 {
+					return FaultIntegerOverrunKinds
 				}
-				if idxNdEx >= l {
+				if idxNdExc >= l {
 					return io.ErrUnexpectedEOF
 				}
-				b := dAtA[idxNdEx]
-				idxNdEx++
-				messagesize |= int(b&0x7F) << displace
+				b := deltaLocatedAN[idxNdExc]
+				idxNdExc++
+				signallength |= int(b&0x7F) << relocate
 				if b < 0x80 {
 					break
 				}
 			}
-			if messagesize < 0 {
-				return ErrCorruptExtentKinds
+			if signallength < 0 {
+				return FaultUnfitMagnitudeKinds
 			}
-			submitOrdinal := idxNdEx + messagesize
+			submitOrdinal := idxNdExc + signallength
 			if submitOrdinal < 0 {
-				return ErrCorruptExtentKinds
+				return FaultUnfitMagnitudeKinds
 			}
 			if submitOrdinal > l {
 				return io.ErrUnexpectedEOF
 			}
-			m.Events = append(m.Events, Event{})
-			if err := m.Events[len(m.Events)-1].Unserialize(dAtA[idxNdEx:submitOrdinal]); err != nil {
+			m.Incidents = append(m.Incidents, Incident{})
+			if err := m.Incidents[len(m.Incidents)-1].Decode(deltaLocatedAN[idxNdExc:submitOrdinal]); err != nil {
 				return err
 			}
-			idxNdEx = submitOrdinal
+			idxNdExc = submitOrdinal
 		case 8:
 			if cableKind != 2 {
 				return fmt.Errorf("REDACTED", cableKind)
 			}
-			var stringSize uint64
-			for displace := uint(0); ; displace += 7 {
-				if displace >= 64 {
-					return ErrIntegerOverloadKinds
+			var textSize uint64
+			for relocate := uint(0); ; relocate += 7 {
+				if relocate >= 64 {
+					return FaultIntegerOverrunKinds
 				}
-				if idxNdEx >= l {
+				if idxNdExc >= l {
 					return io.ErrUnexpectedEOF
 				}
-				b := dAtA[idxNdEx]
-				idxNdEx++
-				stringSize |= uint64(b&0x7F) << displace
+				b := deltaLocatedAN[idxNdExc]
+				idxNdExc++
+				textSize |= uint64(b&0x7F) << relocate
 				if b < 0x80 {
 					break
 				}
 			}
-			integerStringSize := int(stringSize)
-			if integerStringSize < 0 {
-				return ErrCorruptExtentKinds
+			integerTextSize := int(textSize)
+			if integerTextSize < 0 {
+				return FaultUnfitMagnitudeKinds
 			}
-			submitOrdinal := idxNdEx + integerStringSize
+			submitOrdinal := idxNdExc + integerTextSize
 			if submitOrdinal < 0 {
-				return ErrCorruptExtentKinds
+				return FaultUnfitMagnitudeKinds
 			}
 			if submitOrdinal > l {
 				return io.ErrUnexpectedEOF
 			}
-			m.Codex = string(dAtA[idxNdEx:submitOrdinal])
-			idxNdEx = submitOrdinal
+			m.Codeset = string(deltaLocatedAN[idxNdExc:submitOrdinal])
+			idxNdExc = submitOrdinal
 		default:
-			idxNdEx = preOrdinal
-			skippy, err := omitKinds(dAtA[idxNdEx:])
+			idxNdExc = priorOrdinal
+			omitted, err := omitKinds(deltaLocatedAN[idxNdExc:])
 			if err != nil {
 				return err
 			}
-			if (skippy < 0) || (idxNdEx+skippy) < 0 {
-				return ErrCorruptExtentKinds
+			if (omitted < 0) || (idxNdExc+omitted) < 0 {
+				return FaultUnfitMagnitudeKinds
 			}
-			if (idxNdEx + skippy) > l {
+			if (idxNdExc + omitted) > l {
 				return io.ErrUnexpectedEOF
 			}
-			idxNdEx += skippy
+			idxNdExc += omitted
 		}
 	}
 
-	if idxNdEx > l {
+	if idxNdExc > l {
 		return io.ErrUnexpectedEOF
 	}
 	return nil
 }
-func (m *TransOutcome) Unserialize(dAtA []byte) error {
-	l := len(dAtA)
-	idxNdEx := 0
-	for idxNdEx < l {
-		preOrdinal := idxNdEx
+func (m *TransferOutcome) Decode(deltaLocatedAN []byte) error {
+	l := len(deltaLocatedAN)
+	idxNdExc := 0
+	for idxNdExc < l {
+		priorOrdinal := idxNdExc
 		var cable uint64
-		for displace := uint(0); ; displace += 7 {
-			if displace >= 64 {
-				return ErrIntegerOverloadKinds
+		for relocate := uint(0); ; relocate += 7 {
+			if relocate >= 64 {
+				return FaultIntegerOverrunKinds
 			}
-			if idxNdEx >= l {
+			if idxNdExc >= l {
 				return io.ErrUnexpectedEOF
 			}
-			b := dAtA[idxNdEx]
-			idxNdEx++
-			cable |= uint64(b&0x7F) << displace
+			b := deltaLocatedAN[idxNdExc]
+			idxNdExc++
+			cable |= uint64(b&0x7F) << relocate
 			if b < 0x80 {
 				break
 			}
 		}
-		fieldCount := int32(cable >> 3)
+		attributeCount := int32(cable >> 3)
 		cableKind := int(cable & 0x7)
 		if cableKind == 4 {
 			return fmt.Errorf("REDACTED")
 		}
-		if fieldCount <= 0 {
-			return fmt.Errorf("REDACTED", fieldCount, cable)
+		if attributeCount <= 0 {
+			return fmt.Errorf("REDACTED", attributeCount, cable)
 		}
-		switch fieldCount {
+		switch attributeCount {
 		case 1:
 			if cableKind != 0 {
 				return fmt.Errorf("REDACTED", cableKind)
 			}
-			m.Level = 0
-			for displace := uint(0); ; displace += 7 {
-				if displace >= 64 {
-					return ErrIntegerOverloadKinds
+			m.Altitude = 0
+			for relocate := uint(0); ; relocate += 7 {
+				if relocate >= 64 {
+					return FaultIntegerOverrunKinds
 				}
-				if idxNdEx >= l {
+				if idxNdExc >= l {
 					return io.ErrUnexpectedEOF
 				}
-				b := dAtA[idxNdEx]
-				idxNdEx++
-				m.Level |= int64(b&0x7F) << displace
+				b := deltaLocatedAN[idxNdExc]
+				idxNdExc++
+				m.Altitude |= int64(b&0x7F) << relocate
 				if b < 0x80 {
 					break
 				}
@@ -16696,16 +16696,16 @@ func (m *TransOutcome) Unserialize(dAtA []byte) error {
 				return fmt.Errorf("REDACTED", cableKind)
 			}
 			m.Ordinal = 0
-			for displace := uint(0); ; displace += 7 {
-				if displace >= 64 {
-					return ErrIntegerOverloadKinds
+			for relocate := uint(0); ; relocate += 7 {
+				if relocate >= 64 {
+					return FaultIntegerOverrunKinds
 				}
-				if idxNdEx >= l {
+				if idxNdExc >= l {
 					return io.ErrUnexpectedEOF
 				}
-				b := dAtA[idxNdEx]
-				idxNdEx++
-				m.Ordinal |= uint32(b&0x7F) << displace
+				b := deltaLocatedAN[idxNdExc]
+				idxNdExc++
+				m.Ordinal |= uint32(b&0x7F) << relocate
 				if b < 0x80 {
 					break
 				}
@@ -16715,610 +16715,610 @@ func (m *TransOutcome) Unserialize(dAtA []byte) error {
 				return fmt.Errorf("REDACTED", cableKind)
 			}
 			var octetSize int
-			for displace := uint(0); ; displace += 7 {
-				if displace >= 64 {
-					return ErrIntegerOverloadKinds
+			for relocate := uint(0); ; relocate += 7 {
+				if relocate >= 64 {
+					return FaultIntegerOverrunKinds
 				}
-				if idxNdEx >= l {
+				if idxNdExc >= l {
 					return io.ErrUnexpectedEOF
 				}
-				b := dAtA[idxNdEx]
-				idxNdEx++
-				octetSize |= int(b&0x7F) << displace
+				b := deltaLocatedAN[idxNdExc]
+				idxNdExc++
+				octetSize |= int(b&0x7F) << relocate
 				if b < 0x80 {
 					break
 				}
 			}
 			if octetSize < 0 {
-				return ErrCorruptExtentKinds
+				return FaultUnfitMagnitudeKinds
 			}
-			submitOrdinal := idxNdEx + octetSize
+			submitOrdinal := idxNdExc + octetSize
 			if submitOrdinal < 0 {
-				return ErrCorruptExtentKinds
+				return FaultUnfitMagnitudeKinds
 			}
 			if submitOrdinal > l {
 				return io.ErrUnexpectedEOF
 			}
-			m.Tx = append(m.Tx[:0], dAtA[idxNdEx:submitOrdinal]...)
+			m.Tx = append(m.Tx[:0], deltaLocatedAN[idxNdExc:submitOrdinal]...)
 			if m.Tx == nil {
 				m.Tx = []byte{}
 			}
-			idxNdEx = submitOrdinal
+			idxNdExc = submitOrdinal
 		case 4:
 			if cableKind != 2 {
 				return fmt.Errorf("REDACTED", cableKind)
 			}
-			var messagesize int
-			for displace := uint(0); ; displace += 7 {
-				if displace >= 64 {
-					return ErrIntegerOverloadKinds
+			var signallength int
+			for relocate := uint(0); ; relocate += 7 {
+				if relocate >= 64 {
+					return FaultIntegerOverrunKinds
 				}
-				if idxNdEx >= l {
+				if idxNdExc >= l {
 					return io.ErrUnexpectedEOF
 				}
-				b := dAtA[idxNdEx]
-				idxNdEx++
-				messagesize |= int(b&0x7F) << displace
+				b := deltaLocatedAN[idxNdExc]
+				idxNdExc++
+				signallength |= int(b&0x7F) << relocate
 				if b < 0x80 {
 					break
 				}
 			}
-			if messagesize < 0 {
-				return ErrCorruptExtentKinds
+			if signallength < 0 {
+				return FaultUnfitMagnitudeKinds
 			}
-			submitOrdinal := idxNdEx + messagesize
+			submitOrdinal := idxNdExc + signallength
 			if submitOrdinal < 0 {
-				return ErrCorruptExtentKinds
+				return FaultUnfitMagnitudeKinds
 			}
 			if submitOrdinal > l {
 				return io.ErrUnexpectedEOF
 			}
-			if err := m.Outcome.Unserialize(dAtA[idxNdEx:submitOrdinal]); err != nil {
+			if err := m.Outcome.Decode(deltaLocatedAN[idxNdExc:submitOrdinal]); err != nil {
 				return err
 			}
-			idxNdEx = submitOrdinal
+			idxNdExc = submitOrdinal
 		default:
-			idxNdEx = preOrdinal
-			skippy, err := omitKinds(dAtA[idxNdEx:])
+			idxNdExc = priorOrdinal
+			omitted, err := omitKinds(deltaLocatedAN[idxNdExc:])
 			if err != nil {
 				return err
 			}
-			if (skippy < 0) || (idxNdEx+skippy) < 0 {
-				return ErrCorruptExtentKinds
+			if (omitted < 0) || (idxNdExc+omitted) < 0 {
+				return FaultUnfitMagnitudeKinds
 			}
-			if (idxNdEx + skippy) > l {
+			if (idxNdExc + omitted) > l {
 				return io.ErrUnexpectedEOF
 			}
-			idxNdEx += skippy
+			idxNdExc += omitted
 		}
 	}
 
-	if idxNdEx > l {
+	if idxNdExc > l {
 		return io.ErrUnexpectedEOF
 	}
 	return nil
 }
-func (m *Ratifier) Unserialize(dAtA []byte) error {
-	l := len(dAtA)
-	idxNdEx := 0
-	for idxNdEx < l {
-		preOrdinal := idxNdEx
+func (m *Assessor) Decode(deltaLocatedAN []byte) error {
+	l := len(deltaLocatedAN)
+	idxNdExc := 0
+	for idxNdExc < l {
+		priorOrdinal := idxNdExc
 		var cable uint64
-		for displace := uint(0); ; displace += 7 {
-			if displace >= 64 {
-				return ErrIntegerOverloadKinds
+		for relocate := uint(0); ; relocate += 7 {
+			if relocate >= 64 {
+				return FaultIntegerOverrunKinds
 			}
-			if idxNdEx >= l {
+			if idxNdExc >= l {
 				return io.ErrUnexpectedEOF
 			}
-			b := dAtA[idxNdEx]
-			idxNdEx++
-			cable |= uint64(b&0x7F) << displace
+			b := deltaLocatedAN[idxNdExc]
+			idxNdExc++
+			cable |= uint64(b&0x7F) << relocate
 			if b < 0x80 {
 				break
 			}
 		}
-		fieldCount := int32(cable >> 3)
+		attributeCount := int32(cable >> 3)
 		cableKind := int(cable & 0x7)
 		if cableKind == 4 {
 			return fmt.Errorf("REDACTED")
 		}
-		if fieldCount <= 0 {
-			return fmt.Errorf("REDACTED", fieldCount, cable)
+		if attributeCount <= 0 {
+			return fmt.Errorf("REDACTED", attributeCount, cable)
 		}
-		switch fieldCount {
+		switch attributeCount {
 		case 1:
 			if cableKind != 2 {
 				return fmt.Errorf("REDACTED", cableKind)
 			}
 			var octetSize int
-			for displace := uint(0); ; displace += 7 {
-				if displace >= 64 {
-					return ErrIntegerOverloadKinds
+			for relocate := uint(0); ; relocate += 7 {
+				if relocate >= 64 {
+					return FaultIntegerOverrunKinds
 				}
-				if idxNdEx >= l {
+				if idxNdExc >= l {
 					return io.ErrUnexpectedEOF
 				}
-				b := dAtA[idxNdEx]
-				idxNdEx++
-				octetSize |= int(b&0x7F) << displace
+				b := deltaLocatedAN[idxNdExc]
+				idxNdExc++
+				octetSize |= int(b&0x7F) << relocate
 				if b < 0x80 {
 					break
 				}
 			}
 			if octetSize < 0 {
-				return ErrCorruptExtentKinds
+				return FaultUnfitMagnitudeKinds
 			}
-			submitOrdinal := idxNdEx + octetSize
+			submitOrdinal := idxNdExc + octetSize
 			if submitOrdinal < 0 {
-				return ErrCorruptExtentKinds
+				return FaultUnfitMagnitudeKinds
 			}
 			if submitOrdinal > l {
 				return io.ErrUnexpectedEOF
 			}
-			m.Location = append(m.Location[:0], dAtA[idxNdEx:submitOrdinal]...)
+			m.Location = append(m.Location[:0], deltaLocatedAN[idxNdExc:submitOrdinal]...)
 			if m.Location == nil {
 				m.Location = []byte{}
 			}
-			idxNdEx = submitOrdinal
+			idxNdExc = submitOrdinal
 		case 3:
 			if cableKind != 0 {
 				return fmt.Errorf("REDACTED", cableKind)
 			}
-			m.Energy = 0
-			for displace := uint(0); ; displace += 7 {
-				if displace >= 64 {
-					return ErrIntegerOverloadKinds
+			m.Potency = 0
+			for relocate := uint(0); ; relocate += 7 {
+				if relocate >= 64 {
+					return FaultIntegerOverrunKinds
 				}
-				if idxNdEx >= l {
+				if idxNdExc >= l {
 					return io.ErrUnexpectedEOF
 				}
-				b := dAtA[idxNdEx]
-				idxNdEx++
-				m.Energy |= int64(b&0x7F) << displace
+				b := deltaLocatedAN[idxNdExc]
+				idxNdExc++
+				m.Potency |= int64(b&0x7F) << relocate
 				if b < 0x80 {
 					break
 				}
 			}
 		default:
-			idxNdEx = preOrdinal
-			skippy, err := omitKinds(dAtA[idxNdEx:])
+			idxNdExc = priorOrdinal
+			omitted, err := omitKinds(deltaLocatedAN[idxNdExc:])
 			if err != nil {
 				return err
 			}
-			if (skippy < 0) || (idxNdEx+skippy) < 0 {
-				return ErrCorruptExtentKinds
+			if (omitted < 0) || (idxNdExc+omitted) < 0 {
+				return FaultUnfitMagnitudeKinds
 			}
-			if (idxNdEx + skippy) > l {
+			if (idxNdExc + omitted) > l {
 				return io.ErrUnexpectedEOF
 			}
-			idxNdEx += skippy
+			idxNdExc += omitted
 		}
 	}
 
-	if idxNdEx > l {
+	if idxNdExc > l {
 		return io.ErrUnexpectedEOF
 	}
 	return nil
 }
-func (m *RatifierModify) Unserialize(dAtA []byte) error {
-	l := len(dAtA)
-	idxNdEx := 0
-	for idxNdEx < l {
-		preOrdinal := idxNdEx
+func (m *AssessorRevise) Decode(deltaLocatedAN []byte) error {
+	l := len(deltaLocatedAN)
+	idxNdExc := 0
+	for idxNdExc < l {
+		priorOrdinal := idxNdExc
 		var cable uint64
-		for displace := uint(0); ; displace += 7 {
-			if displace >= 64 {
-				return ErrIntegerOverloadKinds
+		for relocate := uint(0); ; relocate += 7 {
+			if relocate >= 64 {
+				return FaultIntegerOverrunKinds
 			}
-			if idxNdEx >= l {
+			if idxNdExc >= l {
 				return io.ErrUnexpectedEOF
 			}
-			b := dAtA[idxNdEx]
-			idxNdEx++
-			cable |= uint64(b&0x7F) << displace
+			b := deltaLocatedAN[idxNdExc]
+			idxNdExc++
+			cable |= uint64(b&0x7F) << relocate
 			if b < 0x80 {
 				break
 			}
 		}
-		fieldCount := int32(cable >> 3)
+		attributeCount := int32(cable >> 3)
 		cableKind := int(cable & 0x7)
 		if cableKind == 4 {
 			return fmt.Errorf("REDACTED")
 		}
-		if fieldCount <= 0 {
-			return fmt.Errorf("REDACTED", fieldCount, cable)
+		if attributeCount <= 0 {
+			return fmt.Errorf("REDACTED", attributeCount, cable)
 		}
-		switch fieldCount {
+		switch attributeCount {
 		case 1:
 			if cableKind != 2 {
 				return fmt.Errorf("REDACTED", cableKind)
 			}
-			var messagesize int
-			for displace := uint(0); ; displace += 7 {
-				if displace >= 64 {
-					return ErrIntegerOverloadKinds
+			var signallength int
+			for relocate := uint(0); ; relocate += 7 {
+				if relocate >= 64 {
+					return FaultIntegerOverrunKinds
 				}
-				if idxNdEx >= l {
+				if idxNdExc >= l {
 					return io.ErrUnexpectedEOF
 				}
-				b := dAtA[idxNdEx]
-				idxNdEx++
-				messagesize |= int(b&0x7F) << displace
+				b := deltaLocatedAN[idxNdExc]
+				idxNdExc++
+				signallength |= int(b&0x7F) << relocate
 				if b < 0x80 {
 					break
 				}
 			}
-			if messagesize < 0 {
-				return ErrCorruptExtentKinds
+			if signallength < 0 {
+				return FaultUnfitMagnitudeKinds
 			}
-			submitOrdinal := idxNdEx + messagesize
+			submitOrdinal := idxNdExc + signallength
 			if submitOrdinal < 0 {
-				return ErrCorruptExtentKinds
+				return FaultUnfitMagnitudeKinds
 			}
 			if submitOrdinal > l {
 				return io.ErrUnexpectedEOF
 			}
-			if err := m.PublicKey.Unserialize(dAtA[idxNdEx:submitOrdinal]); err != nil {
+			if err := m.PublicToken.Decode(deltaLocatedAN[idxNdExc:submitOrdinal]); err != nil {
 				return err
 			}
-			idxNdEx = submitOrdinal
+			idxNdExc = submitOrdinal
 		case 2:
 			if cableKind != 0 {
 				return fmt.Errorf("REDACTED", cableKind)
 			}
-			m.Energy = 0
-			for displace := uint(0); ; displace += 7 {
-				if displace >= 64 {
-					return ErrIntegerOverloadKinds
+			m.Potency = 0
+			for relocate := uint(0); ; relocate += 7 {
+				if relocate >= 64 {
+					return FaultIntegerOverrunKinds
 				}
-				if idxNdEx >= l {
+				if idxNdExc >= l {
 					return io.ErrUnexpectedEOF
 				}
-				b := dAtA[idxNdEx]
-				idxNdEx++
-				m.Energy |= int64(b&0x7F) << displace
+				b := deltaLocatedAN[idxNdExc]
+				idxNdExc++
+				m.Potency |= int64(b&0x7F) << relocate
 				if b < 0x80 {
 					break
 				}
 			}
 		default:
-			idxNdEx = preOrdinal
-			skippy, err := omitKinds(dAtA[idxNdEx:])
+			idxNdExc = priorOrdinal
+			omitted, err := omitKinds(deltaLocatedAN[idxNdExc:])
 			if err != nil {
 				return err
 			}
-			if (skippy < 0) || (idxNdEx+skippy) < 0 {
-				return ErrCorruptExtentKinds
+			if (omitted < 0) || (idxNdExc+omitted) < 0 {
+				return FaultUnfitMagnitudeKinds
 			}
-			if (idxNdEx + skippy) > l {
+			if (idxNdExc + omitted) > l {
 				return io.ErrUnexpectedEOF
 			}
-			idxNdEx += skippy
+			idxNdExc += omitted
 		}
 	}
 
-	if idxNdEx > l {
+	if idxNdExc > l {
 		return io.ErrUnexpectedEOF
 	}
 	return nil
 }
-func (m *BallotDetails) Unserialize(dAtA []byte) error {
-	l := len(dAtA)
-	idxNdEx := 0
-	for idxNdEx < l {
-		preOrdinal := idxNdEx
+func (m *BallotDetails) Decode(deltaLocatedAN []byte) error {
+	l := len(deltaLocatedAN)
+	idxNdExc := 0
+	for idxNdExc < l {
+		priorOrdinal := idxNdExc
 		var cable uint64
-		for displace := uint(0); ; displace += 7 {
-			if displace >= 64 {
-				return ErrIntegerOverloadKinds
+		for relocate := uint(0); ; relocate += 7 {
+			if relocate >= 64 {
+				return FaultIntegerOverrunKinds
 			}
-			if idxNdEx >= l {
+			if idxNdExc >= l {
 				return io.ErrUnexpectedEOF
 			}
-			b := dAtA[idxNdEx]
-			idxNdEx++
-			cable |= uint64(b&0x7F) << displace
+			b := deltaLocatedAN[idxNdExc]
+			idxNdExc++
+			cable |= uint64(b&0x7F) << relocate
 			if b < 0x80 {
 				break
 			}
 		}
-		fieldCount := int32(cable >> 3)
+		attributeCount := int32(cable >> 3)
 		cableKind := int(cable & 0x7)
 		if cableKind == 4 {
 			return fmt.Errorf("REDACTED")
 		}
-		if fieldCount <= 0 {
-			return fmt.Errorf("REDACTED", fieldCount, cable)
+		if attributeCount <= 0 {
+			return fmt.Errorf("REDACTED", attributeCount, cable)
 		}
-		switch fieldCount {
+		switch attributeCount {
 		case 1:
 			if cableKind != 2 {
 				return fmt.Errorf("REDACTED", cableKind)
 			}
-			var messagesize int
-			for displace := uint(0); ; displace += 7 {
-				if displace >= 64 {
-					return ErrIntegerOverloadKinds
+			var signallength int
+			for relocate := uint(0); ; relocate += 7 {
+				if relocate >= 64 {
+					return FaultIntegerOverrunKinds
 				}
-				if idxNdEx >= l {
+				if idxNdExc >= l {
 					return io.ErrUnexpectedEOF
 				}
-				b := dAtA[idxNdEx]
-				idxNdEx++
-				messagesize |= int(b&0x7F) << displace
+				b := deltaLocatedAN[idxNdExc]
+				idxNdExc++
+				signallength |= int(b&0x7F) << relocate
 				if b < 0x80 {
 					break
 				}
 			}
-			if messagesize < 0 {
-				return ErrCorruptExtentKinds
+			if signallength < 0 {
+				return FaultUnfitMagnitudeKinds
 			}
-			submitOrdinal := idxNdEx + messagesize
+			submitOrdinal := idxNdExc + signallength
 			if submitOrdinal < 0 {
-				return ErrCorruptExtentKinds
+				return FaultUnfitMagnitudeKinds
 			}
 			if submitOrdinal > l {
 				return io.ErrUnexpectedEOF
 			}
-			if err := m.Ratifier.Unserialize(dAtA[idxNdEx:submitOrdinal]); err != nil {
+			if err := m.Assessor.Decode(deltaLocatedAN[idxNdExc:submitOrdinal]); err != nil {
 				return err
 			}
-			idxNdEx = submitOrdinal
+			idxNdExc = submitOrdinal
 		case 3:
 			if cableKind != 0 {
 				return fmt.Errorf("REDACTED", cableKind)
 			}
-			m.LedgerUidMark = 0
-			for displace := uint(0); ; displace += 7 {
-				if displace >= 64 {
-					return ErrIntegerOverloadKinds
+			m.LedgerUuidMarker = 0
+			for relocate := uint(0); ; relocate += 7 {
+				if relocate >= 64 {
+					return FaultIntegerOverrunKinds
 				}
-				if idxNdEx >= l {
+				if idxNdExc >= l {
 					return io.ErrUnexpectedEOF
 				}
-				b := dAtA[idxNdEx]
-				idxNdEx++
-				m.LedgerUidMark |= kinds1.LedgerUIDMark(b&0x7F) << displace
+				b := deltaLocatedAN[idxNdExc]
+				idxNdExc++
+				m.LedgerUuidMarker |= kinds1.LedgerUUIDMarker(b&0x7F) << relocate
 				if b < 0x80 {
 					break
 				}
 			}
 		default:
-			idxNdEx = preOrdinal
-			skippy, err := omitKinds(dAtA[idxNdEx:])
+			idxNdExc = priorOrdinal
+			omitted, err := omitKinds(deltaLocatedAN[idxNdExc:])
 			if err != nil {
 				return err
 			}
-			if (skippy < 0) || (idxNdEx+skippy) < 0 {
-				return ErrCorruptExtentKinds
+			if (omitted < 0) || (idxNdExc+omitted) < 0 {
+				return FaultUnfitMagnitudeKinds
 			}
-			if (idxNdEx + skippy) > l {
+			if (idxNdExc + omitted) > l {
 				return io.ErrUnexpectedEOF
 			}
-			idxNdEx += skippy
+			idxNdExc += omitted
 		}
 	}
 
-	if idxNdEx > l {
+	if idxNdExc > l {
 		return io.ErrUnexpectedEOF
 	}
 	return nil
 }
-func (m *ExpandedBallotDetails) Unserialize(dAtA []byte) error {
-	l := len(dAtA)
-	idxNdEx := 0
-	for idxNdEx < l {
-		preOrdinal := idxNdEx
+func (m *ExpandedBallotDetails) Decode(deltaLocatedAN []byte) error {
+	l := len(deltaLocatedAN)
+	idxNdExc := 0
+	for idxNdExc < l {
+		priorOrdinal := idxNdExc
 		var cable uint64
-		for displace := uint(0); ; displace += 7 {
-			if displace >= 64 {
-				return ErrIntegerOverloadKinds
+		for relocate := uint(0); ; relocate += 7 {
+			if relocate >= 64 {
+				return FaultIntegerOverrunKinds
 			}
-			if idxNdEx >= l {
+			if idxNdExc >= l {
 				return io.ErrUnexpectedEOF
 			}
-			b := dAtA[idxNdEx]
-			idxNdEx++
-			cable |= uint64(b&0x7F) << displace
+			b := deltaLocatedAN[idxNdExc]
+			idxNdExc++
+			cable |= uint64(b&0x7F) << relocate
 			if b < 0x80 {
 				break
 			}
 		}
-		fieldCount := int32(cable >> 3)
+		attributeCount := int32(cable >> 3)
 		cableKind := int(cable & 0x7)
 		if cableKind == 4 {
 			return fmt.Errorf("REDACTED")
 		}
-		if fieldCount <= 0 {
-			return fmt.Errorf("REDACTED", fieldCount, cable)
+		if attributeCount <= 0 {
+			return fmt.Errorf("REDACTED", attributeCount, cable)
 		}
-		switch fieldCount {
+		switch attributeCount {
 		case 1:
 			if cableKind != 2 {
 				return fmt.Errorf("REDACTED", cableKind)
 			}
-			var messagesize int
-			for displace := uint(0); ; displace += 7 {
-				if displace >= 64 {
-					return ErrIntegerOverloadKinds
+			var signallength int
+			for relocate := uint(0); ; relocate += 7 {
+				if relocate >= 64 {
+					return FaultIntegerOverrunKinds
 				}
-				if idxNdEx >= l {
+				if idxNdExc >= l {
 					return io.ErrUnexpectedEOF
 				}
-				b := dAtA[idxNdEx]
-				idxNdEx++
-				messagesize |= int(b&0x7F) << displace
+				b := deltaLocatedAN[idxNdExc]
+				idxNdExc++
+				signallength |= int(b&0x7F) << relocate
 				if b < 0x80 {
 					break
 				}
 			}
-			if messagesize < 0 {
-				return ErrCorruptExtentKinds
+			if signallength < 0 {
+				return FaultUnfitMagnitudeKinds
 			}
-			submitOrdinal := idxNdEx + messagesize
+			submitOrdinal := idxNdExc + signallength
 			if submitOrdinal < 0 {
-				return ErrCorruptExtentKinds
+				return FaultUnfitMagnitudeKinds
 			}
 			if submitOrdinal > l {
 				return io.ErrUnexpectedEOF
 			}
-			if err := m.Ratifier.Unserialize(dAtA[idxNdEx:submitOrdinal]); err != nil {
+			if err := m.Assessor.Decode(deltaLocatedAN[idxNdExc:submitOrdinal]); err != nil {
 				return err
 			}
-			idxNdEx = submitOrdinal
+			idxNdExc = submitOrdinal
 		case 3:
 			if cableKind != 2 {
 				return fmt.Errorf("REDACTED", cableKind)
 			}
 			var octetSize int
-			for displace := uint(0); ; displace += 7 {
-				if displace >= 64 {
-					return ErrIntegerOverloadKinds
+			for relocate := uint(0); ; relocate += 7 {
+				if relocate >= 64 {
+					return FaultIntegerOverrunKinds
 				}
-				if idxNdEx >= l {
+				if idxNdExc >= l {
 					return io.ErrUnexpectedEOF
 				}
-				b := dAtA[idxNdEx]
-				idxNdEx++
-				octetSize |= int(b&0x7F) << displace
+				b := deltaLocatedAN[idxNdExc]
+				idxNdExc++
+				octetSize |= int(b&0x7F) << relocate
 				if b < 0x80 {
 					break
 				}
 			}
 			if octetSize < 0 {
-				return ErrCorruptExtentKinds
+				return FaultUnfitMagnitudeKinds
 			}
-			submitOrdinal := idxNdEx + octetSize
+			submitOrdinal := idxNdExc + octetSize
 			if submitOrdinal < 0 {
-				return ErrCorruptExtentKinds
+				return FaultUnfitMagnitudeKinds
 			}
 			if submitOrdinal > l {
 				return io.ErrUnexpectedEOF
 			}
-			m.BallotAddition = append(m.BallotAddition[:0], dAtA[idxNdEx:submitOrdinal]...)
+			m.BallotAddition = append(m.BallotAddition[:0], deltaLocatedAN[idxNdExc:submitOrdinal]...)
 			if m.BallotAddition == nil {
 				m.BallotAddition = []byte{}
 			}
-			idxNdEx = submitOrdinal
+			idxNdExc = submitOrdinal
 		case 4:
 			if cableKind != 2 {
 				return fmt.Errorf("REDACTED", cableKind)
 			}
 			var octetSize int
-			for displace := uint(0); ; displace += 7 {
-				if displace >= 64 {
-					return ErrIntegerOverloadKinds
+			for relocate := uint(0); ; relocate += 7 {
+				if relocate >= 64 {
+					return FaultIntegerOverrunKinds
 				}
-				if idxNdEx >= l {
+				if idxNdExc >= l {
 					return io.ErrUnexpectedEOF
 				}
-				b := dAtA[idxNdEx]
-				idxNdEx++
-				octetSize |= int(b&0x7F) << displace
+				b := deltaLocatedAN[idxNdExc]
+				idxNdExc++
+				octetSize |= int(b&0x7F) << relocate
 				if b < 0x80 {
 					break
 				}
 			}
 			if octetSize < 0 {
-				return ErrCorruptExtentKinds
+				return FaultUnfitMagnitudeKinds
 			}
-			submitOrdinal := idxNdEx + octetSize
+			submitOrdinal := idxNdExc + octetSize
 			if submitOrdinal < 0 {
-				return ErrCorruptExtentKinds
+				return FaultUnfitMagnitudeKinds
 			}
 			if submitOrdinal > l {
 				return io.ErrUnexpectedEOF
 			}
-			m.AdditionAutograph = append(m.AdditionAutograph[:0], dAtA[idxNdEx:submitOrdinal]...)
-			if m.AdditionAutograph == nil {
-				m.AdditionAutograph = []byte{}
+			m.AdditionNotation = append(m.AdditionNotation[:0], deltaLocatedAN[idxNdExc:submitOrdinal]...)
+			if m.AdditionNotation == nil {
+				m.AdditionNotation = []byte{}
 			}
-			idxNdEx = submitOrdinal
+			idxNdExc = submitOrdinal
 		case 5:
 			if cableKind != 0 {
 				return fmt.Errorf("REDACTED", cableKind)
 			}
-			m.LedgerUidMark = 0
-			for displace := uint(0); ; displace += 7 {
-				if displace >= 64 {
-					return ErrIntegerOverloadKinds
+			m.LedgerUuidMarker = 0
+			for relocate := uint(0); ; relocate += 7 {
+				if relocate >= 64 {
+					return FaultIntegerOverrunKinds
 				}
-				if idxNdEx >= l {
+				if idxNdExc >= l {
 					return io.ErrUnexpectedEOF
 				}
-				b := dAtA[idxNdEx]
-				idxNdEx++
-				m.LedgerUidMark |= kinds1.LedgerUIDMark(b&0x7F) << displace
+				b := deltaLocatedAN[idxNdExc]
+				idxNdExc++
+				m.LedgerUuidMarker |= kinds1.LedgerUUIDMarker(b&0x7F) << relocate
 				if b < 0x80 {
 					break
 				}
 			}
 		default:
-			idxNdEx = preOrdinal
-			skippy, err := omitKinds(dAtA[idxNdEx:])
+			idxNdExc = priorOrdinal
+			omitted, err := omitKinds(deltaLocatedAN[idxNdExc:])
 			if err != nil {
 				return err
 			}
-			if (skippy < 0) || (idxNdEx+skippy) < 0 {
-				return ErrCorruptExtentKinds
+			if (omitted < 0) || (idxNdExc+omitted) < 0 {
+				return FaultUnfitMagnitudeKinds
 			}
-			if (idxNdEx + skippy) > l {
+			if (idxNdExc + omitted) > l {
 				return io.ErrUnexpectedEOF
 			}
-			idxNdEx += skippy
+			idxNdExc += omitted
 		}
 	}
 
-	if idxNdEx > l {
+	if idxNdExc > l {
 		return io.ErrUnexpectedEOF
 	}
 	return nil
 }
-func (m *Malpractice) Unserialize(dAtA []byte) error {
-	l := len(dAtA)
-	idxNdEx := 0
-	for idxNdEx < l {
-		preOrdinal := idxNdEx
+func (m *Malpractice) Decode(deltaLocatedAN []byte) error {
+	l := len(deltaLocatedAN)
+	idxNdExc := 0
+	for idxNdExc < l {
+		priorOrdinal := idxNdExc
 		var cable uint64
-		for displace := uint(0); ; displace += 7 {
-			if displace >= 64 {
-				return ErrIntegerOverloadKinds
+		for relocate := uint(0); ; relocate += 7 {
+			if relocate >= 64 {
+				return FaultIntegerOverrunKinds
 			}
-			if idxNdEx >= l {
+			if idxNdExc >= l {
 				return io.ErrUnexpectedEOF
 			}
-			b := dAtA[idxNdEx]
-			idxNdEx++
-			cable |= uint64(b&0x7F) << displace
+			b := deltaLocatedAN[idxNdExc]
+			idxNdExc++
+			cable |= uint64(b&0x7F) << relocate
 			if b < 0x80 {
 				break
 			}
 		}
-		fieldCount := int32(cable >> 3)
+		attributeCount := int32(cable >> 3)
 		cableKind := int(cable & 0x7)
 		if cableKind == 4 {
 			return fmt.Errorf("REDACTED")
 		}
-		if fieldCount <= 0 {
-			return fmt.Errorf("REDACTED", fieldCount, cable)
+		if attributeCount <= 0 {
+			return fmt.Errorf("REDACTED", attributeCount, cable)
 		}
-		switch fieldCount {
+		switch attributeCount {
 		case 1:
 			if cableKind != 0 {
 				return fmt.Errorf("REDACTED", cableKind)
 			}
 			m.Kind = 0
-			for displace := uint(0); ; displace += 7 {
-				if displace >= 64 {
-					return ErrIntegerOverloadKinds
+			for relocate := uint(0); ; relocate += 7 {
+				if relocate >= 64 {
+					return FaultIntegerOverrunKinds
 				}
-				if idxNdEx >= l {
+				if idxNdExc >= l {
 					return io.ErrUnexpectedEOF
 				}
-				b := dAtA[idxNdEx]
-				idxNdEx++
-				m.Kind |= MalpracticeKind(b&0x7F) << displace
+				b := deltaLocatedAN[idxNdExc]
+				idxNdExc++
+				m.Kind |= MalpracticeKind(b&0x7F) << relocate
 				if b < 0x80 {
 					break
 				}
@@ -17327,50 +17327,50 @@ func (m *Malpractice) Unserialize(dAtA []byte) error {
 			if cableKind != 2 {
 				return fmt.Errorf("REDACTED", cableKind)
 			}
-			var messagesize int
-			for displace := uint(0); ; displace += 7 {
-				if displace >= 64 {
-					return ErrIntegerOverloadKinds
+			var signallength int
+			for relocate := uint(0); ; relocate += 7 {
+				if relocate >= 64 {
+					return FaultIntegerOverrunKinds
 				}
-				if idxNdEx >= l {
+				if idxNdExc >= l {
 					return io.ErrUnexpectedEOF
 				}
-				b := dAtA[idxNdEx]
-				idxNdEx++
-				messagesize |= int(b&0x7F) << displace
+				b := deltaLocatedAN[idxNdExc]
+				idxNdExc++
+				signallength |= int(b&0x7F) << relocate
 				if b < 0x80 {
 					break
 				}
 			}
-			if messagesize < 0 {
-				return ErrCorruptExtentKinds
+			if signallength < 0 {
+				return FaultUnfitMagnitudeKinds
 			}
-			submitOrdinal := idxNdEx + messagesize
+			submitOrdinal := idxNdExc + signallength
 			if submitOrdinal < 0 {
-				return ErrCorruptExtentKinds
+				return FaultUnfitMagnitudeKinds
 			}
 			if submitOrdinal > l {
 				return io.ErrUnexpectedEOF
 			}
-			if err := m.Ratifier.Unserialize(dAtA[idxNdEx:submitOrdinal]); err != nil {
+			if err := m.Assessor.Decode(deltaLocatedAN[idxNdExc:submitOrdinal]); err != nil {
 				return err
 			}
-			idxNdEx = submitOrdinal
+			idxNdExc = submitOrdinal
 		case 3:
 			if cableKind != 0 {
 				return fmt.Errorf("REDACTED", cableKind)
 			}
-			m.Level = 0
-			for displace := uint(0); ; displace += 7 {
-				if displace >= 64 {
-					return ErrIntegerOverloadKinds
+			m.Altitude = 0
+			for relocate := uint(0); ; relocate += 7 {
+				if relocate >= 64 {
+					return FaultIntegerOverrunKinds
 				}
-				if idxNdEx >= l {
+				if idxNdExc >= l {
 					return io.ErrUnexpectedEOF
 				}
-				b := dAtA[idxNdEx]
-				idxNdEx++
-				m.Level |= int64(b&0x7F) << displace
+				b := deltaLocatedAN[idxNdExc]
+				idxNdExc++
+				m.Altitude |= int64(b&0x7F) << relocate
 				if b < 0x80 {
 					break
 				}
@@ -17379,119 +17379,119 @@ func (m *Malpractice) Unserialize(dAtA []byte) error {
 			if cableKind != 2 {
 				return fmt.Errorf("REDACTED", cableKind)
 			}
-			var messagesize int
-			for displace := uint(0); ; displace += 7 {
-				if displace >= 64 {
-					return ErrIntegerOverloadKinds
+			var signallength int
+			for relocate := uint(0); ; relocate += 7 {
+				if relocate >= 64 {
+					return FaultIntegerOverrunKinds
 				}
-				if idxNdEx >= l {
+				if idxNdExc >= l {
 					return io.ErrUnexpectedEOF
 				}
-				b := dAtA[idxNdEx]
-				idxNdEx++
-				messagesize |= int(b&0x7F) << displace
+				b := deltaLocatedAN[idxNdExc]
+				idxNdExc++
+				signallength |= int(b&0x7F) << relocate
 				if b < 0x80 {
 					break
 				}
 			}
-			if messagesize < 0 {
-				return ErrCorruptExtentKinds
+			if signallength < 0 {
+				return FaultUnfitMagnitudeKinds
 			}
-			submitOrdinal := idxNdEx + messagesize
+			submitOrdinal := idxNdExc + signallength
 			if submitOrdinal < 0 {
-				return ErrCorruptExtentKinds
+				return FaultUnfitMagnitudeKinds
 			}
 			if submitOrdinal > l {
 				return io.ErrUnexpectedEOF
 			}
-			if err := github_com_cosmos_gogoproto_types.StdTimeUnmarshal(&m.Time, dAtA[idxNdEx:submitOrdinal]); err != nil {
+			if err := github_com_cosmos_gogoproto_types.StdTimeUnmarshal(&m.Moment, deltaLocatedAN[idxNdExc:submitOrdinal]); err != nil {
 				return err
 			}
-			idxNdEx = submitOrdinal
+			idxNdExc = submitOrdinal
 		case 5:
 			if cableKind != 0 {
 				return fmt.Errorf("REDACTED", cableKind)
 			}
-			m.SumPollingEnergy = 0
-			for displace := uint(0); ; displace += 7 {
-				if displace >= 64 {
-					return ErrIntegerOverloadKinds
+			m.SumBallotingPotency = 0
+			for relocate := uint(0); ; relocate += 7 {
+				if relocate >= 64 {
+					return FaultIntegerOverrunKinds
 				}
-				if idxNdEx >= l {
+				if idxNdExc >= l {
 					return io.ErrUnexpectedEOF
 				}
-				b := dAtA[idxNdEx]
-				idxNdEx++
-				m.SumPollingEnergy |= int64(b&0x7F) << displace
+				b := deltaLocatedAN[idxNdExc]
+				idxNdExc++
+				m.SumBallotingPotency |= int64(b&0x7F) << relocate
 				if b < 0x80 {
 					break
 				}
 			}
 		default:
-			idxNdEx = preOrdinal
-			skippy, err := omitKinds(dAtA[idxNdEx:])
+			idxNdExc = priorOrdinal
+			omitted, err := omitKinds(deltaLocatedAN[idxNdExc:])
 			if err != nil {
 				return err
 			}
-			if (skippy < 0) || (idxNdEx+skippy) < 0 {
-				return ErrCorruptExtentKinds
+			if (omitted < 0) || (idxNdExc+omitted) < 0 {
+				return FaultUnfitMagnitudeKinds
 			}
-			if (idxNdEx + skippy) > l {
+			if (idxNdExc + omitted) > l {
 				return io.ErrUnexpectedEOF
 			}
-			idxNdEx += skippy
+			idxNdExc += omitted
 		}
 	}
 
-	if idxNdEx > l {
+	if idxNdExc > l {
 		return io.ErrUnexpectedEOF
 	}
 	return nil
 }
-func (m *Mirror) Unserialize(dAtA []byte) error {
-	l := len(dAtA)
-	idxNdEx := 0
-	for idxNdEx < l {
-		preOrdinal := idxNdEx
+func (m *Image) Decode(deltaLocatedAN []byte) error {
+	l := len(deltaLocatedAN)
+	idxNdExc := 0
+	for idxNdExc < l {
+		priorOrdinal := idxNdExc
 		var cable uint64
-		for displace := uint(0); ; displace += 7 {
-			if displace >= 64 {
-				return ErrIntegerOverloadKinds
+		for relocate := uint(0); ; relocate += 7 {
+			if relocate >= 64 {
+				return FaultIntegerOverrunKinds
 			}
-			if idxNdEx >= l {
+			if idxNdExc >= l {
 				return io.ErrUnexpectedEOF
 			}
-			b := dAtA[idxNdEx]
-			idxNdEx++
-			cable |= uint64(b&0x7F) << displace
+			b := deltaLocatedAN[idxNdExc]
+			idxNdExc++
+			cable |= uint64(b&0x7F) << relocate
 			if b < 0x80 {
 				break
 			}
 		}
-		fieldCount := int32(cable >> 3)
+		attributeCount := int32(cable >> 3)
 		cableKind := int(cable & 0x7)
 		if cableKind == 4 {
 			return fmt.Errorf("REDACTED")
 		}
-		if fieldCount <= 0 {
-			return fmt.Errorf("REDACTED", fieldCount, cable)
+		if attributeCount <= 0 {
+			return fmt.Errorf("REDACTED", attributeCount, cable)
 		}
-		switch fieldCount {
+		switch attributeCount {
 		case 1:
 			if cableKind != 0 {
 				return fmt.Errorf("REDACTED", cableKind)
 			}
-			m.Level = 0
-			for displace := uint(0); ; displace += 7 {
-				if displace >= 64 {
-					return ErrIntegerOverloadKinds
+			m.Altitude = 0
+			for relocate := uint(0); ; relocate += 7 {
+				if relocate >= 64 {
+					return FaultIntegerOverrunKinds
 				}
-				if idxNdEx >= l {
+				if idxNdExc >= l {
 					return io.ErrUnexpectedEOF
 				}
-				b := dAtA[idxNdEx]
-				idxNdEx++
-				m.Level |= uint64(b&0x7F) << displace
+				b := deltaLocatedAN[idxNdExc]
+				idxNdExc++
+				m.Altitude |= uint64(b&0x7F) << relocate
 				if b < 0x80 {
 					break
 				}
@@ -17501,16 +17501,16 @@ func (m *Mirror) Unserialize(dAtA []byte) error {
 				return fmt.Errorf("REDACTED", cableKind)
 			}
 			m.Layout = 0
-			for displace := uint(0); ; displace += 7 {
-				if displace >= 64 {
-					return ErrIntegerOverloadKinds
+			for relocate := uint(0); ; relocate += 7 {
+				if relocate >= 64 {
+					return FaultIntegerOverrunKinds
 				}
-				if idxNdEx >= l {
+				if idxNdExc >= l {
 					return io.ErrUnexpectedEOF
 				}
-				b := dAtA[idxNdEx]
-				idxNdEx++
-				m.Layout |= uint32(b&0x7F) << displace
+				b := deltaLocatedAN[idxNdExc]
+				idxNdExc++
+				m.Layout |= uint32(b&0x7F) << relocate
 				if b < 0x80 {
 					break
 				}
@@ -17520,16 +17520,16 @@ func (m *Mirror) Unserialize(dAtA []byte) error {
 				return fmt.Errorf("REDACTED", cableKind)
 			}
 			m.Segments = 0
-			for displace := uint(0); ; displace += 7 {
-				if displace >= 64 {
-					return ErrIntegerOverloadKinds
+			for relocate := uint(0); ; relocate += 7 {
+				if relocate >= 64 {
+					return FaultIntegerOverrunKinds
 				}
-				if idxNdEx >= l {
+				if idxNdExc >= l {
 					return io.ErrUnexpectedEOF
 				}
-				b := dAtA[idxNdEx]
-				idxNdEx++
-				m.Segments |= uint32(b&0x7F) << displace
+				b := deltaLocatedAN[idxNdExc]
+				idxNdExc++
+				m.Segments |= uint32(b&0x7F) << relocate
 				if b < 0x80 {
 					break
 				}
@@ -17539,106 +17539,106 @@ func (m *Mirror) Unserialize(dAtA []byte) error {
 				return fmt.Errorf("REDACTED", cableKind)
 			}
 			var octetSize int
-			for displace := uint(0); ; displace += 7 {
-				if displace >= 64 {
-					return ErrIntegerOverloadKinds
+			for relocate := uint(0); ; relocate += 7 {
+				if relocate >= 64 {
+					return FaultIntegerOverrunKinds
 				}
-				if idxNdEx >= l {
+				if idxNdExc >= l {
 					return io.ErrUnexpectedEOF
 				}
-				b := dAtA[idxNdEx]
-				idxNdEx++
-				octetSize |= int(b&0x7F) << displace
+				b := deltaLocatedAN[idxNdExc]
+				idxNdExc++
+				octetSize |= int(b&0x7F) << relocate
 				if b < 0x80 {
 					break
 				}
 			}
 			if octetSize < 0 {
-				return ErrCorruptExtentKinds
+				return FaultUnfitMagnitudeKinds
 			}
-			submitOrdinal := idxNdEx + octetSize
+			submitOrdinal := idxNdExc + octetSize
 			if submitOrdinal < 0 {
-				return ErrCorruptExtentKinds
+				return FaultUnfitMagnitudeKinds
 			}
 			if submitOrdinal > l {
 				return io.ErrUnexpectedEOF
 			}
-			m.Digest = append(m.Digest[:0], dAtA[idxNdEx:submitOrdinal]...)
+			m.Digest = append(m.Digest[:0], deltaLocatedAN[idxNdExc:submitOrdinal]...)
 			if m.Digest == nil {
 				m.Digest = []byte{}
 			}
-			idxNdEx = submitOrdinal
+			idxNdExc = submitOrdinal
 		case 5:
 			if cableKind != 2 {
 				return fmt.Errorf("REDACTED", cableKind)
 			}
 			var octetSize int
-			for displace := uint(0); ; displace += 7 {
-				if displace >= 64 {
-					return ErrIntegerOverloadKinds
+			for relocate := uint(0); ; relocate += 7 {
+				if relocate >= 64 {
+					return FaultIntegerOverrunKinds
 				}
-				if idxNdEx >= l {
+				if idxNdExc >= l {
 					return io.ErrUnexpectedEOF
 				}
-				b := dAtA[idxNdEx]
-				idxNdEx++
-				octetSize |= int(b&0x7F) << displace
+				b := deltaLocatedAN[idxNdExc]
+				idxNdExc++
+				octetSize |= int(b&0x7F) << relocate
 				if b < 0x80 {
 					break
 				}
 			}
 			if octetSize < 0 {
-				return ErrCorruptExtentKinds
+				return FaultUnfitMagnitudeKinds
 			}
-			submitOrdinal := idxNdEx + octetSize
+			submitOrdinal := idxNdExc + octetSize
 			if submitOrdinal < 0 {
-				return ErrCorruptExtentKinds
+				return FaultUnfitMagnitudeKinds
 			}
 			if submitOrdinal > l {
 				return io.ErrUnexpectedEOF
 			}
-			m.Metainfo = append(m.Metainfo[:0], dAtA[idxNdEx:submitOrdinal]...)
-			if m.Metainfo == nil {
-				m.Metainfo = []byte{}
+			m.Attributes = append(m.Attributes[:0], deltaLocatedAN[idxNdExc:submitOrdinal]...)
+			if m.Attributes == nil {
+				m.Attributes = []byte{}
 			}
-			idxNdEx = submitOrdinal
+			idxNdExc = submitOrdinal
 		default:
-			idxNdEx = preOrdinal
-			skippy, err := omitKinds(dAtA[idxNdEx:])
+			idxNdExc = priorOrdinal
+			omitted, err := omitKinds(deltaLocatedAN[idxNdExc:])
 			if err != nil {
 				return err
 			}
-			if (skippy < 0) || (idxNdEx+skippy) < 0 {
-				return ErrCorruptExtentKinds
+			if (omitted < 0) || (idxNdExc+omitted) < 0 {
+				return FaultUnfitMagnitudeKinds
 			}
-			if (idxNdEx + skippy) > l {
+			if (idxNdExc + omitted) > l {
 				return io.ErrUnexpectedEOF
 			}
-			idxNdEx += skippy
+			idxNdExc += omitted
 		}
 	}
 
-	if idxNdEx > l {
+	if idxNdExc > l {
 		return io.ErrUnexpectedEOF
 	}
 	return nil
 }
-func omitKinds(dAtA []byte) (n int, err error) {
-	l := len(dAtA)
-	idxNdEx := 0
+func omitKinds(deltaLocatedAN []byte) (n int, err error) {
+	l := len(deltaLocatedAN)
+	idxNdExc := 0
 	intensity := 0
-	for idxNdEx < l {
+	for idxNdExc < l {
 		var cable uint64
-		for displace := uint(0); ; displace += 7 {
-			if displace >= 64 {
-				return 0, ErrIntegerOverloadKinds
+		for relocate := uint(0); ; relocate += 7 {
+			if relocate >= 64 {
+				return 0, FaultIntegerOverrunKinds
 			}
-			if idxNdEx >= l {
+			if idxNdExc >= l {
 				return 0, io.ErrUnexpectedEOF
 			}
-			b := dAtA[idxNdEx]
-			idxNdEx++
-			cable |= (uint64(b) & 0x7F) << displace
+			b := deltaLocatedAN[idxNdExc]
+			idxNdExc++
+			cable |= (uint64(b) & 0x7F) << relocate
 			if b < 0x80 {
 				break
 			}
@@ -17646,64 +17646,64 @@ func omitKinds(dAtA []byte) (n int, err error) {
 		cableKind := int(cable & 0x7)
 		switch cableKind {
 		case 0:
-			for displace := uint(0); ; displace += 7 {
-				if displace >= 64 {
-					return 0, ErrIntegerOverloadKinds
+			for relocate := uint(0); ; relocate += 7 {
+				if relocate >= 64 {
+					return 0, FaultIntegerOverrunKinds
 				}
-				if idxNdEx >= l {
+				if idxNdExc >= l {
 					return 0, io.ErrUnexpectedEOF
 				}
-				idxNdEx++
-				if dAtA[idxNdEx-1] < 0x80 {
+				idxNdExc++
+				if deltaLocatedAN[idxNdExc-1] < 0x80 {
 					break
 				}
 			}
 		case 1:
-			idxNdEx += 8
+			idxNdExc += 8
 		case 2:
-			var extent int
-			for displace := uint(0); ; displace += 7 {
-				if displace >= 64 {
-					return 0, ErrIntegerOverloadKinds
+			var magnitude int
+			for relocate := uint(0); ; relocate += 7 {
+				if relocate >= 64 {
+					return 0, FaultIntegerOverrunKinds
 				}
-				if idxNdEx >= l {
+				if idxNdExc >= l {
 					return 0, io.ErrUnexpectedEOF
 				}
-				b := dAtA[idxNdEx]
-				idxNdEx++
-				extent |= (int(b) & 0x7F) << displace
+				b := deltaLocatedAN[idxNdExc]
+				idxNdExc++
+				magnitude |= (int(b) & 0x7F) << relocate
 				if b < 0x80 {
 					break
 				}
 			}
-			if extent < 0 {
-				return 0, ErrCorruptExtentKinds
+			if magnitude < 0 {
+				return 0, FaultUnfitMagnitudeKinds
 			}
-			idxNdEx += extent
+			idxNdExc += magnitude
 		case 3:
 			intensity++
 		case 4:
 			if intensity == 0 {
-				return 0, ErrUnforeseenTerminateOfClusterKinds
+				return 0, FaultUnforeseenTerminateBelongingClusterKinds
 			}
 			intensity--
 		case 5:
-			idxNdEx += 4
+			idxNdExc += 4
 		default:
 			return 0, fmt.Errorf("REDACTED", cableKind)
 		}
-		if idxNdEx < 0 {
-			return 0, ErrCorruptExtentKinds
+		if idxNdExc < 0 {
+			return 0, FaultUnfitMagnitudeKinds
 		}
 		if intensity == 0 {
-			return idxNdEx, nil
+			return idxNdExc, nil
 		}
 	}
 	return 0, io.ErrUnexpectedEOF
 }
 
 var (
-	ErrCorruptExtentKinds        = fmt.Errorf("REDACTED")
-	ErrIntegerOverloadKinds          = fmt.Errorf("REDACTED")
-	ErrUnforeseenTerminateOfClusterKinds = fmt.Errorf("REDACTED")
+	FaultUnfitMagnitudeKinds        = fmt.Errorf("REDACTED")
+	FaultIntegerOverrunKinds          = fmt.Errorf("REDACTED")
+	FaultUnforeseenTerminateBelongingClusterKinds = fmt.Errorf("REDACTED")
 )

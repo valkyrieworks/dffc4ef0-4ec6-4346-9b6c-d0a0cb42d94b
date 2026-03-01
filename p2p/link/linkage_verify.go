@@ -11,63 +11,63 @@ import (
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/require"
 
-	"github.com/valkyrieworks/utils/log"
-	"github.com/valkyrieworks/utils/protoio"
-	tmp2p "github.com/valkyrieworks/schema/consensuscore/p2p"
-	"github.com/valkyrieworks/schema/consensuscore/kinds"
+	"github.com/valkyrieworks/dffc4ef0-4ec6-4346-9b6c-d0a0cb42d94b/utils/log"
+	"github.com/valkyrieworks/dffc4ef0-4ec6-4346-9b6c-d0a0cb42d94b/utils/protocolio"
+	tmpfabric "github.com/valkyrieworks/dffc4ef0-4ec6-4346-9b6c-d0a0cb42d94b/schema/strongmind/p2p"
+	"github.com/valkyrieworks/dffc4ef0-4ec6-4346-9b6c-d0a0cb42d94b/schema/strongmind/kinds"
 )
 
-const maximumPingPongPackageVolume = 1024 //
+const maximumPingPongPacketExtent = 1024 //
 
-func instantiateVerifyMLinkage(link net.Conn) *MLinkage {
-	onAccept := func(chanUID byte, messageOctets []byte) {
+func generateVerifyModuleLinkage(link net.Conn) *ModuleLinkage {
+	uponAccept := func(chnlUUID byte, signalOctets []byte) {
 	}
-	onFault := func(r any) {
+	uponFailure := func(r any) {
 	}
-	c := instantiateMLinkageWithResponses(link, onAccept, onFault)
+	c := generateModuleLinkageUsingReacts(link, uponAccept, uponFailure)
 	c.AssignTracer(log.VerifyingTracer())
 	return c
 }
 
-func instantiateMLinkageWithResponses(
+func generateModuleLinkageUsingReacts(
 	link net.Conn,
-	onAccept func(chanUID byte, messageOctets []byte),
-	onFault func(r any),
-) *MLinkage {
-	cfg := StandardMLinkSettings()
-	cfg.PingCadence = 90 * time.Millisecond
+	uponAccept func(chnlUUID byte, signalOctets []byte),
+	uponFailure func(r any),
+) *ModuleLinkage {
+	cfg := FallbackModuleLinkSettings()
+	cfg.PingDuration = 90 * time.Millisecond
 	cfg.PongDeadline = 45 * time.Millisecond
-	chanTraits := []*StreamDefinition{{ID: 0x01, Urgency: 1, TransmitBufferVolume: 1}}
-	c := NewMLinkageWithSettings(link, chanTraits, onAccept, onFault, cfg)
+	chnlDescriptions := []*ConduitDefinition{{ID: 0x01, Urgency: 1, TransmitStagingVolume: 1}}
+	c := FreshModuleLinkageUsingSettings(link, chnlDescriptions, uponAccept, uponFailure, cfg)
 	c.AssignTracer(log.VerifyingTracer())
 	return c
 }
 
-func VerifyMLinkageTransmitPurgeHalt(t *testing.T) {
-	host, customer := NetPipe()
-	defer host.Close()
+func VerifyModuleLinkageTransmitPurgeHalt(t *testing.T) {
+	node, customer := NetworkTube()
+	defer node.Close()
 	defer customer.Close()
 
-	customerLink := instantiateVerifyMLinkage(customer)
-	err := customerLink.Begin()
+	customerLink := generateVerifyModuleLinkage(customer)
+	err := customerLink.Initiate()
 	require.Nil(t, err)
 	defer customerLink.Halt() //
 
 	msg := []byte("REDACTED")
 	assert.True(t, customerLink.Transmit(0x01, msg))
 
-	messageExtent := 14
+	signalMagnitude := 14
 
 	//
-	errChan := make(chan error)
+	faultChnl := make(chan error)
 	go func() {
-		messageBYTE := make([]byte, messageExtent)
-		_, err := host.Read(messageBYTE)
+		signalBYTE := make([]byte, signalMagnitude)
+		_, err := node.Read(signalBYTE)
 		if err != nil {
 			t.Error(err)
 			return
 		}
-		errChan <- err
+		faultChnl <- err
 	}()
 
 	//
@@ -75,63 +75,63 @@ func VerifyMLinkageTransmitPurgeHalt(t *testing.T) {
 
 	clock := time.NewTimer(3 * time.Second)
 	select {
-	case <-errChan:
+	case <-faultChnl:
 	case <-clock.C:
 		t.Error("REDACTED")
 	}
 }
 
-func VerifyMLinkageTransmit(t *testing.T) {
-	host, customer := NetPipe()
-	defer host.Close()
+func VerifyModuleLinkageTransmit(t *testing.T) {
+	node, customer := NetworkTube()
+	defer node.Close()
 	defer customer.Close()
 
-	mconn := instantiateVerifyMLinkage(customer)
-	err := mconn.Begin()
+	multilink := generateVerifyModuleLinkage(customer)
+	err := multilink.Initiate()
 	require.Nil(t, err)
-	defer mconn.Halt() //
+	defer multilink.Halt() //
 
 	msg := []byte("REDACTED")
-	assert.True(t, mconn.Transmit(0x01, msg))
+	assert.True(t, multilink.Transmit(0x01, msg))
 	//
 	//
-	_, err = host.Read(make([]byte, len(msg)))
+	_, err = node.Read(make([]byte, len(msg)))
 	if err != nil {
 		t.Error(err)
 	}
-	assert.True(t, mconn.MayTransmit(0x01))
+	assert.True(t, multilink.AbleTransmit(0x01))
 
 	msg = []byte("REDACTED")
-	assert.True(t, mconn.AttemptTransmit(0x01, msg))
-	_, err = host.Read(make([]byte, len(msg)))
+	assert.True(t, multilink.AttemptTransmit(0x01, msg))
+	_, err = node.Read(make([]byte, len(msg)))
 	if err != nil {
 		t.Error(err)
 	}
 
-	assert.False(t, mconn.MayTransmit(0x05), "REDACTED")
-	assert.False(t, mconn.Transmit(0x05, []byte("REDACTED")), "REDACTED")
+	assert.False(t, multilink.AbleTransmit(0x05), "REDACTED")
+	assert.False(t, multilink.Transmit(0x05, []byte("REDACTED")), "REDACTED")
 }
 
-func VerifyMLinkageAccept(t *testing.T) {
-	host, customer := NetPipe()
-	defer host.Close()
+func VerifyModuleLinkageAccept(t *testing.T) {
+	node, customer := NetworkTube()
+	defer node.Close()
 	defer customer.Close()
 
-	acceptedChan := make(chan []byte)
-	faultsChan := make(chan any)
-	onAccept := func(chanUID byte, messageOctets []byte) {
-		acceptedChan <- messageOctets
+	acceptedChnl := make(chan []byte)
+	faultsStream := make(chan any)
+	uponAccept := func(chnlUUID byte, signalOctets []byte) {
+		acceptedChnl <- signalOctets
 	}
-	onFault := func(r any) {
-		faultsChan <- r
+	uponFailure := func(r any) {
+		faultsStream <- r
 	}
-	mconn1 := instantiateMLinkageWithResponses(customer, onAccept, onFault)
-	err := mconn1.Begin()
+	mconn1 := generateModuleLinkageUsingReacts(customer, uponAccept, uponFailure)
+	err := mconn1.Initiate()
 	require.Nil(t, err)
 	defer mconn1.Halt() //
 
-	mconn2 := instantiateVerifyMLinkage(host)
-	err = mconn2.Begin()
+	mconn2 := generateVerifyModuleLinkage(node)
+	err = mconn2.Initiate()
 	require.Nil(t, err)
 	defer mconn2.Halt() //
 
@@ -139,487 +139,487 @@ func VerifyMLinkageAccept(t *testing.T) {
 	assert.True(t, mconn2.Transmit(0x01, msg))
 
 	select {
-	case acceptedOctets := <-acceptedChan:
+	case acceptedOctets := <-acceptedChnl:
 		assert.Equal(t, msg, acceptedOctets)
-	case err := <-faultsChan:
+	case err := <-faultsStream:
 		t.Fatalf("REDACTED", msg, err)
 	case <-time.After(500 * time.Millisecond):
 		t.Fatalf("REDACTED", msg)
 	}
 }
 
-func VerifyMLinkageState(t *testing.T) {
-	host, customer := NetPipe()
-	defer host.Close()
+func VerifyModuleLinkageCondition(t *testing.T) {
+	node, customer := NetworkTube()
+	defer node.Close()
 	defer customer.Close()
 
-	mconn := instantiateVerifyMLinkage(customer)
-	err := mconn.Begin()
+	multilink := generateVerifyModuleLinkage(customer)
+	err := multilink.Initiate()
 	require.Nil(t, err)
-	defer mconn.Halt() //
+	defer multilink.Halt() //
 
-	state := mconn.Status()
-	assert.NotNil(t, state)
-	assert.Zero(t, state.Streams[0].TransmitBufferVolume)
+	condition := multilink.Condition()
+	assert.NotNil(t, condition)
+	assert.Zero(t, condition.Conduits[0].TransmitStagingExtent)
 }
 
-func VerifyMLinkagePongDeadlineOutcomesInFault(t *testing.T) {
-	host, customer := net.Pipe()
-	defer host.Close()
+func VerifyModuleLinkagePongDeadlineOutcomesInsideFailure(t *testing.T) {
+	node, customer := net.Pipe()
+	defer node.Close()
 	defer customer.Close()
 
-	acceptedChan := make(chan []byte)
-	faultsChan := make(chan any)
-	onAccept := func(chanUID byte, messageOctets []byte) {
-		acceptedChan <- messageOctets
+	acceptedChnl := make(chan []byte)
+	faultsStream := make(chan any)
+	uponAccept := func(chnlUUID byte, signalOctets []byte) {
+		acceptedChnl <- signalOctets
 	}
-	onFault := func(r any) {
-		faultsChan <- r
+	uponFailure := func(r any) {
+		faultsStream <- r
 	}
-	mconn := instantiateMLinkageWithResponses(customer, onAccept, onFault)
-	err := mconn.Begin()
+	multilink := generateModuleLinkageUsingReacts(customer, uponAccept, uponFailure)
+	err := multilink.Initiate()
 	require.Nil(t, err)
-	defer mconn.Halt() //
+	defer multilink.Halt() //
 
-	hostAcquiredPing := make(chan struct{})
+	daemonAttainedPing := make(chan struct{})
 	go func() {
 		//
-		var pkt tmp2p.Package
-		_, err := protoio.NewSeparatedScanner(host, maximumPingPongPackageVolume).ScanMessage(&pkt)
+		var pkt tmpfabric.Packet
+		_, err := protocolio.FreshSeparatedFetcher(node, maximumPingPongPacketExtent).FetchSignal(&pkt)
 		require.NoError(t, err)
-		hostAcquiredPing <- struct{}{}
+		daemonAttainedPing <- struct{}{}
 	}()
-	<-hostAcquiredPing
+	<-daemonAttainedPing
 
-	pongClockLapsed := mconn.settings.PongDeadline + 200*time.Millisecond
+	pongClockLapsed := multilink.settings.PongDeadline + 200*time.Millisecond
 	select {
-	case messageOctets := <-acceptedChan:
-		t.Fatalf("REDACTED", messageOctets)
-	case err := <-faultsChan:
+	case signalOctets := <-acceptedChnl:
+		t.Fatalf("REDACTED", signalOctets)
+	case err := <-faultsStream:
 		assert.NotNil(t, err)
 	case <-time.After(pongClockLapsed):
 		t.Fatalf("REDACTED", pongClockLapsed)
 	}
 }
 
-func VerifyMLinkageVariedPongsInTheCommencement(t *testing.T) {
-	host, customer := net.Pipe()
-	defer host.Close()
+func VerifyModuleLinkageVariousPongsInsideTheCommencement(t *testing.T) {
+	node, customer := net.Pipe()
+	defer node.Close()
 	defer customer.Close()
 
-	acceptedChan := make(chan []byte)
-	faultsChan := make(chan any)
-	onAccept := func(chanUID byte, messageOctets []byte) {
-		acceptedChan <- messageOctets
+	acceptedChnl := make(chan []byte)
+	faultsStream := make(chan any)
+	uponAccept := func(chnlUUID byte, signalOctets []byte) {
+		acceptedChnl <- signalOctets
 	}
-	onFault := func(r any) {
-		faultsChan <- r
+	uponFailure := func(r any) {
+		faultsStream <- r
 	}
-	mconn := instantiateMLinkageWithResponses(customer, onAccept, onFault)
-	err := mconn.Begin()
+	multilink := generateModuleLinkageUsingReacts(customer, uponAccept, uponFailure)
+	err := multilink.Initiate()
 	require.Nil(t, err)
-	defer mconn.Halt() //
+	defer multilink.Halt() //
 
 	//
-	schemaRecorder := protoio.NewSeparatedRecorder(host)
+	schemaPersistor := protocolio.FreshSeparatedPersistor(node)
 
-	_, err = schemaRecorder.RecordMessage(shouldEnclosePackage(&tmp2p.PackagePong{}))
+	_, err = schemaPersistor.PersistSignal(shouldEnclosePacket(&tmpfabric.PacketPong{}))
 	require.NoError(t, err)
 
-	_, err = schemaRecorder.RecordMessage(shouldEnclosePackage(&tmp2p.PackagePong{}))
+	_, err = schemaPersistor.PersistSignal(shouldEnclosePacket(&tmpfabric.PacketPong{}))
 	require.NoError(t, err)
 
-	_, err = schemaRecorder.RecordMessage(shouldEnclosePackage(&tmp2p.PackagePong{}))
+	_, err = schemaPersistor.PersistSignal(shouldEnclosePacket(&tmpfabric.PacketPong{}))
 	require.NoError(t, err)
 
-	hostAcquiredPing := make(chan struct{})
+	daemonAttainedPing := make(chan struct{})
 	go func() {
 		//
-		var package tmp2p.Package
-		_, err := protoio.NewSeparatedScanner(host, maximumPingPongPackageVolume).ScanMessage(&package)
+		var packet tmpfabric.Packet
+		_, err := protocolio.FreshSeparatedFetcher(node, maximumPingPongPacketExtent).FetchSignal(&packet)
 		require.NoError(t, err)
-		hostAcquiredPing <- struct{}{}
+		daemonAttainedPing <- struct{}{}
 
 		//
-		_, err = schemaRecorder.RecordMessage(shouldEnclosePackage(&tmp2p.PackagePong{}))
+		_, err = schemaPersistor.PersistSignal(shouldEnclosePacket(&tmpfabric.PacketPong{}))
 		require.NoError(t, err)
 	}()
-	<-hostAcquiredPing
+	<-daemonAttainedPing
 
-	pongClockLapsed := mconn.settings.PongDeadline + 20*time.Millisecond
+	pongClockLapsed := multilink.settings.PongDeadline + 20*time.Millisecond
 	select {
-	case messageOctets := <-acceptedChan:
-		t.Fatalf("REDACTED", messageOctets)
-	case err := <-faultsChan:
+	case signalOctets := <-acceptedChnl:
+		t.Fatalf("REDACTED", signalOctets)
+	case err := <-faultsStream:
 		t.Fatalf("REDACTED", err)
 	case <-time.After(pongClockLapsed):
-		assert.True(t, mconn.IsActive())
+		assert.True(t, multilink.EqualsActive())
 	}
 }
 
-func VerifyMLinkageVariedPings(t *testing.T) {
-	host, customer := net.Pipe()
-	defer host.Close()
+func VerifyModuleLinkageVariousPings(t *testing.T) {
+	node, customer := net.Pipe()
+	defer node.Close()
 	defer customer.Close()
 
-	acceptedChan := make(chan []byte)
-	faultsChan := make(chan any)
-	onAccept := func(chanUID byte, messageOctets []byte) {
-		acceptedChan <- messageOctets
+	acceptedChnl := make(chan []byte)
+	faultsStream := make(chan any)
+	uponAccept := func(chnlUUID byte, signalOctets []byte) {
+		acceptedChnl <- signalOctets
 	}
-	onFault := func(r any) {
-		faultsChan <- r
+	uponFailure := func(r any) {
+		faultsStream <- r
 	}
-	mconn := instantiateMLinkageWithResponses(customer, onAccept, onFault)
-	err := mconn.Begin()
+	multilink := generateModuleLinkageUsingReacts(customer, uponAccept, uponFailure)
+	err := multilink.Initiate()
 	require.Nil(t, err)
-	defer mconn.Halt() //
+	defer multilink.Halt() //
 
 	//
 	//
-	schemaScanner := protoio.NewSeparatedScanner(host, maximumPingPongPackageVolume)
-	schemaRecorder := protoio.NewSeparatedRecorder(host)
-	var pkt tmp2p.Package
+	schemaFetcher := protocolio.FreshSeparatedFetcher(node, maximumPingPongPacketExtent)
+	schemaPersistor := protocolio.FreshSeparatedPersistor(node)
+	var pkt tmpfabric.Packet
 
-	_, err = schemaRecorder.RecordMessage(shouldEnclosePackage(&tmp2p.PackagePing{}))
+	_, err = schemaPersistor.PersistSignal(shouldEnclosePacket(&tmpfabric.PacketPing{}))
 	require.NoError(t, err)
 
-	_, err = schemaScanner.ScanMessage(&pkt)
+	_, err = schemaFetcher.FetchSignal(&pkt)
 	require.NoError(t, err)
 
-	_, err = schemaRecorder.RecordMessage(shouldEnclosePackage(&tmp2p.PackagePing{}))
+	_, err = schemaPersistor.PersistSignal(shouldEnclosePacket(&tmpfabric.PacketPing{}))
 	require.NoError(t, err)
 
-	_, err = schemaScanner.ScanMessage(&pkt)
+	_, err = schemaFetcher.FetchSignal(&pkt)
 	require.NoError(t, err)
 
-	_, err = schemaRecorder.RecordMessage(shouldEnclosePackage(&tmp2p.PackagePing{}))
+	_, err = schemaPersistor.PersistSignal(shouldEnclosePacket(&tmpfabric.PacketPing{}))
 	require.NoError(t, err)
 
-	_, err = schemaScanner.ScanMessage(&pkt)
+	_, err = schemaFetcher.FetchSignal(&pkt)
 	require.NoError(t, err)
 
-	assert.True(t, mconn.IsActive())
+	assert.True(t, multilink.EqualsActive())
 }
 
-func VerifyMLinkagePingPongs(t *testing.T) {
+func VerifyModuleLinkagePingPongs(t *testing.T) {
 	//
 	defer leaktest.CheckTimeout(t, 10*time.Second)()
 
-	host, customer := net.Pipe()
+	node, customer := net.Pipe()
 
-	defer host.Close()
+	defer node.Close()
 	defer customer.Close()
 
-	acceptedChan := make(chan []byte)
-	faultsChan := make(chan any)
-	onAccept := func(chanUID byte, messageOctets []byte) {
-		acceptedChan <- messageOctets
+	acceptedChnl := make(chan []byte)
+	faultsStream := make(chan any)
+	uponAccept := func(chnlUUID byte, signalOctets []byte) {
+		acceptedChnl <- signalOctets
 	}
-	onFault := func(r any) {
-		faultsChan <- r
+	uponFailure := func(r any) {
+		faultsStream <- r
 	}
-	mconn := instantiateMLinkageWithResponses(customer, onAccept, onFault)
-	err := mconn.Begin()
+	multilink := generateModuleLinkageUsingReacts(customer, uponAccept, uponFailure)
+	err := multilink.Initiate()
 	require.Nil(t, err)
-	defer mconn.Halt() //
+	defer multilink.Halt() //
 
-	hostAcquiredPing := make(chan struct{})
+	daemonAttainedPing := make(chan struct{})
 	go func() {
-		schemaScanner := protoio.NewSeparatedScanner(host, maximumPingPongPackageVolume)
-		schemaRecorder := protoio.NewSeparatedRecorder(host)
-		var pkt tmp2p.PackagePing
+		schemaFetcher := protocolio.FreshSeparatedFetcher(node, maximumPingPongPacketExtent)
+		schemaPersistor := protocolio.FreshSeparatedPersistor(node)
+		var pkt tmpfabric.PacketPing
 
 		//
-		_, err = schemaScanner.ScanMessage(&pkt)
+		_, err = schemaFetcher.FetchSignal(&pkt)
 		require.NoError(t, err)
-		hostAcquiredPing <- struct{}{}
+		daemonAttainedPing <- struct{}{}
 
 		//
-		_, err = schemaRecorder.RecordMessage(shouldEnclosePackage(&tmp2p.PackagePong{}))
+		_, err = schemaPersistor.PersistSignal(shouldEnclosePacket(&tmpfabric.PacketPong{}))
 		require.NoError(t, err)
 
-		time.Sleep(mconn.settings.PingCadence)
+		time.Sleep(multilink.settings.PingDuration)
 
 		//
-		_, err = schemaScanner.ScanMessage(&pkt)
+		_, err = schemaFetcher.FetchSignal(&pkt)
 		require.NoError(t, err)
-		hostAcquiredPing <- struct{}{}
+		daemonAttainedPing <- struct{}{}
 
 		//
-		_, err = schemaRecorder.RecordMessage(shouldEnclosePackage(&tmp2p.PackagePong{}))
+		_, err = schemaPersistor.PersistSignal(shouldEnclosePacket(&tmpfabric.PacketPong{}))
 		require.NoError(t, err)
 	}()
-	<-hostAcquiredPing
-	<-hostAcquiredPing
+	<-daemonAttainedPing
+	<-daemonAttainedPing
 
-	pongClockLapsed := (mconn.settings.PongDeadline + 20*time.Millisecond) * 2
+	pongClockLapsed := (multilink.settings.PongDeadline + 20*time.Millisecond) * 2
 	select {
-	case messageOctets := <-acceptedChan:
-		t.Fatalf("REDACTED", messageOctets)
-	case err := <-faultsChan:
+	case signalOctets := <-acceptedChnl:
+		t.Fatalf("REDACTED", signalOctets)
+	case err := <-faultsStream:
 		t.Fatalf("REDACTED", err)
 	case <-time.After(2 * pongClockLapsed):
-		assert.True(t, mconn.IsActive())
+		assert.True(t, multilink.EqualsActive())
 	}
 }
 
-func VerifyMLinkageHaltsAndYieldsFault(t *testing.T) {
-	host, customer := NetPipe()
-	defer host.Close()
+func VerifyModuleLinkageHaltsAlsoYieldsFailure(t *testing.T) {
+	node, customer := NetworkTube()
+	defer node.Close()
 	defer customer.Close()
 
-	acceptedChan := make(chan []byte)
-	faultsChan := make(chan any)
-	onAccept := func(chanUID byte, messageOctets []byte) {
-		acceptedChan <- messageOctets
+	acceptedChnl := make(chan []byte)
+	faultsStream := make(chan any)
+	uponAccept := func(chnlUUID byte, signalOctets []byte) {
+		acceptedChnl <- signalOctets
 	}
-	onFault := func(r any) {
-		faultsChan <- r
+	uponFailure := func(r any) {
+		faultsStream <- r
 	}
-	mconn := instantiateMLinkageWithResponses(customer, onAccept, onFault)
-	err := mconn.Begin()
+	multilink := generateModuleLinkageUsingReacts(customer, uponAccept, uponFailure)
+	err := multilink.Initiate()
 	require.Nil(t, err)
-	defer mconn.Halt() //
+	defer multilink.Halt() //
 
 	if err := customer.Close(); err != nil {
 		t.Error(err)
 	}
 
 	select {
-	case acceptedOctets := <-acceptedChan:
+	case acceptedOctets := <-acceptedChnl:
 		t.Fatalf("REDACTED", acceptedOctets)
-	case err := <-faultsChan:
+	case err := <-faultsStream:
 		assert.NotNil(t, err)
-		assert.False(t, mconn.IsActive())
+		assert.False(t, multilink.EqualsActive())
 	case <-time.After(500 * time.Millisecond):
 		t.Fatal("REDACTED")
 	}
 }
 
-func newCustomerAndHostLinksForReadFaults(t *testing.T, chanOnErr chan struct{}) (*MLinkage, *MLinkage) {
-	host, customer := NetPipe()
+func freshCustomerAlsoDaemonLinksForeachFetchFaults(t *testing.T, chnlUponFault chan struct{}) (*ModuleLinkage, *ModuleLinkage) {
+	node, customer := NetworkTube()
 
-	onAccept := func(chanUID byte, messageOctets []byte) {}
-	onFault := func(r any) {}
+	uponAccept := func(chnlUUID byte, signalOctets []byte) {}
+	uponFailure := func(r any) {}
 
 	//
-	chanTraits := []*StreamDefinition{
-		{ID: 0x01, Urgency: 1, TransmitBufferVolume: 1},
-		{ID: 0x02, Urgency: 1, TransmitBufferVolume: 1},
+	chnlDescriptions := []*ConduitDefinition{
+		{ID: 0x01, Urgency: 1, TransmitStagingVolume: 1},
+		{ID: 0x02, Urgency: 1, TransmitStagingVolume: 1},
 	}
-	mconnCustomer := NewMLinkage(customer, chanTraits, onAccept, onFault)
-	mconnCustomer.AssignTracer(log.VerifyingTracer().With("REDACTED", "REDACTED"))
-	err := mconnCustomer.Begin()
+	multilinkCustomer := FreshModuleLinkage(customer, chnlDescriptions, uponAccept, uponFailure)
+	multilinkCustomer.AssignTracer(log.VerifyingTracer().Using("REDACTED", "REDACTED"))
+	err := multilinkCustomer.Initiate()
 	require.Nil(t, err)
 
 	//
 	//
-	hostTracer := log.VerifyingTracer().With("REDACTED", "REDACTED")
-	onFault = func(r any) {
-		chanOnErr <- struct{}{}
+	daemonTracer := log.VerifyingTracer().Using("REDACTED", "REDACTED")
+	uponFailure = func(r any) {
+		chnlUponFault <- struct{}{}
 	}
-	mconnHost := instantiateMLinkageWithResponses(host, onAccept, onFault)
-	mconnHost.AssignTracer(hostTracer)
-	err = mconnHost.Begin()
+	multilinkDaemon := generateModuleLinkageUsingReacts(node, uponAccept, uponFailure)
+	multilinkDaemon.AssignTracer(daemonTracer)
+	err = multilinkDaemon.Initiate()
 	require.Nil(t, err)
-	return mconnCustomer, mconnHost
+	return multilinkCustomer, multilinkDaemon
 }
 
 func anticipateTransmit(ch chan struct{}) bool {
-	after := time.After(time.Second * 5)
+	subsequent := time.After(time.Second * 5)
 	select {
 	case <-ch:
 		return true
-	case <-after:
+	case <-subsequent:
 		return false
 	}
 }
 
-func VerifyMLinkageReadFaultFlawedCodec(t *testing.T) {
-	chanOnErr := make(chan struct{})
-	mconnCustomer, mconnHost := newCustomerAndHostLinksForReadFaults(t, chanOnErr)
+func VerifyModuleLinkageFetchFailureFlawedSerialization(t *testing.T) {
+	chnlUponFault := make(chan struct{})
+	multilinkCustomer, multilinkDaemon := freshCustomerAlsoDaemonLinksForeachFetchFaults(t, chnlUponFault)
 
-	customer := mconnCustomer.link
+	customer := multilinkCustomer.link
 
 	//
 	_, err := customer.Write([]byte{1, 2, 3, 4, 5})
 	require.NoError(t, err)
-	assert.True(t, anticipateTransmit(chanOnErr), "REDACTED")
+	assert.True(t, anticipateTransmit(chnlUponFault), "REDACTED")
 
 	t.Cleanup(func() {
-		if err := mconnCustomer.Halt(); err != nil {
+		if err := multilinkCustomer.Halt(); err != nil {
 			t.Log(err)
 		}
 	})
 
 	t.Cleanup(func() {
-		if err := mconnHost.Halt(); err != nil {
+		if err := multilinkDaemon.Halt(); err != nil {
 			t.Log(err)
 		}
 	})
 }
 
-func VerifyMLinkageReadFaultUnclearConduit(t *testing.T) {
-	chanOnErr := make(chan struct{})
-	mconnCustomer, mconnHost := newCustomerAndHostLinksForReadFaults(t, chanOnErr)
+func VerifyModuleLinkageFetchFailureUnfamiliarConduit(t *testing.T) {
+	chnlUponFault := make(chan struct{})
+	multilinkCustomer, multilinkDaemon := freshCustomerAlsoDaemonLinksForeachFetchFaults(t, chnlUponFault)
 
 	msg := []byte("REDACTED")
 
 	//
-	assert.False(t, mconnCustomer.Transmit(0x03, msg))
+	assert.False(t, multilinkCustomer.Transmit(0x03, msg))
 
 	//
 	//
-	assert.True(t, mconnCustomer.Transmit(0x02, msg))
-	assert.True(t, anticipateTransmit(chanOnErr), "REDACTED")
+	assert.True(t, multilinkCustomer.Transmit(0x02, msg))
+	assert.True(t, anticipateTransmit(chnlUponFault), "REDACTED")
 
 	t.Cleanup(func() {
-		if err := mconnCustomer.Halt(); err != nil {
+		if err := multilinkCustomer.Halt(); err != nil {
 			t.Log(err)
 		}
 	})
 
 	t.Cleanup(func() {
-		if err := mconnHost.Halt(); err != nil {
+		if err := multilinkDaemon.Halt(); err != nil {
 			t.Log(err)
 		}
 	})
 }
 
-func VerifyMLinkageReadFaultLengthySignal(t *testing.T) {
-	chanOnErr := make(chan struct{})
-	chanOnRcv := make(chan struct{})
+func VerifyModuleLinkageFetchFailureExtendedArtifact(t *testing.T) {
+	chnlUponFault := make(chan struct{})
+	chnlUponAcceptmsg := make(chan struct{})
 
-	mconnCustomer, mconnHost := newCustomerAndHostLinksForReadFaults(t, chanOnErr)
-	defer mconnCustomer.Halt() //
-	defer mconnHost.Halt() //
+	multilinkCustomer, multilinkDaemon := freshCustomerAlsoDaemonLinksForeachFetchFaults(t, chnlUponFault)
+	defer multilinkCustomer.Halt() //
+	defer multilinkDaemon.Halt() //
 
-	mconnHost.onAccept = func(chanUID byte, messageOctets []byte) {
-		chanOnRcv <- struct{}{}
+	multilinkDaemon.uponAccept = func(chnlUUID byte, signalOctets []byte) {
+		chnlUponAcceptmsg <- struct{}{}
 	}
 
-	customer := mconnCustomer.link
-	schemaRecorder := protoio.NewSeparatedRecorder(customer)
+	customer := multilinkCustomer.link
+	schemaPersistor := protocolio.FreshSeparatedPersistor(customer)
 
 	//
-	package := tmp2p.PackageMessage{
-		StreamUID: 0x01,
+	packet := tmpfabric.PacketSignal{
+		ConduitUUID: 0x01,
 		EOF:       true,
-		Data:      make([]byte, mconnCustomer.settings.MaximumPackageMessageShipmentVolume),
+		Data:      make([]byte, multilinkCustomer.settings.MaximumPacketSignalWorkloadExtent),
 	}
 
-	_, err := schemaRecorder.RecordMessage(shouldEnclosePackage(&package))
+	_, err := schemaPersistor.PersistSignal(shouldEnclosePacket(&packet))
 	require.NoError(t, err)
-	assert.True(t, anticipateTransmit(chanOnRcv), "REDACTED")
+	assert.True(t, anticipateTransmit(chnlUponAcceptmsg), "REDACTED")
 
 	//
-	package = tmp2p.PackageMessage{
-		StreamUID: 0x01,
+	packet = tmpfabric.PacketSignal{
+		ConduitUUID: 0x01,
 		EOF:       true,
-		Data:      make([]byte, mconnCustomer.settings.MaximumPackageMessageShipmentVolume+100),
+		Data:      make([]byte, multilinkCustomer.settings.MaximumPacketSignalWorkloadExtent+100),
 	}
 
-	_, err = schemaRecorder.RecordMessage(shouldEnclosePackage(&package))
+	_, err = schemaPersistor.PersistSignal(shouldEnclosePacket(&packet))
 	require.Error(t, err)
-	assert.True(t, anticipateTransmit(chanOnErr), "REDACTED")
+	assert.True(t, anticipateTransmit(chnlUponFault), "REDACTED")
 }
 
-func VerifyMLinkageReadFaultUnclearMessageKind(t *testing.T) {
-	chanOnErr := make(chan struct{})
-	mconnCustomer, mconnHost := newCustomerAndHostLinksForReadFaults(t, chanOnErr)
-	defer mconnCustomer.Halt() //
-	defer mconnHost.Halt() //
+func VerifyModuleLinkageFetchFailureUnfamiliarSignalKind(t *testing.T) {
+	chnlUponFault := make(chan struct{})
+	multilinkCustomer, multilinkDaemon := freshCustomerAlsoDaemonLinksForeachFetchFaults(t, chnlUponFault)
+	defer multilinkCustomer.Halt() //
+	defer multilinkDaemon.Halt() //
 
 	//
-	_, err := protoio.NewSeparatedRecorder(mconnCustomer.link).RecordMessage(&kinds.Heading{LedgerUID: "REDACTED"})
+	_, err := protocolio.FreshSeparatedPersistor(multilinkCustomer.link).PersistSignal(&kinds.Heading{SuccessionUUID: "REDACTED"})
 	require.NoError(t, err)
-	assert.True(t, anticipateTransmit(chanOnErr), "REDACTED")
+	assert.True(t, anticipateTransmit(chnlUponFault), "REDACTED")
 }
 
-func VerifyMLinkageAttemptTransmit(t *testing.T) {
-	host, customer := NetPipe()
-	defer host.Close()
+func VerifyModuleLinkageAttemptTransmit(t *testing.T) {
+	node, customer := NetworkTube()
+	defer node.Close()
 	defer customer.Close()
 
-	mconn := instantiateVerifyMLinkage(customer)
-	err := mconn.Begin()
+	multilink := generateVerifyModuleLinkage(customer)
+	err := multilink.Initiate()
 	require.Nil(t, err)
-	defer mconn.Halt() //
+	defer multilink.Halt() //
 
 	msg := []byte("REDACTED")
-	outcomeChan := make(chan string, 2)
-	assert.True(t, mconn.AttemptTransmit(0x01, msg))
-	_, err = host.Read(make([]byte, len(msg)))
+	outcomeChnl := make(chan string, 2)
+	assert.True(t, multilink.AttemptTransmit(0x01, msg))
+	_, err = node.Read(make([]byte, len(msg)))
 	require.NoError(t, err)
-	assert.True(t, mconn.MayTransmit(0x01))
-	assert.True(t, mconn.AttemptTransmit(0x01, msg))
-	assert.False(t, mconn.MayTransmit(0x01))
+	assert.True(t, multilink.AbleTransmit(0x01))
+	assert.True(t, multilink.AttemptTransmit(0x01, msg))
+	assert.False(t, multilink.AbleTransmit(0x01))
 	go func() {
-		mconn.AttemptTransmit(0x01, msg)
-		outcomeChan <- "REDACTED"
+		multilink.AttemptTransmit(0x01, msg)
+		outcomeChnl <- "REDACTED"
 	}()
-	assert.False(t, mconn.MayTransmit(0x01))
-	assert.False(t, mconn.AttemptTransmit(0x01, msg))
-	assert.Equal(t, "REDACTED", <-outcomeChan)
+	assert.False(t, multilink.AbleTransmit(0x01))
+	assert.False(t, multilink.AttemptTransmit(0x01, msg))
+	assert.Equal(t, "REDACTED", <-outcomeChnl)
 }
 
 //
 func VerifyLinkArrays(t *testing.T) {
 	verifyScenarios := []struct {
-		verifyLabel string
+		verifyAlias string
 		msg      proto.Message
 		expirationOctets string
 	}{
-		{"REDACTED", &tmp2p.PackagePing{}, "REDACTED"},
-		{"REDACTED", &tmp2p.PackagePong{}, "REDACTED"},
-		{"REDACTED", &tmp2p.PackageMessage{StreamUID: 1, EOF: false, Data: []byte("REDACTED")}, "REDACTED"},
+		{"REDACTED", &tmpfabric.PacketPing{}, "REDACTED"},
+		{"REDACTED", &tmpfabric.PacketPong{}, "REDACTED"},
+		{"REDACTED", &tmpfabric.PacketSignal{ConduitUUID: 1, EOF: false, Data: []byte("REDACTED")}, "REDACTED"},
 	}
 
 	for _, tc := range verifyScenarios {
 
-		pm := shouldEnclosePackage(tc.msg)
+		pm := shouldEnclosePacket(tc.msg)
 		bz, err := pm.Serialize()
-		require.NoError(t, err, tc.verifyLabel)
+		require.NoError(t, err, tc.verifyAlias)
 
-		require.Equal(t, tc.expirationOctets, hex.EncodeToString(bz), tc.verifyLabel)
+		require.Equal(t, tc.expirationOctets, hex.EncodeToString(bz), tc.verifyAlias)
 	}
 }
 
-func VerifyMLinkageConduitOverload(t *testing.T) {
-	chanOnErr := make(chan struct{})
-	chanOnRcv := make(chan struct{})
+func VerifyModuleLinkageConduitOverrun(t *testing.T) {
+	chnlUponFault := make(chan struct{})
+	chnlUponAcceptmsg := make(chan struct{})
 
-	mconnCustomer, mconnHost := newCustomerAndHostLinksForReadFaults(t, chanOnErr)
-	t.Cleanup(haltAll(t, mconnCustomer, mconnHost))
+	multilinkCustomer, multilinkDaemon := freshCustomerAlsoDaemonLinksForeachFetchFaults(t, chnlUponFault)
+	t.Cleanup(haltEvery(t, multilinkCustomer, multilinkDaemon))
 
-	mconnHost.onAccept = func(chanUID byte, messageOctets []byte) {
-		chanOnRcv <- struct{}{}
+	multilinkDaemon.uponAccept = func(chnlUUID byte, signalOctets []byte) {
+		chnlUponAcceptmsg <- struct{}{}
 	}
 
-	customer := mconnCustomer.link
-	schemaRecorder := protoio.NewSeparatedRecorder(customer)
+	customer := multilinkCustomer.link
+	schemaPersistor := protocolio.FreshSeparatedPersistor(customer)
 
-	package := tmp2p.PackageMessage{
-		StreamUID: 0x01,
+	packet := tmpfabric.PacketSignal{
+		ConduitUUID: 0x01,
 		EOF:       true,
 		Data:      []byte("REDACTED"),
 	}
-	_, err := schemaRecorder.RecordMessage(shouldEnclosePackage(&package))
+	_, err := schemaPersistor.PersistSignal(shouldEnclosePacket(&packet))
 	require.NoError(t, err)
-	assert.True(t, anticipateTransmit(chanOnRcv))
+	assert.True(t, anticipateTransmit(chnlUponAcceptmsg))
 
-	package.StreamUID = int32(1025)
-	_, err = schemaRecorder.RecordMessage(shouldEnclosePackage(&package))
+	packet.ConduitUUID = int32(1025)
+	_, err = schemaPersistor.PersistSignal(shouldEnclosePacket(&packet))
 	require.NoError(t, err)
-	assert.False(t, anticipateTransmit(chanOnRcv))
+	assert.False(t, anticipateTransmit(chnlUponAcceptmsg))
 }
 
 type terminator interface {
 	Halt() error
 }
 
-func haltAll(t *testing.T, terminators ...terminator) func() {
+func haltEvery(t *testing.T, terminators ...terminator) func() {
 	return func() {
 		for _, s := range terminators {
 			if err := s.Halt(); err != nil {

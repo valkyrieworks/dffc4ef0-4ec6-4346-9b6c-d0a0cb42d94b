@@ -6,119 +6,119 @@ import (
 	"fmt"
 	"time"
 
-	"github.com/valkyrieworks/vault"
-	cometbytes "github.com/valkyrieworks/utils/octets"
-	"github.com/valkyrieworks/utils/protoio"
-	engineproto "github.com/valkyrieworks/schema/consensuscore/kinds"
+	"github.com/valkyrieworks/dffc4ef0-4ec6-4346-9b6c-d0a0cb42d94b/security"
+	tendermintoctets "github.com/valkyrieworks/dffc4ef0-4ec6-4346-9b6c-d0a0cb42d94b/utils/octets"
+	"github.com/valkyrieworks/dffc4ef0-4ec6-4346-9b6c-d0a0cb42d94b/utils/protocolio"
+	commitchema "github.com/valkyrieworks/dffc4ef0-4ec6-4346-9b6c-d0a0cb42d94b/schema/strongmind/kinds"
 )
 
 const (
-	nullBallotStr string = "REDACTED"
+	voidBallotTxt string = "REDACTED"
 
 	//
-	MaximumBallotAdditionVolume int = 1024 * 1024
+	MaximumBallotAdditionExtent int = 1024 * 1024
 )
 
 var (
-	ErrBallotUnforeseenPhase            = errors.New("REDACTED")
-	ErrBallotCorruptRatifierOrdinal     = errors.New("REDACTED")
-	ErrBallotCorruptRatifierLocation   = errors.New("REDACTED")
-	ErrBallotCorruptAutograph          = errors.New("REDACTED")
-	ErrBallotCorruptLedgerDigest          = errors.New("REDACTED")
-	ErrBallotNotCertainAutograph = errors.New("REDACTED")
-	ErrBallotNull                       = errors.New("REDACTED")
-	ErrBallotAdditionMissing           = errors.New("REDACTED")
-	ErrCorruptBallotAddition          = errors.New("REDACTED")
+	FaultBallotUnforeseenPhase            = errors.New("REDACTED")
+	FaultBallotUnfitAssessorPosition     = errors.New("REDACTED")
+	FaultBallotUnfitAssessorLocator   = errors.New("REDACTED")
+	FaultBallotUnfitSigning          = errors.New("REDACTED")
+	FaultBallotUnfitLedgerDigest          = errors.New("REDACTED")
+	FaultBallotUnCertainNotation = errors.New("REDACTED")
+	FaultBallotVoid                       = errors.New("REDACTED")
+	FaultBallotAdditionMissing           = errors.New("REDACTED")
+	FaultUnfitBallotAddition          = errors.New("REDACTED")
 )
 
-type ErrBallotClashingBallots struct {
-	BallotA *Ballot
+type FaultBallotDiscordantBallots struct {
+	BallotAN *Ballot
 	BallotBYTE *Ballot
 }
 
-func (err *ErrBallotClashingBallots) Fault() string {
-	return fmt.Sprintf("REDACTED", err.BallotA.RatifierLocation)
+func (err *FaultBallotDiscordantBallots) Failure() string {
+	return fmt.Sprintf("REDACTED", err.BallotAN.AssessorLocation)
 }
 
-func NewClashingBallotFault(vote1, ballot2 *Ballot) *ErrBallotClashingBallots {
-	return &ErrBallotClashingBallots{
-		BallotA: vote1,
+func FreshDiscordantBallotFailure(ballot1, ballot2 *Ballot) *FaultBallotDiscordantBallots {
+	return &FaultBallotDiscordantBallots{
+		BallotAN: ballot1,
 		BallotBYTE: ballot2,
 	}
 }
 
 //
-type ErrBallotAdditionCorrupt struct {
-	ExtensionAutograph []byte
+type FaultBallotAdditionUnfit struct {
+	AddnSigning []byte
 }
 
-func (err *ErrBallotAdditionCorrupt) Fault() string {
-	return fmt.Sprintf("REDACTED", err.ExtensionAutograph)
+func (err *FaultBallotAdditionUnfit) Failure() string {
+	return fmt.Sprintf("REDACTED", err.AddnSigning)
 }
 
 //
-type Location = vault.Location
+type Location = security.Location
 
 //
 //
 type Ballot struct {
-	Kind               engineproto.AttestedMessageKind `json:"kind"`
-	Level             int64                  `json:"level"`
-	Cycle              int32                  `json:"epoch"`    //
-	LedgerUID            LedgerUID                `json:"ledger_uid"` //
+	Kind               commitchema.AttestedSignalKind `json:"kind"`
+	Altitude             int64                  `json:"altitude"`
+	Iteration              int32                  `json:"iteration"`    //
+	LedgerUUID            LedgerUUID                `json:"ledger_uuid"` //
 	Timestamp          time.Time              `json:"timestamp"`
-	RatifierLocation   Location                `json:"ratifier_location"`
-	RatifierOrdinal     int32                  `json:"ratifier_ordinal"`
-	Autograph          []byte                 `json:"autograph"`
+	AssessorLocation   Location                `json:"assessor_location"`
+	AssessorOrdinal     int32                  `json:"assessor_position"`
+	Notation          []byte                 `json:"signing"`
 	Addition          []byte                 `json:"addition"`
-	AdditionAutograph []byte                 `json:"addition_autograph"`
+	AdditionNotation []byte                 `json:"addition_signing"`
 }
 
 //
 //
 //
 //
-func BallotFromSchema(pv *engineproto.Ballot) (*Ballot, error) {
-	ledgerUID, err := LedgerUIDFromSchema(&pv.LedgerUID)
+func BallotOriginatingSchema(pv *commitchema.Ballot) (*Ballot, error) {
+	ledgerUUID, err := LedgerUUIDOriginatingSchema(&pv.LedgerUUID)
 	if err != nil {
 		return nil, err
 	}
 
 	return &Ballot{
 		Kind:               pv.Kind,
-		Level:             pv.Level,
-		Cycle:              pv.Cycle,
-		LedgerUID:            *ledgerUID,
+		Altitude:             pv.Altitude,
+		Iteration:              pv.Iteration,
+		LedgerUUID:            *ledgerUUID,
 		Timestamp:          pv.Timestamp,
-		RatifierLocation:   pv.RatifierLocation,
-		RatifierOrdinal:     pv.RatifierOrdinal,
-		Autograph:          pv.Autograph,
+		AssessorLocation:   pv.AssessorLocation,
+		AssessorOrdinal:     pv.AssessorOrdinal,
+		Notation:          pv.Notation,
 		Addition:          pv.Addition,
-		AdditionAutograph: pv.AdditionAutograph,
+		AdditionNotation: pv.AdditionNotation,
 	}, nil
 }
 
 //
 func (ballot *Ballot) EndorseSignature() EndorseSignature {
 	if ballot == nil {
-		return NewEndorseSignatureMissing()
+		return FreshEndorseSignatureMissing()
 	}
 
-	var ledgerUIDMark LedgerUIDMark
+	var ledgerUUIDMarker LedgerUUIDMarker
 	switch {
-	case ballot.LedgerUID.IsFinished():
-		ledgerUIDMark = LedgerUIDMarkEndorse
-	case ballot.LedgerUID.IsNil():
-		ledgerUIDMark = LedgerUIDMarkNull
+	case ballot.LedgerUUID.EqualsFinish():
+		ledgerUUIDMarker = LedgerUUIDMarkerEndorse
+	case ballot.LedgerUUID.EqualsNull():
+		ledgerUUIDMarker = LedgerUUIDMarkerVoid
 	default:
 		panic(fmt.Sprintf("REDACTED", ballot))
 	}
 
 	return EndorseSignature{
-		LedgerUIDMark:      ledgerUIDMark,
-		RatifierLocation: ballot.RatifierLocation,
+		LedgerUUIDMarker:      ledgerUUIDMarker,
+		AssessorLocation: ballot.AssessorLocation,
 		Timestamp:        ballot.Timestamp,
-		Autograph:        ballot.Autograph,
+		Notation:        ballot.Notation,
 	}
 }
 
@@ -127,13 +127,13 @@ func (ballot *Ballot) EndorseSignature() EndorseSignature {
 //
 func (ballot *Ballot) ExpandedEndorseSignature() ExpandedEndorseSignature {
 	if ballot == nil {
-		return NewExpandedEndorseSignatureMissing()
+		return FreshExpandedEndorseSignatureMissing()
 	}
 
 	return ExpandedEndorseSignature{
 		EndorseSignature:          ballot.EndorseSignature(),
 		Addition:          ballot.Addition,
-		AdditionAutograph: ballot.AdditionAutograph,
+		AdditionNotation: ballot.AdditionNotation,
 	}
 }
 
@@ -145,9 +145,9 @@ func (ballot *Ballot) ExpandedEndorseSignature() ExpandedEndorseSignature {
 //
 //
 //
-func BallotAttestOctets(ledgerUID string, ballot *engineproto.Ballot) []byte {
-	pb := StandardizeBallot(ledgerUID, ballot)
-	bz, err := protoio.SerializeSeparated(&pb)
+func BallotAttestOctets(successionUUID string, ballot *commitchema.Ballot) []byte {
+	pb := NormalizeBallot(successionUUID, ballot)
+	bz, err := protocolio.SerializeSeparated(&pb)
 	if err != nil {
 		panic(err)
 	}
@@ -160,9 +160,9 @@ func BallotAttestOctets(ledgerUID string, ballot *engineproto.Ballot) []byte {
 //
 //
 //
-func BallotAdditionAttestOctets(ledgerUID string, ballot *engineproto.Ballot) []byte {
-	pb := StandardizeBallotAddition(ledgerUID, ballot)
-	bz, err := protoio.SerializeSeparated(&pb)
+func BallotAdditionAttestOctets(successionUUID string, ballot *commitchema.Ballot) []byte {
+	pb := NormalizeBallotAddition(successionUUID, ballot)
+	bz, err := protocolio.SerializeSeparated(&pb)
 	if err != nil {
 		panic(err)
 	}
@@ -170,9 +170,9 @@ func BallotAdditionAttestOctets(ledgerUID string, ballot *engineproto.Ballot) []
 	return bz
 }
 
-func (ballot *Ballot) Clone() *Ballot {
-	ballotClone := *ballot
-	return &ballotClone
+func (ballot *Ballot) Duplicate() *Ballot {
+	ballotDuplicate := *ballot
+	return &ballotDuplicate
 }
 
 //
@@ -187,42 +187,42 @@ func (ballot *Ballot) Clone() *Ballot {
 //
 //
 //
-func (ballot *Ballot) String() string {
+func (ballot *Ballot) Text() string {
 	if ballot == nil {
-		return nullBallotStr
+		return voidBallotTxt
 	}
 
-	var kindString string
+	var kindText string
 	switch ballot.Kind {
-	case engineproto.PreballotKind:
-		kindString = "REDACTED"
-	case engineproto.PreendorseKind:
-		kindString = "REDACTED"
+	case commitchema.PreballotKind:
+		kindText = "REDACTED"
+	case commitchema.PreendorseKind:
+		kindText = "REDACTED"
 	default:
 		panic("REDACTED")
 	}
 
 	return fmt.Sprintf("REDACTED",
-		ballot.RatifierOrdinal,
-		cometbytes.Footprint(ballot.RatifierLocation),
-		ballot.Level,
-		ballot.Cycle,
+		ballot.AssessorOrdinal,
+		tendermintoctets.Identifier(ballot.AssessorLocation),
+		ballot.Altitude,
+		ballot.Iteration,
 		ballot.Kind,
-		kindString,
-		cometbytes.Footprint(ballot.LedgerUID.Digest),
-		cometbytes.Footprint(ballot.Autograph),
-		cometbytes.Footprint(ballot.Addition),
-		StandardTime(ballot.Timestamp),
+		kindText,
+		tendermintoctets.Identifier(ballot.LedgerUUID.Digest),
+		tendermintoctets.Identifier(ballot.Notation),
+		tendermintoctets.Identifier(ballot.Addition),
+		StandardMoment(ballot.Timestamp),
 	)
 }
 
-func (ballot *Ballot) validateAndYieldSchema(ledgerUID string, publicKey vault.PublicKey) (*engineproto.Ballot, error) {
-	if !bytes.Equal(publicKey.Location(), ballot.RatifierLocation) {
-		return nil, ErrBallotCorruptRatifierLocation
+func (ballot *Ballot) validateAlsoYieldSchema(successionUUID string, publicToken security.PublicToken) (*commitchema.Ballot, error) {
+	if !bytes.Equal(publicToken.Location(), ballot.AssessorLocation) {
+		return nil, FaultBallotUnfitAssessorLocator
 	}
-	v := ballot.ToSchema()
-	if !publicKey.ValidateAutograph(BallotAttestOctets(ledgerUID, v), ballot.Autograph) {
-		return nil, ErrBallotCorruptAutograph
+	v := ballot.TowardSchema()
+	if !publicToken.ValidateNotation(BallotAttestOctets(successionUUID, v), ballot.Notation) {
+		return nil, FaultBallotUnfitSigning
 	}
 	return v, nil
 }
@@ -230,8 +230,8 @@ func (ballot *Ballot) validateAndYieldSchema(ledgerUID string, publicKey vault.P
 //
 //
 //
-func (ballot *Ballot) Validate(ledgerUID string, publicKey vault.PublicKey) error {
-	_, err := ballot.validateAndYieldSchema(ledgerUID, publicKey)
+func (ballot *Ballot) Validate(successionUUID string, publicToken security.PublicToken) error {
+	_, err := ballot.validateAlsoYieldSchema(successionUUID, publicToken)
 	return err
 }
 
@@ -239,20 +239,20 @@ func (ballot *Ballot) Validate(ledgerUID string, publicKey vault.PublicKey) erro
 //
 //
 //
-func (ballot *Ballot) ValidateBallotAndAddition(ledgerUID string, publicKey vault.PublicKey) error {
-	v, err := ballot.validateAndYieldSchema(ledgerUID, publicKey)
+func (ballot *Ballot) ValidateBallotAlsoAddition(successionUUID string, publicToken security.PublicToken) error {
+	v, err := ballot.validateAlsoYieldSchema(successionUUID, publicToken)
 	if err != nil {
 		return err
 	}
 	//
-	if ballot.Kind == engineproto.PreendorseKind && !SchemaLedgerUIDIsNull(&v.LedgerUID) {
-		if len(ballot.AdditionAutograph) == 0 {
+	if ballot.Kind == commitchema.PreendorseKind && !SchemaLedgerUUIDEqualsVoid(&v.LedgerUUID) {
+		if len(ballot.AdditionNotation) == 0 {
 			return errors.New("REDACTED")
 		}
 
-		extensionAttestOctets := BallotAdditionAttestOctets(ledgerUID, v)
-		if !publicKey.ValidateAutograph(extensionAttestOctets, ballot.AdditionAutograph) {
-			return ErrBallotCorruptAutograph
+		addnAttestOctets := BallotAdditionAttestOctets(successionUUID, v)
+		if !publicToken.ValidateNotation(addnAttestOctets, ballot.AdditionNotation) {
+			return FaultBallotUnfitSigning
 		}
 	}
 	return nil
@@ -260,14 +260,14 @@ func (ballot *Ballot) ValidateBallotAndAddition(ledgerUID string, publicKey vaul
 
 //
 //
-func (ballot *Ballot) ValidateAddition(ledgerUID string, publicKey vault.PublicKey) error {
-	if ballot.Kind != engineproto.PreendorseKind || ballot.LedgerUID.IsNil() {
+func (ballot *Ballot) ValidateAddition(successionUUID string, publicToken security.PublicToken) error {
+	if ballot.Kind != commitchema.PreendorseKind || ballot.LedgerUUID.EqualsNull() {
 		return nil
 	}
-	v := ballot.ToSchema()
-	extensionAttestOctets := BallotAdditionAttestOctets(ledgerUID, v)
-	if !publicKey.ValidateAutograph(extensionAttestOctets, ballot.AdditionAutograph) {
-		return ErrBallotCorruptAutograph
+	v := ballot.TowardSchema()
+	addnAttestOctets := BallotAdditionAttestOctets(successionUUID, v)
+	if !publicToken.ValidateNotation(addnAttestOctets, ballot.AdditionNotation) {
+		return FaultBallotUnfitSigning
 	}
 	return nil
 }
@@ -275,76 +275,76 @@ func (ballot *Ballot) ValidateAddition(ledgerUID string, publicKey vault.PublicK
 //
 //
 //
-func (ballot *Ballot) CertifySimple() error {
-	if !IsBallotKindSound(ballot.Kind) {
+func (ballot *Ballot) CertifyFundamental() error {
+	if !EqualsBallotKindSound(ballot.Kind) {
 		return errors.New("REDACTED")
 	}
 
-	if ballot.Level <= 0 {
+	if ballot.Altitude <= 0 {
 		return errors.New("REDACTED")
 	}
 
-	if ballot.Cycle < 0 {
+	if ballot.Iteration < 0 {
 		return errors.New("REDACTED")
 	}
 
 	//
 
-	if err := ballot.LedgerUID.CertifySimple(); err != nil {
+	if err := ballot.LedgerUUID.CertifyFundamental(); err != nil {
 		return fmt.Errorf("REDACTED", err)
 	}
 
 	//
 	//
-	if !ballot.LedgerUID.IsNil() && !ballot.LedgerUID.IsFinished() {
-		return fmt.Errorf("REDACTED", ballot.LedgerUID)
+	if !ballot.LedgerUUID.EqualsNull() && !ballot.LedgerUUID.EqualsFinish() {
+		return fmt.Errorf("REDACTED", ballot.LedgerUUID)
 	}
 
-	if len(ballot.RatifierLocation) != vault.LocationVolume {
+	if len(ballot.AssessorLocation) != security.LocatorExtent {
 		return fmt.Errorf("REDACTED",
-			vault.LocationVolume,
-			len(ballot.RatifierLocation),
+			security.LocatorExtent,
+			len(ballot.AssessorLocation),
 		)
 	}
-	if ballot.RatifierOrdinal < 0 {
+	if ballot.AssessorOrdinal < 0 {
 		return errors.New("REDACTED")
 	}
-	if len(ballot.Autograph) == 0 {
+	if len(ballot.Notation) == 0 {
 		return errors.New("REDACTED")
 	}
 
-	if len(ballot.Autograph) > MaximumAutographVolume {
-		return fmt.Errorf("REDACTED", MaximumAutographVolume)
+	if len(ballot.Notation) > MaximumSigningExtent {
+		return fmt.Errorf("REDACTED", MaximumSigningExtent)
 	}
 
 	//
 	//
 	//
-	if ballot.Kind != engineproto.PreendorseKind || ballot.LedgerUID.IsNil() {
+	if ballot.Kind != commitchema.PreendorseKind || ballot.LedgerUUID.EqualsNull() {
 		if len(ballot.Addition) > 0 {
 			return fmt.Errorf(
 				"REDACTED",
-				ballot.Kind, ballot.LedgerUID.IsNil(),
+				ballot.Kind, ballot.LedgerUUID.EqualsNull(),
 			)
 		}
-		if len(ballot.AdditionAutograph) > 0 {
+		if len(ballot.AdditionNotation) > 0 {
 			return errors.New("REDACTED")
 		}
 	}
 
-	if ballot.Kind == engineproto.PreendorseKind && !ballot.LedgerUID.IsNil() {
+	if ballot.Kind == commitchema.PreendorseKind && !ballot.LedgerUUID.EqualsNull() {
 		//
 		//
 		//
-		if len(ballot.AdditionAutograph) > MaximumAutographVolume {
-			return fmt.Errorf("REDACTED", MaximumAutographVolume)
+		if len(ballot.AdditionNotation) > MaximumSigningExtent {
+			return fmt.Errorf("REDACTED", MaximumSigningExtent)
 		}
 
 		//
 		//
 		//
 		//
-		if len(ballot.AdditionAutograph) == 0 && len(ballot.Addition) != 0 {
+		if len(ballot.AdditionNotation) == 0 && len(ballot.Addition) != 0 {
 			return fmt.Errorf("REDACTED")
 		}
 	}
@@ -356,47 +356,47 @@ func (ballot *Ballot) CertifySimple() error {
 //
 func (ballot *Ballot) AssureAddition() error {
 	//
-	if ballot.Kind != engineproto.PreendorseKind {
+	if ballot.Kind != commitchema.PreendorseKind {
 		return nil
 	}
-	if ballot.LedgerUID.IsNil() {
+	if ballot.LedgerUUID.EqualsNull() {
 		return nil
 	}
-	if len(ballot.AdditionAutograph) > 0 {
+	if len(ballot.AdditionNotation) > 0 {
 		return nil
 	}
-	return ErrBallotAdditionMissing
+	return FaultBallotAdditionMissing
 }
 
 //
 //
-func (ballot *Ballot) ToSchema() *engineproto.Ballot {
+func (ballot *Ballot) TowardSchema() *commitchema.Ballot {
 	if ballot == nil {
 		return nil
 	}
 
-	return &engineproto.Ballot{
+	return &commitchema.Ballot{
 		Kind:               ballot.Kind,
-		Level:             ballot.Level,
-		Cycle:              ballot.Cycle,
-		LedgerUID:            ballot.LedgerUID.ToSchema(),
+		Altitude:             ballot.Altitude,
+		Iteration:              ballot.Iteration,
+		LedgerUUID:            ballot.LedgerUUID.TowardSchema(),
 		Timestamp:          ballot.Timestamp,
-		RatifierLocation:   ballot.RatifierLocation,
-		RatifierOrdinal:     ballot.RatifierOrdinal,
-		Autograph:          ballot.Autograph,
+		AssessorLocation:   ballot.AssessorLocation,
+		AssessorOrdinal:     ballot.AssessorOrdinal,
+		Notation:          ballot.Notation,
 		Addition:          ballot.Addition,
-		AdditionAutograph: ballot.AdditionAutograph,
+		AdditionNotation: ballot.AdditionNotation,
 	}
 }
 
-func BallotsToSchema(ballots []*Ballot) []*engineproto.Ballot {
+func BallotsTowardSchema(ballots []*Ballot) []*commitchema.Ballot {
 	if ballots == nil {
 		return nil
 	}
 
-	res := make([]*engineproto.Ballot, 0, len(ballots))
+	res := make([]*commitchema.Ballot, 0, len(ballots))
 	for _, ballot := range ballots {
-		v := ballot.ToSchema()
+		v := ballot.TowardSchema()
 		//
 		if v != nil {
 			res = append(res, v)
@@ -408,44 +408,44 @@ func BallotsToSchema(ballots []*Ballot) []*engineproto.Ballot {
 //
 //
 //
-func AttestAndInspectBallot(
+func AttestAlsoInspectBallot(
 	ballot *Ballot,
-	privateValue PrivateRatifier,
-	ledgerUID string,
-	pluginsActivated bool,
+	privateItem PrivateAssessor,
+	successionUUID string,
+	additionsActivated bool,
 ) (bool, error) {
-	v := ballot.ToSchema()
-	if err := privateValue.AttestBallot(ledgerUID, v); err != nil {
+	v := ballot.TowardSchema()
+	if err := privateItem.AttestBallot(successionUUID, v); err != nil {
 		//
 		//
 		return true, err
 	}
-	ballot.Autograph = v.Autograph
+	ballot.Notation = v.Notation
 
-	isPreendorse := ballot.Kind == engineproto.PreendorseKind
-	if !isPreendorse && pluginsActivated {
+	equalsPreendorse := ballot.Kind == commitchema.PreendorseKind
+	if !equalsPreendorse && additionsActivated {
 		//
-		return false, &ErrBallotAdditionCorrupt{ExtensionAutograph: v.AdditionAutograph}
+		return false, &FaultBallotAdditionUnfit{AddnSigning: v.AdditionNotation}
 	}
 
-	isNull := ballot.LedgerUID.IsNil()
-	extensionAutograph := (len(v.AdditionAutograph) > 0)
+	equalsVoid := ballot.LedgerUUID.EqualsNull()
+	addnSigning := (len(v.AdditionNotation) > 0)
 
 	//
-	if extensionAutograph && (!isPreendorse || isNull) {
+	if addnSigning && (!equalsPreendorse || equalsVoid) {
 		//
-		return false, &ErrBallotAdditionCorrupt{ExtensionAutograph: v.AdditionAutograph}
+		return false, &FaultBallotAdditionUnfit{AddnSigning: v.AdditionNotation}
 	}
 
-	ballot.AdditionAutograph = nil
-	if pluginsActivated {
+	ballot.AdditionNotation = nil
+	if additionsActivated {
 		//
-		if !extensionAutograph && isPreendorse && !isNull {
+		if !addnSigning && equalsPreendorse && !equalsVoid {
 			//
-			return false, &ErrBallotAdditionCorrupt{ExtensionAutograph: v.AdditionAutograph}
+			return false, &FaultBallotAdditionUnfit{AddnSigning: v.AdditionNotation}
 		}
 
-		ballot.AdditionAutograph = v.AdditionAutograph
+		ballot.AdditionNotation = v.AdditionNotation
 	}
 
 	ballot.Timestamp = v.Timestamp

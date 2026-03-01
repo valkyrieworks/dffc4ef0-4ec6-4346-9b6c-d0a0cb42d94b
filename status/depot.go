@@ -7,14 +7,14 @@ import (
 
 	"github.com/cosmos/gogoproto/proto"
 
-	dbm "github.com/valkyrieworks/-db"
+	dbm "github.com/valkyrieworks/dffc4ef0-4ec6-4346-9b6c-d0a0cb42d94b/-db"
 
-	iface "github.com/valkyrieworks/iface/kinds"
-	cometmath "github.com/valkyrieworks/utils/math"
-	cometos "github.com/valkyrieworks/utils/os"
-	cometstatus "github.com/valkyrieworks/schema/consensuscore/status"
-	engineproto "github.com/valkyrieworks/schema/consensuscore/kinds"
-	"github.com/valkyrieworks/kinds"
+	iface "github.com/valkyrieworks/dffc4ef0-4ec6-4346-9b6c-d0a0cb42d94b/iface/kinds"
+	strongarithmetic "github.com/valkyrieworks/dffc4ef0-4ec6-4346-9b6c-d0a0cb42d94b/utils/arithmetic"
+	strongos "github.com/valkyrieworks/dffc4ef0-4ec6-4346-9b6c-d0a0cb42d94b/utils/os"
+	strongstatus "github.com/valkyrieworks/dffc4ef0-4ec6-4346-9b6c-d0a0cb42d94b/schema/strongmind/status"
+	commitchema "github.com/valkyrieworks/dffc4ef0-4ec6-4346-9b6c-d0a0cb42d94b/schema/strongmind/kinds"
+	"github.com/valkyrieworks/dffc4ef0-4ec6-4346-9b6c-d0a0cb42d94b/kinds"
 )
 
 const (
@@ -22,28 +22,28 @@ const (
 	//
 	//
 	//
-	valueCollectionMilestoneCadence = 100000
+	itemAssignMilestoneDuration = 100000
 )
 
 //
 
-func computeRatifiersKey(level int64) []byte {
-	return []byte(fmt.Sprintf("REDACTED", level))
+func computeAssessorsToken(altitude int64) []byte {
+	return []byte(fmt.Sprintf("REDACTED", altitude))
 }
 
-func computeAgreementOptionsKey(level int64) []byte {
-	return []byte(fmt.Sprintf("REDACTED", level))
+func computeAgreementParametersToken(altitude int64) []byte {
+	return []byte(fmt.Sprintf("REDACTED", altitude))
 }
 
-func computeIfaceRepliesKey(level int64) []byte {
-	return []byte(fmt.Sprintf("REDACTED", level))
+func computeIfaceRepliesToken(altitude int64) []byte {
+	return []byte(fmt.Sprintf("REDACTED", altitude))
 }
 
 //
 
 var (
-	finalIfaceReplyKey    = []byte("REDACTED")
-	inactiveStatusAlignLevel = []byte("REDACTED")
+	finalIfaceReplyToken    = []byte("REDACTED")
+	inactiveStatusChronizeAltitude = []byte("REDACTED")
 )
 
 //
@@ -55,76 +55,76 @@ var (
 type Depot interface {
 	//
 	//
-	ImportFromStoreOrOriginEntry(string) (Status, error)
+	FetchOriginatingDatastoreEitherInaugurationRecord(string) (Status, error)
 	//
 	//
-	ImportFromStoreOrOriginPaper(*kinds.OriginPaper) (Status, error)
+	FetchOriginatingDatastoreEitherOriginPaper(*kinds.OriginPaper) (Status, error)
 	//
-	Import() (Status, error)
+	Fetch() (Status, error)
 	//
-	ImportRatifiers(int64) (*kinds.RatifierAssign, error)
+	FetchAssessors(int64) (*kinds.AssessorAssign, error)
 	//
-	ImportCompleteLedgerReply(int64) (*iface.ReplyCompleteLedger, error)
+	FetchCulminateLedgerReply(int64) (*iface.ReplyCulminateLedger, error)
 	//
-	ImportFinalCompleteLedgerReply(int64) (*iface.ReplyCompleteLedger, error)
+	FetchFinalCulminateLedgerReply(int64) (*iface.ReplyCulminateLedger, error)
 	//
-	ImportAgreementOptions(int64) (kinds.AgreementOptions, error)
+	FetchAgreementParameters(int64) (kinds.AgreementSettings, error)
 	//
 	Persist(Status) error
 	//
-	PersistCompleteLedgerReply(int64, *iface.ReplyCompleteLedger) error
+	PersistCulminateLedgerReply(int64, *iface.ReplyCulminateLedger) error
 	//
 	Onboard(Status) error
 	//
-	TrimConditions(int64, int64, int64) error
+	TrimStatuses(int64, int64, int64) error
 	//
-	CollectionInactiveStatusAlignLevel(level int64) error
+	AssignInactiveStatusChronizeAltitude(altitude int64) error
 	//
-	FetchInactiveStatusAlignLevel() (int64, error)
+	ObtainInactiveStatusChronizeAltitude() (int64, error)
 	//
-	End() error
+	Shutdown() error
 }
 
 //
-type storeDepot struct {
+type datastoreDepot struct {
 	db dbm.DB
 
-	DepotSettings
+	DepotChoices
 }
 
-type DepotSettings struct {
+type DepotChoices struct {
 	//
 	//
 	//
 	//
-	DropIfaceReplies bool
+	EjectIfaceReplies bool
 }
 
-var _ Depot = (*storeDepot)(nil)
+var _ Depot = (*datastoreDepot)(nil)
 
-func IsEmpty(depot storeDepot) (bool, error) {
-	status, err := depot.Import()
+func EqualsBlank(depot datastoreDepot) (bool, error) {
+	status, err := depot.Fetch()
 	if err != nil {
 		return false, err
 	}
-	return status.IsEmpty(), nil
+	return status.EqualsBlank(), nil
 }
 
 //
-func NewDepot(db dbm.DB, options DepotSettings) Depot {
-	return storeDepot{db, options}
+func FreshDepot(db dbm.DB, choices DepotChoices) Depot {
+	return datastoreDepot{db, choices}
 }
 
 //
 //
-func (depot storeDepot) ImportFromStoreOrOriginEntry(originEntryRoute string) (Status, error) {
-	status, err := depot.Import()
+func (depot datastoreDepot) FetchOriginatingDatastoreEitherInaugurationRecord(inaugurationRecordRoute string) (Status, error) {
+	status, err := depot.Fetch()
 	if err != nil {
 		return Status{}, err
 	}
-	if status.IsEmpty() {
+	if status.EqualsBlank() {
 		var err error
-		status, err = CreateOriginStatusFromEntry(originEntryRoute)
+		status, err = CreateInaugurationStatusOriginatingRecord(inaugurationRecordRoute)
 		if err != nil {
 			return status, err
 		}
@@ -135,15 +135,15 @@ func (depot storeDepot) ImportFromStoreOrOriginEntry(originEntryRoute string) (S
 
 //
 //
-func (depot storeDepot) ImportFromStoreOrOriginPaper(originPaper *kinds.OriginPaper) (Status, error) {
-	status, err := depot.Import()
+func (depot datastoreDepot) FetchOriginatingDatastoreEitherOriginPaper(inaugurationPaper *kinds.OriginPaper) (Status, error) {
+	status, err := depot.Fetch()
 	if err != nil {
 		return Status{}, err
 	}
 
-	if status.IsEmpty() {
+	if status.EqualsBlank() {
 		var err error
-		status, err = CreateOriginStatus(originPaper)
+		status, err = CreateInaugurationStatus(inaugurationPaper)
 		if err != nil {
 			return status, err
 		}
@@ -153,11 +153,11 @@ func (depot storeDepot) ImportFromStoreOrOriginPaper(originPaper *kinds.OriginPa
 }
 
 //
-func (depot storeDepot) Import() (Status, error) {
-	return depot.importStatus(statusKey)
+func (depot datastoreDepot) Fetch() (Status, error) {
+	return depot.fetchStatus(statusToken)
 }
 
-func (depot storeDepot) importStatus(key []byte) (status Status, err error) {
+func (depot datastoreDepot) fetchStatus(key []byte) (status Status, err error) {
 	buf, err := depot.db.Get(key)
 	if err != nil {
 		return status, err
@@ -166,16 +166,16 @@ func (depot storeDepot) importStatus(key []byte) (status Status, err error) {
 		return status, nil
 	}
 
-	sp := new(cometstatus.Status)
+	sp := new(strongstatus.Status)
 
 	err = proto.Unmarshal(buf, sp)
 	if err != nil {
 		//
-		cometos.Quit(fmt.Sprintf(`REDACTED:
+		strongos.Quit(fmt.Sprintf(`REDACTED:
 REDACTED`, err))
 	}
 
-	sm, err := FromSchema(sp)
+	sm, err := OriginatingSchema(sp)
 	if err != nil {
 		return status, err
 	}
@@ -184,88 +184,88 @@ REDACTED`, err))
 
 //
 //
-func (depot storeDepot) Persist(status Status) error {
-	return depot.persist(status, statusKey)
+func (depot datastoreDepot) Persist(status Status) error {
+	return depot.persist(status, statusToken)
 }
 
-func (depot storeDepot) persist(status Status, key []byte) error {
-	group := depot.db.NewGroup()
-	defer func(group dbm.Group) {
-		err := group.End()
+func (depot datastoreDepot) persist(status Status, key []byte) error {
+	cluster := depot.db.FreshCluster()
+	defer func(cluster dbm.Cluster) {
+		err := cluster.Shutdown()
 		if err != nil {
 			panic(err)
 		}
-	}(group)
-	followingLevel := status.FinalLedgerLevel + 1
+	}(cluster)
+	followingAltitude := status.FinalLedgerAltitude + 1
 	//
-	if followingLevel == 1 {
-		followingLevel = status.PrimaryLevel
+	if followingAltitude == 1 {
+		followingAltitude = status.PrimaryAltitude
 		//
 		//
-		if err := depot.persistRatifiersDetails(followingLevel, followingLevel, status.Ratifiers, group); err != nil {
+		if err := depot.persistAssessorsDetails(followingAltitude, followingAltitude, status.Assessors, cluster); err != nil {
 			return err
 		}
 	}
 	//
-	if err := depot.persistRatifiersDetails(followingLevel+1, status.FinalLevelRatifiersModified, status.FollowingRatifiers, group); err != nil {
+	if err := depot.persistAssessorsDetails(followingAltitude+1, status.FinalAltitudeAssessorsAltered, status.FollowingAssessors, cluster); err != nil {
 		return err
 	}
 	//
-	if err := depot.persistAgreementOptionsDetails(followingLevel,
-		status.FinalLevelAgreementOptionsModified, status.AgreementOptions, group); err != nil {
+	if err := depot.persistAgreementParametersDetails(followingAltitude,
+		status.FinalAltitudeAgreementParametersAltered, status.AgreementSettings, cluster); err != nil {
 		return err
 	}
-	if err := group.Set(key, status.Octets()); err != nil {
+	if err := cluster.Set(key, status.Octets()); err != nil {
 		return err
 	}
-	if err := group.RecordAlign(); err != nil {
+	if err := cluster.PersistChronize(); err != nil {
 		panic(err)
 	}
 	return nil
 }
 
 //
-func (depot storeDepot) Onboard(status Status) error {
-	group := depot.db.NewGroup()
-	defer func(group dbm.Group) {
-		err := group.End()
+func (depot datastoreDepot) Onboard(status Status) error {
+	cluster := depot.db.FreshCluster()
+	defer func(cluster dbm.Cluster) {
+		err := cluster.Shutdown()
 		if err != nil {
 			panic(err)
 		}
-	}(group)
-	level := status.FinalLedgerLevel + 1
-	if level == 1 {
-		level = status.PrimaryLevel
+	}(cluster)
+	altitude := status.FinalLedgerAltitude + 1
+	if altitude == 1 {
+		altitude = status.PrimaryAltitude
 	}
 
-	if level > 1 && !status.FinalRatifiers.IsNullOrEmpty() {
-		if err := depot.persistRatifiersDetails(level-1, level-1, status.FinalRatifiers, group); err != nil {
+	if altitude > 1 && !status.FinalAssessors.EqualsVoidEitherBlank() {
+		if err := depot.persistAssessorsDetails(altitude-1, altitude-1, status.FinalAssessors, cluster); err != nil {
 			return err
 		}
 	}
 
-	if err := depot.persistRatifiersDetails(level, level, status.Ratifiers, group); err != nil {
+	if err := depot.persistAssessorsDetails(altitude, altitude, status.Assessors, cluster); err != nil {
 		return err
 	}
 
-	if err := depot.persistRatifiersDetails(level+1, level+1, status.FollowingRatifiers, group); err != nil {
+	if err := depot.persistAssessorsDetails(altitude+1, altitude+1, status.FollowingAssessors, cluster); err != nil {
 		return err
 	}
 
-	if err := depot.persistAgreementOptionsDetails(level,
-		status.FinalLevelAgreementOptionsModified, status.AgreementOptions, group); err != nil {
+	if err := depot.persistAgreementParametersDetails(altitude,
+		status.FinalAltitudeAgreementParametersAltered, status.AgreementSettings, cluster); err != nil {
 		return err
 	}
 
-	if err := group.Set(statusKey, status.Octets()); err != nil {
+	if err := cluster.Set(statusToken, status.Octets()); err != nil {
 		return err
 	}
 
-	if err := group.RecordAlign(); err != nil {
+	if err := cluster.PersistChronize(); err != nil {
 		panic(err)
 	}
 
-	return group.End()
+	return cluster.Shutdown()
 }
 
 //
@@ -276,70 +276,70 @@ func (depot storeDepot) Onboard(status Status) error {
 //
 //
 //
-func (depot storeDepot) TrimConditions(from int64, to int64, proofLimitLevel int64) error {
-	if from <= 0 || to <= 0 {
-		return fmt.Errorf("REDACTED", from, to)
+func (depot datastoreDepot) TrimStatuses(originating int64, to int64, proofLimitAltitude int64) error {
+	if originating <= 0 || to <= 0 {
+		return fmt.Errorf("REDACTED", originating, to)
 	}
-	if from >= to {
-		return fmt.Errorf("REDACTED", from, to)
+	if originating >= to {
+		return fmt.Errorf("REDACTED", originating, to)
 	}
 
-	valueDetails, err := importRatifiersDetails(depot.db, min(to, proofLimitLevel))
+	itemDetails, err := fetchAssessorsDetails(depot.db, min(to, proofLimitAltitude))
 	if err != nil {
 		return fmt.Errorf("REDACTED", to, err)
 	}
-	optionsDetails, err := depot.importAgreementOptionsDetails(to)
+	parametersDetails, err := depot.fetchAgreementParametersDetails(to)
 	if err != nil {
 		return fmt.Errorf("REDACTED", to, err)
 	}
 
 	retainValues := make(map[int64]bool)
-	if valueDetails.RatifierAssign == nil {
-		retainValues[valueDetails.FinalLevelModified] = true
-		retainValues[finalArchivedLevelFor(to, valueDetails.FinalLevelModified)] = true //
+	if itemDetails.AssessorAssign == nil {
+		retainValues[itemDetails.FinalAltitudeAltered] = true
+		retainValues[finalPersistedAltitudeForeach(to, itemDetails.FinalAltitudeAltered)] = true //
 	}
-	retainOptions := make(map[int64]bool)
-	if optionsDetails.AgreementOptions.Equivalent(&engineproto.AgreementOptions{}) {
-		retainOptions[optionsDetails.FinalLevelModified] = true
+	retainParameters := make(map[int64]bool)
+	if parametersDetails.AgreementSettings.Equivalent(&commitchema.AgreementSettings{}) {
+		retainParameters[parametersDetails.FinalAltitudeAltered] = true
 	}
 
-	group := depot.db.NewGroup()
-	defer group.End()
+	cluster := depot.db.FreshCluster()
+	defer cluster.Shutdown()
 	trimmed := uint64(0)
 
 	//
 	//
-	for h := to - 1; h >= from; h-- {
+	for h := to - 1; h >= originating; h-- {
 		//
 		//
 		//
 		if retainValues[h] {
-			v, err := importRatifiersDetails(depot.db, h)
-			if err != nil || v.RatifierAssign == nil {
-				vip, err := depot.ImportRatifiers(h)
+			v, err := fetchAssessorsDetails(depot.db, h)
+			if err != nil || v.AssessorAssign == nil {
+				vip, err := depot.FetchAssessors(h)
 				if err != nil {
 					return err
 				}
 
-				pvi, err := vip.ToSchema()
+				pvi, err := vip.TowardSchema()
 				if err != nil {
 					return err
 				}
 
-				v.RatifierAssign = pvi
-				v.FinalLevelModified = h
+				v.AssessorAssign = pvi
+				v.FinalAltitudeAltered = h
 
 				bz, err := v.Serialize()
 				if err != nil {
 					return err
 				}
-				err = group.Set(computeRatifiersKey(h), bz)
+				err = cluster.Set(computeAssessorsToken(h), bz)
 				if err != nil {
 					return err
 				}
 			}
-		} else if h < proofLimitLevel {
-			err = group.Erase(computeRatifiersKey(h))
+		} else if h < proofLimitAltitude {
+			err = cluster.Erase(computeAssessorsToken(h))
 			if err != nil {
 				return err
 			}
@@ -347,38 +347,38 @@ func (depot storeDepot) TrimConditions(from int64, to int64, proofLimitLevel int
 		//
 		//
 
-		if retainOptions[h] {
-			p, err := depot.importAgreementOptionsDetails(h)
+		if retainParameters[h] {
+			p, err := depot.fetchAgreementParametersDetails(h)
 			if err != nil {
 				return err
 			}
 
-			if p.AgreementOptions.Equivalent(&engineproto.AgreementOptions{}) {
-				options, err := depot.ImportAgreementOptions(h)
+			if p.AgreementSettings.Equivalent(&commitchema.AgreementSettings{}) {
+				parameters, err := depot.FetchAgreementParameters(h)
 				if err != nil {
 					return err
 				}
-				p.AgreementOptions = options.ToSchema()
+				p.AgreementSettings = parameters.TowardSchema()
 
-				p.FinalLevelModified = h
+				p.FinalAltitudeAltered = h
 				bz, err := p.Serialize()
 				if err != nil {
 					return err
 				}
 
-				err = group.Set(computeAgreementOptionsKey(h), bz)
+				err = cluster.Set(computeAgreementParametersToken(h), bz)
 				if err != nil {
 					return err
 				}
 			}
 		} else {
-			err = group.Erase(computeAgreementOptionsKey(h))
+			err = cluster.Erase(computeAgreementParametersToken(h))
 			if err != nil {
 				return err
 			}
 		}
 
-		err = group.Erase(computeIfaceRepliesKey(h))
+		err = cluster.Erase(computeIfaceRepliesToken(h))
 		if err != nil {
 			return err
 		}
@@ -386,17 +386,17 @@ func (depot storeDepot) TrimConditions(from int64, to int64, proofLimitLevel int
 
 		//
 		if trimmed%1000 == 0 && trimmed > 0 {
-			err := group.Record()
+			err := cluster.Record()
 			if err != nil {
 				return err
 			}
-			group.End()
-			group = depot.db.NewGroup()
-			defer group.End()
+			cluster.Shutdown()
+			cluster = depot.db.FreshCluster()
+			defer cluster.Shutdown()
 		}
 	}
 
-	err = group.RecordAlign()
+	err = cluster.PersistChronize()
 	if err != nil {
 		return err
 	}
@@ -411,27 +411,27 @@ func (depot storeDepot) TrimConditions(from int64, to int64, proofLimitLevel int
 //
 //
 func TransferOutcomesDigest(transferOutcomes []*iface.InvokeTransferOutcome) []byte {
-	return kinds.NewOutcomes(transferOutcomes).Digest()
+	return kinds.FreshOutcomes(transferOutcomes).Digest()
 }
 
 //
 //
 //
-func (depot storeDepot) ImportCompleteLedgerReply(level int64) (*iface.ReplyCompleteLedger, error) {
-	if depot.DropIfaceReplies {
-		return nil, ErrCompleteLedgerRepliesNotSustained
+func (depot datastoreDepot) FetchCulminateLedgerReply(altitude int64) (*iface.ReplyCulminateLedger, error) {
+	if depot.EjectIfaceReplies {
+		return nil, FaultCulminateLedgerRepliesNegationStored
 	}
 
-	buf, err := depot.db.Get(computeIfaceRepliesKey(level))
+	buf, err := depot.db.Get(computeIfaceRepliesToken(altitude))
 	if err != nil {
 		return nil, err
 	}
 	if len(buf) == 0 {
-		return nil, ErrNoIfaceRepliesForLevel{level}
+		return nil, FaultNegativeIfaceRepliesForeachAltitude{altitude}
 	}
 
-	reply := new(iface.ReplyCompleteLedger)
-	err = reply.Unserialize(buf)
+	reply := new(iface.ReplyCulminateLedger)
+	err = reply.Decode(buf)
 	//
 	//
 	//
@@ -439,19 +439,19 @@ func (depot storeDepot) ImportCompleteLedgerReply(level int64) (*iface.ReplyComp
 	//
 	//
 	//
-	if err != nil || reply.ApplicationDigest == nil {
+	if err != nil || reply.PlatformDigest == nil {
 		//
 		//
-		pastReply := new(cometstatus.PastIfaceReplies)
-		if err := pastReply.Unserialize(buf); err != nil {
+		heritageAnswer := new(strongstatus.HeritageIfaceReplies)
+		if err := heritageAnswer.Decode(buf); err != nil {
 			//
 			//
-			return nil, ErrIfaceReplyTaintedOrBlueprintAlterForLevel{Level: level, Err: err}
+			return nil, FaultIfaceReplyTaintedEitherBlueprintAlterationForeachAltitude{Altitude: altitude, Err: err}
 		}
 		//
 		//
 		//
-		return replyCompleteLedgerFromPast(pastReply), nil
+		return replyCulminateLedgerOriginatingHeritage(heritageAnswer), nil
 	}
 
 	//
@@ -465,8 +465,8 @@ func (depot storeDepot) ImportCompleteLedgerReply(level int64) (*iface.ReplyComp
 //
 //
 //
-func (depot storeDepot) ImportFinalCompleteLedgerReply(level int64) (*iface.ReplyCompleteLedger, error) {
-	bz, err := depot.db.Get(finalIfaceReplyKey)
+func (depot datastoreDepot) FetchFinalCulminateLedgerReply(altitude int64) (*iface.ReplyCulminateLedger, error) {
+	bz, err := depot.db.Get(finalIfaceReplyToken)
 	if err != nil {
 		return nil, err
 	}
@@ -475,30 +475,30 @@ func (depot storeDepot) ImportFinalCompleteLedgerReply(level int64) (*iface.Repl
 		return nil, errors.New("REDACTED")
 	}
 
-	details := new(cometstatus.IfaceRepliesDetails)
-	err = details.Unserialize(bz)
+	details := new(strongstatus.IfaceRepliesDetails)
+	err = details.Decode(bz)
 	if err != nil {
-		cometos.Quit(fmt.Sprintf(`REDACTEDs
+		strongos.Quit(fmt.Sprintf(`REDACTEDs
 REDACTED`, err))
 	}
 
 	//
-	if level != details.FetchLevel() {
-		return nil, fmt.Errorf("REDACTED", level, details.FetchLevel())
+	if altitude != details.ObtainAltitude() {
+		return nil, fmt.Errorf("REDACTED", altitude, details.ObtainAltitude())
 	}
 
 	//
 	//
 	//
-	if details.ReplyCompleteLedger == nil {
+	if details.ReplyCulminateLedger == nil {
 		//
-		if details.PastIfaceReplies == nil {
+		if details.HeritageIfaceReplies == nil {
 			panic("REDACTED")
 		}
-		return replyCompleteLedgerFromPast(details.PastIfaceReplies), nil
+		return replyCulminateLedgerOriginatingHeritage(details.HeritageIfaceReplies), nil
 	}
 
-	return details.ReplyCompleteLedger, nil
+	return details.ReplyCulminateLedger, nil
 }
 
 //
@@ -507,79 +507,79 @@ REDACTED`, err))
 //
 //
 //
-func (depot storeDepot) PersistCompleteLedgerReply(level int64, reply *iface.ReplyCompleteLedger) error {
+func (depot datastoreDepot) PersistCulminateLedgerReply(altitude int64, reply *iface.ReplyCulminateLedger) error {
 	var dtrans []*iface.InvokeTransferOutcome
 	//
-	for _, tx := range reply.TransOutcomes {
+	for _, tx := range reply.TransferOutcomes {
 		if tx != nil {
 			dtrans = append(dtrans, tx)
 		}
 	}
-	reply.TransOutcomes = dtrans
+	reply.TransferOutcomes = dtrans
 
 	//
 	//
-	if !depot.DropIfaceReplies {
+	if !depot.EjectIfaceReplies {
 		bz, err := reply.Serialize()
 		if err != nil {
 			return err
 		}
-		if err := depot.db.Set(computeIfaceRepliesKey(level), bz); err != nil {
+		if err := depot.db.Set(computeIfaceRepliesToken(altitude), bz); err != nil {
 			return err
 		}
 	}
 
 	//
 	//
-	reply := &cometstatus.IfaceRepliesDetails{
-		ReplyCompleteLedger: reply,
-		Level:                level,
+	reply := &strongstatus.IfaceRepliesDetails{
+		ReplyCulminateLedger: reply,
+		Altitude:                altitude,
 	}
 	bz, err := reply.Serialize()
 	if err != nil {
 		return err
 	}
 
-	return depot.db.CollectionAlign(finalIfaceReplyKey, bz)
+	return depot.db.AssignChronize(finalIfaceReplyToken, bz)
 }
 
 //
 
 //
 //
-func (depot storeDepot) ImportRatifiers(level int64) (*kinds.RatifierAssign, error) {
-	valueDetails, err := importRatifiersDetails(depot.db, level)
+func (depot datastoreDepot) FetchAssessors(altitude int64) (*kinds.AssessorAssign, error) {
+	itemDetails, err := fetchAssessorsDetails(depot.db, altitude)
 	if err != nil {
-		return nil, ErrNoValueCollectionForLevel{level}
+		return nil, FaultNegativeItemAssignForeachAltitude{altitude}
 	}
-	if valueDetails.RatifierAssign == nil {
-		finalArchivedLevel := finalArchivedLevelFor(level, valueDetails.FinalLevelModified)
-		valueDetail2, err := importRatifiersDetails(depot.db, finalArchivedLevel)
-		if err != nil || valueDetail2.RatifierAssign == nil {
+	if itemDetails.AssessorAssign == nil {
+		finalPersistedAltitude := finalPersistedAltitudeForeach(altitude, itemDetails.FinalAltitudeAltered)
+		itemDetails2, err := fetchAssessorsDetails(depot.db, finalPersistedAltitude)
+		if err != nil || itemDetails2.AssessorAssign == nil {
 			return nil,
 				fmt.Errorf("REDACTED",
-					finalArchivedLevel,
-					level,
+					finalPersistedAltitude,
+					altitude,
 					err,
 				)
 		}
 
-		vs, err := kinds.RatifierCollectionFromSchema(valueDetail2.RatifierAssign)
+		vs, err := kinds.AssessorAssignOriginatingSchema(itemDetails2.AssessorAssign)
 		if err != nil {
 			return nil, err
 		}
 
-		vs.AugmentRecommenderUrgency(cometmath.SecureTransformInt32(level - finalArchivedLevel)) //
-		vi2, err := vs.ToSchema()
+		vs.AdvanceNominatorUrgency(strongarithmetic.SecureAdaptInteger32(altitude - finalPersistedAltitude)) //
+		vi2, err := vs.TowardSchema()
 		if err != nil {
 			return nil, err
 		}
 
-		valueDetail2.RatifierAssign = vi2
-		valueDetails = valueDetail2
+		itemDetails2.AssessorAssign = vi2
+		itemDetails = itemDetails2
 	}
 
-	vip, err := kinds.RatifierCollectionFromSchema(valueDetails.RatifierAssign)
+	vip, err := kinds.AssessorAssignOriginatingSchema(itemDetails.AssessorAssign)
 	if err != nil {
 		return nil, err
 	}
@@ -587,14 +587,14 @@ func (depot storeDepot) ImportRatifiers(level int64) (*kinds.RatifierAssign, err
 	return vip, nil
 }
 
-func finalArchivedLevelFor(level, finalLevelModified int64) int64 {
-	milestoneLevel := level - level%valueCollectionMilestoneCadence
-	return cometmath.MaximumInt64(milestoneLevel, finalLevelModified)
+func finalPersistedAltitudeForeach(altitude, finalAltitudeAltered int64) int64 {
+	milestoneAltitude := altitude - altitude%itemAssignMilestoneDuration
+	return strongarithmetic.MaximumInt64n(milestoneAltitude, finalAltitudeAltered)
 }
 
 //
-func importRatifiersDetails(db dbm.DB, level int64) (*cometstatus.RatifiersDetails, error) {
-	buf, err := db.Get(computeRatifiersKey(level))
+func fetchAssessorsDetails(db dbm.DB, altitude int64) (*strongstatus.AssessorsDetails, error) {
+	buf, err := db.Get(computeAssessorsToken(altitude))
 	if err != nil {
 		return nil, err
 	}
@@ -603,11 +603,11 @@ func importRatifiersDetails(db dbm.DB, level int64) (*cometstatus.RatifiersDetai
 		return nil, errors.New("REDACTED")
 	}
 
-	v := new(cometstatus.RatifiersDetails)
-	err = v.Unserialize(buf)
+	v := new(strongstatus.AssessorsDetails)
+	err = v.Decode(buf)
 	if err != nil {
 		//
-		cometos.Quit(fmt.Sprintf(`REDACTED:
+		strongos.Quit(fmt.Sprintf(`REDACTED:
 REDACTED`, err))
 	}
 	//
@@ -620,29 +620,29 @@ REDACTED`, err))
 //
 //
 //
-func (depot storeDepot) persistRatifiersDetails(level, finalLevelModified int64, valueCollection *kinds.RatifierAssign, group dbm.Group) error {
-	if finalLevelModified > level {
+func (depot datastoreDepot) persistAssessorsDetails(altitude, finalAltitudeAltered int64, itemAssign *kinds.AssessorAssign, cluster dbm.Cluster) error {
+	if finalAltitudeAltered > altitude {
 		return errors.New("REDACTED")
 	}
-	valueDetails := &cometstatus.RatifiersDetails{
-		FinalLevelModified: finalLevelModified,
+	itemDetails := &strongstatus.AssessorsDetails{
+		FinalAltitudeAltered: finalAltitudeAltered,
 	}
 	//
 	//
-	if level == finalLevelModified || level%valueCollectionMilestoneCadence == 0 {
-		pv, err := valueCollection.ToSchema()
+	if altitude == finalAltitudeAltered || altitude%itemAssignMilestoneDuration == 0 {
+		pv, err := itemAssign.TowardSchema()
 		if err != nil {
 			return err
 		}
-		valueDetails.RatifierAssign = pv
+		itemDetails.AssessorAssign = pv
 	}
 
-	bz, err := valueDetails.Serialize()
+	bz, err := itemDetails.Serialize()
 	if err != nil {
 		return err
 	}
 
-	err = group.Set(computeRatifiersKey(level), bz)
+	err = cluster.Set(computeAssessorsToken(altitude), bz)
 	if err != nil {
 		return err
 	}
@@ -655,35 +655,35 @@ func (depot storeDepot) persistRatifiersDetails(level, finalLevelModified int64,
 //
 
 //
-func (depot storeDepot) ImportAgreementOptions(level int64) (kinds.AgreementOptions, error) {
+func (depot datastoreDepot) FetchAgreementParameters(altitude int64) (kinds.AgreementSettings, error) {
 	var (
-		empty   = kinds.AgreementOptions{}
-		emptypb = engineproto.AgreementOptions{}
+		blank   = kinds.AgreementSettings{}
+		voidschema = commitchema.AgreementSettings{}
 	)
-	optionsDetails, err := depot.importAgreementOptionsDetails(level)
+	parametersDetails, err := depot.fetchAgreementParametersDetails(altitude)
 	if err != nil {
-		return empty, fmt.Errorf("REDACTED", level, err)
+		return blank, fmt.Errorf("REDACTED", altitude, err)
 	}
 
-	if optionsDetails.AgreementOptions.Equivalent(&emptypb) {
-		optionsDetail2, err := depot.importAgreementOptionsDetails(optionsDetails.FinalLevelModified)
+	if parametersDetails.AgreementSettings.Equivalent(&voidschema) {
+		parametersDetails2, err := depot.fetchAgreementParametersDetails(parametersDetails.FinalAltitudeAltered)
 		if err != nil {
-			return empty, fmt.Errorf(
+			return blank, fmt.Errorf(
 				"REDACTED",
-				optionsDetails.FinalLevelModified,
-				level,
+				parametersDetails.FinalAltitudeAltered,
+				altitude,
 				err,
 			)
 		}
 
-		optionsDetails = optionsDetail2
+		parametersDetails = parametersDetails2
 	}
 
-	return kinds.AgreementOptionsFromSchema(optionsDetails.AgreementOptions), nil
+	return kinds.AgreementParametersOriginatingSchema(parametersDetails.AgreementSettings), nil
 }
 
-func (depot storeDepot) importAgreementOptionsDetails(level int64) (*cometstatus.AgreementOptionsDetails, error) {
-	buf, err := depot.db.Get(computeAgreementOptionsKey(level))
+func (depot datastoreDepot) fetchAgreementParametersDetails(altitude int64) (*strongstatus.AgreementParametersDetails, error) {
+	buf, err := depot.db.Get(computeAgreementParametersToken(altitude))
 	if err != nil {
 		return nil, err
 	}
@@ -691,35 +691,35 @@ func (depot storeDepot) importAgreementOptionsDetails(level int64) (*cometstatus
 		return nil, errors.New("REDACTED")
 	}
 
-	optionsDetails := new(cometstatus.AgreementOptionsDetails)
-	if err = optionsDetails.Unserialize(buf); err != nil {
+	parametersDetails := new(strongstatus.AgreementParametersDetails)
+	if err = parametersDetails.Decode(buf); err != nil {
 		//
-		cometos.Quit(fmt.Sprintf(`REDACTED:
+		strongos.Quit(fmt.Sprintf(`REDACTED:
 REDACTED`, err))
 	}
 	//
 
-	return optionsDetails, nil
+	return parametersDetails, nil
 }
 
 //
 //
 //
 //
-func (depot storeDepot) persistAgreementOptionsDetails(followingLevel, alterLevel int64, options kinds.AgreementOptions, group dbm.Group) error {
-	optionsDetails := &cometstatus.AgreementOptionsDetails{
-		FinalLevelModified: alterLevel,
+func (depot datastoreDepot) persistAgreementParametersDetails(followingAltitude, alterationAltitude int64, parameters kinds.AgreementSettings, cluster dbm.Cluster) error {
+	parametersDetails := &strongstatus.AgreementParametersDetails{
+		FinalAltitudeAltered: alterationAltitude,
 	}
 
-	if alterLevel == followingLevel {
-		optionsDetails.AgreementOptions = options.ToSchema()
+	if alterationAltitude == followingAltitude {
+		parametersDetails.AgreementSettings = parameters.TowardSchema()
 	}
-	bz, err := optionsDetails.Serialize()
+	bz, err := parametersDetails.Serialize()
 	if err != nil {
 		return err
 	}
 
-	err = group.Set(computeAgreementOptionsKey(followingLevel), bz)
+	err = cluster.Set(computeAgreementParametersToken(followingAltitude), bz)
 	if err != nil {
 		return err
 	}
@@ -727,8 +727,8 @@ func (depot storeDepot) persistAgreementOptionsDetails(followingLevel, alterLeve
 	return nil
 }
 
-func (depot storeDepot) CollectionInactiveStatusAlignLevel(level int64) error {
-	err := depot.db.CollectionAlign(inactiveStatusAlignLevel, int64toOctets(level))
+func (depot datastoreDepot) AssignInactiveStatusChronizeAltitude(altitude int64) error {
+	err := depot.db.AssignChronize(inactiveStatusChronizeAltitude, integer64towOctets(altitude))
 	if err != nil {
 		return err
 	}
@@ -736,8 +736,8 @@ func (depot storeDepot) CollectionInactiveStatusAlignLevel(level int64) error {
 }
 
 //
-func (depot storeDepot) FetchInactiveStatusAlignLevel() (int64, error) {
-	buf, err := depot.db.Get(inactiveStatusAlignLevel)
+func (depot datastoreDepot) ObtainInactiveStatusChronizeAltitude() (int64, error) {
+	buf, err := depot.db.Get(inactiveStatusChronizeAltitude)
 	if err != nil {
 		return 0, err
 	}
@@ -746,74 +746,74 @@ func (depot storeDepot) FetchInactiveStatusAlignLevel() (int64, error) {
 		return 0, errors.New("REDACTED")
 	}
 
-	level := int64fromOctets(buf)
-	if level < 0 {
+	altitude := integer64fromOctets(buf)
+	if altitude < 0 {
 		return 0, errors.New("REDACTED")
 	}
-	return level, nil
+	return altitude, nil
 }
 
-func (depot storeDepot) End() error {
-	return depot.db.End()
+func (depot datastoreDepot) Shutdown() error {
+	return depot.db.Shutdown()
 }
 
 //
 //
-func replyCompleteLedgerFromPast(pastReply *cometstatus.PastIfaceReplies) *iface.ReplyCompleteLedger {
-	var reply iface.ReplyCompleteLedger
-	events := make([]iface.Event, 0)
+func replyCulminateLedgerOriginatingHeritage(heritageAnswer *strongstatus.HeritageIfaceReplies) *iface.ReplyCulminateLedger {
+	var reply iface.ReplyCulminateLedger
+	incidents := make([]iface.Incident, 0)
 
-	if pastReply.DispatchTrans != nil {
-		reply.TransOutcomes = pastReply.DispatchTrans
+	if heritageAnswer.DispatchTrans != nil {
+		reply.TransferOutcomes = heritageAnswer.DispatchTrans
 	}
 
 	//
-	if pastReply.InitiateLedger != nil {
-		if pastReply.InitiateLedger.Events != nil {
+	if heritageAnswer.InitiateLedger != nil {
+		if heritageAnswer.InitiateLedger.Incidents != nil {
 			//
-			for idx := range pastReply.InitiateLedger.Events {
-				pastReply.InitiateLedger.Events[idx].Properties = append(pastReply.InitiateLedger.Events[idx].Properties, iface.EventProperty{
+			for idx := range heritageAnswer.InitiateLedger.Incidents {
+				heritageAnswer.InitiateLedger.Incidents[idx].Properties = append(heritageAnswer.InitiateLedger.Incidents[idx].Properties, iface.IncidentProperty{
 					Key:   "REDACTED",
-					Item: "REDACTED",
+					Datum: "REDACTED",
 					Ordinal: false,
 				})
 			}
-			events = append(events, pastReply.InitiateLedger.Events...)
+			incidents = append(incidents, heritageAnswer.InitiateLedger.Incidents...)
 		}
 	}
-	if pastReply.TerminateLedger != nil {
-		if pastReply.TerminateLedger.RatifierRefreshes != nil {
-			reply.RatifierRefreshes = pastReply.TerminateLedger.RatifierRefreshes
+	if heritageAnswer.TerminateLedger != nil {
+		if heritageAnswer.TerminateLedger.AssessorRevisions != nil {
+			reply.AssessorRevisions = heritageAnswer.TerminateLedger.AssessorRevisions
 		}
-		if pastReply.TerminateLedger.AgreementArgumentRefreshes != nil {
-			reply.AgreementArgumentRefreshes = pastReply.TerminateLedger.AgreementArgumentRefreshes
+		if heritageAnswer.TerminateLedger.AgreementArgumentRevisions != nil {
+			reply.AgreementArgumentRevisions = heritageAnswer.TerminateLedger.AgreementArgumentRevisions
 		}
-		if pastReply.TerminateLedger.Events != nil {
+		if heritageAnswer.TerminateLedger.Incidents != nil {
 			//
-			for idx := range pastReply.TerminateLedger.Events {
-				pastReply.TerminateLedger.Events[idx].Properties = append(pastReply.TerminateLedger.Events[idx].Properties, iface.EventProperty{
+			for idx := range heritageAnswer.TerminateLedger.Incidents {
+				heritageAnswer.TerminateLedger.Incidents[idx].Properties = append(heritageAnswer.TerminateLedger.Incidents[idx].Properties, iface.IncidentProperty{
 					Key:   "REDACTED",
-					Item: "REDACTED",
+					Datum: "REDACTED",
 					Ordinal: false,
 				})
 			}
-			events = append(events, pastReply.TerminateLedger.Events...)
+			incidents = append(incidents, heritageAnswer.TerminateLedger.Incidents...)
 		}
 	}
 
-	reply.Events = events
+	reply.Incidents = incidents
 
 	//
 	//
 	return &reply
 }
 
-func int64fromOctets(bz []byte) int64 {
+func integer64fromOctets(bz []byte) int64 {
 	v, _ := binary.Varint(bz)
 	return v
 }
 
-func int64toOctets(i int64) []byte {
+func integer64towOctets(i int64) []byte {
 	buf := make([]byte, binary.MaxVarintLen64)
 	n := binary.PutVarint(buf, i)
 	return buf[:n]

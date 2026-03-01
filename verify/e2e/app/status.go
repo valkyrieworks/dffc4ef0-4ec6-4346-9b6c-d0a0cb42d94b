@@ -13,42 +13,42 @@ import (
 )
 
 const (
-	statusEntryLabel     = "REDACTED"
-	previousStatusEntryLabel = "REDACTED"
+	statusRecordAlias     = "REDACTED"
+	previousStatusRecordAlias = "REDACTED"
 )
 
 //
 //
 type marshaledStatus struct {
-	Level uint64
+	Altitude uint64
 	Items map[string]string
 	Digest   []byte
 }
 
 //
 type Status struct {
-	sync.ReadwriteLock
-	level uint64
+	sync.ReadwriteExclusion
+	altitude uint64
 	items map[string]string
 	digest   []byte
 
-	ongoingEntry string
+	prevailingRecord string
 	//
-	precedingEntry    string
-	endureCadence uint64
-	primaryLevel   uint64
+	precedingRecord    string
+	endureDuration uint64
+	primaryAltitude   uint64
 }
 
 //
-func NewStatus(dir string, endureCadence uint64) (*Status, error) {
+func FreshStatus(dir string, endureDuration uint64) (*Status, error) {
 	status := &Status{
 		items:          make(map[string]string),
-		ongoingEntry:     filepath.Join(dir, statusEntryLabel),
-		precedingEntry:    filepath.Join(dir, previousStatusEntryLabel),
-		endureCadence: endureCadence,
+		prevailingRecord:     filepath.Join(dir, statusRecordAlias),
+		precedingRecord:    filepath.Join(dir, previousStatusRecordAlias),
+		endureDuration: endureDuration,
 	}
-	status.digest = digestElements(status.items, status.level)
-	err := status.import()
+	status.digest = digestElements(status.items, status.altitude)
+	err := status.fetch()
 	switch {
 	case errors.Is(err, os.ErrNotExist):
 	case err != nil:
@@ -59,22 +59,22 @@ func NewStatus(dir string, endureCadence uint64) (*Status, error) {
 
 //
 //
-func (s *Status) import() error {
-	bz, err := os.ReadFile(s.ongoingEntry)
+func (s *Status) fetch() error {
+	bz, err := os.ReadFile(s.prevailingRecord)
 	if err != nil {
 		//
 		if errors.Is(err, os.ErrNotExist) {
-			bz, err = os.ReadFile(s.precedingEntry)
+			bz, err = os.ReadFile(s.precedingRecord)
 			if err != nil {
 				return fmt.Errorf("REDACTED",
-					s.precedingEntry, err)
+					s.precedingRecord, err)
 			}
 		} else {
-			return fmt.Errorf("REDACTED", s.ongoingEntry, err)
+			return fmt.Errorf("REDACTED", s.prevailingRecord, err)
 		}
 	}
 	if err := json.Unmarshal(bz, s); err != nil {
-		return fmt.Errorf("REDACTED", s.ongoingEntry, err)
+		return fmt.Errorf("REDACTED", s.prevailingRecord, err)
 	}
 	return nil
 }
@@ -88,24 +88,24 @@ func (s *Status) persist() error {
 	}
 	//
 	//
-	newEntry := fmt.Sprintf("REDACTED", s.ongoingEntry)
-	err = os.WriteFile(newEntry, bz, 0o644) //
+	freshRecord := fmt.Sprintf("REDACTED", s.prevailingRecord)
+	err = os.WriteFile(freshRecord, bz, 0o644) //
 	if err != nil {
-		return fmt.Errorf("REDACTED", s.ongoingEntry, err)
+		return fmt.Errorf("REDACTED", s.prevailingRecord, err)
 	}
 	//
-	if _, err := os.Stat(s.ongoingEntry); err == nil {
-		if err := os.Rename(s.ongoingEntry, s.precedingEntry); err != nil {
+	if _, err := os.Stat(s.prevailingRecord); err == nil {
+		if err := os.Rename(s.prevailingRecord, s.precedingRecord); err != nil {
 			return fmt.Errorf("REDACTED", err)
 		}
 	}
 	//
-	return os.Rename(newEntry, s.ongoingEntry)
+	return os.Rename(freshRecord, s.prevailingRecord)
 }
 
 //
 //
-func (s *Status) FetchDigest() []byte {
+func (s *Status) ObtainDigest() []byte {
 	s.RLock()
 	defer s.RUnlock()
 	digest := make([]byte, len(s.digest))
@@ -118,39 +118,39 @@ func (s *Status) FetchDigest() []byte {
 func (s *Status) Details() (uint64, []byte) {
 	s.RLock()
 	defer s.RUnlock()
-	level := s.level
+	altitude := s.altitude
 	digest := make([]byte, len(s.digest))
 	copy(digest, s.digest)
-	return level, digest
+	return altitude, digest
 }
 
 //
 //
-func (s *Status) Publish() ([]byte, uint64, []byte, error) {
+func (s *Status) Disclose() ([]byte, uint64, []byte, error) {
 	s.RLock()
 	defer s.RUnlock()
 	bz, err := json.Marshal(s.items)
 	if err != nil {
 		return nil, 0, nil, err
 	}
-	level := s.level
-	statusDigest := digestElements(s.items, level)
-	return bz, level, statusDigest, nil
+	altitude := s.altitude
+	statusDigest := digestElements(s.items, altitude)
+	return bz, altitude, statusDigest, nil
 }
 
 //
 //
-func (s *Status) Include(level uint64, jsonOctets []byte) error {
+func (s *Status) Ingest(altitude uint64, jsnOctets []byte) error {
 	s.Lock()
 	defer s.Unlock()
 	items := map[string]string{}
-	err := json.Unmarshal(jsonOctets, &items)
+	err := json.Unmarshal(jsnOctets, &items)
 	if err != nil {
 		return fmt.Errorf("REDACTED", err)
 	}
-	s.level = level
+	s.altitude = altitude
 	s.items = items
-	s.digest = digestElements(items, level)
+	s.digest = digestElements(items, altitude)
 	return s.persist()
 }
 
@@ -162,13 +162,13 @@ func (s *Status) Get(key string) string {
 }
 
 //
-func (s *Status) Set(key, item string) {
+func (s *Status) Set(key, datum string) {
 	s.Lock()
 	defer s.Unlock()
-	if item == "REDACTED" {
+	if datum == "REDACTED" {
 		delete(s.items, key)
 	} else {
-		s.items[key] = item
+		s.items[key] = datum
 	}
 }
 
@@ -177,24 +177,24 @@ func (s *Status) Set(key, item string) {
 func (s *Status) Inquire(key string) (string, uint64) {
 	s.RLock()
 	defer s.RUnlock()
-	level := s.level
-	item := s.items[key]
-	return item, level
+	altitude := s.altitude
+	datum := s.items[key]
+	return datum, altitude
 }
 
 //
-func (s *Status) Complete() []byte {
+func (s *Status) Culminate() []byte {
 	s.Lock()
 	defer s.Unlock()
 	switch {
-	case s.level > 0:
-		s.level++
-	case s.primaryLevel > 0:
-		s.level = s.primaryLevel
+	case s.altitude > 0:
+		s.altitude++
+	case s.primaryAltitude > 0:
+		s.altitude = s.primaryAltitude
 	default:
-		s.level = 1
+		s.altitude = 1
 	}
-	s.digest = digestElements(s.items, s.level)
+	s.digest = digestElements(s.items, s.altitude)
 	return s.digest
 }
 
@@ -202,40 +202,40 @@ func (s *Status) Complete() []byte {
 func (s *Status) Endorse() (uint64, error) {
 	s.Lock()
 	defer s.Unlock()
-	if s.endureCadence > 0 && s.level%s.endureCadence == 0 {
+	if s.endureDuration > 0 && s.altitude%s.endureDuration == 0 {
 		err := s.persist()
 		if err != nil {
 			return 0, err
 		}
 	}
-	return s.level, nil
+	return s.altitude, nil
 }
 
 func (s *Status) Revert() error {
-	bz, err := os.ReadFile(s.precedingEntry)
+	bz, err := os.ReadFile(s.precedingRecord)
 	if err != nil {
-		return fmt.Errorf("REDACTED", s.precedingEntry, err)
+		return fmt.Errorf("REDACTED", s.precedingRecord, err)
 	}
 	if err := json.Unmarshal(bz, s); err != nil {
-		return fmt.Errorf("REDACTED", s.precedingEntry, err)
+		return fmt.Errorf("REDACTED", s.precedingRecord, err)
 	}
 	return nil
 }
 
-func (s *Status) UnserializeJSON(b []byte) error {
+func (s *Status) DecodeJSN(b []byte) error {
 	var ss marshaledStatus
 	if err := json.Unmarshal(b, &ss); err != nil {
 		return err
 	}
-	s.level = ss.Level
+	s.altitude = ss.Altitude
 	s.items = ss.Items
 	s.digest = ss.Digest
 	return nil
 }
 
-func (s *Status) SerializeJSON() ([]byte, error) {
+func (s *Status) SerializeJSN() ([]byte, error) {
 	ss := &marshaledStatus{
-		Level: s.level,
+		Altitude: s.altitude,
 		Items: s.items,
 		Digest:   s.digest,
 	}
@@ -243,21 +243,21 @@ func (s *Status) SerializeJSON() ([]byte, error) {
 }
 
 //
-func digestElements(items map[string]string, level uint64) []byte {
-	keys := make([]string, 0, len(items))
-	for key := range items {
-		keys = append(keys, key)
+func digestElements(elements map[string]string, altitude uint64) []byte {
+	tokens := make([]string, 0, len(elements))
+	for key := range elements {
+		tokens = append(tokens, key)
 	}
-	sort.Strings(keys)
+	sort.Strings(tokens)
 
 	digester := sha256.New()
 	var b [8]byte
-	binary.BigEndian.PutUint64(b[:], level)
+	binary.BigEndian.PutUint64(b[:], altitude)
 	_, _ = digester.Write(b[:])
-	for _, key := range keys {
+	for _, key := range tokens {
 		_, _ = digester.Write([]byte(key))
 		_, _ = digester.Write([]byte{0})
-		_, _ = digester.Write([]byte(items[key]))
+		_, _ = digester.Write([]byte(elements[key]))
 		_, _ = digester.Write([]byte{0})
 	}
 	return digester.Sum(nil)

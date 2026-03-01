@@ -5,21 +5,21 @@ import (
 	"fmt"
 	"math"
 
-	iface "github.com/valkyrieworks/iface/kinds"
-	"github.com/valkyrieworks/kinds"
+	iface "github.com/valkyrieworks/dffc4ef0-4ec6-4346-9b6c-d0a0cb42d94b/iface/kinds"
+	"github.com/valkyrieworks/dffc4ef0-4ec6-4346-9b6c-d0a0cb42d94b/kinds"
 )
 
 const (
 	TxpoolConduit = byte(0x30)
 
 	//
-	NodeOvertakePauseCadenceMillis = 100
+	NodeOvertakeSnoozeDurationMSEC = 100
 
 	//
 	//
-	UnclearNodeUID uint16 = 0
+	UnfamiliarNodeUUID uint16 = 0
 
-	MaximumEnabledIDXDatastore = math.MaxUint16
+	MaximumDynamicIDXDstore = math.MaxUint16
 )
 
 //
@@ -31,11 +31,11 @@ const (
 type Txpool interface {
 	//
 	//
-	InspectTransfer(tx kinds.Tx, callback func(*iface.ReplyInspectTransfer), transferDetails TransferDetails) error
+	InspectTransfer(tx kinds.Tx, clbk func(*iface.ReplyInspectTransfer), transferDetails TransferDetails) error
 
 	//
 	//
-	DeleteTransferByKey(transferKey kinds.TransferKey) error
+	DiscardTransferViaToken(transferToken kinds.TransferToken) error
 
 	//
 	//
@@ -65,12 +65,12 @@ type Txpool interface {
 	//
 	//
 	//
-	Modify(
-		ledgerLevel int64,
+	Revise(
+		ledgerAltitude int64,
 		ledgerTrans kinds.Txs,
 		dispatchTransferReplies []*iface.InvokeTransferOutcome,
-		newPreFn PreInspectFunction,
-		newSubmitFn SubmitInspectFunction,
+		freshAnteProc PriorInspectMethod,
+		freshSubmitProc RelayInspectMethod,
 	) error
 
 	//
@@ -95,30 +95,30 @@ type Txpool interface {
 	ActivateTransAccessible()
 
 	//
-	Volume() int
+	Extent() int
 
 	//
-	VolumeOctets() int64
+	ExtentOctets() int64
 }
 
 //
 //
 //
-type PreInspectFunction func(kinds.Tx) error
+type PriorInspectMethod func(kinds.Tx) error
 
 //
 //
 //
-type SubmitInspectFunction func(kinds.Tx, *iface.ReplyInspectTransfer) error
+type RelayInspectMethod func(kinds.Tx, *iface.ReplyInspectTransfer) error
 
 //
 //
-func PreInspectMaximumOctets(maximumOctets int64) PreInspectFunction {
+func PriorInspectMaximumOctets(maximumOctets int64) PriorInspectMethod {
 	return func(tx kinds.Tx) error {
-		transferVolume := kinds.CalculateSchemaVolumeForTrans([]kinds.Tx{tx})
+		transferExtent := kinds.CalculateSchemaExtentForeachTrans([]kinds.Tx{tx})
 
-		if transferVolume > maximumOctets {
-			return fmt.Errorf("REDACTED", transferVolume, maximumOctets)
+		if transferExtent > maximumOctets {
+			return fmt.Errorf("REDACTED", transferExtent, maximumOctets)
 		}
 
 		return nil
@@ -127,7 +127,7 @@ func PreInspectMaximumOctets(maximumOctets int64) PreInspectFunction {
 
 //
 //
-func SubmitInspectMaximumFuel(maximumFuel int64) SubmitInspectFunction {
+func SubmitInspectMaximumFuel(maximumFuel int64) RelayInspectMethod {
 	return func(tx kinds.Tx, res *iface.ReplyInspectTransfer) error {
 		if maximumFuel == -1 {
 			return nil
@@ -146,4 +146,4 @@ func SubmitInspectMaximumFuel(maximumFuel int64) SubmitInspectFunction {
 }
 
 //
-type TransferKey [sha256.Size]byte
+type TransferToken [sha256.Size]byte

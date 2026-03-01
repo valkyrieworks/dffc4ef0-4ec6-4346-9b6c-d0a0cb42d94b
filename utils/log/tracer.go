@@ -8,11 +8,11 @@ import (
 
 //
 type Tracer interface {
-	Diagnose(msg string, keyvalues ...any)
-	Details(msg string, keyvalues ...any)
-	Fault(msg string, keyvalues ...any)
+	Diagnose(msg string, tokvals ...any)
+	Details(msg string, tokvals ...any)
+	Failure(msg string, tokvals ...any)
 
-	With(keyvalues ...any) Tracer
+	Using(tokvals ...any) Tracer
 }
 
 //
@@ -25,6 +25,6 @@ type Tracer interface {
 //
 //
 //
-func NewAlignRecorder(w io.Writer) io.Writer {
+func FreshChronizePersistor(w io.Writer) io.Writer {
 	return kitlog.NewSyncWriter(w)
 }

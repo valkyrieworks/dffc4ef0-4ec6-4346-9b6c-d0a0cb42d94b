@@ -6,22 +6,22 @@ import (
 	"fmt"
 	"time"
 
-	"github.com/valkyrieworks/kinds"
+	"github.com/valkyrieworks/dffc4ef0-4ec6-4346-9b6c-d0a0cb42d94b/kinds"
 )
 
 //
-type Observer func(variance int64) (cancel error)
+type Pauser func(variation int64) (cancel error)
 
 //
 //
-func StandardWaitTactic(variance int64) (cancel error) {
-	if variance > 10 {
-		return fmt.Errorf("REDACTED", variance)
-	} else if variance > 0 {
+func FallbackPauseTactic(variation int64) (cancel error) {
+	if variation > 10 {
+		return fmt.Errorf("REDACTED", variation)
+	} else if variation > 0 {
 		//
 		//
 		//
-		deferral := time.Duration(variance-1)*time.Second + 500*time.Millisecond
+		deferral := time.Duration(variation-1)*time.Second + 500*time.Millisecond
 		time.Sleep(deferral)
 	}
 	return nil
@@ -32,19 +32,19 @@ func StandardWaitTactic(variance int64) (cancel error) {
 //
 //
 //
-func WaitForLevel(c StateCustomer, h int64, observer Observer) error {
+func PauseForeachAltitude(c ConditionCustomer, h int64, observer Pauser) error {
 	if observer == nil {
-		observer = StandardWaitTactic
+		observer = FallbackPauseTactic
 	}
-	variance := int64(1)
-	for variance > 0 {
-		s, err := c.Status(context.Background())
+	variation := int64(1)
+	for variation > 0 {
+		s, err := c.Condition(context.Background())
 		if err != nil {
 			return err
 		}
-		variance = h - s.AlignDetails.NewestLedgerLevel
+		variation = h - s.ChronizeDetails.NewestLedgerAltitude
 		//
-		if err := observer(variance); err != nil {
+		if err := observer(variation); err != nil {
 			return err
 		}
 	}
@@ -57,26 +57,26 @@ func WaitForLevel(c StateCustomer, h int64, observer Observer) error {
 //
 //
 //
-func WaitForOneEvent(c EventsCustomer, occurrenceType string, deadline time.Duration) (kinds.TMEventData, error) {
-	const enrollee = "REDACTED"
-	ctx, revoke := context.WithTimeout(context.Background(), deadline)
-	defer revoke()
+func PauseForeachSingleIncident(c IncidentsCustomer, signalKind string, deadline time.Duration) (kinds.TEMPIncidentData, error) {
+	const listener = "REDACTED"
+	ctx, abort := context.WithTimeout(context.Background(), deadline)
+	defer abort()
 
 	//
-	eventChan, err := c.Enrol(ctx, enrollee, kinds.InquireForEvent(occurrenceType).String())
+	incidentChnl, err := c.Listen(ctx, listener, kinds.InquireForeachIncident(signalKind).Text())
 	if err != nil {
 		return nil, fmt.Errorf("REDACTED", err)
 	}
 	//
 	defer func() {
-		if delayErr := c.DeenrollAll(ctx, enrollee); delayErr != nil {
-			panic(delayErr)
+		if delayFault := c.UnlistenEvery(ctx, listener); delayFault != nil {
+			panic(delayFault)
 		}
 	}()
 
 	select {
-	case event := <-eventChan:
-		return event.Data, nil
+	case incident := <-incidentChnl:
+		return incident.Data, nil
 	case <-ctx.Done():
 		return nil, errors.New("REDACTED")
 	}

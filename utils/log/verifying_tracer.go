@@ -18,7 +18,7 @@ var _verifyingtracer Tracer
 //
 //
 func VerifyingTracer() Tracer {
-	return VerifyingTracerWithResult(os.Stdout)
+	return VerifyingTracerUsingEmission(os.Stdout)
 }
 
 //
@@ -27,15 +27,15 @@ func VerifyingTracer() Tracer {
 //
 //
 //
-func VerifyingTracerWithResult(w io.Writer) Tracer {
+func VerifyingTracerUsingEmission(w io.Writer) Tracer {
 	if _verifyingtracer != nil {
 		return _verifyingtracer
 	}
 
 	if testing.Verbose() {
-		_verifyingtracer = NewTMTracer(NewAlignRecorder(w))
+		_verifyingtracer = FreshTEMPTracer(FreshChronizePersistor(w))
 	} else {
-		_verifyingtracer = NewNoopTracer()
+		_verifyingtracer = FreshNooperationTracer()
 	}
 
 	return _verifyingtracer
@@ -43,15 +43,15 @@ func VerifyingTracerWithResult(w io.Writer) Tracer {
 
 //
 //
-func VerifyingTracerWithHueFn(hueFn func(keyvalues ...any) term.FgBgColor) Tracer {
+func VerifyingTracerUsingHueProc(hueProc func(tokvals ...any) term.FgBgColor) Tracer {
 	if _verifyingtracer != nil {
 		return _verifyingtracer
 	}
 
 	if testing.Verbose() {
-		_verifyingtracer = NewTMTracerWithHueFn(NewAlignRecorder(os.Stdout), hueFn)
+		_verifyingtracer = FreshTEMPTracerUsingHueProc(FreshChronizePersistor(os.Stdout), hueProc)
 	} else {
-		_verifyingtracer = NewNoopTracer()
+		_verifyingtracer = FreshNooperationTracer()
 	}
 
 	return _verifyingtracer

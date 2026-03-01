@@ -4,123 +4,123 @@ import (
 	"errors"
 	"fmt"
 
-	cometstatus "github.com/valkyrieworks/schema/consensuscore/status"
-	cometrelease "github.com/valkyrieworks/schema/consensuscore/release"
-	"github.com/valkyrieworks/release"
+	strongstatus "github.com/valkyrieworks/dffc4ef0-4ec6-4346-9b6c-d0a0cb42d94b/schema/strongmind/status"
+	strongmindedition "github.com/valkyrieworks/dffc4ef0-4ec6-4346-9b6c-d0a0cb42d94b/schema/strongmind/edition"
+	"github.com/valkyrieworks/dffc4ef0-4ec6-4346-9b6c-d0a0cb42d94b/edition"
 )
 
 //
 //
 //
-func Revert(bs LedgerDepot, ss Depot, deleteLedger bool) (int64, []byte, error) {
-	corruptStatus, err := ss.Import()
+func Revert(bs LedgerDepot, ss Depot, discardLedger bool) (int64, []byte, error) {
+	unfitStatus, err := ss.Fetch()
 	if err != nil {
 		return -1, nil, err
 	}
-	if corruptStatus.IsEmpty() {
+	if unfitStatus.EqualsBlank() {
 		return -1, nil, errors.New("REDACTED")
 	}
 
-	level := bs.Level()
+	altitude := bs.Altitude()
 
 	//
 	//
 	//
-	if level == corruptStatus.FinalLedgerLevel+1 {
-		if deleteLedger {
-			if err := bs.RemoveNewestLedger(); err != nil {
+	if altitude == unfitStatus.FinalLedgerAltitude+1 {
+		if discardLedger {
+			if err := bs.EraseNewestLedger(); err != nil {
 				return -1, nil, fmt.Errorf("REDACTED", err)
 			}
 		}
-		return corruptStatus.FinalLedgerLevel, corruptStatus.ApplicationDigest, nil
+		return unfitStatus.FinalLedgerAltitude, unfitStatus.PlatformDigest, nil
 	}
 
 	//
 	//
-	if level != corruptStatus.FinalLedgerLevel {
+	if altitude != unfitStatus.FinalLedgerAltitude {
 		return -1, nil, fmt.Errorf("REDACTED",
-			corruptStatus.FinalLedgerLevel, level)
+			unfitStatus.FinalLedgerAltitude, altitude)
 	}
 
 	//
-	revertLevel := corruptStatus.FinalLedgerLevel - 1
-	revertLedger := bs.ImportLedgerMeta(revertLevel)
+	revertAltitude := unfitStatus.FinalLedgerAltitude - 1
+	revertLedger := bs.FetchLedgerSummary(revertAltitude)
 	if revertLedger == nil {
-		return -1, nil, fmt.Errorf("REDACTED", revertLevel)
+		return -1, nil, fmt.Errorf("REDACTED", revertAltitude)
 	}
 	//
 	//
-	newestLedger := bs.ImportLedgerMeta(corruptStatus.FinalLedgerLevel)
+	newestLedger := bs.FetchLedgerSummary(unfitStatus.FinalLedgerAltitude)
 	if newestLedger == nil {
-		return -1, nil, fmt.Errorf("REDACTED", corruptStatus.FinalLedgerLevel)
+		return -1, nil, fmt.Errorf("REDACTED", unfitStatus.FinalLedgerAltitude)
 	}
 
-	precedingFinalRatifierCollection, err := ss.ImportRatifiers(revertLevel)
+	precedingFinalAssessorAssign, err := ss.FetchAssessors(revertAltitude)
 	if err != nil {
 		return -1, nil, err
 	}
 
-	precedingOptions, err := ss.ImportAgreementOptions(revertLevel + 1)
+	precedingParameters, err := ss.FetchAgreementParameters(revertAltitude + 1)
 	if err != nil {
 		return -1, nil, err
 	}
 
-	followingLevel := revertLevel + 1
-	valueAlterLevel := corruptStatus.FinalLevelRatifiersModified
+	followingAltitude := revertAltitude + 1
+	itemAlterationAltitude := unfitStatus.FinalAltitudeAssessorsAltered
 	//
-	if valueAlterLevel > followingLevel+1 {
-		valueAlterLevel = followingLevel + 1
+	if itemAlterationAltitude > followingAltitude+1 {
+		itemAlterationAltitude = followingAltitude + 1
 	}
 
-	optionsAlterLevel := corruptStatus.FinalLevelAgreementOptionsModified
+	parametersAlterationAltitude := unfitStatus.FinalAltitudeAgreementParametersAltered
 	//
-	if optionsAlterLevel > revertLevel {
-		optionsAlterLevel = revertLevel + 1
+	if parametersAlterationAltitude > revertAltitude {
+		parametersAlterationAltitude = revertAltitude + 1
 	}
 
 	//
-	invertedRearStatus := Status{
-		Release: cometstatus.Release{
-			Agreement: cometrelease.Agreement{
-				Ledger: release.LedgerProtocol,
-				App:   precedingOptions.Release.App,
+	morphedRearStatus := Status{
+		Edition: strongstatus.Edition{
+			Agreement: strongmindedition.Agreement{
+				Ledger: edition.LedgerScheme,
+				App:   precedingParameters.Edition.App,
 			},
-			Software: release.TMCoreSemaphoreRev,
+			Package: edition.TEMPBaseSemaphoreEdtn,
 		},
 		//
-		LedgerUID:       corruptStatus.LedgerUID,
-		PrimaryLevel: corruptStatus.PrimaryLevel,
+		SuccessionUUID:       unfitStatus.SuccessionUUID,
+		PrimaryAltitude: unfitStatus.PrimaryAltitude,
 
-		FinalLedgerLevel: revertLedger.Heading.Level,
-		FinalLedgerUID:     revertLedger.LedgerUID,
-		FinalLedgerTime:   revertLedger.Heading.Time,
+		FinalLedgerAltitude: revertLedger.Heading.Altitude,
+		FinalLedgerUUID:     revertLedger.LedgerUUID,
+		FinalLedgerMoment:   revertLedger.Heading.Moment,
 
-		FollowingRatifiers:              corruptStatus.Ratifiers,
-		Ratifiers:                  corruptStatus.FinalRatifiers,
-		FinalRatifiers:              precedingFinalRatifierCollection,
-		FinalLevelRatifiersModified: valueAlterLevel,
+		FollowingAssessors:              unfitStatus.Assessors,
+		Assessors:                  unfitStatus.FinalAssessors,
+		FinalAssessors:              precedingFinalAssessorAssign,
+		FinalAltitudeAssessorsAltered: itemAlterationAltitude,
 
-		AgreementOptions:                  precedingOptions,
-		FinalLevelAgreementOptionsModified: optionsAlterLevel,
+		AgreementSettings:                  precedingParameters,
+		FinalAltitudeAgreementParametersAltered: parametersAlterationAltitude,
 
 		FinalOutcomesDigest: newestLedger.Heading.FinalOutcomesDigest,
-		ApplicationDigest:         newestLedger.Heading.ApplicationDigest,
+		PlatformDigest:         newestLedger.Heading.PlatformDigest,
 	}
 
 	//
 	//
 	//
-	if err := ss.Persist(invertedRearStatus); err != nil {
+	if err := ss.Persist(morphedRearStatus); err != nil {
 		return -1, nil, fmt.Errorf("REDACTED", err)
 	}
 
 	//
 	//
-	if deleteLedger {
-		if err := bs.RemoveNewestLedger(); err != nil {
+	if discardLedger {
+		if err := bs.EraseNewestLedger(); err != nil {
 			return -1, nil, fmt.Errorf("REDACTED", err)
 		}
 	}
 
-	return invertedRearStatus.FinalLedgerLevel, invertedRearStatus.ApplicationDigest, nil
+	return morphedRearStatus.FinalLedgerAltitude, morphedRearStatus.PlatformDigest, nil
 }

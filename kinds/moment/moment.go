@@ -18,40 +18,40 @@ func Standard(t time.Time) time.Time {
 }
 
 //
-type ScaledTime struct {
-	Time   time.Time
-	Magnitude int64
+type BurdenedMoment struct {
+	Moment   time.Time
+	Load int64
 }
 
 //
-func NewScaledTime(moment time.Time, magnitude int64) *ScaledTime {
-	return &ScaledTime{
-		Time:   moment,
-		Magnitude: magnitude,
+func FreshBurdenedMoment(moment time.Time, load int64) *BurdenedMoment {
+	return &BurdenedMoment{
+		Moment:   moment,
+		Load: load,
 	}
 }
 
 //
-func ScaledAverage(scaledInstances []*ScaledTime, sumPollingEnergy int64) (res time.Time) {
-	average := sumPollingEnergy / 2
+func BurdenedAverage(burdenedMultiples []*BurdenedMoment, sumBallotingPotency int64) (res time.Time) {
+	average := sumBallotingPotency / 2
 
-	sort.Slice(scaledInstances, func(i, j int) bool {
-		if scaledInstances[i] == nil {
+	sort.Slice(burdenedMultiples, func(i, j int) bool {
+		if burdenedMultiples[i] == nil {
 			return false
 		}
-		if scaledInstances[j] == nil {
+		if burdenedMultiples[j] == nil {
 			return true
 		}
-		return scaledInstances[i].Time.UnixNano() < scaledInstances[j].Time.UnixNano()
+		return burdenedMultiples[i].Moment.UnixNano() < burdenedMultiples[j].Moment.UnixNano()
 	})
 
-	for _, scaledTime := range scaledInstances {
-		if scaledTime != nil {
-			if average <= scaledTime.Magnitude {
-				res = scaledTime.Time
+	for _, burdenedMoment := range burdenedMultiples {
+		if burdenedMoment != nil {
+			if average <= burdenedMoment.Load {
+				res = burdenedMoment.Moment
 				break
 			}
-			average -= scaledTime.Magnitude
+			average -= burdenedMoment.Load
 		}
 	}
 	return

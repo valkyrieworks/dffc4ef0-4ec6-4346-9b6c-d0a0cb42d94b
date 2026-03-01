@@ -1,4 +1,4 @@
-package rpctest
+package rpcoverify
 
 import (
 	"context"
@@ -8,46 +8,46 @@ import (
 	"strings"
 	"time"
 
-	iface "github.com/valkyrieworks/iface/kinds"
-	"github.com/valkyrieworks/intrinsic/verify"
-	"github.com/valkyrieworks/utils/log"
+	iface "github.com/valkyrieworks/dffc4ef0-4ec6-4346-9b6c-d0a0cb42d94b/iface/kinds"
+	"github.com/valkyrieworks/dffc4ef0-4ec6-4346-9b6c-d0a0cb42d94b/intrinsic/verify"
+	"github.com/valkyrieworks/dffc4ef0-4ec6-4346-9b6c-d0a0cb42d94b/utils/log"
 
-	cfg "github.com/valkyrieworks/settings"
-	cometnet "github.com/valkyrieworks/utils/net"
-	nm "github.com/valkyrieworks/member"
-	"github.com/valkyrieworks/p2p"
-	"github.com/valkyrieworks/privatekey"
-	"github.com/valkyrieworks/gateway"
-	ctypes "github.com/valkyrieworks/rpc/core/kinds"
-	core_grpc "github.com/valkyrieworks/rpc/grpc"
-	rpccustomer "github.com/valkyrieworks/rpc/jsonrpc/customer"
+	cfg "github.com/valkyrieworks/dffc4ef0-4ec6-4346-9b6c-d0a0cb42d94b/settings"
+	strongmindnet "github.com/valkyrieworks/dffc4ef0-4ec6-4346-9b6c-d0a0cb42d94b/utils/net"
+	nm "github.com/valkyrieworks/dffc4ef0-4ec6-4346-9b6c-d0a0cb42d94b/peer"
+	"github.com/valkyrieworks/dffc4ef0-4ec6-4346-9b6c-d0a0cb42d94b/p2p"
+	"github.com/valkyrieworks/dffc4ef0-4ec6-4346-9b6c-d0a0cb42d94b/privatevalue"
+	"github.com/valkyrieworks/dffc4ef0-4ec6-4346-9b6c-d0a0cb42d94b/delegate"
+	ktypes "github.com/valkyrieworks/dffc4ef0-4ec6-4346-9b6c-d0a0cb42d94b/rpc/base/kinds"
+	base_grps "github.com/valkyrieworks/dffc4ef0-4ec6-4346-9b6c-d0a0cb42d94b/rpc/grps"
+	customeriface "github.com/valkyrieworks/dffc4ef0-4ec6-4346-9b6c-d0a0cb42d94b/rpc/jsoniface/customer"
 )
 
 //
 //
-type Settings struct {
-	inhibitStdout  bool
+type Choices struct {
+	quashStandardemission  bool
 	rebuildSettings  bool
-	maximumRequestGroupVolume int
+	maximumRequestClusterExtent int
 }
 
 var (
 	universalSettings   *cfg.Settings
-	standardSettings = Settings{
-		inhibitStdout: false,
+	fallbackChoices = Choices{
+		quashStandardemission: false,
 		rebuildSettings: false,
 	}
 )
 
-func waitForRPC() {
-	laddress := FetchSettings().RPC.AcceptLocation
-	customer, err := rpccustomer.New(laddress)
+func pauseForeachRemote() {
+	localaddr := FetchSettings().RPC.OverhearLocation
+	customer, err := customeriface.New(localaddr)
 	if err != nil {
 		panic(err)
 	}
-	outcome := new(ctypes.OutcomeState)
+	outcome := new(ktypes.OutcomeCondition)
 	for {
-		_, err := customer.Invoke(context.Background(), "REDACTED", map[string]any{}, outcome)
+		_, err := customer.Invocation(context.Background(), "REDACTED", map[string]any{}, outcome)
 		if err == nil {
 			return
 		}
@@ -57,10 +57,10 @@ func waitForRPC() {
 	}
 }
 
-func waitForGRPC() {
-	customer := FetchGRPCCustomer()
+func pauseForeachGRPS() {
+	customer := FetchGRPSCustomer()
 	for {
-		_, err := customer.Ping(context.Background(), &core_grpc.QueryPing{})
+		_, err := customer.Ping(context.Background(), &base_grps.SolicitPing{})
 		if err == nil {
 			return
 		}
@@ -68,7 +68,7 @@ func waitForGRPC() {
 }
 
 //
-func createPathstring() string {
+func createFilepath() string {
 	//
 	p, err := os.Getwd()
 	if err != nil {
@@ -79,126 +79,126 @@ func createPathstring() string {
 	return strings.ReplaceAll(p, sep, "REDACTED")
 }
 
-func randomPort() int {
-	port, err := cometnet.FetchReleasePort()
+func arbitraryChannel() int {
+	channel, err := strongmindnet.ObtainLiberateChannel()
 	if err != nil {
 		panic(err)
 	}
-	return port
+	return channel
 }
 
 func createLocations() (string, string, string) {
-	return fmt.Sprintf("REDACTED", randomPort()),
-		fmt.Sprintf("REDACTED", randomPort()),
-		fmt.Sprintf("REDACTED", randomPort())
+	return fmt.Sprintf("REDACTED", arbitraryChannel()),
+		fmt.Sprintf("REDACTED", arbitraryChannel()),
+		fmt.Sprintf("REDACTED", arbitraryChannel())
 }
 
-func instantiateSettings() *cfg.Settings {
-	pathstring := createPathstring()
-	c := verify.RestoreVerifyOrigin(pathstring)
+func generateSettings() *cfg.Settings {
+	filepath := createFilepath()
+	c := verify.RestoreVerifyOrigin(filepath)
 
 	//
-	tm, rpc, grpc := createLocations()
-	c.P2P.AcceptLocation = tm
-	c.RPC.AcceptLocation = rpc
-	c.RPC.CORSPermittedSources = []string{"REDACTED"}
-	c.RPC.GRPCAcceptLocation = grpc
+	tm, rpc, grps := createLocations()
+	c.P2P.OverhearLocation = tm
+	c.RPC.OverhearLocation = rpc
+	c.RPC.CrossoriginPermittedSources = []string{"REDACTED"}
+	c.RPC.GRPSOverhearLocation = grps
 	return c
 }
 
 //
-func FetchSettings(compelInstantiate ...bool) *cfg.Settings {
-	if universalSettings == nil || (len(compelInstantiate) > 0 && compelInstantiate[0]) {
-		universalSettings = instantiateSettings()
+func FetchSettings(compelGenerate ...bool) *cfg.Settings {
+	if universalSettings == nil || (len(compelGenerate) > 0 && compelGenerate[0]) {
+		universalSettings = generateSettings()
 	}
 	return universalSettings
 }
 
-func FetchGRPCCustomer() core_grpc.MulticastAPICustomer {
-	grpcAddress := universalSettings.RPC.GRPCAcceptLocation
+func FetchGRPSCustomer() base_grps.MulticastAPICustomer {
+	grpsLocation := universalSettings.RPC.GRPSOverhearLocation
 	//
-	return core_grpc.BeginGRPCCustomer(grpcAddress)
+	return base_grps.InitiateGRPSCustomer(grpsLocation)
 }
 
 //
-func BeginConsensuscore(app iface.Software, opts ...func(*Settings)) *nm.Member {
-	memberOpts := standardSettings
-	for _, opt := range opts {
-		opt(&memberOpts)
+func InitiateStrongmind(app iface.Platform, choices ...func(*Choices)) *nm.Peer {
+	peerOptions := fallbackChoices
+	for _, opt := range choices {
+		opt(&peerOptions)
 	}
-	member := NewConsensuscore(app, &memberOpts)
-	err := member.Begin()
+	peer := FreshStrongmind(app, &peerOptions)
+	err := peer.Initiate()
 	if err != nil {
 		panic(err)
 	}
 
 	//
-	waitForRPC()
-	waitForGRPC()
+	pauseForeachRemote()
+	pauseForeachGRPS()
 
-	if !memberOpts.inhibitStdout {
+	if !peerOptions.quashStandardemission {
 		fmt.Println("REDACTED")
 	}
 
-	return member
+	return peer
 }
 
 //
 //
-func HaltConsensuscore(member *nm.Member) {
-	if err := member.Halt(); err != nil {
-		member.Tracer.Fault("REDACTED", "REDACTED", err)
+func HaltStrongmind(peer *nm.Peer) {
+	if err := peer.Halt(); err != nil {
+		peer.Tracer.Failure("REDACTED", "REDACTED", err)
 	}
-	member.Wait()
-	os.RemoveAll(member.Settings().OriginFolder)
+	peer.Pause()
+	os.RemoveAll(peer.Settings().OriginPath)
 }
 
 //
-func NewConsensuscore(app iface.Software, opts *Settings) *nm.Member {
+func FreshStrongmind(app iface.Platform, choices *Choices) *nm.Peer {
 	//
-	settings := FetchSettings(opts.rebuildSettings)
+	settings := FetchSettings(choices.rebuildSettings)
 	var tracer log.Tracer
-	if opts.inhibitStdout {
-		tracer = log.NewNoopTracer()
+	if choices.quashStandardemission {
+		tracer = log.FreshNooperationTracer()
 	} else {
-		tracer = log.NewTMTracer(log.NewAlignRecorder(os.Stdout))
-		tracer = log.NewRefine(tracer, log.PermitFault())
+		tracer = log.FreshTEMPTracer(log.FreshChronizePersistor(os.Stdout))
+		tracer = log.FreshRefine(tracer, log.PermitFailure())
 	}
-	if opts.maximumRequestGroupVolume > 0 {
-		settings.RPC.MaximumQueryClusterVolume = opts.maximumRequestGroupVolume
+	if choices.maximumRequestClusterExtent > 0 {
+		settings.RPC.MaximumSolicitClusterExtent = choices.maximumRequestClusterExtent
 	}
-	privatekeyKeyEntry := settings.PrivateRatifierKeyEntry()
-	pvKeyStatusEntry := settings.PrivateRatifierStatusEntry()
-	pv := privatekey.ImportOrGenerateEntryPV(privatekeyKeyEntry, pvKeyStatusEntry)
-	proxyapp := gateway.NewNativeCustomerOriginator(app)
-	memberKey, err := p2p.ImportOrGenerateMemberKey(settings.MemberKeyEntry())
+	prvTokenRecord := settings.PrivateAssessorTokenRecord()
+	prvTokenStatusRecord := settings.PrivateAssessorStatusRecord()
+	pv := privatevalue.FetchEitherProduceRecordPRV(prvTokenRecord, prvTokenStatusRecord)
+	proxyapp := delegate.FreshRegionalCustomerOriginator(app)
+	peerToken, err := p2p.FetchEitherProducePeerToken(settings.PeerTokenRecord())
 	if err != nil {
 		panic(err)
 	}
-	member, err := nm.NewMember(settings, pv, memberKey, proxyapp,
-		nm.StandardOriginPaperSourceFunction(settings),
-		cfg.StandardStoreSource,
-		nm.StandardStatsSource(settings.Telemetry),
+	peer, err := nm.FreshPeer(settings, pv, peerToken, proxyapp,
+		nm.FallbackInaugurationPaperSupplierMethod(settings),
+		cfg.FallbackDatastoreSupplier,
+		nm.FallbackTelemetrySupplier(settings.Telemetry),
 		tracer)
 	if err != nil {
 		panic(err)
 	}
-	return member
+	return peer
 }
 
 //
 //
-func InhibitStdout(o *Settings) {
-	o.inhibitStdout = true
+func QuashStandardemission(o *Choices) {
+	o.quashStandardemission = true
 }
 
 //
 //
-func RebuildSettings(o *Settings) {
+func RebuildSettings(o *Choices) {
 	o.rebuildSettings = true
 }
 
 //
-func MaximumRequestGroupVolume(o *Settings) {
-	o.maximumRequestGroupVolume = 2
+func MaximumRequestClusterExtent(o *Choices) {
+	o.maximumRequestClusterExtent = 2
 }

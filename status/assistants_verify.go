@@ -6,287 +6,287 @@ import (
 	"fmt"
 	"time"
 
-	dbm "github.com/valkyrieworks/-db"
+	dbm "github.com/valkyrieworks/dffc4ef0-4ec6-4346-9b6c-d0a0cb42d94b/-db"
 
-	iface "github.com/valkyrieworks/iface/kinds"
-	"github.com/valkyrieworks/vault"
-	"github.com/valkyrieworks/vault/ed25519"
-	"github.com/valkyrieworks/intrinsic/verify"
-	engineproto "github.com/valkyrieworks/schema/consensuscore/kinds"
-	"github.com/valkyrieworks/gateway"
-	sm "github.com/valkyrieworks/status"
-	"github.com/valkyrieworks/kinds"
-	engineclock "github.com/valkyrieworks/kinds/moment"
+	iface "github.com/valkyrieworks/dffc4ef0-4ec6-4346-9b6c-d0a0cb42d94b/iface/kinds"
+	"github.com/valkyrieworks/dffc4ef0-4ec6-4346-9b6c-d0a0cb42d94b/security"
+	"github.com/valkyrieworks/dffc4ef0-4ec6-4346-9b6c-d0a0cb42d94b/security/edwards25519"
+	"github.com/valkyrieworks/dffc4ef0-4ec6-4346-9b6c-d0a0cb42d94b/intrinsic/verify"
+	commitchema "github.com/valkyrieworks/dffc4ef0-4ec6-4346-9b6c-d0a0cb42d94b/schema/strongmind/kinds"
+	"github.com/valkyrieworks/dffc4ef0-4ec6-4346-9b6c-d0a0cb42d94b/delegate"
+	sm "github.com/valkyrieworks/dffc4ef0-4ec6-4346-9b6c-d0a0cb42d94b/status"
+	"github.com/valkyrieworks/dffc4ef0-4ec6-4346-9b6c-d0a0cb42d94b/kinds"
+	committime "github.com/valkyrieworks/dffc4ef0-4ec6-4346-9b6c-d0a0cb42d94b/kinds/moment"
 )
 
-type optionsAlterVerifyScenario struct {
-	level int64
-	options kinds.AgreementOptions
+type parametersAlterationVerifyInstance struct {
+	altitude int64
+	parameters kinds.AgreementSettings
 }
 
-func newVerifyApplication() gateway.ApplicationLinks {
+func freshVerifyApplication() delegate.PlatformLinks {
 	app := &verifyApplication{}
-	cc := gateway.NewNativeCustomerOriginator(app)
-	return gateway.NewApplicationLinks(cc, gateway.NoopStats())
+	cc := delegate.FreshRegionalCustomerOriginator(app)
+	return delegate.FreshPlatformLinks(cc, delegate.NooperationTelemetry())
 }
 
-func createAndEndorseValidLedger(
+func createAlsoEndorseValidLedger(
 	status sm.Status,
-	level int64,
+	altitude int64,
 	finalEndorse *kinds.Endorse,
-	recommenderAddress []byte,
-	ledgerExecute *sm.LedgerRunner,
-	privateValues map[string]kinds.PrivateRatifier,
+	nominatorLocation []byte,
+	ledgerExecute *sm.LedgerHandler,
+	privateItems map[string]kinds.PrivateAssessor,
 	proof []kinds.Proof,
-) (sm.Status, kinds.LedgerUID, *kinds.ExpandedEndorse, error) {
+) (sm.Status, kinds.LedgerUUID, *kinds.ExpandedEndorse, error) {
 	//
-	status, ledgerUID, err := createAndExecuteValidLedger(status, level, finalEndorse, recommenderAddress, ledgerExecute, proof)
+	status, ledgerUUID, err := createAlsoExecuteValidLedger(status, altitude, finalEndorse, nominatorLocation, ledgerExecute, proof)
 	if err != nil {
-		return status, kinds.LedgerUID{}, nil, err
+		return status, kinds.LedgerUUID{}, nil, err
 	}
 
 	//
-	endorse, _, err := createSoundEndorse(level, ledgerUID, status.Ratifiers, privateValues)
+	endorse, _, err := createSoundEndorse(altitude, ledgerUUID, status.Assessors, privateItems)
 	if err != nil {
-		return status, kinds.LedgerUID{}, nil, err
+		return status, kinds.LedgerUUID{}, nil, err
 	}
-	return status, ledgerUID, endorse, nil
+	return status, ledgerUUID, endorse, nil
 }
 
-func createAndExecuteValidLedger(status sm.Status, level int64, finalEndorse *kinds.Endorse, recommenderAddress []byte,
-	ledgerExecute *sm.LedgerRunner, proof []kinds.Proof,
-) (sm.Status, kinds.LedgerUID, error) {
-	ledger, err := status.CreateLedger(level, verify.CreateNTrans(level, 10), finalEndorse, proof, recommenderAddress)
+func createAlsoExecuteValidLedger(status sm.Status, altitude int64, finalEndorse *kinds.Endorse, nominatorLocation []byte,
+	ledgerExecute *sm.LedgerHandler, proof []kinds.Proof,
+) (sm.Status, kinds.LedgerUUID, error) {
+	ledger, err := status.CreateLedger(altitude, verify.CreateNTHTrans(altitude, 10), finalEndorse, proof, nominatorLocation)
 	if err != nil {
-		return status, kinds.LedgerUID{}, nil
+		return status, kinds.LedgerUUID{}, nil
 	}
-	sectionCollection, err := ledger.CreateSegmentAssign(kinds.LedgerSegmentVolumeOctets)
+	fragmentAssign, err := ledger.CreateFragmentAssign(kinds.LedgerFragmentExtentOctets)
 	if err != nil {
-		return status, kinds.LedgerUID{}, err
+		return status, kinds.LedgerUUID{}, err
 	}
 
 	if err := ledgerExecute.CertifyLedger(status, ledger); err != nil {
-		return status, kinds.LedgerUID{}, err
+		return status, kinds.LedgerUUID{}, err
 	}
-	ledgerUID := kinds.LedgerUID{
+	ledgerUUID := kinds.LedgerUUID{
 		Digest:          ledger.Digest(),
-		SegmentAssignHeading: sectionCollection.Heading(),
+		FragmentAssignHeading: fragmentAssign.Heading(),
 	}
-	status, err = ledgerExecute.ExecuteLedger(status, ledgerUID, ledger)
+	status, err = ledgerExecute.ExecuteLedger(status, ledgerUUID, ledger)
 	if err != nil {
-		return status, kinds.LedgerUID{}, err
+		return status, kinds.LedgerUUID{}, err
 	}
-	return status, ledgerUID, nil
+	return status, ledgerUUID, nil
 }
 
-func createLedger(status sm.Status, level int64, c *kinds.Endorse) (*kinds.Ledger, error) {
+func createLedger(status sm.Status, altitude int64, c *kinds.Endorse) (*kinds.Ledger, error) {
 	return status.CreateLedger(
-		level,
-		verify.CreateNTrans(status.FinalLedgerLevel, 10),
+		altitude,
+		verify.CreateNTHTrans(status.FinalLedgerAltitude, 10),
 		c,
 		nil,
-		status.Ratifiers.FetchRecommender().Location,
+		status.Assessors.ObtainNominator().Location,
 	)
 }
 
 func createSoundEndorse(
-	level int64,
-	ledgerUID kinds.LedgerUID,
-	values *kinds.RatifierAssign,
-	privateValues map[string]kinds.PrivateRatifier,
+	altitude int64,
+	ledgerUUID kinds.LedgerUUID,
+	values *kinds.AssessorAssign,
+	privateItems map[string]kinds.PrivateAssessor,
 ) (*kinds.ExpandedEndorse, []*kinds.Ballot, error) {
-	autographs := make([]kinds.ExpandedEndorseSignature, values.Volume())
-	ballots := make([]*kinds.Ballot, values.Volume())
-	for i := 0; i < values.Volume(); i++ {
-		_, val := values.FetchByOrdinal(int32(i))
+	signatures := make([]kinds.ExpandedEndorseSignature, values.Extent())
+	ballots := make([]*kinds.Ballot, values.Extent())
+	for i := 0; i < values.Extent(); i++ {
+		_, val := values.ObtainViaOrdinal(int32(i))
 		ballot, err := kinds.CreateBallot(
-			privateValues[val.Location.String()],
-			ledgerUID,
+			privateItems[val.Location.Text()],
+			successionUUID,
 			int32(i),
-			level,
+			altitude,
 			0,
-			engineproto.PreendorseKind,
-			ledgerUID,
+			commitchema.PreendorseKind,
+			ledgerUUID,
 			time.Now(),
 		)
 		if err != nil {
 			return nil, nil, err
 		}
-		autographs[i] = ballot.ExpandedEndorseSignature()
+		signatures[i] = ballot.ExpandedEndorseSignature()
 		ballots[i] = ballot
 	}
 	return &kinds.ExpandedEndorse{
-		Level:             level,
-		LedgerUID:            ledgerUID,
-		ExpandedEndorsements: autographs,
+		Altitude:             altitude,
+		LedgerUUID:            ledgerUUID,
+		ExpandedNotations: signatures,
 	}, ballots, nil
 }
 
-func createStatus(nValues, level int) (sm.Status, dbm.DB, map[string]kinds.PrivateRatifier) {
-	values := make([]kinds.OriginRatifier, nValues)
-	privateValues := make(map[string]kinds.PrivateRatifier, nValues)
-	for i := 0; i < nValues; i++ {
-		key := []byte(fmt.Sprintf("REDACTED", i))
-		pk := ed25519.GeneratePrivateKeyFromPrivatekey(key)
-		valueAddress := pk.PublicKey().Location()
-		values[i] = kinds.OriginRatifier{
-			Location: valueAddress,
-			PublicKey:  pk.PublicKey(),
-			Energy:   1000,
-			Label:    fmt.Sprintf("REDACTED", i),
+func createStatus(nthValues, altitude int) (sm.Status, dbm.DB, map[string]kinds.PrivateAssessor) {
+	values := make([]kinds.OriginAssessor, nthValues)
+	privateItems := make(map[string]kinds.PrivateAssessor, nthValues)
+	for i := 0; i < nthValues; i++ {
+		credential := []byte(fmt.Sprintf("REDACTED", i))
+		pk := edwards25519.ProducePrivateTokenOriginatingCredential(credential)
+		itemLocation := pk.PublicToken().Location()
+		values[i] = kinds.OriginAssessor{
+			Location: itemLocation,
+			PublicToken:  pk.PublicToken(),
+			Potency:   1000,
+			Alias:    fmt.Sprintf("REDACTED", i),
 		}
-		privateValues[valueAddress.String()] = kinds.NewEmulatePVWithOptions(pk, false, false)
+		privateItems[itemLocation.Text()] = kinds.FreshSimulatePRVUsingParameters(pk, false, false)
 	}
-	s, _ := sm.CreateOriginStatus(&kinds.OriginPaper{
-		LedgerUID:    ledgerUID,
-		Ratifiers: values,
-		ApplicationDigest:    nil,
+	s, _ := sm.CreateInaugurationStatus(&kinds.OriginPaper{
+		SuccessionUUID:    successionUUID,
+		Assessors: values,
+		PlatformDigest:    nil,
 	})
 
-	statusStore := dbm.NewMemoryStore()
-	statusDepot := sm.NewDepot(statusStore, sm.DepotSettings{
-		DropIfaceReplies: false,
+	statusDatastore := dbm.FreshMemoryDatastore()
+	statusDepot := sm.FreshDepot(statusDatastore, sm.DepotChoices{
+		EjectIfaceReplies: false,
 	})
 	if err := statusDepot.Persist(s); err != nil {
 		panic(err)
 	}
 
-	for i := 1; i < level; i++ {
-		s.FinalLedgerLevel++
-		s.FinalRatifiers = s.Ratifiers.Clone()
+	for i := 1; i < altitude; i++ {
+		s.FinalLedgerAltitude++
+		s.FinalAssessors = s.Assessors.Duplicate()
 		if err := statusDepot.Persist(s); err != nil {
 			panic(err)
 		}
 	}
 
-	return s, statusStore, privateValues
+	return s, statusDatastore, privateItems
 }
 
-func generateValueCollection(volume int) *kinds.RatifierAssign {
-	values := make([]*kinds.Ratifier, volume)
-	for i := 0; i < volume; i++ {
-		values[i] = kinds.NewRatifier(ed25519.GeneratePrivateKey().PublicKey(), 10)
+func produceItemCollection(extent int) *kinds.AssessorAssign {
+	values := make([]*kinds.Assessor, extent)
+	for i := 0; i < extent; i++ {
+		values[i] = kinds.FreshAssessor(edwards25519.ProducePrivateToken().PublicToken(), 10)
 	}
-	return kinds.NewRatifierCollection(values)
+	return kinds.FreshAssessorAssign(values)
 }
 
-func createHeadingSectionsRepliesValuePublicKeyAlter(
+func createHeadlineFragmentsRepliesItemPublicTokenAlteration(
 	status sm.Status,
-	publickey vault.PublicKey,
-) (kinds.Heading, kinds.LedgerUID, *iface.ReplyCompleteLedger) {
-	ledger, err := createLedger(status, status.FinalLedgerLevel+1, new(kinds.Endorse))
+	publickey security.PublicToken,
+) (kinds.Heading, kinds.LedgerUUID, *iface.ReplyCulminateLedger) {
+	ledger, err := createLedger(status, status.FinalLedgerAltitude+1, new(kinds.Endorse))
 	if err != nil {
-		return kinds.Heading{}, kinds.LedgerUID{}, nil
+		return kinds.Heading{}, kinds.LedgerUUID{}, nil
 	}
-	ifaceReplies := &iface.ReplyCompleteLedger{}
+	ifaceReplies := &iface.ReplyCulminateLedger{}
 	//
-	_, val := status.FollowingRatifiers.FetchByOrdinal(0)
-	if !bytes.Equal(publickey.Octets(), val.PublicKey.Octets()) {
-		ifaceReplies.RatifierRefreshes = []iface.RatifierModify{
-			kinds.Tm2schema.NewRatifierModify(val.PublicKey, 0),
-			kinds.Tm2schema.NewRatifierModify(publickey, 10),
+	_, val := status.FollowingAssessors.ObtainViaOrdinal(0)
+	if !bytes.Equal(publickey.Octets(), val.PublicToken.Octets()) {
+		ifaceReplies.AssessorRevisions = []iface.AssessorRevise{
+			kinds.Temp2buffer.FreshAssessorRevise(val.PublicToken, 0),
+			kinds.Temp2buffer.FreshAssessorRevise(publickey, 10),
 		}
 	}
 
-	return ledger.Heading, kinds.LedgerUID{Digest: ledger.Digest(), SegmentAssignHeading: kinds.SegmentAssignHeading{}}, ifaceReplies
+	return ledger.Heading, kinds.LedgerUUID{Digest: ledger.Digest(), FragmentAssignHeading: kinds.FragmentAssignHeading{}}, ifaceReplies
 }
 
-func createHeadingSectionsRepliesValueEnergyAlter(
+func createHeadlineFragmentsRepliesItemPotencyAlteration(
 	status sm.Status,
-	energy int64,
-) (kinds.Heading, kinds.LedgerUID, *iface.ReplyCompleteLedger) {
-	ledger, err := createLedger(status, status.FinalLedgerLevel+1, new(kinds.Endorse))
+	potency int64,
+) (kinds.Heading, kinds.LedgerUUID, *iface.ReplyCulminateLedger) {
+	ledger, err := createLedger(status, status.FinalLedgerAltitude+1, new(kinds.Endorse))
 	if err != nil {
-		return kinds.Heading{}, kinds.LedgerUID{}, nil
+		return kinds.Heading{}, kinds.LedgerUUID{}, nil
 	}
-	ifaceReplies := &iface.ReplyCompleteLedger{}
+	ifaceReplies := &iface.ReplyCulminateLedger{}
 
 	//
-	_, val := status.FollowingRatifiers.FetchByOrdinal(0)
-	if val.PollingEnergy != energy {
-		ifaceReplies.RatifierRefreshes = []iface.RatifierModify{
-			kinds.Tm2schema.NewRatifierModify(val.PublicKey, energy),
+	_, val := status.FollowingAssessors.ObtainViaOrdinal(0)
+	if val.BallotingPotency != potency {
+		ifaceReplies.AssessorRevisions = []iface.AssessorRevise{
+			kinds.Temp2buffer.FreshAssessorRevise(val.PublicToken, potency),
 		}
 	}
 
-	return ledger.Heading, kinds.LedgerUID{Digest: ledger.Digest(), SegmentAssignHeading: kinds.SegmentAssignHeading{}}, ifaceReplies
+	return ledger.Heading, kinds.LedgerUUID{Digest: ledger.Digest(), FragmentAssignHeading: kinds.FragmentAssignHeading{}}, ifaceReplies
 }
 
-func createHeadingSectionsRepliesOptions(
+func createHeadlineFragmentsRepliesParameters(
 	status sm.Status,
-	options engineproto.AgreementOptions,
-) (kinds.Heading, kinds.LedgerUID, *iface.ReplyCompleteLedger) {
-	ledger, err := createLedger(status, status.FinalLedgerLevel+1, new(kinds.Endorse))
+	parameters commitchema.AgreementSettings,
+) (kinds.Heading, kinds.LedgerUUID, *iface.ReplyCulminateLedger) {
+	ledger, err := createLedger(status, status.FinalLedgerAltitude+1, new(kinds.Endorse))
 	if err != nil {
-		return kinds.Heading{}, kinds.LedgerUID{}, nil
+		return kinds.Heading{}, kinds.LedgerUUID{}, nil
 	}
-	ifaceReplies := &iface.ReplyCompleteLedger{
-		AgreementArgumentRefreshes: &options,
+	ifaceReplies := &iface.ReplyCulminateLedger{
+		AgreementArgumentRevisions: &parameters,
 	}
-	return ledger.Heading, kinds.LedgerUID{Digest: ledger.Digest(), SegmentAssignHeading: kinds.SegmentAssignHeading{}}, ifaceReplies
+	return ledger.Heading, kinds.LedgerUUID{Digest: ledger.Digest(), FragmentAssignHeading: kinds.FragmentAssignHeading{}}, ifaceReplies
 }
 
-func arbitraryOriginPaper() *kinds.OriginPaper {
-	publickey := ed25519.GeneratePrivateKey().PublicKey()
+func unpredictableInaugurationPaper() *kinds.OriginPaper {
+	publickey := edwards25519.ProducePrivateToken().PublicToken()
 	return &kinds.OriginPaper{
-		OriginMoment: engineclock.Now(),
-		LedgerUID:     "REDACTED",
-		Ratifiers: []kinds.OriginRatifier{
+		OriginMoment: committime.Now(),
+		SuccessionUUID:     "REDACTED",
+		Assessors: []kinds.OriginAssessor{
 			{
 				Location: publickey.Location(),
-				PublicKey:  publickey,
-				Energy:   10,
-				Label:    "REDACTED",
+				PublicToken:  publickey,
+				Potency:   10,
+				Alias:    "REDACTED",
 			},
 		},
-		AgreementOptions: kinds.StandardAgreementOptions(),
+		AgreementSettings: kinds.FallbackAgreementSettings(),
 	}
 }
 
 //
 
 type verifyApplication struct {
-	iface.RootSoftware
+	iface.FoundationPlatform
 
 	EndorseBallots      []iface.BallotDetails
 	Malpractice      []iface.Malpractice
-	FinalTime         time.Time
-	RatifierRefreshes []iface.RatifierModify
-	ApplicationDigest          []byte
+	FinalMoment         time.Time
+	AssessorRevisions []iface.AssessorRevise
+	PlatformDigest          []byte
 }
 
-var _ iface.Software = (*verifyApplication)(nil)
+var _ iface.Platform = (*verifyApplication)(nil)
 
-func (app *verifyApplication) CompleteLedger(_ context.Context, req *iface.QueryCompleteLedger) (*iface.ReplyCompleteLedger, error) {
+func (app *verifyApplication) CulminateLedger(_ context.Context, req *iface.SolicitCulminateLedger) (*iface.ReplyCulminateLedger, error) {
 	app.EndorseBallots = req.ResolvedFinalEndorse.Ballots
 	app.Malpractice = req.Malpractice
-	app.FinalTime = req.Time
+	app.FinalMoment = req.Moment
 	transferOutcomes := make([]*iface.InvokeTransferOutcome, len(req.Txs))
 	for idx := range req.Txs {
 		transferOutcomes[idx] = &iface.InvokeTransferOutcome{
-			Code: iface.CodeKindSuccess,
+			Cipher: iface.CipherKindOKAY,
 		}
 	}
 
-	return &iface.ReplyCompleteLedger{
-		RatifierRefreshes: app.RatifierRefreshes,
-		AgreementArgumentRefreshes: &engineproto.AgreementOptions{
-			Release: &engineproto.ReleaseOptions{
+	return &iface.ReplyCulminateLedger{
+		AssessorRevisions: app.AssessorRevisions,
+		AgreementArgumentRevisions: &commitchema.AgreementSettings{
+			Edition: &commitchema.EditionParameters{
 				App: 1,
 			},
 		},
-		TransOutcomes: transferOutcomes,
-		ApplicationDigest:   app.ApplicationDigest,
+		TransferOutcomes: transferOutcomes,
+		PlatformDigest:   app.PlatformDigest,
 	}, nil
 }
 
-func (app *verifyApplication) Endorse(_ context.Context, _ *iface.QueryEndorse) (*iface.ReplyEndorse, error) {
-	return &iface.ReplyEndorse{PreserveLevel: 1}, nil
+func (app *verifyApplication) Endorse(_ context.Context, _ *iface.SolicitEndorse) (*iface.ReplyEndorse, error) {
+	return &iface.ReplyEndorse{PreserveAltitude: 1}, nil
 }
 
 func (app *verifyApplication) ArrangeNomination(
 	_ context.Context,
-	req *iface.QueryArrangeNomination,
+	req *iface.SolicitArrangeNomination,
 ) (*iface.ReplyArrangeNomination, error) {
 	txs := make([][]byte, 0, len(req.Txs))
 	var sumOctets int64
@@ -305,12 +305,12 @@ func (app *verifyApplication) ArrangeNomination(
 
 func (app *verifyApplication) HandleNomination(
 	_ context.Context,
-	req *iface.QueryHandleNomination,
+	req *iface.SolicitHandleNomination,
 ) (*iface.ReplyHandleNomination, error) {
 	for _, tx := range req.Txs {
 		if len(tx) == 0 {
-			return &iface.ReplyHandleNomination{Status: iface.Responseprocessnomination_DECLINE}, nil
+			return &iface.ReplyHandleNomination{Condition: iface.Responseexecuteitem_DECLINE}, nil
 		}
 	}
-	return &iface.ReplyHandleNomination{Status: iface.Responseprocessnomination_ALLOW}, nil
+	return &iface.ReplyHandleNomination{Condition: iface.Responseexecuteitem_EMBRACE}, nil
 }

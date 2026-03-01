@@ -16,134 +16,134 @@ import (
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/require"
 
-	dbm "github.com/valkyrieworks/-db"
+	dbm "github.com/valkyrieworks/dffc4ef0-4ec6-4346-9b6c-d0a0cb42d94b/-db"
 
-	abciend "github.com/valkyrieworks/iface/customer"
-	"github.com/valkyrieworks/iface/instance/objectdepot"
-	iface "github.com/valkyrieworks/iface/kinds"
-	cfg "github.com/valkyrieworks/settings"
-	cskinds "github.com/valkyrieworks/agreement/kinds"
-	"github.com/valkyrieworks/intrinsic/verify"
-	cometbytes "github.com/valkyrieworks/utils/octets"
-	"github.com/valkyrieworks/utils/log"
-	cometos "github.com/valkyrieworks/utils/os"
-	cometbroadcast "github.com/valkyrieworks/utils/broadcast"
-	engineconnect "github.com/valkyrieworks/utils/align"
-	txpool "github.com/valkyrieworks/txpool"
-	"github.com/valkyrieworks/p2p"
-	"github.com/valkyrieworks/privatekey"
-	engineproto "github.com/valkyrieworks/schema/consensuscore/kinds"
-	"github.com/valkyrieworks/gateway"
-	sm "github.com/valkyrieworks/status"
-	"github.com/valkyrieworks/depot"
-	"github.com/valkyrieworks/kinds"
-	engineclock "github.com/valkyrieworks/kinds/moment"
+	abcicustomer "github.com/valkyrieworks/dffc4ef0-4ec6-4346-9b6c-d0a0cb42d94b/iface/customer"
+	"github.com/valkyrieworks/dffc4ef0-4ec6-4346-9b6c-d0a0cb42d94b/iface/instance/statedepot"
+	iface "github.com/valkyrieworks/dffc4ef0-4ec6-4346-9b6c-d0a0cb42d94b/iface/kinds"
+	cfg "github.com/valkyrieworks/dffc4ef0-4ec6-4346-9b6c-d0a0cb42d94b/settings"
+	controlkinds "github.com/valkyrieworks/dffc4ef0-4ec6-4346-9b6c-d0a0cb42d94b/agreement/kinds"
+	"github.com/valkyrieworks/dffc4ef0-4ec6-4346-9b6c-d0a0cb42d94b/intrinsic/verify"
+	tendermintoctets "github.com/valkyrieworks/dffc4ef0-4ec6-4346-9b6c-d0a0cb42d94b/utils/octets"
+	"github.com/valkyrieworks/dffc4ef0-4ec6-4346-9b6c-d0a0cb42d94b/utils/log"
+	strongos "github.com/valkyrieworks/dffc4ef0-4ec6-4346-9b6c-d0a0cb42d94b/utils/os"
+	tendermintpubsub "github.com/valkyrieworks/dffc4ef0-4ec6-4346-9b6c-d0a0cb42d94b/utils/broadcastlisten"
+	commitchronize "github.com/valkyrieworks/dffc4ef0-4ec6-4346-9b6c-d0a0cb42d94b/utils/chronize"
+	txpooll "github.com/valkyrieworks/dffc4ef0-4ec6-4346-9b6c-d0a0cb42d94b/txpool"
+	"github.com/valkyrieworks/dffc4ef0-4ec6-4346-9b6c-d0a0cb42d94b/p2p"
+	"github.com/valkyrieworks/dffc4ef0-4ec6-4346-9b6c-d0a0cb42d94b/privatevalue"
+	commitchema "github.com/valkyrieworks/dffc4ef0-4ec6-4346-9b6c-d0a0cb42d94b/schema/strongmind/kinds"
+	"github.com/valkyrieworks/dffc4ef0-4ec6-4346-9b6c-d0a0cb42d94b/delegate"
+	sm "github.com/valkyrieworks/dffc4ef0-4ec6-4346-9b6c-d0a0cb42d94b/status"
+	"github.com/valkyrieworks/dffc4ef0-4ec6-4346-9b6c-d0a0cb42d94b/depot"
+	"github.com/valkyrieworks/dffc4ef0-4ec6-4346-9b6c-d0a0cb42d94b/kinds"
+	committime "github.com/valkyrieworks/dffc4ef0-4ec6-4346-9b6c-d0a0cb42d94b/kinds/moment"
 )
 
 const (
-	verifyEnrollee = "REDACTED"
+	verifyListener = "REDACTED"
 )
 
 //
 //
-type sanitizeFunction func()
+type sanitizeMethod func()
 
 //
 var (
 	settings                *cfg.Settings //
-	agreementResimulateSettings *cfg.Settings
+	agreementReenactSettings *cfg.Settings
 	assureDeadline         = time.Millisecond * 200
 )
 
-func assureFolder(dir string, style os.FileMode) {
-	if err := cometos.AssureFolder(dir, style); err != nil {
+func assurePath(dir string, style os.FileMode) {
+	if err := strongos.AssurePath(dir, style); err != nil {
 		panic(err)
 	}
 }
 
-func RestoreSettings(label string) *cfg.Settings {
-	return verify.RestoreVerifyOrigin(label)
+func RestoreSettings(alias string) *cfg.Settings {
+	return verify.RestoreVerifyOrigin(alias)
 }
 
 //
 //
 
-type ratifierProxy struct {
+type assessorMock struct {
 	Ordinal  int32 //
-	Level int64
-	Cycle  int32
-	kinds.PrivateRatifier
-	PollingEnergy int64
+	Altitude int64
+	Iteration  int32
+	kinds.PrivateAssessor
+	BallotingPotency int64
 	finalBallot    *kinds.Ballot
 }
 
-var verifyMinimumEnergy int64 = 10
+var verifyMinimumPotency int64 = 10
 
-func newRatifierProxy(privateRatifier kinds.PrivateRatifier, valueOrdinal int32) *ratifierProxy {
-	return &ratifierProxy{
-		Ordinal:         valueOrdinal,
-		PrivateRatifier: privateRatifier,
-		PollingEnergy:   verifyMinimumEnergy,
+func freshAssessorMock(privateAssessor kinds.PrivateAssessor, itemOrdinal int32) *assessorMock {
+	return &assessorMock{
+		Ordinal:         itemOrdinal,
+		PrivateAssessor: privateAssessor,
+		BallotingPotency:   verifyMinimumPotency,
 	}
 }
 
-func (vs *ratifierProxy) attestBallot(
-	ballotKind engineproto.AttestedMessageKind,
+func (vs *assessorMock) attestBallot(
+	ballotKind commitchema.AttestedSignalKind,
 	digest []byte,
-	heading kinds.SegmentAssignHeading,
+	heading kinds.FragmentAssignHeading,
 	ballotAddition []byte,
-	extensionActivated bool,
+	addnActivated bool,
 ) (*kinds.Ballot, error) {
-	publicKey, err := vs.FetchPublicKey()
+	publicToken, err := vs.ObtainPublicToken()
 	if err != nil {
 		return nil, fmt.Errorf("REDACTED", err)
 	}
 	ballot := &kinds.Ballot{
 		Kind:             ballotKind,
-		Level:           vs.Level,
-		Cycle:            vs.Cycle,
-		LedgerUID:          kinds.LedgerUID{Digest: digest, SegmentAssignHeading: heading},
-		Timestamp:        engineclock.Now(),
-		RatifierLocation: publicKey.Location(),
-		RatifierOrdinal:   vs.Ordinal,
+		Altitude:           vs.Altitude,
+		Iteration:            vs.Iteration,
+		LedgerUUID:          kinds.LedgerUUID{Digest: digest, FragmentAssignHeading: heading},
+		Timestamp:        committime.Now(),
+		AssessorLocation: publicToken.Location(),
+		AssessorOrdinal:   vs.Ordinal,
 		Addition:        ballotAddition,
 	}
-	v := ballot.ToSchema()
-	if err = vs.AttestBallot(verify.StandardVerifyLedgerUID, v); err != nil {
+	v := ballot.TowardSchema()
+	if err = vs.AttestBallot(verify.FallbackVerifySuccessionUUID, v); err != nil {
 		return nil, fmt.Errorf("REDACTED", err)
 	}
 
 	//
-	if attestDataIsEquivalent(vs.finalBallot, v) {
-		v.Autograph = vs.finalBallot.Autograph
+	if attestDataEqualsEquivalent(vs.finalBallot, v) {
+		v.Notation = vs.finalBallot.Notation
 		v.Timestamp = vs.finalBallot.Timestamp
-		v.AdditionAutograph = vs.finalBallot.AdditionAutograph
+		v.AdditionNotation = vs.finalBallot.AdditionNotation
 	}
 
-	ballot.Autograph = v.Autograph
+	ballot.Notation = v.Notation
 	ballot.Timestamp = v.Timestamp
-	ballot.AdditionAutograph = v.AdditionAutograph
+	ballot.AdditionNotation = v.AdditionNotation
 
-	if !extensionActivated {
-		ballot.AdditionAutograph = nil
+	if !addnActivated {
+		ballot.AdditionNotation = nil
 	}
 
 	return ballot, err
 }
 
 //
-func attestBallot(vs *ratifierProxy, ballotKind engineproto.AttestedMessageKind, digest []byte, heading kinds.SegmentAssignHeading, extensionActivated bool) *kinds.Ballot {
+func attestBallot(vs *assessorMock, ballotKind commitchema.AttestedSignalKind, digest []byte, heading kinds.FragmentAssignHeading, addnActivated bool) *kinds.Ballot {
 	var ext []byte
 	//
-	if extensionActivated {
-		if ballotKind != engineproto.PreendorseKind {
+	if addnActivated {
+		if ballotKind != commitchema.PreendorseKind {
 			panic(fmt.Errorf("REDACTED"))
 		}
-		if len(digest) != 0 || !heading.IsNil() {
+		if len(digest) != 0 || !heading.EqualsNull() {
 			ext = []byte("REDACTED")
 		}
 	}
-	v, err := vs.attestBallot(ballotKind, digest, heading, ext, extensionActivated)
+	v, err := vs.attestBallot(ballotKind, digest, heading, ext, addnActivated)
 	if err != nil {
 		panic(fmt.Errorf("REDACTED", err))
 	}
@@ -154,54 +154,54 @@ func attestBallot(vs *ratifierProxy, ballotKind engineproto.AttestedMessageKind,
 }
 
 func attestBallots(
-	ballotKind engineproto.AttestedMessageKind,
+	ballotKind commitchema.AttestedSignalKind,
 	digest []byte,
-	heading kinds.SegmentAssignHeading,
-	extensionActivated bool,
-	vss ...*ratifierProxy,
+	heading kinds.FragmentAssignHeading,
+	addnActivated bool,
+	vss ...*assessorMock,
 ) []*kinds.Ballot {
 	ballots := make([]*kinds.Ballot, len(vss))
 	for i, vs := range vss {
-		ballots[i] = attestBallot(vs, ballotKind, digest, heading, extensionActivated)
+		ballots[i] = attestBallot(vs, ballotKind, digest, heading, addnActivated)
 	}
 	return ballots
 }
 
-func augmentLevel(vss ...*ratifierProxy) {
+func advanceAltitude(vss ...*assessorMock) {
 	for _, vs := range vss {
-		vs.Level++
+		vs.Altitude++
 	}
 }
 
-func augmentEpoch(vss ...*ratifierProxy) {
+func advanceIteration(vss ...*assessorMock) {
 	for _, vs := range vss {
-		vs.Cycle++
+		vs.Iteration++
 	}
 }
 
-type RatifierDummiesByEnergy []*ratifierProxy
+type AssessorMocksViaPotency []*assessorMock
 
-func (vss RatifierDummiesByEnergy) Len() int {
+func (vss AssessorMocksViaPotency) Len() int {
 	return len(vss)
 }
 
-func (vss RatifierDummiesByEnergy) Lower(i, j int) bool {
-	vssi, err := vss[i].FetchPublicKey()
+func (vss AssessorMocksViaPotency) Inferior(i, j int) bool {
+	vssindex, err := vss[i].ObtainPublicToken()
 	if err != nil {
 		panic(err)
 	}
-	vssj, err := vss[j].FetchPublicKey()
+	vssjoint, err := vss[j].ObtainPublicToken()
 	if err != nil {
 		panic(err)
 	}
 
-	if vss[i].PollingEnergy == vss[j].PollingEnergy {
-		return bytes.Compare(vssi.Location(), vssj.Location()) == -1
+	if vss[i].BallotingPotency == vss[j].BallotingPotency {
+		return bytes.Compare(vssindex.Location(), vssjoint.Location()) == -1
 	}
-	return vss[i].PollingEnergy > vss[j].PollingEnergy
+	return vss[i].BallotingPotency > vss[j].BallotingPotency
 }
 
-func (vss RatifierDummiesByEnergy) Exchange(i, j int) {
+func (vss AssessorMocksViaPotency) Exchange(i, j int) {
 	it := vss[i]
 	vss[i] = vss[j]
 	vss[i].Ordinal = int32(i)
@@ -212,157 +212,157 @@ func (vss RatifierDummiesByEnergy) Exchange(i, j int) {
 //
 //
 
-func beginVerifyEpoch(cs *Status, level int64, duration int32) {
-	cs.joinNewEpoch(level, duration)
-	cs.beginProcedures(0)
+func initiateVerifyIteration(cs *Status, altitude int64, iteration int32) {
+	cs.joinFreshIteration(altitude, iteration)
+	cs.initiateThreads(0)
 }
 
 //
-func determineNomination(
+func resolveNomination(
 	ctx context.Context,
 	t *testing.T,
 	cs1 *Status,
-	vs *ratifierProxy,
-	level int64,
-	duration int32,
+	vs *assessorMock,
+	altitude int64,
+	iteration int32,
 ) (*kinds.Nomination, *kinds.Ledger) {
 	cs1.mtx.Lock()
-	ledger, err := cs1.instantiateNominationLedger(ctx)
+	ledger, err := cs1.generateNominationLedger(ctx)
 	require.NoError(t, err)
-	ledgerSegments, err := ledger.CreateSegmentAssign(kinds.LedgerSegmentVolumeOctets)
+	ledgerFragments, err := ledger.CreateFragmentAssign(kinds.LedgerFragmentExtentOctets)
 	require.NoError(t, err)
-	soundEpoch := cs1.SoundEpoch
-	ledgerUID := cs1.status.LedgerUID
+	soundIteration := cs1.SoundIteration
+	successionUUID := cs1.status.SuccessionUUID
 	cs1.mtx.Unlock()
 	if ledger == nil {
 		panic("REDACTED")
 	}
 
 	//
-	polEpoch, nominationLedgerUID := soundEpoch, kinds.LedgerUID{Digest: ledger.Digest(), SegmentAssignHeading: ledgerSegments.Heading()}
-	nomination := kinds.NewNomination(level, duration, polEpoch, nominationLedgerUID)
-	p := nomination.ToSchema()
-	if err := vs.AttestNomination(ledgerUID, p); err != nil {
+	policyIteration, itemLedgerUUID := soundIteration, kinds.LedgerUUID{Digest: ledger.Digest(), FragmentAssignHeading: ledgerFragments.Heading()}
+	nomination := kinds.FreshNomination(altitude, iteration, policyIteration, itemLedgerUUID)
+	p := nomination.TowardSchema()
+	if err := vs.AttestNomination(successionUUID, p); err != nil {
 		panic(err)
 	}
 
-	nomination.Autograph = p.Autograph
+	nomination.Notation = p.Notation
 
 	return nomination, ledger
 }
 
 func appendBallots(to *Status, ballots ...*kinds.Ballot) {
 	for _, ballot := range ballots {
-		to.nodeMessageBuffer <- messageDetails{Msg: &BallotSignal{ballot}}
+		to.nodeSignalStaging <- signalDetails{Msg: &BallotSignal{ballot}}
 	}
 }
 
 func attestAppendBallots(
 	to *Status,
-	ballotKind engineproto.AttestedMessageKind,
+	ballotKind commitchema.AttestedSignalKind,
 	digest []byte,
-	heading kinds.SegmentAssignHeading,
-	extensionActivated bool,
-	vss ...*ratifierProxy,
+	heading kinds.FragmentAssignHeading,
+	addnActivated bool,
+	vss ...*assessorMock,
 ) {
-	ballots := attestBallots(ballotKind, digest, heading, extensionActivated, vss...)
+	ballots := attestBallots(ballotKind, digest, heading, addnActivated, vss...)
 	appendBallots(to, ballots...)
 }
 
-func certifyPreballot(t *testing.T, cs *Status, duration int32, privateValue *ratifierProxy, ledgerDigest []byte) {
-	preballots := cs.Ballots.Preballots(duration)
-	publicKey, err := privateValue.FetchPublicKey()
+func certifyPreballot(t *testing.T, cs *Status, iteration int32, privateItem *assessorMock, ledgerDigest []byte) {
+	preballots := cs.Ballots.Preballots(iteration)
+	publicToken, err := privateItem.ObtainPublicToken()
 	require.NoError(t, err)
-	location := publicKey.Location()
+	location := publicToken.Location()
 	var ballot *kinds.Ballot
-	if ballot = preballots.FetchByLocation(location); ballot == nil {
+	if ballot = preballots.ObtainViaLocation(location); ballot == nil {
 		panic("REDACTED")
 	}
 	if ledgerDigest == nil {
-		if ballot.LedgerUID.Digest != nil {
-			panic(fmt.Sprintf("REDACTED", ballot.LedgerUID.Digest))
+		if ballot.LedgerUUID.Digest != nil {
+			panic(fmt.Sprintf("REDACTED", ballot.LedgerUUID.Digest))
 		}
 	} else {
-		if !bytes.Equal(ballot.LedgerUID.Digest, ledgerDigest) {
-			panic(fmt.Sprintf("REDACTED", ledgerDigest, ballot.LedgerUID.Digest))
+		if !bytes.Equal(ballot.LedgerUUID.Digest, ledgerDigest) {
+			panic(fmt.Sprintf("REDACTED", ledgerDigest, ballot.LedgerUUID.Digest))
 		}
 	}
 }
 
-func certifyFinalPreendorse(t *testing.T, cs *Status, privateValue *ratifierProxy, ledgerDigest []byte) {
+func certifyFinalPreendorse(t *testing.T, cs *Status, privateItem *assessorMock, ledgerDigest []byte) {
 	ballots := cs.FinalEndorse
-	pv, err := privateValue.FetchPublicKey()
+	pv, err := privateItem.ObtainPublicToken()
 	require.NoError(t, err)
 	location := pv.Location()
 	var ballot *kinds.Ballot
-	if ballot = ballots.FetchByLocation(location); ballot == nil {
+	if ballot = ballots.ObtainViaLocation(location); ballot == nil {
 		panic("REDACTED")
 	}
-	if !bytes.Equal(ballot.LedgerUID.Digest, ledgerDigest) {
-		panic(fmt.Sprintf("REDACTED", ledgerDigest, ballot.LedgerUID.Digest))
+	if !bytes.Equal(ballot.LedgerUUID.Digest, ledgerDigest) {
+		panic(fmt.Sprintf("REDACTED", ledgerDigest, ballot.LedgerUUID.Digest))
 	}
 }
 
 func certifyPreendorse(
 	t *testing.T,
 	cs *Status,
-	thisEpoch,
-	secureEpoch int32,
-	privateValue *ratifierProxy,
-	polledLedgerDigest,
-	latchedLedgerDigest []byte,
+	thatIteration,
+	secureIteration int32,
+	privateItem *assessorMock,
+	ballotedLedgerDigest,
+	securedLedgerDigest []byte,
 ) {
-	preendorsements := cs.Ballots.Preendorsements(thisEpoch)
-	pv, err := privateValue.FetchPublicKey()
+	preendorsements := cs.Ballots.Preendorsements(thatIteration)
+	pv, err := privateItem.ObtainPublicToken()
 	require.NoError(t, err)
 	location := pv.Location()
 	var ballot *kinds.Ballot
-	if ballot = preendorsements.FetchByLocation(location); ballot == nil {
+	if ballot = preendorsements.ObtainViaLocation(location); ballot == nil {
 		panic("REDACTED")
 	}
 
-	if polledLedgerDigest == nil {
-		if ballot.LedgerUID.Digest != nil {
+	if ballotedLedgerDigest == nil {
+		if ballot.LedgerUUID.Digest != nil {
 			panic("REDACTED")
 		}
 	} else {
-		if !bytes.Equal(ballot.LedgerUID.Digest, polledLedgerDigest) {
+		if !bytes.Equal(ballot.LedgerUUID.Digest, ballotedLedgerDigest) {
 			panic("REDACTED")
 		}
 	}
 
-	rs := cs.FetchDurationStatus()
-	if latchedLedgerDigest == nil {
-		if rs.LatchedEpoch != secureEpoch || rs.LatchedLedger != nil {
+	rs := cs.ObtainIterationStatus()
+	if securedLedgerDigest == nil {
+		if rs.SecuredIteration != secureIteration || rs.SecuredLedger != nil {
 			panic(fmt.Sprintf(
 				"REDACTED",
-				secureEpoch,
-				rs.LatchedEpoch,
-				rs.LatchedLedger))
+				secureIteration,
+				rs.SecuredIteration,
+				rs.SecuredLedger))
 		}
 	} else {
-		if rs.LatchedEpoch != secureEpoch || !bytes.Equal(rs.LatchedLedger.Digest(), latchedLedgerDigest) {
+		if rs.SecuredIteration != secureIteration || !bytes.Equal(rs.SecuredLedger.Digest(), securedLedgerDigest) {
 			panic(fmt.Sprintf(
 				"REDACTED",
-				secureEpoch,
-				rs.LatchedEpoch,
-				rs.LatchedLedger.Digest(),
-				latchedLedgerDigest))
+				secureIteration,
+				rs.SecuredIteration,
+				rs.SecuredLedger.Digest(),
+				securedLedgerDigest))
 		}
 	}
 }
 
-func enrolToPoller(cs *Status, address []byte) <-chan cometbroadcast.Signal {
-	ballotsSubtract, err := cs.eventBus.EnrolUnbuffered(context.Background(), verifyEnrollee, kinds.EventInquireBallot)
+func listenTowardBalloter(cs *Status, location []byte) <-chan tendermintpubsub.Signal {
+	ballotsUnder, err := cs.incidentChannel.ListenUncached(context.Background(), verifyListener, kinds.IncidentInquireBallot)
 	if err != nil {
-		panic(fmt.Sprintf("REDACTED", verifyEnrollee, kinds.EventInquireBallot))
+		panic(fmt.Sprintf("REDACTED", verifyListener, kinds.IncidentInquireBallot))
 	}
-	ch := make(chan cometbroadcast.Signal)
+	ch := make(chan tendermintpubsub.Signal)
 	go func() {
-		for msg := range ballotsSubtract.Out() {
-			ballot := msg.Data().(kinds.EventDataBallot)
+		for msg := range ballotsUnder.Out() {
+			ballot := msg.Data().(kinds.IncidentDataBallot)
 			//
-			if bytes.Equal(address, ballot.Ballot.RatifierLocation) {
+			if bytes.Equal(location, ballot.Ballot.AssessorLocation) {
 				ch <- msg
 			}
 		}
@@ -373,326 +373,326 @@ func enrolToPoller(cs *Status, address []byte) <-chan cometbroadcast.Signal {
 //
 //
 
-func newStatus(status sm.Status, pv kinds.PrivateRatifier, app iface.Software) *Status {
+func freshStatus(status sm.Status, pv kinds.PrivateAssessor, app iface.Platform) *Status {
 	settings := verify.RestoreVerifyOrigin("REDACTED")
-	return newStatusWithSettings(settings, status, pv, app)
+	return freshStatusUsingSettings(settings, status, pv, app)
 }
 
-func newStatusWithSettings(
-	thisSettings *cfg.Settings,
+func freshStatusUsingSettings(
+	thatSettings *cfg.Settings,
 	status sm.Status,
-	pv kinds.PrivateRatifier,
-	app iface.Software,
+	pv kinds.PrivateAssessor,
+	app iface.Platform,
 ) *Status {
-	ledgerStore := dbm.NewMemoryStore()
-	return newStatusWithSettingsAndLedgerDepot(thisSettings, status, pv, app, ledgerStore)
+	ledgerDatastore := dbm.FreshMemoryDatastore()
+	return freshStatusUsingSettingsAlsoLedgerDepot(thatSettings, status, pv, app, ledgerDatastore)
 }
 
-func newStatusWithSettingsAndLedgerDepot(
-	thisSettings *cfg.Settings,
+func freshStatusUsingSettingsAlsoLedgerDepot(
+	thatSettings *cfg.Settings,
 	status sm.Status,
-	pv kinds.PrivateRatifier,
-	app iface.Software,
-	ledgerStore dbm.DB,
+	pv kinds.PrivateAssessor,
+	app iface.Platform,
+	ledgerDatastore dbm.DB,
 ) *Status {
 	//
-	ledgerDepot := depot.NewLedgerDepot(ledgerStore)
+	ledgerDepot := depot.FreshLedgerDepot(ledgerDatastore)
 
 	//
-	mtx := new(engineconnect.Lock)
+	mtx := new(commitchronize.Exclusion)
 
-	gatewayApplicationLinkConnect := gateway.NewApplicationLinkAgreement(abciend.NewNativeCustomer(mtx, app), gateway.NoopStats())
-	gatewayApplicationLinkMemory := gateway.NewApplicationLinkTxpool(abciend.NewNativeCustomer(mtx, app), gateway.NoopStats())
+	delegateApplicationLinkConnection := delegate.FreshApplicationLinkAgreement(abcicustomer.FreshRegionalCustomer(mtx, app), delegate.NooperationTelemetry())
+	delegateApplicationLinkMemory := delegate.FreshApplicationLinkTxpool(abcicustomer.FreshRegionalCustomer(mtx, app), delegate.NooperationTelemetry())
 	//
-	memplStats := txpool.NoopStats()
+	txpoollTelemetry := txpooll.NooperationTelemetry()
 
 	//
-	txpool := txpool.NewCCatalogTxpool(settings.Txpool,
-		gatewayApplicationLinkMemory,
-		status.FinalLedgerLevel,
-		txpool.WithStats(memplStats),
-		txpool.WithPreInspect(sm.TransferPreInspect(status)),
-		txpool.WithSubmitInspect(sm.TransferSubmitInspect(status)))
+	txpool := txpooll.FreshCNCatalogTxpool(settings.Txpool,
+		delegateApplicationLinkMemory,
+		status.FinalLedgerAltitude,
+		txpooll.UsingTelemetry(txpoollTelemetry),
+		txpooll.UsingPriorInspect(sm.TransferPriorInspect(status)),
+		txpooll.UsingRelayInspect(sm.TransferRelayInspect(status)))
 
-	if thisSettings.Agreement.WaitForTrans() {
+	if thatSettings.Agreement.PauseForeachTrans() {
 		txpool.ActivateTransAccessible()
 	}
 
-	eventpool := sm.EmptyProofDepository{}
+	incidentpool := sm.VoidProofHub{}
 
 	//
-	statusStore := ledgerStore
-	statusDepot := sm.NewDepot(statusStore, sm.DepotSettings{
-		DropIfaceReplies: false,
+	statusDatastore := ledgerDatastore
+	statusDepot := sm.FreshDepot(statusDatastore, sm.DepotChoices{
+		EjectIfaceReplies: false,
 	})
 
 	if err := statusDepot.Persist(status); err != nil { //
 		panic(err)
 	}
 
-	ledgerExecute := sm.NewLedgerRunner(statusDepot, log.VerifyingTracer(), gatewayApplicationLinkConnect, txpool, eventpool, ledgerDepot)
-	cs := NewStatus(thisSettings.Agreement, status, ledgerExecute, ledgerDepot, txpool, eventpool)
-	cs.AssignTracer(log.VerifyingTracer().With("REDACTED", "REDACTED"))
-	cs.CollectionPrivateRatifier(pv)
+	ledgerExecute := sm.FreshLedgerHandler(statusDepot, log.VerifyingTracer(), delegateApplicationLinkConnection, txpool, incidentpool, ledgerDepot)
+	cs := FreshStatus(thatSettings.Agreement, status, ledgerExecute, ledgerDepot, txpool, incidentpool)
+	cs.AssignTracer(log.VerifyingTracer().Using("REDACTED", "REDACTED"))
+	cs.AssignPrivateAssessor(pv)
 
-	eventBus := kinds.NewEventBus()
-	eventBus.AssignTracer(log.VerifyingTracer().With("REDACTED", "REDACTED"))
-	err := eventBus.Begin()
+	incidentChannel := kinds.FreshIncidentPipeline()
+	incidentChannel.AssignTracer(log.VerifyingTracer().Using("REDACTED", "REDACTED"))
+	err := incidentChannel.Initiate()
 	if err != nil {
 		panic(err)
 	}
-	cs.AssignEventBus(eventBus)
+	cs.AssignIncidentChannel(incidentChannel)
 	return cs
 }
 
-func importPrivateRatifier(settings *cfg.Settings) *privatekey.EntryPV {
-	privateRatifierKeyEntry := settings.PrivateRatifierKeyEntry()
-	assureFolder(filepath.Dir(privateRatifierKeyEntry), 0o700)
-	privateRatifierStatusEntry := settings.PrivateRatifierStatusEntry()
-	privateRatifier := privatekey.ImportOrGenerateEntryPV(privateRatifierKeyEntry, privateRatifierStatusEntry)
-	privateRatifier.Restore()
-	return privateRatifier
+func fetchPrivateAssessor(settings *cfg.Settings) *privatevalue.RecordPRV {
+	privateAssessorTokenRecord := settings.PrivateAssessorTokenRecord()
+	assurePath(filepath.Dir(privateAssessorTokenRecord), 0o700)
+	privateAssessorStatusRecord := settings.PrivateAssessorStatusRecord()
+	privateAssessor := privatevalue.FetchEitherProduceRecordPRV(privateAssessorTokenRecord, privateAssessorStatusRecord)
+	privateAssessor.Restore()
+	return privateAssessor
 }
 
-func randomStatus(nRatifiers int) (*Status, []*ratifierProxy) {
-	return randomStatusWithApplication(nRatifiers, objectdepot.NewInRamSoftware())
+func arbitraryStatus(nthAssessors int) (*Status, []*assessorMock) {
+	return arbitraryStatusUsingApplication(nthAssessors, statedepot.FreshInsideRamPlatform())
 }
 
-func randomStatusWithApplicationWithLevel(
-	nRatifiers int,
-	app iface.Software,
-	level int64,
-) (*Status, []*ratifierProxy) {
-	c := verify.AgreementOptions()
-	c.Iface.BallotPluginsActivateLevel = level
-	return randomStatusWithApplicationImpl(nRatifiers, app, c)
+func arbitraryStatusUsingApplicationUsingAltitude(
+	nthAssessors int,
+	app iface.Platform,
+	altitude int64,
+) (*Status, []*assessorMock) {
+	c := verify.AgreementSettings()
+	c.Iface.BallotAdditionsActivateAltitude = altitude
+	return arbitraryStatusUsingApplicationImplementation(nthAssessors, app, c)
 }
 
-func randomStatusWithApplication(nRatifiers int, app iface.Software) (*Status, []*ratifierProxy) {
-	c := verify.AgreementOptions()
-	return randomStatusWithApplicationImpl(nRatifiers, app, c)
+func arbitraryStatusUsingApplication(nthAssessors int, app iface.Platform) (*Status, []*assessorMock) {
+	c := verify.AgreementSettings()
+	return arbitraryStatusUsingApplicationImplementation(nthAssessors, app, c)
 }
 
-func randomStatusWithApplicationImpl(
-	nRatifiers int,
-	app iface.Software,
-	agreementOptions *kinds.AgreementOptions,
-) (*Status, []*ratifierProxy) {
+func arbitraryStatusUsingApplicationImplementation(
+	nthAssessors int,
+	app iface.Platform,
+	agreementParameters *kinds.AgreementSettings,
+) (*Status, []*assessorMock) {
 	//
-	status, privateValues := randomOriginStatus(nRatifiers, false, 10, agreementOptions)
+	status, privateItems := arbitraryInaugurationStatus(nthAssessors, false, 10, agreementParameters)
 
-	vss := make([]*ratifierProxy, nRatifiers)
+	vss := make([]*assessorMock, nthAssessors)
 
-	cs := newStatus(status, privateValues[0], app)
+	cs := freshStatus(status, privateItems[0], app)
 
-	for i := 0; i < nRatifiers; i++ {
-		vss[i] = newRatifierProxy(privateValues[i], int32(i))
+	for i := 0; i < nthAssessors; i++ {
+		vss[i] = freshAssessorMock(privateItems[i], int32(i))
 	}
 	//
-	augmentLevel(vss[1:]...)
+	advanceAltitude(vss[1:]...)
 
 	return cs, vss
 }
 
 //
 
-func assureNoNewEvent(ch <-chan cometbroadcast.Signal, deadline time.Duration,
-	faultSignal string,
+func assureNegativeFreshIncident(ch <-chan tendermintpubsub.Signal, deadline time.Duration,
+	failureSignal string,
 ) {
 	select {
 	case <-time.After(deadline):
 		break
 	case <-ch:
-		panic(faultSignal)
+		panic(failureSignal)
 	}
 }
 
-func assureNoNewEventOnConduit(ch <-chan cometbroadcast.Signal) {
-	assureNoNewEvent(
+func assureNegativeFreshIncidentUponConduit(ch <-chan tendermintpubsub.Signal) {
+	assureNegativeFreshIncident(
 		ch,
 		assureDeadline*8/10, //
 		"REDACTED")
 }
 
-func assureNoNewEpochPhase(phaseChan <-chan cometbroadcast.Signal) {
-	assureNoNewEvent(
-		phaseChan,
+func assureNegativeFreshIterationPhase(phaseChnl <-chan tendermintpubsub.Signal) {
+	assureNegativeFreshIncident(
+		phaseChnl,
 		assureDeadline,
 		"REDACTED")
 }
 
-func assureNoNewRelease(releaseChan <-chan cometbroadcast.Signal) {
-	assureNoNewEvent(
-		releaseChan,
+func assureNegativeFreshRelease(releaseChnl <-chan tendermintpubsub.Signal) {
+	assureNegativeFreshIncident(
+		releaseChnl,
 		assureDeadline,
 		"REDACTED")
 }
 
-func assureNoNewDeadline(phaseChan <-chan cometbroadcast.Signal, deadline int64) {
-	deadlinePeriod := time.Duration(deadline*10) * time.Nanosecond
-	assureNoNewEvent(
-		phaseChan,
-		deadlinePeriod,
+func assureNegativeFreshDeadline(phaseChnl <-chan tendermintpubsub.Signal, deadline int64) {
+	deadlineInterval := time.Duration(deadline*10) * time.Nanosecond
+	assureNegativeFreshIncident(
+		phaseChnl,
+		deadlineInterval,
 		"REDACTED")
 }
 
-func assureNewEvent(ch <-chan cometbroadcast.Signal, level int64, duration int32, deadline time.Duration, faultSignal string) {
+func assureFreshIncident(ch <-chan tendermintpubsub.Signal, altitude int64, iteration int32, deadline time.Duration, failureSignal string) {
 	select {
 	case <-time.After(deadline):
-		panic(faultSignal)
+		panic(failureSignal)
 	case msg := <-ch:
-		epochStatusEvent, ok := msg.Data().(kinds.EventDataDurationStatus)
+		iterationStatusIncident, ok := msg.Data().(kinds.IncidentDataIterationStatus)
 		if !ok {
 			panic(fmt.Sprintf("REDACTED",
 				msg.Data()))
 		}
-		if epochStatusEvent.Level != level {
-			panic(fmt.Sprintf("REDACTED", level, epochStatusEvent.Level))
+		if iterationStatusIncident.Altitude != altitude {
+			panic(fmt.Sprintf("REDACTED", altitude, iterationStatusIncident.Altitude))
 		}
-		if epochStatusEvent.Cycle != duration {
-			panic(fmt.Sprintf("REDACTED", duration, epochStatusEvent.Cycle))
+		if iterationStatusIncident.Iteration != iteration {
+			panic(fmt.Sprintf("REDACTED", iteration, iterationStatusIncident.Iteration))
 		}
 		//
 	}
 }
 
-func assureNewEpoch(epochChan <-chan cometbroadcast.Signal, level int64, duration int32) {
+func assureFreshIteration(iterationChnl <-chan tendermintpubsub.Signal, altitude int64, iteration int32) {
 	select {
 	case <-time.After(assureDeadline):
 		panic("REDACTED")
-	case msg := <-epochChan:
-		newEpochEvent, ok := msg.Data().(kinds.EventDataNewEpoch)
+	case msg := <-iterationChnl:
+		freshIterationIncident, ok := msg.Data().(kinds.IncidentDataFreshIteration)
 		if !ok {
 			panic(fmt.Sprintf("REDACTED",
 				msg.Data()))
 		}
-		if newEpochEvent.Level != level {
-			panic(fmt.Sprintf("REDACTED", level, newEpochEvent.Level))
+		if freshIterationIncident.Altitude != altitude {
+			panic(fmt.Sprintf("REDACTED", altitude, freshIterationIncident.Altitude))
 		}
-		if newEpochEvent.Cycle != duration {
-			panic(fmt.Sprintf("REDACTED", duration, newEpochEvent.Cycle))
+		if freshIterationIncident.Iteration != iteration {
+			panic(fmt.Sprintf("REDACTED", iteration, freshIterationIncident.Iteration))
 		}
 	}
 }
 
-func assureNewDeadline(deadlineChan <-chan cometbroadcast.Signal, level int64, duration int32, deadline int64) {
-	deadlinePeriod := time.Duration(deadline*10) * time.Nanosecond
-	assureNewEvent(deadlineChan, level, duration, deadlinePeriod,
+func assureFreshDeadline(deadlineChnl <-chan tendermintpubsub.Signal, altitude int64, iteration int32, deadline int64) {
+	deadlineInterval := time.Duration(deadline*10) * time.Nanosecond
+	assureFreshIncident(deadlineChnl, altitude, iteration, deadlineInterval,
 		"REDACTED")
 }
 
-func assureNewNomination(nominationChan <-chan cometbroadcast.Signal, level int64, duration int32) {
+func assureFreshNomination(nominationChnl <-chan tendermintpubsub.Signal, altitude int64, iteration int32) {
 	select {
 	case <-time.After(assureDeadline):
 		panic("REDACTED")
-	case msg := <-nominationChan:
-		nominationEvent, ok := msg.Data().(kinds.EventDataFinishedNomination)
+	case msg := <-nominationChnl:
+		nominationIncident, ok := msg.Data().(kinds.IncidentDataFinishNomination)
 		if !ok {
 			panic(fmt.Sprintf("REDACTED",
 				msg.Data()))
 		}
-		if nominationEvent.Level != level {
-			panic(fmt.Sprintf("REDACTED", level, nominationEvent.Level))
+		if nominationIncident.Altitude != altitude {
+			panic(fmt.Sprintf("REDACTED", altitude, nominationIncident.Altitude))
 		}
-		if nominationEvent.Cycle != duration {
-			panic(fmt.Sprintf("REDACTED", duration, nominationEvent.Cycle))
+		if nominationIncident.Iteration != iteration {
+			panic(fmt.Sprintf("REDACTED", iteration, nominationIncident.Iteration))
 		}
 	}
 }
 
-func assureNewSoundLedger(soundLedgerChan <-chan cometbroadcast.Signal, level int64, duration int32) {
-	assureNewEvent(soundLedgerChan, level, duration, assureDeadline,
+func assureFreshSoundLedger(soundLedgerChnl <-chan tendermintpubsub.Signal, altitude int64, iteration int32) {
+	assureFreshIncident(soundLedgerChnl, altitude, iteration, assureDeadline,
 		"REDACTED")
 }
 
-func assureNewLedger(ledgerChan <-chan cometbroadcast.Signal, level int64) {
+func assureFreshLedger(ledgerChnl <-chan tendermintpubsub.Signal, altitude int64) {
 	select {
 	case <-time.After(assureDeadline):
 		panic("REDACTED")
-	case msg := <-ledgerChan:
-		ledgerEvent, ok := msg.Data().(kinds.EventDataNewLedger)
+	case msg := <-ledgerChnl:
+		ledgerIncident, ok := msg.Data().(kinds.IncidentDataFreshLedger)
 		if !ok {
 			panic(fmt.Sprintf("REDACTED",
 				msg.Data()))
 		}
-		if ledgerEvent.Ledger.Level != level {
-			panic(fmt.Sprintf("REDACTED", level, ledgerEvent.Ledger.Level))
+		if ledgerIncident.Ledger.Altitude != altitude {
+			panic(fmt.Sprintf("REDACTED", altitude, ledgerIncident.Ledger.Altitude))
 		}
 	}
 }
 
-func assureNewLedgerHeading(ledgerChan <-chan cometbroadcast.Signal, level int64, ledgerDigest cometbytes.HexOctets) {
+func assureFreshLedgerHeading(ledgerChnl <-chan tendermintpubsub.Signal, altitude int64, ledgerDigest tendermintoctets.HexadecimalOctets) {
 	select {
 	case <-time.After(assureDeadline):
 		panic("REDACTED")
-	case msg := <-ledgerChan:
-		ledgerHeadingEvent, ok := msg.Data().(kinds.EventDataNewLedgerHeading)
+	case msg := <-ledgerChnl:
+		ledgerHeadingIncident, ok := msg.Data().(kinds.IncidentDataFreshLedgerHeading)
 		if !ok {
 			panic(fmt.Sprintf("REDACTED",
 				msg.Data()))
 		}
-		if ledgerHeadingEvent.Heading.Level != level {
-			panic(fmt.Sprintf("REDACTED", level, ledgerHeadingEvent.Heading.Level))
+		if ledgerHeadingIncident.Heading.Altitude != altitude {
+			panic(fmt.Sprintf("REDACTED", altitude, ledgerHeadingIncident.Heading.Altitude))
 		}
-		if !bytes.Equal(ledgerHeadingEvent.Heading.Digest(), ledgerDigest) {
-			panic(fmt.Sprintf("REDACTED", ledgerDigest, ledgerHeadingEvent.Heading.Digest()))
+		if !bytes.Equal(ledgerHeadingIncident.Heading.Digest(), ledgerDigest) {
+			panic(fmt.Sprintf("REDACTED", ledgerDigest, ledgerHeadingIncident.Heading.Digest()))
 		}
 	}
 }
 
-func assureNewRelease(releaseChan <-chan cometbroadcast.Signal, level int64, duration int32) {
-	assureNewEvent(releaseChan, level, duration, assureDeadline,
+func assureFreshRelease(releaseChnl <-chan tendermintpubsub.Signal, altitude int64, iteration int32) {
+	assureFreshIncident(releaseChnl, altitude, iteration, assureDeadline,
 		"REDACTED")
 }
 
-func assureNomination(nominationChan <-chan cometbroadcast.Signal, level int64, duration int32, nominationUID kinds.LedgerUID) {
+func assureNomination(nominationChnl <-chan tendermintpubsub.Signal, altitude int64, iteration int32, itemUUID kinds.LedgerUUID) {
 	select {
 	case <-time.After(assureDeadline):
 		panic("REDACTED")
-	case msg := <-nominationChan:
-		nominationEvent, ok := msg.Data().(kinds.EventDataFinishedNomination)
+	case msg := <-nominationChnl:
+		nominationIncident, ok := msg.Data().(kinds.IncidentDataFinishNomination)
 		if !ok {
 			panic(fmt.Sprintf("REDACTED",
 				msg.Data()))
 		}
-		if nominationEvent.Level != level {
-			panic(fmt.Sprintf("REDACTED", level, nominationEvent.Level))
+		if nominationIncident.Altitude != altitude {
+			panic(fmt.Sprintf("REDACTED", altitude, nominationIncident.Altitude))
 		}
-		if nominationEvent.Cycle != duration {
-			panic(fmt.Sprintf("REDACTED", duration, nominationEvent.Cycle))
+		if nominationIncident.Iteration != iteration {
+			panic(fmt.Sprintf("REDACTED", iteration, nominationIncident.Iteration))
 		}
-		if !nominationEvent.LedgerUID.Matches(nominationUID) {
-			panic(fmt.Sprintf("REDACTED", nominationEvent.LedgerUID, nominationUID))
+		if !nominationIncident.LedgerUUID.Matches(itemUUID) {
+			panic(fmt.Sprintf("REDACTED", nominationIncident.LedgerUUID, itemUUID))
 		}
 	}
 }
 
-func assurePreendorse(ballotChan <-chan cometbroadcast.Signal, level int64, duration int32) {
-	assureBallot(ballotChan, level, duration, engineproto.PreendorseKind)
+func assurePreendorse(ballotChnl <-chan tendermintpubsub.Signal, altitude int64, iteration int32) {
+	assureBallot(ballotChnl, altitude, iteration, commitchema.PreendorseKind)
 }
 
-func assurePreballot(ballotChan <-chan cometbroadcast.Signal, level int64, duration int32) {
-	assureBallot(ballotChan, level, duration, engineproto.PreballotKind)
+func assurePreballot(ballotChnl <-chan tendermintpubsub.Signal, altitude int64, iteration int32) {
+	assureBallot(ballotChnl, altitude, iteration, commitchema.PreballotKind)
 }
 
-func assureBallot(ballotChan <-chan cometbroadcast.Signal, level int64, duration int32,
-	ballotKind engineproto.AttestedMessageKind,
+func assureBallot(ballotChnl <-chan tendermintpubsub.Signal, altitude int64, iteration int32,
+	ballotKind commitchema.AttestedSignalKind,
 ) {
 	select {
 	case <-time.After(assureDeadline):
 		panic("REDACTED")
-	case msg := <-ballotChan:
-		ballotEvent, ok := msg.Data().(kinds.EventDataBallot)
+	case msg := <-ballotChnl:
+		ballotIncident, ok := msg.Data().(kinds.IncidentDataBallot)
 		if !ok {
 			panic(fmt.Sprintf("REDACTED",
 				msg.Data()))
 		}
-		ballot := ballotEvent.Ballot
-		if ballot.Level != level {
-			panic(fmt.Sprintf("REDACTED", level, ballot.Level))
+		ballot := ballotIncident.Ballot
+		if ballot.Altitude != altitude {
+			panic(fmt.Sprintf("REDACTED", altitude, ballot.Altitude))
 		}
-		if ballot.Cycle != duration {
-			panic(fmt.Sprintf("REDACTED", duration, ballot.Cycle))
+		if ballot.Iteration != iteration {
+			panic(fmt.Sprintf("REDACTED", iteration, ballot.Iteration))
 		}
 		if ballot.Kind != ballotKind {
 			panic(fmt.Sprintf("REDACTED", ballotKind, ballot.Kind))
@@ -700,39 +700,39 @@ func assureBallot(ballotChan <-chan cometbroadcast.Signal, level int64, duration
 	}
 }
 
-func assurePreballotAlign(t *testing.T, ballotChan <-chan cometbroadcast.Signal, level int64, duration int32, digest []byte) {
+func assurePreballotAlign(t *testing.T, ballotChnl <-chan tendermintpubsub.Signal, altitude int64, iteration int32, digest []byte) {
 	t.Helper()
-	assureBallotAlign(t, ballotChan, level, duration, digest, engineproto.PreballotKind)
+	assureBallotAlign(t, ballotChnl, altitude, iteration, digest, commitchema.PreballotKind)
 }
 
-func assurePreendorseAlign(t *testing.T, ballotChan <-chan cometbroadcast.Signal, level int64, duration int32, digest []byte) {
+func assurePreendorseAlign(t *testing.T, ballotChnl <-chan tendermintpubsub.Signal, altitude int64, iteration int32, digest []byte) {
 	t.Helper()
-	assureBallotAlign(t, ballotChan, level, duration, digest, engineproto.PreendorseKind)
+	assureBallotAlign(t, ballotChnl, altitude, iteration, digest, commitchema.PreendorseKind)
 }
 
-func assureBallotAlign(t *testing.T, ballotChan <-chan cometbroadcast.Signal, level int64, duration int32, digest []byte, ballotKind engineproto.AttestedMessageKind) {
+func assureBallotAlign(t *testing.T, ballotChnl <-chan tendermintpubsub.Signal, altitude int64, iteration int32, digest []byte, ballotKind commitchema.AttestedSignalKind) {
 	t.Helper()
 	select {
 	case <-time.After(assureDeadline):
 		t.Fatal("REDACTED")
-	case msg := <-ballotChan:
-		ballotEvent, ok := msg.Data().(kinds.EventDataBallot)
+	case msg := <-ballotChnl:
+		ballotIncident, ok := msg.Data().(kinds.IncidentDataBallot)
 		require.True(t, ok, "REDACTED",
 			msg.Data())
 
-		ballot := ballotEvent.Ballot
-		assert.Equal(t, level, ballot.Level, "REDACTED", level, ballot.Level)
-		assert.Equal(t, duration, ballot.Cycle, "REDACTED", duration, ballot.Cycle)
+		ballot := ballotIncident.Ballot
+		assert.Equal(t, altitude, ballot.Altitude, "REDACTED", altitude, ballot.Altitude)
+		assert.Equal(t, iteration, ballot.Iteration, "REDACTED", iteration, ballot.Iteration)
 		assert.Equal(t, ballotKind, ballot.Kind, "REDACTED", ballotKind, ballot.Kind)
 		if digest == nil {
-			require.Nil(t, ballot.LedgerUID.Digest, "REDACTED", ballot.LedgerUID.Digest)
+			require.Nil(t, ballot.LedgerUUID.Digest, "REDACTED", ballot.LedgerUUID.Digest)
 		} else {
-			require.True(t, bytes.Equal(ballot.LedgerUID.Digest, digest), "REDACTED", digest, ballot.LedgerUID.Digest)
+			require.True(t, bytes.Equal(ballot.LedgerUUID.Digest, digest), "REDACTED", digest, ballot.LedgerUUID.Digest)
 		}
 	}
 }
 
-func assurePreendorseDeadline(ch <-chan cometbroadcast.Signal) {
+func assurePreendorseDeadline(ch <-chan tendermintpubsub.Signal) {
 	select {
 	case <-time.After(assureDeadline):
 		panic("REDACTED")
@@ -740,7 +740,7 @@ func assurePreendorseDeadline(ch <-chan cometbroadcast.Signal) {
 	}
 }
 
-func assureNewEventOnConduit(ch <-chan cometbroadcast.Signal) {
+func assureFreshIncidentUponConduit(ch <-chan tendermintpubsub.Signal) {
 	select {
 	case <-time.After(assureDeadline * 12 / 10): //
 		panic("REDACTED")
@@ -754,44 +754,44 @@ func assureNewEventOnConduit(ch <-chan cometbroadcast.Signal) {
 //
 //
 func agreementTracer() log.Tracer {
-	return log.VerifyingTracerWithHueFn(func(keyvalues ...any) term.FgBgColor {
-		for i := 0; i < len(keyvalues)-1; i += 2 {
-			if keyvalues[i] == "REDACTED" {
-				return term.FgBgColor{Fg: term.Color(uint8(keyvalues[i+1].(int) + 1))}
+	return log.VerifyingTracerUsingHueProc(func(tokvals ...any) term.FgBgColor {
+		for i := 0; i < len(tokvals)-1; i += 2 {
+			if tokvals[i] == "REDACTED" {
+				return term.FgBgColor{Fg: term.Color(uint8(tokvals[i+1].(int) + 1))}
 			}
 		}
 		return term.FgBgColor{}
-	}).With("REDACTED", "REDACTED")
+	}).Using("REDACTED", "REDACTED")
 }
 
-func randomAgreementNet(t *testing.T, nRatifiers int, verifyLabel string, timerFunction func() DeadlineTimer,
-	applicationFunction func() iface.Software, settingsOpts ...func(*cfg.Settings),
-) ([]*Status, sanitizeFunction) {
+func arbitraryAgreementNetwork(t *testing.T, nthAssessors int, verifyAlias string, metronomeMethod func() DeadlineMetronome,
+	applicationMethod func() iface.Platform, settingsOptions ...func(*cfg.Settings),
+) ([]*Status, sanitizeMethod) {
 	t.Helper()
-	generatePaper, privateValues := randomOriginPaper(nRatifiers, false, 30, nil)
-	css := make([]*Status, nRatifiers)
+	producePaper, privateItems := arbitraryOriginPaper(nthAssessors, false, 30, nil)
+	css := make([]*Status, nthAssessors)
 	tracer := agreementTracer()
-	settingsOriginFolders := make([]string, 0, nRatifiers)
-	for i := 0; i < nRatifiers; i++ {
-		statusStore := dbm.NewMemoryStore() //
-		statusDepot := sm.NewDepot(statusStore, sm.DepotSettings{
-			DropIfaceReplies: false,
+	settingsOriginFolders := make([]string, 0, nthAssessors)
+	for i := 0; i < nthAssessors; i++ {
+		statusDatastore := dbm.FreshMemoryDatastore() //
+		statusDepot := sm.FreshDepot(statusDatastore, sm.DepotChoices{
+			EjectIfaceReplies: false,
 		})
-		status, _ := statusDepot.ImportFromStoreOrOriginPaper(generatePaper)
-		thisSettings := RestoreSettings(fmt.Sprintf("REDACTED", verifyLabel, i))
-		settingsOriginFolders = append(settingsOriginFolders, thisSettings.OriginFolder)
-		for _, opt := range settingsOpts {
-			opt(thisSettings)
+		status, _ := statusDepot.FetchOriginatingDatastoreEitherOriginPaper(producePaper)
+		thatSettings := RestoreSettings(fmt.Sprintf("REDACTED", verifyAlias, i))
+		settingsOriginFolders = append(settingsOriginFolders, thatSettings.OriginPath)
+		for _, opt := range settingsOptions {
+			opt(thatSettings)
 		}
-		assureFolder(filepath.Dir(thisSettings.Agreement.JournalEntry()), 0o700) //
-		app := applicationFunction()
-		values := kinds.Tm2schema.RatifierRefreshes(status.Ratifiers)
-		_, err := app.InitSeries(context.Background(), &iface.QueryInitSeries{Ratifiers: values})
+		assurePath(filepath.Dir(thatSettings.Agreement.JournalRecord()), 0o700) //
+		app := applicationMethod()
+		values := kinds.Temp2buffer.AssessorRevisions(status.Assessors)
+		_, err := app.InitializeSuccession(context.Background(), &iface.SolicitInitializeSuccession{Assessors: values})
 		require.NoError(t, err)
 
-		css[i] = newStatusWithSettingsAndLedgerDepot(thisSettings, status, privateValues[i], app, statusStore)
-		css[i].CollectionDeadlineTimer(timerFunction())
-		css[i].AssignTracer(tracer.With("REDACTED", i, "REDACTED", "REDACTED"))
+		css[i] = freshStatusUsingSettingsAlsoLedgerDepot(thatSettings, status, privateItems[i], app, statusDatastore)
+		css[i].AssignDeadlineMetronome(metronomeMethod())
+		css[i].AssignTracer(tracer.Using("REDACTED", i, "REDACTED", "REDACTED"))
 	}
 	return css, func() {
 		for _, dir := range settingsOriginFolders {
@@ -801,72 +801,72 @@ func randomAgreementNet(t *testing.T, nRatifiers int, verifyLabel string, timerF
 }
 
 //
-func randomAgreementNetWithNodes(
+func arbitraryAgreementNetworkUsingNodes(
 	t *testing.T,
-	nRatifiers,
-	nNodes int,
-	verifyLabel string,
-	timerFunction func() DeadlineTimer,
-	applicationFunction func(string) iface.Software,
-) ([]*Status, *kinds.OriginPaper, *cfg.Settings, sanitizeFunction) {
-	c := verify.AgreementOptions()
-	generatePaper, privateValues := randomOriginPaper(nRatifiers, false, verifyMinimumEnergy, c)
-	css := make([]*Status, nNodes)
+	nthAssessors,
+	nthNodes int,
+	verifyAlias string,
+	metronomeMethod func() DeadlineMetronome,
+	applicationMethod func(string) iface.Platform,
+) ([]*Status, *kinds.OriginPaper, *cfg.Settings, sanitizeMethod) {
+	c := verify.AgreementSettings()
+	producePaper, privateItems := arbitraryOriginPaper(nthAssessors, false, verifyMinimumPotency, c)
+	css := make([]*Status, nthNodes)
 	tracer := agreementTracer()
-	var peer0setting *cfg.Settings
-	settingsOriginFolders := make([]string, 0, nNodes)
-	for i := 0; i < nNodes; i++ {
-		statusStore := dbm.NewMemoryStore() //
-		statusDepot := sm.NewDepot(statusStore, sm.DepotSettings{
-			DropIfaceReplies: false,
+	var node0settings *cfg.Settings
+	settingsOriginFolders := make([]string, 0, nthNodes)
+	for i := 0; i < nthNodes; i++ {
+		statusDatastore := dbm.FreshMemoryDatastore() //
+		statusDepot := sm.FreshDepot(statusDatastore, sm.DepotChoices{
+			EjectIfaceReplies: false,
 		})
-		t.Cleanup(func() { _ = statusDepot.End() })
-		status, _ := statusDepot.ImportFromStoreOrOriginPaper(generatePaper)
-		thisSettings := RestoreSettings(fmt.Sprintf("REDACTED", verifyLabel, i))
-		settingsOriginFolders = append(settingsOriginFolders, thisSettings.OriginFolder)
-		assureFolder(filepath.Dir(thisSettings.Agreement.JournalEntry()), 0o700) //
+		t.Cleanup(func() { _ = statusDepot.Shutdown() })
+		status, _ := statusDepot.FetchOriginatingDatastoreEitherOriginPaper(producePaper)
+		thatSettings := RestoreSettings(fmt.Sprintf("REDACTED", verifyAlias, i))
+		settingsOriginFolders = append(settingsOriginFolders, thatSettings.OriginPath)
+		assurePath(filepath.Dir(thatSettings.Agreement.JournalRecord()), 0o700) //
 		if i == 0 {
-			peer0setting = thisSettings
+			node0settings = thatSettings
 		}
-		var privateValue kinds.PrivateRatifier
-		if i < nRatifiers {
-			privateValue = privateValues[i]
+		var privateItem kinds.PrivateAssessor
+		if i < nthAssessors {
+			privateItem = privateItems[i]
 		} else {
-			temporaryKeyEntry, err := os.CreateTemp("REDACTED", "REDACTED")
+			transientTokenRecord, err := os.CreateTemp("REDACTED", "REDACTED")
 			if err != nil {
 				panic(err)
 			}
-			temporaryStatusEntry, err := os.CreateTemp("REDACTED", "REDACTED")
+			transientStatusRecord, err := os.CreateTemp("REDACTED", "REDACTED")
 			if err != nil {
 				panic(err)
 			}
 
-			privateValue = privatekey.GenerateEntryPrivatekey(temporaryKeyEntry.Name(), temporaryStatusEntry.Name())
+			privateItem = privatevalue.ProduceRecordPRV(transientTokenRecord.Name(), transientStatusRecord.Name())
 		}
 
-		app := applicationFunction(path.Join(settings.StoreFolder(), fmt.Sprintf("REDACTED", verifyLabel, i)))
-		values := kinds.Tm2schema.RatifierRefreshes(status.Ratifiers)
-		if _, ok := app.(*objectdepot.Software); ok {
+		app := applicationMethod(path.Join(settings.DatastorePath(), fmt.Sprintf("REDACTED", verifyAlias, i)))
+		values := kinds.Temp2buffer.AssessorRevisions(status.Assessors)
+		if _, ok := app.(*statedepot.Platform); ok {
 			//
-			status.Release.Agreement.App = objectdepot.ApplicationRelease
+			status.Edition.Agreement.App = statedepot.PlatformEdition
 		}
-		_, err := app.InitSeries(context.Background(), &iface.QueryInitSeries{Ratifiers: values})
+		_, err := app.InitializeSuccession(context.Background(), &iface.SolicitInitializeSuccession{Assessors: values})
 		require.NoError(t, err)
 
-		css[i] = newStatusWithSettings(thisSettings, status, privateValue, app)
-		css[i].CollectionDeadlineTimer(timerFunction())
-		css[i].AssignTracer(tracer.With("REDACTED", i, "REDACTED", "REDACTED"))
+		css[i] = freshStatusUsingSettings(thatSettings, status, privateItem, app)
+		css[i].AssignDeadlineMetronome(metronomeMethod())
+		css[i].AssignTracer(tracer.Using("REDACTED", i, "REDACTED", "REDACTED"))
 	}
-	return css, generatePaper, peer0setting, func() {
+	return css, producePaper, node0settings, func() {
 		for _, dir := range settingsOriginFolders {
 			os.RemoveAll(dir)
 		}
 	}
 }
 
-func fetchRouterOrdinal(routers []*p2p.Router, node p2p.Node) int {
+func obtainRouterOrdinal(routers []*p2p.Router, node p2p.Node) int {
 	for i, s := range routers {
-		if node.MemberDetails().ID() == s.MemberDetails().ID() {
+		if node.PeerDetails().ID() == s.PeerDetails().ID() {
 			return i
 		}
 	}
@@ -876,117 +876,117 @@ func fetchRouterOrdinal(routers []*p2p.Router, node p2p.Node) int {
 //
 //
 
-func randomOriginPaper(countRatifiers int,
-	randomEnergy bool,
-	minimumEnergy int64,
-	agreementOptions *kinds.AgreementOptions,
-) (*kinds.OriginPaper, []kinds.PrivateRatifier) {
-	ratifiers := make([]kinds.OriginRatifier, countRatifiers)
-	privateRatifiers := make([]kinds.PrivateRatifier, countRatifiers)
-	for i := 0; i < countRatifiers; i++ {
-		val, privateValue := kinds.RandomRatifier(randomEnergy, minimumEnergy)
-		ratifiers[i] = kinds.OriginRatifier{
-			PublicKey: val.PublicKey,
-			Energy:  val.PollingEnergy,
+func arbitraryOriginPaper(countAssessors int,
+	arbitraryPotency bool,
+	minimumPotency int64,
+	agreementParameters *kinds.AgreementSettings,
+) (*kinds.OriginPaper, []kinds.PrivateAssessor) {
+	assessors := make([]kinds.OriginAssessor, countAssessors)
+	privateAssessors := make([]kinds.PrivateAssessor, countAssessors)
+	for i := 0; i < countAssessors; i++ {
+		val, privateItem := kinds.ArbitraryAssessor(arbitraryPotency, minimumPotency)
+		assessors[i] = kinds.OriginAssessor{
+			PublicToken: val.PublicToken,
+			Potency:  val.BallotingPotency,
 		}
-		privateRatifiers[i] = privateValue
+		privateAssessors[i] = privateItem
 	}
-	sort.Sort(kinds.PrivateRatifiersByLocation(privateRatifiers))
+	sort.Sort(kinds.PrivateAssessorsViaLocation(privateAssessors))
 
 	return &kinds.OriginPaper{
-		OriginMoment:     engineclock.Now(),
-		PrimaryLevel:   1,
-		LedgerUID:         verify.StandardVerifyLedgerUID,
-		Ratifiers:      ratifiers,
-		AgreementOptions: agreementOptions,
-	}, privateRatifiers
+		OriginMoment:     committime.Now(),
+		PrimaryAltitude:   1,
+		SuccessionUUID:         verify.FallbackVerifySuccessionUUID,
+		Assessors:      assessors,
+		AgreementSettings: agreementParameters,
+	}, privateAssessors
 }
 
-func randomOriginStatus(
-	countRatifiers int,
-	randomEnergy bool,
-	minimumEnergy int64,
-	agreementOptions *kinds.AgreementOptions,
-) (sm.Status, []kinds.PrivateRatifier) {
-	generatePaper, privateRatifiers := randomOriginPaper(countRatifiers, randomEnergy, minimumEnergy, agreementOptions)
-	s0, _ := sm.CreateOriginStatus(generatePaper)
-	return s0, privateRatifiers
+func arbitraryInaugurationStatus(
+	countAssessors int,
+	arbitraryPotency bool,
+	minimumPotency int64,
+	agreementParameters *kinds.AgreementSettings,
+) (sm.Status, []kinds.PrivateAssessor) {
+	producePaper, privateAssessors := arbitraryOriginPaper(countAssessors, arbitraryPotency, minimumPotency, agreementParameters)
+	s0, _ := sm.CreateInaugurationStatus(producePaper)
+	return s0, privateAssessors
 }
 
 //
 //
 
-func newEmulateTimerFunction(solelyOnce bool) func() DeadlineTimer {
-	return func() DeadlineTimer {
-		return &emulateTimer{
+func freshSimulateMetronomeMethod(solelyOnetime bool) func() DeadlineMetronome {
+	return func() DeadlineMetronome {
+		return &simulateMetronome{
 			c:        make(chan deadlineDetails, 10),
-			solelyOnce: solelyOnce,
+			solelyOnetime: solelyOnetime,
 		}
 	}
 }
 
 //
 //
-type emulateTimer struct {
+type simulateMetronome struct {
 	c chan deadlineDetails
 
 	mtx      sync.Mutex
-	solelyOnce bool
-	triggered    bool
+	solelyOnetime bool
+	relayed    bool
 }
 
-func (m *emulateTimer) Begin() error {
+func (m *simulateMetronome) Initiate() error {
 	return nil
 }
 
-func (m *emulateTimer) Halt() error {
+func (m *simulateMetronome) Halt() error {
 	return nil
 }
 
-func (m *emulateTimer) SequenceDeadline(ti deadlineDetails) {
+func (m *simulateMetronome) TimelineDeadline(ti deadlineDetails) {
 	m.mtx.Lock()
 	defer m.mtx.Unlock()
-	if m.solelyOnce && m.triggered {
+	if m.solelyOnetime && m.relayed {
 		return
 	}
-	if ti.Phase == cskinds.DurationPhaseNewLevel {
+	if ti.Phase == controlkinds.IterationPhaseFreshAltitude {
 		m.c <- ti
-		m.triggered = true
+		m.relayed = true
 	}
 }
 
-func (m *emulateTimer) Chan() <-chan deadlineDetails {
+func (m *simulateMetronome) Channel() <-chan deadlineDetails {
 	return m.c
 }
 
-func (*emulateTimer) AssignTracer(log.Tracer) {}
+func (*simulateMetronome) AssignTracer(log.Tracer) {}
 
-func newDurableObjectDepot() iface.Software {
+func freshEnduringTokvalDepot() iface.Platform {
 	dir, err := os.MkdirTemp("REDACTED", "REDACTED")
 	if err != nil {
 		panic(err)
 	}
-	return objectdepot.NewDurableSoftware(dir)
+	return statedepot.FreshEnduringPlatform(dir)
 }
 
-func newObjectDepot() iface.Software {
-	return objectdepot.NewInRamSoftware()
+func freshTokvalDepot() iface.Platform {
+	return statedepot.FreshInsideRamPlatform()
 }
 
-func newDurableObjectDepotWithRoute(storeFolder string) iface.Software {
-	return objectdepot.NewDurableSoftware(storeFolder)
+func freshEnduringTokvalDepotUsingRoute(datastorePath string) iface.Platform {
+	return statedepot.FreshEnduringPlatform(datastorePath)
 }
 
-func attestDataIsEquivalent(v1 *kinds.Ballot, v2 *engineproto.Ballot) bool {
+func attestDataEqualsEquivalent(v1 *kinds.Ballot, v2 *commitchema.Ballot) bool {
 	if v1 == nil || v2 == nil {
 		return false
 	}
 
 	return v1.Kind == v2.Kind &&
-		bytes.Equal(v1.LedgerUID.Digest, v2.LedgerUID.FetchDigest()) &&
-		v1.Level == v2.FetchLevel() &&
-		v1.Cycle == v2.Cycle &&
-		bytes.Equal(v1.RatifierLocation.Octets(), v2.FetchRatifierLocation()) &&
-		v1.RatifierOrdinal == v2.FetchRatifierOrdinal() &&
+		bytes.Equal(v1.LedgerUUID.Digest, v2.LedgerUUID.ObtainDigest()) &&
+		v1.Altitude == v2.ObtainAltitude() &&
+		v1.Iteration == v2.Iteration &&
+		bytes.Equal(v1.AssessorLocation.Octets(), v2.ObtainAssessorLocation()) &&
+		v1.AssessorOrdinal == v2.ObtainAssessorOrdinal() &&
 		bytes.Equal(v1.Addition, v2.Addition)
 }

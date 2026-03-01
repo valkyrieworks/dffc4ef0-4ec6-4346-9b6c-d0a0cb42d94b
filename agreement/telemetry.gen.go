@@ -8,265 +8,265 @@ import (
 	stdprometheus "github.com/prometheus/client_golang/prometheus"
 )
 
-func PrometheusMetrics(namespace string, labelsAndValues ...string) *Metrics {
-	labels := []string{}
-	for i := 0; i < len(labelsAndValues); i += 2 {
-		labels = append(labels, labelsAndValues[i])
+func TitanTelemetry(scope string, tagsAlsoItems ...string) *Telemetry {
+	tags := []string{}
+	for i := 0; i < len(tagsAlsoItems); i += 2 {
+		tags = append(tags, tagsAlsoItems[i])
 	}
-	return &Metrics{
-		Height: prometheus.NewGaugeFrom(stdprometheus.GaugeOpts{
-			Namespace: namespace,
-			Subsystem: MetricsSubsystem,
+	return &Telemetry{
+		Altitude: prometheus.NewGaugeFrom(stdprometheus.GaugeOpts{
+			Namespace: scope,
+			Subsystem: TelemetryComponent,
 			Name:      "REDACTED",
 			Help:      "REDACTED",
-		}, labels).With(labelsAndValues...),
-		ValidatorLastSignedHeight: prometheus.NewGaugeFrom(stdprometheus.GaugeOpts{
-			Namespace: namespace,
-			Subsystem: MetricsSubsystem,
+		}, tags).With(tagsAlsoItems...),
+		AssessorFinalAttestedAltitude: prometheus.NewGaugeFrom(stdprometheus.GaugeOpts{
+			Namespace: scope,
+			Subsystem: TelemetryComponent,
 			Name:      "REDACTED",
 			Help:      "REDACTED",
-		}, append(labels, "REDACTED")).With(labelsAndValues...),
-		Rounds: prometheus.NewGaugeFrom(stdprometheus.GaugeOpts{
-			Namespace: namespace,
-			Subsystem: MetricsSubsystem,
+		}, append(tags, "REDACTED")).With(tagsAlsoItems...),
+		Cycles: prometheus.NewGaugeFrom(stdprometheus.GaugeOpts{
+			Namespace: scope,
+			Subsystem: TelemetryComponent,
 			Name:      "REDACTED",
 			Help:      "REDACTED",
-		}, labels).With(labelsAndValues...),
-		RoundDurationSeconds: prometheus.NewHistogramFrom(stdprometheus.HistogramOpts{
-			Namespace: namespace,
-			Subsystem: MetricsSubsystem,
-			Name:      "REDACTED",
-			Help:      "REDACTED",
-
-			Buckets: stdprometheus.ExponentialBucketsRange(0.1, 100, 8),
-		}, labels).With(labelsAndValues...),
-		Validators: prometheus.NewGaugeFrom(stdprometheus.GaugeOpts{
-			Namespace: namespace,
-			Subsystem: MetricsSubsystem,
-			Name:      "REDACTED",
-			Help:      "REDACTED",
-		}, labels).With(labelsAndValues...),
-		ValidatorsPower: prometheus.NewGaugeFrom(stdprometheus.GaugeOpts{
-			Namespace: namespace,
-			Subsystem: MetricsSubsystem,
-			Name:      "REDACTED",
-			Help:      "REDACTED",
-		}, labels).With(labelsAndValues...),
-		ValidatorPower: prometheus.NewGaugeFrom(stdprometheus.GaugeOpts{
-			Namespace: namespace,
-			Subsystem: MetricsSubsystem,
-			Name:      "REDACTED",
-			Help:      "REDACTED",
-		}, append(labels, "REDACTED")).With(labelsAndValues...),
-		ValidatorMissedBlocks: prometheus.NewGaugeFrom(stdprometheus.GaugeOpts{
-			Namespace: namespace,
-			Subsystem: MetricsSubsystem,
-			Name:      "REDACTED",
-			Help:      "REDACTED",
-		}, append(labels, "REDACTED")).With(labelsAndValues...),
-		MissingValidators: prometheus.NewGaugeFrom(stdprometheus.GaugeOpts{
-			Namespace: namespace,
-			Subsystem: MetricsSubsystem,
-			Name:      "REDACTED",
-			Help:      "REDACTED",
-		}, labels).With(labelsAndValues...),
-		MissingValidatorsPower: prometheus.NewGaugeFrom(stdprometheus.GaugeOpts{
-			Namespace: namespace,
-			Subsystem: MetricsSubsystem,
-			Name:      "REDACTED",
-			Help:      "REDACTED",
-		}, labels).With(labelsAndValues...),
-		ByzantineValidators: prometheus.NewGaugeFrom(stdprometheus.GaugeOpts{
-			Namespace: namespace,
-			Subsystem: MetricsSubsystem,
-			Name:      "REDACTED",
-			Help:      "REDACTED",
-		}, labels).With(labelsAndValues...),
-		ByzantineValidatorsPower: prometheus.NewGaugeFrom(stdprometheus.GaugeOpts{
-			Namespace: namespace,
-			Subsystem: MetricsSubsystem,
-			Name:      "REDACTED",
-			Help:      "REDACTED",
-		}, labels).With(labelsAndValues...),
-		BlockIntervalSeconds: prometheus.NewHistogramFrom(stdprometheus.HistogramOpts{
-			Namespace: namespace,
-			Subsystem: MetricsSubsystem,
-			Name:      "REDACTED",
-			Help:      "REDACTED",
-		}, labels).With(labelsAndValues...),
-		NumTxs: prometheus.NewGaugeFrom(stdprometheus.GaugeOpts{
-			Namespace: namespace,
-			Subsystem: MetricsSubsystem,
-			Name:      "REDACTED",
-			Help:      "REDACTED",
-		}, labels).With(labelsAndValues...),
-		BlockSizeBytes: prometheus.NewGaugeFrom(stdprometheus.GaugeOpts{
-			Namespace: namespace,
-			Subsystem: MetricsSubsystem,
-			Name:      "REDACTED",
-			Help:      "REDACTED",
-		}, labels).With(labelsAndValues...),
-		ChainSizeBytes: prometheus.NewCounterFrom(stdprometheus.CounterOpts{
-			Namespace: namespace,
-			Subsystem: MetricsSubsystem,
-			Name:      "REDACTED",
-			Help:      "REDACTED",
-		}, labels).With(labelsAndValues...),
-		TotalTxs: prometheus.NewGaugeFrom(stdprometheus.GaugeOpts{
-			Namespace: namespace,
-			Subsystem: MetricsSubsystem,
-			Name:      "REDACTED",
-			Help:      "REDACTED",
-		}, labels).With(labelsAndValues...),
-		CommittedHeight: prometheus.NewGaugeFrom(stdprometheus.GaugeOpts{
-			Namespace: namespace,
-			Subsystem: MetricsSubsystem,
-			Name:      "REDACTED",
-			Help:      "REDACTED",
-		}, labels).With(labelsAndValues...),
-		BlockParts: prometheus.NewCounterFrom(stdprometheus.CounterOpts{
-			Namespace: namespace,
-			Subsystem: MetricsSubsystem,
-			Name:      "REDACTED",
-			Help:      "REDACTED",
-		}, append(labels, "REDACTED")).With(labelsAndValues...),
-		DuplicateBlockPart: prometheus.NewCounterFrom(stdprometheus.CounterOpts{
-			Namespace: namespace,
-			Subsystem: MetricsSubsystem,
-			Name:      "REDACTED",
-			Help:      "REDACTED",
-		}, labels).With(labelsAndValues...),
-		DuplicateVote: prometheus.NewCounterFrom(stdprometheus.CounterOpts{
-			Namespace: namespace,
-			Subsystem: MetricsSubsystem,
-			Name:      "REDACTED",
-			Help:      "REDACTED",
-		}, labels).With(labelsAndValues...),
-		StepDurationSeconds: prometheus.NewHistogramFrom(stdprometheus.HistogramOpts{
-			Namespace: namespace,
-			Subsystem: MetricsSubsystem,
+		}, tags).With(tagsAlsoItems...),
+		IterationIntervalMoments: prometheus.NewHistogramFrom(stdprometheus.HistogramOpts{
+			Namespace: scope,
+			Subsystem: TelemetryComponent,
 			Name:      "REDACTED",
 			Help:      "REDACTED",
 
 			Buckets: stdprometheus.ExponentialBucketsRange(0.1, 100, 8),
-		}, append(labels, "REDACTED")).With(labelsAndValues...),
-		BlockGossipPartsReceived: prometheus.NewCounterFrom(stdprometheus.CounterOpts{
-			Namespace: namespace,
-			Subsystem: MetricsSubsystem,
+		}, tags).With(tagsAlsoItems...),
+		Assessors: prometheus.NewGaugeFrom(stdprometheus.GaugeOpts{
+			Namespace: scope,
+			Subsystem: TelemetryComponent,
 			Name:      "REDACTED",
 			Help:      "REDACTED",
-		}, append(labels, "REDACTED")).With(labelsAndValues...),
-		QuorumPrevoteDelay: prometheus.NewGaugeFrom(stdprometheus.GaugeOpts{
-			Namespace: namespace,
-			Subsystem: MetricsSubsystem,
+		}, tags).With(tagsAlsoItems...),
+		AssessorsPotency: prometheus.NewGaugeFrom(stdprometheus.GaugeOpts{
+			Namespace: scope,
+			Subsystem: TelemetryComponent,
 			Name:      "REDACTED",
 			Help:      "REDACTED",
-		}, append(labels, "REDACTED")).With(labelsAndValues...),
-		QuorumPrecommitDelay: prometheus.NewGaugeFrom(stdprometheus.GaugeOpts{
-			Namespace: namespace,
-			Subsystem: MetricsSubsystem,
+		}, tags).With(tagsAlsoItems...),
+		AssessorPotency: prometheus.NewGaugeFrom(stdprometheus.GaugeOpts{
+			Namespace: scope,
+			Subsystem: TelemetryComponent,
 			Name:      "REDACTED",
 			Help:      "REDACTED",
-		}, append(labels, "REDACTED")).With(labelsAndValues...),
-		FullPrevoteDelay: prometheus.NewGaugeFrom(stdprometheus.GaugeOpts{
-			Namespace: namespace,
-			Subsystem: MetricsSubsystem,
+		}, append(tags, "REDACTED")).With(tagsAlsoItems...),
+		AssessorOmittedLedgers: prometheus.NewGaugeFrom(stdprometheus.GaugeOpts{
+			Namespace: scope,
+			Subsystem: TelemetryComponent,
 			Name:      "REDACTED",
 			Help:      "REDACTED",
-		}, append(labels, "REDACTED")).With(labelsAndValues...),
-		PrecommitsCounted: prometheus.NewGaugeFrom(stdprometheus.GaugeOpts{
-			Namespace: namespace,
-			Subsystem: MetricsSubsystem,
+		}, append(tags, "REDACTED")).With(tagsAlsoItems...),
+		AbsentAssessors: prometheus.NewGaugeFrom(stdprometheus.GaugeOpts{
+			Namespace: scope,
+			Subsystem: TelemetryComponent,
 			Name:      "REDACTED",
 			Help:      "REDACTED",
-		}, labels).With(labelsAndValues...),
-		PrecommitsStakingPercentage: prometheus.NewGaugeFrom(stdprometheus.GaugeOpts{
-			Namespace: namespace,
-			Subsystem: MetricsSubsystem,
+		}, tags).With(tagsAlsoItems...),
+		AbsentAssessorsPotency: prometheus.NewGaugeFrom(stdprometheus.GaugeOpts{
+			Namespace: scope,
+			Subsystem: TelemetryComponent,
 			Name:      "REDACTED",
 			Help:      "REDACTED",
-		}, labels).With(labelsAndValues...),
-		VoteExtensionReceiveCount: prometheus.NewCounterFrom(stdprometheus.CounterOpts{
-			Namespace: namespace,
-			Subsystem: MetricsSubsystem,
+		}, tags).With(tagsAlsoItems...),
+		TreacherousAssessors: prometheus.NewGaugeFrom(stdprometheus.GaugeOpts{
+			Namespace: scope,
+			Subsystem: TelemetryComponent,
 			Name:      "REDACTED",
 			Help:      "REDACTED",
-		}, append(labels, "REDACTED")).With(labelsAndValues...),
-		ProposalReceiveCount: prometheus.NewCounterFrom(stdprometheus.CounterOpts{
-			Namespace: namespace,
-			Subsystem: MetricsSubsystem,
+		}, tags).With(tagsAlsoItems...),
+		TreacherousAssessorsPotency: prometheus.NewGaugeFrom(stdprometheus.GaugeOpts{
+			Namespace: scope,
+			Subsystem: TelemetryComponent,
 			Name:      "REDACTED",
 			Help:      "REDACTED",
-		}, append(labels, "REDACTED")).With(labelsAndValues...),
-		ProposalCreateCount: prometheus.NewCounterFrom(stdprometheus.CounterOpts{
-			Namespace: namespace,
-			Subsystem: MetricsSubsystem,
+		}, tags).With(tagsAlsoItems...),
+		LedgerDurationMoments: prometheus.NewHistogramFrom(stdprometheus.HistogramOpts{
+			Namespace: scope,
+			Subsystem: TelemetryComponent,
 			Name:      "REDACTED",
 			Help:      "REDACTED",
-		}, labels).With(labelsAndValues...),
-		RoundVotingPowerPercent: prometheus.NewGaugeFrom(stdprometheus.GaugeOpts{
-			Namespace: namespace,
-			Subsystem: MetricsSubsystem,
+		}, tags).With(tagsAlsoItems...),
+		CountTrans: prometheus.NewGaugeFrom(stdprometheus.GaugeOpts{
+			Namespace: scope,
+			Subsystem: TelemetryComponent,
 			Name:      "REDACTED",
 			Help:      "REDACTED",
-		}, append(labels, "REDACTED")).With(labelsAndValues...),
-		LateVotes: prometheus.NewCounterFrom(stdprometheus.CounterOpts{
-			Namespace: namespace,
-			Subsystem: MetricsSubsystem,
+		}, tags).With(tagsAlsoItems...),
+		LedgerExtentOctets: prometheus.NewGaugeFrom(stdprometheus.GaugeOpts{
+			Namespace: scope,
+			Subsystem: TelemetryComponent,
 			Name:      "REDACTED",
 			Help:      "REDACTED",
-		}, append(labels, "REDACTED")).With(labelsAndValues...),
-		PeerHeight: prometheus.NewGaugeFrom(stdprometheus.GaugeOpts{
-			Namespace: namespace,
-			Subsystem: MetricsSubsystem,
+		}, tags).With(tagsAlsoItems...),
+		SuccessionExtentOctets: prometheus.NewCounterFrom(stdprometheus.CounterOpts{
+			Namespace: scope,
+			Subsystem: TelemetryComponent,
 			Name:      "REDACTED",
 			Help:      "REDACTED",
-		}, append(labels, "REDACTED")).With(labelsAndValues...),
-		RoundIncrementTotal: prometheus.NewCounterFrom(stdprometheus.CounterOpts{
-			Namespace: namespace,
-			Subsystem: MetricsSubsystem,
+		}, tags).With(tagsAlsoItems...),
+		SumTrans: prometheus.NewGaugeFrom(stdprometheus.GaugeOpts{
+			Namespace: scope,
+			Subsystem: TelemetryComponent,
 			Name:      "REDACTED",
 			Help:      "REDACTED",
-		}, append(labels, "REDACTED")).With(labelsAndValues...),
+		}, tags).With(tagsAlsoItems...),
+		RatifiedAltitude: prometheus.NewGaugeFrom(stdprometheus.GaugeOpts{
+			Namespace: scope,
+			Subsystem: TelemetryComponent,
+			Name:      "REDACTED",
+			Help:      "REDACTED",
+		}, tags).With(tagsAlsoItems...),
+		LedgerFragments: prometheus.NewCounterFrom(stdprometheus.CounterOpts{
+			Namespace: scope,
+			Subsystem: TelemetryComponent,
+			Name:      "REDACTED",
+			Help:      "REDACTED",
+		}, append(tags, "REDACTED")).With(tagsAlsoItems...),
+		ReplicatedLedgerFragment: prometheus.NewCounterFrom(stdprometheus.CounterOpts{
+			Namespace: scope,
+			Subsystem: TelemetryComponent,
+			Name:      "REDACTED",
+			Help:      "REDACTED",
+		}, tags).With(tagsAlsoItems...),
+		ReplicatedBallot: prometheus.NewCounterFrom(stdprometheus.CounterOpts{
+			Namespace: scope,
+			Subsystem: TelemetryComponent,
+			Name:      "REDACTED",
+			Help:      "REDACTED",
+		}, tags).With(tagsAlsoItems...),
+		PhaseIntervalMoments: prometheus.NewHistogramFrom(stdprometheus.HistogramOpts{
+			Namespace: scope,
+			Subsystem: TelemetryComponent,
+			Name:      "REDACTED",
+			Help:      "REDACTED",
+
+			Buckets: stdprometheus.ExponentialBucketsRange(0.1, 100, 8),
+		}, append(tags, "REDACTED")).With(tagsAlsoItems...),
+		LedgerMulticastFragmentsAccepted: prometheus.NewCounterFrom(stdprometheus.CounterOpts{
+			Namespace: scope,
+			Subsystem: TelemetryComponent,
+			Name:      "REDACTED",
+			Help:      "REDACTED",
+		}, append(tags, "REDACTED")).With(tagsAlsoItems...),
+		AssemblyPreballotDeferral: prometheus.NewGaugeFrom(stdprometheus.GaugeOpts{
+			Namespace: scope,
+			Subsystem: TelemetryComponent,
+			Name:      "REDACTED",
+			Help:      "REDACTED",
+		}, append(tags, "REDACTED")).With(tagsAlsoItems...),
+		AssemblyPreendorseDeferral: prometheus.NewGaugeFrom(stdprometheus.GaugeOpts{
+			Namespace: scope,
+			Subsystem: TelemetryComponent,
+			Name:      "REDACTED",
+			Help:      "REDACTED",
+		}, append(tags, "REDACTED")).With(tagsAlsoItems...),
+		CompletePreballotDeferral: prometheus.NewGaugeFrom(stdprometheus.GaugeOpts{
+			Namespace: scope,
+			Subsystem: TelemetryComponent,
+			Name:      "REDACTED",
+			Help:      "REDACTED",
+		}, append(tags, "REDACTED")).With(tagsAlsoItems...),
+		PreendorsementsTallied: prometheus.NewGaugeFrom(stdprometheus.GaugeOpts{
+			Namespace: scope,
+			Subsystem: TelemetryComponent,
+			Name:      "REDACTED",
+			Help:      "REDACTED",
+		}, tags).With(tagsAlsoItems...),
+		PreendorsementsPledgingFraction: prometheus.NewGaugeFrom(stdprometheus.GaugeOpts{
+			Namespace: scope,
+			Subsystem: TelemetryComponent,
+			Name:      "REDACTED",
+			Help:      "REDACTED",
+		}, tags).With(tagsAlsoItems...),
+		BallotAdditionAcceptTally: prometheus.NewCounterFrom(stdprometheus.CounterOpts{
+			Namespace: scope,
+			Subsystem: TelemetryComponent,
+			Name:      "REDACTED",
+			Help:      "REDACTED",
+		}, append(tags, "REDACTED")).With(tagsAlsoItems...),
+		NominationAcceptTally: prometheus.NewCounterFrom(stdprometheus.CounterOpts{
+			Namespace: scope,
+			Subsystem: TelemetryComponent,
+			Name:      "REDACTED",
+			Help:      "REDACTED",
+		}, append(tags, "REDACTED")).With(tagsAlsoItems...),
+		NominationGenerateTally: prometheus.NewCounterFrom(stdprometheus.CounterOpts{
+			Namespace: scope,
+			Subsystem: TelemetryComponent,
+			Name:      "REDACTED",
+			Help:      "REDACTED",
+		}, tags).With(tagsAlsoItems...),
+		IterationBallotingPotencyRatio: prometheus.NewGaugeFrom(stdprometheus.GaugeOpts{
+			Namespace: scope,
+			Subsystem: TelemetryComponent,
+			Name:      "REDACTED",
+			Help:      "REDACTED",
+		}, append(tags, "REDACTED")).With(tagsAlsoItems...),
+		TardyBallots: prometheus.NewCounterFrom(stdprometheus.CounterOpts{
+			Namespace: scope,
+			Subsystem: TelemetryComponent,
+			Name:      "REDACTED",
+			Help:      "REDACTED",
+		}, append(tags, "REDACTED")).With(tagsAlsoItems...),
+		NodeAltitude: prometheus.NewGaugeFrom(stdprometheus.GaugeOpts{
+			Namespace: scope,
+			Subsystem: TelemetryComponent,
+			Name:      "REDACTED",
+			Help:      "REDACTED",
+		}, append(tags, "REDACTED")).With(tagsAlsoItems...),
+		IterationAdvanceSum: prometheus.NewCounterFrom(stdprometheus.CounterOpts{
+			Namespace: scope,
+			Subsystem: TelemetryComponent,
+			Name:      "REDACTED",
+			Help:      "REDACTED",
+		}, append(tags, "REDACTED")).With(tagsAlsoItems...),
 	}
 }
 
-func NopMetrics() *Metrics {
-	return &Metrics{
-		Height:                      discard.NewGauge(),
-		ValidatorLastSignedHeight:   discard.NewGauge(),
-		Rounds:                      discard.NewGauge(),
-		RoundDurationSeconds:        discard.NewHistogram(),
-		Validators:                  discard.NewGauge(),
-		ValidatorsPower:             discard.NewGauge(),
-		ValidatorPower:              discard.NewGauge(),
-		ValidatorMissedBlocks:       discard.NewGauge(),
-		MissingValidators:           discard.NewGauge(),
-		MissingValidatorsPower:      discard.NewGauge(),
-		ByzantineValidators:         discard.NewGauge(),
-		ByzantineValidatorsPower:    discard.NewGauge(),
-		BlockIntervalSeconds:        discard.NewHistogram(),
-		NumTxs:                      discard.NewGauge(),
-		BlockSizeBytes:              discard.NewGauge(),
-		ChainSizeBytes:              discard.NewCounter(),
-		TotalTxs:                    discard.NewGauge(),
-		CommittedHeight:             discard.NewGauge(),
-		BlockParts:                  discard.NewCounter(),
-		DuplicateBlockPart:          discard.NewCounter(),
-		DuplicateVote:               discard.NewCounter(),
-		StepDurationSeconds:         discard.NewHistogram(),
-		BlockGossipPartsReceived:    discard.NewCounter(),
-		QuorumPrevoteDelay:          discard.NewGauge(),
-		QuorumPrecommitDelay:        discard.NewGauge(),
-		FullPrevoteDelay:            discard.NewGauge(),
-		PrecommitsCounted:           discard.NewGauge(),
-		PrecommitsStakingPercentage: discard.NewGauge(),
-		VoteExtensionReceiveCount:   discard.NewCounter(),
-		ProposalReceiveCount:        discard.NewCounter(),
-		ProposalCreateCount:         discard.NewCounter(),
-		RoundVotingPowerPercent:     discard.NewGauge(),
-		LateVotes:                   discard.NewCounter(),
-		PeerHeight:                  discard.NewGauge(),
-		RoundIncrementTotal:         discard.NewCounter(),
+func NooperationTelemetry() *Telemetry {
+	return &Telemetry{
+		Altitude:                      discard.NewGauge(),
+		AssessorFinalAttestedAltitude:   discard.NewGauge(),
+		Cycles:                      discard.NewGauge(),
+		IterationIntervalMoments:        discard.NewHistogram(),
+		Assessors:                  discard.NewGauge(),
+		AssessorsPotency:             discard.NewGauge(),
+		AssessorPotency:              discard.NewGauge(),
+		AssessorOmittedLedgers:       discard.NewGauge(),
+		AbsentAssessors:           discard.NewGauge(),
+		AbsentAssessorsPotency:      discard.NewGauge(),
+		TreacherousAssessors:         discard.NewGauge(),
+		TreacherousAssessorsPotency:    discard.NewGauge(),
+		LedgerDurationMoments:        discard.NewHistogram(),
+		CountTrans:                      discard.NewGauge(),
+		LedgerExtentOctets:              discard.NewGauge(),
+		SuccessionExtentOctets:              discard.NewCounter(),
+		SumTrans:                    discard.NewGauge(),
+		RatifiedAltitude:             discard.NewGauge(),
+		LedgerFragments:                  discard.NewCounter(),
+		ReplicatedLedgerFragment:          discard.NewCounter(),
+		ReplicatedBallot:               discard.NewCounter(),
+		PhaseIntervalMoments:         discard.NewHistogram(),
+		LedgerMulticastFragmentsAccepted:    discard.NewCounter(),
+		AssemblyPreballotDeferral:          discard.NewGauge(),
+		AssemblyPreendorseDeferral:        discard.NewGauge(),
+		CompletePreballotDeferral:            discard.NewGauge(),
+		PreendorsementsTallied:           discard.NewGauge(),
+		PreendorsementsPledgingFraction: discard.NewGauge(),
+		BallotAdditionAcceptTally:   discard.NewCounter(),
+		NominationAcceptTally:        discard.NewCounter(),
+		NominationGenerateTally:         discard.NewCounter(),
+		IterationBallotingPotencyRatio:     discard.NewGauge(),
+		TardyBallots:                   discard.NewCounter(),
+		NodeAltitude:                  discard.NewGauge(),
+		IterationAdvanceSum:         discard.NewCounter(),
 	}
 }

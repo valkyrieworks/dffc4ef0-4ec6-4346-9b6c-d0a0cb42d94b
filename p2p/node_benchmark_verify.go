@@ -11,83 +11,83 @@ import (
 	"testing"
 	"time"
 
-	"github.com/valkyrieworks/iface/kinds"
-	"github.com/valkyrieworks/settings"
-	"github.com/valkyrieworks/vault/ed25519"
-	"github.com/valkyrieworks/utils/log"
-	"github.com/valkyrieworks/p2p/link"
-	"github.com/valkyrieworks/verify/utilities"
+	"github.com/valkyrieworks/dffc4ef0-4ec6-4346-9b6c-d0a0cb42d94b/iface/kinds"
+	"github.com/valkyrieworks/dffc4ef0-4ec6-4346-9b6c-d0a0cb42d94b/settings"
+	"github.com/valkyrieworks/dffc4ef0-4ec6-4346-9b6c-d0a0cb42d94b/security/edwards25519"
+	"github.com/valkyrieworks/dffc4ef0-4ec6-4346-9b6c-d0a0cb42d94b/utils/log"
+	"github.com/valkyrieworks/dffc4ef0-4ec6-4346-9b6c-d0a0cb42d94b/p2p/link"
+	"github.com/valkyrieworks/dffc4ef0-4ec6-4346-9b6c-d0a0cb42d94b/verify/toolkits"
 	"github.com/cosmos/gogoproto/proto"
 	"github.com/stretchr/testify/require"
 )
 
-type p2pOnewaySettings struct {
-	period        time.Duration
+type peer2peerSimplexSettings struct {
+	interval        time.Duration
 	transmitParallelism int
 	acceptDeferral    time.Duration
 }
 
 //
 //
-func VerifyBenchmarkP2POneway(t *testing.T) {
-	utilities.ShieldP2PBenchmarkVerify(t)
+func VerifyBenchmarkPeer2peerSimplex(t *testing.T) {
+	toolkits.ShieldPeer2peerBenchmarkVerify(t)
 
-	for _, tt := range []p2pOnewaySettings{
+	for _, tt := range []peer2peerSimplexSettings{
 		{
-			period:        10 * time.Second,
+			interval:        10 * time.Second,
 			transmitParallelism: 1,
 			acceptDeferral:    0,
 		},
 		{
-			period:        10 * time.Second,
+			interval:        10 * time.Second,
 			transmitParallelism: 8,
 			acceptDeferral:    0,
 		},
 		{
-			period:        10 * time.Second,
+			interval:        10 * time.Second,
 			transmitParallelism: 1,
 			acceptDeferral:    10 * time.Millisecond,
 		},
 		{
-			period:        10 * time.Second,
+			interval:        10 * time.Second,
 			transmitParallelism: 8,
 			acceptDeferral:    10 * time.Millisecond,
 		},
 		{
-			period:        10 * time.Second,
+			interval:        10 * time.Second,
 			transmitParallelism: 16,
 			acceptDeferral:    10 * time.Millisecond,
 		},
 	} {
-		label := fmt.Sprintf("REDACTED", tt.period, tt.transmitParallelism, tt.acceptDeferral)
-		t.Run(label, func(t *testing.T) {
+		alias := fmt.Sprintf("REDACTED", tt.interval, tt.transmitParallelism, tt.acceptDeferral)
+		t.Run(alias, func(t *testing.T) {
 			runtime.GC()
-			verifyBenchmarkP2POneway(t, tt)
+			verifyBenchmarkPeer2peerSimplex(t, tt)
 			t.Log("REDACTED")
 		})
 	}
 }
 
-func verifyBenchmarkP2POneway(t *testing.T, cfg p2pOnewaySettings) {
-	t.Logf("REDACTED", cfg.period.String())
+func verifyBenchmarkPeer2peerSimplex(t *testing.T, cfg peer2peerSimplexSettings) {
+	t.Logf("REDACTED", cfg.interval.String())
 	t.Logf("REDACTED", cfg.transmitParallelism)
 	t.Logf("REDACTED", cfg.acceptDeferral.String())
 
 	//
 	const (
-		benchmarkChannelFoo = byte(0xaa)
-		throughput    = 100 * (1 << 20) //
+		benchmarkChnSample = byte(0xaa)
+		capacity    = 100 * (1 << 20) //
 	)
 
 	//
-	p2pConfig := settings.StandardP2PSettings()
-	p2pConfig.AddressLedgerPrecise = true
+	peer2peerConfig := settings.FallbackPeer2peerSettings()
+	peer2peerConfig.LocationRegisterPrecise = true
 
 	//
 	//
 	//
 
-	multiplexerLinkSettings := link.StandardMLinkSettings()
+	multiplexerLinkSettings := link.FallbackModuleLinkSettings()
 
 	//
 	//
@@ -99,103 +99,103 @@ func verifyBenchmarkP2POneway(t *testing.T, cfg p2pOnewaySettings) {
 	//
 	//
 
-	tracer := log.NewNoopTracer()
+	tracer := log.FreshNooperationTracer()
 
 	//
-	receiverHandler := NewBenchmarkHandler(t, benchmarkChannelFoo, cfg.acceptDeferral)
+	receiverHandler := FreshBenchmarkHandler(t, benchmarkChnSample, cfg.acceptDeferral)
 
 	//
-	receiverRouter := instantiateRouterWithHandler(t, p2pConfig, multiplexerLinkSettings, "REDACTED", receiverHandler, tracer)
-	require.NoError(t, receiverRouter.Begin())
+	receiverRouter := generateRouterUsingHandler(t, peer2peerConfig, multiplexerLinkSettings, "REDACTED", receiverHandler, tracer)
+	require.NoError(t, receiverRouter.Initiate())
 	defer func() { require.NoError(t, receiverRouter.Halt()) }()
 
-	receiverAddress := receiverRouter.NetLocation()
-	t.Logf("REDACTED", receiverAddress.String())
+	receiverLocation := receiverRouter.NetworkLocator()
+	t.Logf("REDACTED", receiverLocation.Text())
 
 	//
-	proxyHandler := NewVerifyHandler(receiverHandler.FetchStreams(), false)
-	proxyHandler.AssignTracer(tracer)
+	mockHandler := FreshVerifyHandler(receiverHandler.ObtainConduits(), false)
+	mockHandler.AssignTracer(tracer)
 
-	emitterRouter := instantiateRouterWithHandler(t, p2pConfig, multiplexerLinkSettings, "REDACTED", proxyHandler, tracer)
-	require.NoError(t, emitterRouter.Begin())
-	defer func() { require.NoError(t, emitterRouter.Halt()) }()
+	originatorRouter := generateRouterUsingHandler(t, peer2peerConfig, multiplexerLinkSettings, "REDACTED", mockHandler, tracer)
+	require.NoError(t, originatorRouter.Initiate())
+	defer func() { require.NoError(t, originatorRouter.Halt()) }()
 
-	t.Logf("REDACTED", emitterRouter.NetLocation().String())
+	t.Logf("REDACTED", originatorRouter.NetworkLocator().Text())
 
 	//
-	require.NoError(t, emitterRouter.CallNodeWithLocation(receiverAddress))
+	require.NoError(t, originatorRouter.CallNodeUsingLocator(receiverLocation))
 	time.Sleep(100 * time.Millisecond)
 
-	require.Equal(t, 1, receiverRouter.Nodes().Volume(), "REDACTED")
-	require.Equal(t, 1, emitterRouter.Nodes().Volume(), "REDACTED")
+	require.Equal(t, 1, receiverRouter.Nodes().Extent(), "REDACTED")
+	require.Equal(t, 1, originatorRouter.Nodes().Extent(), "REDACTED")
 
-	emitterNodes := emitterRouter.Nodes().Clone()
-	require.Len(t, emitterNodes, 1)
+	originatorNodes := originatorRouter.Nodes().Duplicate()
+	require.Len(t, originatorNodes, 1)
 
-	receiverNode := emitterNodes[0]
+	receiverNode := originatorNodes[0]
 
-	ctx, revoke := context.WithTimeout(context.Background(), cfg.period)
-	defer revoke()
+	ctx, abort := context.WithTimeout(context.Background(), cfg.interval)
+	defer abort()
 
 	var (
-		begin = time.Now()
+		initiate = time.Now()
 
 		transmitTriumphs = atomic.Uint64{}
-		transmitBreakdowns  = atomic.Uint64{}
+		transmitMishaps  = atomic.Uint64{}
 
 		acceptTriumphs = atomic.Uint64{}
 
 		//
 		//
 
-		acceptWaitperiods = make([]time.Duration, 0, 10_000)
-		handleWaitperiods = make([]time.Duration, 0, 10_000)
+		acceptWaitstates = make([]time.Duration, 0, 10_000)
+		handleWaitstates = make([]time.Duration, 0, 10_000)
 
-		waitExecution = make(chan struct{})
+		pauseExecution = make(chan struct{})
 	)
 
-	transmitFunction := func() {
-		currentStr := strconv.FormatInt(time.Now().UnixMicro(), 10)
-		msg := kinds.ToQueryReverberate(currentStr)
+	transmitMethod := func() {
+		presentTxt := strconv.FormatInt(time.Now().UnixMicro(), 10)
+		msg := kinds.TowardSolicitReverberate(presentTxt)
 
-		relayed := receiverNode.Transmit(Packet{
-			StreamUID: benchmarkChannelFoo,
+		relayed := receiverNode.Transmit(Wrapper{
+			ConduitUUID: benchmarkChnSample,
 			Signal:   msg,
 		})
 
 		if relayed {
 			transmitTriumphs.Add(1)
 		} else {
-			transmitBreakdowns.Add(1)
+			transmitMishaps.Add(1)
 		}
 	}
 
 	conclude := func() {
-		t.Logf("REDACTED", len(receiverHandler.drain))
-		close(receiverHandler.drain)
-		<-waitExecution
+		t.Logf("REDACTED", len(receiverHandler.receiver))
+		close(receiverHandler.receiver)
+		<-pauseExecution
 	}
 
 	go func() {
-		for log := range receiverHandler.drain {
+		for log := range receiverHandler.receiver {
 			acceptTriumphs.Add(1)
 
-			req, ok := log.shipment.(*kinds.QueryReverberate)
+			req, ok := log.content.(*kinds.SolicitReverberate)
 			require.True(t, ok)
 
 			msg := strings.TrimLeft(req.Signal, "REDACTED")
 			i64, err := strconv.ParseInt(msg, 10, 64)
 			require.NoError(t, err, "REDACTED", msg)
 
-			relayedAt := time.UnixMicro(i64)
+			relayedLocated := time.UnixMicro(i64)
 
-			acceptWaitperiods = append(acceptWaitperiods, log.acceptedAt.Sub(relayedAt))
-			handleWaitperiods = append(handleWaitperiods, log.handledAt.Sub(relayedAt))
+			acceptWaitstates = append(acceptWaitstates, log.acceptedLocated.Sub(relayedLocated))
+			handleWaitstates = append(handleWaitstates, log.handledLocated.Sub(relayedLocated))
 		}
 
 		t.Logf("REDACTED")
 
-		close(waitExecution)
+		close(pauseExecution)
 	}()
 
 	t.Log("REDACTED")
@@ -209,7 +209,7 @@ Cycle:
 		default:
 			//
 			if cfg.transmitParallelism < 2 {
-				transmitFunction()
+				transmitMethod()
 				continue
 			}
 
@@ -219,7 +219,7 @@ Cycle:
 			for i := 0; i < cfg.transmitParallelism; i++ {
 				go func() {
 					defer wg.Done()
-					transmitFunction()
+					transmitMethod()
 				}()
 			}
 			wg.Wait()
@@ -227,145 +227,145 @@ Cycle:
 	}
 
 	time.Sleep(time.Second)
-	<-waitExecution
+	<-pauseExecution
 
 	//
-	timeSeized := time.Since(begin)
+	momentSeized := time.Since(initiate)
 
-	t.Logf("REDACTED", transmitTriumphs.Load()+transmitBreakdowns.Load())
-	t.Logf("REDACTED", transmitTriumphs.Load(), transmitBreakdowns.Load())
-	t.Logf("REDACTED", float64(transmitTriumphs.Load())/timeSeized.Seconds())
+	t.Logf("REDACTED", transmitTriumphs.Load()+transmitMishaps.Load())
+	t.Logf("REDACTED", transmitTriumphs.Load(), transmitMishaps.Load())
+	t.Logf("REDACTED", float64(transmitTriumphs.Load())/momentSeized.Seconds())
 
 	t.Logf("REDACTED", acceptTriumphs.Load())
-	t.Logf("REDACTED", float64(acceptTriumphs.Load())/timeSeized.Seconds())
+	t.Logf("REDACTED", float64(acceptTriumphs.Load())/momentSeized.Seconds())
 
-	signalsMissing := transmitTriumphs.Load() - acceptTriumphs.Load()
-	signalLeakageFraction := float64(signalsMissing) / float64(transmitTriumphs.Load()+transmitBreakdowns.Load()) * 100
+	signalsMislaid := transmitTriumphs.Load() - acceptTriumphs.Load()
+	artifactLeakageFraction := float64(signalsMislaid) / float64(transmitTriumphs.Load()+transmitMishaps.Load()) * 100
 
-	t.Logf("REDACTED", int64(signalsMissing), signalLeakageFraction)
+	t.Logf("REDACTED", int64(signalsMislaid), artifactLeakageFraction)
 
-	utilities.TracePeriodMetrics(t, "REDACTED", acceptWaitperiods)
-	utilities.TracePeriodMetrics(t, "REDACTED", handleWaitperiods)
+	toolkits.RecordIntervalMetrics(t, "REDACTED", acceptWaitstates)
+	toolkits.RecordIntervalMetrics(t, "REDACTED", handleWaitstates)
 }
 
 //
-func instantiateRouterWithHandler(
+func generateRouterUsingHandler(
 	t *testing.T,
-	cfg *settings.P2PSettings,
-	multiplexerLinkSettings link.MLinkSettings,
-	label string,
+	cfg *settings.Peer2peerSettings,
+	multiplexerLinkSettings link.ModuleLinkSettings,
+	alias string,
 	handler Handler,
 	tracer log.Tracer,
 ) *Router {
 	t.Helper()
 
-	memberKey := MemberKey{
-		PrivateKey: ed25519.GeneratePrivateKey(),
+	peerToken := PeerToken{
+		PrivateToken: edwards25519.ProducePrivateToken(),
 	}
 
-	ports := utilities.FetchReleasePorts(t, 1)
-	addressStr := fmt.Sprintf("REDACTED", ports[0])
+	channels := toolkits.ObtainReleaseChannels(t, 1)
+	locationTxt := fmt.Sprintf("REDACTED", channels[0])
 
-	memberDetails := StandardMemberDetails{
-		Moniker:         label,
-		ProtocolRelease: standardProtocolRelease,
-		StandardMemberUID:   memberKey.ID(),
-		ObserveAddress:      addressStr,
+	peerDetails := FallbackPeerDetails{
+		Pseudonym:         alias,
+		SchemeEdition: fallbackSchemeEdition,
+		FallbackPeerUUID:   peerToken.ID(),
+		OverhearLocation:      locationTxt,
 		Fabric:         "REDACTED",
-		Release:         "REDACTED",
-		Streams:        []byte{},
+		Edition:         "REDACTED",
+		Conduits:        []byte{},
 	}
 
-	address, err := NewNetLocationString(UIDLocationString(memberKey.ID(), addressStr))
+	location, err := FreshNetworkLocatorText(UUIDLocationText(peerToken.ID(), locationTxt))
 	require.NoError(t, err)
 
 	//
-	carrier := NewMulticastCarrier(memberDetails, memberKey, multiplexerLinkSettings)
+	carrier := FreshMultiplexCarrier(peerDetails, peerToken, multiplexerLinkSettings)
 
 	//
-	require.NoError(t, carrier.Observe(*address))
+	require.NoError(t, carrier.Overhear(*location))
 
 	//
 	//
-	factualAddress := NewNetLocation(memberKey.ID(), carrier.observer.Addr())
-	carrier.netAddress = *factualAddress
+	veritableLocation := FreshNetworkLocator(peerToken.ID(), carrier.observer.Addr())
+	carrier.networkLocation = *veritableLocation
 
 	//
-	sw := NewRouter(cfg, carrier)
-	sw.AssignTracer(tracer.With("REDACTED", label))
-	sw.CollectionMemberKey(&memberKey)
+	sw := FreshRouter(cfg, carrier)
+	sw.AssignTracer(tracer.Using("REDACTED", alias))
+	sw.AssignPeerToken(&peerToken)
 
 	//
-	sw.AppendHandler(label, handler)
+	sw.AppendHandler(alias, handler)
 	//
-	for ch := range sw.handlersByChan {
-		memberDetails.Streams = append(memberDetails.Streams, ch)
+	for ch := range sw.enginesViaChnl {
+		peerDetails.Conduits = append(peerDetails.Conduits, ch)
 	}
 
-	carrier.memberDetails = memberDetails
+	carrier.peerDetails = peerDetails
 
-	sw.CollectionMemberDetails(memberDetails)
+	sw.AssignPeerDetails(peerDetails)
 
 	return sw
 }
 
 type BenchmarkHandler struct {
-	RootHandler
+	FoundationHandler
 
 	t *testing.T
 
-	conduitUID    byte
+	conduitUUID    byte
 	acceptDeferral time.Duration
-	drain         chan benchmarkLog
+	receiver         chan benchmarkLog
 }
 
 type benchmarkLog struct {
-	shipment     proto.Message
-	acceptedAt  time.Time
-	handledAt time.Time
+	content     proto.Message
+	acceptedLocated  time.Time
+	handledLocated time.Time
 }
 
-func NewBenchmarkHandler(t *testing.T, conduitUID byte, acceptDeferral time.Duration) *BenchmarkHandler {
+func FreshBenchmarkHandler(t *testing.T, conduitUUID byte, acceptDeferral time.Duration) *BenchmarkHandler {
 	r := &BenchmarkHandler{
 		t:            t,
-		conduitUID:    conduitUID,
+		conduitUUID:    conduitUUID,
 		acceptDeferral: acceptDeferral,
-		drain:         make(chan benchmarkLog, 1_000_000),
+		receiver:         make(chan benchmarkLog, 1_000_000),
 	}
 
-	r.RootHandler = *NewRootHandler("REDACTED", r)
-	r.AssignTracer(log.NewNoopTracer())
+	r.FoundationHandler = *FreshFoundationHandler("REDACTED", r)
+	r.AssignTracer(log.FreshNooperationTracer())
 
 	return r
 }
 
-func (r *BenchmarkHandler) FetchStreams() []*link.StreamDefinition {
-	return []*link.StreamDefinition{
+func (r *BenchmarkHandler) ObtainConduits() []*link.ConduitDefinition {
+	return []*link.ConduitDefinition{
 		{
-			ID:                  r.conduitUID,
+			ID:                  r.conduitUUID,
 			Urgency:            1,
-			SignalKind:         &kinds.QueryReverberate{},
-			TransmitBufferVolume:   1_000_000,
-			AcceptBufferVolume:  100 * (1 << 20),
-			AcceptSignalVolume: 1_000_000,
+			SignalKind:         &kinds.SolicitReverberate{},
+			TransmitStagingVolume:   1_000_000,
+			ObtainReserveVolume:  100 * (1 << 20),
+			ObtainSignalVolume: 1_000_000,
 		},
 	}
 }
 
-func (r *BenchmarkHandler) Accept(e Packet) {
-	acceptedAt := time.Now()
+func (r *BenchmarkHandler) Accept(e Wrapper) {
+	acceptedLocated := time.Now()
 
 	//
 	if r.acceptDeferral > 0 {
 		time.Sleep(r.acceptDeferral)
 	}
 
-	handledAt := time.Now()
+	handledLocated := time.Now()
 
 	//
-	r.drain <- benchmarkLog{
-		shipment:     e.Signal,
-		acceptedAt:  acceptedAt,
-		handledAt: handledAt,
+	r.receiver <- benchmarkLog{
+		content:     e.Signal,
+		acceptedLocated:  acceptedLocated,
+		handledLocated: handledLocated,
 	}
 }

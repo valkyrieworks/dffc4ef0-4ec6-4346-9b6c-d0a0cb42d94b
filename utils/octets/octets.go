@@ -7,21 +7,21 @@ import (
 )
 
 //
-type HexOctets []byte
+type HexadecimalOctets []byte
 
 //
-func (bz HexOctets) Serialize() ([]byte, error) {
+func (bz HexadecimalOctets) Serialize() ([]byte, error) {
 	return bz, nil
 }
 
 //
-func (bz *HexOctets) Unserialize(data []byte) error {
+func (bz *HexadecimalOctets) Decode(data []byte) error {
 	*bz = data
 	return nil
 }
 
 //
-func (bz HexOctets) SerializeJSON() ([]byte, error) {
+func (bz HexadecimalOctets) SerializeJSN() ([]byte, error) {
 	s := strings.ToUpper(hex.EncodeToString(bz))
 	jbz := make([]byte, len(s)+2)
 	jbz[0] = '"'
@@ -31,7 +31,7 @@ func (bz HexOctets) SerializeJSON() ([]byte, error) {
 }
 
 //
-func (bz *HexOctets) UnserializeJSON(data []byte) error {
+func (bz *HexadecimalOctets) DecodeJSN(data []byte) error {
 	if len(data) < 2 || data[0] != '"' || data[len(data)-1] != '"' {
 		return fmt.Errorf("REDACTED", data)
 	}
@@ -44,18 +44,18 @@ func (bz *HexOctets) UnserializeJSON(data []byte) error {
 }
 
 //
-func (bz HexOctets) Octets() []byte {
+func (bz HexadecimalOctets) Octets() []byte {
 	return bz
 }
 
-func (bz HexOctets) String() string {
+func (bz HexadecimalOctets) Text() string {
 	return strings.ToUpper(hex.EncodeToString(bz))
 }
 
 //
 //
 //
-func (bz HexOctets) Layout(s fmt.State, command rune) {
+func (bz HexadecimalOctets) Layout(s fmt.State, command rune) {
 	switch command {
 	case 'p':
 		fmt.Fprintf(s, "REDACTED", bz)

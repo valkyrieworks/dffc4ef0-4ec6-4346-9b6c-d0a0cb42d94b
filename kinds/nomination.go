@@ -5,15 +5,15 @@ import (
 	"fmt"
 	"time"
 
-	cometbytes "github.com/valkyrieworks/utils/octets"
-	"github.com/valkyrieworks/utils/protoio"
-	engineproto "github.com/valkyrieworks/schema/consensuscore/kinds"
-	engineclock "github.com/valkyrieworks/kinds/moment"
+	tendermintoctets "github.com/valkyrieworks/dffc4ef0-4ec6-4346-9b6c-d0a0cb42d94b/utils/octets"
+	"github.com/valkyrieworks/dffc4ef0-4ec6-4346-9b6c-d0a0cb42d94b/utils/protocolio"
+	commitchema "github.com/valkyrieworks/dffc4ef0-4ec6-4346-9b6c-d0a0cb42d94b/schema/strongmind/kinds"
+	committime "github.com/valkyrieworks/dffc4ef0-4ec6-4346-9b6c-d0a0cb42d94b/kinds/moment"
 )
 
 var (
-	ErrCorruptLedgerSectionAutograph = errors.New("REDACTED")
-	ErrCorruptLedgerSectionDigest      = errors.New("REDACTED")
+	FaultUnfitLedgerFragmentSigning = errors.New("REDACTED")
+	FaultUnfitLedgerFragmentDigest      = errors.New("REDACTED")
 )
 
 //
@@ -23,58 +23,58 @@ var (
 //
 //
 type Nomination struct {
-	Kind      engineproto.AttestedMessageKind
-	Level    int64     `json:"level"`
-	Cycle     int32     `json:"epoch"`     //
-	POLDuration  int32     `json:"pol_epoch"` //
-	LedgerUID   LedgerUID   `json:"ledger_uid"`
+	Kind      commitchema.AttestedSignalKind
+	Altitude    int64     `json:"altitude"`
+	Iteration     int32     `json:"iteration"`     //
+	PolicyIteration  int32     `json:"policy_iteration"` //
+	LedgerUUID   LedgerUUID   `json:"ledger_uuid"`
 	Timestamp time.Time `json:"timestamp"`
-	Autograph []byte    `json:"autograph"`
+	Notation []byte    `json:"signing"`
 }
 
 //
 //
-func NewNomination(level int64, epoch int32, polEpoch int32, ledgerUID LedgerUID) *Nomination {
+func FreshNomination(altitude int64, iteration int32, policyIteration int32, ledgerUUID LedgerUUID) *Nomination {
 	return &Nomination{
-		Kind:      engineproto.NominationKind,
-		Level:    level,
-		Cycle:     epoch,
-		LedgerUID:   ledgerUID,
-		POLDuration:  polEpoch,
-		Timestamp: engineclock.Now(),
+		Kind:      commitchema.NominationKind,
+		Altitude:    altitude,
+		Iteration:     iteration,
+		LedgerUUID:   ledgerUUID,
+		PolicyIteration:  policyIteration,
+		Timestamp: committime.Now(),
 	}
 }
 
 //
-func (p *Nomination) CertifySimple() error {
-	if p.Kind != engineproto.NominationKind {
+func (p *Nomination) CertifyFundamental() error {
+	if p.Kind != commitchema.NominationKind {
 		return errors.New("REDACTED")
 	}
-	if p.Level < 0 {
+	if p.Altitude < 0 {
 		return errors.New("REDACTED")
 	}
-	if p.Cycle < 0 {
+	if p.Iteration < 0 {
 		return errors.New("REDACTED")
 	}
-	if p.POLDuration < -1 {
+	if p.PolicyIteration < -1 {
 		return errors.New("REDACTED")
 	}
-	if err := p.LedgerUID.CertifySimple(); err != nil {
+	if err := p.LedgerUUID.CertifyFundamental(); err != nil {
 		return fmt.Errorf("REDACTED", err)
 	}
 	//
-	if !p.LedgerUID.IsFinished() {
-		return fmt.Errorf("REDACTED", p.LedgerUID)
+	if !p.LedgerUUID.EqualsFinish() {
+		return fmt.Errorf("REDACTED", p.LedgerUUID)
 	}
 
 	//
 
-	if len(p.Autograph) == 0 {
+	if len(p.Notation) == 0 {
 		return errors.New("REDACTED")
 	}
 
-	if len(p.Autograph) > MaximumAutographVolume {
-		return fmt.Errorf("REDACTED", MaximumAutographVolume)
+	if len(p.Notation) > MaximumSigningExtent {
+		return fmt.Errorf("REDACTED", MaximumSigningExtent)
 	}
 	return nil
 }
@@ -83,14 +83,14 @@ func (p *Nomination) CertifySimple() error {
 //
 //
 //
-func (p *Nomination) CertifyLedgerVolume(maximumLedgerVolumeOctets int64) error {
-	if maximumLedgerVolumeOctets == -1 {
-		maximumLedgerVolumeOctets = int64(MaximumLedgerVolumeOctets)
+func (p *Nomination) CertifyLedgerExtent(maximumLedgerExtentOctets int64) error {
+	if maximumLedgerExtentOctets == -1 {
+		maximumLedgerExtentOctets = int64(MaximumLedgerExtentOctets)
 	}
-	sumSections := int64(p.LedgerUID.SegmentAssignHeading.Sum)
-	maximumSections := (maximumLedgerVolumeOctets-1)/int64(LedgerSegmentVolumeOctets) + 1
-	if sumSections > maximumSections {
-		return fmt.Errorf("REDACTED", sumSections, maximumSections)
+	sumFragments := int64(p.LedgerUUID.FragmentAssignHeading.Sum)
+	maximumFragments := (maximumLedgerExtentOctets-1)/int64(LedgerFragmentExtentOctets) + 1
+	if sumFragments > maximumFragments {
+		return fmt.Errorf("REDACTED", sumFragments, maximumFragments)
 	}
 	return nil
 }
@@ -105,14 +105,14 @@ func (p *Nomination) CertifyLedgerVolume(maximumLedgerVolumeOctets int64) error 
 //
 //
 //
-func (p *Nomination) String() string {
+func (p *Nomination) Text() string {
 	return fmt.Sprintf("REDACTED",
-		p.Level,
-		p.Cycle,
-		p.LedgerUID,
-		p.POLDuration,
-		cometbytes.Footprint(p.Autograph),
-		StandardTime(p.Timestamp))
+		p.Altitude,
+		p.Iteration,
+		p.LedgerUUID,
+		p.PolicyIteration,
+		tendermintoctets.Identifier(p.Notation),
+		StandardMoment(p.Timestamp))
 }
 
 //
@@ -123,9 +123,9 @@ func (p *Nomination) String() string {
 //
 //
 //
-func NominationAttestOctets(ledgerUID string, p *engineproto.Nomination) []byte {
-	pb := StandardizeNomination(ledgerUID, p)
-	bz, err := protoio.SerializeSeparated(&pb)
+func NominationAttestOctets(successionUUID string, p *commitchema.Nomination) []byte {
+	pb := NormalizeNomination(successionUUID, p)
+	bz, err := protocolio.SerializeSeparated(&pb)
 	if err != nil {
 		panic(err)
 	}
@@ -134,44 +134,44 @@ func NominationAttestOctets(ledgerUID string, p *engineproto.Nomination) []byte 
 }
 
 //
-func (p *Nomination) ToSchema() *engineproto.Nomination {
+func (p *Nomination) TowardSchema() *commitchema.Nomination {
 	if p == nil {
-		return &engineproto.Nomination{}
+		return &commitchema.Nomination{}
 	}
-	pb := new(engineproto.Nomination)
+	pb := new(commitchema.Nomination)
 
-	pb.LedgerUID = p.LedgerUID.ToSchema()
+	pb.LedgerUUID = p.LedgerUUID.TowardSchema()
 	pb.Kind = p.Kind
-	pb.Level = p.Level
-	pb.Cycle = p.Cycle
-	pb.PolEpoch = p.POLDuration
+	pb.Altitude = p.Altitude
+	pb.Iteration = p.Iteration
+	pb.PolicyIteration = p.PolicyIteration
 	pb.Timestamp = p.Timestamp
-	pb.Autograph = p.Autograph
+	pb.Notation = p.Notation
 
 	return pb
 }
 
 //
 //
-func NominationFromSchema(pp *engineproto.Nomination) (*Nomination, error) {
+func NominationOriginatingSchema(pp *commitchema.Nomination) (*Nomination, error) {
 	if pp == nil {
 		return nil, errors.New("REDACTED")
 	}
 
 	p := new(Nomination)
 
-	ledgerUID, err := LedgerUIDFromSchema(&pp.LedgerUID)
+	ledgerUUID, err := LedgerUUIDOriginatingSchema(&pp.LedgerUUID)
 	if err != nil {
 		return nil, err
 	}
 
-	p.LedgerUID = *ledgerUID
+	p.LedgerUUID = *ledgerUUID
 	p.Kind = pp.Kind
-	p.Level = pp.Level
-	p.Cycle = pp.Cycle
-	p.POLDuration = pp.PolEpoch
+	p.Altitude = pp.Altitude
+	p.Iteration = pp.Iteration
+	p.PolicyIteration = pp.PolicyIteration
 	p.Timestamp = pp.Timestamp
-	p.Autograph = pp.Autograph
+	p.Notation = pp.Notation
 
-	return p, p.CertifySimple()
+	return p, p.CertifyFundamental()
 }

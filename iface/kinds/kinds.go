@@ -8,121 +8,121 @@ import (
 )
 
 const (
-	CodeKindSuccess uint32 = 0
+	CipherKindOKAY uint32 = 0
 
 	//
 	//
-	CodeKindReprocess uint32 = 32_000
+	CipherKindReissue uint32 = 32_000
 )
 
 //
-func (r ReplyInspectTransfer) IsOK() bool {
-	return r.Code == CodeKindSuccess
+func (r ReplyInspectTransfer) EqualsOKAY() bool {
+	return r.Cipher == CipherKindOKAY
 }
 
 //
-func (r ReplyInspectTransfer) IsErr() bool {
-	return r.Code != CodeKindSuccess
+func (r ReplyInspectTransfer) EqualsFault() bool {
+	return r.Cipher != CipherKindOKAY
 }
 
 //
-func (r InvokeTransferOutcome) IsOK() bool {
-	return r.Code == CodeKindSuccess
+func (r InvokeTransferOutcome) EqualsOKAY() bool {
+	return r.Cipher == CipherKindOKAY
 }
 
 //
-func (r InvokeTransferOutcome) IsErr() bool {
-	return r.Code != CodeKindSuccess
+func (r InvokeTransferOutcome) EqualsFault() bool {
+	return r.Cipher != CipherKindOKAY
 }
 
 //
-func (r ReplyInquire) IsOK() bool {
-	return r.Code == CodeKindSuccess
+func (r ReplyInquire) EqualsOKAY() bool {
+	return r.Cipher == CipherKindOKAY
 }
 
 //
-func (r ReplyInquire) IsErr() bool {
-	return r.Code != CodeKindSuccess
+func (r ReplyInquire) EqualsFault() bool {
+	return r.Cipher != CipherKindOKAY
 }
 
 //
-func (r ReplyHandleNomination) IsApproved() bool {
-	return r.Status == Responseprocessnomination_ALLOW
+func (r ReplyHandleNomination) EqualsApproved() bool {
+	return r.Condition == Responseexecuteitem_EMBRACE
 }
 
 //
-func (r ReplyHandleNomination) IsStateUnclear() bool {
-	return r.Status == Responseprocessnomination_UNCLEAR
+func (r ReplyHandleNomination) EqualsConditionUnfamiliar() bool {
+	return r.Condition == Responseexecuteitem_UNFAMILIAR
 }
 
-func (r ReplyValidateBallotAddition) IsApproved() bool {
-	return r.Status == Responseverifyballotextension_ALLOW
+func (r ReplyValidateBallotAddition) EqualsApproved() bool {
+	return r.Condition == Responsecertifyballotaddition_EMBRACE
 }
 
 //
-func (r ReplyValidateBallotAddition) IsStateUnclear() bool {
-	return r.Status == Responseverifyballotextension_UNCLEAR
+func (r ReplyValidateBallotAddition) EqualsConditionUnfamiliar() bool {
+	return r.Condition == Responsecertifyballotaddition_UNFAMILIAR
 }
 
 //
 //
 
 var (
-	jsonfmtFormatter = jsonpb.Marshaler{
+	jsonpbSerializer = jsonpb.Marshaler{
 		EnumsAsInts:  true,
 		EmitDefaults: true,
 	}
-	jsonfmtParser = jsonpb.Unmarshaler{}
+	jsonpbDeserializer = jsonpb.Unmarshaler{}
 )
 
-func (r *ReplyInspectTransfer) SerializeJSON() ([]byte, error) {
-	s, err := jsonfmtFormatter.MarshalToString(r)
+func (r *ReplyInspectTransfer) SerializeJSN() ([]byte, error) {
+	s, err := jsonpbSerializer.MarshalToString(r)
 	return []byte(s), err
 }
 
-func (r *ReplyInspectTransfer) UnserializeJSON(b []byte) error {
-	scanner := bytes.NewBuffer(b)
-	return jsonfmtParser.Unmarshal(scanner, r)
+func (r *ReplyInspectTransfer) DecodeJSN(b []byte) error {
+	fetcher := bytes.NewBuffer(b)
+	return jsonpbDeserializer.Unmarshal(fetcher, r)
 }
 
-func (r *InvokeTransferOutcome) SerializeJSON() ([]byte, error) {
-	s, err := jsonfmtFormatter.MarshalToString(r)
+func (r *InvokeTransferOutcome) SerializeJSN() ([]byte, error) {
+	s, err := jsonpbSerializer.MarshalToString(r)
 	return []byte(s), err
 }
 
-func (r *InvokeTransferOutcome) UnserializeJSON(b []byte) error {
-	scanner := bytes.NewBuffer(b)
-	return jsonfmtParser.Unmarshal(scanner, r)
+func (r *InvokeTransferOutcome) DecodeJSN(b []byte) error {
+	fetcher := bytes.NewBuffer(b)
+	return jsonpbDeserializer.Unmarshal(fetcher, r)
 }
 
-func (r *ReplyInquire) SerializeJSON() ([]byte, error) {
-	s, err := jsonfmtFormatter.MarshalToString(r)
+func (r *ReplyInquire) SerializeJSN() ([]byte, error) {
+	s, err := jsonpbSerializer.MarshalToString(r)
 	return []byte(s), err
 }
 
-func (r *ReplyInquire) UnserializeJSON(b []byte) error {
-	scanner := bytes.NewBuffer(b)
-	return jsonfmtParser.Unmarshal(scanner, r)
+func (r *ReplyInquire) DecodeJSN(b []byte) error {
+	fetcher := bytes.NewBuffer(b)
+	return jsonpbDeserializer.Unmarshal(fetcher, r)
 }
 
-func (r *ReplyEndorse) SerializeJSON() ([]byte, error) {
-	s, err := jsonfmtFormatter.MarshalToString(r)
+func (r *ReplyEndorse) SerializeJSN() ([]byte, error) {
+	s, err := jsonpbSerializer.MarshalToString(r)
 	return []byte(s), err
 }
 
-func (r *ReplyEndorse) UnserializeJSON(b []byte) error {
-	scanner := bytes.NewBuffer(b)
-	return jsonfmtParser.Unmarshal(scanner, r)
+func (r *ReplyEndorse) DecodeJSN(b []byte) error {
+	fetcher := bytes.NewBuffer(b)
+	return jsonpbDeserializer.Unmarshal(fetcher, r)
 }
 
-func (r *EventProperty) SerializeJSON() ([]byte, error) {
-	s, err := jsonfmtFormatter.MarshalToString(r)
+func (r *IncidentProperty) SerializeJSN() ([]byte, error) {
+	s, err := jsonpbSerializer.MarshalToString(r)
 	return []byte(s), err
 }
 
-func (r *EventProperty) UnserializeJSON(b []byte) error {
-	scanner := bytes.NewBuffer(b)
-	return jsonfmtParser.Unmarshal(scanner, r)
+func (r *IncidentProperty) DecodeJSN(b []byte) error {
+	fetcher := bytes.NewBuffer(b)
+	return jsonpbDeserializer.Unmarshal(fetcher, r)
 }
 
 //
@@ -130,28 +130,28 @@ func (r *EventProperty) UnserializeJSON(b []byte) error {
 
 //
 //
-type jsonEpochTripper interface {
+type jsnIterationMessenger interface {
 	json.Marshaler
 	json.Unmarshaler
 }
 
 var (
-	_ jsonEpochTripper = (*ReplyEndorse)(nil)
-	_ jsonEpochTripper = (*ReplyInquire)(nil)
-	_ jsonEpochTripper = (*InvokeTransferOutcome)(nil)
-	_ jsonEpochTripper = (*ReplyInspectTransfer)(nil)
+	_ jsnIterationMessenger = (*ReplyEndorse)(nil)
+	_ jsnIterationMessenger = (*ReplyInquire)(nil)
+	_ jsnIterationMessenger = (*InvokeTransferOutcome)(nil)
+	_ jsnIterationMessenger = (*ReplyInspectTransfer)(nil)
 )
 
-var _ jsonEpochTripper = (*EventProperty)(nil)
+var _ jsnIterationMessenger = (*IncidentProperty)(nil)
 
 //
 //
 func CertainInvokeTransferOutcome(reply *InvokeTransferOutcome) *InvokeTransferOutcome {
 	return &InvokeTransferOutcome{
-		Code:      reply.Code,
+		Cipher:      reply.Cipher,
 		Data:      reply.Data,
 		FuelDesired: reply.FuelDesired,
-		FuelApplied:   reply.FuelApplied,
+		FuelUtilized:   reply.FuelUtilized,
 	}
 }
 

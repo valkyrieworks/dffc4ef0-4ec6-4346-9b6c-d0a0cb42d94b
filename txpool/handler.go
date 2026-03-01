@@ -7,12 +7,12 @@ import (
 	"sync/atomic"
 	"time"
 
-	cfg "github.com/valkyrieworks/settings"
-	"github.com/valkyrieworks/utils/ringlist"
-	"github.com/valkyrieworks/utils/log"
-	"github.com/valkyrieworks/p2p"
-	protomemory "github.com/valkyrieworks/schema/consensuscore/txpool"
-	"github.com/valkyrieworks/kinds"
+	cfg "github.com/valkyrieworks/dffc4ef0-4ec6-4346-9b6c-d0a0cb42d94b/settings"
+	"github.com/valkyrieworks/dffc4ef0-4ec6-4346-9b6c-d0a0cb42d94b/utils/linkedlist"
+	"github.com/valkyrieworks/dffc4ef0-4ec6-4346-9b6c-d0a0cb42d94b/utils/log"
+	"github.com/valkyrieworks/dffc4ef0-4ec6-4346-9b6c-d0a0cb42d94b/p2p"
+	schemaspace "github.com/valkyrieworks/dffc4ef0-4ec6-4346-9b6c-d0a0cb42d94b/schema/strongmind/txpool"
+	"github.com/valkyrieworks/dffc4ef0-4ec6-4346-9b6c-d0a0cb42d94b/kinds"
 	"golang.org/x/sync/semaphore"
 )
 
@@ -20,43 +20,43 @@ import (
 //
 //
 type Handler struct {
-	p2p.RootHandler
+	p2p.FoundationHandler
 	settings  *cfg.TxpoolSettings
-	txpool *CCatalogTxpool
-	ids     *txpoolIDXDatastore
+	txpool *CNCatalogTxpool
+	ids     *txpoolIDXDstore
 
 	//
 	//
 	//
-	enabledDurableNodesMutex    *semaphore.Weighted
-	enabledNotDurableNodesMutex *semaphore.Weighted
+	dynamicEnduringNodesGate    *semaphore.Weighted
+	dynamicUnEnduringNodesGate *semaphore.Weighted
 
-	waitAlign   atomic.Bool
-	waitAlignChan chan struct{} //
+	awaitChronize   atomic.Bool
+	pauseChronizeChnl chan struct{} //
 }
 
 //
-func NewHandler(settings *cfg.TxpoolSettings, txpool *CCatalogTxpool, waitAlign bool) *Handler {
+func FreshHandler(settings *cfg.TxpoolSettings, txpool *CNCatalogTxpool, awaitChronize bool) *Handler {
 	memoryReader := &Handler{
 		settings:   settings,
 		txpool:  txpool,
-		ids:      newTxpoolIDXDatastore(),
-		waitAlign: atomic.Bool{},
+		ids:      freshTxpoolIDXDstore(),
+		awaitChronize: atomic.Bool{},
 	}
-	memoryReader.RootHandler = *p2p.NewRootHandler("REDACTED", memoryReader)
-	memoryReader.enabledDurableNodesMutex = semaphore.NewWeighted(int64(memoryReader.settings.ExploratoryMaximumGossipLinkagesToDurableNodes))
-	memoryReader.enabledNotDurableNodesMutex = semaphore.NewWeighted(int64(memoryReader.settings.ExploratoryMaximumGossipLinkagesToNotDurableNodes))
+	memoryReader.FoundationHandler = *p2p.FreshFoundationHandler("REDACTED", memoryReader)
+	memoryReader.dynamicEnduringNodesGate = semaphore.NewWeighted(int64(memoryReader.settings.ExploratoryMaximumBroadcastLinkagesTowardEnduringNodes))
+	memoryReader.dynamicUnEnduringNodesGate = semaphore.NewWeighted(int64(memoryReader.settings.ExploratoryMaximumBroadcastLinkagesTowardUnEnduringNodes))
 
-	if waitAlign {
-		memoryReader.waitAlign.Store(true)
-		memoryReader.waitAlignChan = make(chan struct{})
+	if awaitChronize {
+		memoryReader.awaitChronize.Store(true)
+		memoryReader.pauseChronizeChnl = make(chan struct{})
 	}
 	return memoryReader
 }
 
 //
-func (memoryReader *Handler) InitNode(node p2p.Node) p2p.Node {
-	memoryReader.ids.AllocateForNode(node)
+func (memoryReader *Handler) InitializeNode(node p2p.Node) p2p.Node {
+	memoryReader.ids.AllocateForeachNode(node)
 	return node
 }
 
@@ -67,8 +67,8 @@ func (memoryReader *Handler) AssignTracer(l log.Tracer) {
 }
 
 //
-func (memoryReader *Handler) OnBegin() error {
-	if memoryReader.WaitAlign() {
+func (memoryReader *Handler) UponInitiate() error {
+	if memoryReader.AwaitChronize() {
 		memoryReader.Tracer.Details("REDACTED")
 	}
 	if !memoryReader.settings.Multicast {
@@ -79,20 +79,20 @@ func (memoryReader *Handler) OnBegin() error {
 
 //
 //
-func (memoryReader *Handler) FetchStreams() []*p2p.StreamDefinition {
+func (memoryReader *Handler) ObtainConduits() []*p2p.ConduitDefinition {
 	greatestTransfer := make([]byte, memoryReader.settings.MaximumTransferOctets)
-	groupMessage := protomemory.Signal{
-		Sum: &protomemory.Signal_Trans{
-			Txs: &protomemory.Txs{Txs: [][]byte{greatestTransfer}},
+	clusterSignal := schemaspace.Signal{
+		Sum: &schemaspace.Artifact_Trans{
+			Txs: &schemaspace.Txs{Txs: [][]byte{greatestTransfer}},
 		},
 	}
 
-	return []*p2p.StreamDefinition{
+	return []*p2p.ConduitDefinition{
 		{
 			ID:                  TxpoolConduit,
 			Urgency:            5,
-			AcceptSignalVolume: groupMessage.Volume(),
-			SignalKind:         &protomemory.Signal{},
+			ObtainSignalVolume: clusterSignal.Extent(),
+			SignalKind:         &schemaspace.Signal{},
 		},
 	}
 }
@@ -103,68 +103,68 @@ func (memoryReader *Handler) AppendNode(node p2p.Node) {
 	if memoryReader.settings.Multicast {
 		go func() {
 			//
-			if !memoryReader.Router.IsNodeAbsolute(node.ID()) {
+			if !memoryReader.Router.EqualsNodeAbsolute(node.ID()) {
 				//
-				var nodeMutex *semaphore.Weighted
-				if node.IsDurable() && memoryReader.settings.ExploratoryMaximumGossipLinkagesToDurableNodes > 0 {
-					nodeMutex = memoryReader.enabledDurableNodesMutex
-				} else if !node.IsDurable() && memoryReader.settings.ExploratoryMaximumGossipLinkagesToNotDurableNodes > 0 {
-					nodeMutex = memoryReader.enabledNotDurableNodesMutex
+				var nodeGate *semaphore.Weighted
+				if node.EqualsEnduring() && memoryReader.settings.ExploratoryMaximumBroadcastLinkagesTowardEnduringNodes > 0 {
+					nodeGate = memoryReader.dynamicEnduringNodesGate
+				} else if !node.EqualsEnduring() && memoryReader.settings.ExploratoryMaximumBroadcastLinkagesTowardUnEnduringNodes > 0 {
+					nodeGate = memoryReader.dynamicUnEnduringNodesGate
 				}
 
-				if nodeMutex != nil {
-					for node.IsActive() {
+				if nodeGate != nil {
+					for node.EqualsActive() {
 						//
 						//
-						ctxDeadline, revoke := context.WithTimeout(context.TODO(), 30*time.Second)
+						contextDeadline, abort := context.WithTimeout(context.TODO(), 30*time.Second)
 						//
 						//
-						err := nodeMutex.Acquire(ctxDeadline, 1)
-						revoke()
+						err := nodeGate.Acquire(contextDeadline, 1)
+						abort()
 
 						if err != nil {
 							continue
 						}
 
 						//
-						defer nodeMutex.Release(1)
+						defer nodeGate.Release(1)
 						break
 					}
 				}
 			}
 
-			memoryReader.txpool.stats.EnabledOutgoingLinkages.Add(1)
-			defer memoryReader.txpool.stats.EnabledOutgoingLinkages.Add(-1)
+			memoryReader.txpool.telemetry.DynamicOutgoingLinkages.Add(1)
+			defer memoryReader.txpool.telemetry.DynamicOutgoingLinkages.Add(-1)
 			memoryReader.multicastTransferProcedure(node)
 		}()
 	}
 }
 
 //
-func (memoryReader *Handler) DeleteNode(node p2p.Node, _ any) {
+func (memoryReader *Handler) DiscardNode(node p2p.Node, _ any) {
 	memoryReader.ids.Recover(node)
 	//
 }
 
 //
 //
-func (memoryReader *Handler) Accept(e p2p.Packet) {
-	memoryReader.Tracer.Diagnose("REDACTED", "REDACTED", e.Src, "REDACTED", e.StreamUID, "REDACTED", e.Signal)
+func (memoryReader *Handler) Accept(e p2p.Wrapper) {
+	memoryReader.Tracer.Diagnose("REDACTED", "REDACTED", e.Src, "REDACTED", e.ConduitUUID, "REDACTED", e.Signal)
 	switch msg := e.Signal.(type) {
-	case *protomemory.Txs:
-		if memoryReader.WaitAlign() {
+	case *schemaspace.Txs:
+		if memoryReader.AwaitChronize() {
 			memoryReader.Tracer.Diagnose("REDACTED", "REDACTED", msg)
 			return
 		}
 
-		schemaTrans := msg.FetchTrans()
+		schemaTrans := msg.ObtainTrans()
 		if len(schemaTrans) == 0 {
-			memoryReader.Tracer.Fault("REDACTED", "REDACTED", e.Src)
+			memoryReader.Tracer.Failure("REDACTED", "REDACTED", e.Src)
 			return
 		}
-		transferDetails := TransferDetails{EmitterUID: memoryReader.ids.FetchForNode(e.Src)}
+		transferDetails := TransferDetails{OriginatorUUID: memoryReader.ids.ObtainForeachNode(e.Src)}
 		if e.Src != nil {
-			transferDetails.EmitterP2pid = e.Src.ID()
+			transferDetails.OriginatorNodeid = e.Src.ID()
 		}
 
 		var err error
@@ -173,52 +173,52 @@ func (memoryReader *Handler) Accept(e p2p.Packet) {
 			err = memoryReader.txpool.InspectTransfer(ntx, nil, transferDetails)
 			if err != nil {
 				switch {
-				case errors.Is(err, ErrTransferInRepository):
-					memoryReader.Tracer.Diagnose("REDACTED", "REDACTED", ntx.String())
-				case errors.As(err, &ErrTxpoolIsComplete{}):
+				case errors.Is(err, FaultTransferInsideStash):
+					memoryReader.Tracer.Diagnose("REDACTED", "REDACTED", ntx.Text())
+				case errors.As(err, &FaultTxpoolEqualsComplete{}):
 					//
 					memoryReader.Tracer.Diagnose(err.Error())
 				default:
-					memoryReader.Tracer.Details("REDACTED", "REDACTED", ntx.String(), "REDACTED", err)
+					memoryReader.Tracer.Details("REDACTED", "REDACTED", ntx.Text(), "REDACTED", err)
 				}
 			}
 		}
 	default:
-		memoryReader.Tracer.Fault("REDACTED", "REDACTED", e.Src, "REDACTED", e.StreamUID, "REDACTED", e.Signal)
-		memoryReader.Router.HaltNodeForFault(e.Src, fmt.Errorf("REDACTED", e.Signal))
+		memoryReader.Tracer.Failure("REDACTED", "REDACTED", e.Src, "REDACTED", e.ConduitUUID, "REDACTED", e.Signal)
+		memoryReader.Router.HaltNodeForeachFailure(e.Src, fmt.Errorf("REDACTED", e.Signal))
 		return
 	}
 
 	//
 }
 
-func (memoryReader *Handler) ActivateInOutTrans() {
+func (memoryReader *Handler) ActivateInsideOutputTrans() {
 	memoryReader.Tracer.Details("REDACTED")
-	if !memoryReader.waitAlign.CompareAndSwap(true, false) {
+	if !memoryReader.awaitChronize.CompareAndSwap(true, false) {
 		return
 	}
 
 	//
 	if memoryReader.settings.Multicast {
-		close(memoryReader.waitAlignChan)
+		close(memoryReader.pauseChronizeChnl)
 	}
 }
 
-func (memoryReader *Handler) WaitAlign() bool {
-	return memoryReader.waitAlign.Load()
+func (memoryReader *Handler) AwaitChronize() bool {
+	return memoryReader.awaitChronize.Load()
 }
 
 //
 type NodeStatus interface {
-	FetchLevel() int64
+	ObtainAltitude() int64
 }
 
 //
 func (memoryReader *Handler) multicastTransferProcedure(node p2p.Node) {
 	//
-	if memoryReader.WaitAlign() {
+	if memoryReader.AwaitChronize() {
 		select {
-		case <-memoryReader.waitAlignChan:
+		case <-memoryReader.pauseChronizeChnl:
 			//
 		case <-memoryReader.Exit():
 			return
@@ -232,19 +232,19 @@ func (memoryReader *Handler) multicastTransferProcedure(node p2p.Node) {
 	//
 	//
 	for {
-		if ps, ok := node.Get(kinds.NodeStatusKey).(NodeStatus); ok {
+		if ps, ok := node.Get(kinds.NodeStatusToken).(NodeStatus); ok {
 			nodeStatus = ps
 			break
 		}
 		//
-		time.Sleep(NodeOvertakePauseCadenceMillis * time.Millisecond)
+		time.Sleep(NodeOvertakeSnoozeDurationMSEC * time.Millisecond)
 	}
 
-	nodeUID := memoryReader.ids.FetchForNode(node)
-	var following *ringlist.CComponent
+	nodeUUID := memoryReader.ids.ObtainForeachNode(node)
+	var following *linkedlist.CNComponent
 	for {
 		//
-		if !memoryReader.IsActive() || !node.IsActive() {
+		if !memoryReader.EqualsActive() || !node.EqualsActive() {
 			return
 		}
 
@@ -253,8 +253,8 @@ func (memoryReader *Handler) multicastTransferProcedure(node p2p.Node) {
 		//
 		if following == nil {
 			select {
-			case <-memoryReader.txpool.TransWaitChan(): //
-				if following = memoryReader.txpool.TransHead(); following == nil {
+			case <-memoryReader.txpool.TransPauseChannel(): //
+				if following = memoryReader.txpool.TransLeading(); following == nil {
 					continue
 				}
 			case <-node.Exit():
@@ -270,28 +270,28 @@ func (memoryReader *Handler) multicastTransferProcedure(node p2p.Node) {
 		//
 		//
 		//
-		memoryTransfer := following.Item.(*txpoolTransfer)
-		if nodeStatus.FetchLevel() < memoryTransfer.Level()-1 {
-			time.Sleep(NodeOvertakePauseCadenceMillis * time.Millisecond)
+		memoryTransfer := following.Datum.(*txpoolTransfer)
+		if nodeStatus.ObtainAltitude() < memoryTransfer.Altitude()-1 {
+			time.Sleep(NodeOvertakeSnoozeDurationMSEC * time.Millisecond)
 			continue
 		}
 
 		//
 		//
 
-		if !memoryTransfer.isEmitter(nodeUID) {
-			success := node.Transmit(p2p.Packet{
-				StreamUID: TxpoolConduit,
-				Signal:   &protomemory.Txs{Txs: [][]byte{memoryTransfer.tx}},
+		if !memoryTransfer.equalsOriginator(nodeUUID) {
+			triumph := node.Transmit(p2p.Wrapper{
+				ConduitUUID: TxpoolConduit,
+				Signal:   &schemaspace.Txs{Txs: [][]byte{memoryTransfer.tx}},
 			})
-			if !success {
-				time.Sleep(NodeOvertakePauseCadenceMillis * time.Millisecond)
+			if !triumph {
+				time.Sleep(NodeOvertakeSnoozeDurationMSEC * time.Millisecond)
 				continue
 			}
 		}
 
 		select {
-		case <-following.FollowingWaitChan():
+		case <-following.FollowingPauseChnl():
 			//
 			following = following.Following()
 		case <-node.Exit():

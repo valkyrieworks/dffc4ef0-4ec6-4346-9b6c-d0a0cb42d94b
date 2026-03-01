@@ -8,43 +8,43 @@ import (
 
 	"github.com/cosmos/gogoproto/proto"
 
-	"github.com/valkyrieworks/utils/cmap"
-	"github.com/valkyrieworks/utils/log"
-	"github.com/valkyrieworks/utils/daemon"
+	"github.com/valkyrieworks/dffc4ef0-4ec6-4346-9b6c-d0a0cb42d94b/utils/componentindex"
+	"github.com/valkyrieworks/dffc4ef0-4ec6-4346-9b6c-d0a0cb42d94b/utils/log"
+	"github.com/valkyrieworks/dffc4ef0-4ec6-4346-9b6c-d0a0cb42d94b/utils/facility"
 
-	cmtconn "github.com/valkyrieworks/p2p/link"
+	consensuslink "github.com/valkyrieworks/dffc4ef0-4ec6-4346-9b6c-d0a0cb42d94b/p2p/link"
 )
 
 //
 
-const statsTimerPeriod = 10 * time.Second
+const telemetryMetronomeInterval = 10 * time.Second
 
 //
 type Node interface {
-	daemon.Daemon
+	facility.Facility
 	PurgeHalt()
 
 	ID() ID               //
-	DistantIP() net.IP     //
-	DistantAddress() net.Addr //
+	DistantINET() net.IP     //
+	DistantLocation() net.Addr //
 
-	IsOutgoing() bool   //
-	IsDurable() bool //
+	EqualsOutgoing() bool   //
+	EqualsEnduring() bool //
 
-	EndLink() error //
+	ShutdownLink() error //
 
-	MemberDetails() MemberDetails //
-	Status() cmtconn.LinkageState
-	SocketAddress() *NetLocation //
+	PeerDetails() PeerDetails //
+	Condition() consensuslink.LinkageCondition
+	PortLocation() *NetworkLocator //
 
-	Transmit(Packet) bool
-	AttemptTransmit(Packet) bool
+	Transmit(Wrapper) bool
+	AttemptTransmit(Wrapper) bool
 
 	Set(string, any)
 	Get(string) any
 
-	CollectionDeletionErrored()
-	FetchDeletionErrored() bool
+	AssignDeletionUnsuccessful()
+	ObtainDeletionUnsuccessful() bool
 }
 
 //
@@ -52,36 +52,36 @@ type Node interface {
 //
 type nodeLink struct {
 	outgoing   bool
-	durable bool
+	enduring bool
 	link       net.Conn //
 
-	socketAddress *NetLocation
+	portLocation *NetworkLocator
 
 	//
 	ip net.IP
 }
 
-func newNodeLink(
-	outgoing, durable bool,
+func freshNodeLink(
+	outgoing, enduring bool,
 	link net.Conn,
-	socketAddress *NetLocation,
+	portLocation *NetworkLocator,
 ) nodeLink {
 	return nodeLink{
 		outgoing:   outgoing,
-		durable: durable,
+		enduring: enduring,
 		link:       link,
-		socketAddress: socketAddress,
+		portLocation: portLocation,
 	}
 }
 
 //
 //
 func (pc nodeLink) ID() ID {
-	return PublicKeyToUID(pc.link.(*cmtconn.TokenLinkage).DistantPublicKey())
+	return PublicTokenTowardUUID(pc.link.(*consensuslink.CredentialLinkage).DistantPublicToken())
 }
 
 //
-func (pc nodeLink) DistantIP() net.IP {
+func (pc nodeLink) DistantINET() net.IP {
 	if pc.ip != nil {
 		return pc.ip
 	}
@@ -105,74 +105,74 @@ func (pc nodeLink) DistantIP() net.IP {
 //
 //
 type node struct {
-	daemon.RootDaemon
+	facility.FoundationFacility
 
 	//
 	nodeLink
-	mconn *cmtconn.MLinkage
+	multilink *consensuslink.ModuleLinkage
 
 	//
 	//
 	//
-	memberDetails MemberDetails
-	streams []byte
+	peerDetails PeerDetails
+	conduits []byte
 
 	//
-	Data *cmap.CIndex
+	Data *componentindex.CNIndex
 
-	stats *Stats
-	mlc     *statsTagRepository
+	telemetry *Telemetry
+	mlc     *telemetryTagStash
 
 	//
-	deletionEndeavorErrored bool
+	deletionEffortUnsuccessful bool
 }
 
-type NodeSetting func(*node)
+type NodeSelection func(*node)
 
-func newNode(
+func freshNode(
 	pc nodeLink,
-	mSettings cmtconn.MLinkSettings,
-	memberDetails MemberDetails,
-	handlersByChan map[byte]Handler,
-	messageKindByChanUID map[byte]proto.Message,
-	chanTraits []*cmtconn.StreamDefinition,
-	onNodeFault func(Node, any),
-	mlc *statsTagRepository,
-	options ...NodeSetting,
+	moduleSettings consensuslink.ModuleLinkSettings,
+	peerDetails PeerDetails,
+	enginesViaChnl map[byte]Handler,
+	signalKindViaChnlUUID map[byte]proto.Message,
+	chnlDescriptions []*consensuslink.ConduitDefinition,
+	uponNodeFailure func(Node, any),
+	mlc *telemetryTagStash,
+	choices ...NodeSelection,
 ) *node {
 	p := &node{
 		nodeLink: pc,
-		memberDetails: memberDetails,
-		streams: memberDetails.(StandardMemberDetails).Streams,
-		Data:     cmap.NewCIndex(),
-		stats:  NoopStats(),
+		peerDetails: peerDetails,
+		conduits: peerDetails.(FallbackPeerDetails).Conduits,
+		Data:     componentindex.FreshCNIndex(),
+		telemetry:  NooperationTelemetry(),
 		mlc:      mlc,
 	}
 
-	p.mconn = instantiateMLinkage(
+	p.multilink = generateModuleLinkage(
 		pc.link,
 		p,
-		handlersByChan,
-		messageKindByChanUID,
-		chanTraits,
-		onNodeFault,
-		mSettings,
+		enginesViaChnl,
+		signalKindViaChnlUUID,
+		chnlDescriptions,
+		uponNodeFailure,
+		moduleSettings,
 	)
-	p.RootDaemon = *daemon.NewRootDaemon(nil, "REDACTED", p)
-	for _, setting := range options {
-		setting(p)
+	p.FoundationFacility = *facility.FreshFoundationFacility(nil, "REDACTED", p)
+	for _, selection := range choices {
+		selection(p)
 	}
 
 	return p
 }
 
 //
-func (p *node) String() string {
+func (p *node) Text() string {
 	if p.outgoing {
-		return fmt.Sprintf("REDACTED", p.mconn, p.ID())
+		return fmt.Sprintf("REDACTED", p.multilink, p.ID())
 	}
 
-	return fmt.Sprintf("REDACTED", p.mconn, p.ID())
+	return fmt.Sprintf("REDACTED", p.multilink, p.ID())
 }
 
 //
@@ -181,20 +181,20 @@ func (p *node) String() string {
 //
 func (p *node) AssignTracer(l log.Tracer) {
 	p.Tracer = l
-	p.mconn.AssignTracer(l)
+	p.multilink.AssignTracer(l)
 }
 
 //
-func (p *node) OnBegin() error {
-	if err := p.RootDaemon.OnBegin(); err != nil {
+func (p *node) UponInitiate() error {
+	if err := p.FoundationFacility.UponInitiate(); err != nil {
 		return err
 	}
 
-	if err := p.mconn.Begin(); err != nil {
+	if err := p.multilink.Initiate(); err != nil {
 		return err
 	}
 
-	go p.statsMonitor()
+	go p.telemetryMonitor()
 	return nil
 }
 
@@ -203,12 +203,12 @@ func (p *node) OnBegin() error {
 //
 //
 func (p *node) PurgeHalt() {
-	p.mconn.PurgeHalt() //
+	p.multilink.PurgeHalt() //
 }
 
 //
-func (p *node) OnHalt() {
-	if err := p.mconn.Halt(); err != nil { //
+func (p *node) UponHalt() {
+	if err := p.multilink.Halt(); err != nil { //
 		p.Tracer.Diagnose("REDACTED", "REDACTED", err)
 	}
 }
@@ -218,76 +218,76 @@ func (p *node) OnHalt() {
 
 //
 func (p *node) ID() ID {
-	return p.memberDetails.ID()
+	return p.peerDetails.ID()
 }
 
 //
-func (p *node) IsOutgoing() bool {
+func (p *node) EqualsOutgoing() bool {
 	return p.outgoing
 }
 
 //
-func (p *node) IsDurable() bool {
-	return p.durable
+func (p *node) EqualsEnduring() bool {
+	return p.enduring
 }
 
 //
-func (p *node) MemberDetails() MemberDetails {
-	return p.memberDetails
-}
-
-//
-//
-//
-//
-func (p *node) SocketAddress() *NetLocation {
-	return p.socketAddress
-}
-
-//
-func (p *node) Status() cmtconn.LinkageState {
-	return p.mconn.Status()
+func (p *node) PeerDetails() PeerDetails {
+	return p.peerDetails
 }
 
 //
 //
 //
 //
-func (p *node) Transmit(e Packet) bool {
-	return p.transmit(e.StreamUID, e.Signal, p.mconn.Transmit)
+func (p *node) PortLocation() *NetworkLocator {
+	return p.portLocation
+}
+
+//
+func (p *node) Condition() consensuslink.LinkageCondition {
+	return p.multilink.Condition()
 }
 
 //
 //
 //
 //
-func (p *node) AttemptTransmit(e Packet) bool {
-	return p.transmit(e.StreamUID, e.Signal, p.mconn.AttemptTransmit)
+func (p *node) Transmit(e Wrapper) bool {
+	return p.transmit(e.ConduitUUID, e.Signal, p.multilink.Transmit)
 }
 
-func (p *node) transmit(chanUID byte, msg proto.Message, transmitFunction func(byte, []byte) bool) bool {
-	if !p.IsActive() {
+//
+//
+//
+//
+func (p *node) AttemptTransmit(e Wrapper) bool {
+	return p.transmit(e.ConduitUUID, e.Signal, p.multilink.AttemptTransmit)
+}
+
+func (p *node) transmit(chnlUUID byte, msg proto.Message, transmitMethod func(byte, []byte) bool) bool {
+	if !p.EqualsActive() {
 		return false
-	} else if !p.hasConduit(chanUID) {
+	} else if !p.ownsConduit(chnlUUID) {
 		return false
 	}
-	indicatorTagItem := p.mlc.ItemToIndicatorTag(msg)
-	if w, ok := msg.(Adapter); ok {
+	measurementTagDatum := p.mlc.DatumTowardMeasurementTag(msg)
+	if w, ok := msg.(Encapsulator); ok {
 		msg = w.Enclose()
 	}
-	messageOctets, err := proto.Marshal(msg)
+	signalOctets, err := proto.Marshal(msg)
 	if err != nil {
-		p.Tracer.Fault("REDACTED", "REDACTED", err)
+		p.Tracer.Failure("REDACTED", "REDACTED", err)
 		return false
 	}
-	res := transmitFunction(chanUID, messageOctets)
+	res := transmitMethod(chnlUUID, signalOctets)
 	if res {
 		tags := []string{
 			"REDACTED", string(p.ID()),
-			"REDACTED", fmt.Sprintf("REDACTED", chanUID),
+			"REDACTED", fmt.Sprintf("REDACTED", chnlUUID),
 		}
-		p.stats.NodeTransmitOctetsSum.With(tags...).Add(float64(len(messageOctets)))
-		p.stats.SignalTransmitOctetsSum.With("REDACTED", indicatorTagItem).Add(float64(len(messageOctets)))
+		p.telemetry.NodeTransmitOctetsSum.With(tags...).Add(float64(len(signalOctets)))
+		p.telemetry.ArtifactTransmitOctetsSum.With("REDACTED", measurementTagDatum).Add(float64(len(signalOctets)))
 	}
 	return res
 }
@@ -308,9 +308,9 @@ func (p *node) Set(key string, data any) {
 
 //
 //
-func (p *node) hasConduit(chanUID byte) bool {
-	for _, ch := range p.streams {
-		if ch == chanUID {
+func (p *node) ownsConduit(chnlUUID byte) bool {
+	for _, ch := range p.conduits {
+		if ch == chnlUUID {
 			return true
 		}
 	}
@@ -318,16 +318,16 @@ func (p *node) hasConduit(chanUID byte) bool {
 }
 
 //
-func (p *node) EndLink() error {
+func (p *node) ShutdownLink() error {
 	return p.link.Close()
 }
 
-func (p *node) CollectionDeletionErrored() {
-	p.deletionEndeavorErrored = true
+func (p *node) AssignDeletionUnsuccessful() {
+	p.deletionEffortUnsuccessful = true
 }
 
-func (p *node) FetchDeletionErrored() bool {
-	return p.deletionEndeavorErrored
+func (p *node) ObtainDeletionUnsuccessful() bool {
+	return p.deletionEffortUnsuccessful
 }
 
 //
@@ -335,45 +335,45 @@ func (p *node) FetchDeletionErrored() bool {
 //
 
 //
-func (pc *nodeLink) EndLink() {
+func (pc *nodeLink) ShutdownLink() {
 	pc.link.Close()
 }
 
 //
-func (p *node) DistantAddress() net.Addr {
+func (p *node) DistantLocation() net.Addr {
 	return p.link.RemoteAddr()
 }
 
 //
-func (p *node) MayTransmit(chanUID byte) bool {
-	if !p.IsActive() {
+func (p *node) AbleTransmit(chnlUUID byte) bool {
+	if !p.EqualsActive() {
 		return false
 	}
-	return p.mconn.MayTransmit(chanUID)
+	return p.multilink.AbleTransmit(chnlUUID)
 }
 
 //
 
-func NodeStats(stats *Stats) NodeSetting {
+func NodeTelemetry(telemetry *Telemetry) NodeSelection {
 	return func(p *node) {
-		p.stats = stats
+		p.telemetry = telemetry
 	}
 }
 
-func (p *node) statsMonitor() {
-	statsTimer := time.NewTicker(statsTimerPeriod)
-	defer statsTimer.Stop()
+func (p *node) telemetryMonitor() {
+	telemetryMetronome := time.NewTicker(telemetryMetronomeInterval)
+	defer telemetryMetronome.Stop()
 
 	for {
 		select {
-		case <-statsTimer.C:
-			state := p.mconn.Status()
-			var transmitBufferVolume float64
-			for _, chanState := range state.Streams {
-				transmitBufferVolume += float64(chanState.TransmitBufferVolume)
+		case <-telemetryMetronome.C:
+			condition := p.multilink.Condition()
+			var transmitStagingExtent float64
+			for _, chnlCondition := range condition.Conduits {
+				transmitStagingExtent += float64(chnlCondition.TransmitStagingExtent)
 			}
 
-			p.stats.NodeAwaitingTransmitOctets.With("REDACTED", string(p.ID())).Set(transmitBufferVolume)
+			p.telemetry.NodeTransmitStagingExtent.With("REDACTED", string(p.ID())).Set(transmitStagingExtent)
 		case <-p.Exit():
 			return
 		}
@@ -383,56 +383,56 @@ func (p *node) statsMonitor() {
 //
 //
 
-func instantiateMLinkage(
+func generateModuleLinkage(
 	link net.Conn,
 	p *node,
-	handlersByChan map[byte]Handler,
-	messageKindByChanUID map[byte]proto.Message,
-	chanTraits []*cmtconn.StreamDefinition,
-	onNodeFault func(Node, any),
-	settings cmtconn.MLinkSettings,
-) *cmtconn.MLinkage {
-	onAccept := func(chanUID byte, messageOctets []byte) {
-		handler := handlersByChan[chanUID]
+	enginesViaChnl map[byte]Handler,
+	signalKindViaChnlUUID map[byte]proto.Message,
+	chnlDescriptions []*consensuslink.ConduitDefinition,
+	uponNodeFailure func(Node, any),
+	settings consensuslink.ModuleLinkSettings,
+) *consensuslink.ModuleLinkage {
+	uponAccept := func(chnlUUID byte, signalOctets []byte) {
+		handler := enginesViaChnl[chnlUUID]
 		if handler == nil {
 			//
 			//
-			panic(fmt.Sprintf("REDACTED", chanUID))
+			panic(fmt.Sprintf("REDACTED", chnlUUID))
 		}
-		mt := messageKindByChanUID[chanUID]
+		mt := signalKindViaChnlUUID[chnlUUID]
 		msg := proto.Clone(mt)
-		err := proto.Unmarshal(messageOctets, msg)
+		err := proto.Unmarshal(signalOctets, msg)
 		if err != nil {
 			panic(fmt.Errorf("REDACTED", err, reflect.TypeOf(mt)))
 		}
 		tags := []string{
 			"REDACTED", string(p.ID()),
-			"REDACTED", fmt.Sprintf("REDACTED", chanUID),
+			"REDACTED", fmt.Sprintf("REDACTED", chnlUUID),
 		}
-		if w, ok := msg.(Extractor); ok {
+		if w, ok := msg.(Unwrapper); ok {
 			msg, err = w.Disclose()
 			if err != nil {
 				panic(fmt.Errorf("REDACTED", err))
 			}
 		}
-		p.stats.NodeAcceptOctetsSum.With(tags...).Add(float64(len(messageOctets)))
-		p.stats.SignalAcceptOctetsSum.With("REDACTED", p.mlc.ItemToIndicatorTag(msg)).Add(float64(len(messageOctets)))
-		handler.Accept(Packet{
-			StreamUID: chanUID,
+		p.telemetry.NodeAcceptOctetsSum.With(tags...).Add(float64(len(signalOctets)))
+		p.telemetry.ArtifactAcceptOctetsSum.With("REDACTED", p.mlc.DatumTowardMeasurementTag(msg)).Add(float64(len(signalOctets)))
+		handler.Accept(Wrapper{
+			ConduitUUID: chnlUUID,
 			Src:       p,
 			Signal:   msg,
 		})
 	}
 
-	onFault := func(r any) {
-		onNodeFault(p, r)
+	uponFailure := func(r any) {
+		uponNodeFailure(p, r)
 	}
 
-	return cmtconn.NewMLinkageWithSettings(
+	return consensuslink.FreshModuleLinkageUsingSettings(
 		link,
-		chanTraits,
-		onAccept,
-		onFault,
+		chnlDescriptions,
+		uponAccept,
+		uponFailure,
 		settings,
 	)
 }

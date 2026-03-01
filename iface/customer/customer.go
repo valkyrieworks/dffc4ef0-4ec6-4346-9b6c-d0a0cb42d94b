@@ -1,17 +1,17 @@
-package abciend
+package abcicustomer
 
 import (
 	"context"
 	"sync"
 
-	"github.com/valkyrieworks/iface/kinds"
-	"github.com/valkyrieworks/utils/daemon"
-	engineconnect "github.com/valkyrieworks/utils/align"
+	"github.com/valkyrieworks/dffc4ef0-4ec6-4346-9b6c-d0a0cb42d94b/iface/kinds"
+	"github.com/valkyrieworks/dffc4ef0-4ec6-4346-9b6c-d0a0cb42d94b/utils/facility"
+	commitchronize "github.com/valkyrieworks/dffc4ef0-4ec6-4346-9b6c-d0a0cb42d94b/utils/chronize"
 )
 
 const (
-	callReprocessCadenceMoments = 3
-	reverberateReprocessCadenceMoments = 1
+	callReissueDurationMoments = 3
+	reverberateReissueDurationMoments = 1
 )
 
 //
@@ -22,65 +22,65 @@ const (
 //
 //
 type Customer interface {
-	daemon.Daemon
-	kinds.Software
+	facility.Facility
+	kinds.Platform
 
 	//
-	Fault() error
+	Failure() error
 	//
 	Purge(context.Context) error
-	Replicate(context.Context, string) (*kinds.ReplyReverberate, error)
+	Reverberate(context.Context, string) (*kinds.ReplyReverberate, error)
 
 	//
 	//
 	//
 	//
 	//
-	CollectionReplyCallback(Callback)
-	InspectTransferAsync(context.Context, *kinds.QueryInspectTransfer) (*RequestOutput, error)
+	AssignReplyClbk(Clbk)
+	InspectTransferAsyncronous(context.Context, *kinds.SolicitInspectTransfer) (*RequestResult, error)
 }
 
 //
 
 //
 //
-func NewCustomer(address, carrier string, shouldLink bool) (customer Customer, err error) {
+func FreshCustomer(location, carrier string, shouldRelate bool) (customer Customer, err error) {
 	switch carrier {
 	case "REDACTED":
-		customer = NewSocketCustomer(address, shouldLink)
+		customer = FreshPortCustomer(location, shouldRelate)
 	case "REDACTED":
-		customer = NewGRPCCustomer(address, shouldLink)
+		customer = FreshGRPSCustomer(location, shouldRelate)
 	default:
-		err = ErrUnclearIfaceCarrier{Carrier: carrier}
+		err = FaultUnfamiliarIfaceCarrier{Carrier: carrier}
 	}
 	return
 }
 
-type Callback func(*kinds.Query, *kinds.Reply)
+type Clbk func(*kinds.Solicit, *kinds.Reply)
 
-type RequestOutput struct {
-	*kinds.Query
-	*sync.WaitCluster
+type RequestResult struct {
+	*kinds.Solicit
+	*sync.PauseCluster
 	*kinds.Reply //
 
-	mtx engineconnect.Lock
+	mtx commitchronize.Exclusion
 
 	//
 	//
 	//
 	//
 	//
-	callbackExecuted bool
+	clbkExecuted bool
 	cb              func(*kinds.Reply) //
 }
 
-func NewRequestOutput(req *kinds.Query) *RequestOutput {
-	return &RequestOutput{
-		Query:   req,
-		WaitCluster: waitCluster1(),
+func FreshRequestResult(req *kinds.Solicit) *RequestResult {
+	return &RequestResult{
+		Solicit:   req,
+		PauseCluster: pauseCluster1(),
 		Reply:  nil,
 
-		callbackExecuted: false,
+		clbkExecuted: false,
 		cb:              nil,
 	}
 }
@@ -88,10 +88,10 @@ func NewRequestOutput(req *kinds.Query) *RequestOutput {
 //
 //
 //
-func (r *RequestOutput) CollectionCallback(cb func(res *kinds.Reply)) {
+func (r *RequestResult) AssignClbk(cb func(res *kinds.Reply)) {
 	r.mtx.Lock()
 
-	if r.callbackExecuted {
+	if r.clbkExecuted {
 		r.mtx.Unlock()
 		cb(r.Reply)
 		return
@@ -103,14 +103,14 @@ func (r *RequestOutput) CollectionCallback(cb func(res *kinds.Reply)) {
 
 //
 //
-func (r *RequestOutput) ExecuteCallback() {
+func (r *RequestResult) ExecuteClbk() {
 	r.mtx.Lock()
 	defer r.mtx.Unlock()
 
 	if r.cb != nil {
 		r.cb(r.Reply)
 	}
-	r.callbackExecuted = true
+	r.clbkExecuted = true
 }
 
 //
@@ -119,13 +119,13 @@ func (r *RequestOutput) ExecuteCallback() {
 //
 //
 //
-func (r *RequestOutput) FetchCallback() func(*kinds.Reply) {
+func (r *RequestResult) ObtainClbk() func(*kinds.Reply) {
 	r.mtx.Lock()
 	defer r.mtx.Unlock()
 	return r.cb
 }
 
-func waitCluster1() (wg *sync.WaitGroup) {
+func pauseCluster1() (wg *sync.WaitGroup) {
 	wg = &sync.WaitGroup{}
 	wg.Add(1)
 	return

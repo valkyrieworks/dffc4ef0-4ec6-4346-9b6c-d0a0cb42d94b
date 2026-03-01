@@ -13,202 +13,202 @@ import (
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/require"
 
-	dbm "github.com/valkyrieworks/-db"
+	dbm "github.com/valkyrieworks/dffc4ef0-4ec6-4346-9b6c-d0a0cb42d94b/-db"
 
-	"github.com/valkyrieworks/vault"
-	"github.com/valkyrieworks/intrinsic/verify"
-	engineseed "github.com/valkyrieworks/utils/random"
-	commitdepot "github.com/valkyrieworks/schema/consensuscore/depot"
-	cometrelease "github.com/valkyrieworks/schema/consensuscore/release"
-	sm "github.com/valkyrieworks/status"
-	"github.com/valkyrieworks/kinds"
-	engineclock "github.com/valkyrieworks/kinds/moment"
-	"github.com/valkyrieworks/release"
+	"github.com/valkyrieworks/dffc4ef0-4ec6-4346-9b6c-d0a0cb42d94b/security"
+	"github.com/valkyrieworks/dffc4ef0-4ec6-4346-9b6c-d0a0cb42d94b/intrinsic/verify"
+	commitrand "github.com/valkyrieworks/dffc4ef0-4ec6-4346-9b6c-d0a0cb42d94b/utils/arbitrary"
+	commitstore "github.com/valkyrieworks/dffc4ef0-4ec6-4346-9b6c-d0a0cb42d94b/schema/strongmind/depot"
+	strongmindedition "github.com/valkyrieworks/dffc4ef0-4ec6-4346-9b6c-d0a0cb42d94b/schema/strongmind/edition"
+	sm "github.com/valkyrieworks/dffc4ef0-4ec6-4346-9b6c-d0a0cb42d94b/status"
+	"github.com/valkyrieworks/dffc4ef0-4ec6-4346-9b6c-d0a0cb42d94b/kinds"
+	committime "github.com/valkyrieworks/dffc4ef0-4ec6-4346-9b6c-d0a0cb42d94b/kinds/moment"
+	"github.com/valkyrieworks/dffc4ef0-4ec6-4346-9b6c-d0a0cb42d94b/edition"
 )
 
 //
 //
-type sanitizeFunction func()
+type sanitizeMethod func()
 
 //
 //
-func createVerifyExtensionEndorse(level int64, timestamp time.Time) *kinds.ExpandedEndorse {
-	return createVerifyExtensionEndorseWithCountAutographs(level, timestamp, 1)
+func createVerifyAddnEndorse(altitude int64, timestamp time.Time) *kinds.ExpandedEndorse {
+	return createVerifyAddnEndorseUsingCountSignatures(altitude, timestamp, 1)
 }
 
-func createVerifyExtensionEndorseWithCountAutographs(level int64, timestamp time.Time, countAutographs int) *kinds.ExpandedEndorse {
-	extensionEndorseAutographs := []kinds.ExpandedEndorseSignature{}
-	for i := 0; i < countAutographs; i++ {
-		extensionEndorseAutographs = append(extensionEndorseAutographs, kinds.ExpandedEndorseSignature{
+func createVerifyAddnEndorseUsingCountSignatures(altitude int64, timestamp time.Time, countSignatures int) *kinds.ExpandedEndorse {
+	addnEndorseSignatures := []kinds.ExpandedEndorseSignature{}
+	for i := 0; i < countSignatures; i++ {
+		addnEndorseSignatures = append(addnEndorseSignatures, kinds.ExpandedEndorseSignature{
 			EndorseSignature: kinds.EndorseSignature{
-				LedgerUIDMark:      kinds.LedgerUIDMarkEndorse,
-				RatifierLocation: engineseed.Octets(vault.LocationVolume),
+				LedgerUUIDMarker:      kinds.LedgerUUIDMarkerEndorse,
+				AssessorLocation: commitrand.Octets(security.LocatorExtent),
 				Timestamp:        timestamp,
-				Autograph:        engineseed.Octets(64),
+				Notation:        commitrand.Octets(64),
 			},
-			AdditionAutograph: []byte("REDACTED"),
+			AdditionNotation: []byte("REDACTED"),
 		})
 	}
 	return &kinds.ExpandedEndorse{
-		Level: level,
-		LedgerUID: kinds.LedgerUID{
-			Digest:          vault.CRandomOctets(32),
-			SegmentAssignHeading: kinds.SegmentAssignHeading{Digest: vault.CRandomOctets(32), Sum: 2},
+		Altitude: altitude,
+		LedgerUUID: kinds.LedgerUUID{
+			Digest:          security.CHARArbitraryOctets(32),
+			FragmentAssignHeading: kinds.FragmentAssignHeading{Digest: security.CHARArbitraryOctets(32), Sum: 2},
 		},
-		ExpandedEndorsements: extensionEndorseAutographs,
+		ExpandedNotations: addnEndorseSignatures,
 	}
 }
 
-func createStatusAndLedgerDepot() (sm.Status, *LedgerDepot, sanitizeFunction) {
+func createStatusAlsoLedgerDepot() (sm.Status, *LedgerDepot, sanitizeMethod) {
 	settings := verify.RestoreVerifyOrigin("REDACTED")
 	//
 	//
-	ledgerStore := dbm.NewMemoryStore()
-	statusStore := dbm.NewMemoryStore()
-	statusDepot := sm.NewDepot(statusStore, sm.DepotSettings{
-		DropIfaceReplies: false,
+	ledgerDatastore := dbm.FreshMemoryDatastore()
+	statusDatastore := dbm.FreshMemoryDatastore()
+	statusDepot := sm.FreshDepot(statusDatastore, sm.DepotChoices{
+		EjectIfaceReplies: false,
 	})
-	status, err := statusDepot.ImportFromStoreOrOriginEntry(settings.OriginEntry())
+	status, err := statusDepot.FetchOriginatingDatastoreEitherInaugurationRecord(settings.InaugurationRecord())
 	if err != nil {
 		panic(fmt.Errorf("REDACTED", err))
 	}
-	return status, NewLedgerDepot(ledgerStore), func() { os.RemoveAll(settings.OriginFolder) }
+	return status, FreshLedgerDepot(ledgerDatastore), func() { os.RemoveAll(settings.OriginPath) }
 }
 
-func VerifyImportLedgerDepotStatus(t *testing.T) {
+func VerifyFetchLedgerDepotStatus(t *testing.T) {
 	type ledgerDepotVerify struct {
-		verifyLabel string
-		bss      *commitdepot.LedgerDepotStatus
-		desire     commitdepot.LedgerDepotStatus
+		verifyAlias string
+		bss      *commitstore.LedgerDepotStatus
+		desire     commitstore.LedgerDepotStatus
 	}
 
 	verifyScenarios := []ledgerDepotVerify{
 		{
-			"REDACTED", &commitdepot.LedgerDepotStatus{Root: 100, Level: 1000},
-			commitdepot.LedgerDepotStatus{Root: 100, Level: 1000},
+			"REDACTED", &commitstore.LedgerDepotStatus{Foundation: 100, Altitude: 1000},
+			commitstore.LedgerDepotStatus{Foundation: 100, Altitude: 1000},
 		},
-		{"REDACTED", &commitdepot.LedgerDepotStatus{}, commitdepot.LedgerDepotStatus{}},
-		{"REDACTED", &commitdepot.LedgerDepotStatus{Level: 1000}, commitdepot.LedgerDepotStatus{Root: 1, Level: 1000}},
+		{"REDACTED", &commitstore.LedgerDepotStatus{}, commitstore.LedgerDepotStatus{}},
+		{"REDACTED", &commitstore.LedgerDepotStatus{Altitude: 1000}, commitstore.LedgerDepotStatus{Foundation: 1, Altitude: 1000}},
 	}
 
 	for _, tc := range verifyScenarios {
-		db := dbm.NewMemoryStore()
-		group := db.NewGroup()
-		PersistLedgerDepotStatusSegment(tc.bss, group)
-		err := group.RecordAlign()
+		db := dbm.FreshMemoryDatastore()
+		cluster := db.FreshCluster()
+		PersistLedgerDepotStatusCluster(tc.bss, cluster)
+		err := cluster.PersistChronize()
 		require.NoError(t, err)
-		retrieveBSJ := ImportLedgerDepotStatus(db)
-		assert.Equal(t, tc.desire, retrieveBSJ, "REDACTED", tc.verifyLabel)
-		err = group.End()
+		retrieveBytesjsn := FetchLedgerDepotStatus(db)
+		assert.Equal(t, tc.desire, retrieveBytesjsn, "REDACTED", tc.verifyAlias)
+		err = cluster.Shutdown()
 		require.NoError(t, err)
 	}
 }
 
-func VerifyNewLedgerDepot(t *testing.T) {
-	db := dbm.NewMemoryStore()
-	bss := commitdepot.LedgerDepotStatus{Root: 100, Level: 10000}
+func VerifyFreshLedgerDepot(t *testing.T) {
+	db := dbm.FreshMemoryDatastore()
+	bss := commitstore.LedgerDepotStatus{Foundation: 100, Altitude: 10000}
 	bz, _ := proto.Marshal(&bss)
-	err := db.Set(ledgerDepotKey, bz)
+	err := db.Set(ledgerDepotToken, bz)
 	require.NoError(t, err)
-	bs := NewLedgerDepot(db)
-	require.Equal(t, int64(100), bs.Root(), "REDACTED")
-	require.Equal(t, int64(10000), bs.Level(), "REDACTED")
+	bs := FreshLedgerDepot(db)
+	require.Equal(t, int64(100), bs.Foundation(), "REDACTED")
+	require.Equal(t, int64(10000), bs.Altitude(), "REDACTED")
 
-	alarmCusers := []struct {
+	alarmCausees := []struct {
 		data    []byte
-		desireErr string
+		desireFault string
 	}{
 		{[]byte("REDACTED"), "REDACTED"},
 		{[]byte("REDACTED"), "REDACTED"},
 	}
 
-	for i, tt := range alarmCusers {
+	for i, tt := range alarmCausees {
 
 		//
-		_, _, alarmErr := doFn(func() (any, error) {
-			err := db.Set(ledgerDepotKey, tt.data)
+		_, _, alarmFault := conductProc(func() (any, error) {
+			err := db.Set(ledgerDepotToken, tt.data)
 			require.NoError(t, err)
-			_ = NewLedgerDepot(db)
+			_ = FreshLedgerDepot(db)
 			return nil, nil
 		})
-		require.NotNil(t, alarmErr, "REDACTED", i, tt.data)
-		assert.Contains(t, fmt.Sprintf("REDACTED", alarmErr), tt.desireErr, "REDACTED", i, tt.data)
+		require.NotNil(t, alarmFault, "REDACTED", i, tt.data)
+		assert.Contains(t, fmt.Sprintf("REDACTED", alarmFault), tt.desireFault, "REDACTED", i, tt.data)
 	}
 
-	err = db.Set(ledgerDepotKey, []byte{})
+	err = db.Set(ledgerDepotToken, []byte{})
 	require.NoError(t, err)
-	bs = NewLedgerDepot(db)
-	assert.Equal(t, bs.Level(), int64(0), "REDACTED")
+	bs = FreshLedgerDepot(db)
+	assert.Equal(t, bs.Altitude(), int64(0), "REDACTED")
 }
 
-func newInRamLedgerDepot() (*LedgerDepot, dbm.DB) {
-	db := dbm.NewMemoryStore()
-	return NewLedgerDepot(db), db
+func freshInsideRamLedgerDepot() (*LedgerDepot, dbm.DB) {
+	db := dbm.FreshMemoryDatastore()
+	return FreshLedgerDepot(db), db
 }
 
 //
 
-func VerifyLedgerDepotPersistImportLedger(t *testing.T) {
-	status, bs, sanitize := createStatusAndLedgerDepot()
+func VerifyLedgerDepotPersistFetchLedger(t *testing.T) {
+	status, bs, sanitize := createStatusAlsoLedgerDepot()
 	defer sanitize()
-	require.Equal(t, bs.Root(), int64(0), "REDACTED")
-	require.Equal(t, bs.Level(), int64(0), "REDACTED")
+	require.Equal(t, bs.Foundation(), int64(0), "REDACTED")
+	require.Equal(t, bs.Altitude(), int64(0), "REDACTED")
 
 	//
-	noLedgerLevels := []int64{0, -1, 100, 1000, 2}
-	for i, level := range noLedgerLevels {
-		if g := bs.ImportLedger(level); g != nil {
-			t.Errorf("REDACTED", i, level)
+	negativeLedgerElevations := []int64{0, -1, 100, 1000, 2}
+	for i, altitude := range negativeLedgerElevations {
+		if g := bs.FetchLedger(altitude); g != nil {
+			t.Errorf("REDACTED", i, altitude)
 		}
 	}
 
 	//
-	txs := []kinds.Tx{make([]byte, kinds.LedgerSegmentVolumeOctets)} //
-	ledger, err := status.CreateLedger(bs.Level()+1, txs, new(kinds.Endorse), nil, status.Ratifiers.FetchRecommender().Location)
+	txs := []kinds.Tx{make([]byte, kinds.LedgerFragmentExtentOctets)} //
+	ledger, err := status.CreateLedger(bs.Altitude()+1, txs, new(kinds.Endorse), nil, status.Assessors.ObtainNominator().Location)
 	require.NoError(t, err)
-	soundSectionCollection, err := ledger.CreateSegmentAssign(kinds.LedgerSegmentVolumeOctets)
+	soundFragmentAssign, err := ledger.CreateFragmentAssign(kinds.LedgerFragmentExtentOctets)
 	require.NoError(t, err)
-	require.GreaterOrEqual(t, soundSectionCollection.Sum(), uint32(2))
-	section2 := soundSectionCollection.FetchSegment(1)
+	require.GreaterOrEqual(t, soundFragmentAssign.Sum(), uint32(2))
+	section2 := soundFragmentAssign.ObtainFragment(1)
 
-	viewedEndorse := createVerifyExtensionEndorse(ledger.Level, engineclock.Now())
-	bs.PersistLedgerWithExpandedEndorse(ledger, soundSectionCollection, viewedEndorse)
-	require.EqualValues(t, 1, bs.Root(), "REDACTED")
-	require.EqualValues(t, ledger.Level, bs.Level(), "REDACTED")
+	observedEndorse := createVerifyAddnEndorse(ledger.Altitude, committime.Now())
+	bs.PersistLedgerUsingExpandedEndorse(ledger, soundFragmentAssign, observedEndorse)
+	require.EqualValues(t, 1, bs.Foundation(), "REDACTED")
+	require.EqualValues(t, ledger.Altitude, bs.Altitude(), "REDACTED")
 
-	partialSectionCollection := kinds.NewSegmentCollectionFromHeading(kinds.SegmentAssignHeading{Sum: 2})
-	noncontiguousSectionCollection := kinds.NewSegmentCollectionFromHeading(kinds.SegmentAssignHeading{Sum: 0})
-	_, err = noncontiguousSectionCollection.AppendSegment(section2)
+	partialFragmentAssign := kinds.FreshFragmentAssignOriginatingHeading(kinds.FragmentAssignHeading{Sum: 2})
+	noncontiguousFragmentAssign := kinds.FreshFragmentAssignOriginatingHeading(kinds.FragmentAssignHeading{Sum: 0})
+	_, err = noncontiguousFragmentAssign.AppendFragment(section2)
 	require.Error(t, err)
 
-	header1 := kinds.Heading{
-		Release:         cometrelease.Agreement{Ledger: release.LedgerProtocol},
-		Level:          1,
-		LedgerUID:         "REDACTED",
-		Time:            engineclock.Now(),
-		RecommenderLocation: engineseed.Octets(vault.LocationVolume),
+	heading1 := kinds.Heading{
+		Edition:         strongmindedition.Agreement{Ledger: edition.LedgerScheme},
+		Altitude:          1,
+		SuccessionUUID:         "REDACTED",
+		Moment:            committime.Now(),
+		NominatorLocation: commitrand.Octets(security.LocatorExtent),
 	}
 
 	//
 
-	endorseAtH10 := createVerifyExtensionEndorse(10, engineclock.Now()).ToEndorse()
-	records := []struct {
+	endorseLocatedLevel10 := createVerifyAddnEndorse(10, committime.Now()).TowardEndorse()
+	groups := []struct {
 		ledger      *kinds.Ledger
-		segments      *kinds.SegmentCollection
-		viewedEndorse *kinds.ExpandedEndorse
+		fragments      *kinds.FragmentAssign
+		observedEndorse *kinds.ExpandedEndorse
 		desireAlarm  string
-		desireErr    bool
+		desireFault    bool
 
-		taintLedgerInStore      bool
-		taintEndorseInStore     bool
-		taintViewedEndorseInStore bool
-		purgeEndorseInStore       bool
-		purgeViewedEndorseInStore   bool
+		invalidLedgerInsideDatastore      bool
+		invalidEndorseInsideDatastore     bool
+		invalidObservedEndorseInsideDatastore bool
+		removeEndorseInsideDatastore       bool
+		removeObservedEndorseInsideDatastore   bool
 	}{
 		{
-			ledger:      newLedger(header1, endorseAtH10),
-			segments:      soundSectionCollection,
-			viewedEndorse: viewedEndorse,
+			ledger:      freshLedger(heading1, endorseLocatedLevel10),
+			fragments:      soundFragmentAssign,
+			observedEndorse: observedEndorse,
 		},
 
 		{
@@ -217,150 +217,150 @@ func VerifyLedgerDepotPersistImportLedger(t *testing.T) {
 		},
 
 		{
-			ledger: newLedger( //
+			ledger: freshLedger( //
 				kinds.Heading{
-					Release:         cometrelease.Agreement{Ledger: release.LedgerProtocol},
-					Level:          5,
-					LedgerUID:         "REDACTED",
-					Time:            engineclock.Now(),
-					RecommenderLocation: engineseed.Octets(vault.LocationVolume),
+					Edition:         strongmindedition.Agreement{Ledger: edition.LedgerScheme},
+					Altitude:          5,
+					SuccessionUUID:         "REDACTED",
+					Moment:            committime.Now(),
+					NominatorLocation: commitrand.Octets(security.LocatorExtent),
 				},
-				createVerifyExtensionEndorse(5, engineclock.Now()).ToEndorse(),
+				createVerifyAddnEndorse(5, committime.Now()).TowardEndorse(),
 			),
-			segments:      soundSectionCollection,
-			viewedEndorse: createVerifyExtensionEndorse(5, engineclock.Now()),
+			fragments:      soundFragmentAssign,
+			observedEndorse: createVerifyAddnEndorse(5, committime.Now()),
 		},
 
 		{
-			ledger:      newLedger(header1, endorseAtH10),
-			segments:      partialSectionCollection,
+			ledger:      freshLedger(heading1, endorseLocatedLevel10),
+			fragments:      partialFragmentAssign,
 			desireAlarm:  "REDACTED", //
-			viewedEndorse: createVerifyExtensionEndorse(10, engineclock.Now()),
+			observedEndorse: createVerifyAddnEndorse(10, committime.Now()),
 		},
 
 		{
-			ledger:             newLedger(header1, endorseAtH10),
-			segments:             soundSectionCollection,
-			viewedEndorse:        viewedEndorse,
-			taintEndorseInStore: true, //
+			ledger:             freshLedger(heading1, endorseLocatedLevel10),
+			fragments:             soundFragmentAssign,
+			observedEndorse:        observedEndorse,
+			invalidEndorseInsideDatastore: true, //
 			desireAlarm:         "REDACTED",
 		},
 
 		{
-			ledger:            newLedger(header1, endorseAtH10),
-			segments:            soundSectionCollection,
-			viewedEndorse:       viewedEndorse,
+			ledger:            freshLedger(heading1, endorseLocatedLevel10),
+			fragments:            soundFragmentAssign,
+			observedEndorse:       observedEndorse,
 			desireAlarm:        "REDACTED",
-			taintLedgerInStore: true, //
+			invalidLedgerInsideDatastore: true, //
 		},
 
 		{
-			ledger:      newLedger(header1, endorseAtH10),
-			segments:      soundSectionCollection,
-			viewedEndorse: viewedEndorse,
+			ledger:      freshLedger(heading1, endorseLocatedLevel10),
+			fragments:      soundFragmentAssign,
+			observedEndorse: observedEndorse,
 
 			//
-			purgeViewedEndorseInStore: true,
+			removeObservedEndorseInsideDatastore: true,
 		},
 
 		{
 			ledger:      ledger,
-			segments:      soundSectionCollection,
-			viewedEndorse: viewedEndorse,
+			fragments:      soundFragmentAssign,
+			observedEndorse: observedEndorse,
 
-			taintViewedEndorseInStore: true,
+			invalidObservedEndorseInsideDatastore: true,
 			desireAlarm:             "REDACTED",
 		},
 
 		{
 			ledger:      ledger,
-			segments:      soundSectionCollection,
-			viewedEndorse: viewedEndorse,
+			fragments:      soundFragmentAssign,
+			observedEndorse: observedEndorse,
 
 			//
-			purgeEndorseInStore: true,
+			removeEndorseInsideDatastore: true,
 		},
 	}
 
-	type group struct {
+	type quartet struct {
 		ledger  *kinds.Ledger
 		endorse *kinds.Endorse
-		meta   *kinds.LedgerMeta
+		summary   *kinds.LedgerSummary
 
-		viewedEndorse *kinds.Endorse
+		observedEndorse *kinds.Endorse
 	}
 
-	for i, record := range records {
+	for i, group := range groups {
 
-		bs, db := newInRamLedgerDepot()
+		bs, db := freshInsideRamLedgerDepot()
 		//
-		res, err, alarmErr := doFn(func() (any, error) {
-			bs.PersistLedgerWithExpandedEndorse(record.ledger, record.segments, record.viewedEndorse)
-			if record.ledger == nil {
+		res, err, alarmFault := conductProc(func() (any, error) {
+			bs.PersistLedgerUsingExpandedEndorse(group.ledger, group.fragments, group.observedEndorse)
+			if group.ledger == nil {
 				return nil, nil
 			}
 
-			if record.taintLedgerInStore {
-				err := db.Set(computeLedgerMetaKey(record.ledger.Level), []byte("REDACTED"))
+			if group.invalidLedgerInsideDatastore {
+				err := db.Set(reckonLedgerSummaryToken(group.ledger.Altitude), []byte("REDACTED"))
 				require.NoError(t, err)
 			}
-			byteLedger := bs.ImportLedger(record.ledger.Level)
-			byteLedgerMeta := bs.ImportLedgerMeta(record.ledger.Level)
+			byteLedger := bs.FetchLedger(group.ledger.Altitude)
+			byteLedgerSummary := bs.FetchLedgerSummary(group.ledger.Altitude)
 
-			if record.purgeViewedEndorseInStore {
-				err := db.Erase(computeViewedEndorseKey(record.ledger.Level))
+			if group.removeObservedEndorseInsideDatastore {
+				err := db.Erase(reckonObservedEndorseToken(group.ledger.Altitude))
 				require.NoError(t, err)
 			}
-			if record.taintViewedEndorseInStore {
-				err := db.Set(computeViewedEndorseKey(record.ledger.Level), []byte("REDACTED"))
+			if group.invalidObservedEndorseInsideDatastore {
+				err := db.Set(reckonObservedEndorseToken(group.ledger.Altitude), []byte("REDACTED"))
 				require.NoError(t, err)
 			}
-			byteViewedEndorse := bs.ImportViewedEndorse(record.ledger.Level)
+			byteObservedEndorse := bs.FetchObservedEndorse(group.ledger.Altitude)
 
-			endorseLevel := record.ledger.Level - 1
-			if record.purgeEndorseInStore {
-				err := db.Erase(computeLedgerEndorseKey(endorseLevel))
+			endorseAltitude := group.ledger.Altitude - 1
+			if group.removeEndorseInsideDatastore {
+				err := db.Erase(reckonLedgerEndorseToken(endorseAltitude))
 				require.NoError(t, err)
 			}
-			if record.taintEndorseInStore {
-				err := db.Set(computeLedgerEndorseKey(endorseLevel), []byte("REDACTED"))
+			if group.invalidEndorseInsideDatastore {
+				err := db.Set(reckonLedgerEndorseToken(endorseAltitude), []byte("REDACTED"))
 				require.NoError(t, err)
 			}
-			byteEndorse := bs.ImportLedgerEndorse(endorseLevel)
-			return &group{
-				ledger: byteLedger, viewedEndorse: byteViewedEndorse, endorse: byteEndorse,
-				meta: byteLedgerMeta,
+			byteEndorse := bs.FetchLedgerEndorse(endorseAltitude)
+			return &quartet{
+				ledger: byteLedger, observedEndorse: byteObservedEndorse, endorse: byteEndorse,
+				summary: byteLedgerSummary,
 			}, nil
 		})
 
-		if subtractStr := record.desireAlarm; subtractStr != "REDACTED" {
-			if alarmErr == nil {
+		if underTxt := group.desireAlarm; underTxt != "REDACTED" {
+			if alarmFault == nil {
 				t.Errorf("REDACTED", i)
-			} else if got := fmt.Sprintf("REDACTED", alarmErr); !strings.Contains(got, subtractStr) {
-				t.Errorf("REDACTED", i, got, subtractStr)
+			} else if got := fmt.Sprintf("REDACTED", alarmFault); !strings.Contains(got, underTxt) {
+				t.Errorf("REDACTED", i, got, underTxt)
 			}
 			continue
 		}
 
-		if record.desireErr {
+		if group.desireFault {
 			if err == nil {
 				t.Errorf("REDACTED", i)
 			}
 			continue
 		}
 
-		assert.Nil(t, alarmErr, "REDACTED", i)
+		assert.Nil(t, alarmFault, "REDACTED", i)
 		assert.Nil(t, err, "REDACTED", i)
-		qua, ok := res.(*group)
+		qua, ok := res.(*quartet)
 		if !ok || qua == nil {
 			t.Errorf("REDACTED", i, res)
 			continue
 		}
-		if record.purgeViewedEndorseInStore {
-			assert.Nil(t, qua.viewedEndorse,
+		if group.removeObservedEndorseInsideDatastore {
+			assert.Nil(t, qua.observedEndorse,
 				"REDACTED")
 		}
-		if record.purgeEndorseInStore {
+		if group.removeEndorseInsideDatastore {
 			assert.Nil(t, qua.endorse,
 				"REDACTED")
 		}
@@ -370,56 +370,56 @@ func VerifyLedgerDepotPersistImportLedger(t *testing.T) {
 //
 //
 //
-func removePlugins(ec *kinds.ExpandedEndorse) bool {
-	removed := false
-	for idx := range ec.ExpandedEndorsements {
-		if len(ec.ExpandedEndorsements[idx].Addition) > 0 || len(ec.ExpandedEndorsements[idx].AdditionAutograph) > 0 {
-			removed = true
+func extractAdditions(ec *kinds.ExpandedEndorse) bool {
+	extracted := false
+	for idx := range ec.ExpandedNotations {
+		if len(ec.ExpandedNotations[idx].Addition) > 0 || len(ec.ExpandedNotations[idx].AdditionNotation) > 0 {
+			extracted = true
 		}
-		ec.ExpandedEndorsements[idx].Addition = nil
-		ec.ExpandedEndorsements[idx].AdditionAutograph = nil
+		ec.ExpandedNotations[idx].Addition = nil
+		ec.ExpandedNotations[idx].AdditionNotation = nil
 	}
-	return removed
+	return extracted
 }
 
 //
 //
-func VerifyPersistLedgerWithExpandedEndorseAlarmOnMissingAddition(t *testing.T) {
+func VerifyPersistLedgerUsingExpandedEndorseAlarmUponMissingAddition(t *testing.T) {
 	for _, verifyInstance := range []struct {
-		label           string
+		alias           string
 		distortEndorse func(*kinds.ExpandedEndorse)
 		mustAlarm    bool
 	}{
 		{
-			label:           "REDACTED",
+			alias:           "REDACTED",
 			distortEndorse: func(_ *kinds.ExpandedEndorse) {},
 			mustAlarm:    false,
 		},
 		{
-			label: "REDACTED",
+			alias: "REDACTED",
 			distortEndorse: func(c *kinds.ExpandedEndorse) {
-				removePlugins(c)
+				extractAdditions(c)
 			},
 			mustAlarm: true,
 		},
 	} {
-		t.Run(verifyInstance.label, func(t *testing.T) {
-			status, bs, sanitize := createStatusAndLedgerDepot()
+		t.Run(verifyInstance.alias, func(t *testing.T) {
+			status, bs, sanitize := createStatusAlsoLedgerDepot()
 			defer sanitize()
-			h := bs.Level() + 1
-			ledger, err := status.CreateLedger(h, verify.CreateNTrans(h, 10), new(kinds.Endorse), nil, status.Ratifiers.FetchRecommender().Location)
+			h := bs.Altitude() + 1
+			ledger, err := status.CreateLedger(h, verify.CreateNTHTrans(h, 10), new(kinds.Endorse), nil, status.Assessors.ObtainNominator().Location)
 			require.NoError(t, err)
 
-			viewedEndorse := createVerifyExtensionEndorse(ledger.Level, engineclock.Now())
-			ps, err := ledger.CreateSegmentAssign(kinds.LedgerSegmentVolumeOctets)
+			observedEndorse := createVerifyAddnEndorse(ledger.Altitude, committime.Now())
+			ps, err := ledger.CreateFragmentAssign(kinds.LedgerFragmentExtentOctets)
 			require.NoError(t, err)
-			verifyInstance.distortEndorse(viewedEndorse)
+			verifyInstance.distortEndorse(observedEndorse)
 			if verifyInstance.mustAlarm {
 				require.Panics(t, func() {
-					bs.PersistLedgerWithExpandedEndorse(ledger, ps, viewedEndorse)
+					bs.PersistLedgerUsingExpandedEndorse(ledger, ps, observedEndorse)
 				})
 			} else {
-				bs.PersistLedgerWithExpandedEndorse(ledger, ps, viewedEndorse)
+				bs.PersistLedgerUsingExpandedEndorse(ledger, ps, observedEndorse)
 			}
 		})
 	}
@@ -428,40 +428,40 @@ func VerifyPersistLedgerWithExpandedEndorseAlarmOnMissingAddition(t *testing.T) 
 //
 //
 //
-func VerifyImportLedgerExpandedEndorse(t *testing.T) {
+func VerifyFetchLedgerExpandedEndorse(t *testing.T) {
 	for _, verifyInstance := range []struct {
-		label         string
+		alias         string
 		persistExpanded bool
 		anticipateOutcome bool
 	}{
 		{
-			label:         "REDACTED",
+			alias:         "REDACTED",
 			persistExpanded: false,
 			anticipateOutcome: false,
 		},
 		{
-			label:         "REDACTED",
+			alias:         "REDACTED",
 			persistExpanded: true,
 			anticipateOutcome: true,
 		},
 	} {
-		t.Run(verifyInstance.label, func(t *testing.T) {
-			status, bs, sanitize := createStatusAndLedgerDepot()
+		t.Run(verifyInstance.alias, func(t *testing.T) {
+			status, bs, sanitize := createStatusAlsoLedgerDepot()
 			defer sanitize()
-			h := bs.Level() + 1
-			ledger, err := status.CreateLedger(h, verify.CreateNTrans(h, 10), new(kinds.Endorse), nil, status.Ratifiers.FetchRecommender().Location)
+			h := bs.Altitude() + 1
+			ledger, err := status.CreateLedger(h, verify.CreateNTHTrans(h, 10), new(kinds.Endorse), nil, status.Assessors.ObtainNominator().Location)
 			require.NoError(t, err)
-			viewedEndorse := createVerifyExtensionEndorse(ledger.Level, engineclock.Now())
-			ps, err := ledger.CreateSegmentAssign(kinds.LedgerSegmentVolumeOctets)
+			observedEndorse := createVerifyAddnEndorse(ledger.Altitude, committime.Now())
+			ps, err := ledger.CreateFragmentAssign(kinds.LedgerFragmentExtentOctets)
 			require.NoError(t, err)
 			if verifyInstance.persistExpanded {
-				bs.PersistLedgerWithExpandedEndorse(ledger, ps, viewedEndorse)
+				bs.PersistLedgerUsingExpandedEndorse(ledger, ps, observedEndorse)
 			} else {
-				bs.PersistLedger(ledger, ps, viewedEndorse.ToEndorse())
+				bs.PersistLedger(ledger, ps, observedEndorse.TowardEndorse())
 			}
-			res := bs.ImportLedgerExpandedEndorse(ledger.Level)
+			res := bs.FetchLedgerExpandedEndorse(ledger.Altitude)
 			if verifyInstance.anticipateOutcome {
-				require.Equal(t, viewedEndorse, res)
+				require.Equal(t, observedEndorse, res)
 			} else {
 				require.Nil(t, res)
 			}
@@ -469,99 +469,99 @@ func VerifyImportLedgerExpandedEndorse(t *testing.T) {
 	}
 }
 
-func VerifyImportRootMeta(t *testing.T) {
+func VerifyFetchFoundationSummary(t *testing.T) {
 	settings := verify.RestoreVerifyOrigin("REDACTED")
-	defer os.RemoveAll(settings.OriginFolder)
-	statusDepot := sm.NewDepot(dbm.NewMemoryStore(), sm.DepotSettings{
-		DropIfaceReplies: false,
+	defer os.RemoveAll(settings.OriginPath)
+	statusDepot := sm.FreshDepot(dbm.FreshMemoryDatastore(), sm.DepotChoices{
+		EjectIfaceReplies: false,
 	})
-	status, err := statusDepot.ImportFromStoreOrOriginEntry(settings.OriginEntry())
+	status, err := statusDepot.FetchOriginatingDatastoreEitherInaugurationRecord(settings.InaugurationRecord())
 	require.NoError(t, err)
-	bs := NewLedgerDepot(dbm.NewMemoryStore())
+	bs := FreshLedgerDepot(dbm.FreshMemoryDatastore())
 
 	for h := int64(1); h <= 10; h++ {
-		ledger, err := status.CreateLedger(h, verify.CreateNTrans(h, 10), new(kinds.Endorse), nil, status.Ratifiers.FetchRecommender().Location)
+		ledger, err := status.CreateLedger(h, verify.CreateNTHTrans(h, 10), new(kinds.Endorse), nil, status.Assessors.ObtainNominator().Location)
 		require.NoError(t, err)
-		sectionCollection, err := ledger.CreateSegmentAssign(kinds.LedgerSegmentVolumeOctets)
+		fragmentAssign, err := ledger.CreateFragmentAssign(kinds.LedgerFragmentExtentOctets)
 		require.NoError(t, err)
-		viewedEndorse := createVerifyExtensionEndorse(h, engineclock.Now())
-		bs.PersistLedgerWithExpandedEndorse(ledger, sectionCollection, viewedEndorse)
+		observedEndorse := createVerifyAddnEndorse(h, committime.Now())
+		bs.PersistLedgerUsingExpandedEndorse(ledger, fragmentAssign, observedEndorse)
 	}
 
 	_, _, err = bs.TrimLedgers(4, status)
 	require.NoError(t, err)
 
-	rootLedger := bs.ImportRootMeta()
-	assert.EqualValues(t, 4, rootLedger.Heading.Level)
-	assert.EqualValues(t, 4, bs.Root())
+	foundationLedger := bs.FetchFoundationSummary()
+	assert.EqualValues(t, 4, foundationLedger.Heading.Altitude)
+	assert.EqualValues(t, 4, bs.Foundation())
 
-	require.NoError(t, bs.RemoveNewestLedger())
-	require.EqualValues(t, 9, bs.Level())
+	require.NoError(t, bs.EraseNewestLedger())
+	require.EqualValues(t, 9, bs.Altitude())
 }
 
-func VerifyImportLedgerSection(t *testing.T) {
+func VerifyFetchLedgerFragment(t *testing.T) {
 	settings := verify.RestoreVerifyOrigin("REDACTED")
 
-	bs, db := newInRamLedgerDepot()
-	const level, ordinal = 10, 1
-	importSection := func() (any, error) {
-		segment := bs.ImportLedgerSegment(level, ordinal)
-		return segment, nil
+	bs, db := freshInsideRamLedgerDepot()
+	const altitude, ordinal = 10, 1
+	fetchFragment := func() (any, error) {
+		fragment := bs.FetchLedgerFragment(altitude, ordinal)
+		return fragment, nil
 	}
 
-	status, err := sm.CreateOriginStatusFromEntry(settings.OriginEntry())
+	status, err := sm.CreateInaugurationStatusOriginatingRecord(settings.InaugurationRecord())
 	require.NoError(t, err)
 
 	//
 	//
-	res, _, alarmErr := doFn(importSection)
-	require.Nil(t, alarmErr, "REDACTED")
+	res, _, alarmFault := conductProc(fetchFragment)
+	require.Nil(t, alarmFault, "REDACTED")
 	require.Nil(t, res, "REDACTED")
 
 	//
-	err = db.Set(computeLedgerSectionKey(level, ordinal), []byte("REDACTED"))
+	err = db.Set(reckonLedgerFragmentToken(altitude, ordinal), []byte("REDACTED"))
 	require.NoError(t, err)
-	res, _, alarmErr = doFn(importSection)
-	require.NotNil(t, alarmErr, "REDACTED")
-	require.Contains(t, alarmErr.Error(), "REDACTED")
+	res, _, alarmFault = conductProc(fetchFragment)
+	require.NotNil(t, alarmFault, "REDACTED")
+	require.Contains(t, alarmFault.Error(), "REDACTED")
 
 	//
-	ledger, err := status.CreateLedger(level, nil, new(kinds.Endorse), nil, status.Ratifiers.FetchRecommender().Location)
+	ledger, err := status.CreateLedger(altitude, nil, new(kinds.Endorse), nil, status.Assessors.ObtainNominator().Location)
 	require.NoError(t, err)
-	sectionCollection, err := ledger.CreateSegmentAssign(kinds.LedgerSegmentVolumeOctets)
+	fragmentAssign, err := ledger.CreateFragmentAssign(kinds.LedgerFragmentExtentOctets)
 	require.NoError(t, err)
-	section1 := sectionCollection.FetchSegment(0)
+	section1 := fragmentAssign.ObtainFragment(0)
 
-	pb1, err := section1.ToSchema()
+	pb1, err := section1.TowardSchema()
 	require.NoError(t, err)
-	err = db.Set(computeLedgerSectionKey(level, ordinal), shouldSerialize(pb1))
+	err = db.Set(reckonLedgerFragmentToken(altitude, ordinal), shouldEncode(pb1))
 	require.NoError(t, err)
-	acquiredSection, _, alarmErr := doFn(importSection)
-	require.Nil(t, alarmErr, "REDACTED")
+	attainedFragment, _, alarmFault := conductProc(fetchFragment)
+	require.Nil(t, alarmFault, "REDACTED")
 	require.Nil(t, res, "REDACTED")
 
 	//
-	acquiredSectionJSON, err := json.Marshal(acquiredSection.(*kinds.Segment))
+	attainedFragmentJSN, err := json.Marshal(attainedFragment.(*kinds.Fragment))
 	require.NoError(t, err)
-	section1json, err := json.Marshal(section1)
+	section1jsn, err := json.Marshal(section1)
 	require.NoError(t, err)
-	require.JSONEq(t, string(acquiredSectionJSON), string(section1json),
+	require.JSONEq(t, string(attainedFragmentJSN), string(section1jsn),
 		"REDACTED")
 }
 
 func VerifyTrimLedgers(t *testing.T) {
 	settings := verify.RestoreVerifyOrigin("REDACTED")
-	defer os.RemoveAll(settings.OriginFolder)
-	statusDepot := sm.NewDepot(dbm.NewMemoryStore(), sm.DepotSettings{
-		DropIfaceReplies: false,
+	defer os.RemoveAll(settings.OriginPath)
+	statusDepot := sm.FreshDepot(dbm.FreshMemoryDatastore(), sm.DepotChoices{
+		EjectIfaceReplies: false,
 	})
-	status, err := statusDepot.ImportFromStoreOrOriginEntry(settings.OriginEntry())
+	status, err := statusDepot.FetchOriginatingDatastoreEitherInaugurationRecord(settings.InaugurationRecord())
 	require.NoError(t, err)
-	db := dbm.NewMemoryStore()
-	bs := NewLedgerDepot(db)
-	assert.EqualValues(t, 0, bs.Root())
-	assert.EqualValues(t, 0, bs.Level())
-	assert.EqualValues(t, 0, bs.Volume())
+	db := dbm.FreshMemoryDatastore()
+	bs := FreshLedgerDepot(db)
+	assert.EqualValues(t, 0, bs.Foundation())
+	assert.EqualValues(t, 0, bs.Altitude())
+	assert.EqualValues(t, 0, bs.Extent())
 
 	//
 	_, _, err = bs.TrimLedgers(1, status)
@@ -572,51 +572,51 @@ func VerifyTrimLedgers(t *testing.T) {
 
 	//
 	for h := int64(1); h <= 1500; h++ {
-		ledger, err := status.CreateLedger(h, verify.CreateNTrans(h, 10), new(kinds.Endorse), nil, status.Ratifiers.FetchRecommender().Location)
+		ledger, err := status.CreateLedger(h, verify.CreateNTHTrans(h, 10), new(kinds.Endorse), nil, status.Assessors.ObtainNominator().Location)
 		require.NoError(t, err)
-		sectionCollection, err := ledger.CreateSegmentAssign(kinds.LedgerSegmentVolumeOctets)
+		fragmentAssign, err := ledger.CreateFragmentAssign(kinds.LedgerFragmentExtentOctets)
 		require.NoError(t, err)
-		viewedEndorse := createVerifyExtensionEndorse(h, engineclock.Now())
-		bs.PersistLedgerWithExpandedEndorse(ledger, sectionCollection, viewedEndorse)
+		observedEndorse := createVerifyAddnEndorse(h, committime.Now())
+		bs.PersistLedgerUsingExpandedEndorse(ledger, fragmentAssign, observedEndorse)
 	}
 
-	assert.EqualValues(t, 1, bs.Root())
-	assert.EqualValues(t, 1500, bs.Level())
-	assert.EqualValues(t, 1500, bs.Volume())
+	assert.EqualValues(t, 1, bs.Foundation())
+	assert.EqualValues(t, 1500, bs.Altitude())
+	assert.EqualValues(t, 1500, bs.Extent())
 
-	status.FinalLedgerTime = time.Date(2020, 1, 1, 1, 0, 0, 0, time.UTC)
-	status.FinalLedgerLevel = 1500
+	status.FinalLedgerMoment = time.Date(2020, 1, 1, 1, 0, 0, 0, time.UTC)
+	status.FinalLedgerAltitude = 1500
 
-	status.AgreementOptions.Proof.MaximumDurationCountLedgers = 400
-	status.AgreementOptions.Proof.MaximumDurationPeriod = 1 * time.Second
+	status.AgreementSettings.Proof.MaximumLifespanCountLedgers = 400
+	status.AgreementSettings.Proof.MaximumLifespanInterval = 1 * time.Second
 
 	//
-	trimmed, proofPreserveLevel, err := bs.TrimLedgers(1200, status)
+	trimmed, proofPreserveAltitude, err := bs.TrimLedgers(1200, status)
 	require.NoError(t, err)
 	assert.EqualValues(t, 1199, trimmed)
-	assert.EqualValues(t, 1200, bs.Root())
-	assert.EqualValues(t, 1500, bs.Level())
-	assert.EqualValues(t, 301, bs.Volume())
-	assert.EqualValues(t, 1100, proofPreserveLevel)
+	assert.EqualValues(t, 1200, bs.Foundation())
+	assert.EqualValues(t, 1500, bs.Altitude())
+	assert.EqualValues(t, 301, bs.Extent())
+	assert.EqualValues(t, 1100, proofPreserveAltitude)
 
-	require.NotNil(t, bs.ImportLedger(1200))
-	require.Nil(t, bs.ImportLedger(1199))
+	require.NotNil(t, bs.FetchLedger(1200))
+	require.Nil(t, bs.FetchLedger(1199))
 
 	//
 	//
-	require.NotNil(t, bs.ImportLedgerMeta(1100))
-	require.Nil(t, bs.ImportLedgerMeta(1099))
-	require.NotNil(t, bs.ImportLedgerEndorse(1100))
-	require.NotNil(t, bs.ImportLedgerExpandedEndorse(1100))
+	require.NotNil(t, bs.FetchLedgerSummary(1100))
+	require.Nil(t, bs.FetchLedgerSummary(1099))
+	require.NotNil(t, bs.FetchLedgerEndorse(1100))
+	require.NotNil(t, bs.FetchLedgerExpandedEndorse(1100))
 	//
-	require.Nil(t, bs.ImportLedgerEndorse(1099))
-	require.Nil(t, bs.ImportLedgerExpandedEndorse(1099))
+	require.Nil(t, bs.FetchLedgerEndorse(1099))
+	require.Nil(t, bs.FetchLedgerExpandedEndorse(1099))
 
 	for i := int64(1); i < 1200; i++ {
-		require.Nil(t, bs.ImportLedger(i))
+		require.Nil(t, bs.FetchLedger(i))
 	}
 	for i := int64(1200); i <= 1500; i++ {
-		require.NotNil(t, bs.ImportLedger(i))
+		require.NotNil(t, bs.FetchLedger(i))
 	}
 
 	//
@@ -632,17 +632,17 @@ func VerifyTrimLedgers(t *testing.T) {
 	trimmed, _, err = bs.TrimLedgers(1300, status)
 	require.NoError(t, err)
 	assert.EqualValues(t, 100, trimmed)
-	assert.EqualValues(t, 1300, bs.Root())
+	assert.EqualValues(t, 1300, bs.Foundation())
 
 	//
 	//
-	require.NotNil(t, bs.ImportLedgerMeta(1100))
-	require.Nil(t, bs.ImportLedgerMeta(1099))
-	require.NotNil(t, bs.ImportLedgerEndorse(1100))
-	require.NotNil(t, bs.ImportLedgerExpandedEndorse(1100))
+	require.NotNil(t, bs.FetchLedgerSummary(1100))
+	require.Nil(t, bs.FetchLedgerSummary(1099))
+	require.NotNil(t, bs.FetchLedgerEndorse(1100))
+	require.NotNil(t, bs.FetchLedgerExpandedEndorse(1100))
 	//
-	require.Nil(t, bs.ImportLedgerEndorse(1099))
-	require.Nil(t, bs.ImportLedgerExpandedEndorse(1099))
+	require.Nil(t, bs.FetchLedgerEndorse(1099))
+	require.Nil(t, bs.FetchLedgerExpandedEndorse(1099))
 
 	//
 	_, _, err = bs.TrimLedgers(1501, status)
@@ -652,128 +652,128 @@ func VerifyTrimLedgers(t *testing.T) {
 	trimmed, _, err = bs.TrimLedgers(1500, status)
 	require.NoError(t, err)
 	assert.EqualValues(t, 200, trimmed)
-	assert.Nil(t, bs.ImportLedger(1499))
-	assert.NotNil(t, bs.ImportLedger(1500))
-	assert.Nil(t, bs.ImportLedger(1501))
+	assert.Nil(t, bs.FetchLedger(1499))
+	assert.NotNil(t, bs.FetchLedger(1500))
+	assert.Nil(t, bs.FetchLedger(1501))
 }
 
-func VerifyImportLedgerMeta(t *testing.T) {
-	bs, db := newInRamLedgerDepot()
-	level := int64(10)
-	importMeta := func() (any, error) {
-		meta := bs.ImportLedgerMeta(level)
-		return meta, nil
+func VerifyFetchLedgerSummary(t *testing.T) {
+	bs, db := freshInsideRamLedgerDepot()
+	altitude := int64(10)
+	fetchSummary := func() (any, error) {
+		summary := bs.FetchLedgerSummary(altitude)
+		return summary, nil
 	}
 
 	//
 	//
-	res, _, alarmErr := doFn(importMeta)
-	require.Nil(t, alarmErr, "REDACTED")
+	res, _, alarmFault := conductProc(fetchSummary)
+	require.Nil(t, alarmFault, "REDACTED")
 	require.Nil(t, res, "REDACTED")
 
 	//
-	err := db.Set(computeLedgerMetaKey(level), []byte("REDACTED"))
+	err := db.Set(reckonLedgerSummaryToken(altitude), []byte("REDACTED"))
 	require.NoError(t, err)
-	res, _, alarmErr = doFn(importMeta)
-	require.NotNil(t, alarmErr, "REDACTED")
-	require.Contains(t, alarmErr.Error(), "REDACTED")
+	res, _, alarmFault = conductProc(fetchSummary)
+	require.NotNil(t, alarmFault, "REDACTED")
+	require.Contains(t, alarmFault.Error(), "REDACTED")
 
 	//
-	meta := &kinds.LedgerMeta{Heading: kinds.Heading{
-		Release: cometrelease.Agreement{
-			Ledger: release.LedgerProtocol, App: 0,
-		}, Level: 1, RecommenderLocation: engineseed.Octets(vault.LocationVolume),
+	summary := &kinds.LedgerSummary{Heading: kinds.Heading{
+		Edition: strongmindedition.Agreement{
+			Ledger: edition.LedgerScheme, App: 0,
+		}, Altitude: 1, NominatorLocation: commitrand.Octets(security.LocatorExtent),
 	}}
-	pbm := meta.ToSchema()
-	err = db.Set(computeLedgerMetaKey(level), shouldSerialize(pbm))
+	pbm := summary.TowardSchema()
+	err = db.Set(reckonLedgerSummaryToken(altitude), shouldEncode(pbm))
 	require.NoError(t, err)
-	acquiredMeta, _, alarmErr := doFn(importMeta)
-	require.Nil(t, alarmErr, "REDACTED")
+	attainedSummary, _, alarmFault := conductProc(fetchSummary)
+	require.Nil(t, alarmFault, "REDACTED")
 	require.Nil(t, res, "REDACTED")
-	pbdata := meta.ToSchema()
-	if gdata, ok := acquiredMeta.(*kinds.LedgerMeta); ok {
-		pbtainedMeta := gdata.ToSchema()
-		require.Equal(t, shouldSerialize(pbdata), shouldSerialize(pbtainedMeta),
+	protosummary := summary.TowardSchema()
+	if genesisummary, ok := attainedSummary.(*kinds.LedgerSummary); ok {
+		protoattainedSummary := genesisummary.TowardSchema()
+		require.Equal(t, shouldEncode(protosummary), shouldEncode(protoattainedSummary),
 			"REDACTED")
 	}
 }
 
-func VerifyImportLedgerMetaByDigest(t *testing.T) {
+func VerifyFetchLedgerSummaryViaDigest(t *testing.T) {
 	settings := verify.RestoreVerifyOrigin("REDACTED")
-	defer os.RemoveAll(settings.OriginFolder)
-	statusDepot := sm.NewDepot(dbm.NewMemoryStore(), sm.DepotSettings{
-		DropIfaceReplies: false,
+	defer os.RemoveAll(settings.OriginPath)
+	statusDepot := sm.FreshDepot(dbm.FreshMemoryDatastore(), sm.DepotChoices{
+		EjectIfaceReplies: false,
 	})
-	status, err := statusDepot.ImportFromStoreOrOriginEntry(settings.OriginEntry())
+	status, err := statusDepot.FetchOriginatingDatastoreEitherInaugurationRecord(settings.InaugurationRecord())
 	require.NoError(t, err)
-	bs := NewLedgerDepot(dbm.NewMemoryStore())
+	bs := FreshLedgerDepot(dbm.FreshMemoryDatastore())
 
-	b1, err := status.CreateLedger(status.FinalLedgerLevel+1, verify.CreateNTrans(status.FinalLedgerLevel+1, 10), new(kinds.Endorse), nil, status.Ratifiers.FetchRecommender().Location)
+	b1, err := status.CreateLedger(status.FinalLedgerAltitude+1, verify.CreateNTHTrans(status.FinalLedgerAltitude+1, 10), new(kinds.Endorse), nil, status.Assessors.ObtainNominator().Location)
 	require.NoError(t, err)
-	sectionCollection, err := b1.CreateSegmentAssign(kinds.LedgerSegmentVolumeOctets)
+	fragmentAssign, err := b1.CreateFragmentAssign(kinds.LedgerFragmentExtentOctets)
 	require.NoError(t, err)
-	viewedEndorse := createVerifyExtensionEndorse(1, engineclock.Now())
-	bs.PersistLedger(b1, sectionCollection, viewedEndorse.ToEndorse())
+	observedEndorse := createVerifyAddnEndorse(1, committime.Now())
+	bs.PersistLedger(b1, fragmentAssign, observedEndorse.TowardEndorse())
 
-	rootLedger := bs.ImportLedgerMetaByDigest(b1.Digest())
-	assert.EqualValues(t, b1.Level, rootLedger.Heading.Level)
-	assert.EqualValues(t, b1.FinalLedgerUID, rootLedger.Heading.FinalLedgerUID)
-	assert.EqualValues(t, b1.LedgerUID, rootLedger.Heading.LedgerUID)
+	foundationLedger := bs.FetchLedgerSummaryViaDigest(b1.Digest())
+	assert.EqualValues(t, b1.Altitude, foundationLedger.Heading.Altitude)
+	assert.EqualValues(t, b1.FinalLedgerUUID, foundationLedger.Heading.FinalLedgerUUID)
+	assert.EqualValues(t, b1.SuccessionUUID, foundationLedger.Heading.SuccessionUUID)
 }
 
-func VerifyLedgerAcquireAtLevel(t *testing.T) {
-	status, bs, sanitize := createStatusAndLedgerDepot()
+func VerifyLedgerAcquireLocatedAltitude(t *testing.T) {
+	status, bs, sanitize := createStatusAlsoLedgerDepot()
 	defer sanitize()
-	require.Equal(t, bs.Level(), int64(0), "REDACTED")
-	ledger, err := status.CreateLedger(bs.Level()+1, nil, new(kinds.Endorse), nil, status.Ratifiers.FetchRecommender().Location)
+	require.Equal(t, bs.Altitude(), int64(0), "REDACTED")
+	ledger, err := status.CreateLedger(bs.Altitude()+1, nil, new(kinds.Endorse), nil, status.Assessors.ObtainNominator().Location)
 	require.NoError(t, err)
 
-	sectionCollection, err := ledger.CreateSegmentAssign(kinds.LedgerSegmentVolumeOctets)
+	fragmentAssign, err := ledger.CreateFragmentAssign(kinds.LedgerFragmentExtentOctets)
 	require.NoError(t, err)
-	viewedEndorse := createVerifyExtensionEndorse(ledger.Level, engineclock.Now())
-	bs.PersistLedgerWithExpandedEndorse(ledger, sectionCollection, viewedEndorse)
-	require.Equal(t, bs.Level(), ledger.Level, "REDACTED")
+	observedEndorse := createVerifyAddnEndorse(ledger.Altitude, committime.Now())
+	bs.PersistLedgerUsingExpandedEndorse(ledger, fragmentAssign, observedEndorse)
+	require.Equal(t, bs.Altitude(), ledger.Altitude, "REDACTED")
 
-	ledgerAtLevel := bs.ImportLedger(bs.Level())
-	b1, err := ledger.ToSchema()
+	ledgerLocatedAltitude := bs.FetchLedger(bs.Altitude())
+	b1, err := ledger.TowardSchema()
 	require.NoError(t, err)
-	b2, err := ledgerAtLevel.ToSchema()
+	b2, err := ledgerLocatedAltitude.TowardSchema()
 	require.NoError(t, err)
-	bz1 := shouldSerialize(b1)
-	bz2 := shouldSerialize(b2)
+	bz1 := shouldEncode(b1)
+	bz2 := shouldEncode(b2)
 	require.Equal(t, bz1, bz2)
-	require.Equal(t, ledger.Digest(), ledgerAtLevel.Digest(),
+	require.Equal(t, ledger.Digest(), ledgerLocatedAltitude.Digest(),
 		"REDACTED")
 
-	ledgerAtLevelAdd1 := bs.ImportLedger(bs.Level() + 1)
-	require.Nil(t, ledgerAtLevelAdd1, "REDACTED")
-	ledgerAtLevelAdd2 := bs.ImportLedger(bs.Level() + 2)
-	require.Nil(t, ledgerAtLevelAdd2, "REDACTED")
+	ledgerLocatedAltitudeAdd1 := bs.FetchLedger(bs.Altitude() + 1)
+	require.Nil(t, ledgerLocatedAltitudeAdd1, "REDACTED")
+	ledgerLocatedAltitudeAdd2 := bs.FetchLedger(bs.Altitude() + 2)
+	require.Nil(t, ledgerLocatedAltitudeAdd2, "REDACTED")
 }
 
-func doFn(fn func() (any, error)) (res any, err error, alarmErr error) {
+func conductProc(fn func() (any, error)) (res any, err error, alarmFault error) {
 	defer func() {
 		if r := recover(); r != nil {
 			switch e := r.(type) {
 			case error:
-				alarmErr = e
+				alarmFault = e
 			case string:
-				alarmErr = fmt.Errorf("REDACTED", e)
+				alarmFault = fmt.Errorf("REDACTED", e)
 			default:
 				if st, ok := r.(fmt.Stringer); ok {
-					alarmErr = fmt.Errorf("REDACTED", st)
+					alarmFault = fmt.Errorf("REDACTED", st)
 				} else {
-					alarmErr = fmt.Errorf("REDACTED", debug.Stack())
+					alarmFault = fmt.Errorf("REDACTED", debug.Stack())
 				}
 			}
 		}
 	}()
 
 	res, err = fn()
-	return res, err, alarmErr
+	return res, err, alarmFault
 }
 
-func newLedger(hdr kinds.Heading, finalEndorse *kinds.Endorse) *kinds.Ledger {
+func freshLedger(hdr kinds.Heading, finalEndorse *kinds.Endorse) *kinds.Ledger {
 	return &kinds.Ledger{
 		Heading:     hdr,
 		FinalEndorse: finalEndorse,
